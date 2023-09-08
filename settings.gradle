@@ -61,3 +61,6 @@ include ':lib-detect'
 project(':lib-detect').projectDir = file('../1CorePublic/lib-detect')
 include ':lib-detect-mlkit'
 project(':lib-detect-mlkit').projectDir = file('../1CorePublic/lib-detect-mlkit')
+
+include ':app-config-phonetics'
+project(':app-config-phonetics').projectDir = file('../1CorePrivate/app-config-phonetics')

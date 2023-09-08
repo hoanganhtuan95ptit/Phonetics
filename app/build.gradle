@@ -5,14 +5,11 @@ plugins {
 }
 
 apply from: "../../1CorePublic/constant/build.gradle"
+apply from: "../../1CorePrivate/app-config-phonetics/build.gradle"
 
 android {
     namespace "com.simple.phonetics"
     compileSdkVersion project.ext.compileSdkVersion
-
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    def sdkDir = properties.getProperty('sdk.dir')
 
     defaultConfig {
         applicationId "com.simple.phonetics"
@@ -31,11 +28,11 @@ android {
 
     signingConfigs {
         keystore {
-            keyAlias properties.getProperty('keyAlias')
-            keyPassword properties.getProperty('keyPassword')
-            
-            storeFile file(properties.getProperty('storeFile'))
-            storePassword properties.getProperty('storePassword')
+            keyAlias project.ext.keyAlias
+            keyPassword project.ext.keyPassword
+
+            storeFile file(project.ext.storeFile)
+            storePassword project.ext.storePassword
         }
     }
     buildTypes {

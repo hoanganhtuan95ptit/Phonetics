@@ -10,6 +10,7 @@
         <option name="gradleJvm" value="jbr-17" />
         <option name="modules">
           <set>
+            <option value="$PROJECT_DIR$/../1CorePrivate/app-config-phonetics" />
             <option value="$PROJECT_DIR$/../1CorePublic/constant" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-adapter" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-analytics" />
