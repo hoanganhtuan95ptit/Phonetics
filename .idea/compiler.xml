@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="11">
+      <module name="phonetics.adapter" target="17" />
+      <module name="phonetics.analytics" target="17" />
+      <module name="phonetics.bottomsheet" target="17" />
+      <module name="phonetics.config" target="17" />
+      <module name="phonetics.core-app" target="17" />
+      <module name="phonetics.core-navigation" target="17" />
+      <module name="phonetics.crashlytics" target="17" />
+      <module name="phonetics.job" target="17" />
+      <module name="phonetics.task" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
