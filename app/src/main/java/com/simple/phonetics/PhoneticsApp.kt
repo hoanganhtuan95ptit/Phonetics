@@ -1,16 +1,16 @@
 package com.simple.phonetics
 
-import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.simple.coreapp.BaseApp
-import com.simple.phonetics.domain.usecase.SyncUseCase
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.di.apiModule
 import com.simple.phonetics.di.cacheModule
 import com.simple.phonetics.di.daoModule
 import com.simple.phonetics.di.taskModule
 import com.simple.phonetics.di.useCaseModule
 import com.simple.phonetics.di.viewModelModule
+import com.simple.phonetics.domain.usecase.SyncUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
@@ -23,7 +23,7 @@ class PhoneticsApp : BaseApp() {
 
     private val handler = CoroutineExceptionHandler { _: CoroutineContext, throwable: Throwable ->
 
-        Log.d("tuanha", "handler: ", throwable)
+        logCrashlytics(throwable)
     }
 
     private val syncUseCase: SyncUseCase by lazy {
