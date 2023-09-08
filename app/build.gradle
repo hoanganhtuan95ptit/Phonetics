@@ -1,0 +1,114 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+apply from: "../../1CorePublic/constant/build.gradle"
+
+android {
+    namespace "com.simple.phonetics"
+    compileSdkVersion project.ext.compileSdkVersion
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def sdkDir = properties.getProperty('sdk.dir')
+
+    defaultConfig {
+        applicationId "com.simple.phonetics"
+
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    signingConfigs {
+        keystore {
+            keyAlias properties.getProperty('keyAlias')
+            keyPassword properties.getProperty('keyPassword')
+            
+            storeFile file(properties.getProperty('storeFile'))
+            storePassword properties.getProperty('storePassword')
+        }
+    }
+    buildTypes {
+        debug {
+//            minifyEnabled true
+//            signingConfig signingConfigs.keystore
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+//            manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
+        }
+        release {
+//            minifyEnabled true
+            signingConfig signingConfigs.keystore
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+//            manifestPlaceholders = [crashlyticsCollectionEnabled: "true"]
+        }
+    }
+    compileOptions {
+        sourceCompatibility project.ext.javaVersion
+        targetCompatibility project.ext.javaVersion
+    }
+    kotlinOptions {
+        jvmTarget = project.ext.javaVersion.toString()
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+
+    implementation androidxDependencies.values()
+
+    implementation project(path: ':lib-core-app')
+    implementation project(path: ':lib-core-navigation')
+
+    implementation project(path: ':lib-job')
+    implementation project(path: ':lib-task')
+    implementation project(path: ':lib-core')
+    implementation project(path: ':lib-state')
+    implementation project(path: ':lib-config')
+    implementation project(path: ':lib-adapter')
+
+    implementation project(path: ':lib-detect')
+    implementation project(path: ':lib-detect-mlkit')
+
+    implementation project(path: ':lib-translate')
+    implementation project(path: ':lib-translate-mlkit')
+
+    implementation project(path: ':lib-analytics')
+    implementation project(path: ':lib-crashlytics')
+    implementation project(path: ':lib-bottomsheet')
+
+    implementation 'org.reflections:reflections:0.10.2'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.guolindev.permissionx:permissionx:1.7.1'
+
+    kapt 'androidx.room:room-compiler:2.5.1'
+    implementation 'androidx.room:room-ktx:2.5.1'
+    implementation 'androidx.room:room-runtime:2.5.1'
+
+    implementation 'com.google.android:flexbox:2.0.1'
+
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.2'
+
+    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+}

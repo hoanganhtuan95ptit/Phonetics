@@ -1,0 +1,63 @@
+pluginManagement {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        gradlePluginPortal()
+
+        maven { url "https://jitpack.io" }
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+
+        maven { url "https://jitpack.io" }
+    }
+}
+
+rootProject.name = "Phonetics"
+
+include ':app'
+
+include ':constant'
+project(':constant').projectDir = file('../1CorePublic/constant')
+
+include ':lib-job'
+project(':lib-job').projectDir = file('../1CorePublic/lib-job')
+include ':lib-task'
+project(':lib-task').projectDir = file('../1CorePublic/lib-task')
+include ':lib-state'
+project(':lib-state').projectDir = file('../1CorePublic/lib-state')
+include ':lib-adapter'
+project(':lib-adapter').projectDir = file('../1CorePublic/lib-adapter')
+include ':lib-config'
+project(':lib-config').projectDir = file('../1CorePublic/lib-config')
+include ':lib-analytics'
+project(':lib-analytics').projectDir = file('../1CorePublic/lib-analytics')
+include ':lib-crashlytics'
+project(':lib-crashlytics').projectDir = file('../1CorePublic/lib-crashlytics')
+
+include ':lib-core'
+project(':lib-core').projectDir = file('../1CorePublic/lib-core')
+include ':lib-core-app'
+project(':lib-core-app').projectDir = file('../1CorePublic/lib-core-app')
+include ':lib-core-navigation'
+project(':lib-core-navigation').projectDir = file('../1CorePublic/lib-core-navigation')
+
+include ':lib-bottomsheet'
+project(':lib-bottomsheet').projectDir = file('../Android-HackBottomSheet/lib-bottomsheet')
+
+include ':lib-translate'
+project(':lib-translate').projectDir = file('../1CorePublic/lib-translate')
+include ':lib-translate-mlkit'
+project(':lib-translate-mlkit').projectDir = file('../1CorePublic/lib-translate-mlkit')
+
+include ':lib-detect'
+project(':lib-detect').projectDir = file('../1CorePublic/lib-detect')
+include ':lib-detect-mlkit'
+project(':lib-detect-mlkit').projectDir = file('../1CorePublic/lib-detect-mlkit')

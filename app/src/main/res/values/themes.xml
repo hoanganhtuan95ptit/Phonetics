@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Phonetics" parent="Theme.Night">
+
+        <item name="colorOnBackgroundVariant">#5b5b5b</item>
+        <item name="colorOnBackground">#000000</item>
+
+        <item name="android:colorBackground">#EFEFEF</item>
+
+        <item name="colorLoading">#5b5b5b</item>
+        <item name="colorDivider">#5b5b5b</item>
+        <item name="colorAccent">#1ED760</item>
+    </style>
+
+    <style name="Theme.Phonetics.Popup">
+
+        <item name="colorOnBackgroundVariant">#7F8483</item>
+
+        <item name="android:colorBackground">#FFFFFF</item>
+    </style>
+</resources>

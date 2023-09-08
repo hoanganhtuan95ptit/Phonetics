@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="jbr-17" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/../1CorePublic/constant" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-adapter" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-analytics" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-config" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-core" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-core-app" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-core-navigation" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-crashlytics" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-detect" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-detect-mlkit" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-job" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-state" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-task" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-translate" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-translate-mlkit" />
+            <option value="$PROJECT_DIR$/../Android-HackBottomSheet/lib-bottomsheet" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
