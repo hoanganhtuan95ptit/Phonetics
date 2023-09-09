@@ -22,6 +22,7 @@ import androidx.transition.TransitionSet
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceAdapter
@@ -43,10 +44,6 @@ import com.simple.coreapp.utils.extentions.setTextWhenDiff
 import com.simple.coreapp.utils.extentions.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.extentions.text
-import com.simple.state.doRunning
-import com.simple.state.isRunning
-import com.permissionx.guolindev.PermissionX
-import com.simple.coreapp.utils.extentions.doOnHeightStatusAndHeightNavigationChange
 import com.simple.phonetics.databinding.FragmentPhoneticsBinding
 import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.adapters.TextOptionAdapter
@@ -56,6 +53,8 @@ import com.simple.phonetics.ui.phonetics.adapters.PhoneticsHistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
 import com.simple.phonetics.ui.phonetics.config.PhoneticsConfigFragment
 import com.simple.phonetics.ui.phonetics.config.PhoneticsConfigViewModel
+import com.simple.state.doRunning
+import com.simple.state.isRunning
 import java.util.Locale
 
 
@@ -68,9 +67,9 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         if (result.resultCode == RESULT_OK) {
 
-            viewModel.getTextFromImage(currentPhotoPath)
-
             logAnalytics("TAKE_IMAGE_FROM_CAMERA_SUCCESS" to "TAKE_IMAGE_FROM_CAMERA")
+
+            viewModel.getTextFromImage(currentPhotoPath)
         } else {
 
             logAnalytics("TAKE_IMAGE_FROM_CAMERA_FAILED" to "TAKE_IMAGE_FROM_CAMERA")
@@ -84,9 +83,9 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             FileUtils.uriToImageFile(requireContext(), it)
         }?.let {
 
-            viewModel.getTextFromImage(it.absolutePath)
-
             logAnalytics("TAKE_IMAGE_FROM_GALLERY_SUCCESS" to "TAKE_IMAGE_FROM_GALLERY")
+
+            viewModel.getTextFromImage(it.absolutePath)
         } ?: let {
 
             logAnalytics("TAKE_IMAGE_FROM_GALLERY_FAILED" to "TAKE_IMAGE_FROM_GALLERY")
@@ -219,18 +218,18 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
             val speak = speak ?: return@setDebouncedClickListener
 
-            speak.speak(binding.etText.text.toString(), TextToSpeech.QUEUE_FLUSH, null, "1")
-
             logAnalytics("READ_ACTION" to "READ")
+
+            speak.speak(binding.etText.text.toString(), TextToSpeech.QUEUE_FLUSH, null, "1")
         }
 
         binding.ivStop.setDebouncedClickListener {
 
             val speak = speak ?: return@setDebouncedClickListener
 
-            speak.stopSpeak()
-
             logAnalytics("STOP_ACTION" to "STOP")
+
+            speak.stopSpeak()
         }
     }
 
@@ -240,39 +239,39 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         binding.ivPaste.setOnClickListener {
 
+            logAnalytics("PASTE_ACTION" to "PASTE")
+
             binding.etText.setText(clipboard?.text() ?: "")
 
             clipboard?.clear()
-
-            logAnalytics("PASTE_ACTION" to "PASTE")
         }
 
         binding.ivGallery.setDebouncedClickListener {
+
+            logAnalytics("GALLERY_OPEN" to "GALLERY")
 
             PermissionX.init(requireActivity())
                 .permissions(REQUIRED_PERMISSIONS_READ_FILE.toList())
                 .request { allGranted, _, _ ->
                     if (allGranted) {
-                        takeImageFromGalleryResult.launchTakeImageFromGallery()
                         logAnalytics("GALLERY_OPEN_WITH_PERMISSION" to "GALLERY")
+                        takeImageFromGalleryResult.launchTakeImageFromGallery()
                     }
                 }
-
-            logAnalytics("GALLERY_OPEN" to "GALLERY")
         }
 
         binding.ivCamera.setDebouncedClickListener {
+
+            logAnalytics("CAMERA_OPEN" to "CAMERA")
 
             PermissionX.init(requireActivity())
                 .permissions(REQUIRED_PERMISSIONS_CAMERA.toList())
                 .request { allGranted, _, _ ->
                     if (allGranted) {
-                        currentPhotoPath = takeImageFromCameraResult.launchTakeImageFromCamera(requireContext(), "image")?.absolutePath ?: return@request
                         logAnalytics("CAMERA_OPEN_WITH_PERMISSION" to "CAMERA")
+                        currentPhotoPath = takeImageFromCameraResult.launchTakeImageFromCamera(requireContext(), "image")?.absolutePath ?: return@request
                     }
                 }
-
-            logAnalytics("CAMERA_OPEN" to "CAMERA")
         }
     }
 
@@ -291,9 +290,9 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         binding.tvClear.setDebouncedClickListener {
 
-            binding.etText.setText("")
-
             logAnalytics("CLEAR_ACTION" to "CLEAR")
+
+            binding.etText.setText("")
         }
 
         doOnHeightStatusChange {
@@ -308,20 +307,20 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         val phoneticsAdapter = PhoneticsAdapter { _, phoneticsViewItem ->
 
-            val text = phoneticsViewItem.data.text
-
             val speak = speak ?: return@PhoneticsAdapter
 
-            speak.speak(text, TextToSpeech.QUEUE_FLUSH, null, "1")
+            val text = phoneticsViewItem.data.text
 
             logAnalytics("PHONETICS" to "CLICK")
+
+            speak.speak(text, TextToSpeech.QUEUE_FLUSH, null, "1")
         }
 
         val phoneticsHistoryAdapter = PhoneticsHistoryAdapter { _, item ->
 
-            binding.etText.setText(item.id)
-
             logAnalytics("PHONETICS_HISTORY" to "CLICK")
+
+            binding.etText.setText(item.id)
         }
 
         adapter = MultiAdapter(phoneticsAdapter, phoneticsHistoryAdapter, SentenceAdapter(), TitleAdapter(), SpaceAdapter()).apply {
@@ -341,9 +340,9 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         val textOptionAdapter = TextOptionAdapter { _, item ->
 
-            PhoneticsConfigFragment().show(childFragmentManager, "")
-
             logAnalytics("TEXT_OPTION" to item.id)
+
+            PhoneticsConfigFragment().show(childFragmentManager, "")
         }
 
         adapterConfig = MultiAdapter(textOptionAdapter, SpaceAdapter()).apply {
@@ -457,8 +456,10 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
         private val REQUIRED_PERMISSIONS_CAMERA = arrayOf(Manifest.permission.CAMERA)
 
         private val REQUIRED_PERMISSIONS_READ_FILE = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
             arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
         } else {
+
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
     }
