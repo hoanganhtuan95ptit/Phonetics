@@ -37,10 +37,6 @@ include ':lib-adapter'
 project(':lib-adapter').projectDir = file('../1CorePublic/lib-adapter')
 include ':lib-config'
 project(':lib-config').projectDir = file('../1CorePublic/lib-config')
-include ':lib-analytics'
-project(':lib-analytics').projectDir = file('../1CorePublic/lib-analytics')
-include ':lib-crashlytics'
-project(':lib-crashlytics').projectDir = file('../1CorePublic/lib-crashlytics')
 
 include ':lib-core'
 project(':lib-core').projectDir = file('../1CorePublic/lib-core')
@@ -61,6 +57,16 @@ include ':lib-detect'
 project(':lib-detect').projectDir = file('../1CorePublic/lib-detect')
 include ':lib-detect-mlkit'
 project(':lib-detect-mlkit').projectDir = file('../1CorePublic/lib-detect-mlkit')
+
+include(':lib-analytics')
+project(':lib-analytics').projectDir = file('../1CorePublic/lib-analytics')
+include(':lib-analytics-sentry')
+project(':lib-analytics-sentry').projectDir = file('../1CorePublic/lib-analytics-sentry')
+
+include(':lib-crashlytics')
+project(':lib-crashlytics').projectDir = file('../1CorePublic/lib-crashlytics')
+include(':lib-crashlytics-sentry')
+project(':lib-crashlytics-sentry').projectDir = file('../1CorePublic/lib-crashlytics-sentry')
 
 include ':app-config-phonetics'
 project(':app-config-phonetics').projectDir = file('../1CorePrivate/app-config-phonetics')

@@ -2,10 +2,12 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+
+    id "io.sentry.android.gradle" version "3.12.0" // can remove
 }
 
 apply from: "../../1CorePublic/constant/build.gradle"
-apply from: "../../1CorePrivate/app-config-phonetics/build.gradle"
+apply from: "../../1CorePrivate/app-config-phonetics/config.gradle" // can remove
 
 android {
     namespace "com.simple.phonetics"
@@ -28,27 +30,20 @@ android {
 
     signingConfigs {
         keystore {
-            keyAlias project.ext.keyAlias
-            keyPassword project.ext.keyPassword
+            keyAlias project.ext.keyAlias // can remove
+            keyPassword project.ext.keyPassword // can remove
 
-            storeFile file(project.ext.storeFile)
-            storePassword project.ext.storePassword
+            storeFile file(project.ext.storeFile) // can remove
+            storePassword project.ext.storePassword // can remove
         }
     }
     buildTypes {
         debug {
-//            minifyEnabled true
-//            signingConfig signingConfigs.keystore
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-//            manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
         }
         release {
-//            minifyEnabled true
-            signingConfig signingConfigs.keystore
+            signingConfig signingConfigs.keystore  // can remove
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-//            manifestPlaceholders = [crashlyticsCollectionEnabled: "true"]
         }
     }
     compileOptions {
@@ -89,12 +84,18 @@ dependencies {
     implementation project(path: ':lib-translate-mlkit')
 
     implementation project(path: ':lib-analytics')
+    implementation project(path: ':lib-analytics-sentry')
+
     implementation project(path: ':lib-crashlytics')
+    implementation project(path: ':lib-crashlytics-sentry')
+
     implementation project(path: ':lib-bottomsheet')
 
-    implementation 'org.reflections:reflections:0.10.2'
+    implementation project(path: ':app-config-phonetics')
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
 
     kapt 'androidx.room:room-compiler:2.5.1'
@@ -102,10 +103,4 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.5.1'
 
     implementation 'com.google.android:flexbox:2.0.1'
-
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.2'
-
-    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
 }
