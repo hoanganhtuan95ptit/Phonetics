@@ -205,7 +205,10 @@ class PhoneticsViewModel(
             viewItemList.addAll(historyViewItemList)
         }
 
-        viewItemList.add(SpaceViewItem(height = 60.toPx()))
+        if (viewItemList.isNotEmpty()) {
+
+            viewItemList.add(SpaceViewItem(height = 60.toPx()))
+        }
 
         postDifferentValue(viewItemList)
     }

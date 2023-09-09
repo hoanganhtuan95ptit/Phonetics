@@ -76,6 +76,7 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
         }
     }
 
+    @Suppress("ComplexRedundantLet")
     private val takeImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
 
         uri?.let {
