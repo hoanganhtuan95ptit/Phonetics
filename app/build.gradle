@@ -14,7 +14,7 @@ android {
     compileSdkVersion project.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.simple.phonetics"
+        applicationId "com.english.phonetics"
 
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
@@ -91,7 +91,7 @@ dependencies {
 
     implementation project(path: ':lib-bottomsheet')
 
-    implementation project(path: ':app-config-phonetics')
+    implementation project(path: ':app-config-phonetics') // can remove
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
