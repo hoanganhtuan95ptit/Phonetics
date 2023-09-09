@@ -46,6 +46,7 @@ import com.simple.coreapp.utils.extentions.text
 import com.simple.state.doRunning
 import com.simple.state.isRunning
 import com.permissionx.guolindev.PermissionX
+import com.simple.coreapp.utils.extentions.doOnHeightStatusAndHeightNavigationChange
 import com.simple.phonetics.databinding.FragmentPhoneticsBinding
 import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.adapters.TextOptionAdapter
@@ -345,7 +346,7 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             logAnalytics("TEXT_OPTION" to item.id)
         }
 
-        adapterConfig = MultiAdapter(textOptionAdapter).apply {
+        adapterConfig = MultiAdapter(textOptionAdapter, SpaceAdapter()).apply {
 
             binding.recFilter.adapter = this
 

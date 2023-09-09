@@ -4,12 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
 
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission
@@ -25,10 +23,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Phonetics"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="@string/sentry_dsn" /><!--can remove-->
+        <meta-data
+            android:name="io.sentry.attach-screenshot"
+            android:value="@string/sentry_attach_screenshot" /><!--can remove-->
+        <meta-data
+            android:name="io.sentry.attach-view-hierarchy"
+            android:value="@string/sentry_attach_view_hierarchy" /><!--can remove-->
+
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,7 +54,5 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
     </application>
-
 </manifest>

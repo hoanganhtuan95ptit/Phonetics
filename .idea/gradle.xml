@@ -14,11 +14,13 @@
             <option value="$PROJECT_DIR$/../1CorePublic/constant" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-adapter" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-analytics" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-analytics-sentry" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-config" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-core" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-core-app" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-core-navigation" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-crashlytics" />
+            <option value="$PROJECT_DIR$/../1CorePublic/lib-crashlytics-sentry" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-detect" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-detect-mlkit" />
             <option value="$PROJECT_DIR$/../1CorePublic/lib-job" />
