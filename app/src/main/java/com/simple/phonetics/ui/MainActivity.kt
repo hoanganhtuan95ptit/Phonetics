@@ -9,9 +9,9 @@ import com.simple.bottomsheet.ActivityScreen
 import com.simple.coreapp.ui.base.activities.BaseViewBindingActivity
 import com.simple.coreapp.utils.extentions.getColorFromAttr
 import com.simple.coreapp.utils.extentions.toPx
-import com.simple.phonetics.R
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
+
 
 class MainActivity : BaseViewBindingActivity<ActivityMainBinding>(), ActivityScreen {
 
@@ -21,17 +21,45 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>(), ActivityScr
         window.statusBarColor = Color.TRANSPARENT
         window.navigationBarColor = Color.TRANSPARENT
 
-
         super.onCreate(savedInstanceState)
 
 
         lifecycleScope.launchWhenResumed {
 
-            supportFragmentManager.beginTransaction().add(R.id.fragment_container, PhoneticsFragment()).commitAllowingStateLoss()
+            supportFragmentManager.beginTransaction().add(com.simple.phonetics.R.id.fragment_container, PhoneticsFragment()).commitAllowingStateLoss()
         }
 
 
         val binding = binding ?: return
+
+//        MobileAds.initialize(this) { status ->
+//            logAnalytics("MobileAds" to "MobileAds", *status.adapterStatusMap.map { Pair(it.key, it.value.initializationState.name) }.toTypedArray(), *status.adapterStatusMap.map { Pair(it.key, it.value.description) }.toTypedArray())
+//        }
+//
+//        binding.adView.loadAd(AdRequest.Builder().build())
+//        binding.adView.adListener = object : AdListener() {
+//
+//            override fun onAdClicked() {
+//                logAnalytics("AdClicked" to "AdClicked")
+//            }
+//
+//            override fun onAdOpened() {
+//                logAnalytics("AdOpened" to "AdOpened")
+//            }
+//
+//            override fun onAdImpression() {
+//                logAnalytics("AdImpression" to "AdImpression")
+//            }
+//
+//            override fun onAdFailedToLoad(p0: LoadAdError) {
+//                logCrashlytics(RuntimeException("${p0.code}-${p0.message}"))
+//            }
+//        }
+//
+//        doOnHeightNavigationChange {
+//
+//            binding.root.children.first().updatePadding(bottom = it)
+//        }
 
         (binding.root.parent as? View)?.setBackgroundColor(binding.root.context.getColorFromAttr(com.google.android.material.R.attr.colorOnBackground))
     }
