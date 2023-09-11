@@ -65,14 +65,12 @@ android {
 
 dependencies {
 
-    implementation androidxDependencies.values()
-
+    implementation project(path: ':lib-core')
     implementation project(path: ':lib-core-app')
     implementation project(path: ':lib-core-navigation')
 
     implementation project(path: ':lib-job')
     implementation project(path: ':lib-task')
-    implementation project(path: ':lib-core')
     implementation project(path: ':lib-state')
     implementation project(path: ':lib-config')
     implementation project(path: ':lib-adapter')
@@ -93,14 +91,16 @@ dependencies {
 
     implementation project(path: ':app-config-phonetics') // can remove
 
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+    implementation androidxDependencies.values()
+
+    kapt('androidx.room:room-compiler:2.5.2')
+    implementation roomDependencies.values()
+
+    implementation retrofit2Dependencies.values()
 
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
 
-    kapt 'androidx.room:room-compiler:2.5.1'
-    implementation 'androidx.room:room-ktx:2.5.1'
-    implementation 'androidx.room:room-runtime:2.5.1'
+    implementation 'com.google.android.gms:play-services-ads:22.3.0'
 
     implementation 'com.google.android:flexbox:2.0.1'
 }
