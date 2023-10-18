@@ -1,5 +1,6 @@
 package com.simple.phonetics.domain.usecase
 
+import android.util.Log
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.hasChar
 import com.simple.core.utils.extentions.hasNumber
@@ -49,12 +50,6 @@ class GetPhoneticsAsyncUseCase(
 
             id = UUID.randomUUID().toString()
             offerActiveAwait(ResultState.Success(emptyList()))
-            return@channelFlow
-        }
-
-        if (textBefore == textNew) {
-
-            awaitClose()
             return@channelFlow
         }
 

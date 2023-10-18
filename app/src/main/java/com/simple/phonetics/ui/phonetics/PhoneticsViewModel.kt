@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.phonetics
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -39,7 +40,6 @@ import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 class PhoneticsViewModel(
     private val detectUseCase: DetectUseCase,
@@ -58,6 +58,11 @@ class PhoneticsViewModel(
         LoadingViewItem(R.layout.item_phonetics_loading),
         LoadingViewItem(R.layout.item_phonetics_loading)
     )
+
+
+    @VisibleForTesting
+    val translateState: LiveData<ResultState<Boolean>> = MediatorLiveData<ResultState<Boolean>>()
+
 
     @VisibleForTesting
     val historyViewItemList: LiveData<List<PhoneticsHistoryViewItem>> = liveData {
@@ -90,6 +95,14 @@ class PhoneticsViewModel(
     }
 
 
+    val isReverse: LiveData<Boolean> = MediatorLiveData(true)
+
+    val isSupportReverse: LiveData<Boolean> = combineSources(translateState) {
+
+        postValue(translateState.get().isSuccess())
+    }
+
+
     @VisibleForTesting
     val speakState: LiveData<Boolean> = MediatorLiveData()
 
@@ -97,17 +110,16 @@ class PhoneticsViewModel(
     val isSpeakStatus: LiveData<Boolean> = MediatorLiveData(false)
 
 
-    val isReverse: LiveData<Boolean> = MediatorLiveData(true)
-
-
     @VisibleForTesting
     val phoneticsCode: LiveData<String> = MediatorLiveData()
+
 
     @VisibleForTesting
     val inputLanguageCode: LiveData<String> = MediatorLiveData()
 
     @VisibleForTesting
     val outputLanguageCode: LiveData<String> = MediatorLiveData()
+
 
     @VisibleForTesting
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
@@ -267,12 +279,13 @@ class PhoneticsViewModel(
 
     fun getPhonetics(text: String) {
 
+        Log.d("tuanha", "getPhonetics: $text")
         this.text.postDifferentValue(text)
     }
 
-    fun updatePhoneticSelect(code: String) {
+    fun switchReverse() {
 
-        this.phoneticsCode.postDifferentValue(code)
+        this.isReverse.postValue(!this.isReverse.get())
     }
 
     fun updateSpeakState(speakState: Boolean) {
@@ -283,6 +296,16 @@ class PhoneticsViewModel(
     fun updateSpeakStatus(speakStatus: Boolean) {
 
         this.isSpeakStatus.postDifferentValue(speakStatus)
+    }
+
+    fun updatePhoneticSelect(code: String) {
+
+        this.phoneticsCode.postDifferentValue(code)
+    }
+
+    fun updateTranslateState(state: ResultState<Boolean>) {
+
+        this.translateState.postDifferentValue(state)
     }
 
     fun updateInputLanguageCode(code: String) {

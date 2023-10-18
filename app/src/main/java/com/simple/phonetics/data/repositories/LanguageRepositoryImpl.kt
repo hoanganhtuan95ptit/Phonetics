@@ -14,8 +14,11 @@ class LanguageRepositoryImpl : LanguageRepository {
     override fun getLanguageInput(): Language {
 
         return Language(
-            Locale.getDefault().language,
-            emptyList()
+            LANGUAGE_DEFAULT,
+            listOf(
+                Ipa("UK", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"),
+                Ipa("US", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt")
+            )
         )
     }
 
@@ -29,11 +32,8 @@ class LanguageRepositoryImpl : LanguageRepository {
     override fun getLanguageOutput(): Language {
 
         return Language(
-            LANGUAGE_DEFAULT,
-            listOf(
-                Ipa("UK", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"),
-                Ipa("US", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt")
-            )
+            Locale.getDefault().language,
+            emptyList()
         )
     }
 

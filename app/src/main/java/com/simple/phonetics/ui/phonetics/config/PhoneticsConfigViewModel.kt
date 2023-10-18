@@ -34,7 +34,7 @@ class PhoneticsConfigViewModel(
     @VisibleForTesting
     val language: LiveData<Language> = liveData {
 
-        languageRepository.getLanguageOutputAsync().collect {
+        languageRepository.getLanguageInputAsync().collect {
 
             postValue(it)
         }
