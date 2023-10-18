@@ -20,16 +20,8 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toPx
 import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
-import com.simple.state.ResultState
-import com.simple.state.doFailed
-import com.simple.state.doStart
-import com.simple.state.doSuccess
-import com.simple.state.isStart
-import com.simple.state.isSuccess
-import com.simple.state.toSuccess
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.entities.Phonetics
-import com.simple.phonetics.domain.entities.PhoneticsCode
 import com.simple.phonetics.domain.entities.Sentence
 import com.simple.phonetics.domain.usecase.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.GetPhoneticsHistoryAsyncUseCase
@@ -37,9 +29,17 @@ import com.simple.phonetics.ui.adapters.TitleViewItem
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsHistoryViewItem
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.phonetics.adapters.SentenceViewItem
+import com.simple.state.ResultState
+import com.simple.state.doFailed
+import com.simple.state.doStart
+import com.simple.state.doSuccess
+import com.simple.state.isStart
+import com.simple.state.isSuccess
+import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class PhoneticsViewModel(
     private val detectUseCase: DetectUseCase,
@@ -60,6 +60,21 @@ class PhoneticsViewModel(
     )
 
     @VisibleForTesting
+    val historyViewItemList: LiveData<List<PhoneticsHistoryViewItem>> = liveData {
+
+        getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
+
+            list.mapIndexed { index, sentence ->
+
+                PhoneticsHistoryViewItem(sentence.text).refresh(index == list.lastIndex)
+            }.let {
+
+                postDifferentValue(it)
+            }
+        }
+    }
+
+    @VisibleForTesting
     val detectState: LiveData<ResultState<String>> = MediatorLiveData<ResultState<String>>().apply {
 
         postValue(ResultState.Success(""))
@@ -76,43 +91,32 @@ class PhoneticsViewModel(
 
 
     @VisibleForTesting
-    val historyViewItemList: LiveData<List<PhoneticsHistoryViewItem>> = liveData {
-
-        getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
-
-            list.mapIndexed { index, sentence ->
-
-                PhoneticsHistoryViewItem(sentence.text).refresh(index == list.lastIndex)
-            }.let {
-
-                postDifferentValue(it)
-            }
-        }
-    }
-
-
-    @VisibleForTesting
     val speakState: LiveData<Boolean> = MediatorLiveData()
 
     @VisibleForTesting
-    val isSpeakStatus: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+    val isSpeakStatus: LiveData<Boolean> = MediatorLiveData(false)
 
-        value = false
-    }
+
+    val isReverse: LiveData<Boolean> = MediatorLiveData(true)
 
 
     @VisibleForTesting
-    val phoneticsCode: LiveData<PhoneticsCode> = MediatorLiveData()
+    val phoneticsCode: LiveData<String> = MediatorLiveData()
 
+    @VisibleForTesting
+    val inputLanguageCode: LiveData<String> = MediatorLiveData()
+
+    @VisibleForTesting
+    val outputLanguageCode: LiveData<String> = MediatorLiveData()
 
     @VisibleForTesting
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
 
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text) {
+    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguageCode, outputLanguageCode) {
 
-        getPhoneticsAsyncUseCase.execute(GetPhoneticsAsyncUseCase.Param(text.get())).collect {
+        getPhoneticsAsyncUseCase.execute(GetPhoneticsAsyncUseCase.Param(text.get(), isReverse.get(), inputLanguageCode.get(), outputLanguageCode.get())).collect {
 
             postValue(it)
         }
@@ -266,7 +270,7 @@ class PhoneticsViewModel(
         this.text.postDifferentValue(text)
     }
 
-    fun updatePhoneticSelect(code: PhoneticsCode) {
+    fun updatePhoneticSelect(code: String) {
 
         this.phoneticsCode.postDifferentValue(code)
     }
@@ -279,6 +283,16 @@ class PhoneticsViewModel(
     fun updateSpeakStatus(speakStatus: Boolean) {
 
         this.isSpeakStatus.postDifferentValue(speakStatus)
+    }
+
+    fun updateInputLanguageCode(code: String) {
+
+        this.inputLanguageCode.postDifferentValue(code)
+    }
+
+    fun updateOutputLanguageCode(code: String) {
+
+        this.outputLanguageCode.postDifferentValue(code)
     }
 
     fun updateTranslateStatus(isSupportTranslate: Boolean) {

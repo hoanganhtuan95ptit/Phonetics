@@ -9,7 +9,6 @@ import com.simple.coreapp.utils.extentions.setText
 import com.simple.coreapp.utils.extentions.toText
 import com.simple.phonetics.databinding.ItemPhoneticsBinding
 import com.simple.phonetics.domain.entities.Phonetics
-import com.simple.phonetics.domain.entities.PhoneticsCode
 
 class PhoneticsAdapter(onItemClick: (View, PhoneticsViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<PhoneticsViewItem, ItemPhoneticsBinding>(onItemClick) {
 
@@ -66,11 +65,11 @@ data class PhoneticsViewItem(
     var isMultiIpa: Boolean = false
 ) : ViewItemCloneable {
 
-    fun refresh(phoneticsCode: PhoneticsCode) = apply {
+    fun refresh(ipaCode: String) = apply {
 
         val codeAndIpa = data.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
 
-        ipa = (codeAndIpa?.get(phoneticsCode.value) ?: codeAndIpa?.toList()?.first()?.second)?.firstOrNull()?.toText() ?: emptyText()
+        ipa = (codeAndIpa?.get(ipaCode) ?: codeAndIpa?.toList()?.first()?.second)?.firstOrNull()?.toText() ?: emptyText()
 
         text = data.text.toText()
 

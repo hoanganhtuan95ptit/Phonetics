@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.adapters
 
+import android.util.TypedValue
 import android.view.View
 import androidx.core.view.updatePadding
 import com.simple.adapter.ViewItemAdapter
@@ -16,6 +17,7 @@ open class TitleAdapter(onItemClick: (View, TitleViewItem) -> Unit = { _, _ -> }
     override fun bind(binding: ItemTitleBinding, viewType: Int, position: Int, item: TitleViewItem) {
         super.bind(binding, viewType, position, item)
 
+        binding.tvText.setTextSize(TypedValue.COMPLEX_UNIT_SP, item.textSize)
         binding.tvText.updatePadding(left = item.paddingHorizontal, right = item.paddingHorizontal)
 
         refreshText(binding, item)
@@ -31,6 +33,8 @@ class TitleViewItem(
     val id: Int,
 
     var text: Text<*> = emptyText(),
+
+    var textSize: Float = 16f,
 
     var paddingHorizontal: Int = 4.toPx()
 ) : ViewItemCloneable {

@@ -53,19 +53,19 @@ class PhoneticsConfigFragment : BaseViewModelSheetFragment<FragmentConfigBinding
 
         val binding = binding ?: return
 
-        val voiceCodeAdapter = VoiceCodeAdapter { view, item ->
+        val voiceCodeAdapter = VoiceCodeAdapter { _, item ->
 
             logAnalytics("VOICE_CODE" to item.id)
             viewModel.updateVoiceSelect(item.id)
         }
 
-        val voiceSpeedAdapter = VoiceSpeedAdapter { view, item ->
+        val voiceSpeedAdapter = VoiceSpeedAdapter { _, item ->
 
             logAnalytics("VOICE_SPEED" to item.current.toString())
             viewModel.updateVoiceSpeed(item.current)
         }
 
-        val translationAdapter = TranslationAdapter { view, item ->
+        val translationAdapter = TranslationAdapter { _, item ->
 
             if (item.id.isEmpty()) return@TranslationAdapter
 
@@ -73,7 +73,7 @@ class PhoneticsConfigFragment : BaseViewModelSheetFragment<FragmentConfigBinding
             viewModel.updateTranslation(item.id)
         }
 
-        val phoneticCodeAdapter = PhoneticCodeAdapter { view, item ->
+        val phoneticCodeAdapter = PhoneticCodeAdapter { _, item ->
 
             logAnalytics("PHONETIC_CODE" to item.id)
             viewModel.updatePhoneticSelect(item.data)

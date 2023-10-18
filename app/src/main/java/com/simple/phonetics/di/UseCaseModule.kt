@@ -13,7 +13,7 @@ val useCaseModule = module {
     }
 
     single {
-        GetPhoneticsAsyncUseCase(get(), get(), getAll())
+        GetPhoneticsAsyncUseCase(get(), get(), get(), getAll())
     }
 
     single {

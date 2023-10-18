@@ -7,6 +7,7 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.di.apiModule
 import com.simple.phonetics.di.cacheModule
 import com.simple.phonetics.di.daoModule
+import com.simple.phonetics.di.repositoryModule
 import com.simple.phonetics.di.taskModule
 import com.simple.phonetics.di.useCaseModule
 import com.simple.phonetics.di.viewModelModule
@@ -41,6 +42,7 @@ class PhoneticsApp : BaseApp() {
                 cacheModule,
                 useCaseModule,
                 viewModelModule,
+                repositoryModule,
             )
         )
 
