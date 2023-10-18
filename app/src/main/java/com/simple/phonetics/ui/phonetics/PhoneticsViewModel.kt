@@ -61,7 +61,7 @@ class PhoneticsViewModel(
 
 
     @VisibleForTesting
-    val translateState: LiveData<ResultState<Boolean>> = MediatorLiveData<ResultState<Boolean>>()
+    val translateState: LiveData<ResultState<Boolean>> = MediatorLiveData()
 
 
     @VisibleForTesting
