@@ -6,21 +6,20 @@ import com.simple.core.utils.extentions.hasNumber
 import com.simple.coreapp.data.usecase.BaseUseCase
 import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.coreapp.utils.extentions.offerActiveAwait
-import com.simple.state.ResultState
-import com.simple.state.isSuccess
-import com.simple.state.toSuccess
-import com.simple.task.executeAsyncByPriority
-import com.simple.translate.TranslateTask
 import com.simple.phonetics.data.dao.PhoneticsDao
 import com.simple.phonetics.data.dao.PhoneticsHistoryDao
 import com.simple.phonetics.data.dao.RoomPhoneticHistory
 import com.simple.phonetics.domain.entities.Phonetics
 import com.simple.phonetics.domain.entities.Sentence
+import com.simple.state.ResultState
+import com.simple.state.isSuccess
+import com.simple.state.toSuccess
+import com.simple.task.executeAsyncByPriority
+import com.simple.translate.TranslateTask
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
-import java.util.Locale
 import java.util.UUID
 
 class GetPhoneticsAsyncUseCase(
@@ -65,9 +64,6 @@ class GetPhoneticsAsyncUseCase(
         }
 
 
-        textBefore = textNew
-
-
         phoneticsHistoryDao.getRoomListByTextAsync(textNew).firstOrNull()?.let {
 
             id = it.id
@@ -76,7 +72,16 @@ class GetPhoneticsAsyncUseCase(
         phoneticsHistoryDao.insertOrUpdate(RoomPhoneticHistory(id = id, text = textNew))
 
 
-        val list = textNew.split(".", "!", "?", "\n").mapIndexedNotNull { _, s ->
+        textBefore = if (param.isReverse) {
+
+            listTranslateTask.executeAsyncByPriority(TranslateTask.Param(listOf(textNew), param.outputLanguageCode, param.inputLanguageCode)).toSuccess()?.data?.firstOrNull() ?: textNew
+        } else {
+
+            textNew
+        }
+
+
+        val list = textBefore.split(".", "!", "?", "\n").mapIndexedNotNull { _, s ->
 
             val text = s.trim().replace(" ", " ").lowercase()
 
@@ -136,7 +141,7 @@ class GetPhoneticsAsyncUseCase(
 
             val mapKeyAndSentence = mapKeyAndSentence.filter { !it.value.translateState.isSuccess() }
 
-            val state = listTranslateTask.executeAsyncByPriority(TranslateTask.Param(mapKeyAndSentence.keys.toList(), "en", Locale.getDefault().language))
+            val state = listTranslateTask.executeAsyncByPriority(TranslateTask.Param(mapKeyAndSentence.keys.toList(), param.inputLanguageCode, param.outputLanguageCode))
 
             state.toSuccess()?.data?.forEachIndexed { index, s ->
 
@@ -146,9 +151,16 @@ class GetPhoneticsAsyncUseCase(
             offerActive(ResultState.Success(list))
         }
 
-        awaitClose {
-        }
+
+        awaitClose {}
     }
 
-    data class Param(val text: String) : BaseUseCase.Param()
+    data class Param(
+        val text: String,
+
+        val isReverse: Boolean,
+
+        val inputLanguageCode: String,
+        val outputLanguageCode: String
+    ) : BaseUseCase.Param()
 }

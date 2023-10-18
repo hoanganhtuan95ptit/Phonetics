@@ -6,8 +6,3 @@ class Phonetics(
 
     var ipa: HashMap<String, List<String>> = hashMapOf()
 }
-
-enum class PhoneticsCode(val value: String) {
-
-    UK("UK"), US("US")
-}

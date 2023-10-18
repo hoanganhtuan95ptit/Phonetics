@@ -8,8 +8,7 @@ import com.simple.coreapp.utils.extentions.saveSync
 import com.simple.phonetics.data.api.Api
 import com.simple.phonetics.data.dao.PhoneticsDao
 import com.simple.phonetics.data.dao.RoomPhonetics
-import com.simple.phonetics.domain.entities.PhoneticsCode
-import kotlinx.coroutines.Deferred
+import com.simple.phonetics.domain.repositories.LanguageRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
@@ -19,32 +18,22 @@ import kotlin.coroutines.coroutineContext
 class ApiSyncTask(
     private val api: Api,
     private val context: Context,
-    private val phoneticsDao: PhoneticsDao
+    private val phoneticsDao: PhoneticsDao,
+    private val languageRepository: LanguageRepository
 ) : SyncTask {
 
     override suspend fun executeTask(param: Unit) = withContext(coroutineContext) {
 
 
-        val deferredList = arrayListOf<Deferred<Any>>()
-
-
         val textAndPhonetics = hashMapOf<String, RoomPhonetics>()
 
 
-        async {
+        val deferredList = languageRepository.getLanguageOutput().listIpa.map {
 
-            api.syncPhoneticsEnUk().string().toPhonetics(textAndPhonetics, PhoneticsCode.UK)
-        }.let {
+            async {
 
-            deferredList.add(it)
-        }
-
-        async {
-
-            api.syncPhoneticsEnUs().string().toPhonetics(textAndPhonetics, PhoneticsCode.US)
-        }.let {
-
-            deferredList.add(it)
+                api.syncPhonetics(it.source).string().toPhonetics(textAndPhonetics, it.code)
+            }
         }
 
 
@@ -61,7 +50,7 @@ class ApiSyncTask(
         Unit
     }
 
-    private fun String.toPhonetics(textAndPhonetics: HashMap<String, RoomPhonetics>, code: PhoneticsCode) = split("\n").mapNotNull { phonetics ->
+    private fun String.toPhonetics(textAndPhonetics: HashMap<String, RoomPhonetics>, ipaCode: String) = split("\n").mapNotNull { phonetics ->
 
         val split = phonetics.split("\t", ", ").mapNotNull { ipa -> ipa.trim().takeIf { it.isNotBlank() } }.toArrayList()
 
@@ -88,7 +77,7 @@ class ApiSyncTask(
 
         if (item.ipa.isEmpty() || (!item.ipa.values.flatten().containsAll(ipa) && !ipa.containsAll(item.ipa.values.flatten()))) {
 
-            item.ipa[code.value] = ipa
+            item.ipa[ipaCode] = ipa
         }
 
         item

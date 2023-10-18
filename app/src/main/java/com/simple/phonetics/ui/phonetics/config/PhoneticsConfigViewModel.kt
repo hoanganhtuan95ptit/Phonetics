@@ -9,14 +9,13 @@ import com.simple.coreapp.ui.base.viewmodels.BaseViewModel
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
+import com.simple.coreapp.utils.extentions.liveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toText
-import com.simple.state.ResultState
-import com.simple.state.isFailed
-import com.simple.state.isStart
 import com.simple.phonetics.R
-import com.simple.phonetics.domain.entities.PhoneticsCode
+import com.simple.phonetics.domain.entities.Language
+import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.ui.adapters.OptionViewItem
 import com.simple.phonetics.ui.adapters.TextOptionViewItem
 import com.simple.phonetics.ui.adapters.TitleViewItem
@@ -24,22 +23,42 @@ import com.simple.phonetics.ui.phonetics.config.adapters.PhoneticCodeOptionViewI
 import com.simple.phonetics.ui.phonetics.config.adapters.TranslationOptionViewItem
 import com.simple.phonetics.ui.phonetics.config.adapters.VoiceOptionViewItem
 import com.simple.phonetics.ui.phonetics.config.adapters.VoiceSpeedViewItem
+import com.simple.state.ResultState
+import com.simple.state.isFailed
+import com.simple.state.isStart
 
-class PhoneticsConfigViewModel : BaseViewModel() {
+class PhoneticsConfigViewModel(
+    private val languageRepository: LanguageRepository
+) : BaseViewModel() {
 
-    val phoneticSelect: LiveData<PhoneticsCode> = MediatorLiveData<PhoneticsCode>().apply {
+    @VisibleForTesting
+    val language: LiveData<Language> = liveData {
 
-        value = PhoneticsCode.US
+        languageRepository.getLanguageOutputAsync().collect {
+
+            postValue(it)
+        }
+    }
+
+    val phoneticSelect: LiveData<String> = combineSources(language) {
+
+        val language = language.get()
+
+        postValue(language.listIpa.first().code)
     }
 
     @VisibleForTesting
-    val listPhoneViewItem: LiveData<List<OptionViewItem<PhoneticsCode>>> = combineSources<List<OptionViewItem<PhoneticsCode>>>(phoneticSelect) {
+    val listPhoneViewItem: LiveData<List<OptionViewItem<String>>> = combineSources<List<OptionViewItem<String>>>(language, phoneticSelect) {
+
+        val language = language.get()
 
         val phoneticSelect = phoneticSelect.get()
 
-        PhoneticsCode.values().map {
+        language.listIpa.map {
 
-            PhoneticCodeOptionViewItem(it.value, it).refresh(it == phoneticSelect)
+            val code = it.code
+
+            PhoneticCodeOptionViewItem(code, code).refresh(code == phoneticSelect)
         }.let {
 
             postDifferentValue(it)
@@ -137,22 +156,22 @@ class PhoneticsConfigViewModel : BaseViewModel() {
 
         listPhoneViewItem.getOrEmpty().find { it.isSelect }?.let {
 
-            list.add(TextOptionViewItem("listPhoneViewItem", it.text, false))
+            list.add(TextOptionViewItem("LIST_PHONE_VIEW_ITEM", it.text, false))
         }
 
         listTranslationViewItem.getOrEmpty().find { it.isSelect }?.let {
 
-            list.add(TextOptionViewItem("listTranslationViewItem", it.text, false))
+            list.add(TextOptionViewItem("LIST_TRANSLATION_VIEW_ITEM", it.text, false))
         }
 
         listVoiceSpeedViewItem.getOrEmpty().map { it.clone() }.firstOrNull()?.let {
 
-            list.add(TextOptionViewItem("listTranslationViewItem", "Speed ${it.current}".toText(), false))
+            list.add(TextOptionViewItem("LIST_TRANSLATION_VIEW_ITEM", "Speed ${it.current}".toText(), false))
         }
 
         listVoiceViewItem.getOrEmpty().find { it.isSelect }?.let {
 
-            list.add(TextOptionViewItem("listVoiceViewItem", it.text, false))
+            list.add(TextOptionViewItem("LIST_VOICE_VIEW_ITEM", it.text, false))
         }
 
         postDifferentValue(list)
@@ -216,7 +235,7 @@ class PhoneticsConfigViewModel : BaseViewModel() {
         this.translateSelect.postDifferentValue(if (translateSelect.value.isNullOrBlank()) id else "")
     }
 
-    fun updatePhoneticSelect(data: PhoneticsCode) {
+    fun updatePhoneticSelect(data: String) {
 
         this.phoneticSelect.postDifferentValue(data)
     }

@@ -44,6 +44,7 @@ import com.simple.coreapp.utils.extentions.setTextWhenDiff
 import com.simple.coreapp.utils.extentions.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.extentions.text
+import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentPhoneticsBinding
 import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.adapters.TextOptionAdapter
@@ -365,6 +366,13 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             binding.etText.setTextWhenDiff(it)
         }
 
+        isReverse.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+//            binding.etText.setHint(R.string.hint_enter_)
+        }
+
         listViewItemDisplayEvent.observeQueue(viewLifecycleOwner) { event ->
 
             val binding = binding ?: return@observeQueue
@@ -406,9 +414,19 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
     private fun observeMainData() = with(mainViewModel) {
 
-        translateState.observeLaunch(viewLifecycleOwner) {
+        translateState.observe(viewLifecycleOwner) {
 
             phoneticsConfigViewModel.updateTranslateState(it)
+        }
+
+        inputLanguageCode.observe(viewLifecycleOwner) {
+
+            viewModel.updateInputLanguageCode(it)
+        }
+
+        outputLanguageCode.observe(viewLifecycleOwner) {
+
+            viewModel.updateOutputLanguageCode(it)
         }
     }
 
