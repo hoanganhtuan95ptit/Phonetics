@@ -2,6 +2,7 @@
     <string name="app_name">EPhonetics</string>
 
     <string name="hint_enter_text"><b>Enter here!</b></string>
+    <string name="hint_enter_language_text"><b>Enter %s here!</b></string>
 
     <string name="title_voice">Voice:</string>
     <string name="title_history">History:</string>
@@ -13,4 +14,5 @@
     <string name="message_translate_download">Translate downloading…</string>
 
     <string name="action_clear">Clear</string>
+    <string name="action_reverse">Reverse</string>
 </resources>

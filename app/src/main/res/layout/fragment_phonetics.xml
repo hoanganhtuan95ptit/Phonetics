@@ -82,6 +82,23 @@
                         app:layout_constraintTop_toTopOf="@id/iv_gallery" />
 
                     <TextView
+                        android:id="@+id/tv_reverse"
+                        style="?attr/textCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/bg_state_corner_8dp_solid_accent_and_stroke_accent_1dp"
+                        android:gravity="center"
+                        android:paddingHorizontal="8dp"
+                        android:text="@string/action_reverse"
+                        android:textColor="@color/color_state_on_accent_and_accent"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_camera"
+                        app:layout_constraintEnd_toStartOf="@id/iv_paste"
+                        app:layout_constraintTop_toTopOf="@id/iv_camera"
+                        tools:visibility="visible" />
+
+                    <TextView
                         android:id="@+id/tv_clear"
                         style="?attr/textCaption"
                         android:layout_width="wrap_content"
@@ -94,7 +111,7 @@
                         android:textColor="?attr/colorAccent"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@id/iv_camera"
-                        app:layout_constraintEnd_toStartOf="@id/iv_paste"
+                        app:layout_constraintEnd_toStartOf="@id/tv_reverse"
                         app:layout_constraintTop_toTopOf="@id/iv_camera"
                         tools:visibility="visible" />
 
@@ -108,7 +125,8 @@
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@id/iv_camera"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/iv_camera" />
+                        app:layout_constraintTop_toTopOf="@id/iv_camera"
+                        tools:visibility="visible" />
 
                     <ImageView
                         android:id="@+id/iv_stop"
@@ -120,7 +138,8 @@
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@id/iv_camera"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/iv_camera" />
+                        app:layout_constraintTop_toTopOf="@id/iv_camera"
+                        tools:visibility="visible" />
 
                     <ImageView
                         android:id="@+id/iv_picture"

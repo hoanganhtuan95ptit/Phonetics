@@ -133,6 +133,7 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
         setupSpeak()
         setupPaste()
         setupInput()
+        setupReverse()
         setupRecyclerView()
         setupRecyclerViewConfig()
 
@@ -303,6 +304,16 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
         }
     }
 
+    private fun setupReverse() {
+
+        val binding = binding ?: return
+
+        binding.tvReverse.setOnClickListener {
+
+            viewModel.switchReverse()
+        }
+    }
+
     private fun setupRecyclerView() {
 
         val binding = binding ?: return
@@ -370,7 +381,20 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
             val binding = binding ?: return@observe
 
-//            binding.etText.setHint(R.string.hint_enter_)
+            binding.etText.hint = if (it) {
+                getString(R.string.hint_enter_language_text, Locale.getDefault().language)
+            } else {
+                getString(R.string.hint_enter_text)
+            }
+
+            binding.tvReverse.isSelected = it
+        }
+
+        isSupportReverse.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.tvReverse.setVisible(it)
         }
 
         listViewItemDisplayEvent.observeQueue(viewLifecycleOwner) { event ->
@@ -416,6 +440,7 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         translateState.observe(viewLifecycleOwner) {
 
+            viewModel.updateTranslateState(it)
             phoneticsConfigViewModel.updateTranslateState(it)
         }
 
