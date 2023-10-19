@@ -5,7 +5,9 @@ import com.simple.coreapp.ui.base.viewmodels.BaseViewModel
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.liveData
-import com.simple.phonetics.domain.repositories.LanguageRepository
+import com.simple.phonetics.domain.entities.Language
+import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
@@ -14,32 +16,33 @@ import com.simple.translate.data.usecase.TranslateUseCase
 class MainViewModel(
     private val translateUseCase: TranslateUseCase,
 
-    private val languageRepository: LanguageRepository
+    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
+    private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
 ) : BaseViewModel() {
 
-    val inputLanguageCode: LiveData<String> = liveData {
+    val inputLanguage: LiveData<Language> = liveData {
 
-        languageRepository.getLanguageInputAsync().collect {
+        getLanguageInputAsyncUseCase.execute().collect {
 
-            postValue(it.code)
+            postValue(it)
         }
     }
 
-    val outputLanguageCode: LiveData<String> = liveData {
+    val outputLanguage: LiveData<Language> = liveData {
 
-        languageRepository.getLanguageOutputAsync().collect {
+        getLanguageOutputAsyncUseCase.execute().collect {
 
-            postValue(it.code)
+            postValue(it)
         }
     }
 
-    val translateState: LiveData<ResultState<Boolean>> = combineSources(inputLanguageCode, outputLanguageCode) {
+    val translateState: LiveData<ResultState<Boolean>> = combineSources(inputLanguage, outputLanguage) {
 
         postValue(ResultState.Start)
 
-        val inputLanguageCode = inputLanguageCode.get()
+        val inputLanguageCode = inputLanguage.get().code
 
-        val outputLanguageCode = outputLanguageCode.get()
+        val outputLanguageCode = outputLanguage.get().code
 
         translateUseCase.execute(TranslateUseCase.Param(listOf("hello"), inputLanguageCode, outputLanguageCode)).let { state ->
 

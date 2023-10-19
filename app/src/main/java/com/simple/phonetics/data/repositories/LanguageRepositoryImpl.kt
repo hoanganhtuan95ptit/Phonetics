@@ -15,6 +15,7 @@ class LanguageRepositoryImpl : LanguageRepository {
 
         return Language(
             LANGUAGE_DEFAULT,
+            "English",
             listOf(
                 Ipa("UK", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"),
                 Ipa("US", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt")
@@ -33,6 +34,7 @@ class LanguageRepositoryImpl : LanguageRepository {
 
         return Language(
             Locale.getDefault().language,
+            Locale.getDefault().displayName,
             emptyList()
         )
     }
