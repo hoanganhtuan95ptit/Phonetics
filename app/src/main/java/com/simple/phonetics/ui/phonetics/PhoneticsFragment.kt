@@ -382,7 +382,7 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             val binding = binding ?: return@observe
 
             binding.etText.hint = if (it) {
-                getString(R.string.hint_enter_language_text, outputLanguage.get().name)
+                getString(R.string.hint_enter_language_text, outputLanguage.value?.name ?: "")
             } else {
                 getString(R.string.hint_enter_text)
             }
