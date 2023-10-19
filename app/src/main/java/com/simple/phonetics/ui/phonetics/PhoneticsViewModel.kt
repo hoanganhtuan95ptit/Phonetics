@@ -95,7 +95,7 @@ class PhoneticsViewModel(
     }
 
 
-    val isReverse: LiveData<Boolean> = MediatorLiveData(true)
+    val isReverse: LiveData<Boolean> = MediatorLiveData(false)
 
     val isSupportReverse: LiveData<Boolean> = combineSources(translateState) {
 
