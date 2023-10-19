@@ -32,11 +32,11 @@ import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.extentions.beginTransitionAwait
 import com.simple.coreapp.utils.extentions.clear
 import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
+import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getViewModel
 import com.simple.coreapp.utils.extentions.haveText
 import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
 import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
-import com.simple.coreapp.utils.extentions.observeLaunch
 import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.setDebouncedClickListener
 import com.simple.coreapp.utils.extentions.setImage
@@ -382,7 +382,7 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             val binding = binding ?: return@observe
 
             binding.etText.hint = if (it) {
-                getString(R.string.hint_enter_language_text, Locale.getDefault().language)
+                getString(R.string.hint_enter_language_text, outputLanguage.get().name)
             } else {
                 getString(R.string.hint_enter_text)
             }
@@ -444,14 +444,14 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             phoneticsConfigViewModel.updateTranslateState(it)
         }
 
-        inputLanguageCode.observe(viewLifecycleOwner) {
+        inputLanguage.observe(viewLifecycleOwner) {
 
-            viewModel.updateInputLanguageCode(it)
+            viewModel.updateInputLanguage(it)
         }
 
-        outputLanguageCode.observe(viewLifecycleOwner) {
+        outputLanguage.observe(viewLifecycleOwner) {
 
-            viewModel.updateOutputLanguageCode(it)
+            viewModel.updateOutputLanguage(it)
         }
     }
 

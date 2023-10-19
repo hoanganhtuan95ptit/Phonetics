@@ -15,7 +15,7 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toText
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.entities.Language
-import com.simple.phonetics.domain.repositories.LanguageRepository
+import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.ui.adapters.OptionViewItem
 import com.simple.phonetics.ui.adapters.TextOptionViewItem
 import com.simple.phonetics.ui.adapters.TitleViewItem
@@ -28,13 +28,13 @@ import com.simple.state.isFailed
 import com.simple.state.isStart
 
 class PhoneticsConfigViewModel(
-    private val languageRepository: LanguageRepository
+    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
 ) : BaseViewModel() {
 
     @VisibleForTesting
     val language: LiveData<Language> = liveData {
 
-        languageRepository.getLanguageInputAsync().collect {
+        getLanguageInputAsyncUseCase.execute().collect {
 
             postValue(it)
         }

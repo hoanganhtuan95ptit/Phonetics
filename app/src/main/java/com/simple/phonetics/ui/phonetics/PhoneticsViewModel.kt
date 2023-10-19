@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.phonetics
 
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -22,10 +21,11 @@ import com.simple.coreapp.utils.extentions.toPx
 import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
+import com.simple.phonetics.domain.entities.Language
 import com.simple.phonetics.domain.entities.Phonetics
 import com.simple.phonetics.domain.entities.Sentence
-import com.simple.phonetics.domain.usecase.GetPhoneticsAsyncUseCase
-import com.simple.phonetics.domain.usecase.GetPhoneticsHistoryAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.ui.adapters.TitleViewItem
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsHistoryViewItem
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsViewItem
@@ -115,20 +115,22 @@ class PhoneticsViewModel(
 
 
     @VisibleForTesting
-    val inputLanguageCode: LiveData<String> = MediatorLiveData()
+    val inputLanguage: LiveData<Language> = MediatorLiveData()
 
-    @VisibleForTesting
-    val outputLanguageCode: LiveData<String> = MediatorLiveData()
-
+    val outputLanguage: LiveData<Language> = MediatorLiveData()
 
     @VisibleForTesting
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
 
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguageCode, outputLanguageCode) {
+    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage) {
 
-        getPhoneticsAsyncUseCase.execute(GetPhoneticsAsyncUseCase.Param(text.get(), isReverse.get(), inputLanguageCode.get(), outputLanguageCode.get())).collect {
+        val inputLanguageCode = inputLanguage.get().code
+
+        val outputLanguageCode = outputLanguage.get().code
+
+        getPhoneticsAsyncUseCase.execute(GetPhoneticsAsyncUseCase.Param(text.get(), isReverse.get(), inputLanguageCode, outputLanguageCode)).collect {
 
             postValue(it)
         }
@@ -279,7 +281,6 @@ class PhoneticsViewModel(
 
     fun getPhonetics(text: String) {
 
-        Log.d("tuanha", "getPhonetics: $text")
         this.text.postDifferentValue(text)
     }
 
@@ -308,14 +309,14 @@ class PhoneticsViewModel(
         this.translateState.postDifferentValue(state)
     }
 
-    fun updateInputLanguageCode(code: String) {
+    fun updateInputLanguage(language: Language) {
 
-        this.inputLanguageCode.postDifferentValue(code)
+        this.inputLanguage.postDifferentValue(language)
     }
 
-    fun updateOutputLanguageCode(code: String) {
+    fun updateOutputLanguage(language: Language) {
 
-        this.outputLanguageCode.postDifferentValue(code)
+        this.outputLanguage.postDifferentValue(language)
     }
 
     fun updateTranslateStatus(isSupportTranslate: Boolean) {
