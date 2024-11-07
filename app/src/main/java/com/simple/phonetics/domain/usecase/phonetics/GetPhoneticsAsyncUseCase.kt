@@ -3,19 +3,19 @@ package com.simple.phonetics.domain.usecase.phonetics
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.hasChar
 import com.simple.core.utils.extentions.hasNumber
-import com.simple.coreapp.data.usecase.BaseUseCase
 import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.coreapp.utils.extentions.offerActiveAwait
+import com.simple.phonetics.data.dao.HistoryDao
 import com.simple.phonetics.data.dao.PhoneticsDao
-import com.simple.phonetics.data.dao.PhoneticsHistoryDao
-import com.simple.phonetics.data.dao.RoomPhoneticHistory
-import com.simple.phonetics.domain.entities.Phonetics
-import com.simple.phonetics.domain.entities.Sentence
+import com.simple.phonetics.data.dao.RoomHistory
+import com.simple.phonetics.entities.Phonetics
+import com.simple.phonetics.entities.Sentence
 import com.simple.state.ResultState
 import com.simple.state.isSuccess
 import com.simple.state.toSuccess
 import com.simple.task.executeAsyncByPriority
-import com.simple.translate.TranslateTask
+import com.simple.translate.data.tasks.TranslateTask
+import com.simple.translate.entities.TranslateRequest
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -24,10 +24,10 @@ import java.util.UUID
 
 class GetPhoneticsAsyncUseCase(
     private val phoneticsDao: PhoneticsDao,
-    private val phoneticsHistoryDao: PhoneticsHistoryDao,
+    private val historyDao: HistoryDao,
 
     private val listTranslateTask: List<TranslateTask>
-) : BaseUseCase<GetPhoneticsAsyncUseCase.Param, Flow<ResultState<List<Any>>>> {
+) {
 
     private val mapKeyAndSentence = hashMapOf<String, Sentence>()
 
@@ -39,7 +39,7 @@ class GetPhoneticsAsyncUseCase(
     private var textBefore: String = ""
 
 
-    override suspend fun execute(param: Param?): Flow<ResultState<List<Any>>> = channelFlow {
+    suspend fun execute(param: Param?): Flow<ResultState<List<Any>>> = channelFlow {
         checkNotNull(param)
 
 
@@ -58,17 +58,17 @@ class GetPhoneticsAsyncUseCase(
         }
 
 
-        phoneticsHistoryDao.getRoomListByTextAsync(textNew).firstOrNull()?.let {
+        historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.let {
 
             id = it.id
         }
 
-        phoneticsHistoryDao.insertOrUpdate(RoomPhoneticHistory(id = id, text = textNew))
+        historyDao.insertOrUpdate(RoomHistory(id = id, text = textNew))
 
 
         textBefore = if (param.isReverse) {
 
-            listTranslateTask.executeAsyncByPriority(TranslateTask.Param(listOf(textNew), param.outputLanguageCode, param.inputLanguageCode)).toSuccess()?.data?.firstOrNull() ?: textNew
+            listTranslateTask.executeAsyncByPriority(TranslateTask.Param(listOf(TranslateRequest(textNew, param.outputLanguageCode)), param.inputLanguageCode)).toSuccess()?.data?.firstOrNull()?.translateState?.toSuccess()?.data ?: textNew
         } else {
 
             textNew
@@ -126,7 +126,7 @@ class GetPhoneticsAsyncUseCase(
 
                 if (phonetic.text.hasChar() && !phonetic.text.hasNumber() && (phonetic.ipa.isEmpty() || phonetic.ipa.toList().all { it.second.isEmpty() })) {
 
-                    logAnalytics("IPA_EMPTY_${phonetic.text.uppercase()}" to phonetic.text)
+                    logAnalytics("IPA_EMPTY", "code" to phonetic.text)
                 }
             }
         }
@@ -135,11 +135,17 @@ class GetPhoneticsAsyncUseCase(
 
             val mapKeyAndSentence = mapKeyAndSentence.filter { !it.value.translateState.isSuccess() }
 
-            val state = listTranslateTask.executeAsyncByPriority(TranslateTask.Param(mapKeyAndSentence.keys.toList(), param.inputLanguageCode, param.outputLanguageCode))
+            val state = listTranslateTask.executeAsyncByPriority(TranslateTask.Param(mapKeyAndSentence.keys.toList().map {
+
+                TranslateRequest(
+                    text = it,
+                    languageCode = param.inputLanguageCode
+                )
+            }, param.outputLanguageCode))
 
             state.toSuccess()?.data?.forEachIndexed { index, s ->
 
-                mapKeyAndSentence.toList().getOrNull(index)?.second?.translateState = ResultState.Success(s)
+                mapKeyAndSentence.toList().getOrNull(index)?.second?.translateState = s.translateState
             }
 
             offerActive(ResultState.Success(list))
@@ -156,5 +162,5 @@ class GetPhoneticsAsyncUseCase(
 
         val inputLanguageCode: String,
         val outputLanguageCode: String
-    ) : BaseUseCase.Param()
+    )
 }

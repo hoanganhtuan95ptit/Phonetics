@@ -1,10 +1,5 @@
 package com.simple.phonetics.data.task
 
-import android.content.Context
-import com.simple.core.utils.extentions.toArrayList
-import com.simple.core.utils.extentions.toJson
-import com.simple.coreapp.utils.FileUtils
-import com.simple.coreapp.utils.extentions.saveSync
 import com.simple.phonetics.data.api.Api
 import com.simple.phonetics.data.dao.PhoneticsDao
 import com.simple.phonetics.data.dao.RoomPhonetics
@@ -17,7 +12,6 @@ import kotlin.coroutines.coroutineContext
 
 class ApiSyncTask(
     private val api: Api,
-    private val context: Context,
     private val phoneticsDao: PhoneticsDao,
     private val languageRepository: LanguageRepository
 ) : SyncTask {
@@ -43,8 +37,6 @@ class ApiSyncTask(
         textAndPhonetics.values.toList().let {
 
             phoneticsDao.insertOrUpdate(it)
-
-            FileUtils.createFile(context, true, "raw", "en.json")?.saveSync(it.toJson())
         }
 
         Unit
@@ -52,7 +44,7 @@ class ApiSyncTask(
 
     private fun String.toPhonetics(textAndPhonetics: HashMap<String, RoomPhonetics>, ipaCode: String) = split("\n").mapNotNull { phonetics ->
 
-        val split = phonetics.split("\t", ", ").mapNotNull { ipa -> ipa.trim().takeIf { it.isNotBlank() } }.toArrayList()
+        val split = phonetics.split("\t", ", ").mapNotNull { ipa -> ipa.trim().takeIf { it.isNotBlank() } }.toMutableList()
 
         if (split.isEmpty()) return@mapNotNull null
 

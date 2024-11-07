@@ -2,13 +2,9 @@ package com.simple.phonetics.ui.phonetics.adapters
 
 import android.view.View
 import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.ViewItemCloneable
-import com.simple.coreapp.utils.extentions.Text
-import com.simple.coreapp.utils.extentions.emptyText
-import com.simple.coreapp.utils.extentions.setText
-import com.simple.coreapp.utils.extentions.toText
+import com.simple.adapter.entities.ViewItem
 import com.simple.phonetics.databinding.ItemPhoneticsBinding
-import com.simple.phonetics.domain.entities.Phonetics
+import com.simple.phonetics.entities.Phonetics
 
 class PhoneticsAdapter(onItemClick: (View, PhoneticsViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<PhoneticsViewItem, ItemPhoneticsBinding>(onItemClick) {
 
@@ -59,22 +55,22 @@ data class PhoneticsViewItem(
     val id: String,
     val data: Phonetics,
 
-    var ipa: Text<*> = emptyText(),
-    var text: Text<*> = emptyText(),
+    var ipa: String = "",
+    var text: String = "",
 
     var isMultiIpa: Boolean = false
-) : ViewItemCloneable {
+) : ViewItem {
 
-    fun refresh(ipaCode: String) = apply {
-
-        val codeAndIpa = data.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
-
-        ipa = (codeAndIpa?.get(ipaCode) ?: codeAndIpa?.toList()?.first()?.second)?.firstOrNull()?.toText() ?: emptyText()
-
-        text = data.text.toText()
-
-        isMultiIpa = data.ipa.size > 1
-    }
+//    fun refresh(ipaCode: String) = apply {
+//
+//        val codeAndIpa = data.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
+//
+//        ipa = (codeAndIpa?.get(ipaCode) ?: codeAndIpa?.toList()?.first()?.second)?.firstOrNull()?.toText() ?: emptyText()
+//
+//        text = data.text.toText()
+//
+//        isMultiIpa = data.ipa.size > 1
+//    }
 
     override fun areItemsTheSame(): List<Any> = listOf(
         id

@@ -3,10 +3,8 @@ package com.simple.phonetics.ui.adapters
 import android.view.View
 import androidx.annotation.CallSuper
 import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.ViewItemCloneable
-import com.simple.coreapp.utils.extentions.Text
-import com.simple.coreapp.utils.extentions.emptyText
-import com.simple.coreapp.utils.extentions.setText
+import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.utils.extentions.text.Text
 import com.simple.phonetics.databinding.ItemConfigNormalBinding
 
 open class OptionAdapter<T : OptionViewItem<*>>(onItemClick: (View, T) -> Unit = { _, _ -> }) : ViewItemAdapter<T, ItemConfigNormalBinding>(onItemClick) {
@@ -47,15 +45,9 @@ open class OptionViewItem<T>(
     open val id: String,
     open val data: T,
 
-    open var text: Text<*> = emptyText(),
+    open var text: String = "",
     open var isSelect: Boolean = false
-) : ViewItemCloneable {
-
-    @CallSuper
-    open fun refresh(isSelected: Boolean) = apply {
-
-        this.isSelect = isSelected
-    }
+) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(
         id

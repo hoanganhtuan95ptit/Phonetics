@@ -2,12 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-
-    id "io.sentry.android.gradle" version "3.12.0" // can remove
 }
 
-apply from: "../../1CorePublic/constant/build.gradle"
-apply from: "../../1CorePrivate/app-config-phonetics/config.gradle" // can remove
+apply from: "$rootDir/constant.gradle"
 
 android {
     namespace "com.simple.phonetics"
@@ -28,21 +25,21 @@ android {
         }
     }
 
-    signingConfigs {
-        keystore {
-            keyAlias project.ext.keyAlias // can remove
-            keyPassword project.ext.keyPassword // can remove
-
-            storeFile file(project.ext.storeFile) // can remove
-            storePassword project.ext.storePassword // can remove
-        }
-    }
+//    signingConfigs {
+//        keystore {
+//            keyAlias project.ext.keyAlias // can remove
+//            keyPassword project.ext.keyPassword // can remove
+//
+//            storeFile file(project.ext.storeFile) // can remove
+//            storePassword project.ext.storePassword // can remove
+//        }
+//    }
     buildTypes {
         debug {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            signingConfig signingConfigs.keystore  // can remove
+//            signingConfig signingConfigs.keystore  // can remove
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -65,42 +62,43 @@ android {
 
 dependencies {
 
-    implementation project(path: ':lib-core')
-    implementation project(path: ':lib-core-app')
-    implementation project(path: ':lib-core-navigation')
-
-    implementation project(path: ':lib-job')
-    implementation project(path: ':lib-task')
-    implementation project(path: ':lib-state')
-    implementation project(path: ':lib-config')
-    implementation project(path: ':lib-adapter')
-
-    implementation project(path: ':lib-detect')
-    implementation project(path: ':lib-detect-mlkit')
-
-    implementation project(path: ':lib-translate')
-    implementation project(path: ':lib-translate-mlkit')
-
-    implementation project(path: ':lib-analytics')
-    implementation project(path: ':lib-analytics-sentry')
-
-    implementation project(path: ':lib-crashlytics')
-    implementation project(path: ':lib-crashlytics-sentry')
-
-    implementation project(path: ':lib-bottomsheet')
-
-    implementation project(path: ':app-config-phonetics') // can remove
-
+    implementation koinDependencies.values()
+    implementation jacksonDependencies.values()
     implementation androidxDependencies.values()
+    implementation retrofit2Dependencies.values()
+
+    implementation hoanganhtuan95Dependencies.base
+    implementation hoanganhtuan95Dependencies.android
+
+    implementation hoanganhtuan95Dependencies.task
+    implementation hoanganhtuan95Dependencies.state
+    implementation hoanganhtuan95Dependencies.image
+    implementation hoanganhtuan95Dependencies.adapter
+
+    implementation hoanganhtuan95Dependencies.analytics
+    implementation hoanganhtuan95Dependencies.analytics_log
+//    implementation hoanganhtuan95Dependencies.analytics_firebase
+
+    implementation hoanganhtuan95Dependencies.crashlytics
+    implementation hoanganhtuan95Dependencies.crashlytics_log
+//    implementation hoanganhtuan95Dependencies.crashlytics_firebase
+
+    implementation hoanganhtuan95Dependencies.detect
+    implementation hoanganhtuan95Dependencies.detect_mlkit
+
+    implementation hoanganhtuan95Dependencies.translate
+    implementation hoanganhtuan95Dependencies.translate_mlkit
 
     kapt('androidx.room:room-compiler:2.5.2')
     implementation roomDependencies.values()
 
-    implementation retrofit2Dependencies.values()
+    implementation "com.airbnb.android:lottie:$lottie_version"
+
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
 
-    implementation 'com.google.android.gms:play-services-ads:22.4.0'
-
-    implementation 'com.google.android:flexbox:2.0.1'
+//    implementation 'com.google.android.gms:play-services-ads:22.4.0'
 }

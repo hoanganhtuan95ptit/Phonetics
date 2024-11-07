@@ -1,15 +1,10 @@
 package com.simple.phonetics.ui.phonetics.adapters
 
 import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.ViewItemCloneable
-import com.simple.coreapp.utils.extentions.Text
-import com.simple.coreapp.utils.extentions.emptyText
-import com.simple.coreapp.utils.extentions.setText
-import com.simple.coreapp.utils.extentions.setVisible
-import com.simple.coreapp.utils.extentions.toText
-import com.simple.state.toSuccess
+import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.databinding.ItemSentenceBinding
-import com.simple.phonetics.domain.entities.Sentence
+import com.simple.phonetics.entities.Sentence
 
 class SentenceAdapter : ViewItemAdapter<SentenceViewItem, ItemSentenceBinding>() {
 
@@ -49,16 +44,9 @@ data class SentenceViewItem(
     val id: String,
     val data: Sentence,
 
-    var text: Text<*> = emptyText(),
+    var text: String = "",
     var isLast: Boolean = false
-) : ViewItemCloneable {
-
-    fun refresh(isLast: Boolean) = apply {
-
-        text = data.translateState.toSuccess()?.data?.toText() ?: "failed".toText()
-
-        this.isLast = isLast
-    }
+) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(
         id

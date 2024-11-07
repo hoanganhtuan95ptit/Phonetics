@@ -19466,7 +19466,7 @@ com.google.mlkit.nl.translate.internal.zzg: zzg(com.google.mlkit.nl.translate.in
 com.simple.phonetics.data.dao.PhoneticsDao_Impl$1: void bind(androidx.sqlite.db.SupportSQLiteStatement,com.simple.phonetics.data.dao.RoomPhonetics)
 com.google.mlkit.nl.translate.TranslatorOptions: TranslatorOptions(java.lang.String,java.lang.String,java.util.concurrent.Executor,com.google.mlkit.nl.translate.zzl)
 com.google.mlkit.vision.common.internal.VisionImageMetadataParcel: <clinit>()
-com.simple.phonetics.ui.phonetics.config.PhoneticsConfigViewModel: PhoneticsConfigViewModel()
+com.simple.phonetics.ui.PhoneticsConfigViewModel: PhoneticsConfigViewModel()
 androidx.appcompat.widget.AppCompatTextView: void setCustomSelectionActionModeCallback(android.view.ActionMode$Callback)
 com.google.mlkit.vision.interfaces.R: R()
 com.airbnb.lottie.LottieAnimationView: void setRepeatMode(int)

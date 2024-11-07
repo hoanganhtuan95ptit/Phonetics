@@ -3,7 +3,7 @@ package com.simple.phonetics.ui.phonetics.config.adapters
 import android.view.View
 import android.widget.SeekBar
 import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.ViewItemCloneable
+import com.simple.adapter.entities.ViewItem
 import com.simple.phonetics.databinding.ItemVoiceSpeedBinding
 
 class VoiceSpeedAdapter(private val onItemClick: (View, VoiceSpeedViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<VoiceSpeedViewItem, ItemVoiceSpeedBinding>() {
@@ -58,17 +58,13 @@ data class VoiceSpeedViewItem(
     val end: Float,
     val start: Float,
 
+    val text: String,
+
     var current: Float
-) : ViewItemCloneable {
-
-    override fun clone() = copy()
-
-    fun refresh() = apply {
-
-    }
+) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(
-        "VoiceOptionViewItem", end, start
+        end, start
     )
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
