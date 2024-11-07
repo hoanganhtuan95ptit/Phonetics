@@ -5,11 +5,12 @@ data class Language(
     val name: String,
 
     val listIpa: List<Ipa>,
-){
+) {
 
-    companion object{
+    companion object {
 
-        const val EN ="en"
+        const val EN = "en"
+        const val VI = "vi"
     }
 }
 

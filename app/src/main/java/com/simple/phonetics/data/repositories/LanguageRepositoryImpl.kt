@@ -20,6 +20,15 @@ import java.util.Locale
 class LanguageRepositoryImpl : LanguageRepository {
 
     override fun getLanguageInput(): Language {
+//        return Language(
+//            Language.VI,
+//            "Việt Nam",
+//            listOf(
+//                Ipa("Bắc", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"),
+//                Ipa("Trung", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"),
+//                Ipa("Nam", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_S.txt")
+//            )
+//        )
 
         return Language(
             Language.EN,

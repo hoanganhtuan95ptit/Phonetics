@@ -22,7 +22,7 @@ class ApiSyncTask(
         val textAndPhonetics = hashMapOf<String, RoomPhonetics>()
 
 
-        val deferredList = languageRepository.getLanguageOutput().listIpa.map {
+        val deferredList = languageRepository.getLanguageInput().listIpa.map {
 
             async {
 
@@ -34,7 +34,7 @@ class ApiSyncTask(
         deferredList.awaitAll()
 
 
-        textAndPhonetics.values.toList().let {
+        textAndPhonetics.values.filterNotNull().map {
 
             phoneticsDao.insertOrUpdate(it)
         }
