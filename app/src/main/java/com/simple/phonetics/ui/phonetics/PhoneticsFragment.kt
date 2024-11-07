@@ -263,6 +263,63 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
     private fun observeData() = with(viewModel) {
 
+        imageInfo.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.ivPicture.setImage(it.image, CircleCrop())
+            binding.ivPicture.setVisible(it.isShowImage)
+        }
+
+        speakInfo.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.ivStop.setVisible(it.isShowPause)
+            binding.ivRead.setVisible(it.isShowPlay)
+        }
+
+        clearInfo.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.tvClear.text = it.text
+            binding.tvClear.setVisible(it.isShow)
+        }
+
+        hintEnter.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.etText.hint = it
+        }
+
+        reverseInfo.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.tvReverse.text = it.text
+            binding.tvReverse.isSelected = it.isSelected
+            binding.tvReverse.setVisible(it.isShow)
+        }
+
+        listViewItem.asFlow().launchCollect(viewLifecycleOwner) {
+
+            val binding = binding ?: return@launchCollect
+
+            binding.recyclerView.submitListAwait(it)
+
+            val transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))
+            binding.recyclerView.beginTransitionAwait(transition)
+        }
+
+        isShowLoading.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.progress.setVisible(it)
+        }
+
         detectState.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
@@ -271,54 +328,6 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
                 binding.etText.setText(it)
             }
-        }
-
-        listViewItemDisplayEvent.asFlow().launchCollect(viewLifecycleOwner) { event ->
-
-            val binding = binding ?: return@launchCollect
-
-            val anim = !event.hasBeenHandled
-
-            val data = event.getContentIfNotHandled() ?: event.peekContent()
-
-            binding.etText.hint = data.hintEnter
-            binding.progress.setVisible(data.isShowLoading)
-
-            data.imageInfo?.let {
-
-                binding.ivPicture.setImage(it.image, CircleCrop())
-                binding.ivPicture.setVisible(it.isShowImage)
-            }
-
-            data.clearInfo?.let {
-
-                binding.tvClear.text = it.text
-                binding.tvClear.setVisible(it.isShow)
-            }
-
-            data.speakInfo?.let {
-
-                binding.ivStop.setVisible(it.isShowPause)
-                binding.ivRead.setVisible(it.isShowPlay)
-            }
-
-            data.reverseInfo?.let {
-
-                binding.tvReverse.text = it.text
-                binding.tvReverse.isSelected = it.isSelected
-                binding.tvReverse.setVisible(it.isShow)
-            }
-
-
-            binding.recyclerView.submitListAwait(data.listViewItem)
-
-            if (!anim) {
-
-                return@launchCollect
-            }
-
-            val transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))
-            binding.recyclerView.beginTransitionAwait(transition)
         }
     }
 

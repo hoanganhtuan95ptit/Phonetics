@@ -12,12 +12,9 @@ import com.simple.core.utils.extentions.hasChar
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
-import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.getOrDefault
 import com.simple.coreapp.utils.extentions.getOrEmpty
-import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
@@ -51,7 +48,6 @@ import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PhoneticsViewModel(
@@ -62,8 +58,6 @@ class PhoneticsViewModel(
     private val getKeyTranslateAsyncUseCase: GetKeyTranslateAsyncUseCase,
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
 ) : BaseViewModel() {
-
-    private var timePost = 0L
 
     private val itemLoading = listOf(
         LoadingViewItem(R.layout.item_phonetics_loading),
@@ -121,13 +115,12 @@ class PhoneticsViewModel(
     @VisibleForTesting
     val isSupportDetect: LiveData<Boolean> = MediatorLiveData(true)
 
-    @VisibleForTesting
-    val imageInfo: LiveData<PhoneticsInfoScreen.ImageInfo> = combineSources(detectState, isSupportDetect) {
+    val imageInfo: LiveData<ImageInfo> = combineSources(detectState, isSupportDetect) {
 
         val detectState = detectState.get()
         val isSupportDetect = isSupportDetect.get()
 
-        val info = PhoneticsInfoScreen.ImageInfo(
+        val info = ImageInfo(
             image = detectState.toRunning()?.data.orEmpty(),
             isShowImage = !detectState.isCompleted(),
             isShowInput = isSupportDetect
@@ -143,15 +136,14 @@ class PhoneticsViewModel(
     @VisibleForTesting
     val isSupportReverse: LiveData<Boolean> = MediatorLiveData(true)
 
-    @VisibleForTesting
-    val reverseInfo: LiveData<PhoneticsInfoScreen.ReverseInfo> = combineSources(isReverse, isSupportReverse, keyTranslateMap) {
+    val reverseInfo: LiveData<ReverseInfo> = combineSources(isReverse, isSupportReverse, keyTranslateMap) {
 
         val isReverse = isReverse.get()
         val keyTranslateMap = keyTranslateMap.get()
         val isSupportReverse = isSupportReverse.get()
 
-        val info = PhoneticsInfoScreen.ReverseInfo(
-            text = keyTranslateMap["reverse"].orEmpty(),
+        val info = ReverseInfo(
+            text = keyTranslateMap["action_reverse"].orEmpty(),
             isShow = isSupportReverse,
             isSelected = isReverse
         )
@@ -166,14 +158,13 @@ class PhoneticsViewModel(
     @VisibleForTesting
     val isSupportSpeak: LiveData<Boolean> = MediatorLiveData(true)
 
-    @VisibleForTesting
-    val speakInfo: LiveData<PhoneticsInfoScreen.SpeakInfo> = combineSources(text, speakState, isSupportSpeak) {
+    val speakInfo: LiveData<SpeakInfo> = combineSources(text, speakState, isSupportSpeak) {
 
         val text = text.get()
         val speakState = speakState.get()
         val isSupportSpeak = isSupportSpeak.get() && text.isNotBlank()
 
-        val info = PhoneticsInfoScreen.SpeakInfo(
+        val info = SpeakInfo(
             isShowPlay = !speakState.isRunning() && isSupportSpeak,
             isShowPause = speakState.isRunning() && isSupportSpeak
         )
@@ -182,13 +173,12 @@ class PhoneticsViewModel(
     }
 
 
-    @VisibleForTesting
-    val clearInfo: LiveData<PhoneticsInfoScreen.ClearInfo> = combineSources(text, keyTranslateMap) {
+    val clearInfo: LiveData<ClearInfo> = combineSources(text, keyTranslateMap) {
 
         val text = text.get()
         val keyTranslateMap = keyTranslateMap.get()
 
-        val info = PhoneticsInfoScreen.ClearInfo(
+        val info = ClearInfo(
             text = keyTranslateMap["action_clear"].orEmpty(),
             isShow = text.isNotBlank()
         )
@@ -327,7 +317,6 @@ class PhoneticsViewModel(
         postDifferentValue(emptyList())
     }
 
-    @VisibleForTesting
     val listViewItem: LiveData<List<ViewItem>> = combineSources(text, theme, keyTranslateMap, historyViewItemList, phoneticsViewItemList) {
 
         val text = text.get()
@@ -361,7 +350,7 @@ class PhoneticsViewModel(
             viewItemList.add(SpaceViewItem(height = 60.toPx()))
         } else EmptyViewItem(
             id = "EMPTY",
-            message = keyTranslateMap["empty"].orEmpty(),
+            message = keyTranslateMap["message_result_empty"].orEmpty(),
             imageRes = R.raw.anim_empty
         ).let {
 
@@ -372,7 +361,6 @@ class PhoneticsViewModel(
     }
 
 
-    @VisibleForTesting
     val hintEnter: LiveData<String> = combineSources(isReverse, outputLanguage, keyTranslateMap) {
 
         val outputLanguage = outputLanguage.value ?: return@combineSources
@@ -387,45 +375,10 @@ class PhoneticsViewModel(
         postDifferentValue(hint)
     }
 
-    @VisibleForTesting
     val isShowLoading: LiveData<Boolean> = combineSources(speakState, detectState) {
 
         postDifferentValue(speakState.value.isStart() || !detectState.value.isCompleted())
     }
-
-
-    @VisibleForTesting
-    internal val dataScreen: LiveData<PhoneticsInfoScreen> = listenerSources(hintEnter, listViewItem, speakInfo, imageInfo, clearInfo, reverseInfo, isShowLoading) {
-
-        PhoneticsInfoScreen(
-            hintEnter = hintEnter.value.orEmpty(),
-
-            listViewItem = listViewItem.getOrEmpty(),
-
-            speakInfo = speakInfo.value,
-            imageInfo = imageInfo.value,
-            clearInfo = clearInfo.value,
-            reverseInfo = reverseInfo.value,
-
-            isShowLoading = isShowLoading.getOrDefault(false),
-        ).let {
-
-            postValue(it)
-        }
-    }
-
-    internal val listViewItemDisplayEvent: LiveData<Event<PhoneticsInfoScreen>> = combineSources(dataScreen) {
-
-        val event = Event(dataScreen.get())
-        event.hasBeenHandled = !this.hasActiveObservers()
-
-        delay(350 - (System.currentTimeMillis() - timePost))
-
-        postValue(event)
-
-        timePost = System.currentTimeMillis()
-    }
-
 
     fun getPhonetics(text: String) {
 
@@ -514,20 +467,6 @@ class PhoneticsViewModel(
             detectState.postValue(ResultState.Failed(it))
         }
     }
-}
-
-data class PhoneticsInfoScreen(
-    val hintEnter: String,
-
-    val listViewItem: List<ViewItem> = emptyList(),
-
-    val speakInfo: SpeakInfo? = null,
-    val imageInfo: ImageInfo? = null,
-    val clearInfo: ClearInfo? = null,
-    val reverseInfo: ReverseInfo? = null,
-
-    val isShowLoading: Boolean = false,
-) {
 
     data class SpeakInfo(
         val isShowPlay: Boolean = false,
