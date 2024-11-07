@@ -1,0 +1,15 @@
+{
+  "title_voice": "Voice:",
+  "title_history": "History:",
+  "title_phonetic": "Phonetic:",
+  "title_translate": "Translate:",
+  "title_voice_speed": "Voice Speed:",
+  "speed_lever": "Speed $lever",
+  "voice_index": "Voice $index",
+  "hint_enter_text": "Enter here!",
+  "hint_enter_language_text": "Enter $language_name here!",
+  "message_support_translate": "Support translate",
+  "message_translate_download": "Translate downloading…",
+  "action_clear": "Clear",
+  "action_reverse": "Reverse"
+}
