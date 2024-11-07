@@ -3,47 +3,63 @@ package com.simple.phonetics.ui.phonetics
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.ViewModels.BaseViewModel
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.LoadingViewItem
-import com.simple.adapter.ViewItemCloneable
-import com.simple.core.entities.Comparable
+import com.simple.adapter.SpaceViewItem
+import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.hasChar
-import com.simple.coreapp.ui.adapters.SpaceViewItem
-import com.simple.coreapp.ui.base.viewmodels.BaseViewModel
+import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.handler
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
+import com.simple.coreapp.utils.extentions.getOrDefault
 import com.simple.coreapp.utils.extentions.getOrEmpty
-import com.simple.coreapp.utils.extentions.liveData
+import com.simple.coreapp.utils.extentions.listenerSources
+import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toPx
 import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
-import com.simple.phonetics.domain.entities.Language
-import com.simple.phonetics.domain.entities.Phonetics
-import com.simple.phonetics.domain.entities.Sentence
+import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.StartSpeakUseCase
+import com.simple.phonetics.domain.usecase.language.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
+import com.simple.phonetics.entities.Language
+import com.simple.phonetics.entities.Phonetics
+import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.adapters.TitleViewItem
-import com.simple.phonetics.ui.phonetics.adapters.PhoneticsHistoryViewItem
+import com.simple.phonetics.ui.phonetics.adapters.EmptyViewItem
+import com.simple.phonetics.ui.phonetics.adapters.HistoryViewItem
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.phonetics.adapters.SentenceViewItem
+import com.simple.phonetics.utils.AppTheme
+import com.simple.phonetics.utils.appTheme
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
 import com.simple.state.doSuccess
+import com.simple.state.isCompleted
+import com.simple.state.isRunning
 import com.simple.state.isStart
-import com.simple.state.isSuccess
+import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PhoneticsViewModel(
     private val detectUseCase: DetectUseCase,
+    private val stopSpeakUseCase: StopSpeakUseCase,
+    private val startSpeakUseCase: StartSpeakUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
+    private val getKeyTranslateAsyncUseCase: GetKeyTranslateAsyncUseCase,
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
 ) : BaseViewModel() {
 
@@ -59,19 +75,35 @@ class PhoneticsViewModel(
         LoadingViewItem(R.layout.item_phonetics_loading)
     )
 
+    val theme: LiveData<AppTheme> = mediatorLiveData {
+
+        appTheme.collect {
+
+            postDifferentValue(it)
+        }
+    }
 
     @VisibleForTesting
-    val translateState: LiveData<ResultState<Boolean>> = MediatorLiveData()
+    val keyTranslateMap: LiveData<Map<String, String>> = mediatorLiveData {
 
+        getKeyTranslateAsyncUseCase.execute().collect {
+
+            postDifferentValue(it)
+        }
+    }
 
     @VisibleForTesting
-    val historyViewItemList: LiveData<List<PhoneticsHistoryViewItem>> = liveData {
+    val historyViewItemList: LiveData<List<HistoryViewItem>> = mediatorLiveData {
 
         getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
 
             list.mapIndexed { index, sentence ->
 
-                PhoneticsHistoryViewItem(sentence.text).refresh(index == list.lastIndex)
+                HistoryViewItem(
+                    id = sentence.text,
+                    text = sentence.text,
+                    isLast = index == list.lastIndex
+                )
             }.let {
 
                 postDifferentValue(it)
@@ -79,44 +111,99 @@ class PhoneticsViewModel(
         }
     }
 
+
     @VisibleForTesting
-    val detectState: LiveData<ResultState<String>> = MediatorLiveData<ResultState<String>>().apply {
+    val text: LiveData<String> = MediatorLiveData("")
 
-        postValue(ResultState.Success(""))
+
+    val detectState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
+
+    @VisibleForTesting
+    val isSupportDetect: LiveData<Boolean> = MediatorLiveData(true)
+
+    @VisibleForTesting
+    val imageInfo: LiveData<PhoneticsInfoScreen.ImageInfo> = combineSources(detectState, isSupportDetect) {
+
+        val detectState = detectState.get()
+        val isSupportDetect = isSupportDetect.get()
+
+        val info = PhoneticsInfoScreen.ImageInfo(
+            image = detectState.toRunning()?.data.orEmpty(),
+            isShowImage = !detectState.isCompleted(),
+            isShowInput = isSupportDetect
+        )
+
+        postDifferentValue(info)
     }
 
 
-    val text: LiveData<String> = combineSources(detectState) {
-
-        detectState.get().doSuccess {
-
-            postDifferentValue(it)
-        }
-    }
-
-
+    @VisibleForTesting
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)
 
-    val isSupportReverse: LiveData<Boolean> = combineSources(translateState) {
+    @VisibleForTesting
+    val isSupportReverse: LiveData<Boolean> = MediatorLiveData(true)
 
-        postValue(translateState.get().isSuccess())
+    @VisibleForTesting
+    val reverseInfo: LiveData<PhoneticsInfoScreen.ReverseInfo> = combineSources(isReverse, isSupportReverse, keyTranslateMap) {
+
+        val isReverse = isReverse.get()
+        val keyTranslateMap = keyTranslateMap.get()
+        val isSupportReverse = isSupportReverse.get()
+
+        val info = PhoneticsInfoScreen.ReverseInfo(
+            text = keyTranslateMap["reverse"].orEmpty(),
+            isShow = isSupportReverse,
+            isSelected = isReverse
+        )
+
+        postDifferentValue(info)
     }
 
 
     @VisibleForTesting
-    val speakState: LiveData<Boolean> = MediatorLiveData()
+    val speakState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
     @VisibleForTesting
-    val isSpeakStatus: LiveData<Boolean> = MediatorLiveData(false)
+    val isSupportSpeak: LiveData<Boolean> = MediatorLiveData(true)
+
+    @VisibleForTesting
+    val speakInfo: LiveData<PhoneticsInfoScreen.SpeakInfo> = combineSources(text, speakState, isSupportSpeak) {
+
+        val text = text.get()
+        val speakState = speakState.get()
+        val isSupportSpeak = isSupportSpeak.get() && text.isNotBlank()
+
+        val info = PhoneticsInfoScreen.SpeakInfo(
+            isShowPlay = !speakState.isRunning() && isSupportSpeak,
+            isShowPause = speakState.isRunning() && isSupportSpeak
+        )
+
+        postDifferentValue(info)
+    }
+
+
+    @VisibleForTesting
+    val clearInfo: LiveData<PhoneticsInfoScreen.ClearInfo> = combineSources(text, keyTranslateMap) {
+
+        val text = text.get()
+        val keyTranslateMap = keyTranslateMap.get()
+
+        val info = PhoneticsInfoScreen.ClearInfo(
+            text = keyTranslateMap["action_clear"].orEmpty(),
+            isShow = text.isNotBlank()
+        )
+
+        postDifferentValue(info)
+    }
 
 
     @VisibleForTesting
     val phoneticsCode: LiveData<String> = MediatorLiveData()
 
-
     @VisibleForTesting
     val inputLanguage: LiveData<Language> = MediatorLiveData()
 
+    @VisibleForTesting
     val outputLanguage: LiveData<Language> = MediatorLiveData()
 
     @VisibleForTesting
@@ -126,9 +213,9 @@ class PhoneticsViewModel(
     @VisibleForTesting
     val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage) {
 
-        val inputLanguageCode = inputLanguage.get().code
+        val inputLanguageCode = inputLanguage.get().id
 
-        val outputLanguageCode = outputLanguage.get().code
+        val outputLanguageCode = outputLanguage.get().id
 
         getPhoneticsAsyncUseCase.execute(GetPhoneticsAsyncUseCase.Param(text.get(), isReverse.get(), inputLanguageCode, outputLanguageCode)).collect {
 
@@ -137,14 +224,12 @@ class PhoneticsViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItemCloneable>> = combineSources<List<ViewItemCloneable>>(phoneticsCode, isSupportTranslate, phoneticsState) {
-
-        val phoneticsCode = phoneticsCode.get()
-
-        val isSupportTranslate = isSupportTranslate.get()
-
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(phoneticsCode, phoneticsState, isSupportTranslate, keyTranslateMap) {
 
         val state = phoneticsState.get()
+        val phoneticsCode = phoneticsCode.get()
+        val keyTranslateMap = keyTranslateMap.get()
+        val isSupportTranslate = isSupportTranslate.get()
 
 
         state.doStart {
@@ -154,13 +239,28 @@ class PhoneticsViewModel(
         }
 
 
-        val listItem = state.toSuccess()?.data
+        val listItem = state.toSuccess()?.data.orEmpty()
 
-        listItem?.flatMapIndexed { indexItem: Int, item: Any ->
+        listItem.flatMapIndexed { indexItem: Int, item: Any ->
 
-            if (item is Phonetics) {
+            if (item is Phonetics) item.let { phonetic ->
 
-                return@flatMapIndexed listOf(PhoneticsViewItem("${indexItem * 1000}", item).refresh(phoneticsCode))
+                val codeAndIpa = phonetic.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
+
+                val ipa = (codeAndIpa?.get(phoneticsCode) ?: codeAndIpa?.toList()?.first()?.second)?.firstOrNull().orEmpty()
+
+                PhoneticsViewItem(
+                    id = "${indexItem * 1000}",
+                    data = phonetic,
+
+                    ipa = ipa,
+                    text = phonetic.text,
+
+                    isMultiIpa = phonetic.ipa.size > 1
+                )
+            }.let {
+
+                return@flatMapIndexed listOf(it)
             }
 
 
@@ -170,27 +270,55 @@ class PhoneticsViewModel(
             }
 
 
-            val list = arrayListOf<ViewItemCloneable>()
+            val list = arrayListOf<ViewItem>()
 
             item.phonetics.mapIndexed { indexPhonetic, phonetic ->
 
-                PhoneticsViewItem("${indexItem * 1000 + indexPhonetic}", phonetic).refresh(phoneticsCode)
+                val codeAndIpa = phonetic.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
+
+                val ipa = (codeAndIpa?.get(phoneticsCode) ?: codeAndIpa?.toList()?.first()?.second)?.firstOrNull().orEmpty()
+
+                PhoneticsViewItem(
+                    id = "${indexItem * 1000 + indexPhonetic}",
+                    data = phonetic,
+
+                    ipa = ipa,
+                    text = phonetic.text,
+
+                    isMultiIpa = phonetic.ipa.size > 1
+                )
             }.let {
 
                 list.addAll(it)
             }
 
-            if (item.text.hasChar() && isSupportTranslate) SentenceViewItem("${indexItem * 1000}", item).refresh(indexItem == listItem.lastIndex).let {
+            if (isSupportTranslate && item.text.hasChar()) item.translateState.let { translateState ->
+
+                val text = if (translateState is ResultState.Start) {
+                    keyTranslateMap["translating"].orEmpty()
+                } else if (translateState is ResultState.Success) {
+                    translateState.data
+                } else {
+                    keyTranslateMap["translate_failed"].orEmpty()
+                }
+
+                SentenceViewItem(
+                    "${indexItem * 1000}",
+                    item,
+                    text = text,
+                    isLast = indexItem == listItem.lastIndex
+                )
+            }.let {
 
                 list.add(it)
             }
 
             list
-        }?.let {
+        }.let {
 
             val list = it.toMutableList()
 
-            list.add(SpaceViewItem(height = 100.toPx()))
+            list.add(SpaceViewItem(height = DP.DP_100))
 
             postDifferentValue(list)
         }
@@ -200,24 +328,29 @@ class PhoneticsViewModel(
     }
 
     @VisibleForTesting
-    val listViewItem: LiveData<List<ViewItemCloneable>> = combineSources(text, historyViewItemList, phoneticsViewItemList) {
+    val listViewItem: LiveData<List<ViewItem>> = combineSources(text, theme, keyTranslateMap, historyViewItemList, phoneticsViewItemList) {
 
         val text = text.get()
-
+        val theme = theme.get()
+        val keyTranslateMap = keyTranslateMap.get()
         val historyViewItemList = historyViewItemList.getOrEmpty()
+        val phoneticsViewItemList = phoneticsViewItemList.getOrEmpty()
 
+        val viewItemList = arrayListOf<ViewItem>()
 
-        val viewItemList = arrayListOf<ViewItemCloneable>()
+        if (historyViewItemList.isNotEmpty() && text.isBlank()) TitleViewItem(
+            text = keyTranslateMap["title_history"].orEmpty(),
+            textSize = 20f,
+            textColor = theme.primaryColor,
+            paddingHorizontal = DP.DP_16
+        ).let {
 
-
-        if (historyViewItemList.isNotEmpty() && text.isBlank()) {
-
-            viewItemList.add(TitleViewItem(R.string.title_history, paddingHorizontal = 12.toPx()).refresh())
+            viewItemList.add(it)
         }
 
         if (text.isNotBlank()) {
 
-            viewItemList.addAll(phoneticsViewItemList.getOrEmpty())
+            viewItemList.addAll(phoneticsViewItemList)
         } else {
 
             viewItemList.addAll(historyViewItemList)
@@ -226,40 +359,55 @@ class PhoneticsViewModel(
         if (viewItemList.isNotEmpty()) {
 
             viewItemList.add(SpaceViewItem(height = 60.toPx()))
+        } else EmptyViewItem(
+            id = "EMPTY",
+            message = keyTranslateMap["empty"].orEmpty(),
+            imageRes = R.raw.anim_empty
+        ).let {
+
+            viewItemList.add(it)
         }
 
         postDifferentValue(viewItemList)
     }
 
 
-    @Suppress("ComplexRedundantLet")
     @VisibleForTesting
-    internal val dataScreen: LiveData<PhoneticsInfoScreen> = combineSources(listViewItem, speakState, isSpeakStatus, detectState) {
+    val hintEnter: LiveData<String> = combineSources(isReverse, outputLanguage, keyTranslateMap) {
 
-        val text = text.get()
+        val outputLanguage = outputLanguage.value ?: return@combineSources
+        val keyTranslateMap = keyTranslateMap.value ?: return@combineSources
 
-        val speakState = speakState.get()
-
-        val detectState = detectState.get()
-
-        val isShowClearText = text.isNotBlank()
-
-        val isShowSpeakStatus = detectState.isSuccess() && text.isNotBlank()
-
-        val isSpeakStatus = if (detectState.isStart() || !speakState || text.isBlank()) {
-            null
+        val hint = if (isReverse.value == true) {
+            keyTranslateMap["hint_enter_language_text"].orEmpty().replace("\$language_name", outputLanguage.name)
         } else {
-            isSpeakStatus.get()
+            keyTranslateMap["hint_enter_text"].orEmpty()
         }
 
-        val listViewItem = listViewItem.getOrEmpty()
+        postDifferentValue(hint)
+    }
+
+    @VisibleForTesting
+    val isShowLoading: LiveData<Boolean> = combineSources(speakState, detectState) {
+
+        postDifferentValue(speakState.value.isStart() || !detectState.value.isCompleted())
+    }
+
+
+    @VisibleForTesting
+    internal val dataScreen: LiveData<PhoneticsInfoScreen> = listenerSources(hintEnter, listViewItem, speakInfo, imageInfo, clearInfo, reverseInfo, isShowLoading) {
 
         PhoneticsInfoScreen(
-            listViewItem = listViewItem,
-            isSpeakStatus = isSpeakStatus,
-            isShowClearText = isShowClearText,
-            isShowSpeakStatus = isShowSpeakStatus,
-            detectState = detectState
+            hintEnter = hintEnter.value.orEmpty(),
+
+            listViewItem = listViewItem.getOrEmpty(),
+
+            speakInfo = speakInfo.value,
+            imageInfo = imageInfo.value,
+            clearInfo = clearInfo.value,
+            reverseInfo = reverseInfo.value,
+
+            isShowLoading = isShowLoading.getOrDefault(false),
         ).let {
 
             postValue(it)
@@ -289,14 +437,9 @@ class PhoneticsViewModel(
         this.isReverse.postValue(!this.isReverse.get())
     }
 
-    fun updateSpeakState(speakState: Boolean) {
+    fun updateSupportSpeak(b: Boolean) {
 
-        this.speakState.postDifferentValue(speakState)
-    }
-
-    fun updateSpeakStatus(speakStatus: Boolean) {
-
-        this.isSpeakStatus.postDifferentValue(speakStatus)
+        this.isSupportSpeak.postDifferentValue(b)
     }
 
     fun updatePhoneticSelect(code: String) {
@@ -304,9 +447,10 @@ class PhoneticsViewModel(
         this.phoneticsCode.postDifferentValue(code)
     }
 
-    fun updateTranslateState(state: ResultState<Boolean>) {
+    fun updateSupportTranslate(b: Boolean) {
 
-        this.translateState.postDifferentValue(state)
+        this.isSupportReverse.postDifferentValue(b)
+        this.isSupportTranslate.postDifferentValue(b)
     }
 
     fun updateInputLanguage(language: Language) {
@@ -319,9 +463,39 @@ class PhoneticsViewModel(
         this.outputLanguage.postDifferentValue(language)
     }
 
-    fun updateTranslateStatus(isSupportTranslate: Boolean) {
 
-        this.isSupportTranslate.postDifferentValue(isSupportTranslate)
+    fun startSpeak(text: String, languageCode: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
+
+        speakState.postValue(ResultState.Start)
+
+        val param = StartSpeakUseCase.Param(
+            text = text,
+
+            languageCode = languageCode,
+
+            voiceId = voiceId,
+            voiceSpeed = voiceSpeed
+        )
+
+        var job: Job? = null
+
+        job = startSpeakUseCase.execute(param).launchCollect(viewModelScope) { state ->
+
+            speakState.postValue(state)
+
+            state.doSuccess {
+                job?.cancel()
+            }
+
+            state.doFailed {
+                job?.cancel()
+            }
+        }
+    }
+
+    fun stopSpeak() = viewModelScope.launch(handler + Dispatchers.IO) {
+
+        stopSpeakUseCase.execute()
     }
 
     fun getTextFromImage(path: String) = viewModelScope.launch(handler + Dispatchers.IO) {
@@ -342,28 +516,38 @@ class PhoneticsViewModel(
     }
 }
 
-internal data class PhoneticsInfoScreen(
-    val listViewItem: List<ViewItemCloneable> = emptyList(),
+data class PhoneticsInfoScreen(
+    val hintEnter: String,
 
-    val isSpeakStatus: Boolean? = null,
-    val isShowClearText: Boolean? = null,
-    val isShowSpeakStatus: Boolean? = null,
+    val listViewItem: List<ViewItem> = emptyList(),
 
-    val detectState: ResultState<String>
-) : Comparable {
+    val speakInfo: SpeakInfo? = null,
+    val imageInfo: ImageInfo? = null,
+    val clearInfo: ClearInfo? = null,
+    val reverseInfo: ReverseInfo? = null,
 
-    override fun getListCompare(): List<*> {
+    val isShowLoading: Boolean = false,
+) {
 
-        val list = arrayListOf<Any?>()
+    data class SpeakInfo(
+        val isShowPlay: Boolean = false,
+        val isShowPause: Boolean = false,
+    )
 
-        list.addAll(listViewItem.flatMap { it.getListCompare() })
+    data class ImageInfo(
+        val image: String,
+        val isShowInput: Boolean = false,
+        val isShowImage: Boolean = false,
+    )
 
-        list.add(isSpeakStatus)
-        list.add(isShowClearText)
-        list.add(isShowSpeakStatus)
+    data class ClearInfo(
+        val text: String = "",
+        val isShow: Boolean = false,
+    )
 
-        list.add(detectState)
-
-        return list
-    }
+    data class ReverseInfo(
+        val text: String = "",
+        val isShow: Boolean = false,
+        val isSelected: Boolean = false,
+    )
 }

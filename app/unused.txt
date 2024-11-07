@@ -24224,7 +24224,7 @@ com.simple.phonetics.ui.phonetics.adapters.SentenceViewItem:
 com.simple.phonetics.ui.phonetics.config.PhoneticsConfigFragment:
     private final com.simple.adapter.MultiAdapter getAdapter()
     public synthetic bridge androidx.lifecycle.ViewModel getViewModel()
-com.simple.phonetics.ui.phonetics.config.PhoneticsConfigViewModel:
+com.simple.phonetics.ui.PhoneticsConfigViewModel:
     public static synthetic void getListPhoneViewItem$annotations()
     public static synthetic void getListVoice$annotations()
     public static synthetic void getTranslateState$annotations()

@@ -13,10 +13,14 @@ val daoModule = module {
     }
 
     single {
+        get<PhoneticsRoomDatabase>().providerKeyTranslateDao()
+    }
+
+    single {
         get<PhoneticsRoomDatabase>().providerPhoneticsDao()
     }
 
     single {
-        get<PhoneticsRoomDatabase>().providerPhoneticsHistoryDao()
+        get<PhoneticsRoomDatabase>().providerHistoryDao()
     }
 }

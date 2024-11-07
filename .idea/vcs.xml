@@ -3,7 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/../1CorePrivate" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../1CorePublic" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../Android-HackBottomSheet" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
 </project>

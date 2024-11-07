@@ -2,7 +2,7 @@ package com.simple.phonetics.di
 
 import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
-import com.simple.phonetics.ui.phonetics.config.PhoneticsConfigViewModel
+import com.simple.phonetics.ui.ConfigViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -10,14 +10,14 @@ import org.koin.dsl.module
 val viewModelModule = module {
 
     viewModel {
-        MainViewModel(get(), get(), get())
+        MainViewModel()
     }
 
     viewModel {
-        PhoneticsViewModel(get(), get(), get())
+        ConfigViewModel(get(), get(), get(), get(), get())
     }
 
     viewModel {
-        PhoneticsConfigViewModel(get())
+        PhoneticsViewModel(get(), get(), get(), get(), get(), get())
     }
 }

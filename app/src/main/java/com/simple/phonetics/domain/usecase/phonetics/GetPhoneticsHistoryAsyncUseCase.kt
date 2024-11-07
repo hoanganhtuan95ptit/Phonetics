@@ -1,22 +1,21 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
-import com.simple.coreapp.data.usecase.BaseUseCase
-import com.simple.phonetics.data.dao.PhoneticsHistoryDao
-import com.simple.phonetics.domain.entities.Sentence
+import com.simple.phonetics.data.dao.HistoryDao
+import com.simple.phonetics.entities.Sentence
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class GetPhoneticsHistoryAsyncUseCase(
-    private val phoneticsHistoryDao: PhoneticsHistoryDao,
-) : BaseUseCase<GetPhoneticsHistoryAsyncUseCase.Param, Flow<List<Sentence>>> {
+    private val historyDao: HistoryDao,
+) {
 
-    override suspend fun execute(param: Param?): Flow<List<Sentence>> {
+    suspend fun execute(param: Param?): Flow<List<Sentence>> {
 
-        return phoneticsHistoryDao.getRoomListByAsync().map { list ->
+        return historyDao.getRoomListByAsync().map { list ->
 
             list.map { Sentence(it.text) }
         }
     }
 
-    class Param() : BaseUseCase.Param()
+    class Param()
 }

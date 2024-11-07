@@ -1,15 +1,14 @@
 package com.simple.phonetics.domain.usecase.language
 
-import com.simple.coreapp.data.usecase.BaseUseCase
-import com.simple.phonetics.domain.entities.Language
 import com.simple.phonetics.domain.repositories.LanguageRepository
+import com.simple.phonetics.entities.Language
 import kotlinx.coroutines.flow.Flow
 
 class GetLanguageOutputAsyncUseCase(
     private val languageRepository: LanguageRepository
-) : BaseUseCase<Unit, Flow<Language>> {
+) {
 
-    override suspend fun execute(param: Unit?): Flow<Language> {
+    suspend fun execute(): Flow<Language> {
 
         return languageRepository.getLanguageOutputAsync()
     }

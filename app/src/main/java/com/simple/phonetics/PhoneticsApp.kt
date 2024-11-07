@@ -1,8 +1,9 @@
 package com.simple.phonetics
 
+import android.app.Application
+import android.content.Context
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.simple.coreapp.BaseApp
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.di.apiModule
 import com.simple.phonetics.di.cacheModule
@@ -16,15 +17,18 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import org.koin.core.context.loadKoinModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import org.koin.java.KoinJavaComponent.getKoin
 import kotlin.coroutines.CoroutineContext
 
-class PhoneticsApp : BaseApp() {
+class PhoneticsApp : Application() {
 
     private val handler = CoroutineExceptionHandler { _: CoroutineContext, throwable: Throwable ->
 
-        logCrashlytics(throwable)
+        logCrashlytics("exception_captured", throwable)
     }
 
     private val syncUseCase: SyncUseCase by lazy {
@@ -32,10 +36,16 @@ class PhoneticsApp : BaseApp() {
         getKoin().get()
     }
 
-    override fun onCreate() {
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
 
-        loadKoinModules(
-            listOf(
+        startKoin {
+
+            androidContext(this@PhoneticsApp)
+
+            androidLogger(Level.NONE)
+
+            modules(
                 apiModule,
                 daoModule,
                 taskModule,
@@ -44,7 +54,12 @@ class PhoneticsApp : BaseApp() {
                 viewModelModule,
                 repositoryModule,
             )
-        )
+        }
+
+    }
+
+
+    override fun onCreate() {
 
         super.onCreate()
 

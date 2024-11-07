@@ -27,21 +27,21 @@
         android:theme="@style/Theme.Phonetics"
         tools:targetApi="31">
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/ad_app_id" />
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
+<!--            android:value="@string/ad_app_id" />-->
 
-        <meta-data
-            android:name="io.sentry.dsn"
-            android:value="@string/sentry_dsn" /><!--can remove-->
+<!--        <meta-data-->
+<!--            android:name="io.sentry.dsn"-->
+<!--            android:value="@string/sentry_dsn" />&lt;!&ndash;can remove&ndash;&gt;-->
 
-        <meta-data
-            android:name="io.sentry.attach-screenshot"
-            android:value="@string/sentry_attach_screenshot" /><!--can remove-->
+<!--        <meta-data-->
+<!--            android:name="io.sentry.attach-screenshot"-->
+<!--            android:value="@string/sentry_attach_screenshot" />&lt;!&ndash;can remove&ndash;&gt;-->
 
-        <meta-data
-            android:name="io.sentry.attach-view-hierarchy"
-            android:value="@string/sentry_attach_view_hierarchy" /><!--can remove-->
+<!--        <meta-data-->
+<!--            android:name="io.sentry.attach-view-hierarchy"-->
+<!--            android:value="@string/sentry_attach_view_hierarchy" />&lt;!&ndash;can remove&ndash;&gt;-->
 
         <activity
             android:name=".ui.MainActivity"

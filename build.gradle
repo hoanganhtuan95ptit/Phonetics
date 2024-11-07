@@ -1,6 +1,6 @@
 buildscript {
 
-    apply from: '../1CorePublic/constant/build.gradle'
+    apply from: "$rootDir/constant.gradle"
 
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.3"
@@ -8,8 +8,8 @@ buildscript {
 
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
-        classpath 'com.google.gms:google-services:4.3.13'
-
+//        classpath 'com.google.gms:google-services:4.3.13'
+//
 //        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
 //        classpath 'com.google.firebase:perf-plugin:1.4.1'
     }

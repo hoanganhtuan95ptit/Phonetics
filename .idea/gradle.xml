@@ -4,35 +4,36 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="jbr-17" />
+        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/../1CorePrivate/app-config-phonetics" />
             <option value="$PROJECT_DIR$/../1CorePublic/constant" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-adapter" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-analytics" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-analytics-sentry" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-config" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-core" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-core-app" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-core-navigation" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-crashlytics" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-crashlytics-sentry" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-detect" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-detect-mlkit" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-job" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-state" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-task" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-translate" />
-            <option value="$PROJECT_DIR$/../1CorePublic/lib-translate-mlkit" />
-            <option value="$PROJECT_DIR$/../Android-HackBottomSheet/lib-bottomsheet" />
+            <option value="$PROJECT_DIR$/../1CorePublic/core/android" />
+            <option value="$PROJECT_DIR$/../1CorePublic/core/base" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/adapter" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/analytics" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/analytics/sentry" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/binding" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/config" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/crashlytics" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/crashlytics/sentry" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/detect" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/detect/mlkit" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/image" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/job" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/state" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/task" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/translate" />
+            <option value="$PROJECT_DIR$/../1CorePublic/library/translate/mlkit" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/library" />
           </set>
         </option>
+        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

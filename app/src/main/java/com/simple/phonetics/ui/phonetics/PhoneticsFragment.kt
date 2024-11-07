@@ -7,13 +7,12 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import android.util.TypedValue
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
@@ -24,39 +23,36 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
-import com.simple.analytics.logAnalytics
-import com.simple.coreapp.ui.adapters.SpaceAdapter
+import com.simple.adapter.SpaceAdapter
 import com.simple.coreapp.ui.base.fragments.BaseViewModelFragment
 import com.simple.coreapp.utils.FileUtils
 import com.simple.coreapp.utils.autoCleared
+import com.simple.coreapp.utils.ext.getViewModel
+import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.beginTransitionAwait
 import com.simple.coreapp.utils.extentions.clear
 import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
-import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.getViewModel
 import com.simple.coreapp.utils.extentions.haveText
 import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
 import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
 import com.simple.coreapp.utils.extentions.observeQueue
-import com.simple.coreapp.utils.extentions.setDebouncedClickListener
-import com.simple.coreapp.utils.extentions.setImage
-import com.simple.coreapp.utils.extentions.setTextWhenDiff
-import com.simple.coreapp.utils.extentions.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.extentions.text
-import com.simple.phonetics.R
+import com.simple.image.setImage
 import com.simple.phonetics.databinding.FragmentPhoneticsBinding
-import com.simple.phonetics.ui.MainViewModel
+import com.simple.phonetics.entities.Language
+import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.adapters.TextOptionAdapter
 import com.simple.phonetics.ui.adapters.TitleAdapter
+import com.simple.phonetics.ui.phonetics.adapters.EmptyAdapter
+import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
-import com.simple.phonetics.ui.phonetics.adapters.PhoneticsHistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
 import com.simple.phonetics.ui.phonetics.config.PhoneticsConfigFragment
-import com.simple.phonetics.ui.phonetics.config.PhoneticsConfigViewModel
-import com.simple.state.doRunning
-import com.simple.state.isRunning
-import java.util.Locale
+import com.simple.state.doFailed
+import com.simple.state.doSuccess
 
 
 class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, PhoneticsViewModel>() {
@@ -68,16 +64,10 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         if (result.resultCode == RESULT_OK) {
 
-            logAnalytics("TAKE_IMAGE_FROM_CAMERA_SUCCESS" to "TAKE_IMAGE_FROM_CAMERA")
-
             viewModel.getTextFromImage(currentPhotoPath)
-        } else {
-
-            logAnalytics("TAKE_IMAGE_FROM_CAMERA_FAILED" to "TAKE_IMAGE_FROM_CAMERA")
         }
     }
 
-    @Suppress("ComplexRedundantLet")
     private val takeImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
 
         uri?.let {
@@ -85,29 +75,18 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             FileUtils.uriToImageFile(requireContext(), it)
         }?.let {
 
-            logAnalytics("TAKE_IMAGE_FROM_GALLERY_SUCCESS" to "TAKE_IMAGE_FROM_GALLERY")
-
             viewModel.getTextFromImage(it.absolutePath)
-        } ?: let {
-
-            logAnalytics("TAKE_IMAGE_FROM_GALLERY_FAILED" to "TAKE_IMAGE_FROM_GALLERY")
         }
     }
 
 
-    private val mainViewModel: MainViewModel by lazy {
-        getViewModel(requireActivity(), MainViewModel::class)
-    }
-
-    private val phoneticsConfigViewModel: PhoneticsConfigViewModel by lazy {
-        getViewModel(this, PhoneticsConfigViewModel::class)
+    internal val configViewModel: ConfigViewModel by lazy {
+        getViewModel(requireActivity(), ConfigViewModel::class)
     }
 
 
     private var currentPhotoPath: String? = null
 
-
-    private var speak: TextToSpeech? = null
 
     private var adapter by autoCleared<MultiAdapter>()
 
@@ -129,7 +108,6 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             binding.ivPaste.setVisible(clipboard?.haveText() == true)
         }
 
-        setupMore()
         setupSpeak()
         setupPaste()
         setupInput()
@@ -138,7 +116,6 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
         setupRecyclerViewConfig()
 
         observeData()
-        observeMainData()
         observePhoneticsConfigData()
     }
 
@@ -158,81 +135,21 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
     override fun onPause() {
         super.onPause()
 
-        speak?.stopSpeak()
-
         clipboard?.removePrimaryClipChangedListener(onPrimaryClipChangedListener)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        speak?.shutdown()
-    }
-
-    private fun setupMore() {
-
-        val binding = binding ?: return
-
-        binding.ivMore.setDebouncedClickListener {
-
-            PhoneticsConfigFragment().show(childFragmentManager, "")
-        }
     }
 
     private fun setupSpeak() {
 
         val binding = binding ?: return
 
-        speak = TextToSpeech(requireContext()) { status ->
-
-            viewModel.updateSpeakState(status != TextToSpeech.ERROR)
-
-            if (status != TextToSpeech.ERROR) {
-
-                speak?.language = Locale.US
-
-                speak?.voices?.filter { it.locale == Locale.US }?.apply {
-
-                    phoneticsConfigViewModel.updateVoice(this)
-                }
-            }
-        }
-
-        speak?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-
-            override fun onStart(p0: String?) {
-
-                viewModel.updateSpeakStatus(true)
-            }
-
-            override fun onDone(p0: String?) {
-
-                viewModel.updateSpeakStatus(false)
-            }
-
-            @Deprecated("Deprecated in Java", ReplaceWith("viewModel.updateSpeakStatus(false)"))
-            override fun onError(p0: String?) {
-
-                viewModel.updateSpeakStatus(false)
-            }
-        })
-
         binding.ivRead.setDebouncedClickListener {
 
-            val speak = speak ?: return@setDebouncedClickListener
-
-            logAnalytics("READ_ACTION" to "READ")
-
-            speak.speak(binding.etText.text.toString(), TextToSpeech.QUEUE_FLUSH, null, "1")
+            startSpeak(text = binding.etText.text.toString())
         }
 
         binding.ivStop.setDebouncedClickListener {
 
-            val speak = speak ?: return@setDebouncedClickListener
-
-            logAnalytics("STOP_ACTION" to "STOP")
-
-            speak.stopSpeak()
+            viewModel.stopSpeak()
         }
     }
 
@@ -242,8 +159,6 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         binding.ivPaste.setOnClickListener {
 
-            logAnalytics("PASTE_ACTION" to "PASTE")
-
             binding.etText.setText(clipboard?.text() ?: "")
 
             clipboard?.clear()
@@ -251,13 +166,10 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         binding.ivGallery.setDebouncedClickListener {
 
-            logAnalytics("GALLERY_OPEN" to "GALLERY")
-
             PermissionX.init(requireActivity())
                 .permissions(REQUIRED_PERMISSIONS_READ_FILE.toList())
                 .request { allGranted, _, _ ->
                     if (allGranted) {
-                        logAnalytics("GALLERY_OPEN_WITH_PERMISSION" to "GALLERY")
                         takeImageFromGalleryResult.launchTakeImageFromGallery()
                     }
                 }
@@ -265,13 +177,10 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         binding.ivCamera.setDebouncedClickListener {
 
-            logAnalytics("CAMERA_OPEN" to "CAMERA")
-
             PermissionX.init(requireActivity())
                 .permissions(REQUIRED_PERMISSIONS_CAMERA.toList())
                 .request { allGranted, _, _ ->
                     if (allGranted) {
-                        logAnalytics("CAMERA_OPEN_WITH_PERMISSION" to "CAMERA")
                         currentPhotoPath = takeImageFromCameraResult.launchTakeImageFromCamera(requireContext(), "image")?.absolutePath ?: return@request
                     }
                 }
@@ -284,16 +193,12 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         binding.etText.doAfterTextChanged {
 
-            speak?.stopSpeak()
-
             viewModel.getPhonetics(it.toString())
 
             binding.etText.setTextSize(TypedValue.COMPLEX_UNIT_SP, if (it.toString().isBlank()) 30f else 16f)
         }
 
         binding.tvClear.setDebouncedClickListener {
-
-            logAnalytics("CLEAR_ACTION" to "CLEAR")
 
             binding.etText.setText("")
         }
@@ -320,23 +225,15 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         val phoneticsAdapter = PhoneticsAdapter { _, phoneticsViewItem ->
 
-            val speak = speak ?: return@PhoneticsAdapter
-
-            val text = phoneticsViewItem.data.text
-
-            logAnalytics("PHONETICS" to "CLICK")
-
-            speak.speak(text, TextToSpeech.QUEUE_FLUSH, null, "1")
+            startSpeak(text = phoneticsViewItem.data.text)
         }
 
-        val phoneticsHistoryAdapter = PhoneticsHistoryAdapter { _, item ->
-
-            logAnalytics("PHONETICS_HISTORY" to "CLICK")
+        val historyAdapter = HistoryAdapter { _, item ->
 
             binding.etText.setText(item.id)
         }
 
-        adapter = MultiAdapter(phoneticsAdapter, phoneticsHistoryAdapter, SentenceAdapter(), TitleAdapter(), SpaceAdapter()).apply {
+        adapter = MultiAdapter(phoneticsAdapter, historyAdapter, SentenceAdapter(), TitleAdapter(), SpaceAdapter(), EmptyAdapter()).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -353,8 +250,6 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         val textOptionAdapter = TextOptionAdapter { _, item ->
 
-            logAnalytics("TEXT_OPTION" to item.id)
-
             PhoneticsConfigFragment().show(childFragmentManager, "")
         }
 
@@ -368,80 +263,101 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
     private fun observeData() = with(viewModel) {
 
-        text.observe(viewLifecycleOwner) {
+        detectState.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
 
-            if (binding.etText.isFocused) return@observe
+            it.doSuccess {
 
-            binding.etText.setTextWhenDiff(it)
-        }
-
-        isReverse.observe(viewLifecycleOwner) {
-
-            val binding = binding ?: return@observe
-
-            binding.etText.hint = if (it) {
-                getString(R.string.hint_enter_language_text, outputLanguage.value?.name ?: "")
-            } else {
-                getString(R.string.hint_enter_text)
+                binding.etText.setText(it)
             }
-
-            binding.tvReverse.isSelected = it
         }
 
-        isSupportReverse.observe(viewLifecycleOwner) {
+        listViewItemDisplayEvent.asFlow().launchCollect(viewLifecycleOwner) { event ->
 
-            val binding = binding ?: return@observe
-
-            binding.tvReverse.setVisible(it)
-        }
-
-        listViewItemDisplayEvent.observeQueue(viewLifecycleOwner) { event ->
-
-            val binding = binding ?: return@observeQueue
+            val binding = binding ?: return@launchCollect
 
             val anim = !event.hasBeenHandled
 
             val data = event.getContentIfNotHandled() ?: event.peekContent()
 
-            binding.recyclerView.submitListAwait(data.listViewItem)
+            binding.etText.hint = data.hintEnter
+            binding.progress.setVisible(data.isShowLoading)
 
-            binding.nestedScrollView.setVisible(data.listViewItem.isEmpty())
+            data.imageInfo?.let {
 
-            data.detectState.doRunning {
-
-                binding.ivPicture.setImage(it, CircleCrop())
+                binding.ivPicture.setImage(it.image, CircleCrop())
+                binding.ivPicture.setVisible(it.isShowImage)
             }
 
-            binding.progress.setVisible(data.detectState.isRunning())
-            binding.ivPicture.setVisible(data.detectState.isRunning())
+            data.clearInfo?.let {
+
+                binding.tvClear.text = it.text
+                binding.tvClear.setVisible(it.isShow)
+            }
+
+            data.speakInfo?.let {
+
+                binding.ivStop.setVisible(it.isShowPause)
+                binding.ivRead.setVisible(it.isShowPlay)
+            }
+
+            data.reverseInfo?.let {
+
+                binding.tvReverse.text = it.text
+                binding.tvReverse.isSelected = it.isSelected
+                binding.tvReverse.setVisible(it.isShow)
+            }
 
 
-            binding.ivStop.setVisible(data.isShowSpeakStatus == true && data.isSpeakStatus == true)
-            binding.ivRead.setVisible(data.isShowSpeakStatus == true && data.isSpeakStatus != true)
-
-
-            binding.tvClear.setVisible(data.isShowClearText == true)
-
+            binding.recyclerView.submitListAwait(data.listViewItem)
 
             if (!anim) {
 
-                return@observeQueue
+                return@launchCollect
             }
 
             val transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))
-
             binding.recyclerView.beginTransitionAwait(transition)
         }
     }
 
-    private fun observeMainData() = with(mainViewModel) {
+    private fun observePhoneticsConfigData() = with(configViewModel) {
+
+        voiceState.observe(viewLifecycleOwner) {
+
+            it.doSuccess {
+
+                viewModel.updateSupportSpeak(it.isNotEmpty())
+            }
+
+            it.doFailed {
+
+                viewModel.updateSupportSpeak(false)
+            }
+        }
+
+        listConfig.observe(viewLifecycleOwner) {
+
+            adapterConfig?.submitList(it)
+        }
+
+        phoneticSelect.observe(viewLifecycleOwner) {
+
+            viewModel.updatePhoneticSelect(it)
+        }
 
         translateState.observe(viewLifecycleOwner) {
 
-            viewModel.updateTranslateState(it)
-            phoneticsConfigViewModel.updateTranslateState(it)
+            it.doSuccess {
+
+                viewModel.updateSupportTranslate(true)
+            }
+
+            it.doFailed {
+
+                viewModel.updateSupportTranslate(false)
+            }
         }
 
         inputLanguage.observe(viewLifecycleOwner) {
@@ -455,44 +371,16 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
         }
     }
 
-    private fun observePhoneticsConfigData() = with(phoneticsConfigViewModel) {
+    private fun startSpeak(text: String) {
 
-        listConfig.observe(viewLifecycleOwner) {
+        viewModel.startSpeak(
+            text = text,
 
-            adapterConfig?.submitList(it)
-        }
+            languageCode = configViewModel.inputLanguage.value?.id ?: Language.EN,
 
-        phoneticSelect.observe(viewLifecycleOwner) {
-
-            viewModel.updatePhoneticSelect(it)
-        }
-
-        listVoiceViewItem.observe(viewLifecycleOwner) { list ->
-
-            val voiceSelected = list.find { it.isSelect }?.data ?: return@observe
-
-            speak?.voice = voiceSelected
-        }
-
-        listVoiceSpeedViewItem.observe(viewLifecycleOwner) { list ->
-
-            val item = list.firstOrNull() ?: return@observe
-
-            speak?.setSpeechRate(item.current)
-        }
-
-        listTranslationViewItem.observe(viewLifecycleOwner) { list ->
-
-            viewModel.updateTranslateStatus(list.any { it.isSelect })
-        }
-    }
-
-
-    private fun TextToSpeech.stopSpeak() {
-
-        viewModel.updateSpeakStatus(false)
-
-        stop()
+            voiceId = configViewModel.voiceSelect.value ?: 0,
+            voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
+        )
     }
 
     companion object {

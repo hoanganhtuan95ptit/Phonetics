@@ -8,7 +8,7 @@ import org.koin.dsl.module
 val cacheModule = module {
 
     single<AppCache> {
-        AppCacheImpl()
+        AppCacheImpl(get())
     }
 
 }
