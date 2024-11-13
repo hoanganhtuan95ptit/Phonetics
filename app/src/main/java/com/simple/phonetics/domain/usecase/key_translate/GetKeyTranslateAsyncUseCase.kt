@@ -10,6 +10,7 @@ class GetKeyTranslateAsyncUseCase(
 ) {
 
     suspend fun execute(): Flow<Map<String, String>> = appRepository.getLanguageCodeAsync().flatMapLatest {
+
         getKeyTranslateAsync(it)
     }
 

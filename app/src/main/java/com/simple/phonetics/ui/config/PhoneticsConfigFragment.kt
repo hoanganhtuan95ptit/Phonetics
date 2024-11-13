@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetics.config
+package com.simple.phonetics.ui.config
 
 import android.os.Bundle
 import android.view.View
@@ -14,10 +14,10 @@ import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.phonetics.databinding.FragmentConfigBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.adapters.TitleAdapter
-import com.simple.phonetics.ui.phonetics.config.adapters.PhoneticCodeAdapter
-import com.simple.phonetics.ui.phonetics.config.adapters.TranslationAdapter
-import com.simple.phonetics.ui.phonetics.config.adapters.VoiceCodeAdapter
-import com.simple.phonetics.ui.phonetics.config.adapters.VoiceSpeedAdapter
+import com.simple.phonetics.ui.config.adapters.PhoneticCodeAdapter
+import com.simple.phonetics.ui.config.adapters.TranslationAdapter
+import com.simple.phonetics.ui.config.adapters.VoiceCodeAdapter
+import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 
 class PhoneticsConfigFragment : BaseViewModelSheetFragment<FragmentConfigBinding, ConfigViewModel>() {
 

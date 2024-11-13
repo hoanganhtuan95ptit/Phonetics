@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.simple.phonetics.entities.Phonetics
 
 private const val TABLE_NAME = "phonetics"
 
@@ -20,6 +21,16 @@ interface PhoneticsDao {
     @Query("DELETE FROM $TABLE_NAME")
     fun deleteAll()
 
+    fun insertOrUpdateEntities(entities: List<Phonetics>) {
+
+        entities.map {
+
+            RoomPhonetics(ipa = it.ipa, text = it.text)
+        }.let {
+
+            insertOrUpdate(it)
+        }
+    }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(room: RoomPhonetics)

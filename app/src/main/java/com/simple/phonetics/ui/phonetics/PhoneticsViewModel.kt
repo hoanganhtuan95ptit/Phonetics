@@ -69,6 +69,7 @@ class PhoneticsViewModel(
         LoadingViewItem(R.layout.item_phonetics_loading)
     )
 
+    @VisibleForTesting
     val theme: LiveData<AppTheme> = mediatorLiveData {
 
         appTheme.collect {
@@ -85,6 +86,14 @@ class PhoneticsViewModel(
             postDifferentValue(it)
         }
     }
+
+
+    @VisibleForTesting
+    val inputLanguage: LiveData<Language> = MediatorLiveData()
+
+    @VisibleForTesting
+    val outputLanguage: LiveData<Language> = MediatorLiveData()
+
 
     @VisibleForTesting
     val historyViewItemList: LiveData<List<HistoryViewItem>> = mediatorLiveData {
@@ -113,7 +122,13 @@ class PhoneticsViewModel(
     val detectState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
     @VisibleForTesting
-    val isSupportDetect: LiveData<Boolean> = MediatorLiveData(true)
+    val isSupportDetect: LiveData<Boolean> = combineSources(inputLanguage) {
+
+        inputLanguage.value?.isSupportDetect.let {
+
+            postDifferentValue(it)
+        }
+    }
 
     val imageInfo: LiveData<ImageInfo> = combineSources(detectState, isSupportDetect) {
 
@@ -189,12 +204,6 @@ class PhoneticsViewModel(
 
     @VisibleForTesting
     val phoneticsCode: LiveData<String> = MediatorLiveData()
-
-    @VisibleForTesting
-    val inputLanguage: LiveData<Language> = MediatorLiveData()
-
-    @VisibleForTesting
-    val outputLanguage: LiveData<Language> = MediatorLiveData()
 
     @VisibleForTesting
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()

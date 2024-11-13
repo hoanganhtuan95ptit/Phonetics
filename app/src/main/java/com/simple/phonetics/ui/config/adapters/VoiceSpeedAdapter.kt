@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetics.config.adapters
+package com.simple.phonetics.ui.config.adapters
 
 import android.view.View
 import android.widget.SeekBar
