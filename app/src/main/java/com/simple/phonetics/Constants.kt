@@ -27,6 +27,18 @@ object Param {
 
     const val VOICE_ID = "VOICE_ID"
     const val VOICE_SPEED = "VOICE_SPEED"
+
+    const val ROOT_TRANSITION_NAME = "ROOT_TRANSITION_NAME"
+}
+
+object Deeplink {
+
+    const val LANGUAGE = "language"
+}
+
+object Payload {
+
+    const val SELECTED = "SELECTED"
 }
 
 object EventName {

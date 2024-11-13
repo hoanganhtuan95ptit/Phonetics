@@ -3,8 +3,11 @@ package com.simple.phonetics.entities
 data class Language(
     val id: String,
     val name: String,
+    val image: String,
 
     val listIpa: List<Ipa>,
+
+    val isSupportDetect: Boolean = false,
 ) {
 
     companion object {

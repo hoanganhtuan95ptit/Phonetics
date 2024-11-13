@@ -7,9 +7,11 @@ import com.simple.phonetics.domain.usecase.TranslateUseCase
 import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
 import com.simple.phonetics.domain.usecase.language.GetVoiceAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.language.StopSpeakUseCase
+import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import org.koin.dsl.module
 
 @JvmField
@@ -41,6 +43,14 @@ val useCaseModule = module {
 
     single {
         GetLanguageOutputAsyncUseCase(get())
+    }
+
+    single {
+        GetLanguageSupportUseCase(get())
+    }
+
+    single {
+        UpdateLanguageInputUseCase(get())
     }
 
 

@@ -20,10 +20,10 @@ import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.adapters.OptionViewItem
 import com.simple.phonetics.ui.adapters.TextOptionViewItem
 import com.simple.phonetics.ui.adapters.TitleViewItem
-import com.simple.phonetics.ui.phonetics.config.adapters.PhoneticCodeOptionViewItem
-import com.simple.phonetics.ui.phonetics.config.adapters.TranslationOptionViewItem
-import com.simple.phonetics.ui.phonetics.config.adapters.VoiceOptionViewItem
-import com.simple.phonetics.ui.phonetics.config.adapters.VoiceSpeedViewItem
+import com.simple.phonetics.ui.config.adapters.PhoneticCodeOptionViewItem
+import com.simple.phonetics.ui.config.adapters.TranslationOptionViewItem
+import com.simple.phonetics.ui.config.adapters.VoiceOptionViewItem
+import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess

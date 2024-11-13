@@ -41,6 +41,7 @@ import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.extentions.text
 import com.simple.image.setImage
+import com.simple.phonetics.Deeplink
 import com.simple.phonetics.databinding.FragmentPhoneticsBinding
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.ConfigViewModel
@@ -50,7 +51,8 @@ import com.simple.phonetics.ui.phonetics.adapters.EmptyAdapter
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
-import com.simple.phonetics.ui.phonetics.config.PhoneticsConfigFragment
+import com.simple.phonetics.ui.config.PhoneticsConfigFragment
+import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 
@@ -106,6 +108,13 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             val binding = binding ?: return@OnPrimaryClipChangedListener
 
             binding.ivPaste.setVisible(clipboard?.haveText() == true)
+        }
+
+        val binding = binding ?: return
+
+        binding.ivLanguage.setDebouncedClickListener {
+
+            sendDeeplink(Deeplink.LANGUAGE)
         }
 
         setupSpeak()
@@ -269,6 +278,9 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
             binding.ivPicture.setImage(it.image, CircleCrop())
             binding.ivPicture.setVisible(it.isShowImage)
+
+            binding.ivCamera.setVisible(it.isShowInput)
+            binding.ivGallery.setVisible(it.isShowInput)
         }
 
         speakInfo.observe(viewLifecycleOwner) {
@@ -372,6 +384,10 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
         inputLanguage.observe(viewLifecycleOwner) {
 
             viewModel.updateInputLanguage(it)
+
+            val binding = binding ?: return@observe
+
+            binding.ivLanguage.setImage(it.image, CircleCrop())
         }
 
         outputLanguage.observe(viewLifecycleOwner) {
