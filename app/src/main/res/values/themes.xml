@@ -4,7 +4,7 @@
     <style name="Theme.Phonetics" parent="Theme.Night">
 
         <item name="colorPrimary">#1ED760</item>
-        <item name="colorPrimaryVariant">#101ED760</item>
+        <item name="colorPrimaryVariant">#E9FBEA</item>
 
         <item name="colorOnBackground">#000000</item>
         <item name="colorOnBackgroundVariant">#5b5b5b</item>

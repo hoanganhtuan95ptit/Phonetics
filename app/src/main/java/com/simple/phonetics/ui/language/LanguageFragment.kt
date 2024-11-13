@@ -23,7 +23,10 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.TransitionFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.state.ResultState
+import com.simple.state.doFailed
 import com.simple.state.isStart
+import com.simple.state.isSuccess
 
 class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageViewModel>() {
 
@@ -88,6 +91,16 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
             val binding = binding ?: return@observe
 
             binding.frameConfirm.progress.setVisible(it.isStart())
+
+            if (it.isSuccess()) {
+
+                activity?.supportFragmentManager?.popBackStack()
+            }
+
+            if (it is ResultState.Failed) {
+
+                showToast(it.cause.message.orEmpty(), it)
+            }
         }
     }
 }
