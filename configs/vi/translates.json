@@ -8,11 +8,13 @@
   "voice_index": "Giọng nói $index",
   "hint_enter_text": "Nhập vào đây!",
   "hint_enter_language_text": "Nhập $language_name vào đây!",
+  "message_result_empty": "Chưa có nội dung!",
+  "message_select_language": "Chọn ngôn ngữ bạn muốn tìm phiên âm",
   "message_support_translate": "Hỗ trợ dịch",
   "message_translate_download": "Đang tải bản dịch…",
-  "message_result_empty": "Chưa có nội dung!",
   "action_clear": "Xóa",
   "action_reverse": "Đảo ngược",
+  "action_confirm_change_language": "Đổi ngôn ngữ phiên âm",
   "translating": "Đang thực hiện dịch",
   "translate_failed": "Quá trình dịch thất bại"
 }
