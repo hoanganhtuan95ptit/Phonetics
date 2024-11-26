@@ -1,43 +1,41 @@
-{
-  "data": [
-    {
-      "id": "en",
-      "listIpa": [
-        {
-          "code": "UK",
-          "name": "UK",
-          "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"
-        },
-        {
-          "code": "US",
-          "name": "US",
-          "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt"
-        }
-      ],
-      "name": "English",
-      "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/en.webp"
-    },
-    {
-      "id": "vi",
-      "listIpa": [
-        {
-          "code": "C",
-          "name": "Central region",
-          "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"
-        },
-        {
-          "code": "N",
-          "name": "North",
-          "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"
-        },
-        {
-          "code": "S",
-          "name": "Southern",
-          "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_S.txt"
-        }
-      ],
-      "name": "Vietnamese",
-      "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/vn.webp"
-    }
-  ]
-}
+[
+  {
+    "id": "en",
+    "listIpa": [
+      {
+        "code": "UK",
+        "name": "UK",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"
+      },
+      {
+        "code": "US",
+        "name": "US",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt"
+      }
+    ],
+    "name": "English",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/en.webp"
+  },
+  {
+    "id": "vi",
+    "listIpa": [
+      {
+        "code": "C",
+        "name": "Central region",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"
+      },
+      {
+        "code": "N",
+        "name": "North",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"
+      },
+      {
+        "code": "S",
+        "name": "Southern",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_S.txt"
+      }
+    ],
+    "name": "Vietnamese",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/vn.webp"
+  }
+]
