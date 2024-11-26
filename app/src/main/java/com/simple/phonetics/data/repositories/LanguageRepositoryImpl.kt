@@ -6,6 +6,7 @@ import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObject
 import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.phonetics.DEFAULT_LANGUAGE
 import com.simple.phonetics.EventName
 import com.simple.phonetics.EventName.SPEAK_TEXT_REQUEST
 import com.simple.phonetics.EventName.SPEAK_TEXT_RESPONSE
@@ -34,12 +35,15 @@ class LanguageRepositoryImpl(
     private val phoneticsDao: PhoneticsDao
 ) : LanguageRepository {
 
+    private val languageList = MediatorLiveData(DEFAULT_LANGUAGE)
+
+
     private val languageInput by lazy {
 
         val data = appCache.getData("language_input", "")
 
         MediatorLiveData(
-            if (data.isBlank()) null else data.toObject<Language>()
+            if (data.isBlank()) DEFAULT_LANGUAGE.find { it.id == Language.EN } else data.toObject<Language>()
         )
     }
 
@@ -78,37 +82,18 @@ class LanguageRepositoryImpl(
         awaitClose()
     }
 
+    override suspend fun syncLanguageSupport(languageCode: String): List<Language> {
 
-    override fun getLanguageSupported(): List<Language> {
+        val list = api.getLanguageSupport(languageCode = languageCode)
 
-        return getLanguageSupportedDefault()
+        languageList.postValue(list)
+
+        return list
     }
 
-    override fun getLanguageSupportedDefault(): List<Language> {
+    override suspend fun getLanguageSupportedOrDefaultAsync(): Flow<List<Language>> {
 
-        return listOf(
-            Language(
-                id = Language.VI,
-                name = "Việt Nam",
-                image = "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/vi.webp",
-                listIpa = listOf(
-                    Ipa("Bắc", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"),
-                    Ipa("Trung", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"),
-                    Ipa("Nam", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_S.txt")
-                ),
-                isSupportDetect = false
-            ),
-            Language(
-                id = Language.EN,
-                name = "English",
-                image = "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/en.webp",
-                listIpa = listOf(
-                    Ipa("UK", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"),
-                    Ipa("US", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt")
-                ),
-                isSupportDetect = true
-            )
-        )
+        return languageList.asFlow()
     }
 
 

@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.api
 
+import com.simple.phonetics.entities.Language
 import okhttp3.ResponseBody
 
 import retrofit2.http.GET
@@ -12,7 +13,12 @@ interface Api {
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/configs/{language_code}/translates.json")
     suspend fun syncTranslate(@Path("language_code") languageCode: String): Map<String, String>
 
+    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/configs/{language_code}/languages.json")
+    suspend fun getLanguageSupport(@Path("language_code") languageCode: String): List<Language>
+
     @Streaming
     @GET
     suspend fun syncPhonetics(@Url url: String): ResponseBody
+
+
 }

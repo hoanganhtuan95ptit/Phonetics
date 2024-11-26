@@ -23,5 +23,6 @@ data class Language(
 @Keep
 data class Ipa(
     val code: String = "",
+    val name: String = "",
     val source: String = ""
 )

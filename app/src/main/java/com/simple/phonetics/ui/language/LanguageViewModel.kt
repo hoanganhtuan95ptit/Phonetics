@@ -75,12 +75,15 @@ class LanguageViewModel(
     @VisibleForTesting
     val languageListState: LiveData<ResultState<List<Language>>> = mediatorLiveData {
 
+        postValue(ResultState.Start)
+
         getLanguageSupportUseCase.execute().collect {
 
             postValue(it)
         }
     }
 
+    @VisibleForTesting
     val languageViewItemList: LiveData<List<ViewItem>> = listenerSources(languageSelected, languageListState) {
 
         val state = languageListState.get()

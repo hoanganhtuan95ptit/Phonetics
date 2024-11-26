@@ -20,10 +20,9 @@ interface LanguageRepository {
     fun getLanguageOutputAsync(): Flow<Language>
 
 
-    fun getLanguageSupported(): List<Language>
+    suspend fun syncLanguageSupport(languageCode: String): List<Language>
 
-    fun getLanguageSupportedDefault(): List<Language>
-
+    suspend fun getLanguageSupportedOrDefaultAsync(): Flow<List<Language>>
 
     suspend fun getVoiceListSupportAsync(languageCode: String): ResultState<List<Int>>
 

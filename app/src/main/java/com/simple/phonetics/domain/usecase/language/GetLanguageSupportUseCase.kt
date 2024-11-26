@@ -6,24 +6,16 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.map
 
 class GetLanguageSupportUseCase(
     private val languageRepository: LanguageRepository
 ) {
 
-    suspend fun execute(): Flow<ResultState<List<Language>>> = channelFlow {
+    suspend fun execute(): Flow<ResultState<List<Language>>> = languageRepository.getLanguageSupportedOrDefaultAsync().map {
 
-        runCatching {
-
-            languageRepository.getLanguageSupported()
-        }.getOrElse {
-
-            languageRepository.getLanguageSupportedDefault()
-        }.let {
-
-            trySend(ResultState.Success(it))
-        }
-
-        awaitClose()
+        ResultState.Success(it)
     }
+
+    data class Param(val default: Boolean)
 }
