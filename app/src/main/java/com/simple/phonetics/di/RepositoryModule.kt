@@ -13,5 +13,7 @@ val repositoryModule = module {
         AppRepositoryImpl(get(), get(), get())
     }
 
-    single<LanguageRepository> { LanguageRepositoryImpl() }
+    single<LanguageRepository> {
+        LanguageRepositoryImpl(get(), get(), get())
+    }
 }

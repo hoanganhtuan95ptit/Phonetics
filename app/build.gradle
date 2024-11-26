@@ -89,6 +89,11 @@ dependencies {
     implementation hoanganhtuan95Dependencies.translate
     implementation hoanganhtuan95Dependencies.translate_mlkit
 
+    implementation 'androidx.core:core-splashscreen:1.1.0-rc01'
+
+    implementation 'com.github.hoanganhtuan95ptit.core:deeplink-annotation:1.2.1'
+    kapt 'com.github.hoanganhtuan95ptit.core:deeplink-processor:1.2.1'
+
     kapt('androidx.room:room-compiler:2.5.2')
     implementation roomDependencies.values()
 

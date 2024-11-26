@@ -1,57 +1,76 @@
 package com.simple.phonetics.data.repositories
 
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.asFlow
+import com.simple.core.utils.extentions.toJson
+import com.simple.core.utils.extentions.toObject
 import com.simple.coreapp.utils.extentions.offerActive
+import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.phonetics.DEFAULT_LANGUAGE
 import com.simple.phonetics.EventName
 import com.simple.phonetics.EventName.SPEAK_TEXT_REQUEST
 import com.simple.phonetics.EventName.SPEAK_TEXT_RESPONSE
 import com.simple.phonetics.Param
+import com.simple.phonetics.data.api.Api
+import com.simple.phonetics.data.cache.AppCache
+import com.simple.phonetics.data.dao.PhoneticsDao
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Language
+import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendEvent
 import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import java.util.Locale
+import kotlin.collections.set
 
-class LanguageRepositoryImpl : LanguageRepository {
+class LanguageRepositoryImpl(
+    private val api: Api,
+    private val appCache: AppCache,
+    private val phoneticsDao: PhoneticsDao
+) : LanguageRepository {
 
-    override fun getLanguageInput(): Language {
-//        return Language(
-//            Language.VI,
-//            "Việt Nam",
-//            listOf(
-//                Ipa("Bắc", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"),
-//                Ipa("Trung", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"),
-//                Ipa("Nam", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_S.txt")
-//            )
-//        )
+    private val languageList = MediatorLiveData(DEFAULT_LANGUAGE)
 
-        return Language(
-            Language.EN,
-            "English",
-            listOf(
-                Ipa("UK", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"),
-                Ipa("US", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt")
-            )
+
+    private val languageInput by lazy {
+
+        val data = appCache.getData("language_input", "")
+
+        MediatorLiveData(
+            if (data.isBlank()) DEFAULT_LANGUAGE.find { it.id == Language.EN } else data.toObject<Language>()
         )
     }
 
-    override fun getLanguageInputAsync(): Flow<Language> = channelFlow {
+    override fun getLanguageInput(): Language? {
 
-        offerActive(getLanguageInput())
-
-        awaitClose()
+        return languageInput.value
     }
+
+    override fun getLanguageInputAsync(): Flow<Language> {
+
+        return languageInput.asFlow().filterNotNull()
+    }
+
+    override fun updateLanguageInput(language: Language) {
+
+        appCache.setData("language_input", language.toJson())
+
+        languageInput.postDifferentValue(language)
+    }
+
 
     override fun getLanguageOutput(): Language {
 
         return Language(
             Locale.getDefault().language,
             Locale.getDefault().displayName,
+            "",
             emptyList()
         )
     }
@@ -61,6 +80,20 @@ class LanguageRepositoryImpl : LanguageRepository {
         offerActive(getLanguageOutput())
 
         awaitClose()
+    }
+
+    override suspend fun syncLanguageSupport(languageCode: String): List<Language> {
+
+        val list = api.getLanguageSupport(languageCode = languageCode)
+
+        languageList.postValue(list)
+
+        return list
+    }
+
+    override suspend fun getLanguageSupportedOrDefaultAsync(): Flow<List<Language>> {
+
+        return languageList.asFlow()
     }
 
 
@@ -149,4 +182,54 @@ class LanguageRepositoryImpl : LanguageRepository {
 
         }
     }.first()
+
+
+    override suspend fun updatePhonetics(phonetics: List<Phonetics>) {
+
+        phoneticsDao.insertOrUpdateEntities(phonetics)
+    }
+
+    override suspend fun getPhoneticBySource(it: Ipa): List<Phonetics> {
+
+        val textAndPhonetics = hashMapOf<String, Phonetics>()
+
+        api.syncPhonetics(it.source).string().toPhonetics(textAndPhonetics, it.code)
+
+        return textAndPhonetics.values.toList()
+    }
+
+
+    private fun String.toPhonetics(textAndPhonetics: HashMap<String, Phonetics>, ipaCode: String) = split("\n").mapNotNull { phonetics ->
+
+        val split = phonetics.split("\t", ", ").mapNotNull { ipa -> ipa.trim().takeIf { it.isNotBlank() } }.toMutableList()
+
+        if (split.isEmpty()) return@mapNotNull null
+
+
+        val text = split.removeAt(0)
+
+        val ipa = split.map {
+
+            var ipa = it
+
+            if (!it.startsWith("/")) ipa = "/$it"
+            if (!it.endsWith("/")) ipa = "$it/"
+
+            ipa
+        }
+
+
+        val item = textAndPhonetics[text] ?: Phonetics(text).apply {
+
+            textAndPhonetics[text] = this
+        }
+
+        if (item.ipa.isEmpty() || (!item.ipa.values.flatten().containsAll(ipa) && !ipa.containsAll(item.ipa.values.flatten()))) {
+
+            item.ipa[ipaCode] = ipa
+        }
+
+        item
+    }
+
 }
