@@ -2,7 +2,8 @@ package com.simple.phonetics.data.repositories
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
-import com.simple.coreapp.utils.extentions.get
+import com.simple.core.utils.extentions.toJson
+import com.simple.core.utils.extentions.toObject
 import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.EventName
@@ -10,6 +11,7 @@ import com.simple.phonetics.EventName.SPEAK_TEXT_REQUEST
 import com.simple.phonetics.EventName.SPEAK_TEXT_RESPONSE
 import com.simple.phonetics.Param
 import com.simple.phonetics.data.api.Api
+import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.data.dao.PhoneticsDao
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.entities.Ipa
@@ -21,29 +23,39 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import java.util.Locale
+import kotlin.collections.set
 
 class LanguageRepositoryImpl(
     private val api: Api,
+    private val appCache: AppCache,
     private val phoneticsDao: PhoneticsDao
 ) : LanguageRepository {
 
-    private val languageInput = MediatorLiveData(
-        getLanguageSupportedDefault().first { it.id == Language.EN }
-    )
+    private val languageInput by lazy {
 
-    override fun getLanguageInput(): Language {
+        val data = appCache.getData("language_input", "")
 
-        return languageInput.get()
+        MediatorLiveData(
+            if (data.isBlank()) null else data.toObject<Language>()
+        )
+    }
+
+    override fun getLanguageInput(): Language? {
+
+        return languageInput.value
     }
 
     override fun getLanguageInputAsync(): Flow<Language> {
 
-        return languageInput.asFlow()
+        return languageInput.asFlow().filterNotNull()
     }
 
     override fun updateLanguageInput(language: Language) {
+
+        appCache.setData("language_input", language.toJson())
 
         languageInput.postDifferentValue(language)
     }
@@ -78,7 +90,7 @@ class LanguageRepositoryImpl(
             Language(
                 id = Language.VI,
                 name = "Việt Nam",
-                image = "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/vietnam.png",
+                image = "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/vi.webp",
                 listIpa = listOf(
                     Ipa("Bắc", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"),
                     Ipa("Trung", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"),
@@ -89,7 +101,7 @@ class LanguageRepositoryImpl(
             Language(
                 id = Language.EN,
                 name = "English",
-                image = "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/american.png",
+                image = "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/en.webp",
                 listIpa = listOf(
                     Ipa("UK", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"),
                     Ipa("US", "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt")

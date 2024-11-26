@@ -9,7 +9,11 @@ import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
+import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.asFlow
@@ -42,9 +46,12 @@ import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.extentions.text
 import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
+import com.simple.phonetics.Param
+import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentPhoneticsBinding
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.ConfigViewModel
+import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.adapters.TextOptionAdapter
 import com.simple.phonetics.ui.adapters.TitleAdapter
 import com.simple.phonetics.ui.phonetics.adapters.EmptyAdapter
@@ -52,6 +59,8 @@ import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
 import com.simple.phonetics.ui.config.PhoneticsConfigFragment
+import com.simple.phonetics.ui.language.LanguageFragment
+import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
@@ -102,6 +111,13 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+                activity?.finish()
+            }
+        })
+
         clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         onPrimaryClipChangedListener = ClipboardManager.OnPrimaryClipChangedListener {
 
@@ -114,7 +130,9 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
         binding.ivLanguage.setDebouncedClickListener {
 
-            sendDeeplink(Deeplink.LANGUAGE)
+            val transitionName = binding.ivLanguage.transitionName
+
+            sendDeeplink(Deeplink.LANGUAGE, extras = bundleOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivLanguage))
         }
 
         setupSpeak()
@@ -272,6 +290,13 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
     private fun observeData() = with(viewModel) {
 
+        title.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.tvTitle.text = it
+        }
+
         imageInfo.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
@@ -419,5 +444,35 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
+    }
+}
+
+@com.tuanha.deeplink.annotation.Deeplink
+class PhoneticsDeeplink : DeeplinkHandler {
+
+    override fun getDeeplink(): String {
+        return Deeplink.PHONETICS
+    }
+
+    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+
+        if (activity !is MainActivity) return false
+
+        val fragment = PhoneticsFragment()
+        fragment.arguments = extras
+
+        val fragmentTransaction = activity.supportFragmentManager
+            .beginTransaction()
+
+        sharedElement?.forEach { (t, u) ->
+
+            fragmentTransaction.addSharedElement(u, t)
+        }
+
+        fragmentTransaction.replace(R.id.fragment_container, fragment, "")
+            .addToBackStack("")
+            .commit()
+
+        return true
     }
 }

@@ -18,14 +18,17 @@
             style="?attr/textHeadline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:textColor="?attr/colorOnBackgroundVariant" />
 
         <ImageView
             android:id="@+id/iv_language"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical|end"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginEnd="8dp"
+            android:padding="8dp"
+            android:transitionName="select_language" />
     </FrameLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -63,6 +66,7 @@
                         android:maxHeight="550dp"
                         android:minHeight="350dp"
                         android:paddingHorizontal="16dp"
+                        android:paddingTop="16dp"
                         android:paddingBottom="56dp"
                         android:textColor="?attr/colorOnBackground"
                         android:textColorHint="?attr/colorOnBackgroundVariant"

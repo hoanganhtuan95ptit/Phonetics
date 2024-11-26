@@ -1,5 +1,9 @@
 package com.simple.phonetics.ui.phonetics
 
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -37,6 +41,8 @@ import com.simple.phonetics.ui.phonetics.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.phonetics.adapters.SentenceViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.appTheme
+import com.simple.phonetics.utils.exts.boldWith
+import com.simple.phonetics.utils.exts.with
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
@@ -85,6 +91,16 @@ class PhoneticsViewModel(
 
             postDifferentValue(it)
         }
+    }
+
+    val title: LiveData<Spannable> = combineSources(theme, keyTranslateMap) {
+
+        val theme = theme.get()
+        val keyTranslateMap = keyTranslateMap.getOrEmpty()
+
+        val title = keyTranslateMap["Ephonetics"].orEmpty().with("Ep", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.primaryColor))
+
+        postDifferentValue(title)
     }
 
 

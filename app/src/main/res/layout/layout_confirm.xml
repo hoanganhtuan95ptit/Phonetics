@@ -2,8 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_layout_confirm"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_confirm_state"
+    android:paddingHorizontal="16dp">
 
     <TextView
         android:id="@+id/btn_confirm"
@@ -12,12 +13,14 @@
         android:layout_height="56dp"
         android:layout_gravity="center_vertical"
         android:gravity="center"
-        android:text="Confirm" />
+        android:text="Confirm"
+        android:textColor="@color/color_confirm_state" />
 
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_gravity="center_vertical"
+        android:indeterminateTint="?attr/colorOnPrimary"
         android:visibility="gone" />
 </FrameLayout>

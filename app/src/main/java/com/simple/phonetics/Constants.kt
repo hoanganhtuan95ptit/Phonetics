@@ -23,6 +23,7 @@ val DEFAULT_TRANSLATE = mapOf(
 object Param {
 
     const val TEXT = "TEXT"
+    const val FIRST = "FIRST"
     const val LANGUAGE_CODE = "LANGUAGE_CODE"
 
     const val VOICE_ID = "VOICE_ID"
@@ -33,7 +34,8 @@ object Param {
 
 object Deeplink {
 
-    const val LANGUAGE = "language"
+    const val LANGUAGE = "app://language"
+    const val PHONETICS = "app://PHONETICS"
 }
 
 object Payload {

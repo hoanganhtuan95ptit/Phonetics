@@ -13,6 +13,7 @@ import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
@@ -22,6 +23,7 @@ import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.TransitionViewModel
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
 import com.simple.state.ResultState
+import com.simple.state.isCompleted
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -49,15 +51,24 @@ class LanguageViewModel(
 
     val message: LiveData<String> = combineSources(keyTranslateMap) {
 
-        keyTranslateMap.getOrEmpty()["message_select_language"]
+        postDifferentValue(keyTranslateMap.getOrEmpty()["message_select_language"])
     }
 
     @VisibleForTesting
-    val languageSelected: LiveData<Language> = mediatorLiveData {
+    val languageOld: LiveData<Language> = mediatorLiveData {
 
         getLanguageInputAsyncUseCase.execute().collect {
 
             postValue(it)
+        }
+    }
+
+    @VisibleForTesting
+    val languageSelected: LiveData<Language> = combineSources(languageOld) {
+
+        languageOld.value?.let {
+
+            postDifferentValue(it)
         }
     }
 
@@ -101,7 +112,31 @@ class LanguageViewModel(
         }
     }
 
+    val languageViewItemListEvent = languageViewItemList.toEvent()
+
     val changeLanguageState: LiveData<ResultState<UpdateLanguageInputUseCase.State>> = MediatorLiveData()
+
+
+    val buttonInfo: LiveData<ButtonInfo> = listenerSources(languageOld, languageSelected, changeLanguageState, keyTranslateMap) {
+
+        val keyTranslateMap = keyTranslateMap.get()
+
+        val languageOld = languageOld.value
+        val languageSelected = languageSelected.value
+
+        val changeLanguageState = changeLanguageState.value
+
+        val isSelected = languageOld?.id != languageSelected?.id
+
+        val info = ButtonInfo(
+            text = keyTranslateMap["action_confirm_change_language"].orEmpty(),
+            isSelected = isSelected,
+            isClickable = isSelected,
+            isShowLoading = changeLanguageState != null && !changeLanguageState.isCompleted()
+        )
+
+        postDifferentValue(info)
+    }
 
 
     fun updateLanguageSelected(data: Language) {
@@ -122,4 +157,11 @@ class LanguageViewModel(
             changeLanguageState.postDifferentValue(it)
         }
     }
+
+    data class ButtonInfo(
+        val text: String,
+        val isSelected: Boolean,
+        val isClickable: Boolean,
+        val isShowLoading: Boolean,
+    )
 }
