@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LanguageRepository {
 
-    fun getLanguageInput(): Language
+    fun getLanguageInput(): Language?
 
     fun getLanguageInputAsync(): Flow<Language>
 

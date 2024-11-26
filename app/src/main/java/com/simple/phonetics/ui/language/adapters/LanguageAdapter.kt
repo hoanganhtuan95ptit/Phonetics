@@ -1,10 +1,12 @@
 package com.simple.phonetics.ui.language.adapters
 
 import android.view.View
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.utils.ext.DP
 import com.simple.image.setImage
-import com.simple.phonetics.Param
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemLanguageBinding
 import com.simple.phonetics.entities.Language
@@ -24,7 +26,7 @@ class LanguageAdapter(onItemClick: (View, LanguageViewItem) -> Unit) : ViewItemA
         super.bind(binding, viewType, position, item)
 
         binding.tvName.setText(item.name)
-        binding.ivFlag.setImage(item.image)
+        binding.ivFlag.setImage(item.image, CircleCrop())
 
         bindingSelected(binding, item)
     }

@@ -1,11 +1,14 @@
 package com.simple.phonetics.entities
 
-data class Language(
-    val id: String,
-    val name: String,
-    val image: String,
+import androidx.annotation.Keep
 
-    val listIpa: List<Ipa>,
+@Keep
+data class Language(
+    val id: String = "",
+    val name: String = "",
+    val image: String = "",
+
+    val listIpa: List<Ipa> = emptyList(),
 
     val isSupportDetect: Boolean = false,
 ) {
@@ -17,7 +20,8 @@ data class Language(
     }
 }
 
+@Keep
 data class Ipa(
-    val code: String,
-    val source: String
+    val code: String = "",
+    val source: String = ""
 )

@@ -9,6 +9,9 @@
         <item name="colorOnBackground">#000000</item>
         <item name="colorOnBackgroundVariant">#5b5b5b</item>
 
+        <item name="colorOnSurface">#111111</item>
+        <item name="colorOnSurfaceVariant">#B1B1B1</item>
+
         <item name="android:colorBackground">#EFEFEF</item>
 
         <item name="colorLoading">#5b5b5b</item>

@@ -6,6 +6,7 @@ import com.simple.phonetics.domain.usecase.SyncUseCase
 import com.simple.phonetics.domain.usecase.TranslateUseCase
 import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
 import com.simple.phonetics.domain.usecase.language.GetVoiceAsyncUseCase
@@ -35,6 +36,10 @@ val useCaseModule = module {
 
     single {
         GetPhoneticsHistoryAsyncUseCase(get())
+    }
+
+    single {
+        GetLanguageInputUseCase(get())
     }
 
     single {

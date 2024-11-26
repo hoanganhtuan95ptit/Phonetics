@@ -18,13 +18,13 @@
         style="?attr/textBody1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:text="Chọn ngôn ngữ bạn muốn tìm phiên âm" />
+        android:layout_marginHorizontal="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:layout_weight="1" />
 
     <include
