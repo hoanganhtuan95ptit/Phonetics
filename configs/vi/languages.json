@@ -1,0 +1,43 @@
+{
+  "data": [
+    {
+      "id": "en",
+      "listIpa": [
+        {
+          "code": "UK",
+          "name": "Tiếng Anh - Anh",
+          "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"
+        },
+        {
+          "code": "US",
+          "name": "Tiếng Anh - Mỹ",
+          "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt"
+        }
+      ],
+      "name": "English",
+      "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/en.webp"
+    },
+    {
+      "id": "vi",
+      "listIpa": [
+        {
+          "code": "C",
+          "name": "Miền Bác",
+          "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"
+        },
+        {
+          "code": "N",
+          "name": "Miền Trung",
+          "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"
+        },
+        {
+          "code": "S",
+          "name": "Miền Nam",
+          "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_S.txt"
+        }
+      ],
+      "name": "Vietnamese",
+      "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/vn.webp"
+    }
+  ]
+}
