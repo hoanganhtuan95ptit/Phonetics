@@ -44,12 +44,12 @@
       {
         "code": "zh_Hans",
         "name": "Tiếng Trung giản thể",
-        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_Hans.txt"
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_hans.txt"
       },
       {
         "code": "zh_Hant",
         "name": "Tiếng Trung phồn thể",
-        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_Hant.txt"
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_hant.txt"
       }
     ],
     "name": "Tiếng Trung",
