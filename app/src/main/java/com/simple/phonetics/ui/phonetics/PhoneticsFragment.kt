@@ -91,7 +91,7 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
     }
 
 
-    internal val configViewModel: ConfigViewModel by lazy {
+    private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
     }
 
