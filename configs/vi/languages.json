@@ -37,5 +37,22 @@
     ],
     "name": "Tiếng Việt",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/vi.webp"
+  },
+  {
+    "id": "zh",
+    "listIpa": [
+      {
+        "code": "zh_Hans",
+        "name": "Tiếng Trung giản thể",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_Hans.txt"
+      },
+      {
+        "code": "zh_Hant",
+        "name": "Tiếng Trung phồn thể",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_Hant.txt"
+      }
+    ],
+    "name": "Tiếng Trung",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_zh.webp"
   }
 ]
