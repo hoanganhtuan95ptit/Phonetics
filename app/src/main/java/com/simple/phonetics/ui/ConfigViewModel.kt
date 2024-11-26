@@ -81,13 +81,11 @@ class ConfigViewModel(
 
         language.listIpa.map {
 
-            val code = it.code
-
             PhoneticCodeOptionViewItem(
-                id = code,
-                data = code,
-                text = code,
-                isSelect = code == phoneticSelect
+                id = it.code,
+                data = it.code,
+                text = it.name,
+                isSelect = it.code == phoneticSelect
             )
         }.let {
 
