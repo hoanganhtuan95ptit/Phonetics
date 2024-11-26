@@ -1,5 +1,9 @@
 package com.simple.phonetics.ui.phonetics
 
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -37,6 +41,8 @@ import com.simple.phonetics.ui.phonetics.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.phonetics.adapters.SentenceViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.appTheme
+import com.simple.phonetics.utils.exts.boldWith
+import com.simple.phonetics.utils.exts.with
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
@@ -69,6 +75,7 @@ class PhoneticsViewModel(
         LoadingViewItem(R.layout.item_phonetics_loading)
     )
 
+    @VisibleForTesting
     val theme: LiveData<AppTheme> = mediatorLiveData {
 
         appTheme.collect {
@@ -85,6 +92,24 @@ class PhoneticsViewModel(
             postDifferentValue(it)
         }
     }
+
+    val title: LiveData<Spannable> = combineSources(theme, keyTranslateMap) {
+
+        val theme = theme.get()
+        val keyTranslateMap = keyTranslateMap.getOrEmpty()
+
+        val title = keyTranslateMap["Ephonetics"].orEmpty().with("Ep", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.primaryColor))
+
+        postDifferentValue(title)
+    }
+
+
+    @VisibleForTesting
+    val inputLanguage: LiveData<Language> = MediatorLiveData()
+
+    @VisibleForTesting
+    val outputLanguage: LiveData<Language> = MediatorLiveData()
+
 
     @VisibleForTesting
     val historyViewItemList: LiveData<List<HistoryViewItem>> = mediatorLiveData {
@@ -113,7 +138,13 @@ class PhoneticsViewModel(
     val detectState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
     @VisibleForTesting
-    val isSupportDetect: LiveData<Boolean> = MediatorLiveData(true)
+    val isSupportDetect: LiveData<Boolean> = combineSources(inputLanguage) {
+
+        inputLanguage.value?.isSupportDetect.let {
+
+            postDifferentValue(it)
+        }
+    }
 
     val imageInfo: LiveData<ImageInfo> = combineSources(detectState, isSupportDetect) {
 
@@ -189,12 +220,6 @@ class PhoneticsViewModel(
 
     @VisibleForTesting
     val phoneticsCode: LiveData<String> = MediatorLiveData()
-
-    @VisibleForTesting
-    val inputLanguage: LiveData<Language> = MediatorLiveData()
-
-    @VisibleForTesting
-    val outputLanguage: LiveData<Language> = MediatorLiveData()
 
     @VisibleForTesting
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
