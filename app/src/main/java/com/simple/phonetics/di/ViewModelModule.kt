@@ -29,6 +29,6 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PhoneticsViewModel(get(), get(), get(), get(), get(), get())
+        PhoneticsViewModel(get(), get(), get(), get(), get(), get(), get())
     }
 }
