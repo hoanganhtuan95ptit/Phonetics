@@ -1,5 +1,6 @@
 package com.simple.phonetics.di
 
+import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.domain.usecase.SyncUseCase
@@ -69,5 +70,9 @@ val useCaseModule = module {
 
     single {
         GetVoiceAsyncUseCase(get())
+    }
+
+    single {
+        DetectStateUseCase(getAll())
     }
 }

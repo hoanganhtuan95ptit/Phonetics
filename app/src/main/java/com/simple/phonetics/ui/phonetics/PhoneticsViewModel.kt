@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -26,6 +27,7 @@ import com.simple.coreapp.utils.extentions.toPx
 import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
+import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.language.StopSpeakUseCase
@@ -60,6 +62,7 @@ class PhoneticsViewModel(
     private val detectUseCase: DetectUseCase,
     private val stopSpeakUseCase: StopSpeakUseCase,
     private val startSpeakUseCase: StartSpeakUseCase,
+    private val detectStateUseCase: DetectStateUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val getKeyTranslateAsyncUseCase: GetKeyTranslateAsyncUseCase,
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
@@ -140,10 +143,13 @@ class PhoneticsViewModel(
     @VisibleForTesting
     val isSupportDetect: LiveData<Boolean> = combineSources(inputLanguage) {
 
-        inputLanguage.value?.isSupportDetect.let {
+        val inputLanguage = inputLanguage.value ?: return@combineSources
 
-            postDifferentValue(it)
-        }
+        postValue(false)
+
+        val isSupported = detectStateUseCase.execute(DetectStateUseCase.Param(inputLanguage.id))
+
+        postValue(isSupported)
     }
 
     val imageInfo: LiveData<ImageInfo> = combineSources(detectState, isSupportDetect) {
