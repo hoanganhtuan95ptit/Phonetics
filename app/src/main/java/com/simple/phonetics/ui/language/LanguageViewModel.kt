@@ -6,6 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
@@ -13,7 +14,7 @@ import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
-import com.simple.coreapp.utils.extentions.toEvent
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
@@ -21,9 +22,12 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.TransitionViewModel
+import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
+import com.simple.state.toRunning
+import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -47,6 +51,11 @@ class LanguageViewModel(
 
             postDifferentValue(it)
         }
+    }
+
+    val title: LiveData<String> = combineSources(keyTranslateMap) {
+
+        postDifferentValue(keyTranslateMap.getOrEmpty()["title_language"])
     }
 
     val message: LiveData<String> = combineSources(keyTranslateMap) {
@@ -83,8 +92,9 @@ class LanguageViewModel(
         }
     }
 
-    @VisibleForTesting
-    val languageViewItemList: LiveData<List<ViewItem>> = listenerSources(languageSelected, languageListState) {
+    val changeLanguageState: LiveData<ResultState<List<UpdateLanguageInputUseCase.State>>> = MediatorLiveData()
+
+    val languageViewItemList: LiveData<List<ViewItem>> = listenerSources(languageSelected, languageListState, changeLanguageState) {
 
         val state = languageListState.get()
 
@@ -101,7 +111,8 @@ class LanguageViewModel(
 
         val languageSelected = languageSelected.value
 
-        state.data.map {
+
+        val listLanguage = state.data.map {
 
             LanguageViewItem(
                 data = it,
@@ -109,16 +120,25 @@ class LanguageViewModel(
                 image = it.image,
                 isSelected = it.id == languageSelected?.id
             )
-        }.let {
-
-            postValue(it)
         }
+
+        val listLanguageState = changeLanguageState.value?.toViewItem() ?: emptyList()
+
+
+        val viewItemList = arrayListOf<ViewItem>()
+
+        if (listLanguageState.isEmpty()) {
+
+            viewItemList.addAll(listLanguage)
+        } else {
+
+            viewItemList.addAll(listLanguage.filter { it.isSelected })
+        }
+
+        viewItemList.addAll(listLanguageState)
+
+        postDifferentValue(viewItemList)
     }
-
-    val languageViewItemListEvent = languageViewItemList.toEvent()
-
-    val changeLanguageState: LiveData<ResultState<UpdateLanguageInputUseCase.State>> = MediatorLiveData()
-
 
     val buttonInfo: LiveData<ButtonInfo> = listenerSources(languageOld, languageSelected, changeLanguageState, keyTranslateMap) {
 
@@ -131,10 +151,12 @@ class LanguageViewModel(
 
         val isSelected = languageOld?.id != languageSelected?.id
 
+        val isClickable = isSelected && !changeLanguageState.isCompleted()
+
         val info = ButtonInfo(
             text = keyTranslateMap["action_confirm_change_language"].orEmpty(),
             isSelected = isSelected,
-            isClickable = isSelected,
+            isClickable = isClickable,
             isShowLoading = changeLanguageState != null && !changeLanguageState.isCompleted()
         )
 
@@ -144,20 +166,92 @@ class LanguageViewModel(
 
     fun updateLanguageSelected(data: Language) {
 
+        val changeLanguageState = changeLanguageState.value
+
+        if (changeLanguageState != null && !changeLanguageState.isCompleted()) {
+
+            return
+        }
+
         languageSelected.postDifferentValue(data)
     }
 
     fun changeLanguageInput() = viewModelScope.launch(handler + Dispatchers.IO) {
 
+        val changeLanguageState = changeLanguageState.value
+
+        if (changeLanguageState != null && !changeLanguageState.isCompleted()) {
+
+            return@launch
+        }
+
+        // kiểm tra trước khi cập nhật lại ngôn ngữ tìm phiên âm
         val languageSelected = languageSelected.value ?: return@launch
 
+        if (languageSelected.id == languageOld.value?.id) {
+
+            return@launch
+        }
+
+        // cập nhật ngôn ngữ phiên âm
         val param = UpdateLanguageInputUseCase.Param(
             language = languageSelected
         )
 
         updateLanguageInputUseCase.execute(param).collect {
 
-            changeLanguageState.postDifferentValue(it)
+            this@LanguageViewModel.changeLanguageState.postValue(it)
+        }
+    }
+
+    private fun ResultState<List<UpdateLanguageInputUseCase.State>>.toViewItem() = arrayListOf<ViewItem>().apply {
+
+        val list = this@toViewItem.toSuccess()?.data ?: this@toViewItem.toRunning()?.data ?: return@apply
+
+        val stateLast = list.lastOrNull()
+
+        val keyTranslateMap = keyTranslateMap.value ?: return@apply
+
+        if (stateLast?.value.orZero() >= UpdateLanguageInputUseCase.State.START.value) LanguageStateViewItem(
+            data = UpdateLanguageInputUseCase.State.START.name,
+            name = keyTranslateMap["message_start_sync"].orEmpty()
+        ).let {
+
+            add(it)
+        }
+
+        (if (stateLast?.value.orZero() == UpdateLanguageInputUseCase.State.SYNC_PHONETICS.value) LanguageStateViewItem(
+            data = UpdateLanguageInputUseCase.State.SYNC_PHONETICS.name,
+            name = keyTranslateMap["message_start_sync_phonetics"].orEmpty()
+        ) else if (stateLast?.value.orZero() > UpdateLanguageInputUseCase.State.SYNC_PHONETICS.value) LanguageStateViewItem(
+            data = UpdateLanguageInputUseCase.State.SYNC_PHONETICS.name,
+            name = keyTranslateMap["message_completed_sync_phonetics"].orEmpty()
+        ) else {
+            null
+        })?.let {
+
+            add(it)
+        }
+
+        (if (stateLast?.value.orZero() == UpdateLanguageInputUseCase.State.SYNC_TRANSLATE.value) LanguageStateViewItem(
+            data = UpdateLanguageInputUseCase.State.SYNC_TRANSLATE.name,
+            name = keyTranslateMap["message_start_sync_translate"].orEmpty()
+        ) else if (stateLast?.value.orZero() > UpdateLanguageInputUseCase.State.SYNC_TRANSLATE.value) LanguageStateViewItem(
+            data = UpdateLanguageInputUseCase.State.SYNC_TRANSLATE.name,
+            name = keyTranslateMap["message_completed_sync_translate"].orEmpty()
+        ) else {
+            null
+        })?.let {
+
+            add(it)
+        }
+
+        if (list.contains(UpdateLanguageInputUseCase.State.COMPLETED)) LanguageStateViewItem(
+            data = UpdateLanguageInputUseCase.State.COMPLETED.name,
+            name = keyTranslateMap["message_sync_completed"].orEmpty()
+        ).let {
+
+            add(it)
         }
     }
 

@@ -13,7 +13,7 @@ import androidx.transition.Transition
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialElevationScale
-import com.simple.coreapp.TRANSITION_DURATION
+import com.simple.core.utils.extentions.toJson
 import com.simple.coreapp.ui.base.fragments.BaseViewModelFragment
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.Param
@@ -21,16 +21,22 @@ import com.simple.state.ResultState
 import com.simple.state.isSuccess
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : TransitionViewModel>(@androidx.annotation.LayoutRes contentLayoutId: Int = 0) : BaseViewModelFragment<T, VM>(contentLayoutId) {
 
-    private val lockTransition: MediatorLiveData<Map<String, ResultState<*>>> = MediatorLiveData()
+    private lateinit var lockTransition: MediatorLiveData<HashMap<String, ResultState<*>>>
 
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        lockTransition = MediatorLiveData(hashMapOf())
+
         super.onViewCreated(view, savedInstanceState)
+
+        val TRANSITION_DURATION = 500L
 
         arguments?.getString(Param.ROOT_TRANSITION_NAME)?.let {
 
@@ -82,9 +88,12 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
             scrimColor = Color.TRANSPARENT
         }.addListener(getTransitionListener("sharedElementEnterTransition"))
 
-        lockTransition.asFlow().launchCollect(viewLifecycleOwner) { map ->
+        lockTransition.asFlow().map { map ->
 
-            if (map.values.all { it.isSuccess() }) {
+            map.isNotEmpty() && map.values.all { it.isSuccess() }
+        }.distinctUntilChanged().launchCollect(viewLifecycleOwner) { start ->
+
+            if (start) {
 
                 startPostponedEnterTransition()
             }
@@ -103,7 +112,7 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
 
     fun lockTransition(tag: String) {
 
-        val map = lockTransition.value?.toMutableMap() ?: HashMap()
+        val map = lockTransition.value ?: return
 
         map[tag] = ResultState.Start
 
@@ -114,7 +123,7 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
 
     fun unlockTransition(tag: String) {
 
-        val map = lockTransition.value?.toMutableMap() ?: HashMap()
+        val map = lockTransition.value ?: return
 
         map[tag] = ResultState.Success("")
 
@@ -138,33 +147,33 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
 
         override fun onTransitionStart(transition: Transition) {
 
-            Log.d("tuanha", "getTransitionListener: $name onTransitionStart ${this@TransitionFragment.javaClass.simpleName}")
+//            Log.d("tuanha", "getTransitionListener: $name onTransitionStart ${this@TransitionFragment.javaClass.simpleName}")
 
             timeoutJob?.cancel()
         }
 
         override fun onTransitionEnd(transition: Transition) {
 
-            Log.d("tuanha", "getTransitionListener: $name onTransitionEnd ${this@TransitionFragment.javaClass.simpleName}")
+//            Log.d("tuanha", "getTransitionListener: $name onTransitionEnd ${this@TransitionFragment.javaClass.simpleName}")
 
             viewModel.transitionState(name, ResultState.Success(""))
         }
 
         override fun onTransitionCancel(transition: Transition) {
 
-            Log.d("tuanha", "getTransitionListener: $name onTransitionCancel ${this@TransitionFragment.javaClass.simpleName}")
+//            Log.d("tuanha", "getTransitionListener: $name onTransitionCancel ${this@TransitionFragment.javaClass.simpleName}")
 
             viewModel.transitionState(name, ResultState.Success(""))
         }
 
         override fun onTransitionPause(transition: Transition) {
 
-            Log.d("tuanha", "getTransitionListener: $name onTransitionPause ${this@TransitionFragment.javaClass.simpleName}")
+//            Log.d("tuanha", "getTransitionListener: $name onTransitionPause ${this@TransitionFragment.javaClass.simpleName}")
         }
 
         override fun onTransitionResume(transition: Transition) {
 
-            Log.d("tuanha", "getTransitionListener: $name onTransitionResume ${this@TransitionFragment.javaClass.simpleName}")
+//            Log.d("tuanha", "getTransitionListener: $name onTransitionResume ${this@TransitionFragment.javaClass.simpleName}")
         }
     }
 }

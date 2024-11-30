@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.first
 
 abstract class TransitionViewModel : BaseViewModel() {
 
-    val transition: MediatorLiveData<Map<String, ResultState<*>>> = MediatorLiveData()
+    private val transition: MediatorLiveData<HashMap<String, ResultState<*>>> = MediatorLiveData(HashMap())
 
     fun transitionState(tag: String, state: ResultState<*>) {
 
-        val map = transition.value?.toMutableMap() ?: HashMap()
+        val map = transition.value ?: return
 
         map[tag] = state
 
@@ -24,7 +24,7 @@ abstract class TransitionViewModel : BaseViewModel() {
     suspend fun awaitTransition() {
 
         transition.asFlow().filter { map ->
-            map.values.all { it.isSuccess() }
+            map.isNotEmpty() && map.values.all { it.isSuccess() }
         }.first()
     }
 

@@ -4,6 +4,7 @@ import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetics
 import com.simple.state.ResultState
+import com.simple.translate.entities.TranslateResponse
 import kotlinx.coroutines.flow.Flow
 
 interface LanguageRepository {
@@ -34,4 +35,7 @@ interface LanguageRepository {
     suspend fun updatePhonetics(phonetics: List<Phonetics>)
 
     suspend fun getPhoneticBySource(it: Ipa): List<Phonetics>
+
+
+    suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>>
 }

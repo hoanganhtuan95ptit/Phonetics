@@ -37,6 +37,7 @@ import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.adapters.TitleViewItem
+import com.simple.phonetics.ui.base.TransitionViewModel
 import com.simple.phonetics.ui.phonetics.adapters.EmptyViewItem
 import com.simple.phonetics.ui.phonetics.adapters.HistoryViewItem
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsViewItem
@@ -66,7 +67,7 @@ class PhoneticsViewModel(
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val getKeyTranslateAsyncUseCase: GetKeyTranslateAsyncUseCase,
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
-) : BaseViewModel() {
+) : TransitionViewModel() {
 
     private val itemLoading = listOf(
         LoadingViewItem(R.layout.item_phonetics_loading),
