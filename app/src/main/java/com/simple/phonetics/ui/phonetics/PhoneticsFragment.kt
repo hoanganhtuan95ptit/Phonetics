@@ -11,7 +11,6 @@ import android.util.TypedValue
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
@@ -28,7 +27,6 @@ import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
 import com.simple.adapter.SpaceAdapter
-import com.simple.coreapp.ui.base.fragments.BaseViewModelFragment
 import com.simple.coreapp.utils.FileUtils
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
@@ -41,7 +39,6 @@ import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
 import com.simple.coreapp.utils.extentions.haveText
 import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
 import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
-import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.extentions.text
 import com.simple.image.setImage
@@ -54,19 +51,19 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.adapters.TextOptionAdapter
 import com.simple.phonetics.ui.adapters.TitleAdapter
+import com.simple.phonetics.ui.base.TransitionFragment
+import com.simple.phonetics.ui.config.PhoneticsConfigFragment
 import com.simple.phonetics.ui.phonetics.adapters.EmptyAdapter
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
-import com.simple.phonetics.ui.config.PhoneticsConfigFragment
-import com.simple.phonetics.ui.language.LanguageFragment
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 
 
-class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, PhoneticsViewModel>() {
+class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>() {
 
 
     private val takeImageFromCameraResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -111,7 +108,7 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
 
             override fun handleOnBackPressed() {
                 activity?.finish()
@@ -290,11 +287,15 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
     private fun observeData() = with(viewModel) {
 
+        lockTransition(TAG_TITLE, TAG_HINT, TAG_CLEAR, TAG_REVERSE)
+
         title.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
 
             binding.tvTitle.text = it
+
+            unlockTransition(TAG_TITLE)
         }
 
         imageInfo.observe(viewLifecycleOwner) {
@@ -322,6 +323,8 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
 
             binding.tvClear.text = it.text
             binding.tvClear.setVisible(it.isShow)
+
+            unlockTransition(TAG_CLEAR)
         }
 
         hintEnter.observe(viewLifecycleOwner) {
@@ -329,6 +332,8 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             val binding = binding ?: return@observe
 
             binding.etText.hint = it
+
+            unlockTransition(TAG_HINT)
         }
 
         reverseInfo.observe(viewLifecycleOwner) {
@@ -338,11 +343,15 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             binding.tvReverse.text = it.text
             binding.tvReverse.isSelected = it.isSelected
             binding.tvReverse.setVisible(it.isShow)
+
+            unlockTransition(TAG_REVERSE)
         }
 
         listViewItem.asFlow().launchCollect(viewLifecycleOwner) {
 
             val binding = binding ?: return@launchCollect
+
+            awaitTransition()
 
             binding.recyclerView.submitListAwait(it)
 
@@ -369,6 +378,8 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
     }
 
     private fun observePhoneticsConfigData() = with(configViewModel) {
+
+        lockTransition(TAG_LANGUAGE)
 
         voiceState.observe(viewLifecycleOwner) {
 
@@ -413,6 +424,8 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
             val binding = binding ?: return@observe
 
             binding.ivLanguage.setImage(it.image, CircleCrop())
+
+            unlockTransition(TAG_LANGUAGE)
         }
 
         outputLanguage.observe(viewLifecycleOwner) {
@@ -434,6 +447,12 @@ class PhoneticsFragment : BaseViewModelFragment<FragmentPhoneticsBinding, Phonet
     }
 
     companion object {
+
+        private const val TAG_HINT = "TAG_HINT"
+        private const val TAG_CLEAR = "TAG_CLEAR"
+        private const val TAG_TITLE = "TAG_TITLE"
+        private const val TAG_REVERSE = "TAG_REVERSE"
+        private const val TAG_LANGUAGE = "TAG_LANGUAGE"
 
         private val REQUIRED_PERMISSIONS_CAMERA = arrayOf(Manifest.permission.CAMERA)
 

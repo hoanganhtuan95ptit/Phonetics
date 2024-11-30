@@ -4,25 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp"
-    android:background="@drawable/bg_language_state"
-    android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="4dp">
 
     <ImageView
-        android:id="@+id/iv_flag"
         android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_height="24dp"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="10dp"
         android:scaleType="centerCrop"
-        tools:src="@drawable/ic_american" />
+        android:src="@drawable/ic_dot_on_surface" />
 
     <TextView
-        android:id="@+id/tv_name"
-        style="?attr/textHeadline6"
+        android:id="@+id/tv_value"
+        style="?attr/textBody2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
         android:textColor="?attr/colorOnSurface"
         tools:text="Tiếng Anh" />
 

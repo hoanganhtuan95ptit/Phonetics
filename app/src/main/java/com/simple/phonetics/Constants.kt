@@ -34,3 +34,8 @@ object EventName {
     const val STOP_SPEAK_TEXT_REQUEST = "STOP_SPEAK_TEXT_REQUEST"
     const val STOP_SPEAK_TEXT_RESPONSE = "STOP_SPEAK_TEXT_RESPONSE"
 }
+
+object TransitionName{
+
+    const val SELECT_LANGUAGE ="select_language"
+}

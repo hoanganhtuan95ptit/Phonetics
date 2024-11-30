@@ -21,6 +21,10 @@ import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendEvent
 import com.simple.state.ResultState
+import com.simple.task.executeSyncByPriority
+import com.simple.translate.data.tasks.TranslateTask
+import com.simple.translate.entities.TranslateRequest
+import com.simple.translate.entities.TranslateResponse
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -32,7 +36,8 @@ import kotlin.collections.set
 class LanguageRepositoryImpl(
     private val api: Api,
     private val appCache: AppCache,
-    private val phoneticsDao: PhoneticsDao
+    private val phoneticsDao: PhoneticsDao,
+    private val listTranslateTask: List<TranslateTask>
 ) : LanguageRepository {
 
     private val languageList = MediatorLiveData(DEFAULT_LANGUAGE)
@@ -43,7 +48,7 @@ class LanguageRepositoryImpl(
         val data = appCache.getData("language_input", "")
 
         MediatorLiveData(
-            if (data.isBlank()) DEFAULT_LANGUAGE.find { it.id == Language.EN } else data.toObject<Language>()
+            if (data.isBlank()) null else data.toObject<Language>()
         )
     }
 
@@ -232,4 +237,18 @@ class LanguageRepositoryImpl(
         item
     }
 
+    override suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>> {
+
+        val input = text.map {
+
+            TranslateRequest(
+                text = it,
+                languageCode = languageCodeInput
+            )
+        }
+
+        val translateState = listTranslateTask.executeSyncByPriority(TranslateTask.Param(input = input, outputCode = languageCodeOutput))
+
+        return translateState
+    }
 }

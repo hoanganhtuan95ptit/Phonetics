@@ -1,21 +1,19 @@
 package com.simple.phonetics.ui.language
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
-import androidx.lifecycle.lifecycleScope
 import androidx.transition.ChangeBounds
 import androidx.transition.Fade
 import androidx.transition.TransitionSet
 import com.simple.adapter.MultiAdapter
-import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.coreapp.utils.ext.setInvisible
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.beginTransitionAwait
 import com.simple.coreapp.utils.extentions.submitListAwait
@@ -26,14 +24,12 @@ import com.simple.phonetics.databinding.FragmentLanguageBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.TransitionFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
+import com.simple.phonetics.ui.language.adapters.LanguageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.launchCollect
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.ResultState
-import com.simple.state.isStart
 import com.simple.state.isSuccess
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageViewModel>() {
 
@@ -49,6 +45,11 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
             binding.root.updatePadding(top = heightStatusBar, bottom = heightNavigationBar)
         }
 
+
+        val isFirst = arguments?.getBoolean(Param.FIRST) == true
+
+        binding.icBack.setInvisible(isFirst)
+        binding.icBack.isClickable = !isFirst
         binding.icBack.setDebouncedClickListener {
 
             activity?.supportFragmentManager?.popBackStack()
@@ -73,7 +74,7 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
             viewModel.updateLanguageSelected(item.data)
         }
 
-        adapter = MultiAdapter(languageAdapter).apply {
+        adapter = MultiAdapter(languageAdapter, LanguageStateAdapter()).apply {
 
             setRecyclerView(binding.recyclerView)
         }
@@ -81,14 +82,21 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
 
     private fun observeData() = with(viewModel) {
 
-        lockTransition(TAG_MESSAGE, TAG_BUTTON_INFO, TAG_LANGUAGE_VIEW_ITEM_LIST_EVENT)
+        lockTransition(TAG_TITLE, TAG_MESSAGE, TAG_BUTTON_INFO)
+
+        title.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.tvTitle.text = it
+            unlockTransition(TAG_TITLE)
+        }
 
         message.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
 
             binding.tvMessage.text = it
-
             unlockTransition(TAG_MESSAGE)
         }
 
@@ -107,50 +115,30 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
             unlockTransition(TAG_BUTTON_INFO)
         }
 
-        languageViewItemListEvent.launchCollect(viewLifecycleOwner) { isFromCache, event ->
+        languageViewItemList.asFlow().launchCollect(viewLifecycleOwner) { data ->
 
             val binding = binding ?: return@launchCollect
 
-            if (event == null) {
-
-                unlockTransition(TAG_LANGUAGE_VIEW_ITEM_LIST_EVENT)
-                return@launchCollect
-            }
-
-            val data = if (isFromCache) {
-                event.peekContent()
-            } else {
-                event.getContentIfNotHandled() ?: return@launchCollect
-            }
-
-            if (!isFromCache) {
-
-                viewModel.awaitTransition()
-            } else {
-
-                unlockTransition(TAG_LANGUAGE_VIEW_ITEM_LIST_EVENT)
-            }
+            awaitTransition()
 
             binding.recyclerView.submitListAwait(data)
 
-            val isNeedAnim = !isFromCache
-
-            if (isNeedAnim) {
-
-                val transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))
-                binding.recyclerView.beginTransitionAwait(transition)
-            }
+            val transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))
+            binding.recyclerView.beginTransitionAwait(transition)
         }
 
         changeLanguageState.asFlow().launchCollect(viewLifecycleOwner) {
 
             val binding = binding ?: return@launchCollect
 
-            binding.frameConfirm.progress.setVisible(it.isStart())
+            val transitionName = "select_language"
+            val ivFlag = binding.root.findViewById<View>(R.id.iv_flag)
+            ivFlag.transitionName = transitionName
+            binding.root.transitionName = ""
 
             if (it.isSuccess() && arguments?.getBoolean(Param.FIRST) == true) {
 
-                sendDeeplink(Deeplink.PHONETICS).join()
+                sendDeeplink(Deeplink.PHONETICS, sharedElement = mapOf(transitionName to ivFlag))
             } else if (it.isSuccess()) {
 
                 activity?.supportFragmentManager?.popBackStack()
@@ -165,6 +153,7 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
 
     companion object {
 
+        private const val TAG_TITLE = "TITLE"
         private const val TAG_MESSAGE = "MESSAGE"
         private const val TAG_BUTTON_INFO = "BUTTON_INFO"
         private const val TAG_LANGUAGE_VIEW_ITEM_LIST_EVENT = "LANGUAGE_VIEW_ITEM_LIST_EVENT"
@@ -194,10 +183,18 @@ class LanguageDeeplink : DeeplinkHandler {
             fragmentTransaction.addSharedElement(u, t)
         }
 
-        fragmentTransaction
-            .replace(R.id.fragment_container, fragment, "")
-            .addToBackStack("")
-            .commit()
+        if (extras?.getBoolean(Param.FIRST) == true) {
+
+            fragmentTransaction
+                .replace(R.id.fragment_container, fragment, "")
+                .commit()
+        } else {
+
+            fragmentTransaction
+                .replace(R.id.fragment_container, fragment, "")
+                .addToBackStack("")
+                .commit()
+        }
 
         return true
     }

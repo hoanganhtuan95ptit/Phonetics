@@ -28,7 +28,7 @@ val useCaseModule = module {
     }
 
     single {
-        GetKeyTranslateAsyncUseCase(get())
+        GetKeyTranslateAsyncUseCase(get(), get())
     }
 
     single {
