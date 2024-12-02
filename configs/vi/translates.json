@@ -5,20 +5,21 @@
   "title_language": "Chọn ngôn ngữ",
   "title_translate": "Dịch:",
   "title_voice_speed": "Tốc độ giọng nói:",
+
   "speed_lever": "Tốc độ $lever",
   "voice_index": "Giọng nói $index",
+
   "hint_enter_text": "Nhập vào đây!",
   "hint_enter_language_text": "Nhập $language_name vào đây!",
+
   "message_start_sync": "Bắt đầu quá trình đồng bộ…",
   "message_result_empty": "Chưa có nội dung!",
   "message_sync_completed": "Quá trình đồng bộ kết thúc",
   "message_select_language": "Chọn ngôn ngữ bạn muốn tìm phiên âm",
   "message_support_translate": "Hỗ trợ dịch",
   "message_translate_download": "Đang tải bản dịch…",
-
   "message_start_sync_phonetics": "Bắt đầu đồng bộ phiên âm…",
   "message_completed_sync_phonetics": "Đồng bộ phiên âm thành công",
-
   "message_start_sync_translate": "Bắt đầu đồng bộ bản dịch…",
   "message_completed_sync_translate": "Đồng bộ bản dịch thành công",
 
