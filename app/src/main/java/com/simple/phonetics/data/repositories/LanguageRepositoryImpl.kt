@@ -203,10 +203,67 @@ class LanguageRepositoryImpl(
         return textAndPhonetics.values.toList()
     }
 
+    override suspend fun updatePhonetic(it: Ipa): ResultState<Unit> = channelFlow {
+
+        var count = 0
+
+        val data = kotlin.runCatching {
+
+            api.syncPhonetics(it.source).string()
+        }.getOrElse {
+
+            trySend(ResultState.Failed(it))
+            awaitClose()
+            return@channelFlow
+        }
+
+        val limit = 50 * 1000
+        val dataLength = data.length
+
+        while (count < dataLength) {
+
+            val start = count
+            val end = if (dataLength < count + limit) {
+                dataLength
+            } else {
+                count + limit
+            }
+
+            val dataSplit = data.substring(start, end)
+
+            count += dataSplit.length
+
+            val textAndPhonetics = hashMapOf<String, Phonetics>()
+
+            val phonetics = dataSplit.toPhonetics(textAndPhonetics, it.code)
+
+            val phoneticsOldMap = phoneticsDao.getRoomListByTextList(phonetics.map { it.text }).associateBy {
+                it.text
+            }
+
+            phonetics.map { phonetic ->
+
+                val ipaOld = phoneticsOldMap[phonetic.text]?.ipa ?: phonetic.ipa
+
+                phonetic.ipa.putAll(ipaOld)
+
+                phonetic
+            }
+
+            phoneticsDao.insertOrUpdateEntities(phonetics)
+
+            if (count >= dataLength) {
+
+                trySend(ResultState.Success(Unit))
+            }
+        }
+
+        awaitClose { }
+    }.first()
 
     private fun String.toPhonetics(textAndPhonetics: HashMap<String, Phonetics>, ipaCode: String) = split("\n").mapNotNull { phonetics ->
 
-        val split = phonetics.split("\t", ", ").mapNotNull { ipa -> ipa.trim().takeIf { it.isNotBlank() } }.toMutableList()
+        val split = phonetics.split("\t", ", ", ignoreCase = true, limit = 100).mapNotNull { ipa -> ipa.trim().takeIf { it.isNotBlank() } }.toMutableList()
 
         if (split.isEmpty()) return@mapNotNull null
 
