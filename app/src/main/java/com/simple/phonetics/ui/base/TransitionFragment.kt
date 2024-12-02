@@ -13,7 +13,6 @@ import androidx.transition.Transition
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialElevationScale
-import com.simple.core.utils.extentions.toJson
 import com.simple.coreapp.ui.base.fragments.BaseViewModelFragment
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.Param
@@ -36,37 +35,40 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
 
         super.onViewCreated(view, savedInstanceState)
 
-        val TRANSITION_DURATION = 500L
+        val arguments = arguments
+
+        val isFistScreen = arguments != null && arguments.containsKey(Param.TRANSITION_DURATION) && arguments.getLong(Param.TRANSITION_DURATION) == 0L
+        val transitionDuration = 5 * 100L
 
         arguments?.getString(Param.ROOT_TRANSITION_NAME)?.let {
 
             view.transitionName = it
         }
 
-        enterTransition = MaterialElevationScale(false).apply {
+        if (!isFistScreen) enterTransition = MaterialElevationScale(false).apply {
 
-            duration = TRANSITION_DURATION
+            duration = transitionDuration
         }.addListener(getTransitionListener("enterTransition"))
 
         exitTransition = MaterialElevationScale(false).apply {
 
-            duration = TRANSITION_DURATION
+            duration = transitionDuration
         }.addListener(getTransitionListener("exitTransition"))
 
         returnTransition = MaterialElevationScale(false).apply {
 
-            duration = TRANSITION_DURATION
+            duration = transitionDuration
         }.addListener(getTransitionListener("returnTransition"))
 
         reenterTransition = MaterialElevationScale(false).apply {
 
-            duration = TRANSITION_DURATION
+            duration = transitionDuration
         }.addListener(getTransitionListener("reenterTransition"))
 
 
         sharedElementReturnTransition = MaterialContainerTransform(requireContext(), true).apply {
 
-            duration = TRANSITION_DURATION
+            duration = transitionDuration
 
             fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
 
@@ -76,9 +78,9 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
             scrimColor = Color.TRANSPARENT
         }.addListener(getTransitionListener("sharedElementReturnTransition"))
 
-        sharedElementEnterTransition = MaterialContainerTransform(requireContext(), true).apply {
+        if (!isFistScreen) sharedElementEnterTransition = MaterialContainerTransform(requireContext(), true).apply {
 
-            duration = TRANSITION_DURATION
+            duration = transitionDuration
 
             fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
 

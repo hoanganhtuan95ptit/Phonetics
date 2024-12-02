@@ -4,11 +4,9 @@ import android.graphics.Typeface
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModels.BaseViewModel
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.SpaceViewItem
@@ -44,7 +42,6 @@ import com.simple.phonetics.ui.phonetics.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.phonetics.adapters.SentenceViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.appTheme
-import com.simple.phonetics.utils.exts.boldWith
 import com.simple.phonetics.utils.exts.with
 import com.simple.state.ResultState
 import com.simple.state.doFailed
@@ -139,7 +136,7 @@ class PhoneticsViewModel(
     val text: LiveData<String> = MediatorLiveData("")
 
 
-    val detectState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
+    val detectState: LiveData<ResultState<String>> = MediatorLiveData()
 
     @VisibleForTesting
     val isSupportDetect: LiveData<Boolean> = combineSources(inputLanguage) {
