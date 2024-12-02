@@ -71,5 +71,22 @@
     ],
     "name": "Tiếng Tây Ban Nha",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_es.webp"
+  },
+  {
+    "id": "fr",
+    "listIpa": [
+      {
+        "code": "fr_FR",
+        "name": "Tiếng Pháp (Pháp)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fr_FR.txt"
+      },
+      {
+        "code": "fr_QC",
+        "name": "Tiếng Pháp (Québec)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fr_QC.txt"
+      }
+    ],
+    "name": "Tiếng Tây Ban Nha",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fr.webp"
   }
 ]
