@@ -34,6 +34,8 @@ interface LanguageRepository {
 
     suspend fun updatePhonetics(phonetics: List<Phonetics>)
 
+    suspend fun updatePhonetic(it: Ipa): ResultState<Unit>
+
     suspend fun getPhoneticBySource(it: Ipa): List<Phonetics>
 
 

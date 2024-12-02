@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.language
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -25,7 +26,9 @@ import com.simple.phonetics.ui.base.TransitionViewModel
 import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
 import com.simple.state.ResultState
+import com.simple.state.doFailed
 import com.simple.state.isCompleted
+import com.simple.state.isSuccess
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
@@ -151,7 +154,7 @@ class LanguageViewModel(
 
         val isSelected = languageOld?.id != languageSelected?.id
 
-        val isClickable = isSelected && !changeLanguageState.isCompleted()
+        val isClickable = isSelected && !changeLanguageState.isSuccess()
 
         val info = ButtonInfo(
             text = keyTranslateMap["action_confirm_change_language"].orEmpty(),
@@ -199,6 +202,10 @@ class LanguageViewModel(
         )
 
         updateLanguageInputUseCase.execute(param).collect {
+
+            it.doFailed {
+                Log.d("tuanha", "changeLanguageInput: ", it)
+            }
 
             this@LanguageViewModel.changeLanguageState.postValue(it)
         }
