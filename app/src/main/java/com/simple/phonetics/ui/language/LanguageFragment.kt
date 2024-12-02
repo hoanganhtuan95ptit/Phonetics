@@ -26,7 +26,6 @@ import com.simple.phonetics.ui.base.TransitionFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
 import com.simple.phonetics.ui.language.adapters.LanguageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
-import com.simple.phonetics.utils.exts.launchCollect
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.ResultState
 import com.simple.state.isSuccess

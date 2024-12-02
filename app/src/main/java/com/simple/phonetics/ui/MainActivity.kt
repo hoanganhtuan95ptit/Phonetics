@@ -1,8 +1,14 @@
 package com.simple.phonetics.ui
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
+import android.view.animation.AnticipateInterpolator
+import androidx.core.animation.doOnEnd
 import androidx.core.os.bundleOf
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.phonetics.Deeplink
@@ -41,10 +47,10 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
             if (it == null) {
 
-                sendDeeplink(Deeplink.LANGUAGE, extras = bundleOf(Param.FIRST to true))
+                sendDeeplink(Deeplink.LANGUAGE, extras = bundleOf(Param.FIRST to true, Param.TRANSITION_DURATION to 0L))
             } else {
 
-                sendDeeplink(Deeplink.PHONETICS)
+                sendDeeplink(Deeplink.PHONETICS, extras = bundleOf(Param.TRANSITION_DURATION to 0L))
             }
         }
     }
