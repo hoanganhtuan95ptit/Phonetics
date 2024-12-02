@@ -54,5 +54,22 @@
     ],
     "name": "Tiếng Trung",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_zh.webp"
+  },
+  {
+    "id": "es",
+    "listIpa": [
+      {
+        "code": "es_ES",
+        "name": "Tiếng Tây Ban Nha (Tây Ban Nha)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/es_ES.txt"
+      },
+      {
+        "code": "es_MX",
+        "name": "Tiếng Tây Ban Nha (Mexico)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/es_MX.txt"
+      }
+    ],
+    "name": "Tiếng Tây Ban Nha",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_es.webp"
   }
 ]
