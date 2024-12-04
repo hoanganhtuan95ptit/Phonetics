@@ -94,7 +94,7 @@ class PhoneticsViewModel(
         }
     }
 
-    val title: LiveData<Spannable> = combineSources(theme, keyTranslateMap) {
+    val title: LiveData<CharSequence> = combineSources(theme, keyTranslateMap) {
 
         val theme = theme.get()
         val keyTranslateMap = keyTranslateMap.getOrEmpty()

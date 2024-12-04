@@ -15,7 +15,7 @@ val taskModule = module {
 
     single { TranslateSyncTask(get(), get()) } bind SyncTask::class
 
-    single { ApiSyncTask(get(), get(), get()) } bind SyncTask::class
+//    single { ApiSyncTask(get(), get(), get()) } bind SyncTask::class
 
-    single { DefaultSyncTask(get(), get(), get()) } bind SyncTask::class
+//    single { DefaultSyncTask(get(), get(), get()) } bind SyncTask::class
 }

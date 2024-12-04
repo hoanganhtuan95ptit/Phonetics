@@ -32,12 +32,19 @@ interface LanguageRepository {
     suspend fun stopSpeakText(): ResultState<String>
 
 
+    suspend fun toPhonetics(dataSplit: String, code: String): Map<String, Phonetics>
+
+    suspend fun getPhonetics(phonetics: List<String>): List<Phonetics>
+
+    suspend fun insertOrUpdate(phonetics: List<Phonetics>)
+
     suspend fun updatePhonetics(phonetics: List<Phonetics>)
+
+    suspend fun getSourcePhonetic(it: Ipa): String
 
     suspend fun updatePhonetic(it: Ipa): ResultState<Unit>
 
+
     suspend fun getPhoneticBySource(it: Ipa): List<Phonetics>
-
-
     suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>>
 }
