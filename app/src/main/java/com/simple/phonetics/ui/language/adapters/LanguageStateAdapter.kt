@@ -30,7 +30,7 @@ class LanguageStateAdapter : ViewItemAdapter<LanguageStateViewItem, ItemLanguage
 data class LanguageStateViewItem(
     val data: String,
 
-    val name: String,
+    val name: CharSequence,
 ) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(

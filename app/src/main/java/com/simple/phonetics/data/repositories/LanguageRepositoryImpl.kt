@@ -194,6 +194,20 @@ class LanguageRepositoryImpl(
         phoneticsDao.insertOrUpdateEntities(phonetics)
     }
 
+    override suspend fun toPhonetics(dataSplit: String, code: String): Map<String, Phonetics> {
+
+        val textAndPhonetics = hashMapOf<String, Phonetics>()
+
+        dataSplit.toPhonetics(textAndPhonetics, code)
+
+        return textAndPhonetics
+    }
+
+    override suspend fun getSourcePhonetic(it: Ipa): String {
+
+        return api.syncPhonetics(it.source).string()
+    }
+
     override suspend fun getPhoneticBySource(it: Ipa): List<Phonetics> {
 
         val textAndPhonetics = hashMapOf<String, Phonetics>()
@@ -217,7 +231,7 @@ class LanguageRepositoryImpl(
             return@channelFlow
         }
 
-        val limit = 50 * 1000
+        val limit = 100 * 1000
         val dataLength = data.length
 
         while (count < dataLength) {
@@ -263,7 +277,7 @@ class LanguageRepositoryImpl(
 
     private fun String.toPhonetics(textAndPhonetics: HashMap<String, Phonetics>, ipaCode: String) = split("\n").mapNotNull { phonetics ->
 
-        val split = phonetics.split("\t", ", ", ignoreCase = true, limit = 100).mapNotNull { ipa -> ipa.trim().takeIf { it.isNotBlank() } }.toMutableList()
+        val split = phonetics.split("\t", ", ").mapNotNull { ipa -> ipa.trim().takeIf { it.isNotBlank() } }.toMutableList()
 
         if (split.isEmpty()) return@mapNotNull null
 
@@ -293,6 +307,25 @@ class LanguageRepositoryImpl(
 
         item
     }
+
+    override suspend fun getPhonetics(phonetics: List<String>): List<Phonetics> {
+
+        return phoneticsDao.getRoomListByTextList(phonetics).map {
+
+            Phonetics(
+                text = it.text,
+            ).apply {
+
+                ipa = it.ipa
+            }
+        }
+    }
+
+    override suspend fun insertOrUpdate(phonetics: List<Phonetics>) {
+
+        phoneticsDao.insertOrUpdateEntities(phonetics)
+    }
+
 
     override suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>> {
 

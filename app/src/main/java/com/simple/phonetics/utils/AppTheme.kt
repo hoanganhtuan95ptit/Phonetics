@@ -6,7 +6,8 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 data class AppTheme(
-    val primaryColor: Int
+    val primaryColor: Int,
+    val primaryColorVariant: Int
 )
 
 
@@ -18,7 +19,8 @@ val appTheme by lazy {
 fun setupTheme(activity: Activity) {
 
     val theme = AppTheme(
-        primaryColor = activity.getColorFromAttr(com.google.android.material.R.attr.colorPrimary)
+        primaryColor = activity.getColorFromAttr(com.google.android.material.R.attr.colorPrimary),
+        primaryColorVariant = activity.getColorFromAttr(com.google.android.material.R.attr.colorPrimaryVariant)
     )
 
     appTheme.tryEmit(theme)
