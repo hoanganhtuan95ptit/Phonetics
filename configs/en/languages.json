@@ -4,12 +4,12 @@
     "listIpa": [
       {
         "code": "UK",
-        "name": "UK",
+        "name": "English - UK",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"
       },
       {
         "code": "US",
-        "name": "US",
+        "name": "English - US",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt"
       }
     ],
@@ -20,14 +20,14 @@
     "id": "vi",
     "listIpa": [
       {
-        "code": "C",
-        "name": "Central region",
-        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"
+        "code": "N",
+        "name": "Northern",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"
       },
       {
-        "code": "N",
-        "name": "North",
-        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"
+        "code": "C",
+        "name": "Central",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"
       },
       {
         "code": "S",
@@ -37,5 +37,56 @@
     ],
     "name": "Vietnamese",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/vi.webp"
+  },
+  {
+    "id": "zh",
+    "listIpa": [
+      {
+        "code": "zh_Hans",
+        "name": "Simplified Chinese",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_hans.txt"
+      },
+      {
+        "code": "zh_Hant",
+        "name": "Traditional Chinese",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_hant.txt"
+      }
+    ],
+    "name": "Chinese",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_zh.webp"
+  },
+  {
+    "id": "es",
+    "listIpa": [
+      {
+        "code": "es_ES",
+        "name": "Spanish (Spain)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/es_ES.txt"
+      },
+      {
+        "code": "es_MX",
+        "name": "Spanish (Mexico)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/es_MX.txt"
+      }
+    ],
+    "name": "Spanish",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_es.webp"
+  },
+  {
+    "id": "fr",
+    "listIpa": [
+      {
+        "code": "fr_FR",
+        "name": "French (France)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fr_FR.txt"
+      },
+      {
+        "code": "fr_QC",
+        "name": "French (Québec)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fr_QC.txt"
+      }
+    ],
+    "name": "French",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fr.webp"
   }
 ]

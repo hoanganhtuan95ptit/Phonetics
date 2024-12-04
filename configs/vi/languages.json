@@ -20,14 +20,14 @@
     "id": "vi",
     "listIpa": [
       {
-        "code": "C",
+        "code": "N",
         "name": "Miền Bác",
-        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"
       },
       {
-        "code": "N",
+        "code": "C",
         "name": "Miền Trung",
-        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"
       },
       {
         "code": "S",
