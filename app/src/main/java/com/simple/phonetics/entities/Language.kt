@@ -9,8 +9,6 @@ data class Language(
     val image: String = "",
 
     val listIpa: List<Ipa> = emptyList(),
-
-    val isSupportDetect: Boolean = false,
 ) {
 
     companion object {
