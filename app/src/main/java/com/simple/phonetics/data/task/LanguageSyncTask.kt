@@ -1,7 +1,5 @@
 package com.simple.phonetics.data.task
 
-import android.util.Log
-import com.simple.core.utils.extentions.toJson
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
@@ -17,9 +15,18 @@ class LanguageSyncTask(
 
         channelFlow<Unit> {
 
+            val languageInput = languageRepository.getLanguageInput()
+
             languageRepository.getLanguageOutputAsync().map {
 
-                languageRepository.syncLanguageSupport(it.id)
+                val languageList = languageRepository.syncLanguageSupport(it.id)
+
+                languageList.find {
+                    it.id == languageInput?.id
+                }?.let {
+                    languageRepository.updateLanguageInput(it)
+                }
+
             }.launchIn(this)
 
             awaitClose {
