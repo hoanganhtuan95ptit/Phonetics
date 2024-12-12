@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +14,7 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
@@ -33,6 +36,7 @@ import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
+import com.simple.coreapp.utils.ext.top
 import com.simple.coreapp.utils.extentions.beginTransitionAwait
 import com.simple.coreapp.utils.extentions.clear
 import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
@@ -58,6 +62,7 @@ import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.setImageDrawable
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
@@ -287,7 +292,24 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
     private fun observeData() = with(viewModel) {
 
-        lockTransition(TAG_TITLE, TAG_HINT, TAG_CLEAR, TAG_REVERSE)
+        lockTransition(TAG_THEME, TAG_TITLE, TAG_HINT, TAG_CLEAR, TAG_REVERSE)
+
+        theme.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.ivRead.setImageDrawable(requireActivity(), R.drawable.ic_play_24dp, it.colorPrimary)
+            binding.ivStop.setImageDrawable(requireActivity(), R.drawable.ic_pause_24dp, it.colorPrimary)
+            binding.ivPaste.setImageDrawable(requireActivity(), R.drawable.ic_paste_accent_24dp, it.colorPrimary)
+            binding.ivCamera.setImageDrawable(requireActivity(), R.drawable.ic_camera_accent_24dp, it.colorPrimary)
+            binding.ivGallery.setImageDrawable(requireActivity(), R.drawable.ic_gallery_accent_24dp, it.colorPrimary)
+
+            binding.root.setBackgroundColor(it.colorSurface)
+            binding.frameRootContent.setBackgroundColor(it.colorBackground)
+            binding.frameContent.delegate.backgroundColor = it.colorSurface
+
+            unlockTransition(TAG_THEME)
+        }
 
         title.observe(viewLifecycleOwner) {
 
@@ -323,6 +345,9 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
             binding.tvClear.text = it.text
             binding.tvClear.setVisible(it.isShow)
+            binding.tvClear.setTextColor(it.textColor)
+            binding.tvClear.delegate.strokeColor = it.strokeColor
+            binding.tvClear.delegate.backgroundColor = it.backgroundColor
 
             unlockTransition(TAG_CLEAR)
         }
@@ -331,7 +356,9 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
             val binding = binding ?: return@observe
 
-            binding.etText.hint = it
+            binding.etText.hint = it.hint
+            binding.etText.setTextColor(it.textColor)
+            binding.etText.setHintTextColor(it.hintColor)
 
             unlockTransition(TAG_HINT)
         }
@@ -341,8 +368,10 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             val binding = binding ?: return@observe
 
             binding.tvReverse.text = it.text
-            binding.tvReverse.isSelected = it.isSelected
             binding.tvReverse.setVisible(it.isShow)
+            binding.tvReverse.setTextColor(it.textColor)
+            binding.tvReverse.delegate.strokeColor = it.strokeColor
+            binding.tvReverse.delegate.backgroundColor = it.backgroundColor
 
             unlockTransition(TAG_REVERSE)
         }
@@ -451,6 +480,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
         private const val TAG_HINT = "TAG_HINT"
         private const val TAG_CLEAR = "TAG_CLEAR"
         private const val TAG_TITLE = "TAG_TITLE"
+        private const val TAG_THEME = "TAG_THEME"
         private const val TAG_REVERSE = "TAG_REVERSE"
         private const val TAG_LANGUAGE = "TAG_LANGUAGE"
 

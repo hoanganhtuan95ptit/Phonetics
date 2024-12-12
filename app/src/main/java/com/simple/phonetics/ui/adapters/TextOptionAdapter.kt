@@ -6,9 +6,15 @@ class TextOptionAdapter constructor(onItemClick: (View, TextOptionViewItem) -> U
 
 data class TextOptionViewItem(
     override val id: String,
+
     override var text: String = "",
-    override var isSelect: Boolean = false
-) : OptionViewItem<String>(id, "", text, isSelect) {
+
+    override val isSelect: Boolean,
+
+    override val textColor: Int,
+    override val strokeColor: Int,
+    override val backgroundColor: Int
+) : OptionViewItem<String>(id, "", text, isSelect, textColor, strokeColor, backgroundColor) {
 
     override fun areItemsTheSame(): List<Any> = listOf(
         "TextOptionViewItem", id

@@ -21,7 +21,11 @@ object Deeplink {
 
 object Payload {
 
+    const val NAME = "NAME"
+    const val THEME = "THEME"
     const val SELECTED = "SELECTED"
+    const val NAME_COLOR = "NAME_COLOR"
+    const val BACKGROUND_COLOR = "BACKGROUND_COLOR"
 }
 
 object EventName {

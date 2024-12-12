@@ -1,7 +1,8 @@
 package com.simple.phonetics.ui.phonetics
 
+import android.graphics.Color
 import android.graphics.Typeface
-import android.text.Spannable
+import android.icu.text.IDNA.Info
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting
@@ -76,7 +77,6 @@ class PhoneticsViewModel(
         LoadingViewItem(R.layout.item_phonetics_loading)
     )
 
-    @VisibleForTesting
     val theme: LiveData<AppTheme> = mediatorLiveData {
 
         appTheme.collect {
@@ -99,7 +99,9 @@ class PhoneticsViewModel(
         val theme = theme.get()
         val keyTranslateMap = keyTranslateMap.getOrEmpty()
 
-        val title = keyTranslateMap["Ephonetics"].orEmpty().with("Ep", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.primaryColor))
+        val title = keyTranslateMap["Ephonetics"].orEmpty()
+            .with("Ep", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
+            .with("honetics", ForegroundColorSpan(theme.colorOnSurface))
 
         postDifferentValue(title)
     }
@@ -113,7 +115,9 @@ class PhoneticsViewModel(
 
 
     @VisibleForTesting
-    val historyViewItemList: LiveData<List<HistoryViewItem>> = mediatorLiveData {
+    val historyViewItemList: LiveData<List<HistoryViewItem>> = combineSources(theme) {
+
+        val theme = theme.value ?: return@combineSources
 
         getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
 
@@ -121,8 +125,9 @@ class PhoneticsViewModel(
 
                 HistoryViewItem(
                     id = sentence.text,
-                    text = sentence.text,
-                    isLast = index == list.lastIndex
+                    text = sentence.text.with(sentence.text, ForegroundColorSpan(theme.colorOnSurface)),
+                    dividerShow = index != list.lastIndex,
+                    dividerColor = theme.colorDivider
                 )
             }.let {
 
@@ -171,8 +176,9 @@ class PhoneticsViewModel(
     @VisibleForTesting
     val isSupportReverse: LiveData<Boolean> = MediatorLiveData(true)
 
-    val reverseInfo: LiveData<ReverseInfo> = combineSources(isReverse, isSupportReverse, keyTranslateMap) {
+    val reverseInfo: LiveData<ReverseInfo> = combineSources(theme, isReverse, isSupportReverse, keyTranslateMap) {
 
+        val theme = theme.value ?: return@combineSources
         val isReverse = isReverse.get()
         val keyTranslateMap = keyTranslateMap.get()
         val isSupportReverse = isSupportReverse.get()
@@ -180,7 +186,9 @@ class PhoneticsViewModel(
         val info = ReverseInfo(
             text = keyTranslateMap["action_reverse"].orEmpty(),
             isShow = isSupportReverse,
-            isSelected = isReverse
+            textColor = if (isReverse) theme.colorOnPrimaryVariant else theme.colorPrimary,
+            strokeColor = theme.colorPrimary,
+            backgroundColor = if (isReverse) theme.colorPrimaryVariant else Color.TRANSPARENT
         )
 
         postDifferentValue(info)
@@ -208,14 +216,18 @@ class PhoneticsViewModel(
     }
 
 
-    val clearInfo: LiveData<ClearInfo> = combineSources(text, keyTranslateMap) {
+    val clearInfo: LiveData<ClearInfo> = combineSources(theme, text, keyTranslateMap) {
 
+        val theme = theme.value ?: return@combineSources
         val text = text.get()
         val keyTranslateMap = keyTranslateMap.get()
 
         val info = ClearInfo(
             text = keyTranslateMap["action_clear"].orEmpty(),
-            isShow = text.isNotBlank()
+            isShow = text.isNotBlank(),
+            textColor = theme.colorPrimary,
+            strokeColor = theme.colorPrimary,
+            backgroundColor = Color.TRANSPARENT
         )
 
         postDifferentValue(info)
@@ -243,8 +255,9 @@ class PhoneticsViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(phoneticsCode, phoneticsState, isSupportTranslate, keyTranslateMap) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, phoneticsCode, phoneticsState, isSupportTranslate, keyTranslateMap) {
 
+        val theme = theme.get()
         val state = phoneticsState.get()
         val phoneticsCode = phoneticsCode.get()
         val keyTranslateMap = keyTranslateMap.get()
@@ -273,9 +286,7 @@ class PhoneticsViewModel(
                     data = phonetic,
 
                     ipa = ipa,
-                    text = phonetic.text,
-
-                    isMultiIpa = phonetic.ipa.size > 1
+                    text = phonetic.text.with(phonetic.text),
                 )
             }.let {
 
@@ -301,10 +312,8 @@ class PhoneticsViewModel(
                     id = "${indexItem * 1000 + indexPhonetic}",
                     data = phonetic,
 
-                    ipa = ipa,
-                    text = phonetic.text,
-
-                    isMultiIpa = phonetic.ipa.size > 1
+                    ipa = ipa.with(ipa, ForegroundColorSpan(if (phonetic.ipa.size > 1) theme.colorPrimary else theme.colorError)),
+                    text = phonetic.text.with(phonetic.text, ForegroundColorSpan(theme.colorOnSurface)),
                 )
             }.let {
 
@@ -359,7 +368,7 @@ class PhoneticsViewModel(
         if (historyViewItemList.isNotEmpty() && text.isBlank()) TitleViewItem(
             text = keyTranslateMap["title_history"].orEmpty(),
             textSize = 20f,
-            textColor = theme.primaryColor,
+            textColor = theme.colorPrimary,
             paddingHorizontal = DP.DP_16
         ).let {
 
@@ -390,8 +399,9 @@ class PhoneticsViewModel(
     }
 
 
-    val hintEnter: LiveData<String> = combineSources(isReverse, outputLanguage, keyTranslateMap) {
+    val hintEnter: LiveData<EnterInfo> = combineSources(theme, isReverse, outputLanguage, keyTranslateMap) {
 
+        val theme = theme.value ?: return@combineSources
         val outputLanguage = outputLanguage.value ?: return@combineSources
         val keyTranslateMap = keyTranslateMap.value ?: return@combineSources
 
@@ -401,7 +411,13 @@ class PhoneticsViewModel(
             keyTranslateMap["hint_enter_text"].orEmpty()
         }
 
-        postDifferentValue(hint)
+        val info = EnterInfo(
+            hint = hint,
+            textColor = theme.colorOnSurface,
+            hintColor = theme.colorOnSurfaceVariant
+        )
+
+        postDifferentValue(info)
     }
 
     val isShowLoading: LiveData<Boolean> = combineSources(speakState, detectState) {
@@ -508,14 +524,25 @@ class PhoneticsViewModel(
         val isShowImage: Boolean = false,
     )
 
+    data class EnterInfo(
+        val hint: CharSequence = "",
+        val textColor: Int,
+        val hintColor: Int,
+    )
+
     data class ClearInfo(
         val text: String = "",
         val isShow: Boolean = false,
+        val textColor: Int,
+        val strokeColor: Int,
+        val backgroundColor: Int
     )
 
     data class ReverseInfo(
         val text: String = "",
         val isShow: Boolean = false,
-        val isSelected: Boolean = false,
+        val textColor: Int,
+        val strokeColor: Int,
+        val backgroundColor: Int
     )
 }

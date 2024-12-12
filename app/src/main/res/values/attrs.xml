@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="dashLine">
+        <attr name="dashWidth" format="dimension" />
+        <attr name="dashGap" format="dimension" />
+        <attr name="orientation" format="enum">
+            <enum name="vertical" value="1" />
+            <enum name="horizontal" value="0" />
+        </attr>
+    </declare-styleable>
+</resources>

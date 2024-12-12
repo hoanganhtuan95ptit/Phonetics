@@ -102,8 +102,12 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottie_version"
 
     implementation "com.github.bumptech.glide:glide:$glide_version"
+    
+    implementation 'com.mikhaellopez:circleview:1.4.1'
 
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
+
+    implementation 'com.google.android.material:material:1.13.0-alpha08'
 }

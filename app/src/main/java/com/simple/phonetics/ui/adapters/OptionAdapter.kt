@@ -6,6 +6,7 @@ import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.utils.extentions.text.Text
 import com.simple.phonetics.databinding.ItemConfigNormalBinding
+import com.simple.phonetics.utils.exts.setTextColor
 
 open class OptionAdapter<T : OptionViewItem<*>>(onItemClick: (View, T) -> Unit = { _, _ -> }) : ViewItemAdapter<T, ItemConfigNormalBinding>(onItemClick) {
 
@@ -37,7 +38,9 @@ open class OptionAdapter<T : OptionViewItem<*>>(onItemClick: (View, T) -> Unit =
 
     private fun refreshIsSelected(binding: ItemConfigNormalBinding, item: T) {
 
-        binding.tvText.isSelected = item.isSelect
+        binding.tvText.setTextColor(item.textColor)
+        binding.tvText.delegate.strokeColor = item.strokeColor
+        binding.tvText.delegate.backgroundColor = item.backgroundColor
     }
 }
 
@@ -46,7 +49,12 @@ open class OptionViewItem<T>(
     open val data: T,
 
     open var text: String = "",
-    open var isSelect: Boolean = false
+
+    open val isSelect: Boolean,
+
+    open val textColor: Int,
+    open val strokeColor: Int,
+    open val backgroundColor: Int
 ) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(
@@ -55,7 +63,8 @@ open class OptionViewItem<T>(
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
         text to PAYLOAD_TEXT,
-        isSelect to PAYLOAD_IS_SELECTED
+        textColor to PAYLOAD_IS_SELECTED,
+        backgroundColor to PAYLOAD_IS_SELECTED
     )
 }
 

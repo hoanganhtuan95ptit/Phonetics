@@ -11,6 +11,11 @@ fun String.boldWith(bold: String): CharSequence {
     return (this as CharSequence).with(bold, StyleSpan(Typeface.BOLD))
 }
 
+fun String.with(vararg spannable: Any): CharSequence {
+
+    return with(this, *spannable)
+}
+
 fun String.with(bold: String, vararg spannable: Any): CharSequence {
 
     val spannableString = SpannableString(this)
