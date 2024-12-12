@@ -73,6 +73,13 @@ class PhoneticsConfigFragment : BaseViewModelSheetFragment<FragmentConfigBinding
 
     private fun observeData() = with(viewModel) {
 
+        theme.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.root.delegate.backgroundColor = it.colorBackground
+        }
+
         listViewItem.observeQueue(viewLifecycleOwner) {
 
             val binding = binding ?: return@observeQueue
