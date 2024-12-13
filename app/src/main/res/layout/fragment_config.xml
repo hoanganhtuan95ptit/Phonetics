@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.simple.coreapp.ui.view.round.RoundConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_corner_top_24dp_solid_background"
-    android:theme="@style/Theme.Phonetics.Popup">
+    app:rv_cornerRadius="16dp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -12,4 +12,4 @@
         android:paddingHorizontal="12dp"
         android:paddingTop="16dp"
         android:paddingBottom="100dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.simple.coreapp.ui.view.round.RoundConstraintLayout>

@@ -24,8 +24,10 @@ import com.simple.phonetics.databinding.FragmentLanguageBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.TransitionFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
+import com.simple.phonetics.ui.language.adapters.LanguageLoadingAdapter
 import com.simple.phonetics.ui.language.adapters.LanguageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.setImageDrawable
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.ResultState
 import com.simple.state.isSuccess
@@ -73,7 +75,7 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
             viewModel.updateLanguageSelected(item.data)
         }
 
-        adapter = MultiAdapter(languageAdapter, LanguageStateAdapter()).apply {
+        adapter = MultiAdapter(languageAdapter, LanguageStateAdapter(), LanguageLoadingAdapter()).apply {
 
             setRecyclerView(binding.recyclerView)
         }
@@ -81,22 +83,26 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
 
     private fun observeData() = with(viewModel) {
 
-        lockTransition(TAG_TITLE, TAG_MESSAGE, TAG_BUTTON_INFO)
+        lockTransition(TAG_THEME, TAG_HEADER, TAG_BUTTON_INFO)
 
-        title.observe(viewLifecycleOwner) {
+        theme.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
 
-            binding.tvTitle.text = it
-            unlockTransition(TAG_TITLE)
+            binding.icBack.setImageDrawable(requireActivity(), R.drawable.ic_arrow_left_on_surface, it.colorOnBackground)
+            binding.root.setBackgroundColor(it.colorBackground)
+
+            unlockTransition(TAG_THEME)
         }
 
-        message.observe(viewLifecycleOwner) {
+        headerInfo.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
 
-            binding.tvMessage.text = it
-            unlockTransition(TAG_MESSAGE)
+            binding.tvTitle.text = it.title
+            binding.tvMessage.text = it.message
+
+            unlockTransition(TAG_HEADER)
         }
 
         buttonInfo.asFlow().launchCollect(viewLifecycleOwner) {
@@ -106,8 +112,8 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
             binding.btnConfirm.text = it.text
             binding.progress.setVisible(it.isShowLoading)
 
-            binding.root.isSelected = it.isSelected
-            binding.btnConfirm.isSelected = it.isSelected
+            binding.root.delegate.strokeColor = it.background.strokeColor
+            binding.root.delegate.backgroundColor = it.background.backgroundColor
 
             binding.root.isClickable = it.isClickable
 
@@ -152,9 +158,9 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
 
     companion object {
 
-        private const val TAG_TITLE = "TITLE"
-        private const val TAG_MESSAGE = "MESSAGE"
-        private const val TAG_BUTTON_INFO = "BUTTON_INFO"
+        private const val TAG_THEME = "TAG_THEME"
+        private const val TAG_HEADER = "TAG_HEADER"
+        private const val TAG_BUTTON_INFO = "TAG_BUTTON_INFO"
         private const val TAG_LANGUAGE_VIEW_ITEM_LIST_EVENT = "LANGUAGE_VIEW_ITEM_LIST_EVENT"
     }
 }

@@ -10,9 +10,15 @@ data class VoiceOptionViewItem(
     override val id: String,
 
     override var data: Int,
+
     override var text: String = "",
-    override var isSelect: Boolean = false
-) : OptionViewItem<Int>(id, data, text, isSelect) {
+
+    override val isSelect: Boolean,
+
+    override val textColor: Int,
+    override val strokeColor: Int,
+    override val backgroundColor: Int
+) : OptionViewItem<Int>(id, data, text, isSelect, textColor, strokeColor, backgroundColor) {
 
     override fun areItemsTheSame(): List<Any> = listOf(
         id
