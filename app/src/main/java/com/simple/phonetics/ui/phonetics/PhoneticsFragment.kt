@@ -304,9 +304,10 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.ivCamera.setImageDrawable(requireActivity(), R.drawable.ic_camera_accent_24dp, it.colorPrimary)
             binding.ivGallery.setImageDrawable(requireActivity(), R.drawable.ic_gallery_accent_24dp, it.colorPrimary)
 
-            binding.root.setBackgroundColor(it.colorSurface)
-            binding.frameRootContent.setBackgroundColor(it.colorBackground)
-            binding.frameContent.delegate.backgroundColor = it.colorSurface
+            binding.root.setBackgroundColor(it.colorBackground)
+            binding.frameContent.delegate.backgroundColor = it.colorBackground
+
+            binding.frameRootContent.setBackgroundColor(it.colorBackgroundVariant)
 
             unlockTransition(TAG_THEME)
         }

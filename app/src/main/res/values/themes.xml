@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="Theme.Phonetics.Dark" parent="Theme.Dark">
 
         <item name="colorPrimary">#1ED760</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
 
-        <item name="colorPrimaryVariant">#E9FBEA</item>
+        <item name="colorPrimaryVariant">#23342D</item>
         <item name="colorOnPrimaryVariant">#1ED760</item>
 
-        <item name="colorOnBackground">#000000</item>
-        <item name="colorOnBackgroundVariant">#5b5b5b</item>
-
         <item name="colorOnSurface">#FFFFFF</item>
-        <item name="colorSurfaceVariant">#FFFFFF</item>
-        <item name="colorOnSurfaceVariant">#FFFFFF</item>
+        <item name="colorSurfaceVariant">#EEEEEE</item>
+        <item name="colorOnSurfaceVariant">#B1B1B1</item>
 
-        <item name="android:colorBackground">#222222</item>
+        <item name="android:colorBackground">#000000</item>
+        <item name="colorOnBackground">#FFFFFF</item>
+
+        <item name="colorBackgroundVariant">#252525</item>
+        <item name="colorOnBackgroundVariant">#959696</item>
 
         <item name="colorLoading">#5b5b5b</item>
-        <item name="colorDivider">#1D1D1D</item>
+        <item name="colorDivider">#B1B1B1</item>
         <item name="colorAccent">#1ED760</item>
     </style>
 
@@ -34,20 +34,14 @@
         <item name="colorSurfaceVariant">#EEEEEE</item>
         <item name="colorOnSurfaceVariant">#B1B1B1</item>
 
-        <item name="colorOnBackground">#000000</item>
         <item name="android:colorBackground">#FFFFFF</item>
+        <item name="colorOnBackground">#000000</item>
 
-        <item name="colorOnBackgroundVariant">#5b5b5b</item>
         <item name="colorBackgroundVariant">#EFEFEF</item>
+        <item name="colorOnBackgroundVariant">#5b5b5b</item>
 
         <item name="colorLoading">#5b5b5b</item>
         <item name="colorDivider">#B1B1B1</item>
         <item name="colorAccent">#1ED760</item>
-    </style>
-
-    <style name="Theme.Phonetics.Popup">
-
-        <item name="colorOnBackgroundVariant">#7F8483</item>
-        <item name="android:colorBackground">#FFFFFF</item>
     </style>
 </resources>
