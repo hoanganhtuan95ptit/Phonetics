@@ -1,39 +1,36 @@
 package com.simple.phonetics.ui.language
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.entities.ViewItem
-import com.simple.core.utils.extentions.orZero
+import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
-import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.entities.Language
+import com.simple.phonetics.ui.base.Background
 import com.simple.phonetics.ui.base.TransitionViewModel
+import com.simple.phonetics.ui.language.adapters.LanguageLoadingViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.appTheme
-import com.simple.phonetics.utils.exts.boldWith
 import com.simple.phonetics.utils.exts.with
 import com.simple.state.ResultState
-import com.simple.state.doFailed
 import com.simple.state.isCompleted
 import com.simple.state.isSuccess
 import com.simple.state.toRunning
@@ -48,13 +45,6 @@ class LanguageViewModel(
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
 ) : TransitionViewModel() {
 
-    private val itemLoading = listOf(
-        LoadingViewItem(R.layout.item_language_loading),
-        LoadingViewItem(R.layout.item_language_loading),
-        LoadingViewItem(R.layout.item_language_loading),
-    )
-
-    @VisibleForTesting
     val theme: LiveData<AppTheme> = mediatorLiveData {
 
         appTheme.collect {
@@ -72,14 +62,19 @@ class LanguageViewModel(
         }
     }
 
-    val title: LiveData<String> = combineSources(keyTranslateMap) {
+    val headerInfo: LiveData<HeaderInfo> = combineSources(theme, keyTranslateMap) {
 
-        postDifferentValue(keyTranslateMap.getOrEmpty()["title_language"])
-    }
+        val theme = theme.value ?: return@combineSources
+        val keyTranslateMap = keyTranslateMap.value ?: return@combineSources
 
-    val message: LiveData<String> = combineSources(keyTranslateMap) {
+        val info = HeaderInfo(
+            title = keyTranslateMap["title_language"].orEmpty()
+                .with(ForegroundColorSpan(theme.colorOnBackground)),
+            message = keyTranslateMap["message_select_language"].orEmpty()
+                .with(ForegroundColorSpan(theme.colorOnBackgroundVariant)),
+        )
 
-        postDifferentValue(keyTranslateMap.getOrEmpty()["message_select_language"])
+        postDifferentValue(info)
     }
 
     @VisibleForTesting
@@ -115,11 +110,12 @@ class LanguageViewModel(
 
     val languageViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, keyTranslateMap, languageSelected, languageListState, changeLanguageState) {
 
+        val theme = theme.value ?: return@listenerSources
         val state = languageListState.get()
 
         if (state is ResultState.Start) {
 
-            postValue(itemLoading)
+            postValue(theme.toListLoadingViewItem())
             return@listenerSources
         }
 
@@ -133,11 +129,19 @@ class LanguageViewModel(
 
         val listLanguage = state.data.map {
 
+            val isSelected = it.id == languageSelected?.id
+
             LanguageViewItem(
                 data = it,
-                name = it.name,
+                name = it.name.with(ForegroundColorSpan(if (isSelected) theme.colorOnPrimaryVariant else theme.colorOnSurface)),
                 image = it.image,
-                isSelected = it.id == languageSelected?.id
+                isSelected = isSelected,
+                background = Background(
+                    strokeColor = if (isSelected) theme.colorPrimary else theme.colorDivider,
+                    strokeDashGap = DP.DP_4,
+                    strokeDashWidth = DP.DP_4,
+                    backgroundColor = if (isSelected) theme.colorPrimaryVariant else Color.TRANSPARENT
+                ),
             )
         }
 
@@ -159,9 +163,10 @@ class LanguageViewModel(
         postDifferentValue(viewItemList)
     }
 
-    val buttonInfo: LiveData<ButtonInfo> = listenerSources(languageOld, languageSelected, changeLanguageState, keyTranslateMap) {
+    val buttonInfo: LiveData<ButtonInfo> = listenerSources(theme, languageOld, languageSelected, changeLanguageState, keyTranslateMap) {
 
-        val keyTranslateMap = keyTranslateMap.get()
+        val theme = theme.value ?: return@listenerSources
+        val keyTranslateMap = keyTranslateMap.value ?: return@listenerSources
 
         val languageOld = languageOld.value
         val languageSelected = languageSelected.value
@@ -173,15 +178,19 @@ class LanguageViewModel(
         val isClickable = isSelected && !changeLanguageState.isSuccess()
 
         val info = ButtonInfo(
-            text = keyTranslateMap["action_confirm_change_language"].orEmpty(),
-            isSelected = isSelected,
+            text = keyTranslateMap["action_confirm_change_language"]
+                .orEmpty()
+                .with(ForegroundColorSpan(if (isSelected) theme.colorOnPrimary else theme.colorOnSurface)),
             isClickable = isClickable,
-            isShowLoading = changeLanguageState != null && !changeLanguageState.isCompleted()
+            isShowLoading = changeLanguageState != null && !changeLanguageState.isCompleted(),
+            background = Background(
+                strokeColor = if (isSelected) theme.colorPrimary else theme.colorDivider,
+                backgroundColor = if (isSelected) theme.colorPrimary else Color.TRANSPARENT
+            )
         )
 
         postDifferentValue(info)
     }
-
 
     fun updateLanguageSelected(data: Language) {
 
@@ -219,13 +228,28 @@ class LanguageViewModel(
 
         updateLanguageInputUseCase.execute(param).collect {
 
-            it.doFailed {
-                Log.d("tuanha", "changeLanguageInput: ", it)
-            }
-
             this@LanguageViewModel.changeLanguageState.postValue(it)
         }
     }
+
+    private fun AppTheme.toListLoadingViewItem() = arrayListOf<ViewItem>().apply {
+
+        add(toLoadingViewItem())
+
+        add(toLoadingViewItem())
+
+        add(toLoadingViewItem())
+    }
+
+    private fun AppTheme.toLoadingViewItem() = LanguageLoadingViewItem(
+        loadingColor = colorLoading,
+        background = Background(
+            strokeColor = colorDivider,
+            strokeDashGap = DP.DP_4,
+            strokeDashWidth = DP.DP_4,
+            backgroundColor = Color.TRANSPARENT
+        )
+    )
 
     private fun ResultState<Map<String, UpdateLanguageInputUseCase.State>>.toViewItem() = arrayListOf<ViewItem>().apply {
 
@@ -256,7 +280,7 @@ class LanguageViewModel(
                 .replace("\$ipa_name", this@toViewItem.name)
                 .replace("\$percent", (this@toViewItem.percent * 100).toInt().toString())
                 .with(this@toViewItem.name, StyleSpan(Typeface.BOLD))
-                .with("${(this@toViewItem.percent * 100).toInt()}%", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.primaryColor))
+                .with("${(this@toViewItem.percent * 100).toInt()}%", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
         ) else if (this@toViewItem is UpdateLanguageInputUseCase.State.SYNC_PHONETICS) LanguageStateViewItem(
             data = this@toViewItem.name,
             name = keyTranslateMap["message_completed_sync_phonetics"].orEmpty()
@@ -273,7 +297,7 @@ class LanguageViewModel(
             data = this@toViewItem.name,
             name = keyTranslateMap["message_start_sync_translate"].orEmpty()
                 .replace("\$percent", (this@toViewItem.percent * 100).toInt().toString())
-                .with("${(this@toViewItem.percent * 100).toInt()}%", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.primaryColor))
+                .with("${(this@toViewItem.percent * 100).toInt()}%", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
         ) else if (this@toViewItem is UpdateLanguageInputUseCase.State.SYNC_TRANSLATE) LanguageStateViewItem(
             data = this@toViewItem.name,
             name = keyTranslateMap["message_completed_sync_translate"].orEmpty()
@@ -293,10 +317,15 @@ class LanguageViewModel(
         }
     }
 
+    data class HeaderInfo(
+        val title: CharSequence,
+        val message: CharSequence,
+    )
+
     data class ButtonInfo(
-        val text: String,
-        val isSelected: Boolean,
+        val text: CharSequence,
         val isClickable: Boolean,
         val isShowLoading: Boolean,
+        val background: Background,
     )
 }

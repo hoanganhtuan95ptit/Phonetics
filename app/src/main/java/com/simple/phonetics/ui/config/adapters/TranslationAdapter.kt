@@ -8,9 +8,15 @@ class TranslationAdapter constructor(onItemClick: (View, TranslationOptionViewIt
 
 data class TranslationOptionViewItem(
     override val id: String,
+
     override var text: String = "",
-    override var isSelect: Boolean = false
-) : OptionViewItem<Boolean>(id, false, text, isSelect) {
+
+    override val isSelect: Boolean,
+
+    override val textColor: Int,
+    override val strokeColor: Int,
+    override val backgroundColor: Int
+) : OptionViewItem<Boolean>(id, false, text, isSelect, textColor, strokeColor, backgroundColor) {
 
 //    override fun refresh(isSelected: Boolean): OptionViewItem<Boolean> = apply {
 //        super.refresh(isSelected)

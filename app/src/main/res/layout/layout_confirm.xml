@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.simple.coreapp.ui.view.round.RoundFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_layout_confirm"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_confirm_state"
-    android:paddingHorizontal="16dp">
+    android:paddingHorizontal="16dp"
+    app:rv_cornerRadius="16dp"
+    app:rv_strokeWidth="1dp">
 
     <TextView
         android:id="@+id/btn_confirm"
@@ -23,4 +25,4 @@
         android:layout_gravity="center_vertical"
         android:indeterminateTint="?attr/colorOnPrimary"
         android:visibility="gone" />
-</FrameLayout>
+</com.simple.coreapp.ui.view.round.RoundFrameLayout>

@@ -21,11 +21,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/app_name" />
 
-    <View
+    <com.simple.phonetics.ui.view.DashLine
         android:id="@+id/v_divider"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_marginHorizontal="56dp"
-        android:background="@drawable/bg_divider_dotted"
-        app:layout_constraintTop_toBottomOf="@id/tv_text" />
+        app:dashGap="2dp"
+        app:dashWidth="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_text"
+        app:orientation="horizontal"
+        app:thickness="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
