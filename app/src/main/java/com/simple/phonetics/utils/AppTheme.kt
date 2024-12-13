@@ -8,19 +8,20 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 data class AppTheme(
+    val isDarkMode: Boolean = false,
+
     val colorPrimary: Int,
     val colorOnPrimary: Int,
     val colorPrimaryVariant: Int,
     val colorOnPrimaryVariant: Int,
 
-    val colorDivider: Int,
-
     val colorSurface: Int,
-    val colorOnSurface: Int,
+
+    val colorOnSurface: Int ,
     val colorOnSurfaceVariant: Int,
 
     val colorError: Int,
-
+    val colorDivider: Int,
     val colorLoading: Int,
 
     val colorBackground: Int,

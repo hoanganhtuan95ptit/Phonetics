@@ -1,14 +1,8 @@
 package com.simple.phonetics.ui
 
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
-import android.view.animation.AnticipateInterpolator
-import androidx.core.animation.doOnEnd
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
@@ -24,7 +18,6 @@ import com.simple.phonetics.utils.sendDeeplink
 import com.simple.phonetics.utils.setupTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
 
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(),
     SpeakView by SpeakViewImpl(),
@@ -44,11 +37,11 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
         observeData()
 
-//        lifecycleScope.launch {
-//
-//            delay(5 * 1000)
-//            changeTheme(activity = this@MainActivity)
-//        }
+        lifecycleScope.launch {
+
+            delay(5 * 1000)
+            changeTheme(activity = this@MainActivity)
+        }
     }
 
     private fun observeData() = with(viewModel) {
