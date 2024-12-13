@@ -10,10 +10,10 @@ import retrofit2.http.Url
 
 interface Api {
 
-    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/configs/{language_code}/translates.json")
+    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/configs/translate/{language_code}/translates.json")
     suspend fun syncTranslate(@Path("language_code") languageCode: String): Map<String, String>
 
-    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/configs/{language_code}/languages.json")
+    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/configs/translate/{language_code}/languages.json")
     suspend fun getLanguageSupport(@Path("language_code") languageCode: String): List<Language>
 
     @Streaming
