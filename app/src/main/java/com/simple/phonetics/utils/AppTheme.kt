@@ -64,8 +64,6 @@ fun setupTheme(activity: Activity) {
         colorOnBackgroundVariant = activity.getColorFromAttr(com.simple.coreapp.R.attr.colorOnBackgroundVariant),
     )
 
-    Log.d("tuanha", "changeTheme: ${theme.toJson()}")
-
     appTheme.tryEmit(theme)
 }
 
