@@ -1,7 +1,9 @@
 package com.simple.phonetics.utils
 
 import android.app.Activity
+import android.util.Log
 import android.view.View
+import com.simple.core.utils.extentions.toJson
 import com.simple.coreapp.utils.extentions.getColorFromAttr
 import com.simple.phonetics.R
 import kotlinx.coroutines.channels.BufferOverflow
@@ -61,6 +63,8 @@ fun setupTheme(activity: Activity) {
         colorBackgroundVariant = activity.getColorFromAttr(com.simple.coreapp.R.attr.colorBackgroundVariant),
         colorOnBackgroundVariant = activity.getColorFromAttr(com.simple.coreapp.R.attr.colorOnBackgroundVariant),
     )
+
+    Log.d("tuanha", "changeTheme: ${theme.toJson()}")
 
     appTheme.tryEmit(theme)
 }
