@@ -16,14 +16,35 @@ IPA, Phonetics English-UK and English-US, voice, and meaning of words.
 ![Alt text](images/1.png) | ![Alt text](images/2.png) | ![Alt text](images/3.png) | ![Alt text](images/4.png) | ![Alt text](images/4.png)
 --- | ---  | ---  | ---  | --- 
 
-Are you looking for a new English word's phonetic transcription, pronunciation, voice sample, and meaning? This application can help you.
+### EPhonetics – Your Ultimate English Pronunciation App  
 
-EPhonetics provides an IPA system of English-UK and English-US pronunciations along with the meaning and 13 different voice samples of the word instantly (even when you're Offline). In addition, you can change the reading speed so that you can practice accordingly.
+Are you looking for **phonetic transcription**, **accurate English pronunciation**, **diverse voice samples**, and **the meaning of new English words**? Discover **EPhonetics** – a **comprehensive and smart English learning app** designed to help you master **English pronunciation skills** according to international standards.  
 
-EPhonetics supports many forms of lookup such as lookup via keyboard, lookup via Camera, and lookup via Gallary.
+### Key Features of EPhonetics  
+- **IPA transcription system** with precise phonetics for both **British English (BrE)** and **American English (AmE)**, giving you an in-depth understanding of pronunciation.  
+- **Flexible transcription language selection**, catering to the diverse needs of global users.  
+- **13 different voice samples**, ranging from **Standard British English (Oxford)** to **popular American accents**, to practice listening and speaking effectively.  
+- **Offline mode** lets you look up words and practice anytime, anywhere, without an internet connection.  
+- Adjustable **reading speed**, from slow to fast, suitable for learners at every level, from **beginner** to **advanced**.  
 
-You can easily review your previous search history.
+### Multiple Word Lookup Options  
+- Search quickly and easily via **keyboard input**.  
+- Use your **camera** for real-time word recognition.  
+- Look up words from **images in your gallery**, optimizing your learning from personal resources.  
 
+### Additional Tools  
+- Review your **search history** to revisit and reinforce previously looked-up words.  
+- **Learn English vocabulary**, improve your communication skills, and perfect your pronunciation for exams like **IELTS**, **TOEFL**, or **TOEIC**, as well as for daily conversations.  
+
+### Expand Your Knowledge with Open Source  
+**EPhonetics** is an **open-source project**, encouraging users to explore, learn, and innovate with its source code. Access the source code here:  
+[https://github.com/hoanganhtuan95ptit/Phonetics](https://github.com/hoanganhtuan95ptit/Phonetics)  
+⚠️ **Note**: Unauthorized duplication of the app is a copyright violation.  
+
+### Download **EPhonetics** Today!  
+Become a professional English learner, conquer exams like **IELTS**, **TOEFL**, **TOEIC**, and communicate confidently in English, just like a native speaker!  
+
+---
 
 ## Thank
 
