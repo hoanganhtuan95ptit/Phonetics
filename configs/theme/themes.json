@@ -1,0 +1,36 @@
+[
+  {
+    "isDarkMode": false,
+    "colorBackground": -1,
+    "colorBackgroundVariant": -1052689,
+    "colorDivider": -5131855,
+    "colorError": -65536,
+    "colorLoading": -10790053,
+    "colorOnBackground": -16777216,
+    "colorOnBackgroundVariant": -10790053,
+    "colorOnPrimary": -1,
+    "colorOnPrimaryVariant": -14756000,
+    "colorOnSurface": -15658735,
+    "colorOnSurfaceVariant": -5131855,
+    "colorPrimary": -14756000,
+    "colorPrimaryVariant": -1442838,
+    "colorSurface": -1
+  },
+  {
+    "isDarkMode": true,
+    "colorBackground": -16777216,
+    "colorBackgroundVariant": -14342875,
+    "colorDivider": -5131855,
+    "colorError": -65536,
+    "colorLoading": -6973802,
+    "colorOnBackground": -1,
+    "colorOnBackgroundVariant": -6973802,
+    "colorOnPrimary": -1,
+    "colorOnPrimaryVariant": -14756000,
+    "colorOnSurface": -1,
+    "colorOnSurfaceVariant": -5131855,
+    "colorPrimary": -14756000,
+    "colorPrimaryVariant": -14470099,
+    "colorSurface": -15263974
+  }
+]
