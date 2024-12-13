@@ -18,7 +18,7 @@
         <item name="colorBackgroundVariant">#252525</item>
         <item name="colorOnBackgroundVariant">#959696</item>
 
-        <item name="colorLoading">#5b5b5b</item>
+        <item name="colorLoading">#959696</item>
         <item name="colorDivider">#B1B1B1</item>
         <item name="colorAccent">#1ED760</item>
     </style>
