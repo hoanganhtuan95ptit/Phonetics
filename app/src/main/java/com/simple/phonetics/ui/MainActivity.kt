@@ -37,11 +37,11 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
         observeData()
 
-        lifecycleScope.launch {
-
-            delay(5 * 1000)
-            changeTheme(activity = this@MainActivity)
-        }
+//        lifecycleScope.launch {
+//
+//            delay(5 * 1000)
+//            changeTheme(activity = this@MainActivity)
+//        }
     }
 
     private fun observeData() = with(viewModel) {
