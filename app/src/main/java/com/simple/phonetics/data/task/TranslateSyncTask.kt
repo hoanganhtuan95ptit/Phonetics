@@ -21,7 +21,7 @@ class TranslateSyncTask(
 
                 val list = appRepository.getKeyTranslate(it.id)
 
-                appRepository.setKeyTranslate(list)
+                appRepository.updateKeyTranslate(list)
             }.launchIn(this)
 
             awaitClose {

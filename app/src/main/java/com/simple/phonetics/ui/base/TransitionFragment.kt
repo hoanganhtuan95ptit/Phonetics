@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.base
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -10,9 +9,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.Transition
+import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
-import com.google.android.material.transition.MaterialElevationScale
 import com.simple.coreapp.ui.base.fragments.BaseViewModelFragment
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.Param
@@ -23,11 +22,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.getActivityViewModel
 
 abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : TransitionViewModel>(@androidx.annotation.LayoutRes contentLayoutId: Int = 0) : BaseViewModelFragment<T, VM>(contentLayoutId) {
 
     private lateinit var lockTransition: MediatorLiveData<HashMap<String, ResultState<*>>>
 
+    private val activityViewModel: TransitionGlobalViewModel by lazy {
+        getActivityViewModel()
+    }
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,68 +40,33 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
 
         val arguments = arguments
 
-        val isFistScreen = arguments != null && arguments.containsKey(Param.TRANSITION_DURATION) && arguments.getLong(Param.TRANSITION_DURATION) == 0L
-        val transitionDuration = 5 * 100L
-
         arguments?.getString(Param.ROOT_TRANSITION_NAME)?.let {
 
             view.transitionName = it
         }
 
-        if (!isFistScreen) enterTransition = MaterialElevationScale(false).apply {
+        lockTransition.asFlow().map { map -> map.isNotEmpty() && map.values.all { it.isSuccess() } }.distinctUntilChanged().launchCollect(viewLifecycleOwner) { start ->
 
-            duration = transitionDuration
-        }.addListener(getTransitionListener("enterTransition"))
+            if (start) {
 
-        exitTransition = MaterialElevationScale(false).apply {
-
-            duration = transitionDuration
-        }.addListener(getTransitionListener("exitTransition"))
-
-        returnTransition = MaterialElevationScale(false).apply {
-
-            duration = transitionDuration
-        }.addListener(getTransitionListener("returnTransition"))
-
-        reenterTransition = MaterialElevationScale(false).apply {
-
-            duration = transitionDuration
-        }.addListener(getTransitionListener("reenterTransition"))
-
-
-        sharedElementReturnTransition = MaterialContainerTransform(requireContext(), true).apply {
-
-            duration = transitionDuration
-
-            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
-
-            setPathMotion(MaterialArcMotion())
-
-            interpolator = FastOutSlowInInterpolator()
-            scrimColor = Color.TRANSPARENT
-        }.addListener(getTransitionListener("sharedElementReturnTransition"))
-
-        if (!isFistScreen) sharedElementEnterTransition = MaterialContainerTransform(requireContext(), true).apply {
-
-            duration = transitionDuration
-
-            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
-
-            setPathMotion(MaterialArcMotion())
-
-            interpolator = FastOutSlowInInterpolator()
-            scrimColor = Color.TRANSPARENT
-        }.addListener(getTransitionListener("sharedElementEnterTransition"))
-
-        lockTransition.asFlow().map { map ->
-
-            map.isNotEmpty() && map.values.all { it.isSuccess() }
-        }.distinctUntilChanged().launchCollect(viewLifecycleOwner) { start ->
+                setTransitionAnimation()
+            }
 
             if (start) {
 
                 startPostponedEnterTransition()
+            } else {
+
+                postponeEnterTransition()
             }
+        }
+
+        lockTransition(STATE)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            delay(100)
+            unlockTransition(STATE)
         }
     }
 
@@ -119,8 +87,6 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
         map[tag] = ResultState.Start
 
         lockTransition.postValue(map)
-
-        postponeEnterTransition()
     }
 
     fun unlockTransition(tag: String) {
@@ -132,6 +98,59 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
         lockTransition.postValue(map)
     }
 
+    private fun setTransitionAnimation() {
+
+        val arguments = arguments
+
+        val isFistScreen = arguments != null && arguments.containsKey(Param.TRANSITION_DURATION) && arguments.getLong(Param.TRANSITION_DURATION) == 0L
+        val transitionDuration = 350L
+
+        enterTransition = Hold().apply {
+
+            duration = if (isFistScreen) 0 else transitionDuration
+        }.addListener(getTransitionListener("enterTransition"))
+
+        exitTransition = Hold().apply {
+
+            duration = transitionDuration
+        }.addListener(getTransitionListener("exitTransition"))
+
+        returnTransition = Hold().apply {
+
+            duration = transitionDuration
+        }.addListener(getTransitionListener("returnTransition"))
+
+        reenterTransition = Hold().apply {
+
+            duration = transitionDuration
+        }.addListener(getTransitionListener("reenterTransition"))
+
+
+        sharedElementReturnTransition = MaterialContainerTransform(requireContext(), true).apply {
+
+            duration = transitionDuration
+
+            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
+
+            setPathMotion(MaterialArcMotion())
+
+            interpolator = FastOutSlowInInterpolator()
+            scrimColor = Color.TRANSPARENT
+        }.addListener(getTransitionListener("sharedElementReturnTransition"))
+
+        sharedElementEnterTransition = MaterialContainerTransform(requireContext(), true).apply {
+
+            duration = if (isFistScreen) 0 else transitionDuration
+
+            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
+
+            setPathMotion(MaterialArcMotion())
+
+            interpolator = FastOutSlowInInterpolator()
+            scrimColor = Color.TRANSPARENT
+        }.addListener(getTransitionListener("sharedElementEnterTransition"))
+    }
+
     private fun getTransitionListener(name: String) = object : Transition.TransitionListener {
 
         private var timeoutJob: Job? = null
@@ -139,43 +158,54 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
         init {
 
             viewModel.transitionState(name, ResultState.Start)
+            activityViewModel.transitionState(name, ResultState.Start)
 
             timeoutJob = lifecycleScope.launch {
 
                 delay(100)
+
+//                Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name timeout")
                 viewModel.transitionState(name, ResultState.Success(""))
+                activityViewModel.transitionState(name, ResultState.Success(""))
             }
         }
 
         override fun onTransitionStart(transition: Transition) {
 
-//            Log.d("tuanha", "getTransitionListener: $name onTransitionStart ${this@TransitionFragment.javaClass.simpleName}")
+//            Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name onTransitionStart")
 
             timeoutJob?.cancel()
         }
 
         override fun onTransitionEnd(transition: Transition) {
 
-//            Log.d("tuanha", "getTransitionListener: $name onTransitionEnd ${this@TransitionFragment.javaClass.simpleName}")
+//            Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name onTransitionEnd")
 
             viewModel.transitionState(name, ResultState.Success(""))
+            activityViewModel.transitionState(name, ResultState.Success(""))
         }
 
         override fun onTransitionCancel(transition: Transition) {
 
-//            Log.d("tuanha", "getTransitionListener: $name onTransitionCancel ${this@TransitionFragment.javaClass.simpleName}")
+//            Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name onTransitionCancel")
 
             viewModel.transitionState(name, ResultState.Success(""))
+            activityViewModel.transitionState(name, ResultState.Success(""))
         }
 
         override fun onTransitionPause(transition: Transition) {
 
-//            Log.d("tuanha", "getTransitionListener: $name onTransitionPause ${this@TransitionFragment.javaClass.simpleName}")
+//            Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name onTransitionPause")
         }
 
         override fun onTransitionResume(transition: Transition) {
 
-//            Log.d("tuanha", "getTransitionListener: $name onTransitionResume ${this@TransitionFragment.javaClass.simpleName}")
+//            Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name onTransitionResume")
         }
+    }
+
+    companion object {
+
+        private const val STATE = "STATE"
     }
 }

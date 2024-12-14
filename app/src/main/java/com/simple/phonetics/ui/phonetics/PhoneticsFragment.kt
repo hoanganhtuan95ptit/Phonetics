@@ -61,6 +61,8 @@ import com.simple.phonetics.ui.phonetics.adapters.EmptyAdapter
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
+import com.simple.phonetics.ui.phonetics.view.PasteView
+import com.simple.phonetics.ui.phonetics.view.PasteViewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.setImageDrawable
 import com.simple.phonetics.utils.sendDeeplink
@@ -68,7 +70,8 @@ import com.simple.state.doFailed
 import com.simple.state.doSuccess
 
 
-class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>() {
+class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>(),
+    PasteView by PasteViewImpl() {
 
 
     private val takeImageFromCameraResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -103,11 +106,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
     private var adapter by autoCleared<MultiAdapter>()
 
-    private var clipboard by autoCleared<ClipboardManager>()
-
     private var adapterConfig by autoCleared<MultiAdapter>()
-
-    private var onPrimaryClipChangedListener by autoCleared<ClipboardManager.OnPrimaryClipChangedListener>()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -120,14 +119,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             }
         })
 
-        clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        onPrimaryClipChangedListener = ClipboardManager.OnPrimaryClipChangedListener {
-
-            val binding = binding ?: return@OnPrimaryClipChangedListener
-
-            binding.ivPaste.setVisible(clipboard?.haveText() == true)
-        }
-
         val binding = binding ?: return
 
         binding.ivLanguage.setDebouncedClickListener {
@@ -137,34 +128,17 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             sendDeeplink(Deeplink.LANGUAGE, extras = bundleOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivLanguage))
         }
 
+        setupPaste(this)
+
         setupSpeak()
-        setupPaste()
         setupInput()
+        setupImage()
         setupReverse()
         setupRecyclerView()
         setupRecyclerViewConfig()
 
         observeData()
         observePhoneticsConfigData()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        val binding = binding ?: return
-
-        binding.ivPaste.post {
-
-            binding.ivPaste.setVisible(clipboard?.haveText() == true)
-        }
-
-        clipboard?.addPrimaryClipChangedListener(onPrimaryClipChangedListener)
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        clipboard?.removePrimaryClipChangedListener(onPrimaryClipChangedListener)
     }
 
     private fun setupSpeak() {
@@ -182,16 +156,9 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
         }
     }
 
-    private fun setupPaste() {
+    private fun setupImage() {
 
         val binding = binding ?: return
-
-        binding.ivPaste.setOnClickListener {
-
-            binding.etText.setText(clipboard?.text() ?: "")
-
-            clipboard?.clear()
-        }
 
         binding.ivGallery.setDebouncedClickListener {
 
@@ -381,7 +348,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
             val binding = binding ?: return@launchCollect
 
-            awaitTransition()
+            viewModel.awaitTransition()
 
             binding.recyclerView.submitListAwait(it)
 
@@ -424,7 +391,9 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             }
         }
 
-        listConfig.observe(viewLifecycleOwner) {
+        listConfig.asFlow().launchCollect(viewLifecycleOwner) {
+
+            viewModel.awaitTransition()
 
             adapterConfig?.submitList(it)
         }

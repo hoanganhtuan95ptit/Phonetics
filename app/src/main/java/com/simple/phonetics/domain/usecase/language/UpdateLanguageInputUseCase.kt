@@ -37,7 +37,7 @@ class UpdateLanguageInputUseCase(
                 return@channelFlow
             }
 
-            val limit = 100 * 1000
+            val limit = 10 * 1000
             val dataLength = data.length
 
             while (count < dataLength) {

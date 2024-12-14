@@ -46,5 +46,6 @@ interface LanguageRepository {
 
 
     suspend fun getPhoneticBySource(it: Ipa): List<Phonetics>
+
     suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>>
 }
