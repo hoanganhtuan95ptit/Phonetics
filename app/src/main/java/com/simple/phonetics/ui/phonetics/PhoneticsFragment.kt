@@ -1,21 +1,10 @@
 package com.simple.phonetics.ui.phonetics
 
-import android.Manifest
-import android.app.Activity.RESULT_OK
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.PorterDuff
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.asFlow
@@ -27,27 +16,18 @@ import androidx.transition.TransitionSet
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
 import com.simple.adapter.SpaceAdapter
-import com.simple.coreapp.utils.FileUtils
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
-import com.simple.coreapp.utils.ext.top
 import com.simple.coreapp.utils.extentions.beginTransitionAwait
-import com.simple.coreapp.utils.extentions.clear
 import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
-import com.simple.coreapp.utils.extentions.haveText
-import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
-import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
 import com.simple.coreapp.utils.extentions.submitListAwait
-import com.simple.coreapp.utils.extentions.text
 import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
-import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentPhoneticsBinding
 import com.simple.phonetics.entities.Language
@@ -61,48 +41,26 @@ import com.simple.phonetics.ui.phonetics.adapters.EmptyAdapter
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
+import com.simple.phonetics.ui.phonetics.view.ImageView
+import com.simple.phonetics.ui.phonetics.view.ImageViewImpl
+import com.simple.phonetics.ui.phonetics.view.LanguageView
+import com.simple.phonetics.ui.phonetics.view.LanguageViewImpl
 import com.simple.phonetics.ui.phonetics.view.PasteView
 import com.simple.phonetics.ui.phonetics.view.PasteViewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.setImageDrawable
-import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 
 
 class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>(),
-    PasteView by PasteViewImpl() {
-
-
-    private val takeImageFromCameraResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
-        val currentPhotoPath = currentPhotoPath ?: return@registerForActivityResult
-
-        if (result.resultCode == RESULT_OK) {
-
-            viewModel.getTextFromImage(currentPhotoPath)
-        }
-    }
-
-    private val takeImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-
-        uri?.let {
-
-            FileUtils.uriToImageFile(requireContext(), it)
-        }?.let {
-
-            viewModel.getTextFromImage(it.absolutePath)
-        }
-    }
-
+    PasteView by PasteViewImpl(),
+    ImageView by ImageViewImpl(),
+    LanguageView by LanguageViewImpl() {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
     }
-
-
-    private var currentPhotoPath: String? = null
-
 
     private var adapter by autoCleared<MultiAdapter>()
 
@@ -119,20 +77,12 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             }
         })
 
-        val binding = binding ?: return
-
-        binding.ivLanguage.setDebouncedClickListener {
-
-            val transitionName = binding.ivLanguage.transitionName
-
-            sendDeeplink(Deeplink.LANGUAGE, extras = bundleOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivLanguage))
-        }
-
         setupPaste(this)
+        setupImage(this)
+        setupLanguage(this)
 
         setupSpeak()
         setupInput()
-        setupImage()
         setupReverse()
         setupRecyclerView()
         setupRecyclerViewConfig()
@@ -153,33 +103,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
         binding.ivStop.setDebouncedClickListener {
 
             viewModel.stopSpeak()
-        }
-    }
-
-    private fun setupImage() {
-
-        val binding = binding ?: return
-
-        binding.ivGallery.setDebouncedClickListener {
-
-            PermissionX.init(requireActivity())
-                .permissions(REQUIRED_PERMISSIONS_READ_FILE.toList())
-                .request { allGranted, _, _ ->
-                    if (allGranted) {
-                        takeImageFromGalleryResult.launchTakeImageFromGallery()
-                    }
-                }
-        }
-
-        binding.ivCamera.setDebouncedClickListener {
-
-            PermissionX.init(requireActivity())
-                .permissions(REQUIRED_PERMISSIONS_CAMERA.toList())
-                .request { allGranted, _, _ ->
-                    if (allGranted) {
-                        currentPhotoPath = takeImageFromCameraResult.launchTakeImageFromCamera(requireContext(), "image")?.absolutePath ?: return@request
-                    }
-                }
         }
     }
 
@@ -376,8 +299,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
     private fun observePhoneticsConfigData() = with(configViewModel) {
 
-        lockTransition(TAG_LANGUAGE)
-
         voiceState.observe(viewLifecycleOwner) {
 
             it.doSuccess {
@@ -416,17 +337,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             }
         }
 
-        inputLanguage.observe(viewLifecycleOwner) {
-
-            viewModel.updateInputLanguage(it)
-
-            val binding = binding ?: return@observe
-
-            binding.ivLanguage.setImage(it.image, CircleCrop())
-
-            unlockTransition(TAG_LANGUAGE)
-        }
-
         outputLanguage.observe(viewLifecycleOwner) {
 
             viewModel.updateOutputLanguage(it)
@@ -452,17 +362,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
         private const val TAG_TITLE = "TAG_TITLE"
         private const val TAG_THEME = "TAG_THEME"
         private const val TAG_REVERSE = "TAG_REVERSE"
-        private const val TAG_LANGUAGE = "TAG_LANGUAGE"
-
-        private val REQUIRED_PERMISSIONS_CAMERA = arrayOf(Manifest.permission.CAMERA)
-
-        private val REQUIRED_PERMISSIONS_READ_FILE = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-
-            arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
-        } else {
-
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
     }
 }
 
