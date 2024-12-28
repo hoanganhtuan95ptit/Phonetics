@@ -6,7 +6,6 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObjectOrNull
-import com.simple.phonetics.entities.KeyTranslate
 
 const val versionDao = 1
 

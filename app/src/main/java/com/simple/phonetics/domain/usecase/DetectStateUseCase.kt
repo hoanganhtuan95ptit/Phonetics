@@ -1,7 +1,5 @@
 package com.simple.phonetics.domain.usecase
 
-import android.util.Log
-import com.simple.core.utils.extentions.toJson
 import com.simple.detect.data.tasks.DetectStateTask
 import com.simple.detect.entities.DetectProvider
 import com.simple.detect.entities.DetectState

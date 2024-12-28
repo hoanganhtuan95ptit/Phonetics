@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui
 
 import android.graphics.Color
-import android.text.style.ForegroundColorSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -28,7 +27,6 @@ import com.simple.phonetics.ui.config.adapters.VoiceOptionViewItem
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.appTheme
-import com.simple.phonetics.utils.exts.with
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess

@@ -1,12 +1,9 @@
 package com.simple.phonetics.ui.adapters
 
 import android.view.View
-import androidx.annotation.CallSuper
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.utils.extentions.text.Text
 import com.simple.phonetics.databinding.ItemConfigNormalBinding
-import com.simple.phonetics.utils.exts.setTextColor
 
 open class OptionAdapter<T : OptionViewItem<*>>(onItemClick: (View, T) -> Unit = { _, _ -> }) : ViewItemAdapter<T, ItemConfigNormalBinding>(onItemClick) {
 
