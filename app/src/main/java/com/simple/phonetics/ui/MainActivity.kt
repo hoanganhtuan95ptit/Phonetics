@@ -8,7 +8,6 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
-import androidx.core.animation.doOnEnd
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity

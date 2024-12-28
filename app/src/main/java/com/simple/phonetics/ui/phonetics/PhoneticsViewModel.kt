@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.phonetics
 
 import android.graphics.Color
 import android.graphics.Typeface
-import android.icu.text.IDNA.Info
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting

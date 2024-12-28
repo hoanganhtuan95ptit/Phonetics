@@ -8,29 +8,8 @@
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../1CorePrivate/app-config-phonetics" />
-            <option value="$PROJECT_DIR$/../1CorePublic/constant" />
-            <option value="$PROJECT_DIR$/../1CorePublic/core/android" />
-            <option value="$PROJECT_DIR$/../1CorePublic/core/base" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/adapter" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/analytics" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/analytics/sentry" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/binding" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/config" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/crashlytics" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/crashlytics/sentry" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/detect" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/detect/mlkit" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/image" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/job" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/state" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/task" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/translate" />
-            <option value="$PROJECT_DIR$/../1CorePublic/library/translate/mlkit" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/library" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

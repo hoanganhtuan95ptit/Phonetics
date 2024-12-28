@@ -11,10 +11,8 @@ import com.simple.coreapp.utils.FileUtils
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
 import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
-import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
 import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 interface ImageView {
 

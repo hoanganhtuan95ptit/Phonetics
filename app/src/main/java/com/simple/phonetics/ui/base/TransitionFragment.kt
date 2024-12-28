@@ -17,7 +17,6 @@ import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.Param
 import com.simple.state.ResultState
 import com.simple.state.isSuccess
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -45,7 +44,10 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
             view.transitionName = it
         }
 
-        lockTransition.asFlow().map { map -> map.isNotEmpty() && map.values.all { it.isSuccess() } }.distinctUntilChanged().launchCollect(viewLifecycleOwner) { start ->
+        lockTransition.asFlow().map { map ->
+
+            map.isNotEmpty() && map.values.all { it.isSuccess() }
+        }.distinctUntilChanged().launchCollect(viewLifecycleOwner) { start ->
 
             if (start) {
 
@@ -68,6 +70,16 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
             delay(100)
             unlockTransition(STATE)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateState(STATE, ResultState.Success(""))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        updateState(STATE, ResultState.Start)
     }
 
     fun lockTransition(vararg tag: String) = tag.forEach {
@@ -153,55 +165,26 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
 
     private fun getTransitionListener(name: String) = object : Transition.TransitionListener {
 
-        private var timeoutJob: Job? = null
-
-        init {
-
-            viewModel.transitionState(name, ResultState.Start)
-            activityViewModel.transitionState(name, ResultState.Start)
-
-            timeoutJob = lifecycleScope.launch {
-
-                delay(100)
-
-//                Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name timeout")
-                viewModel.transitionState(name, ResultState.Success(""))
-                activityViewModel.transitionState(name, ResultState.Success(""))
-            }
-        }
-
         override fun onTransitionStart(transition: Transition) {
-
-//            Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name onTransitionStart")
-
-            timeoutJob?.cancel()
         }
 
         override fun onTransitionEnd(transition: Transition) {
-
-//            Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name onTransitionEnd")
-
-            viewModel.transitionState(name, ResultState.Success(""))
-            activityViewModel.transitionState(name, ResultState.Success(""))
         }
 
         override fun onTransitionCancel(transition: Transition) {
-
-//            Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name onTransitionCancel")
-
-            viewModel.transitionState(name, ResultState.Success(""))
-            activityViewModel.transitionState(name, ResultState.Success(""))
         }
 
         override fun onTransitionPause(transition: Transition) {
-
-//            Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name onTransitionPause")
         }
 
         override fun onTransitionResume(transition: Transition) {
-
-//            Log.d("tuanha", "getTransitionListener:${this@TransitionFragment.javaClass.simpleName} $name onTransitionResume")
         }
+    }
+
+    private fun updateState(name: String, state: ResultState<String>) {
+
+        viewModel.transitionState(name, state)
+        activityViewModel.transitionState(name, state)
     }
 
     companion object {
