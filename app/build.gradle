@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.firebase.firebase-perf'
 }
@@ -65,6 +64,8 @@ android {
 }
 
 dependencies {
+
+    implementation project(':config:phonetics') // can remove
 
     implementation koinDependencies.values()
     implementation jacksonDependencies.values()

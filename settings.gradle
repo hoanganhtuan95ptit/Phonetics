@@ -24,3 +24,6 @@ dependencyResolutionManagement {
 rootProject.name = "EPhonetics"
 
 include ':app'
+
+include ':config:phonetics'// can remove
+project(':config:phonetics').projectDir = file('../1CorePrivate/config/phonetics')// can remove
