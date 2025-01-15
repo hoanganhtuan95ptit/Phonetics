@@ -7,7 +7,7 @@ plugins {
 }
 
 apply from: "$rootDir/constant.gradle"
-apply from: "../../1CorePrivate/config/phonetics/config.gradle"// can remove
+apply from: "../../../1CorePrivate/config/phonetics/config.gradle"// can remove
 
 android {
     namespace "com.simple.phonetics"
