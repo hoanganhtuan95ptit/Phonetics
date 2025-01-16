@@ -22,7 +22,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentLanguageBinding
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.base.TransitionFragment
+import com.simple.phonetics.ui.base.transition.TransitionFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
 import com.simple.phonetics.ui.language.adapters.LanguageLoadingAdapter
 import com.simple.phonetics.ui.language.adapters.LanguageStateAdapter

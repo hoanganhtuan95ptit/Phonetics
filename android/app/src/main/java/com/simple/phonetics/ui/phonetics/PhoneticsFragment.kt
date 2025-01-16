@@ -35,7 +35,7 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.adapters.TextOptionAdapter
 import com.simple.phonetics.ui.adapters.TitleAdapter
-import com.simple.phonetics.ui.base.TransitionFragment
+import com.simple.phonetics.ui.base.transition.TransitionFragment
 import com.simple.phonetics.ui.config.PhoneticsConfigFragment
 import com.simple.phonetics.ui.phonetics.adapters.EmptyAdapter
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter

@@ -14,7 +14,7 @@ import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.ActivityMainBinding
-import com.simple.phonetics.ui.base.TransitionGlobalViewModel
+import com.simple.phonetics.ui.base.transition.TransitionGlobalViewModel
 import com.simple.phonetics.ui.view.SpeakView
 import com.simple.phonetics.ui.view.SpeakViewImpl
 import com.simple.phonetics.utils.NavigationView
