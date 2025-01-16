@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.base
+package com.simple.phonetics.ui.base.transition
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,7 +8,6 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
-import androidx.transition.Transition
 import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
@@ -17,7 +16,6 @@ import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.Param
 import com.simple.state.ResultState
 import com.simple.state.isSuccess
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -25,10 +23,21 @@ import org.koin.androidx.viewmodel.ext.android.getActivityViewModel
 
 abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : TransitionViewModel>(@androidx.annotation.LayoutRes contentLayoutId: Int = 0) : BaseViewModelFragment<T, VM>(contentLayoutId) {
 
+
     private lateinit var lockTransition: MediatorLiveData<HashMap<String, ResultState<*>>>
 
     private val activityViewModel: TransitionGlobalViewModel by lazy {
         getActivityViewModel()
+    }
+
+    private var fromCreate: Boolean = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val isAnim = arguments != null && requireArguments().containsKey(Param.ROOT_TRANSITION_NAME)
+
+        fromCreate = !isAnim
     }
 
     @CallSuper
@@ -54,7 +63,7 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
                 setTransitionAnimation()
             }
 
-            if (start) {
+            if (!fromCreate) if (start) {
 
                 startPostponedEnterTransition()
             } else {
@@ -67,7 +76,6 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
 
         viewLifecycleOwner.lifecycleScope.launch {
 
-            delay(100)
             unlockTransition(STATE)
         }
     }
@@ -80,6 +88,11 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
     override fun onPause() {
         super.onPause()
         updateState(STATE, ResultState.Start)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fromCreate = false
     }
 
     fun lockTransition(vararg tag: String) = tag.forEach {
@@ -114,29 +127,23 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
 
         val arguments = arguments
 
-        val isFistScreen = arguments != null && arguments.containsKey(Param.TRANSITION_DURATION) && arguments.getLong(Param.TRANSITION_DURATION) == 0L
+        val isAnim = arguments != null && arguments.containsKey(Param.ROOT_TRANSITION_NAME)
         val transitionDuration = 350L
-
-        enterTransition = Hold().apply {
-
-            duration = if (isFistScreen) 0 else transitionDuration
-        }.addListener(getTransitionListener("enterTransition"))
 
         exitTransition = Hold().apply {
 
             duration = transitionDuration
-        }.addListener(getTransitionListener("exitTransition"))
+        }
 
         returnTransition = Hold().apply {
 
             duration = transitionDuration
-        }.addListener(getTransitionListener("returnTransition"))
+        }
 
         reenterTransition = Hold().apply {
 
             duration = transitionDuration
-        }.addListener(getTransitionListener("reenterTransition"))
-
+        }
 
         sharedElementReturnTransition = MaterialContainerTransform(requireContext(), true).apply {
 
@@ -148,11 +155,11 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
 
             interpolator = FastOutSlowInInterpolator()
             scrimColor = Color.TRANSPARENT
-        }.addListener(getTransitionListener("sharedElementReturnTransition"))
+        }
 
-        sharedElementEnterTransition = MaterialContainerTransform(requireContext(), true).apply {
+        if (isAnim) sharedElementEnterTransition = MaterialContainerTransform(requireContext(), true).apply {
 
-            duration = if (isFistScreen) 0 else transitionDuration
+            duration = transitionDuration
 
             fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
 
@@ -160,24 +167,6 @@ abstract class TransitionFragment<T : androidx.viewbinding.ViewBinding, VM : Tra
 
             interpolator = FastOutSlowInInterpolator()
             scrimColor = Color.TRANSPARENT
-        }.addListener(getTransitionListener("sharedElementEnterTransition"))
-    }
-
-    private fun getTransitionListener(name: String) = object : Transition.TransitionListener {
-
-        override fun onTransitionStart(transition: Transition) {
-        }
-
-        override fun onTransitionEnd(transition: Transition) {
-        }
-
-        override fun onTransitionCancel(transition: Transition) {
-        }
-
-        override fun onTransitionPause(transition: Transition) {
-        }
-
-        override fun onTransitionResume(transition: Transition) {
         }
     }
 

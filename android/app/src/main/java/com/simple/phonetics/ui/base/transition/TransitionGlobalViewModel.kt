@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.base
+package com.simple.phonetics.ui.base.transition
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModels.BaseViewModel
@@ -8,7 +8,7 @@ import com.simple.state.isSuccess
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 
-abstract class TransitionViewModel : BaseViewModel() {
+class TransitionGlobalViewModel : BaseViewModel() {
 
     private val transition: MediatorLiveData<HashMap<String, ResultState<*>>> = MediatorLiveData(HashMap())
 
