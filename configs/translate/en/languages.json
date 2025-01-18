@@ -212,7 +212,7 @@
       }
     ],
     "name": "Malay (Malaysian and Indonesian)",
-    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_ma.webp"
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/malay.png"
   },
   {
     "id": "nb",
@@ -224,7 +224,7 @@
       }
     ],
     "name": "Norwegian Bokmål",
-    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_nb.webp"
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/norway.png"
   },
   {
     "id": "nl",
@@ -247,7 +247,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/or.txt"
       }
     ],
-    "name": "Odia",
+    "name": "India",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/india.png"
   },
   {
@@ -295,7 +295,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/tts.txt"
       }
     ],
-    "name": "Isan",
+    "name": "Thailand",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/isan.png"
   },
   {
