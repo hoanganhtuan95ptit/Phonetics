@@ -35,7 +35,6 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.adapters.TextOptionAdapter
 import com.simple.phonetics.ui.adapters.TitleAdapter
-import com.simple.phonetics.ui.base.transition.TransitionFragment
 import com.simple.phonetics.ui.config.PhoneticsConfigFragment
 import com.simple.phonetics.ui.phonetics.adapters.EmptyAdapter
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
@@ -53,7 +52,7 @@ import com.simple.state.doFailed
 import com.simple.state.doSuccess
 
 
-class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>(),
+class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>(),
     PasteView by PasteViewImpl(),
     ImageView by ImageViewImpl(),
     LanguageView by LanguageViewImpl() {

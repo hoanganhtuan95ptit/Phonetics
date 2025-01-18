@@ -22,8 +22,6 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.ui.base.Background
-import com.simple.phonetics.ui.base.transition.TransitionViewModel
 import com.simple.phonetics.ui.language.adapters.LanguageLoadingViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
@@ -43,7 +41,7 @@ class LanguageViewModel(
     private val updateLanguageInputUseCase: UpdateLanguageInputUseCase,
     private val getKeyTranslateAsyncUseCase: GetKeyTranslateAsyncUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
-) : TransitionViewModel() {
+) : com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel() {
 
     val theme: LiveData<AppTheme> = mediatorLiveData {
 
@@ -136,7 +134,7 @@ class LanguageViewModel(
                 name = it.name.with(ForegroundColorSpan(if (isSelected) theme.colorOnPrimaryVariant else theme.colorOnSurface)),
                 image = it.image,
                 isSelected = isSelected,
-                background = Background(
+                background = com.simple.coreapp.ui.view.round.Background(
                     strokeColor = if (isSelected) theme.colorPrimary else theme.colorDivider,
                     strokeDashGap = DP.DP_4,
                     strokeDashWidth = DP.DP_4,
@@ -183,7 +181,7 @@ class LanguageViewModel(
                 .with(ForegroundColorSpan(if (isSelected) theme.colorOnPrimary else theme.colorOnSurface)),
             isClickable = isClickable,
             isShowLoading = changeLanguageState != null && !changeLanguageState.isCompleted(),
-            background = Background(
+            background = com.simple.coreapp.ui.view.round.Background(
                 strokeColor = if (isSelected) theme.colorPrimary else theme.colorDivider,
                 backgroundColor = if (isSelected) theme.colorPrimary else Color.TRANSPARENT
             )
@@ -243,7 +241,7 @@ class LanguageViewModel(
 
     private fun AppTheme.toLoadingViewItem() = LanguageLoadingViewItem(
         loadingColor = colorLoading,
-        background = Background(
+        background = com.simple.coreapp.ui.view.round.Background(
             strokeColor = colorDivider,
             strokeDashGap = DP.DP_4,
             strokeDashWidth = DP.DP_4,
@@ -324,8 +322,10 @@ class LanguageViewModel(
 
     data class ButtonInfo(
         val text: CharSequence,
+
         val isClickable: Boolean,
         val isShowLoading: Boolean,
-        val background: Background,
+
+        val background: com.simple.coreapp.ui.view.round.Background,
     )
 }

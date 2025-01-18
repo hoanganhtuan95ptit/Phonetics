@@ -9,6 +9,7 @@ import androidx.transition.ChangeBounds
 import androidx.transition.Fade
 import androidx.transition.TransitionSet
 import com.simple.adapter.MultiAdapter
+import com.simple.coreapp.ui.view.round.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.launchCollect
@@ -22,7 +23,6 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentLanguageBinding
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.base.transition.TransitionFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
 import com.simple.phonetics.ui.language.adapters.LanguageLoadingAdapter
 import com.simple.phonetics.ui.language.adapters.LanguageStateAdapter
@@ -32,7 +32,7 @@ import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.ResultState
 import com.simple.state.isSuccess
 
-class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageViewModel>() {
+class LanguageFragment : com.simple.coreapp.ui.base.fragments.transition.TransitionFragment<FragmentLanguageBinding, LanguageViewModel>() {
 
     private var adapter by autoCleared<MultiAdapter>()
 
@@ -112,10 +112,8 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
             binding.btnConfirm.text = it.text
             binding.progress.setVisible(it.isShowLoading)
 
-            binding.root.delegate.strokeColor = it.background.strokeColor
-            binding.root.delegate.backgroundColor = it.background.backgroundColor
-
             binding.root.isClickable = it.isClickable
+            binding.root.delegate.setBackground(it.background)
 
             unlockTransition(TAG_BUTTON_INFO)
         }
