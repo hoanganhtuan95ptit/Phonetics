@@ -248,7 +248,7 @@
       }
     ],
     "name": "Odia",
-    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_or.webp"
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/india.png"
   },
   {
     "id": "ro",
@@ -296,18 +296,18 @@
       }
     ],
     "name": "Isan",
-    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_tts.webp"
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/isan.png"
   },
   {
     "id": "jam",
     "listIpa": [
       {
         "code": "jam",
-        "name": "jam",
+        "name": "Jamaican Creole",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/jam.txt"
       }
     ],
-    "name": "jam",
-    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_jam.webp"
+    "name": "Jamaican Creole",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/jam.png"
   }
 ]
