@@ -39,9 +39,11 @@ android {
     }
     buildTypes {
         debug {
+            buildConfigField 'boolean', 'DEBUG', 'true'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
+            buildConfigField 'boolean', 'DEBUG', 'false'
             signingConfig signingConfigs.keystore  // can remove
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -55,6 +57,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
     packagingOptions {
         resources {
