@@ -21,12 +21,12 @@
     "listIpa": [
       {
         "code": "N",
-        "name": "Norteño",
+        "name": "Norte",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"
       },
       {
         "code": "C",
-        "name": "Central",
+        "name": "Centro",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"
       },
       {
@@ -43,12 +43,12 @@
     "listIpa": [
       {
         "code": "zh_Hans",
-        "name": "Chino simplificado",
+        "name": "Chino Simplificado",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_hans.txt"
       },
       {
         "code": "zh_Hant",
-        "name": "Chino tradicional",
+        "name": "Chino Tradicional",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_hant.txt"
       },
       {
@@ -74,7 +74,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/es_MX.txt"
       }
     ],
-    "name": "Español",
+    "name": "España, México",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_es.webp"
   },
   {
@@ -87,11 +87,11 @@
       },
       {
         "code": "fr_QC",
-        "name": "Francés (Quebec)",
+        "name": "Francés (Québec)",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fr_QC.txt"
       }
     ],
-    "name": "Francés",
+    "name": "Francia, Québec",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fr.webp"
   },
   {
@@ -115,7 +115,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/de.txt"
       }
     ],
-    "name": "Alemán",
+    "name": "Alemania",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_de.webp"
   },
   {
@@ -139,7 +139,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fa.txt"
       }
     ],
-    "name": "Persa",
+    "name": "Irán",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fa.webp"
   },
   {
@@ -151,7 +151,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fi.txt"
       }
     ],
-    "name": "Finlandés",
+    "name": "Finlandia",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fi.webp"
   },
   {
@@ -163,7 +163,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/is.txt"
       }
     ],
-    "name": "Islandés",
+    "name": "Islandia",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_is.webp"
   },
   {
@@ -175,7 +175,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/ja.txt"
       }
     ],
-    "name": "Japonés",
+    "name": "Japón",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_ja.webp"
   },
   {
@@ -187,7 +187,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/km.txt"
       }
     ],
-    "name": "Jemer",
+    "name": "Camboya",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_km.webp"
   },
   {
@@ -199,7 +199,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/ko.txt"
       }
     ],
-    "name": "Coreano",
+    "name": "Corea del Sur",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_ko.webp"
   },
   {
@@ -211,8 +211,8 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/ma.txt"
       }
     ],
-    "name": "Malayo (Malasia e Indonesia)",
-    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_ma.webp"
+    "name": "Malasia, Indonesia",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/malay.png"
   },
   {
     "id": "nb",
@@ -223,8 +223,8 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/nb.txt"
       }
     ],
-    "name": "Noruego Bokmål",
-    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_nb.webp"
+    "name": "Noruega",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/norway.png"
   },
   {
     "id": "nl",
@@ -235,7 +235,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/nl.txt"
       }
     ],
-    "name": "Neerlandés",
+    "name": "Países Bajos",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_nl.webp"
   },
   {
@@ -247,8 +247,8 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/or.txt"
       }
     ],
-    "name": "Odia",
-    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_or.webp"
+    "name": "India",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/india.png"
   },
   {
     "id": "ro",
@@ -259,7 +259,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/ro.txt"
       }
     ],
-    "name": "Rumano",
+    "name": "Rumania",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_ro.webp"
   },
   {
@@ -271,7 +271,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/sv.txt"
       }
     ],
-    "name": "Sueco",
+    "name": "Suecia",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_sv.webp"
   },
   {
@@ -279,11 +279,11 @@
     "listIpa": [
       {
         "code": "sw",
-        "name": "Suajili",
+        "name": "Swahili",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/sw.txt"
       }
     ],
-    "name": "Suajili",
+    "name": "Swahili",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_sw.webp"
   },
   {
@@ -295,19 +295,19 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/tts.txt"
       }
     ],
-    "name": "Isan",
-    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_tts.webp"
+    "name": "Tailandia",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/isan.png"
   },
   {
     "id": "jam",
     "listIpa": [
       {
         "code": "jam",
-        "name": "Jamaicano",
+        "name": "Criollo Jamaicano",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/jam.txt"
       }
     ],
-    "name": "Jamaicano",
-    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_jam.webp"
+    "name": "Criollo Jamaicano",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/jam.png"
   }
 ]

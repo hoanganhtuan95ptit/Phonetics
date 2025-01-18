@@ -21,17 +21,17 @@
     "listIpa": [
       {
         "code": "N",
-        "name": "Miền Bắc",
+        "name": "Bắc",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"
       },
       {
         "code": "C",
-        "name": "Miền Trung",
+        "name": "Trung",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"
       },
       {
         "code": "S",
-        "name": "Miền Nam",
+        "name": "Nam",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_S.txt"
       }
     ],
@@ -50,6 +50,11 @@
         "code": "zh_Hant",
         "name": "Tiếng Trung phồn thể",
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_hant.txt"
+      },
+      {
+        "code": "yue",
+        "name": "Tiếng Quảng Đông",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/yue.txt"
       }
     ],
     "name": "Tiếng Trung",
@@ -69,7 +74,7 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/es_MX.txt"
       }
     ],
-    "name": "Tiếng Tây Ban Nha",
+    "name": "Tây Ban Nha, Mexico",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_es.webp"
   },
   {
@@ -86,7 +91,223 @@
         "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fr_QC.txt"
       }
     ],
-    "name": "Tiếng Pháp",
+    "name": "Pháp, Québec",
     "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fr.webp"
+  },
+  {
+    "id": "ar",
+    "listIpa": [
+      {
+        "code": "ar",
+        "name": "Tiếng Ả Rập (Tiêu chuẩn hiện đại)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/ar.txt"
+      }
+    ],
+    "name": "Tiếng Ả Rập",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_ar.webp"
+  },
+  {
+    "id": "de",
+    "listIpa": [
+      {
+        "code": "de",
+        "name": "Tiếng Đức",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/de.txt"
+      }
+    ],
+    "name": "Đức",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_de.webp"
+  },
+  {
+    "id": "eo",
+    "listIpa": [
+      {
+        "code": "eo",
+        "name": "Tiếng Esperanto",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/eo.txt"
+      }
+    ],
+    "name": "Esperanto",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_eo.webp"
+  },
+  {
+    "id": "fa",
+    "listIpa": [
+      {
+        "code": "fa",
+        "name": "Tiếng Ba Tư",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fa.txt"
+      }
+    ],
+    "name": "Iran",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fa.webp"
+  },
+  {
+    "id": "fi",
+    "listIpa": [
+      {
+        "code": "fi",
+        "name": "Tiếng Phần Lan",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fi.txt"
+      }
+    ],
+    "name": "Phần Lan",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fi.webp"
+  },
+  {
+    "id": "is",
+    "listIpa": [
+      {
+        "code": "is",
+        "name": "Tiếng Iceland",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/is.txt"
+      }
+    ],
+    "name": "Iceland",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_is.webp"
+  },
+  {
+    "id": "ja",
+    "listIpa": [
+      {
+        "code": "ja",
+        "name": "Tiếng Nhật",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/ja.txt"
+      }
+    ],
+    "name": "Nhật Bản",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_ja.webp"
+  },
+  {
+    "id": "km",
+    "listIpa": [
+      {
+        "code": "km",
+        "name": "Tiếng Khmer",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/km.txt"
+      }
+    ],
+    "name": "Campuchia",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_km.webp"
+  },
+  {
+    "id": "ko",
+    "listIpa": [
+      {
+        "code": "ko",
+        "name": "Tiếng Hàn Quốc",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/ko.txt"
+      }
+    ],
+    "name": "Hàn Quốc",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_ko.webp"
+  },
+  {
+    "id": "ma",
+    "listIpa": [
+      {
+        "code": "ma",
+        "name": "Tiếng Mã Lai (Malaysia và Indonesia)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/ma.txt"
+      }
+    ],
+    "name": "Malaysia, Indonesia",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/malay.png"
+  },
+  {
+    "id": "nb",
+    "listIpa": [
+      {
+        "code": "nb",
+        "name": "Tiếng Na Uy Bokmål",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/nb.txt"
+      }
+    ],
+    "name": "Na Uy",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/norway.png"
+  },
+  {
+    "id": "nl",
+    "listIpa": [
+      {
+        "code": "nl",
+        "name": "Tiếng Hà Lan",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/nl.txt"
+      }
+    ],
+    "name": "Hà Lan",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_nl.webp"
+  },
+  {
+    "id": "or",
+    "listIpa": [
+      {
+        "code": "or",
+        "name": "Tiếng Odia",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/or.txt"
+      }
+    ],
+    "name": "Ấn Độ",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/india.png"
+  },
+  {
+    "id": "ro",
+    "listIpa": [
+      {
+        "code": "ro",
+        "name": "Tiếng Romania",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/ro.txt"
+      }
+    ],
+    "name": "Romania",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_ro.webp"
+  },
+  {
+    "id": "sv",
+    "listIpa": [
+      {
+        "code": "sv",
+        "name": "Tiếng Thụy Điển",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/sv.txt"
+      }
+    ],
+    "name": "Thụy Điển",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_sv.webp"
+  },
+  {
+    "id": "sw",
+    "listIpa": [
+      {
+        "code": "sw",
+        "name": "Tiếng Swahili",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/sw.txt"
+      }
+    ],
+    "name": "Swahili",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_sw.webp"
+  },
+  {
+    "id": "tts",
+    "listIpa": [
+      {
+        "code": "tts",
+        "name": "Tiếng Isan",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/tts.txt"
+      }
+    ],
+    "name": "Thái Lan",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/isan.png"
+  },
+  {
+    "id": "jam",
+    "listIpa": [
+      {
+        "code": "jam",
+        "name": "Tiếng Creole Jamaica",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/jam.txt"
+      }
+    ],
+    "name": "Tiếng Creole Jamaica",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/jam.png"
   }
 ]
