@@ -40,6 +40,11 @@ object EventName {
     const val STOP_SPEAK_TEXT_RESPONSE = "STOP_SPEAK_TEXT_RESPONSE"
 }
 
+object Id {
+
+    const val IPA = "IPA"
+}
+
 object TransitionName {
 
     const val SELECT_LANGUAGE = "select_language"

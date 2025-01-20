@@ -24,7 +24,7 @@ val useCaseModule = module {
     }
 
     single {
-        TranslateUseCase(getAll())
+        TranslateUseCase(get())
     }
 
     single {
@@ -32,7 +32,7 @@ val useCaseModule = module {
     }
 
     single {
-        GetPhoneticsAsyncUseCase(get(), get(), getAll())
+        GetPhoneticsAsyncUseCase(get(), get(), get())
     }
 
     single {
