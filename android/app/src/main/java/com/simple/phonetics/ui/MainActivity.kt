@@ -1,11 +1,9 @@
 package com.simple.phonetics.ui
 
 import android.animation.ObjectAnimator
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
 import androidx.core.os.bundleOf
@@ -19,6 +17,7 @@ import com.simple.phonetics.ui.view.SpeakViewImpl
 import com.simple.phonetics.utils.NavigationView
 import com.simple.phonetics.utils.NavigationViewImpl
 import com.simple.phonetics.utils.sendDeeplink
+import com.simple.phonetics.utils.setupSize
 import com.simple.phonetics.utils.setupTheme
 import kotlinx.coroutines.launch
 
@@ -29,13 +28,9 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
     private val activityViewModel: com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        window.statusBarColor = Color.TRANSPARENT
-        window.navigationBarColor = Color.TRANSPARENT
-
         super.onCreate(savedInstanceState)
 
+        setupSize(this)
         setupTheme(this)
         setupSpeak(this)
         setupNavigation(this)

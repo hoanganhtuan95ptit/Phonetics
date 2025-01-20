@@ -11,7 +11,7 @@ apply from: "../../../1CorePrivate/config/phonetics/config.gradle"// can remove
 
 android {
     namespace "com.simple.phonetics"
-    compileSdkVersion project.ext.compileSdkVersion
+    compileSdk project.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "com.ipa.english.phonetics"
@@ -20,7 +20,7 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
 
         versionCode 5
-        versionName "1.2.3"
+        versionName "1.2.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

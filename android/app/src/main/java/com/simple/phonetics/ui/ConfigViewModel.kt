@@ -32,6 +32,7 @@ import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isFailed
 import com.simple.state.isStart
+import com.simple.state.toSuccess
 
 class ConfigViewModel(
     private val translateUseCase: TranslateUseCase,
@@ -135,7 +136,7 @@ class ConfigViewModel(
 
         translateUseCase.execute(TranslateUseCase.Param(listOf("hello"), inputLanguageCode, outputLanguageCode)).let { state ->
 
-            state.doSuccess {
+            state.toSuccess()?.data?.firstOrNull()?.translateState?.doSuccess {
 
                 postValue(ResultState.Success(true))
             }

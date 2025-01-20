@@ -8,14 +8,12 @@ import com.simple.coreapp.utils.extentions.offerActiveAwait
 import com.simple.phonetics.data.dao.HistoryDao
 import com.simple.phonetics.data.dao.PhoneticsDao
 import com.simple.phonetics.data.dao.RoomHistory
+import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.entities.Sentence
 import com.simple.state.ResultState
 import com.simple.state.isSuccess
 import com.simple.state.toSuccess
-import com.simple.task.executeAsyncByPriority
-import com.simple.translate.data.tasks.TranslateTask
-import com.simple.translate.entities.TranslateRequest
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -23,10 +21,9 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 class GetPhoneticsAsyncUseCase(
-    private val phoneticsDao: PhoneticsDao,
     private val historyDao: HistoryDao,
-
-    private val listTranslateTask: List<TranslateTask>
+    private val phoneticsDao: PhoneticsDao,
+    private val languageRepository: LanguageRepository
 ) {
 
     private val mapKeyAndSentence = hashMapOf<String, Sentence>()
@@ -68,7 +65,13 @@ class GetPhoneticsAsyncUseCase(
 
         textBefore = if (param.isReverse) {
 
-            listTranslateTask.executeAsyncByPriority(TranslateTask.Param(listOf(TranslateRequest(textNew, param.outputLanguageCode)), param.inputLanguageCode)).toSuccess()?.data?.firstOrNull()?.translateState?.toSuccess()?.data ?: textNew
+            val state = languageRepository.translate(
+                languageCodeInput = param.outputLanguageCode,
+                languageCodeOutput = param.inputLanguageCode,
+                text = arrayOf(textNew)
+            )
+
+            state.toSuccess()?.data?.firstOrNull()?.translateState?.toSuccess()?.data ?: textNew
         } else {
 
             textNew
@@ -135,13 +138,11 @@ class GetPhoneticsAsyncUseCase(
 
             val mapKeyAndSentence = mapKeyAndSentence.filter { !it.value.translateState.isSuccess() }
 
-            val state = listTranslateTask.executeAsyncByPriority(TranslateTask.Param(mapKeyAndSentence.keys.toList().map {
-
-                TranslateRequest(
-                    text = it,
-                    languageCode = param.inputLanguageCode
-                )
-            }, param.outputLanguageCode))
+            val state = languageRepository.translate(
+                languageCodeInput = param.inputLanguageCode,
+                languageCodeOutput = param.outputLanguageCode,
+                text = mapKeyAndSentence.keys.toTypedArray()
+            )
 
             state.toSuccess()?.data?.forEachIndexed { index, s ->
 
