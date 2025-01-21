@@ -53,7 +53,9 @@ class HistoryAdapter(onItemClick: (View, HistoryViewItem) -> Unit = { _, _ -> })
 
 data class HistoryViewItem(
     val id: String,
+
     val text: CharSequence = "",
+
     val dividerColor: Int,
     val dividerShow: Boolean = false,
 ) : ViewItem {
