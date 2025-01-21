@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -362,20 +363,11 @@ class PhoneticsViewModel(
 
         listItem.flatMapIndexed { indexItem: Int, item: Any ->
 
-            if (item is Phonetics) item.let { phonetic ->
-
-                val codeAndIpa = phonetic.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
-
-                val ipa = (codeAndIpa?.get(phoneticsCode) ?: codeAndIpa?.toList()?.first()?.second)?.firstOrNull().orEmpty()
-
-                PhoneticsViewItem(
-                    id = "${indexItem * 1000}",
-                    data = phonetic,
-
-                    ipa = ipa,
-                    text = phonetic.text.with(phonetic.text),
-                )
-            }.let {
+            if (item is Phonetics) item.toViewItem(
+                id = "${indexItem * 1000}",
+                phoneticsCode = phoneticsCode,
+                theme = theme
+            ).let {
 
                 return@flatMapIndexed listOf(it)
             }
@@ -391,16 +383,10 @@ class PhoneticsViewModel(
 
             item.phonetics.mapIndexed { indexPhonetic, phonetic ->
 
-                val codeAndIpa = phonetic.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
-
-                val ipa = (codeAndIpa?.get(phoneticsCode) ?: codeAndIpa?.toList()?.first()?.second)?.firstOrNull().orEmpty()
-
-                PhoneticsViewItem(
+                phonetic.toViewItem(
                     id = "${indexItem * 1000 + indexPhonetic}",
-                    data = phonetic,
-
-                    ipa = ipa.with(ipa, ForegroundColorSpan(if (phonetic.ipa.size > 1) theme.colorPrimary else theme.colorError)),
-                    text = phonetic.text.with(phonetic.text, ForegroundColorSpan(theme.colorOnSurface)),
+                    phoneticsCode = phoneticsCode,
+                    theme = theme
                 )
             }.let {
 
@@ -409,12 +395,19 @@ class PhoneticsViewModel(
 
             if (isSupportTranslate && item.text.hasChar()) item.translateState.let { translateState ->
 
-                val text = if (translateState is ResultState.Start) {
-                    translate["translating"].orEmpty()
-                } else if (translateState is ResultState.Success) {
-                    translateState.data
-                } else {
-                    translate["translate_failed"].orEmpty()
+                val text = when (translateState) {
+
+                    is ResultState.Start -> {
+                        translate["translating"].orEmpty()
+                    }
+
+                    is ResultState.Success -> {
+                        translateState.data
+                    }
+
+                    else -> {
+                        translate["translate_failed"].orEmpty()
+                    }
                 }
 
                 SentenceViewItem(
@@ -501,6 +494,7 @@ class PhoneticsViewModel(
 
     fun updateSupportTranslate(b: Boolean) {
 
+        Log.d("tuanha", "updateSupportTranslate: $b")
         this.isSupportReverse.postDifferentValue(b)
         this.isSupportTranslate.postDifferentValue(b)
     }
@@ -564,6 +558,21 @@ class PhoneticsViewModel(
 
             detectState.postValue(ResultState.Failed(it))
         }
+    }
+
+    private fun Phonetics.toViewItem(id: String, phoneticsCode: String, theme: AppTheme): ViewItem {
+
+        val codeAndIpa = this.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
+
+        val ipa = (codeAndIpa?.get(phoneticsCode) ?: codeAndIpa?.toList()?.first()?.second)?.firstOrNull().orEmpty()
+
+        return PhoneticsViewItem(
+            id = id,
+            data = this,
+
+            ipa = ipa.with(ForegroundColorSpan(if (this.ipa.size > 1) theme.colorPrimary else theme.colorError)),
+            text = this.text.with(ForegroundColorSpan(theme.colorOnSurface)),
+        )
     }
 
     data class SpeakInfo(

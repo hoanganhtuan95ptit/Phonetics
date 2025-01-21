@@ -114,8 +114,8 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:padding="6dp"
+                            android:src="@drawable/ic_paste_accent_24dp"
                             android:visibility="gone"
-                            tools:src="@drawable/ic_paste_accent_24dp"
                             tools:visibility="visible" />
 
                         <ImageView
@@ -123,14 +123,14 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:padding="8dp"
-                            tools:src="@drawable/ic_gallery_accent_24dp" />
+                            android:src="@drawable/ic_gallery_accent_24dp" />
 
                         <ImageView
                             android:id="@+id/iv_camera"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:padding="8dp"
-                            tools:src="@drawable/ic_camera_accent_24dp" />
+                            android:src="@drawable/ic_camera_accent_24dp" />
 
                     </LinearLayout>
 
@@ -146,8 +146,8 @@
                             android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:padding="8dp"
+                            android:src="@drawable/ic_play_24dp"
                             android:visibility="gone"
-                            tools:src="@drawable/ic_play_24dp"
                             tools:visibility="visible" />
 
                         <ImageView
@@ -156,8 +156,8 @@
                             android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:padding="8dp"
+                            android:src="@drawable/ic_pause_24dp"
                             android:visibility="gone"
-                            tools:src="@drawable/ic_pause_24dp"
                             tools:visibility="visible" />
 
                         <ImageView

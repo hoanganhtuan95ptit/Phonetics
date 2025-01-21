@@ -152,15 +152,33 @@ class ConfigViewModel(
         value = "0"
     }
 
-    @VisibleForTesting
-    val listTranslationViewItem: LiveData<List<OptionViewItem<Boolean>>> = combineSources<List<OptionViewItem<Boolean>>>(theme, translateState, translateSelect, translate) {
+    val translateEnable: LiveData<Boolean> = combineSources(translateState, translateSelect) {
 
-        val theme = theme.value ?: return@combineSources
         val translateState = translateState.get()
         val translateSelect = translateSelect.get()
 
+        if (translateState.isFailed()) {
+
+            postDifferentValue(false)
+            return@combineSources
+        }
+
+        if (translateState !is ResultState.Success) {
+
+            return@combineSources
+        }
+
+        postDifferentValue(translateSelect.isNotBlank())
+    }
+
+    @VisibleForTesting
+    val translateViewItemList: LiveData<List<OptionViewItem<Boolean>>> = combineSources<List<OptionViewItem<Boolean>>>(theme, translate, translateState, translateSelect) {
+
+        val theme = theme.get()
         val translate = translate.get()
 
+        val translateState = translateState.get()
+        val translateSelect = translateSelect.get()
 
         if (translateState.isFailed()) {
 
@@ -330,7 +348,7 @@ class ConfigViewModel(
     }
 
 
-    val listConfig: LiveData<List<ViewItem>> = combineSources(theme, listPhoneViewItem, listVoiceViewItem, listVoiceSpeedViewItem, listTranslationViewItem) {
+    val listConfig: LiveData<List<ViewItem>> = combineSources(theme, listPhoneViewItem, listVoiceViewItem, listVoiceSpeedViewItem, translateViewItemList) {
 
         val theme = theme.value ?: return@combineSources
 
@@ -345,7 +363,7 @@ class ConfigViewModel(
             list.add(TextOptionViewItem("LIST_PHONE_VIEW_ITEM", it.text, false, textColor = textColor, strokeColor = strokeColor, backgroundColor = backgroundColor))
         }
 
-        listTranslationViewItem.getOrEmpty().find { it.isSelect }?.let {
+        translateViewItemList.getOrEmpty().find { it.isSelect }?.let {
 
             list.add(TextOptionViewItem("LIST_TRANSLATION_VIEW_ITEM", it.text, false, textColor = textColor, strokeColor = strokeColor, backgroundColor = backgroundColor))
         }
@@ -363,7 +381,7 @@ class ConfigViewModel(
         postDifferentValue(list)
     }
 
-    val listViewItem: LiveData<List<ViewItem>> = combineSources(theme, translate, listPhoneViewItem, listVoiceViewItem, listTranslationViewItem, listVoiceSpeedViewItem) {
+    val listViewItem: LiveData<List<ViewItem>> = combineSources(theme, translate, listPhoneViewItem, listVoiceViewItem, translateViewItemList, listVoiceSpeedViewItem) {
 
         val theme = theme.value ?: return@combineSources
         val translate = translate.value ?: return@combineSources
@@ -380,7 +398,7 @@ class ConfigViewModel(
             list.addAll(it)
         }
 
-        listTranslationViewItem.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
+        translateViewItemList.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
 
             val text = translate["title_translate"].orEmpty()
 
