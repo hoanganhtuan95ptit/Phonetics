@@ -26,7 +26,6 @@ import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
-import com.simple.coreapp.utils.extentions.toPx
 import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
@@ -122,49 +121,66 @@ class PhoneticsViewModel(
     @VisibleForTesting
     val outputLanguage: LiveData<Language> = MediatorLiveData()
 
+    @VisibleForTesting
+    val historyState: LiveData<ResultState<List<Sentence>>> = mediatorLiveData {
 
-    val historyViewItemList: LiveData<List<ViewItem>> = combineSources(theme) {
+        postDifferentValue(ResultState.Start)
+
+        getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
+
+            postDifferentValue(ResultState.Success(list))
+        }
+    }
+
+    val historyViewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, historyState) {
 
         val theme = theme.get()
         val translate = translate.get()
 
-        getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
+        val state = historyState.get()
 
-            val viewItemList = arrayListOf<ViewItem>()
+        if (state !is ResultState.Success) {
 
-            list.mapIndexed { index, sentence ->
-
-                HistoryViewItem(
-                    id = sentence.text,
-                    text = sentence.text.with(ForegroundColorSpan(theme.colorOnSurface)),
-                    dividerShow = index != list.lastIndex,
-                    dividerColor = theme.colorDivider
-                )
-            }.let {
-
-                viewItemList.addAll(it)
-            }
-
-            if (viewItemList.isNotEmpty()) TextViewItem(
-
-                text = translate["title_history"].orEmpty()
-                    .with(ForegroundColorSpan(theme.colorPrimary)),
-                textStyle = TextStyle(
-                    textSize = 20f
-                ),
-                margin = Margin(
-                    left = DP.DP_16
-                )
-            ).let {
-
-                viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY", height = DP.DP_16))
-                viewItemList.add(0, it)
-
-                viewItemList.add( SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
-            }
-
-            postDifferentValue(viewItemList)
+            return@combineSources
         }
+
+
+        val viewItemList = arrayListOf<ViewItem>()
+
+        val list = state.toSuccess()?.data.orEmpty()
+
+        list.mapIndexed { index, sentence ->
+
+            HistoryViewItem(
+                id = sentence.text,
+                text = sentence.text.with(ForegroundColorSpan(theme.colorOnSurface)),
+                dividerShow = index != list.lastIndex,
+                dividerColor = theme.colorDivider
+            )
+        }.let {
+
+            viewItemList.addAll(it)
+        }
+
+        if (viewItemList.isNotEmpty()) TextViewItem(
+
+            text = translate["title_history"].orEmpty()
+                .with(ForegroundColorSpan(theme.colorPrimary)),
+            textStyle = TextStyle(
+                textSize = 20f
+            ),
+            margin = Margin(
+                left = DP.DP_16
+            )
+        ).let {
+
+            viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY", height = DP.DP_16))
+            viewItemList.add(0, it)
+
+            viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
+        }
+
+        postDifferentValue(viewItemList)
     }
 
 
