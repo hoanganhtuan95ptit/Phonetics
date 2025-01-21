@@ -41,6 +41,8 @@ import com.simple.phonetics.ui.config.PhoneticsConfigFragment
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
+import com.simple.phonetics.ui.phonetics.view.AppReview
+import com.simple.phonetics.ui.phonetics.view.AppReviewImpl
 import com.simple.phonetics.ui.phonetics.view.ImageView
 import com.simple.phonetics.ui.phonetics.view.ImageViewImpl
 import com.simple.phonetics.ui.phonetics.view.LanguageView
@@ -54,6 +56,7 @@ import com.simple.state.doSuccess
 
 
 class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>(),
+    AppReview by AppReviewImpl(),
     PasteView by PasteViewImpl(),
     ImageView by ImageViewImpl(),
     LanguageView by LanguageViewImpl() {
@@ -79,6 +82,7 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
         setupPaste(this)
         setupImage(this)
+        setupAppView(this)
         setupLanguage(this)
 
         setupSpeak()
@@ -300,6 +304,17 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
             it.doSuccess {
 
                 binding.etText.setText(it)
+            }
+        }
+
+        historyViewItemList.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            // hiện rate
+            if (binding.etText.text.isBlank() && it.isNotEmpty()) {
+
+                showReview()
             }
         }
     }

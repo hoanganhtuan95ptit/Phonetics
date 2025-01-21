@@ -123,7 +123,6 @@ class PhoneticsViewModel(
     val outputLanguage: LiveData<Language> = MediatorLiveData()
 
 
-    @VisibleForTesting
     val historyViewItemList: LiveData<List<ViewItem>> = combineSources(theme) {
 
         val theme = theme.get()
@@ -158,8 +157,10 @@ class PhoneticsViewModel(
                 )
             ).let {
 
-                viewItemList.add(0, SpaceViewItem(height = DP.DP_16))
+                viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY", height = DP.DP_16))
                 viewItemList.add(0, it)
+
+                viewItemList.add( SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
             }
 
             postDifferentValue(viewItemList)
@@ -305,7 +306,6 @@ class PhoneticsViewModel(
     @VisibleForTesting
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
 
-    @VisibleForTesting
     val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage) {
 
         val inputLanguageCode = inputLanguage.get().id
@@ -411,7 +411,10 @@ class PhoneticsViewModel(
 
             val list = it.toMutableList()
 
-            list.add(SpaceViewItem(height = DP.DP_100))
+            if (list.isNotEmpty()) {
+
+                list.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_60))
+            }
 
             postDifferentValue(list)
         }
@@ -437,10 +440,7 @@ class PhoneticsViewModel(
             viewItemList.addAll(historyViewItemList)
         }
 
-        if (viewItemList.isNotEmpty()) {
-
-            viewItemList.add(SpaceViewItem(height = 60.toPx()))
-        } else com.simple.coreapp.ui.adapters.EmptyViewItem(
+        if (viewItemList.isEmpty()) com.simple.coreapp.ui.adapters.EmptyViewItem(
             id = "EMPTY",
             message = translate["message_result_empty"].orEmpty(),
             imageRes = R.raw.anim_empty
