@@ -13,6 +13,7 @@ import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.hasChar
 import com.simple.coreapp.ui.adapters.TextViewItem
+import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.ui.view.round.Background
@@ -65,7 +66,7 @@ class PhoneticsViewModel(
     private val detectStateUseCase: DetectStateUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
-) : com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel() {
+) : TransitionViewModel() {
 
     private val itemLoading = listOf(
         LoadingViewItem(R.layout.item_phonetics_loading),
@@ -120,6 +121,7 @@ class PhoneticsViewModel(
 
     @VisibleForTesting
     val outputLanguage: LiveData<Language> = MediatorLiveData()
+
 
     @VisibleForTesting
     val historyState: LiveData<ResultState<List<Sentence>>> = mediatorLiveData {
@@ -275,10 +277,10 @@ class PhoneticsViewModel(
     }
 
 
-    val clearInfo: LiveData<ClearInfo> = combineSources(theme, text, translate) {
+    val clearInfo: LiveData<ClearInfo> = combineSources(theme, translate, text) {
 
-        val theme = theme.value ?: return@combineSources
         val text = text.get()
+        val theme = theme.get()
         val translate = translate.get()
 
         val info = ClearInfo(
@@ -295,9 +297,9 @@ class PhoneticsViewModel(
 
     val enterInfo: LiveData<EnterInfo> = combineSources(theme, translate, isReverse, outputLanguage) {
 
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
-        val outputLanguage = outputLanguage.value ?: return@combineSources
+        val theme = theme.get()
+        val translate = translate.get()
+        val outputLanguage = outputLanguage.get()
 
         val hint = if (isReverse.value == true) {
             translate["hint_enter_language_text"].orEmpty().replace("\$language_name", outputLanguage.name)
@@ -322,13 +324,17 @@ class PhoneticsViewModel(
     @VisibleForTesting
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
 
+    @VisibleForTesting
     val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage) {
 
-        val inputLanguageCode = inputLanguage.get().id
+        val param = GetPhoneticsAsyncUseCase.Param(
+            text = text.get(),
+            isReverse = isReverse.get(),
+            inputLanguageCode = inputLanguage.get().id,
+            outputLanguageCode = outputLanguage.get().id
+        )
 
-        val outputLanguageCode = outputLanguage.get().id
-
-        getPhoneticsAsyncUseCase.execute(GetPhoneticsAsyncUseCase.Param(text.get(), isReverse.get(), inputLanguageCode, outputLanguageCode)).collect {
+        getPhoneticsAsyncUseCase.execute(param).collect {
 
             postValue(it)
         }
