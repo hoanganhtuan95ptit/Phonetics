@@ -9,11 +9,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
-import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
@@ -40,7 +40,7 @@ class LanguageViewModel(
     private val getLanguageSupportUseCase: GetLanguageSupportUseCase,
     private val updateLanguageInputUseCase: UpdateLanguageInputUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
-) : com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel() {
+) : TransitionViewModel() {
 
     val theme: LiveData<AppTheme> = mediatorLiveData {
 
@@ -108,7 +108,7 @@ class LanguageViewModel(
     val languageViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, languageSelected, languageListState, changeLanguageState) {
 
         val theme = theme.value ?: return@listenerSources
-        val state = languageListState.get()
+        val state = languageListState.value ?: return@listenerSources
 
         if (state is ResultState.Start) {
 

@@ -1,5 +1,6 @@
 package com.simple.phonetics.di
 
+import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.language.LanguageViewModel
@@ -15,7 +16,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel()
+        TransitionGlobalViewModel()
     }
 
     viewModel {

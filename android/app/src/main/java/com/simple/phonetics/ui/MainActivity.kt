@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
+import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.ActivityMainBinding
@@ -25,7 +26,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
     SpeakView by SpeakViewImpl(),
     NavigationView by NavigationViewImpl() {
 
-    private val activityViewModel: com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel by viewModels()
+    private val activityViewModel: TransitionGlobalViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,10 +59,10 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
             if (it == null) {
 
-                sendDeeplink(Deeplink.LANGUAGE, extras = bundleOf(Param.FIRST to true, Param.TRANSITION_DURATION to 0L))
+                sendDeeplink(Deeplink.LANGUAGE)
             } else {
 
-                sendDeeplink(Deeplink.PHONETICS, extras = bundleOf(Param.TRANSITION_DURATION to 0L))
+                sendDeeplink(Deeplink.PHONETICS)
             }
         }
     }

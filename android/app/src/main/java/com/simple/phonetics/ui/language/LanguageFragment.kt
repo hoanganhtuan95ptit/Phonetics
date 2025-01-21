@@ -3,12 +3,15 @@ package com.simple.phonetics.ui.language
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import androidx.transition.ChangeBounds
 import androidx.transition.Fade
 import androidx.transition.TransitionSet
 import com.simple.adapter.MultiAdapter
+import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.ui.view.round.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
@@ -32,12 +35,20 @@ import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.ResultState
 import com.simple.state.isSuccess
 
-class LanguageFragment : com.simple.coreapp.ui.base.fragments.transition.TransitionFragment<FragmentLanguageBinding, LanguageViewModel>() {
+class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageViewModel>() {
 
     private var adapter by autoCleared<MultiAdapter>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                if (arguments?.containsKey(Param.ROOT_TRANSITION_NAME) == true) activity?.finish()
+            }
+        })
 
         val binding = binding ?: return
 
@@ -83,7 +94,7 @@ class LanguageFragment : com.simple.coreapp.ui.base.fragments.transition.Transit
 
     private fun observeData() = with(viewModel) {
 
-        lockTransition(TAG_THEME, TAG_HEADER, TAG_BUTTON_INFO)
+        lockTransition(TAG.THEME.name, TAG.HEADER.name, TAG.BUTTON_INFO.name)
 
         theme.observe(viewLifecycleOwner) {
 
@@ -92,7 +103,7 @@ class LanguageFragment : com.simple.coreapp.ui.base.fragments.transition.Transit
             binding.icBack.setImageDrawable(requireActivity(), R.drawable.ic_arrow_left_on_surface, it.colorOnBackground)
             binding.root.setBackgroundColor(it.colorBackground)
 
-            unlockTransition(TAG_THEME)
+            unlockTransition(TAG.THEME.name)
         }
 
         headerInfo.observe(viewLifecycleOwner) {
@@ -102,7 +113,7 @@ class LanguageFragment : com.simple.coreapp.ui.base.fragments.transition.Transit
             binding.tvTitle.text = it.title
             binding.tvMessage.text = it.message
 
-            unlockTransition(TAG_HEADER)
+            unlockTransition(TAG.HEADER.name)
         }
 
         buttonInfo.asFlow().launchCollect(viewLifecycleOwner) {
@@ -115,7 +126,7 @@ class LanguageFragment : com.simple.coreapp.ui.base.fragments.transition.Transit
             binding.root.isClickable = it.isClickable
             binding.root.delegate.setBackground(it.background)
 
-            unlockTransition(TAG_BUTTON_INFO)
+            unlockTransition(TAG.BUTTON_INFO.name)
         }
 
         languageViewItemList.asFlow().launchCollect(viewLifecycleOwner) { data ->
@@ -134,15 +145,15 @@ class LanguageFragment : com.simple.coreapp.ui.base.fragments.transition.Transit
 
             val binding = binding ?: return@launchCollect
 
-            val transitionName = "select_language"
-            val ivFlag = binding.root.findViewById<View>(R.id.iv_flag)
-            ivFlag.transitionName = transitionName
-            binding.root.transitionName = ""
-
-            if (it.isSuccess() && arguments?.getBoolean(Param.FIRST) == true) {
-
-                sendDeeplink(Deeplink.PHONETICS, sharedElement = mapOf(transitionName to ivFlag))
-            } else if (it.isSuccess()) {
+            if (it.isSuccess()) if (arguments?.containsKey(Param.ROOT_TRANSITION_NAME) != true) sendDeeplink(
+                Deeplink.PHONETICS,
+                extras = bundleOf(
+                    Param.ROOT_TRANSITION_NAME to ""
+                ),
+                sharedElement = mapOf(
+                    binding.root.transitionName to binding.root
+                )
+            ) else {
 
                 activity?.supportFragmentManager?.popBackStack()
             }
@@ -154,15 +165,13 @@ class LanguageFragment : com.simple.coreapp.ui.base.fragments.transition.Transit
         }
     }
 
-    companion object {
+    private enum class TAG {
 
-        private const val TAG_THEME = "TAG_THEME"
-        private const val TAG_HEADER = "TAG_HEADER"
-        private const val TAG_BUTTON_INFO = "TAG_BUTTON_INFO"
-        private const val TAG_LANGUAGE_VIEW_ITEM_LIST_EVENT = "LANGUAGE_VIEW_ITEM_LIST_EVENT"
+        THEME,
+        HEADER,
+        BUTTON_INFO,
     }
 }
-
 
 @com.tuanha.deeplink.annotation.Deeplink
 class LanguageDeeplink : DeeplinkHandler {
@@ -186,18 +195,10 @@ class LanguageDeeplink : DeeplinkHandler {
             fragmentTransaction.addSharedElement(u, t)
         }
 
-        if (extras?.getBoolean(Param.FIRST) == true) {
-
-            fragmentTransaction
-                .replace(R.id.fragment_container, fragment, "")
-                .commit()
-        } else {
-
-            fragmentTransaction
-                .replace(R.id.fragment_container, fragment, "")
-                .addToBackStack("")
-                .commit()
-        }
+        fragmentTransaction
+            .replace(R.id.fragment_container, fragment, "")
+            .addToBackStack("")
+            .commit()
 
         return true
     }

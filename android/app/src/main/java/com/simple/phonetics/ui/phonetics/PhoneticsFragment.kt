@@ -19,6 +19,7 @@ import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.adapter.SpaceAdapter
 import com.simple.coreapp.ui.adapters.TextAdapter
+import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.ui.view.round.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
@@ -55,7 +56,7 @@ import com.simple.state.doFailed
 import com.simple.state.doSuccess
 
 
-class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>(),
+class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>(),
     AppReview by AppReviewImpl(),
     PasteView by PasteViewImpl(),
     ImageView by ImageViewImpl(),
@@ -200,11 +201,11 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
             val binding = binding ?: return@observe
 
-            binding.ivRead.setImageDrawable(requireActivity(), R.drawable.ic_play_24dp, it.colorPrimary)
-            binding.ivStop.setImageDrawable(requireActivity(), R.drawable.ic_pause_24dp, it.colorPrimary)
-            binding.ivPaste.setImageDrawable(requireActivity(), R.drawable.ic_paste_accent_24dp, it.colorPrimary)
-            binding.ivCamera.setImageDrawable(requireActivity(), R.drawable.ic_camera_accent_24dp, it.colorPrimary)
-            binding.ivGallery.setImageDrawable(requireActivity(), R.drawable.ic_gallery_accent_24dp, it.colorPrimary)
+            binding.ivRead.setColorFilter(it.colorPrimary)
+            binding.ivStop.setColorFilter(it.colorPrimary)
+            binding.ivPaste.setColorFilter(it.colorPrimary)
+            binding.ivCamera.setColorFilter(it.colorPrimary)
+            binding.ivGallery.setColorFilter(it.colorPrimary)
 
             binding.root.setBackgroundColor(it.colorBackground)
             binding.frameContent.delegate.backgroundColor = it.colorBackground

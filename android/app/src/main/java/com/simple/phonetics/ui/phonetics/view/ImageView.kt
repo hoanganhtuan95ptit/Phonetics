@@ -43,10 +43,10 @@ class ImageViewImpl() : ImageView {
 
         val takeImageFromGalleryResult = fragment.registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
 
-            uri?.let {
+            uri?.runCatching {
 
-                FileUtils.uriToImageFile(fragment.requireContext(), it)
-            }?.let {
+                FileUtils.uriToImageFile(fragment.requireContext(), this)
+            }?.getOrNull()?.let {
 
                 viewModel.getTextFromImage(it.absolutePath)
             }
