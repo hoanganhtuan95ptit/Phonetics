@@ -2,8 +2,11 @@ package com.simple.phonetics.ui.phonetics.view
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.permissionx.guolindev.PermissionX
@@ -13,6 +16,7 @@ import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
 import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
 import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
+import java.io.File
 
 interface ImageView {
 

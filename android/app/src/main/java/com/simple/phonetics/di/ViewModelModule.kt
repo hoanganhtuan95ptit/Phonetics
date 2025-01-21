@@ -19,14 +19,14 @@ val viewModelModule = module {
     }
 
     viewModel {
-        LanguageViewModel(get(), get(), get(), get())
+        LanguageViewModel(get(), get(), get())
     }
 
     viewModel {
-        ConfigViewModel(get(), get(), get(), get(), get())
+        ConfigViewModel(get(), get(), get(), get())
     }
 
     viewModel {
-        PhoneticsViewModel(get(), get(), get(), get(), get(), get(), get())
+        PhoneticsViewModel(get(), get(), get(), get(), get(), get())
     }
 }

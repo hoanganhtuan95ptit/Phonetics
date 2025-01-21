@@ -12,9 +12,14 @@ import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.hasChar
+import com.simple.coreapp.ui.adapters.TextViewItem
+import com.simple.coreapp.ui.view.Margin
+import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.ui.view.round.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
@@ -26,7 +31,6 @@ import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
-import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.language.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
@@ -34,14 +38,14 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUse
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.adapters.TitleViewItem
-import com.simple.phonetics.ui.phonetics.adapters.EmptyViewItem
 import com.simple.phonetics.ui.phonetics.adapters.HistoryViewItem
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.phonetics.adapters.SentenceViewItem
+import com.simple.phonetics.utils.AppSize
 import com.simple.phonetics.utils.AppTheme
+import com.simple.phonetics.utils.appSize
 import com.simple.phonetics.utils.appTheme
-import com.simple.phonetics.utils.exts.with
+import com.simple.phonetics.utils.appTranslate
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
@@ -61,7 +65,6 @@ class PhoneticsViewModel(
     private val startSpeakUseCase: StartSpeakUseCase,
     private val detectStateUseCase: DetectStateUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
-    private val getKeyTranslateAsyncUseCase: GetKeyTranslateAsyncUseCase,
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
 ) : com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel() {
 
@@ -75,6 +78,14 @@ class PhoneticsViewModel(
         LoadingViewItem(R.layout.item_phonetics_loading)
     )
 
+    val size: LiveData<AppSize> = mediatorLiveData {
+
+        appSize.collect {
+
+            postDifferentValue(it)
+        }
+    }
+
     val theme: LiveData<AppTheme> = mediatorLiveData {
 
         appTheme.collect {
@@ -84,20 +95,20 @@ class PhoneticsViewModel(
     }
 
     @VisibleForTesting
-    val keyTranslateMap: LiveData<Map<String, String>> = mediatorLiveData {
+    val translate: LiveData<Map<String, String>> = mediatorLiveData {
 
-        getKeyTranslateAsyncUseCase.execute().collect {
+        appTranslate.collect {
 
             postDifferentValue(it)
         }
     }
 
-    val title: LiveData<CharSequence> = combineSources(theme, keyTranslateMap) {
+    val title: LiveData<CharSequence> = combineSources(theme, translate) {
 
         val theme = theme.get()
-        val keyTranslateMap = keyTranslateMap.getOrEmpty()
+        val translate = translate.getOrEmpty()
 
-        val title = keyTranslateMap["Ephonetics"].orEmpty()
+        val title = translate["Ephonetics"].orEmpty()
             .with("Ep", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
             .with("honetics", ForegroundColorSpan(theme.colorOnSurface))
 
@@ -113,24 +124,45 @@ class PhoneticsViewModel(
 
 
     @VisibleForTesting
-    val historyViewItemList: LiveData<List<HistoryViewItem>> = combineSources(theme) {
+    val historyViewItemList: LiveData<List<ViewItem>> = combineSources(theme) {
 
-        val theme = theme.value ?: return@combineSources
+        val theme = theme.get()
+        val translate = translate.get()
 
         getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
+
+            val viewItemList = arrayListOf<ViewItem>()
 
             list.mapIndexed { index, sentence ->
 
                 HistoryViewItem(
                     id = sentence.text,
-                    text = sentence.text.with(sentence.text, ForegroundColorSpan(theme.colorOnSurface)),
+                    text = sentence.text.with(ForegroundColorSpan(theme.colorOnSurface)),
                     dividerShow = index != list.lastIndex,
                     dividerColor = theme.colorDivider
                 )
             }.let {
 
-                postDifferentValue(it)
+                viewItemList.addAll(it)
             }
+
+            if (viewItemList.isNotEmpty()) TextViewItem(
+
+                text = translate["title_history"].orEmpty()
+                    .with(ForegroundColorSpan(theme.colorPrimary)),
+                textStyle = TextStyle(
+                    textSize = 20f
+                ),
+                margin = Margin(
+                    left = DP.DP_16
+                )
+            ).let {
+
+                viewItemList.add(0, SpaceViewItem(height = DP.DP_16))
+                viewItemList.add(0, it)
+            }
+
+            postDifferentValue(viewItemList)
         }
     }
 
@@ -174,19 +206,31 @@ class PhoneticsViewModel(
     @VisibleForTesting
     val isSupportReverse: LiveData<Boolean> = MediatorLiveData(true)
 
-    val reverseInfo: LiveData<ReverseInfo> = combineSources(theme, isReverse, isSupportReverse, keyTranslateMap) {
+    val reverseInfo: LiveData<ReverseInfo> = combineSources(theme, translate, isReverse, isSupportReverse) {
 
-        val theme = theme.value ?: return@combineSources
+        val theme = theme.get()
+        val translate = translate.get()
+
         val isReverse = isReverse.get()
-        val keyTranslateMap = keyTranslateMap.get()
         val isSupportReverse = isSupportReverse.get()
 
+        val textColor = if (isReverse)
+            theme.colorOnPrimaryVariant
+        else
+            theme.colorPrimary
+
+        val backgroundColor = if (isReverse)
+            theme.colorPrimaryVariant
+        else
+            Color.TRANSPARENT
+
         val info = ReverseInfo(
-            text = keyTranslateMap["action_reverse"].orEmpty(),
+            text = translate["action_reverse"].orEmpty().with(ForegroundColorSpan(textColor)),
             isShow = isSupportReverse,
-            textColor = if (isReverse) theme.colorOnPrimaryVariant else theme.colorPrimary,
-            strokeColor = theme.colorPrimary,
-            backgroundColor = if (isReverse) theme.colorPrimaryVariant else Color.TRANSPARENT
+            background = Background(
+                strokeColor = theme.colorPrimary,
+                backgroundColor = backgroundColor
+            )
         )
 
         postDifferentValue(info)
@@ -214,18 +258,41 @@ class PhoneticsViewModel(
     }
 
 
-    val clearInfo: LiveData<ClearInfo> = combineSources(theme, text, keyTranslateMap) {
+    val clearInfo: LiveData<ClearInfo> = combineSources(theme, text, translate) {
 
         val theme = theme.value ?: return@combineSources
         val text = text.get()
-        val keyTranslateMap = keyTranslateMap.get()
+        val translate = translate.get()
 
         val info = ClearInfo(
-            text = keyTranslateMap["action_clear"].orEmpty(),
+            text = translate["action_clear"].orEmpty().with(ForegroundColorSpan(theme.colorPrimary)),
             isShow = text.isNotBlank(),
-            textColor = theme.colorPrimary,
-            strokeColor = theme.colorPrimary,
-            backgroundColor = Color.TRANSPARENT
+            background = Background(
+                strokeColor = theme.colorPrimary,
+                backgroundColor = Color.TRANSPARENT
+            ),
+        )
+
+        postDifferentValue(info)
+    }
+
+    val enterInfo: LiveData<EnterInfo> = combineSources(theme, translate, isReverse, outputLanguage) {
+
+        val theme = theme.value ?: return@combineSources
+        val translate = translate.value ?: return@combineSources
+        val outputLanguage = outputLanguage.value ?: return@combineSources
+
+        val hint = if (isReverse.value == true) {
+            translate["hint_enter_language_text"].orEmpty().replace("\$language_name", outputLanguage.name)
+        } else {
+            translate["hint_enter_text"].orEmpty()
+        }
+
+        val info = EnterInfo(
+            hint = hint
+                .with(ForegroundColorSpan(theme.colorOnSurfaceVariant))
+                .with(outputLanguage.name, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+            textColor = theme.colorOnSurface,
         )
 
         postDifferentValue(info)
@@ -237,7 +304,6 @@ class PhoneticsViewModel(
 
     @VisibleForTesting
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
-
 
     @VisibleForTesting
     val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage) {
@@ -253,12 +319,13 @@ class PhoneticsViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, phoneticsCode, phoneticsState, isSupportTranslate, keyTranslateMap) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, translate, phoneticsCode, phoneticsState, isSupportTranslate) {
 
         val theme = theme.get()
+        val translate = translate.get()
+
         val state = phoneticsState.get()
         val phoneticsCode = phoneticsCode.get()
-        val keyTranslateMap = keyTranslateMap.get()
         val isSupportTranslate = isSupportTranslate.get()
 
 
@@ -321,11 +388,11 @@ class PhoneticsViewModel(
             if (isSupportTranslate && item.text.hasChar()) item.translateState.let { translateState ->
 
                 val text = if (translateState is ResultState.Start) {
-                    keyTranslateMap["translating"].orEmpty()
+                    translate["translating"].orEmpty()
                 } else if (translateState is ResultState.Success) {
                     translateState.data
                 } else {
-                    keyTranslateMap["translate_failed"].orEmpty()
+                    translate["translate_failed"].orEmpty()
                 }
 
                 SentenceViewItem(
@@ -353,25 +420,14 @@ class PhoneticsViewModel(
         postDifferentValue(emptyList())
     }
 
-    val listViewItem: LiveData<List<ViewItem>> = combineSources(text, theme, keyTranslateMap, historyViewItemList, phoneticsViewItemList) {
+    val listViewItem: LiveData<List<ViewItem>> = combineSources(theme, translate, text, historyViewItemList, phoneticsViewItemList) {
 
         val text = text.get()
-        val theme = theme.get()
-        val keyTranslateMap = keyTranslateMap.get()
+        val translate = translate.get()
         val historyViewItemList = historyViewItemList.getOrEmpty()
         val phoneticsViewItemList = phoneticsViewItemList.getOrEmpty()
 
         val viewItemList = arrayListOf<ViewItem>()
-
-        if (historyViewItemList.isNotEmpty() && text.isBlank()) TitleViewItem(
-            text = keyTranslateMap["title_history"].orEmpty(),
-            textSize = 20f,
-            textColor = theme.colorPrimary,
-            paddingHorizontal = DP.DP_16
-        ).let {
-
-            viewItemList.add(it)
-        }
 
         if (text.isNotBlank()) {
 
@@ -384,9 +440,9 @@ class PhoneticsViewModel(
         if (viewItemList.isNotEmpty()) {
 
             viewItemList.add(SpaceViewItem(height = 60.toPx()))
-        } else EmptyViewItem(
+        } else com.simple.coreapp.ui.adapters.EmptyViewItem(
             id = "EMPTY",
-            message = keyTranslateMap["message_result_empty"].orEmpty(),
+            message = translate["message_result_empty"].orEmpty(),
             imageRes = R.raw.anim_empty
         ).let {
 
@@ -394,28 +450,6 @@ class PhoneticsViewModel(
         }
 
         postDifferentValue(viewItemList)
-    }
-
-
-    val hintEnter: LiveData<EnterInfo> = combineSources(theme, isReverse, outputLanguage, keyTranslateMap) {
-
-        val theme = theme.value ?: return@combineSources
-        val outputLanguage = outputLanguage.value ?: return@combineSources
-        val keyTranslateMap = keyTranslateMap.value ?: return@combineSources
-
-        val hint = if (isReverse.value == true) {
-            keyTranslateMap["hint_enter_language_text"].orEmpty().replace("\$language_name", outputLanguage.name)
-        } else {
-            keyTranslateMap["hint_enter_text"].orEmpty()
-        }
-
-        val info = EnterInfo(
-            hint = hint,
-            textColor = theme.colorOnSurface,
-            hintColor = theme.colorOnSurfaceVariant
-        )
-
-        postDifferentValue(info)
     }
 
     val isShowLoading: LiveData<Boolean> = combineSources(speakState, detectState) {
@@ -458,7 +492,6 @@ class PhoneticsViewModel(
 
         this.outputLanguage.postDifferentValue(language)
     }
-
 
     fun startSpeak(text: String, languageCode: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
@@ -525,22 +558,19 @@ class PhoneticsViewModel(
     data class EnterInfo(
         val hint: CharSequence = "",
         val textColor: Int,
-        val hintColor: Int,
     )
 
     data class ClearInfo(
-        val text: String = "",
+        val text: CharSequence = "",
         val isShow: Boolean = false,
-        val textColor: Int,
-        val strokeColor: Int,
-        val backgroundColor: Int
+
+        val background: Background
     )
 
     data class ReverseInfo(
-        val text: String = "",
+        val text: CharSequence = "",
         val isShow: Boolean = false,
-        val textColor: Int,
-        val strokeColor: Int,
-        val backgroundColor: Int
+
+        val background: Background
     )
 }

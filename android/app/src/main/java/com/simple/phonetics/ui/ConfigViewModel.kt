@@ -13,7 +13,6 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.domain.usecase.TranslateUseCase
-import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetVoiceAsyncUseCase
@@ -27,6 +26,7 @@ import com.simple.phonetics.ui.config.adapters.VoiceOptionViewItem
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.appTheme
+import com.simple.phonetics.utils.appTranslate
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
@@ -37,7 +37,6 @@ import com.simple.state.toSuccess
 class ConfigViewModel(
     private val translateUseCase: TranslateUseCase,
     private val getVoiceAsyncUseCase: GetVoiceAsyncUseCase,
-    private val getKeyTranslateAsyncUseCase: GetKeyTranslateAsyncUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
     private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
 ) : BaseViewModel() {
@@ -51,9 +50,9 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val keyTranslateMap: LiveData<Map<String, String>> = mediatorLiveData {
+    val translate: LiveData<Map<String, String>> = mediatorLiveData {
 
-        getKeyTranslateAsyncUseCase.execute().collect {
+        appTranslate.collect {
 
             postDifferentValue(it)
         }
@@ -154,13 +153,13 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val listTranslationViewItem: LiveData<List<OptionViewItem<Boolean>>> = combineSources<List<OptionViewItem<Boolean>>>(theme, translateState, translateSelect, keyTranslateMap) {
+    val listTranslationViewItem: LiveData<List<OptionViewItem<Boolean>>> = combineSources<List<OptionViewItem<Boolean>>>(theme, translateState, translateSelect, translate) {
 
         val theme = theme.value ?: return@combineSources
         val translateState = translateState.get()
         val translateSelect = translateSelect.get()
 
-        val keyTranslateMap = keyTranslateMap.get()
+        val translate = translate.get()
 
 
         if (translateState.isFailed()) {
@@ -177,9 +176,9 @@ class ConfigViewModel(
         }
 
         val text = if (id.isNotBlank()) {
-            keyTranslateMap["message_support_translate"]
+            translate["message_support_translate"]
         } else {
-            keyTranslateMap["message_translate_download"]
+            translate["message_translate_download"]
         }
 
 
@@ -251,11 +250,11 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val listVoiceSpeedViewItem: LiveData<List<VoiceSpeedViewItem>> = combineSources(listVoice, voiceSpeed, keyTranslateMap) {
+    val listVoiceSpeedViewItem: LiveData<List<VoiceSpeedViewItem>> = combineSources(listVoice, voiceSpeed, translate) {
 
         val listVoice = listVoice.get()
         val voiceSpeed = voiceSpeed.get()
-        val keyTranslateMap = keyTranslateMap.get()
+        val translate = translate.get()
 
         if (listVoice.isEmpty()) {
 
@@ -270,7 +269,7 @@ class ConfigViewModel(
             start = 0f,
             end = 2f,
 
-            text = keyTranslateMap["speed_lever"].orEmpty().replace("\$lever", "$voiceSpeed"),
+            text = translate["speed_lever"].orEmpty().replace("\$lever", "$voiceSpeed"),
 
             current = voiceSpeed
         ).let {
@@ -287,7 +286,7 @@ class ConfigViewModel(
         value = 0
     }
 
-    val listVoiceViewItem: LiveData<List<OptionViewItem<Int>>> = combineSources(theme, listVoice, voiceSelect, keyTranslateMap) {
+    val listVoiceViewItem: LiveData<List<OptionViewItem<Int>>> = combineSources(theme, listVoice, voiceSelect, translate) {
 
         val theme = theme.get()
         val listVoice = listVoice.get()
@@ -306,7 +305,7 @@ class ConfigViewModel(
             VoiceOptionViewItem(
                 id = "$index",
                 data = voice,
-                text = keyTranslateMap.get()["voice_index"].orEmpty().replace("\$index", "$index"),
+                text = translate.get()["voice_index"].orEmpty().replace("\$index", "$index"),
                 isSelect = voice == voiceSelect,
                 textColor = if (isSelect) {
                     theme.colorPrimary
@@ -364,17 +363,17 @@ class ConfigViewModel(
         postDifferentValue(list)
     }
 
-    val listViewItem: LiveData<List<ViewItem>> = combineSources(theme, keyTranslateMap, listPhoneViewItem, listVoiceViewItem, listTranslationViewItem, listVoiceSpeedViewItem) {
+    val listViewItem: LiveData<List<ViewItem>> = combineSources(theme, translate, listPhoneViewItem, listVoiceViewItem, listTranslationViewItem, listVoiceSpeedViewItem) {
 
         val theme = theme.value ?: return@combineSources
-        val keyTranslateMap = keyTranslateMap.value ?: return@combineSources
+        val translate = translate.value ?: return@combineSources
 
         val list = arrayListOf<ViewItem>()
 
 
         listPhoneViewItem.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
 
-            val text = keyTranslateMap["title_phonetic"].orEmpty()
+            val text = translate["title_phonetic"].orEmpty()
 
             list.add(TitleViewItem(text = text, textColor = theme.colorOnSurface))
 
@@ -383,7 +382,7 @@ class ConfigViewModel(
 
         listTranslationViewItem.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
 
-            val text = keyTranslateMap["title_translate"].orEmpty()
+            val text = translate["title_translate"].orEmpty()
 
             list.add(TitleViewItem(text = text, textColor = theme.colorOnSurface))
 
@@ -392,7 +391,7 @@ class ConfigViewModel(
 
         listVoiceSpeedViewItem.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
 
-            val text = keyTranslateMap["title_voice_speed"].orEmpty()
+            val text = translate["title_voice_speed"].orEmpty()
 
             list.add(TitleViewItem(text = text, textColor = theme.colorOnSurface))
 
@@ -401,7 +400,7 @@ class ConfigViewModel(
 
         listVoiceViewItem.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
 
-            val text = keyTranslateMap["title_voice"].orEmpty()
+            val text = translate["title_voice"].orEmpty()
 
             list.add(TitleViewItem(text = text, textColor = theme.colorOnSurface))
 

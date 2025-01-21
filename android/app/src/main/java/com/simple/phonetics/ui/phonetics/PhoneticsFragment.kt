@@ -18,6 +18,8 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.adapter.SpaceAdapter
+import com.simple.coreapp.ui.adapters.TextAdapter
+import com.simple.coreapp.ui.view.round.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
@@ -36,7 +38,6 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.adapters.TextOptionAdapter
 import com.simple.phonetics.ui.adapters.TitleAdapter
 import com.simple.phonetics.ui.config.PhoneticsConfigFragment
-import com.simple.phonetics.ui.phonetics.adapters.EmptyAdapter
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
@@ -141,6 +142,10 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
         val binding = binding ?: return
 
+        val textAdapter = TextAdapter { view, item ->
+
+        }
+
         val phoneticsAdapter = PhoneticsAdapter { _, phoneticsViewItem ->
 
             startSpeak(text = phoneticsViewItem.data.text)
@@ -151,7 +156,7 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
             binding.etText.setText(item.id)
         }
 
-        adapter = MultiAdapter(phoneticsAdapter, historyAdapter, SentenceAdapter(), TitleAdapter(), SpaceAdapter(), EmptyAdapter()).apply {
+        adapter = MultiAdapter(textAdapter, phoneticsAdapter, historyAdapter, SentenceAdapter(), TitleAdapter(), SpaceAdapter(), com.simple.coreapp.ui.adapters.EmptyAdapter()).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -166,12 +171,16 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
         val binding = binding ?: return
 
+        val textAdapter = TextAdapter { view, item ->
+
+        }
+
         val textOptionAdapter = TextOptionAdapter { _, item ->
 
             PhoneticsConfigFragment().show(childFragmentManager, "")
         }
 
-        adapterConfig = MultiAdapter(textOptionAdapter, SpaceAdapter()).apply {
+        adapterConfig = MultiAdapter(textAdapter, textOptionAdapter, SpaceAdapter()).apply {
 
             binding.recFilter.adapter = this
 
@@ -181,7 +190,7 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
     private fun observeData() = with(viewModel) {
 
-        lockTransition(TAG_THEME, TAG_TITLE, TAG_HINT, TAG_CLEAR, TAG_REVERSE)
+        lockTransition(TAG.THEME.name, TAG.TITLE.name, TAG.ENTER.name, TAG.CLEAR.name, TAG.REVERSE.name)
 
         theme.observe(viewLifecycleOwner) {
 
@@ -198,7 +207,7 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
             binding.frameRootContent.setBackgroundColor(it.colorBackgroundVariant)
 
-            unlockTransition(TAG_THEME)
+            unlockTransition(TAG.THEME.name)
         }
 
         title.observe(viewLifecycleOwner) {
@@ -207,7 +216,7 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
             binding.tvTitle.text = it
 
-            unlockTransition(TAG_TITLE)
+            unlockTransition(TAG.TITLE.name)
         }
 
         imageInfo.observe(viewLifecycleOwner) {
@@ -219,6 +228,8 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
             binding.ivCamera.setVisible(it.isShowInput)
             binding.ivGallery.setVisible(it.isShowInput)
+
+            unlockTransition(TAG.IMAGE.name)
         }
 
         speakInfo.observe(viewLifecycleOwner) {
@@ -227,6 +238,8 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
             binding.ivStop.setVisible(it.isShowPause)
             binding.ivRead.setVisible(it.isShowPlay)
+
+            unlockTransition(TAG.SPEAK.name)
         }
 
         clearInfo.observe(viewLifecycleOwner) {
@@ -235,22 +248,19 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
             binding.tvClear.text = it.text
             binding.tvClear.setVisible(it.isShow)
-            binding.tvClear.setTextColor(it.textColor)
-            binding.tvClear.delegate.strokeColor = it.strokeColor
-            binding.tvClear.delegate.backgroundColor = it.backgroundColor
+            binding.tvClear.delegate.setBackground(it.background)
 
-            unlockTransition(TAG_CLEAR)
+            unlockTransition(TAG.CLEAR.name)
         }
 
-        hintEnter.observe(viewLifecycleOwner) {
+        enterInfo.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
 
             binding.etText.hint = it.hint
             binding.etText.setTextColor(it.textColor)
-            binding.etText.setHintTextColor(it.hintColor)
 
-            unlockTransition(TAG_HINT)
+            unlockTransition(TAG.ENTER.name)
         }
 
         reverseInfo.observe(viewLifecycleOwner) {
@@ -259,11 +269,9 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
 
             binding.tvReverse.text = it.text
             binding.tvReverse.setVisible(it.isShow)
-            binding.tvReverse.setTextColor(it.textColor)
-            binding.tvReverse.delegate.strokeColor = it.strokeColor
-            binding.tvReverse.delegate.backgroundColor = it.backgroundColor
+            binding.tvReverse.delegate.setBackground(it.background)
 
-            unlockTransition(TAG_REVERSE)
+            unlockTransition(TAG.REVERSE.name)
         }
 
         listViewItem.asFlow().launchCollect(viewLifecycleOwner) {
@@ -354,13 +362,14 @@ class PhoneticsFragment : com.simple.coreapp.ui.base.fragments.transition.Transi
         )
     }
 
-    companion object {
-
-        private const val TAG_HINT = "TAG_HINT"
-        private const val TAG_CLEAR = "TAG_CLEAR"
-        private const val TAG_TITLE = "TAG_TITLE"
-        private const val TAG_THEME = "TAG_THEME"
-        private const val TAG_REVERSE = "TAG_REVERSE"
+    private enum class TAG {
+        ENTER,
+        IMAGE,
+        CLEAR,
+        TITLE,
+        THEME,
+        SPEAK,
+        REVERSE,
     }
 }
 
