@@ -2,21 +2,21 @@ package com.simple.phonetics.ui.phonetics.view
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
+import android.provider.DocumentsContract
 import android.provider.MediaStore
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.permissionx.guolindev.PermissionX
-import com.simple.coreapp.utils.FileUtils
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
 import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
 import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
-import java.io.File
 
 interface ImageView {
 
@@ -45,10 +45,13 @@ class ImageViewImpl() : ImageView {
 
             uri?.runCatching {
 
-                FileUtils.uriToImageFile(fragment.requireContext(), this)
-            }?.getOrNull()?.let {
+                getFilePath(fragment.requireContext(), this)
+            }?.getOrNull()?.takeIf {
 
-                viewModel.getTextFromImage(it.absolutePath)
+                it.isNotBlank()
+            }?.let {
+
+                viewModel.getTextFromImage(it)
             }
         }
 
@@ -88,6 +91,86 @@ class ImageViewImpl() : ImageView {
         } else {
 
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        private fun getFilePath(context: Context, uri: Uri): String? {
+
+            val selection: String?
+            val selectionArgs: Array<String>?
+
+            if (DocumentsContract.isDocumentUri(context, uri)) when {
+
+                isExternalStorageDocument(uri) -> {
+
+                    val docId = DocumentsContract.getDocumentId(uri)
+
+                    val split = docId.split(":")
+
+                    return "${Environment.getExternalStorageDirectory()}/${split[1]}"
+                }
+
+                isDownloadsDocument(uri) -> {
+
+                    val id = DocumentsContract.getDocumentId(uri)
+                    val contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), id.toLongOrNull() ?: return null)
+                    return getDataColumn(context, contentUri, null, null)
+                }
+
+                isMediaDocument(uri) -> {
+
+                    val docId = DocumentsContract.getDocumentId(uri)
+                    val split = docId.split(":")
+                    val type = split[0]
+                    val contentUri = when (type) {
+                        "image" -> MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                        "video" -> MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                        "audio" -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                        else -> null
+                    }
+                    selection = "_id=?"
+                    selectionArgs = arrayOf(split[1])
+                    return getDataColumn(context, contentUri, selection, selectionArgs)
+                }
+            } else if ("content".equals(uri.scheme, ignoreCase = true)) {
+
+                return if (isGooglePhotosUri(uri)) uri.lastPathSegment else getDataColumn(context, uri, null, null)
+            } else if ("file".equals(uri.scheme, ignoreCase = true)) {
+
+                return uri.path
+            }
+
+            return null
+        }
+
+        private fun getDataColumn(context: Context, uri: Uri?, selection: String?, selectionArgs: Array<String>?): String? {
+
+            val projection = arrayOf(MediaStore.Images.Media.DATA)
+
+            context.contentResolver.query(uri ?: return null, projection, selection, selectionArgs, null)?.use { cursor ->
+
+                if (cursor.moveToFirst()) {
+
+                    val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                    return cursor.getString(columnIndex)
+                }
+            }
+            return null
+        }
+
+        private fun isExternalStorageDocument(uri: Uri): Boolean {
+            return "com.android.externalstorage.documents" == uri.authority
+        }
+
+        private fun isDownloadsDocument(uri: Uri): Boolean {
+            return "com.android.providers.downloads.documents" == uri.authority
+        }
+
+        private fun isMediaDocument(uri: Uri): Boolean {
+            return "com.android.providers.media.documents" == uri.authority
+        }
+
+        private fun isGooglePhotosUri(uri: Uri): Boolean {
+            return "com.google.android.apps.photos.content" == uri.authority
         }
     }
 }

@@ -347,17 +347,9 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             viewModel.updatePhoneticSelect(it)
         }
 
-        translateState.observe(viewLifecycleOwner) {
+        translateEnable.observe(viewLifecycleOwner) {
 
-            it.doSuccess {
-
-                viewModel.updateSupportTranslate(true)
-            }
-
-            it.doFailed {
-
-                viewModel.updateSupportTranslate(false)
-            }
+            viewModel.updateSupportTranslate(it)
         }
 
         outputLanguage.observe(viewLifecycleOwner) {
