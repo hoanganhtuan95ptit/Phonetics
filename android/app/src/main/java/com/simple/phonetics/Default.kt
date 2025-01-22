@@ -6,13 +6,12 @@ import com.simple.phonetics.entities.Language
 
 val DEFAULT_TRANSLATE = mapOf(
     "title_voice" to "Voice:",
+    "title_result" to "Result:",
     "title_history" to "History:",
     "title_phonetic" to "Phonetic:",
     "title_language" to "Select language",
     "title_translate" to "Translate:",
     "title_voice_speed" to "Voice speed:",
-    "speed_lever" to "Speed \$lever",
-    "voice_index" to "Voice \$index",
     "hint_enter_text" to "Enter text here!",
     "hint_enter_language_text" to "Enter \$language_name here!",
     "message_start_sync" to "Starting synchronization...",
@@ -28,6 +27,8 @@ val DEFAULT_TRANSLATE = mapOf(
     "action_clear" to "Clear",
     "action_reverse" to "Reverse",
     "action_confirm_change_language" to "Change phonetic language",
+    "speed_lever" to "Speed \$lever",
+    "voice_index" to "Voice \$index",
     "translating" to "Translating",
     "translate_failed" to "Translation failed"
 )
