@@ -367,13 +367,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
     }
 
     private enum class TAG {
-        ENTER,
-        IMAGE,
-        CLEAR,
-        TITLE,
-        THEME,
-        SPEAK,
-        REVERSE,
+        ENTER, IMAGE, CLEAR, TITLE, THEME, SPEAK, REVERSE,
     }
 }
 
