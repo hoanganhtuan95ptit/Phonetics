@@ -1,28 +1,34 @@
 package com.simple.phonetics.ui
 
 import android.graphics.Color
+import android.text.style.ForegroundColorSpan
+import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModels.BaseViewModel
 import com.simple.adapter.entities.ViewItem
+import com.simple.core.utils.extentions.asObjectOrNull
+import com.simple.coreapp.ui.adapters.TextViewItem
+import com.simple.coreapp.ui.view.Margin
+import com.simple.coreapp.ui.view.Padding
+import com.simple.coreapp.ui.view.Size
+import com.simple.coreapp.ui.view.round.Background
+import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.phonetics.Id
+import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.TranslateUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetVoiceAsyncUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.ui.adapters.OptionViewItem
-import com.simple.phonetics.ui.adapters.TextOptionViewItem
-import com.simple.phonetics.ui.adapters.TitleViewItem
-import com.simple.phonetics.ui.config.adapters.PhoneticCodeOptionViewItem
-import com.simple.phonetics.ui.config.adapters.TranslationOptionViewItem
-import com.simple.phonetics.ui.config.adapters.VoiceOptionViewItem
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.appTheme
@@ -84,9 +90,10 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val listPhoneViewItem: LiveData<List<OptionViewItem<String>>> = combineSources<List<OptionViewItem<String>>>(theme, inputLanguage, phoneticSelect) {
+    val phoneViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, inputLanguage, phoneticSelect) {
 
-        val theme = theme.value ?: return@combineSources
+        val theme = theme.get()
+
         val language = inputLanguage.get()
         val phoneticSelect = phoneticSelect.get()
 
@@ -94,26 +101,12 @@ class ConfigViewModel(
 
             val isSelect = it.code == phoneticSelect
 
-            PhoneticCodeOptionViewItem(
-                id = it.code,
-                data = it.code,
-                text = it.name,
-                isSelect = isSelect,
-                textColor = if (isSelect) {
-                    theme.colorPrimary
-                } else {
-                    theme.colorOnSurface
-                },
-                strokeColor = if (isSelect) {
-                    theme.colorPrimary
-                } else {
-                    theme.colorOnSurface
-                },
-                backgroundColor = if (isSelect) {
-                    theme.colorPrimaryVariant
-                } else {
-                    Color.TRANSPARENT
-                }
+            createOptionViewItem(
+                id = Id.IPA + "_" + it.code,
+                data = it.code to isSelect,
+                text = it.name.with(ForegroundColorSpan(if (isSelect) theme.colorPrimary else theme.colorOnSurface)),
+                strokeColor = if (isSelect) theme.colorPrimary else theme.colorOnSurface,
+                backgroundColor = if (isSelect) theme.colorPrimaryVariant else Color.TRANSPARENT
             )
         }.let {
 
@@ -125,12 +118,12 @@ class ConfigViewModel(
     }
 
 
+    @VisibleForTesting
     val translateState: LiveData<ResultState<Boolean>> = combineSources(inputLanguage, outputLanguage) {
 
         postValue(ResultState.Start)
 
         val inputLanguageCode = inputLanguage.get().id
-
         val outputLanguageCode = outputLanguage.get().id
 
         translateUseCase.execute(TranslateUseCase.Param(listOf("hello"), inputLanguageCode, outputLanguageCode)).let { state ->
@@ -147,6 +140,7 @@ class ConfigViewModel(
         }
     }
 
+    @VisibleForTesting
     val translateSelect: LiveData<String> = MediatorLiveData<String>().apply {
 
         value = "0"
@@ -172,7 +166,7 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val translateViewItemList: LiveData<List<OptionViewItem<Boolean>>> = combineSources<List<OptionViewItem<Boolean>>>(theme, translate, translateState, translateSelect) {
+    val translateViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, translate, translateState, translateSelect) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -200,29 +194,16 @@ class ConfigViewModel(
         }
 
 
-        val list = arrayListOf<OptionViewItem<Boolean>>()
+        val list = arrayListOf<ViewItem>()
 
         val isSelect = translateSelect == id
 
-        TranslationOptionViewItem(
-            id = id,
-            text = text.orEmpty(),
-            isSelect = isSelect,
-            textColor = if (isSelect) {
-                theme.colorPrimary
-            } else {
-                theme.colorOnSurface
-            },
-            strokeColor = if (isSelect) {
-                theme.colorPrimary
-            } else {
-                theme.colorOnSurface
-            },
-            backgroundColor = if (isSelect) {
-                theme.colorPrimaryVariant
-            } else {
-                Color.TRANSPARENT
-            }
+        createOptionViewItem(
+            id = "$TRANSLATE-$id",
+            data = id to isSelect,
+            text = text.orEmpty().with(ForegroundColorSpan(if (isSelect) theme.colorPrimary else theme.colorOnSurface)),
+            strokeColor = if (isSelect) theme.colorPrimary else theme.colorOnSurface,
+            backgroundColor = if (isSelect) theme.colorPrimaryVariant else Color.TRANSPARENT
         ).let {
 
             list.add(it)
@@ -268,11 +249,12 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val listVoiceSpeedViewItem: LiveData<List<VoiceSpeedViewItem>> = combineSources(listVoice, voiceSpeed, translate) {
+    val voiceSpeedViewItemList: LiveData<List<VoiceSpeedViewItem>> = combineSources(theme, translate, listVoice, voiceSpeed) {
+
+        val translate = translate.get()
 
         val listVoice = listVoice.get()
         val voiceSpeed = voiceSpeed.get()
-        val translate = translate.get()
 
         if (listVoice.isEmpty()) {
 
@@ -298,15 +280,16 @@ class ConfigViewModel(
         postDifferentValue(list)
     }
 
-
     val voiceSelect: LiveData<Int> = MediatorLiveData<Int>().apply {
 
         value = 0
     }
 
-    val listVoiceViewItem: LiveData<List<OptionViewItem<Int>>> = combineSources(theme, listVoice, voiceSelect, translate) {
+    val voiceViewItemList: LiveData<List<ViewItem>> = combineSources(theme, listVoice, voiceSelect, translate) {
 
         val theme = theme.get()
+        val translate = translate.get()
+
         val listVoice = listVoice.get()
         val voiceSelect = voiceSelect.get()
 
@@ -320,26 +303,14 @@ class ConfigViewModel(
 
             val isSelect = voice == voiceSelect
 
-            VoiceOptionViewItem(
-                id = "$index",
-                data = voice,
-                text = translate.get()["voice_index"].orEmpty().replace("\$index", "$index"),
-                isSelect = voice == voiceSelect,
-                textColor = if (isSelect) {
-                    theme.colorPrimary
-                } else {
-                    theme.colorOnSurface
-                },
-                strokeColor = if (isSelect) {
-                    theme.colorPrimary
-                } else {
-                    theme.colorOnSurface
-                },
-                backgroundColor = if (isSelect) {
-                    theme.colorPrimaryVariant
-                } else {
-                    Color.TRANSPARENT
-                }
+            createOptionViewItem(
+                id = "${Id.VOICE}-${voice}",
+                data = voice to isSelect,
+                text = translate["voice_index"].orEmpty()
+                    .replace("\$index", "$index")
+                    .with(ForegroundColorSpan(if (isSelect) theme.colorPrimary else theme.colorOnSurface)),
+                strokeColor = if (isSelect) theme.colorPrimary else theme.colorOnSurface,
+                backgroundColor = if (isSelect) theme.colorPrimaryVariant else Color.TRANSPARENT
             )
         }.let {
 
@@ -348,7 +319,7 @@ class ConfigViewModel(
     }
 
 
-    val listConfig: LiveData<List<ViewItem>> = combineSources(theme, listPhoneViewItem, listVoiceViewItem, listVoiceSpeedViewItem, translateViewItemList) {
+    val listConfig: LiveData<List<ViewItem>> = combineSources(theme, phoneViewItemList, voiceViewItemList, voiceSpeedViewItemList, translateViewItemList) {
 
         val theme = theme.value ?: return@combineSources
 
@@ -358,30 +329,62 @@ class ConfigViewModel(
         val strokeColor = theme.colorOnSurface
         val backgroundColor = Color.TRANSPARENT
 
-        listPhoneViewItem.getOrEmpty().find { it.isSelect }?.let {
+        phoneViewItemList.getOrEmpty().filterIsInstance<TextViewItem>().find { it.data.asObjectOrNull<Pair<String, Boolean>>()?.second == true }?.let {
 
-            list.add(TextOptionViewItem("LIST_PHONE_VIEW_ITEM", it.text, false, textColor = textColor, strokeColor = strokeColor, backgroundColor = backgroundColor))
+            createOptionViewItem(
+                id = "LIST_PHONE_VIEW_ITEM",
+                text = it.text.with(ForegroundColorSpan(textColor)),
+                strokeColor = strokeColor,
+                backgroundColor = backgroundColor
+            )
+        }?.let {
+
+            list.add(it)
         }
 
-        translateViewItemList.getOrEmpty().find { it.isSelect }?.let {
+        translateViewItemList.getOrEmpty().filterIsInstance<TextViewItem>().find { it.data.asObjectOrNull<Pair<String, Boolean>>()?.second == true }?.let {
 
-            list.add(TextOptionViewItem("LIST_TRANSLATION_VIEW_ITEM", it.text, false, textColor = textColor, strokeColor = strokeColor, backgroundColor = backgroundColor))
+            createOptionViewItem(
+                id = "LIST_TRANSLATE_VIEW_ITEM",
+                text = it.text.with(ForegroundColorSpan(textColor)),
+                strokeColor = strokeColor,
+                backgroundColor = backgroundColor
+            )
+        }?.let {
+
+            list.add(it)
         }
 
-        listVoiceSpeedViewItem.getOrEmpty().firstOrNull()?.let {
+        voiceSpeedViewItemList.getOrEmpty().firstOrNull()?.let {
 
-            list.add(TextOptionViewItem("LIST_TRANSLATION_VIEW_ITEM", it.text, false, textColor = textColor, strokeColor = strokeColor, backgroundColor = backgroundColor))
+            createOptionViewItem(
+                id = "LIST_VOICE_SPEED_VIEW_ITEM",
+                text = it.text.with(ForegroundColorSpan(textColor)),
+                strokeColor = strokeColor,
+                backgroundColor = backgroundColor
+            )
+        }?.let {
+
+            list.add(it)
         }
 
-        listVoiceViewItem.getOrEmpty().find { it.isSelect }?.let {
+        voiceViewItemList.getOrEmpty().filterIsInstance<TextViewItem>().find { it.data.asObjectOrNull<Pair<String, Boolean>>()?.second == true }?.let {
 
-            list.add(TextOptionViewItem("LIST_VOICE_VIEW_ITEM", it.text, false, textColor = textColor, strokeColor = strokeColor, backgroundColor = backgroundColor))
+            createOptionViewItem(
+                id = "LIST_VOICE_VIEW_ITEM",
+                text = it.text.with(ForegroundColorSpan(textColor)),
+                strokeColor = strokeColor,
+                backgroundColor = backgroundColor
+            )
+        }?.let {
+
+            list.add(it)
         }
 
         postDifferentValue(list)
     }
 
-    val listViewItem: LiveData<List<ViewItem>> = combineSources(theme, translate, listPhoneViewItem, listVoiceViewItem, translateViewItemList, listVoiceSpeedViewItem) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, phoneViewItemList, voiceViewItemList, translateViewItemList, voiceSpeedViewItemList) {
 
         val theme = theme.value ?: return@combineSources
         val translate = translate.value ?: return@combineSources
@@ -389,11 +392,11 @@ class ConfigViewModel(
         val list = arrayListOf<ViewItem>()
 
 
-        listPhoneViewItem.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
+        phoneViewItemList.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
 
             val text = translate["title_phonetic"].orEmpty()
 
-            list.add(TitleViewItem(text = text, textColor = theme.colorOnSurface))
+            list.add(TextViewItem(id = "title_phonetic", text = text.with(ForegroundColorSpan(theme.colorOnSurface)), padding = Padding(top = DP.DP_16, bottom = DP.DP_4)))
 
             list.addAll(it)
         }
@@ -402,25 +405,25 @@ class ConfigViewModel(
 
             val text = translate["title_translate"].orEmpty()
 
-            list.add(TitleViewItem(text = text, textColor = theme.colorOnSurface))
+            list.add(TextViewItem(id = "title_translate", text = text.with(ForegroundColorSpan(theme.colorOnSurface)), padding = Padding(top = DP.DP_16, bottom = DP.DP_4)))
 
             list.addAll(it)
         }
 
-        listVoiceSpeedViewItem.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
+        voiceSpeedViewItemList.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
 
             val text = translate["title_voice_speed"].orEmpty()
 
-            list.add(TitleViewItem(text = text, textColor = theme.colorOnSurface))
+            list.add(TextViewItem(id = "title_voice_speed", text = text.with(ForegroundColorSpan(theme.colorOnSurface)), padding = Padding(top = DP.DP_16, bottom = DP.DP_4)))
 
             list.addAll(it)
         }
 
-        listVoiceViewItem.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
+        voiceViewItemList.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
 
             val text = translate["title_voice"].orEmpty()
 
-            list.add(TitleViewItem(text = text, textColor = theme.colorOnSurface))
+            list.add(TextViewItem(id = "title_voice", text = text.with(ForegroundColorSpan(theme.colorOnSurface)), padding = Padding(top = DP.DP_16, bottom = DP.DP_4)))
 
             list.addAll(it)
         }
@@ -448,5 +451,41 @@ class ConfigViewModel(
 
         this.phoneticSelect.postDifferentValue(data)
     }
+
+    private fun createOptionViewItem(
+        id: String,
+
+        text: CharSequence,
+
+        data: Any? = null,
+
+        strokeColor: Int,
+        backgroundColor: Int
+    ) = TextViewItem(
+        id = id,
+        data = data,
+        text = text,
+        size = Size(
+            width = ViewGroup.LayoutParams.WRAP_CONTENT,
+            height = ViewGroup.LayoutParams.WRAP_CONTENT
+        ),
+        margin = Margin(
+            top = DP.DP_4,
+            right = DP.DP_8,
+            bottom = DP.DP_4
+        ),
+        padding = Padding(
+            top = DP.DP_4,
+            bottom = DP.DP_4,
+            left = DP.DP_16,
+            right = DP.DP_16
+        ),
+        background = Background(
+            cornerRadius = DP.DP_100,
+            strokeWidth = DP.DP_1,
+            strokeColor = strokeColor,
+            backgroundColor = backgroundColor
+        )
+    )
 }
 

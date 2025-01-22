@@ -11,15 +11,8 @@ class PhoneticsAdapter(onItemClick: (View, PhoneticsViewItem) -> Unit = { _, _ -
     override fun bind(binding: ItemPhoneticsBinding, viewType: Int, position: Int, item: PhoneticsViewItem, payloads: MutableList<Any>) {
         super.bind(binding, viewType, position, item, payloads)
 
-        if (payloads.contains(PAYLOAD_IPA)) {
-
-            refreshIpa(binding, item)
-        }
-
-        if (payloads.contains(PAYLOAD_TEXT)) {
-
-            refreshText(binding, item)
-        }
+        if (payloads.contains(PAYLOAD_IPA)) refreshIpa(binding, item)
+        if (payloads.contains(PAYLOAD_TEXT)) refreshText(binding, item)
     }
 
     override fun bind(binding: ItemPhoneticsBinding, viewType: Int, position: Int, item: PhoneticsViewItem) {

@@ -80,7 +80,7 @@ class GetPhoneticsAsyncUseCase(
 
         val list = textBefore.split(".", "!", "?", "\n").mapIndexedNotNull { _, s ->
 
-            val text = s.trim().replace(" ", " ").lowercase()
+            val text = s.trim().replace("  ", " ").lowercase()
 
             if (text.isBlank()) {
                 return@mapIndexedNotNull null
@@ -91,7 +91,7 @@ class GetPhoneticsAsyncUseCase(
                 mapKeyAndSentence[text] = this
             }
 
-            sentenceObject.phonetics = sentenceObject.text.split(" ", "\n").flatMap {
+            sentenceObject.phonetics = sentenceObject.text.split(" ", "\n", ":").flatMap {
 
                 if (it.endsWith(".")) listOf(it.substring(0, it.length - 1), ".")
                 else if (it.endsWith(",")) listOf(it.substring(0, it.length - 1), ",")

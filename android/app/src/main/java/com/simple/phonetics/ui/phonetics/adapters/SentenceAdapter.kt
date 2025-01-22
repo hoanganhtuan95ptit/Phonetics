@@ -11,15 +11,8 @@ class SentenceAdapter : ViewItemAdapter<SentenceViewItem, ItemSentenceBinding>()
     override fun bind(binding: ItemSentenceBinding, viewType: Int, position: Int, item: SentenceViewItem, payloads: MutableList<Any>) {
         super.bind(binding, viewType, position, item, payloads)
 
-        if (payloads.contains(PAYLOAD_TEXT)) {
-
-            refreshText(binding, item)
-        }
-
-        if (payloads.contains(PAYLOAD_IS_LAST)) {
-
-            refreshIsLast(binding, item)
-        }
+        if (payloads.contains(PAYLOAD_TEXT)) refreshText(binding, item)
+        if (payloads.contains(PAYLOAD_IS_LAST)) refreshIsLast(binding, item)
     }
 
     override fun bind(binding: ItemSentenceBinding, viewType: Int, position: Int, item: SentenceViewItem) {
@@ -44,7 +37,8 @@ data class SentenceViewItem(
     val id: String,
     val data: Sentence,
 
-    var text: String = "",
+    var text: CharSequence = "",
+
     var isLast: Boolean = false
 ) : ViewItem {
 

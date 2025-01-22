@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:orientation="vertical"
+    android:paddingTop="16dp"
+    android:paddingEnd="10dp">
 
     <TextView
         android:id="@+id/tv_text"
         style="?attr/textBody1"
         android:gravity="start"
         android:textColor="?attr/colorOnSurface"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/app_name" />
 
     <TextView
         android:id="@+id/tv_ipa"
-        style="?attr/textBody1"
+        style="?attr/textBody2"
+        android:layout_marginTop="2dp"
         android:gravity="start"
-        android:textColor="@color/color_state_on_surface_accent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_text"
         tools:text="@string/app_name" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

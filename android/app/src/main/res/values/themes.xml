@@ -37,7 +37,7 @@
         <item name="android:colorBackground">#FFFFFF</item>
         <item name="colorOnBackground">#000000</item>
 
-        <item name="colorBackgroundVariant">#EFEFEF</item>
+        <item name="colorBackgroundVariant">#EDEDF8</item>
         <item name="colorOnBackgroundVariant">#5b5b5b</item>
 
         <item name="colorLoading">#5b5b5b</item>
