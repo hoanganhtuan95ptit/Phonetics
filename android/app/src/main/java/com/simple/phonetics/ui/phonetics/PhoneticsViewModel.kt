@@ -558,8 +558,10 @@ class PhoneticsViewModel(
             }
 
             SentenceViewItem(
-                "${index * 1000}",
-                item,
+                id = "${index * 1000}",
+
+                data = item,
+
                 text = textPair.first.with(ForegroundColorSpan(textPair.second)),
                 isLast = index == total
             )
