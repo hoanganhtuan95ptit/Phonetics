@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.phonetics
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
@@ -199,6 +200,8 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.ivPaste.setColorFilter(it.colorPrimary)
             binding.ivCamera.setColorFilter(it.colorPrimary)
             binding.ivGallery.setColorFilter(it.colorPrimary)
+
+            binding.progress.progressTintList = ColorStateList.valueOf(it.colorPrimary)
 
             binding.root.setBackgroundColor(it.colorBackground)
             binding.frameContent.delegate.backgroundColor = it.colorBackground

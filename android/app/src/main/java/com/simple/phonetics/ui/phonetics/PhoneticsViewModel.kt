@@ -22,6 +22,7 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
+import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
@@ -414,9 +415,9 @@ class PhoneticsViewModel(
         postDifferentValue(viewItemList)
     }
 
-    val isShowLoading: LiveData<Boolean> = combineSources(speakState, detectState) {
+    val isShowLoading: LiveData<Boolean> = listenerSources(speakState, detectState) {
 
-        postDifferentValue(speakState.value.isStart() || !detectState.value.isCompleted())
+        postDifferentValue(speakState.value.isStart() || detectState.value.isRunning())
     }
 
     fun getPhonetics(text: String) {
