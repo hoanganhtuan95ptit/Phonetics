@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -12,10 +11,8 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
-import com.simple.core.utils.extentions.hasChar
 import com.simple.coreapp.ui.adapters.TextViewItem
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
-import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.ui.view.round.Background
 import com.simple.coreapp.utils.ext.DP
@@ -118,77 +115,13 @@ class PhoneticsViewModel(
 
 
     @VisibleForTesting
+    val text: LiveData<String> = MediatorLiveData("")
+
+    @VisibleForTesting
     val inputLanguage: LiveData<Language> = MediatorLiveData()
 
     @VisibleForTesting
     val outputLanguage: LiveData<Language> = MediatorLiveData()
-
-
-    @VisibleForTesting
-    val historyState: LiveData<ResultState<List<Sentence>>> = mediatorLiveData {
-
-        postDifferentValue(ResultState.Start)
-
-        getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
-
-            postDifferentValue(ResultState.Success(list))
-        }
-    }
-
-    val historyViewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, historyState) {
-
-        val theme = theme.get()
-        val translate = translate.get()
-
-        val state = historyState.get()
-
-        if (state !is ResultState.Success) {
-
-            return@combineSources
-        }
-
-
-        val viewItemList = arrayListOf<ViewItem>()
-
-        val list = state.toSuccess()?.data.orEmpty()
-
-        list.mapIndexed { index, sentence ->
-
-            HistoryViewItem(
-                id = sentence.text,
-                text = sentence.text.with(ForegroundColorSpan(theme.colorOnSurface)),
-                dividerShow = index != list.lastIndex,
-                dividerColor = theme.colorDivider
-            )
-        }.let {
-
-            viewItemList.addAll(it)
-        }
-
-        if (viewItemList.isNotEmpty()) TextViewItem(
-
-            text = translate["title_history"].orEmpty()
-                .with(ForegroundColorSpan(theme.colorPrimary)),
-            textStyle = TextStyle(
-                textSize = 20f
-            ),
-            margin = Margin(
-                left = DP.DP_16
-            )
-        ).let {
-
-            viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY", height = DP.DP_16))
-            viewItemList.add(0, it)
-
-            viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
-        }
-
-        postDifferentValue(viewItemList)
-    }
-
-
-    @VisibleForTesting
-    val text: LiveData<String> = MediatorLiveData("")
 
 
     val detectState: LiveData<ResultState<String>> = MediatorLiveData()
@@ -320,6 +253,61 @@ class PhoneticsViewModel(
 
 
     @VisibleForTesting
+    val historyState: LiveData<ResultState<List<Sentence>>> = mediatorLiveData {
+
+        postDifferentValue(ResultState.Start)
+
+        getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
+
+            postDifferentValue(ResultState.Success(list))
+        }
+    }
+
+    val historyViewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, historyState) {
+
+        val theme = theme.get()
+        val translate = translate.get()
+
+        val historyState = historyState.get()
+
+        if (historyState !is ResultState.Success) {
+
+            return@combineSources
+        }
+
+
+        val viewItemList = arrayListOf<ViewItem>()
+
+        historyState.toSuccess()?.data.orEmpty().mapIndexed { _, sentence ->
+
+            HistoryViewItem(
+                id = sentence.text,
+                text = sentence.text.with(ForegroundColorSpan(theme.colorOnSurface)),
+            )
+        }.let {
+
+            viewItemList.addAll(it)
+        }
+
+        if (viewItemList.isNotEmpty()) TextViewItem(
+
+            text = translate["title_history"].orEmpty()
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+            textStyle = TextStyle(
+                textSize = 20f
+            )
+        ).let {
+
+            viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY", height = DP.DP_16))
+            viewItemList.add(0, it)
+            viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
+        }
+
+        postDifferentValue(viewItemList)
+    }
+
+
+    @VisibleForTesting
     val phoneticsCode: LiveData<String> = MediatorLiveData()
 
     @VisibleForTesting
@@ -351,88 +339,47 @@ class PhoneticsViewModel(
         val phoneticsCode = phoneticsCode.get()
         val isSupportTranslate = isSupportTranslate.get()
 
-
         state.doStart {
 
             postDifferentValue(itemLoading)
             return@combineSources
         }
 
+        val viewItemList = arrayListOf<ViewItem>()
 
         val listItem = state.toSuccess()?.data.orEmpty()
-
         listItem.flatMapIndexed { indexItem: Int, item: Any ->
 
-            if (item is Phonetics) item.toViewItem(
-                id = "${indexItem * 1000}",
+            item.toViewItem(
+                index = indexItem,
+                total = listItem.lastIndex,
+
                 phoneticsCode = phoneticsCode,
-                theme = theme
-            ).let {
+                isSupportTranslate = isSupportTranslate,
 
-                return@flatMapIndexed listOf(it)
-            }
-
-
-            if (item !is Sentence) {
-
-                return@flatMapIndexed emptyList()
-            }
-
-
-            val list = arrayListOf<ViewItem>()
-
-            item.phonetics.mapIndexed { indexPhonetic, phonetic ->
-
-                phonetic.toViewItem(
-                    id = "${indexItem * 1000 + indexPhonetic}",
-                    phoneticsCode = phoneticsCode,
-                    theme = theme
-                )
-            }.let {
-
-                list.addAll(it)
-            }
-
-            if (isSupportTranslate && item.text.hasChar()) item.translateState.let { translateState ->
-
-                val text = when (translateState) {
-
-                    is ResultState.Start -> {
-                        translate["translating"].orEmpty()
-                    }
-
-                    is ResultState.Success -> {
-                        translateState.data
-                    }
-
-                    else -> {
-                        translate["translate_failed"].orEmpty()
-                    }
-                }
-
-                SentenceViewItem(
-                    "${indexItem * 1000}",
-                    item,
-                    text = text,
-                    isLast = indexItem == listItem.lastIndex
-                )
-            }.let {
-
-                list.add(it)
-            }
-
-            list
+                theme = theme,
+                translate = translate
+            )
         }.let {
 
-            val list = it.toMutableList()
-
-            if (list.isNotEmpty()) {
-
-                list.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_60))
-            }
-
-            postDifferentValue(list)
+            viewItemList.addAll(it)
         }
+
+        if (viewItemList.isNotEmpty()) TextViewItem(
+
+            text = translate["title_result"].orEmpty()
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+            textStyle = TextStyle(
+                textSize = 20f
+            )
+        ).let {
+
+            viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE_AND_RESULT", height = DP.DP_16))
+            viewItemList.add(0, it)
+            viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
+        }
+
+        postDifferentValue(viewItemList)
     }.apply {
 
         postDifferentValue(emptyList())
@@ -494,7 +441,6 @@ class PhoneticsViewModel(
 
     fun updateSupportTranslate(b: Boolean) {
 
-        Log.d("tuanha", "updateSupportTranslate: $b")
         this.isSupportReverse.postDifferentValue(b)
         this.isSupportTranslate.postDifferentValue(b)
     }
@@ -557,6 +503,68 @@ class PhoneticsViewModel(
         state.doFailed {
 
             detectState.postValue(ResultState.Failed(it))
+        }
+    }
+
+    private fun Any.toViewItem(index: Int, total: Int, phoneticsCode: String, isSupportTranslate: Boolean, theme: AppTheme, translate: Map<String, String>): List<ViewItem> = arrayListOf<ViewItem>().apply {
+
+        val item = this@toViewItem
+
+        if (item is Phonetics) item.toViewItem(
+            id = "${index * 1000}",
+            phoneticsCode = phoneticsCode,
+            theme = theme
+        ).let {
+
+            add(it)
+            return@apply
+        }
+
+
+        if (item !is Sentence) {
+
+            return@apply
+        }
+
+
+        item.phonetics.mapIndexed { indexPhonetic, phonetic ->
+
+            phonetic.toViewItem(
+                id = "${index * 1000 + indexPhonetic}",
+                phoneticsCode = phoneticsCode,
+                theme = theme
+            )
+        }.let {
+
+            addAll(it)
+        }
+
+        if (isSupportTranslate) item.translateState.let { translateState ->
+
+            val textPair = when (translateState) {
+
+                is ResultState.Start -> {
+                    translate["translating"].orEmpty() to theme.colorOnSurface
+                }
+
+                is ResultState.Success -> {
+                    translateState.data to theme.colorOnSurface
+                }
+
+                else -> {
+                    translate["translate_failed"].orEmpty() to theme.colorError
+                }
+            }
+
+            SentenceViewItem(
+                "${index * 1000}",
+                item,
+                text = textPair.first.with(ForegroundColorSpan(textPair.second)),
+                isLast = index == total
+            )
+        }.let {
+
+            add(it)
         }
     }
 

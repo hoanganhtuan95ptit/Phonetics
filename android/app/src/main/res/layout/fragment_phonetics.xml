@@ -49,7 +49,7 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/tool_bar"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="450dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <com.simple.coreapp.ui.view.round.RoundFrameLayout
@@ -186,8 +186,9 @@
                 android:layout_height="56dp"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp" />
+                android:paddingVertical="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="8dp" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -195,7 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingHorizontal="8dp"
+            android:paddingHorizontal="16dp"
             android:paddingTop="16dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

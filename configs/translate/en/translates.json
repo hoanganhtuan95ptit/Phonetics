@@ -1,12 +1,11 @@
 {
   "title_voice": "Voice:",
+  "title_result": "Result:",
   "title_history": "History:",
   "title_phonetic": "Phonetic:",
   "title_language": "Select language",
   "title_translate": "Translate:",
   "title_voice_speed": "Voice speed:",
-  "speed_lever": "Speed $lever",
-  "voice_index": "Voice $index",
   "hint_enter_text": "Enter text here!",
   "hint_enter_language_text": "Enter $language_name here!",
   "message_start_sync": "Starting synchronization...",
@@ -22,6 +21,8 @@
   "action_clear": "Clear",
   "action_reverse": "Reverse",
   "action_confirm_change_language": "Change phonetic language",
+  "speed_lever": "Speed $lever",
+  "voice_index": "Voice $index",
   "translating": "Translating",
   "translate_failed": "Translation failed"
 }

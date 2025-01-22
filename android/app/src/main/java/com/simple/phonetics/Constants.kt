@@ -43,6 +43,8 @@ object EventName {
 object Id {
 
     const val IPA = "IPA"
+    const val VOICE = "VOICE"
+    const val TRANSLATE = "TRANSLATE"
 }
 
 object TransitionName {

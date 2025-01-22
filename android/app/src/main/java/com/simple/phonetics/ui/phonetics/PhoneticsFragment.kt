@@ -36,8 +36,6 @@ import com.simple.phonetics.databinding.FragmentPhoneticsBinding
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.adapters.TextOptionAdapter
-import com.simple.phonetics.ui.adapters.TitleAdapter
 import com.simple.phonetics.ui.config.PhoneticsConfigFragment
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
@@ -51,7 +49,6 @@ import com.simple.phonetics.ui.phonetics.view.LanguageViewImpl
 import com.simple.phonetics.ui.phonetics.view.PasteView
 import com.simple.phonetics.ui.phonetics.view.PasteViewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
-import com.simple.phonetics.utils.exts.setImageDrawable
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 
@@ -161,7 +158,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.etText.setText(item.id)
         }
 
-        adapter = MultiAdapter(textAdapter, phoneticsAdapter, historyAdapter, SentenceAdapter(), TitleAdapter(), SpaceAdapter(), com.simple.coreapp.ui.adapters.EmptyAdapter()).apply {
+        adapter = MultiAdapter(textAdapter, phoneticsAdapter, historyAdapter, SentenceAdapter(), SpaceAdapter(), com.simple.coreapp.ui.adapters.EmptyAdapter()).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -178,14 +175,10 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         val textAdapter = TextAdapter { view, item ->
 
-        }
-
-        val textOptionAdapter = TextOptionAdapter { _, item ->
-
             PhoneticsConfigFragment().show(childFragmentManager, "")
         }
 
-        adapterConfig = MultiAdapter(textAdapter, textOptionAdapter, SpaceAdapter()).apply {
+        adapterConfig = MultiAdapter(textAdapter).apply {
 
             binding.recFilter.adapter = this
 
