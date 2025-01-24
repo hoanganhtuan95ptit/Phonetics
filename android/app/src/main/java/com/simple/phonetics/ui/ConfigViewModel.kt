@@ -13,6 +13,7 @@ import com.simple.coreapp.ui.adapters.TextViewItem
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
+import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.ui.view.round.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
@@ -396,7 +397,7 @@ class ConfigViewModel(
 
             val text = translate["title_phonetic"].orEmpty()
 
-            list.add(TextViewItem(id = "title_phonetic", text = text.with(ForegroundColorSpan(theme.colorOnSurface)), padding = Padding(top = DP.DP_16, bottom = DP.DP_4)))
+            list.add(createTextView(id = "title_phonetic", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -405,7 +406,7 @@ class ConfigViewModel(
 
             val text = translate["title_translate"].orEmpty()
 
-            list.add(TextViewItem(id = "title_translate", text = text.with(ForegroundColorSpan(theme.colorOnSurface)), padding = Padding(top = DP.DP_16, bottom = DP.DP_4)))
+            list.add(createTextView(id = "title_translate", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -414,7 +415,7 @@ class ConfigViewModel(
 
             val text = translate["title_voice_speed"].orEmpty()
 
-            list.add(TextViewItem(id = "title_voice_speed", text = text.with(ForegroundColorSpan(theme.colorOnSurface)), padding = Padding(top = DP.DP_16, bottom = DP.DP_4)))
+            list.add(createTextView(id = "title_voice_speed", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -423,7 +424,7 @@ class ConfigViewModel(
 
             val text = translate["title_voice"].orEmpty()
 
-            list.add(TextViewItem(id = "title_voice", text = text.with(ForegroundColorSpan(theme.colorOnSurface)), padding = Padding(top = DP.DP_16, bottom = DP.DP_4)))
+            list.add(createTextView(id = "title_voice", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -452,6 +453,22 @@ class ConfigViewModel(
         this.phoneticSelect.postDifferentValue(data)
     }
 
+    private fun createTextView(
+        id: String,
+        text: CharSequence
+    ) = TextViewItem(
+        id = id,
+        text = text,
+        size = Size(
+            width = ViewGroup.LayoutParams.MATCH_PARENT,
+            height = ViewGroup.LayoutParams.WRAP_CONTENT
+        ),
+        padding = Padding(
+            top = DP.DP_16,
+            bottom = DP.DP_4
+        )
+    )
+
     private fun createOptionViewItem(
         id: String,
 
@@ -465,6 +482,9 @@ class ConfigViewModel(
         id = id,
         data = data,
         text = text,
+        textStyle = TextStyle(
+            textSize = 14f
+        ),
         size = Size(
             width = ViewGroup.LayoutParams.WRAP_CONTENT,
             height = ViewGroup.LayoutParams.WRAP_CONTENT

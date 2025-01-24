@@ -208,15 +208,6 @@ class LanguageRepositoryImpl(
         return api.syncPhonetics(it.source).string()
     }
 
-    override suspend fun getPhoneticBySource(it: Ipa): List<Phonetics> {
-
-        val textAndPhonetics = hashMapOf<String, Phonetics>()
-
-        api.syncPhonetics(it.source).string().toPhonetics(textAndPhonetics, it.code)
-
-        return textAndPhonetics.values.toList()
-    }
-
     override suspend fun updatePhonetic(it: Ipa): ResultState<Unit> = channelFlow {
 
         var count = 0

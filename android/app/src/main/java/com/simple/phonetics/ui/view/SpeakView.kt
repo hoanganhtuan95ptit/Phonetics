@@ -127,8 +127,6 @@ class SpeakViewImpl : SpeakView {
         speak.setVoice(voice)
         speak.setSpeechRate(speakSpeed)
 
-        sendEvent(SPEAK_TEXT_RESPONSE, ResultState.Start)
-
         speak.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
 
             override fun onStart(p0: String?) {
