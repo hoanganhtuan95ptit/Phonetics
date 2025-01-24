@@ -50,8 +50,7 @@ import com.simple.phonetics.ui.phonetics.view.LanguageViewImpl
 import com.simple.phonetics.ui.phonetics.view.PasteView
 import com.simple.phonetics.ui.phonetics.view.PasteViewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
-import com.simple.state.doFailed
-import com.simple.state.doSuccess
+import com.simple.state.toSuccess
 
 
 class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>(),
@@ -294,16 +293,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.progress.setVisible(it)
         }
 
-        detectState.observe(viewLifecycleOwner) {
-
-            val binding = binding ?: return@observe
-
-            it.doSuccess {
-
-                binding.etText.setText(it)
-            }
-        }
-
         historyViewItemList.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
@@ -320,22 +309,19 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         voiceState.observe(viewLifecycleOwner) {
 
-            it.doSuccess {
-
-                viewModel.updateSupportSpeak(it.isNotEmpty())
-            }
-
-            it.doFailed {
-
-                viewModel.updateSupportSpeak(false)
-            }
+            viewModel.updateSupportSpeak(it.toSuccess()?.data.orEmpty().isNotEmpty())
         }
 
         listConfig.asFlow().launchCollect(viewLifecycleOwner) {
 
+            val binding = binding ?: return@launchCollect
+
             viewModel.awaitTransition()
 
-            adapterConfig?.submitList(it)
+            binding.recFilter.submitListAwait(it)
+
+            val transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))
+            binding.recFilter.beginTransitionAwait(transition)
         }
 
         phoneticSelect.observe(viewLifecycleOwner) {

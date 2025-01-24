@@ -17,6 +17,7 @@ import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
 import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
 import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
+import com.simple.state.doSuccess
 
 interface ImageView {
 
@@ -27,7 +28,7 @@ class ImageViewImpl() : ImageView {
 
     override fun setupImage(fragment: PhoneticsFragment) {
 
-        val viewModel by fragment.viewModels<PhoneticsViewModel>()
+        val viewModel = fragment.viewModel
 
         var currentPhotoPath: String? = null
 
@@ -55,6 +56,15 @@ class ImageViewImpl() : ImageView {
             }
         }
 
+        viewModel.detectState.observe(fragment.viewLifecycleOwner) {
+
+            val binding = fragment.binding ?: return@observe
+
+            it.doSuccess {
+
+                binding.etText.setText(it)
+            }
+        }
 
         val binding = fragment.binding ?: return
 

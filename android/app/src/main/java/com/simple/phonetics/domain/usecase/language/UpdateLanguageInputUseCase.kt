@@ -19,85 +19,85 @@ class UpdateLanguageInputUseCase(
 
         listState.put("start", State.START)
         trySend(ResultState.Running(listState))
-
-        param.language.listIpa.forEach {
-
-            listState.put(it.name, State.SYNC_PHONETICS(it.name, 0f))
-            trySend(ResultState.Running(listState))
-
-            var count = 0
-
-            val data = kotlin.runCatching {
-
-                languageRepository.getSourcePhonetic(it)
-            }.getOrElse {
-
-                trySend(ResultState.Failed(it))
-                awaitClose()
-                return@channelFlow
-            }
-
-            val limit = 10 * 1000
-            val dataLength = data.length
-
-            while (count < dataLength) {
-
-                val start = count
-                val end = if (dataLength < count + limit) {
-                    dataLength
-                } else {
-                    count + limit
-                }
-
-                val dataSplit = data.substring(start, end)
-
-                count += dataSplit.length
-
-                val phoneticMap = languageRepository.toPhonetics(dataSplit, it.code)
-
-                val phoneticsOldMap = languageRepository.getPhonetics(phoneticMap.keys.toList()).associateBy {
-                    it.text
-                }
-
-                phoneticMap.values.map { phonetic ->
-
-                    val ipaOld = phoneticsOldMap[phonetic.text]?.ipa ?: phonetic.ipa
-
-                    phonetic.ipa.putAll(ipaOld)
-
-                    phonetic
-                }
-
-                languageRepository.insertOrUpdate(phoneticMap.values.toList())
-
-                listState.put(it.name, State.SYNC_PHONETICS(it.name, count * 1f / dataLength))
-                trySend(ResultState.Running(listState))
-            }
-        }
-
-
-        val job = launch {
-
-            for (i in 0..90) {
-
-                listState.put("SYNC_TRANSLATE", State.SYNC_TRANSLATE("SYNC_TRANSLATE", i / 100f))
-                trySend(ResultState.Running(listState))
-
-
-                delay(200)
-            }
-        }
-
-        runCatching {
-
-            val languageOutput = languageRepository.getLanguageOutput()
-
-            languageRepository.translate(param.language.id, languageOutput.id, "hello")
-        }.getOrElse {
-
-        }
-
-        job.cancel()
+//
+//        param.language.listIpa.forEach {
+//
+//            listState.put(it.name, State.SYNC_PHONETICS(it.name, 0f))
+//            trySend(ResultState.Running(listState))
+//
+//            var count = 0
+//
+//            val data = kotlin.runCatching {
+//
+//                languageRepository.getSourcePhonetic(it)
+//            }.getOrElse {
+//
+//                trySend(ResultState.Failed(it))
+//                awaitClose()
+//                return@channelFlow
+//            }
+//
+//            val limit = 10 * 1000
+//            val dataLength = data.length
+//
+//            while (count < dataLength) {
+//
+//                val start = count
+//                val end = if (dataLength < count + limit) {
+//                    dataLength
+//                } else {
+//                    count + limit
+//                }
+//
+//                val dataSplit = data.substring(start, end)
+//
+//                count += dataSplit.length
+//
+//                val phoneticMap = languageRepository.toPhonetics(dataSplit, it.code)
+//
+//                val phoneticsOldMap = languageRepository.getPhonetics(phoneticMap.keys.toList()).associateBy {
+//                    it.text
+//                }
+//
+//                phoneticMap.values.map { phonetic ->
+//
+//                    val ipaOld = phoneticsOldMap[phonetic.text]?.ipa ?: phonetic.ipa
+//
+//                    phonetic.ipa.putAll(ipaOld)
+//
+//                    phonetic
+//                }
+//
+//                languageRepository.insertOrUpdate(phoneticMap.values.toList())
+//
+//                listState.put(it.name, State.SYNC_PHONETICS(it.name, count * 1f / dataLength))
+//                trySend(ResultState.Running(listState))
+//            }
+//        }
+//
+//
+//        val job = launch {
+//
+//            for (i in 0..90) {
+//
+//                listState.put("SYNC_TRANSLATE", State.SYNC_TRANSLATE("SYNC_TRANSLATE", i / 100f))
+//                trySend(ResultState.Running(listState))
+//
+//
+//                delay(200)
+//            }
+//        }
+//
+//        runCatching {
+//
+//            val languageOutput = languageRepository.getLanguageOutput()
+//
+//            languageRepository.translate(param.language.id, languageOutput.id, "hello")
+//        }.getOrElse {
+//
+//        }
+//
+//        job.cancel()
 
         listState.put("SYNC_TRANSLATE", State.SYNC_TRANSLATE("SYNC_TRANSLATE", 100f))
         trySend(ResultState.Running(listState))
