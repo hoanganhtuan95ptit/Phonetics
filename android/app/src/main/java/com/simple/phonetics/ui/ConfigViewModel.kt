@@ -28,7 +28,7 @@ import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.TranslateUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetVoiceAsyncUseCase
+import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.phonetics.utils.AppTheme

@@ -151,24 +151,28 @@ class SpeakViewImpl : SpeakView {
 
     private fun TextToSpeech.getVoice(languageCode: String): List<Voice> {
 
-        return when (languageCode) {
-            Language.EN -> Locale.US
-            else -> null
-        }.let { locale ->
+        return voices?.filter {
 
-            voices?.filter { it.locale == locale }?.mapIndexed { index, voice -> voice } ?: emptyList()
-        }
+            it.locale == languageCode.toLocale()
+        }?.mapIndexed { index, voice ->
+
+            voice
+        } ?: emptyList()
     }
 
     private fun TextToSpeech.setLanguage(languageCode: String) {
 
-        when (languageCode) {
-            Language.EN -> Locale.US
-            else -> null
-        }?.let {
+        language = languageCode.toLocale()
+    }
 
-            language = it
-        }
+    private fun String.toLocale() = when (this) {
+        Language.EN -> Locale.US
+        Language.KO -> Locale.KOREA
+        Language.JA -> Locale.JAPAN
+        "de" -> Locale.GERMANY
+        "fr" -> Locale.FRANCE
+        "zh" -> Locale.SIMPLIFIED_CHINESE
+        else -> null
     }
 
 }

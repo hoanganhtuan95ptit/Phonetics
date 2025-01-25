@@ -30,8 +30,8 @@ import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
-import com.simple.phonetics.domain.usecase.language.StartSpeakUseCase
-import com.simple.phonetics.domain.usecase.language.StopSpeakUseCase
+import com.simple.phonetics.domain.usecase.voice.StartSpeakUseCase
+import com.simple.phonetics.domain.usecase.voice.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Language
@@ -456,14 +456,14 @@ class PhoneticsViewModel(
         this.outputLanguage.postDifferentValue(language)
     }
 
-    fun startSpeak(text: String, languageCode: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startSpeak(text: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         speakState.postValue(ResultState.Start)
 
         val param = StartSpeakUseCase.Param(
             text = text,
 
-            languageCode = languageCode,
+            languageCode = inputLanguage.value?.id ?: Language.EN,
 
             voiceId = voiceId,
             voiceSpeed = voiceSpeed
@@ -494,7 +494,15 @@ class PhoneticsViewModel(
 
         detectState.postValue(ResultState.Running(path))
 
-        val state = detectUseCase.execute(DetectUseCase.Param(path, "en", "en", DetectOption.TEXT, 500))
+        val param = DetectUseCase.Param(
+            path = path,
+            inputCode = inputLanguage.value?.id ?: "en",
+            outputCode = inputLanguage.value?.id ?: "en",
+            detectOption = DetectOption.TEXT,
+            sizeMax = 500
+        )
+
+        val state = detectUseCase.execute(param)
 
         state.doSuccess { list ->
 

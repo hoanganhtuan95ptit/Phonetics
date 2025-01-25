@@ -2,18 +2,22 @@ package com.simple.phonetics.di
 
 import com.simple.phonetics.data.repositories.AppRepositoryImpl
 import com.simple.phonetics.data.repositories.LanguageRepositoryImpl
+import com.simple.phonetics.data.repositories.PhoneticRepositoryImpl
+import com.simple.phonetics.data.repositories.VoiceRepositoryImpl
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
+import com.simple.phonetics.domain.repositories.PhoneticRepository
+import com.simple.phonetics.domain.repositories.VoiceRepository
 import org.koin.dsl.module
 
 @JvmField
 val repositoryModule = module {
 
-    single<AppRepository> {
-        AppRepositoryImpl(get(), get())
-    }
+    single<AppRepository> { AppRepositoryImpl(get(), get(), getAll()) }
 
-    single<LanguageRepository> {
-        LanguageRepositoryImpl(get(), get(), get(), getAll())
-    }
+    single<VoiceRepository> { VoiceRepositoryImpl() }
+
+    single<PhoneticRepository> { PhoneticRepositoryImpl(get(), get()) }
+
+    single<LanguageRepository> { LanguageRepositoryImpl(get(), get()) }
 }

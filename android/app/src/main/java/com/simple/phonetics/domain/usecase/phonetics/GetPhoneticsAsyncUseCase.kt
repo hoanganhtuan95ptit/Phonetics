@@ -6,9 +6,10 @@ import com.simple.core.utils.extentions.hasNumber
 import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.coreapp.utils.extentions.offerActiveAwait
 import com.simple.phonetics.data.dao.HistoryDao
-import com.simple.phonetics.data.dao.PhoneticsDao
 import com.simple.phonetics.data.dao.RoomHistory
-import com.simple.phonetics.domain.repositories.LanguageRepository
+import com.simple.phonetics.domain.repositories.AppRepository
+import com.simple.phonetics.domain.repositories.PhoneticRepository
+import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.entities.Sentence
 import com.simple.state.ResultState
@@ -22,8 +23,8 @@ import java.util.UUID
 
 class GetPhoneticsAsyncUseCase(
     private val historyDao: HistoryDao,
-    private val phoneticsDao: PhoneticsDao,
-    private val languageRepository: LanguageRepository
+    private val appRepository: AppRepository,
+    private val phoneticRepository: PhoneticRepository
 ) {
 
     private val mapKeyAndSentence = hashMapOf<String, Sentence>()
@@ -65,7 +66,7 @@ class GetPhoneticsAsyncUseCase(
 
         textBefore = if (param.isReverse) {
 
-            val state = languageRepository.translate(
+            val state = appRepository.translate(
                 languageCodeInput = param.outputLanguageCode,
                 languageCodeOutput = param.inputLanguageCode,
                 text = arrayOf(textNew)
@@ -91,10 +92,20 @@ class GetPhoneticsAsyncUseCase(
                 mapKeyAndSentence[text] = this
             }
 
-            sentenceObject.phonetics = sentenceObject.text.split(" ", "\n", ":").flatMap {
+
+            // tách chữ
+            val delimiters = arrayListOf(" ", "\n", ":")
+
+            if (param.inputLanguageCode in listOf(Language.ZH, Language.JA, Language.KO)) {
+
+                delimiters.add("")
+            }
+
+            sentenceObject.phonetics = sentenceObject.text.split(*delimiters.toTypedArray()).flatMap {
 
                 if (it.endsWith(".")) listOf(it.substring(0, it.length - 1), ".")
                 else if (it.endsWith(",")) listOf(it.substring(0, it.length - 1), ",")
+                else if (it.endsWith("\"")) listOf(it.substring(0, it.length - 1), "\"")
                 else listOf(it)
             }.map {
 
@@ -116,7 +127,7 @@ class GetPhoneticsAsyncUseCase(
 
             val mapKeyAndPhonetic = mapKeyAndPhonetic.filter { it.value.ipa.isEmpty() }
 
-            val mapTextAndPhonetics = phoneticsDao.getRoomListByTextList(mapKeyAndPhonetic.keys.toList()).associateBy { it.text.lowercase() }
+            val mapTextAndPhonetics = phoneticRepository.getPhonetics(mapKeyAndPhonetic.keys.toList()).associateBy { it.text.lowercase() }
 
             mapTextAndPhonetics.forEach {
 
@@ -138,7 +149,7 @@ class GetPhoneticsAsyncUseCase(
 
             val mapKeyAndSentence = mapKeyAndSentence.filter { !it.value.translateState.isSuccess() }
 
-            val state = languageRepository.translate(
+            val state = appRepository.translate(
                 languageCodeInput = param.inputLanguageCode,
                 languageCodeOutput = param.outputLanguageCode,
                 text = mapKeyAndSentence.keys.toTypedArray()

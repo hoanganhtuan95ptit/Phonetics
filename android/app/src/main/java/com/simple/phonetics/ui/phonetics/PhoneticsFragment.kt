@@ -34,7 +34,6 @@ import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentPhoneticsBinding
-import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.config.PhoneticsConfigFragment
@@ -344,8 +343,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         viewModel.startSpeak(
             text = text,
-
-            languageCode = configViewModel.inputLanguage.value?.id ?: Language.EN,
 
             voiceId = configViewModel.voiceSelect.value ?: 0,
             voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
