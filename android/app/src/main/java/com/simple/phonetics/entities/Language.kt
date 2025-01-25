@@ -15,6 +15,9 @@ data class Language(
 
         const val EN = "en"
         const val VI = "vi"
+        const val ZH = "zh"
+        const val KO = "ko"
+        const val JA = "ja"
     }
 }
 

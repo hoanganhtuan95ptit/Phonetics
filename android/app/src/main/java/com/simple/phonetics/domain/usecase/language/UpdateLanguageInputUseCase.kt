@@ -1,6 +1,8 @@
 package com.simple.phonetics.domain.usecase.language
 
+import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
+import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.entities.Language
 import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
@@ -10,6 +12,8 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 
 class UpdateLanguageInputUseCase(
+    private val appRepository: AppRepository,
+    private val phoneticRepository: PhoneticRepository,
     private val languageRepository: LanguageRepository,
 ) {
 
@@ -29,7 +33,7 @@ class UpdateLanguageInputUseCase(
 
             val data = kotlin.runCatching {
 
-                languageRepository.getSourcePhonetic(it)
+                phoneticRepository.getSourcePhonetic(it)
             }.getOrElse {
 
                 trySend(ResultState.Failed(it))
@@ -53,9 +57,9 @@ class UpdateLanguageInputUseCase(
 
                 count += dataSplit.length
 
-                val phoneticMap = languageRepository.toPhonetics(dataSplit, it.code)
+                val phoneticMap = phoneticRepository.toPhonetics(dataSplit, it.code)
 
-                val phoneticsOldMap = languageRepository.getPhonetics(phoneticMap.keys.toList()).associateBy {
+                val phoneticsOldMap = phoneticRepository.getPhonetics(phoneticMap.keys.toList()).associateBy {
                     it.text
                 }
 
@@ -68,7 +72,7 @@ class UpdateLanguageInputUseCase(
                     phonetic
                 }
 
-                languageRepository.insertOrUpdate(phoneticMap.values.toList())
+                phoneticRepository.insertOrUpdate(phoneticMap.values.toList())
 
                 listState.put(it.name, State.SYNC_PHONETICS(it.name, count * 1f / dataLength))
                 trySend(ResultState.Running(listState))
@@ -92,7 +96,7 @@ class UpdateLanguageInputUseCase(
 
             val languageOutput = languageRepository.getLanguageOutput()
 
-            languageRepository.translate(param.language.id, languageOutput.id, "hello")
+            appRepository.translate(param.language.id, languageOutput.id, "hello")
         }.getOrElse {
 
         }
