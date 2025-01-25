@@ -46,7 +46,8 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
 
             override fun handleOnBackPressed() {
 
-                if (arguments?.containsKey(Param.ROOT_TRANSITION_NAME) == true) activity?.finish()
+                if (arguments?.getString(Param.ROOT_TRANSITION_NAME) == null) activity?.finish()
+                else activity?.supportFragmentManager?.popBackStack()
             }
         })
 
