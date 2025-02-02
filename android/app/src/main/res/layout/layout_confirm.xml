@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.simple.coreapp.ui.view.round.RoundFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout_confirm"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,8 +16,8 @@
         android:layout_height="56dp"
         android:layout_gravity="center_vertical"
         android:gravity="center"
-        android:text="Confirm"
-        android:textColor="@color/color_confirm_state" />
+        android:textColor="@color/color_confirm_state"
+        tools:text="Confirm" />
 
     <ProgressBar
         android:id="@+id/progress"
