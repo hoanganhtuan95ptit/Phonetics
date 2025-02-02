@@ -5,7 +5,7 @@
     android:id="@+id/frame_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="ContentDescription">
+    tools:ignore="HardcodedText">
 
     <FrameLayout
         android:id="@+id/frame_header"
@@ -27,6 +27,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="8dp"
+            android:contentDescription="language find phonetics"
             android:padding="8dp"
             android:transitionName="select_language" />
     </FrameLayout>
@@ -113,6 +114,7 @@
                             android:id="@+id/iv_paste"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
+                            android:contentDescription="get text from clip"
                             android:padding="6dp"
                             android:src="@drawable/ic_paste_accent_24dp"
                             android:visibility="gone"
@@ -122,6 +124,7 @@
                             android:id="@+id/iv_gallery"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
+                            android:contentDescription="take image from gallery"
                             android:padding="8dp"
                             android:src="@drawable/ic_gallery_accent_24dp" />
 
@@ -129,6 +132,7 @@
                             android:id="@+id/iv_camera"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
+                            android:contentDescription="take image from camera"
                             android:padding="8dp"
                             android:src="@drawable/ic_camera_accent_24dp" />
 
@@ -145,6 +149,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="center"
+                            android:contentDescription="start read text"
                             android:padding="8dp"
                             android:src="@drawable/ic_play_24dp"
                             android:visibility="gone"
@@ -155,6 +160,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="center"
+                            android:contentDescription="stop read text"
                             android:padding="8dp"
                             android:src="@drawable/ic_pause_24dp"
                             android:visibility="gone"
@@ -165,6 +171,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="center"
+                            android:contentDescription="image take text"
                             android:padding="8dp"
                             android:visibility="gone"
                             tools:visibility="visible" />
