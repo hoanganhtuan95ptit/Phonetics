@@ -10,13 +10,11 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.viewModels
 import com.permissionx.guolindev.PermissionX
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
 import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
-import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
 import com.simple.state.doSuccess
 
 interface ImageView {
