@@ -13,7 +13,6 @@ import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.adapters.texts.TextViewItem
-import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle

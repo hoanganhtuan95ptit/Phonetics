@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -13,6 +14,7 @@ import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
+import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.ui.view.round.Background
 import com.simple.coreapp.utils.ext.DP
@@ -373,10 +375,12 @@ class PhoneticsViewModel(
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
             textStyle = TextStyle(
                 textSize = 20f
+            ),
+            size = Size(
+                width = ViewGroup.LayoutParams.MATCH_PARENT
             )
         ).let {
 
-            viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE_AND_RESULT", height = DP.DP_16))
             viewItemList.add(0, it)
             viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_8))
             viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
