@@ -19,6 +19,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
+import java.text.Normalizer
 import java.util.UUID
 
 class GetPhoneticsAsyncUseCase(
@@ -32,14 +33,13 @@ class GetPhoneticsAsyncUseCase(
 
 
     private var id: String = ""
-    private var textBefore: String = ""
-
+    private var textOld: String = ""
 
     suspend fun execute(param: Param?): Flow<ResultState<List<Any>>> = channelFlow {
         checkNotNull(param)
 
 
-        val textNew = param.text.trim()
+        val textNew = param.text.replace("  ", " ").trim().lowercase()
 
         if (textNew.isBlank()) {
 
@@ -51,57 +51,40 @@ class GetPhoneticsAsyncUseCase(
         offerActive(ResultState.Start)
 
 
-        val id = historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.id ?: if (textNew.startsWith(textBefore) || textBefore.startsWith(textNew)) {
+        // tìm các trường tách dòng
+        val lineDelimiters = getLineDelimiters(param)
 
-            id
-        } else {
+        // tìm các trường tách chữ
+        val wordDelimiters = getWordDelimiters(param)
 
-            UUID.randomUUID().toString()
-        }
+        // nếu đang bật chế độ đảo ngược thì thực hiện dịch nội dung
+        val textWrap = if (param.isReverse) {
 
-        this@GetPhoneticsAsyncUseCase.id = id
-
-        historyDao.insertOrUpdate(RoomHistory(id = id, text = textNew))
-
-
-        textBefore = if (param.isReverse) {
-
-            val state = appRepository.translate(
-                languageCodeInput = param.outputLanguageCode,
-                languageCodeOutput = param.inputLanguageCode,
-                text = arrayOf(textNew)
-            )
-
-            state.toSuccess()?.data?.firstOrNull()?.translateState?.toSuccess()?.data ?: textNew
+            translate(textNew, param)
         } else {
 
             textNew
         }
 
+        // lưu lịch sử tìm kiếm phiên âm
+        val id = getId(textWrap)
+        historyDao.insertOrUpdate(RoomHistory(id = id, text = textWrap))
 
-        val list = textBefore.split(".", "!", "?", "\n").mapIndexedNotNull { _, s ->
 
-            val text = s.trim().replace("  ", " ").lowercase()
+        // tách dòng
+        val list = textWrap.split(*lineDelimiters.toTypedArray()).mapIndexedNotNull { _, line ->
 
-            if (text.isBlank()) {
+            if (line.isBlank()) {
                 return@mapIndexedNotNull null
             }
 
-            val sentenceObject = mapKeyAndSentence[text] ?: Sentence(text).apply {
+            val sentenceObject = mapKeyAndSentence[line] ?: Sentence(line).apply {
 
-                mapKeyAndSentence[text] = this
+                mapKeyAndSentence[line] = this
             }
 
 
-            // tách chữ
-            val delimiters = arrayListOf(" ", "\n", ":")
-
-            if (param.inputLanguageCode in listOf(Language.ZH, Language.JA, Language.KO)) {
-
-                delimiters.add("")
-            }
-
-            sentenceObject.phonetics = sentenceObject.text.split(*delimiters.toTypedArray()).flatMap {
+            sentenceObject.phonetics = sentenceObject.text.split(*wordDelimiters.toTypedArray()).flatMap {
 
                 if (it.endsWith(".")) listOf(it.substring(0, it.length - 1), ".")
                 else if (it.endsWith(",")) listOf(it.substring(0, it.length - 1), ",")
@@ -166,6 +149,56 @@ class GetPhoneticsAsyncUseCase(
 
         awaitClose {}
     }
+
+    private fun getId(textNew: String): String {
+
+        val textNewNormalize = textNew.normalize()
+        val textOldNormalize = textOld.lowercase()
+
+        // thực hiện lấy id
+        val id = historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.id ?: if (textNewNormalize.startsWith(textOldNormalize) || textOldNormalize.startsWith(textNewNormalize)) {
+            id
+        } else {
+            UUID.randomUUID().toString()
+        }
+
+        this@GetPhoneticsAsyncUseCase.id = id
+        this@GetPhoneticsAsyncUseCase.textOld = textNew
+
+        return id
+    }
+
+    private suspend fun translate(textNew: String, param: Param): String {
+
+        val state = appRepository.translate(
+            text = arrayOf(textNew),
+
+            languageCodeInput = param.outputLanguageCode,
+            languageCodeOutput = param.inputLanguageCode
+        )
+
+        return state.toSuccess()?.data?.firstOrNull()?.translateState?.toSuccess()?.data ?: textNew
+    }
+
+    private suspend fun getLineDelimiters(param: Param): List<String> {
+
+        return arrayListOf(".", "!", "?", "\n")
+    }
+
+    private suspend fun getWordDelimiters(param: Param): List<String> {
+
+        val wordDelimiters = arrayListOf(" ", "\n", ":")
+        if (param.inputLanguageCode in listOf(Language.ZH, Language.JA, Language.KO)) {
+
+            wordDelimiters.add("")
+        }
+
+        return wordDelimiters
+    }
+
+    private fun String.normalize() = Normalizer.normalize(this, Normalizer.Form.NFD)
+        .replace(Regex("\\p{M}"), "")
+        .replace(Regex("[^\\p{IsAlphabetic}\\p{IsDigit}\\p{IsWhitespace}\\p{Punct}\\p{So}]"), "")
 
     data class Param(
         val text: String,
