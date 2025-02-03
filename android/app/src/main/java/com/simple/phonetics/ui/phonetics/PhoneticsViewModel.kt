@@ -27,6 +27,7 @@ import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
@@ -307,7 +308,7 @@ class PhoneticsViewModel(
             viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
         }
 
-        postDifferentValue(viewItemList)
+        postDifferentValueIfActive(viewItemList)
     }
 
 
@@ -386,25 +387,22 @@ class PhoneticsViewModel(
             viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
         }
 
-        postDifferentValue(viewItemList)
+        postDifferentValueIfActive(viewItemList)
     }.apply {
 
         postDifferentValue(emptyList())
     }
 
-    val listViewItem: LiveData<List<ViewItem>> = combineSources(theme, translate, text, historyViewItemList, phoneticsViewItemList) {
+    val listViewItem: LiveData<List<ViewItem>> = combineSources(theme, translate, historyViewItemList, phoneticsViewItemList) {
 
-        val text = text.get()
         val translate = translate.get()
         val historyViewItemList = historyViewItemList.getOrEmpty()
         val phoneticsViewItemList = phoneticsViewItemList.getOrEmpty()
 
         val viewItemList = arrayListOf<ViewItem>()
+        viewItemList.addAll(phoneticsViewItemList)
 
-        if (text.isNotBlank()) {
-
-            viewItemList.addAll(phoneticsViewItemList)
-        } else {
+        if (viewItemList.isEmpty()) {
 
             viewItemList.addAll(historyViewItemList)
         }
@@ -418,7 +416,7 @@ class PhoneticsViewModel(
             viewItemList.add(it)
         }
 
-        postDifferentValue(viewItemList)
+        postDifferentValueIfActive(viewItemList)
     }
 
     val isShowLoading: LiveData<Boolean> = listenerSources(speakState, detectState) {

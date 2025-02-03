@@ -28,12 +28,10 @@ class GetPhoneticsAsyncUseCase(
 ) {
 
     private val mapKeyAndSentence = hashMapOf<String, Sentence>()
-
     private val mapKeyAndPhonetic = hashMapOf<String, Phonetics>()
 
 
-    private var id: String = UUID.randomUUID().toString()
-
+    private var id: String = ""
     private var textBefore: String = ""
 
 
@@ -45,21 +43,23 @@ class GetPhoneticsAsyncUseCase(
 
         if (textNew.isBlank()) {
 
-            id = UUID.randomUUID().toString()
             offerActiveAwait(ResultState.Success(emptyList()))
             return@channelFlow
         }
 
-        if (textBefore.isBlank() || (!textBefore.startsWith(textNew) && !textNew.startsWith(textBefore))) {
 
-            offerActive(ResultState.Start)
+        offerActive(ResultState.Start)
+
+
+        val id = historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.id ?: if (textNew.startsWith(textBefore) || textBefore.startsWith(textNew)) {
+
+            id
+        } else {
+
+            UUID.randomUUID().toString()
         }
 
-
-        historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.let {
-
-            id = it.id
-        }
+        this@GetPhoneticsAsyncUseCase.id = id
 
         historyDao.insertOrUpdate(RoomHistory(id = id, text = textNew))
 
