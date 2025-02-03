@@ -1,7 +1,9 @@
 package com.simple.phonetics.ui
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -460,7 +462,10 @@ class ConfigViewModel(
         text: CharSequence
     ) = NoneTextViewItem(
         id = id,
-        text = text,
+        text = text.with(StyleSpan(Typeface.BOLD)),
+        textStyle = TextStyle(
+            textSize = 16f
+        ),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
             height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -494,8 +499,8 @@ class ConfigViewModel(
             bottom = DP.DP_6
         ),
         textPadding = Padding(
-            top = DP.DP_6,
-            bottom = DP.DP_6,
+            top = DP.DP_8,
+            bottom = DP.DP_8,
             left = DP.DP_16,
             right = DP.DP_16
         ),

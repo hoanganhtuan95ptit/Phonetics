@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="-10dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:ignore="HardcodedText">
 
     <ImageView
         android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
+        android:contentDescription="ic history"
         android:paddingHorizontal="10dp"
         android:src="@drawable/ic_history_24dp" />
 
@@ -21,7 +23,7 @@
         android:ellipsize="end"
         android:gravity="start"
         android:maxLines="3"
-        android:paddingVertical="10dp"
+        android:paddingVertical="14dp"
         android:textColor="?attr/colorOnSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
