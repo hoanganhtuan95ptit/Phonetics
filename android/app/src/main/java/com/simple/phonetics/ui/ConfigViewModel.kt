@@ -2,6 +2,7 @@ package com.simple.phonetics.ui
 
 import android.graphics.Color
 import android.text.style.ForegroundColorSpan
+import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -9,7 +10,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModels.BaseViewModel
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.asObjectOrNull
-import com.simple.coreapp.ui.adapters.TextViewItem
+import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
+import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
+import com.simple.coreapp.ui.adapters.texts.TextViewItem
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
@@ -397,7 +400,7 @@ class ConfigViewModel(
 
             val text = translate["title_phonetic"].orEmpty()
 
-            list.add(createTextView(id = "title_phonetic", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "title_phonetic", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -406,7 +409,7 @@ class ConfigViewModel(
 
             val text = translate["title_translate"].orEmpty()
 
-            list.add(createTextView(id = "title_translate", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "title_translate", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -415,7 +418,7 @@ class ConfigViewModel(
 
             val text = translate["title_voice_speed"].orEmpty()
 
-            list.add(createTextView(id = "title_voice_speed", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "title_voice_speed", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -424,7 +427,7 @@ class ConfigViewModel(
 
             val text = translate["title_voice"].orEmpty()
 
-            list.add(createTextView(id = "title_voice", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "title_voice", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -453,10 +456,10 @@ class ConfigViewModel(
         this.phoneticSelect.postDifferentValue(data)
     }
 
-    private fun createTextView(
+    private fun createTitleTextView(
         id: String,
         text: CharSequence
-    ) = TextViewItem(
+    ) = NoneTextViewItem(
         id = id,
         text = text,
         size = Size(
@@ -478,29 +481,26 @@ class ConfigViewModel(
 
         strokeColor: Int,
         backgroundColor: Int
-    ) = TextViewItem(
+    ) = ClickTextViewItem(
         id = id,
         data = data,
         text = text,
         textStyle = TextStyle(
-            textSize = 14f
-        ),
-        size = Size(
-            width = ViewGroup.LayoutParams.WRAP_CONTENT,
-            height = ViewGroup.LayoutParams.WRAP_CONTENT
-        ),
-        margin = Margin(
-            top = DP.DP_4,
-            right = DP.DP_8,
-            bottom = DP.DP_4
+            textSize = 14f,
+            textGravity = Gravity.CENTER
         ),
         padding = Padding(
-            top = DP.DP_4,
-            bottom = DP.DP_4,
+            top = DP.DP_6,
+            right = DP.DP_8,
+            bottom = DP.DP_6
+        ),
+        textPadding = Padding(
+            top = DP.DP_6,
+            bottom = DP.DP_6,
             left = DP.DP_16,
             right = DP.DP_16
         ),
-        background = Background(
+        textBackground = Background(
             cornerRadius = DP.DP_100,
             strokeWidth = DP.DP_1,
             strokeColor = strokeColor,

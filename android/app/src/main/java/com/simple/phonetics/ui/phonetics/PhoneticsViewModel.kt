@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.TextViewItem
+import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.ui.view.round.Background
@@ -30,10 +30,10 @@ import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
-import com.simple.phonetics.domain.usecase.voice.StartSpeakUseCase
-import com.simple.phonetics.domain.usecase.voice.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
+import com.simple.phonetics.domain.usecase.voice.StartSpeakUseCase
+import com.simple.phonetics.domain.usecase.voice.StopSpeakUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.entities.Sentence
@@ -290,7 +290,7 @@ class PhoneticsViewModel(
             viewItemList.addAll(it)
         }
 
-        if (viewItemList.isNotEmpty()) TextViewItem(
+        if (viewItemList.isNotEmpty()) NoneTextViewItem(
 
             text = translate["title_history"].orEmpty()
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
@@ -301,6 +301,7 @@ class PhoneticsViewModel(
 
             viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY", height = DP.DP_16))
             viewItemList.add(0, it)
+            viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_8))
             viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
         }
 
@@ -366,7 +367,7 @@ class PhoneticsViewModel(
             viewItemList.addAll(it)
         }
 
-        if (viewItemList.isNotEmpty()) TextViewItem(
+        if (viewItemList.isNotEmpty()) NoneTextViewItem(
 
             text = translate["title_result"].orEmpty()
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
@@ -377,6 +378,7 @@ class PhoneticsViewModel(
 
             viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE_AND_RESULT", height = DP.DP_16))
             viewItemList.add(0, it)
+            viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_8))
             viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
         }
 
