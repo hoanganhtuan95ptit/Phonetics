@@ -119,7 +119,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.etText.setTextSize(TypedValue.COMPLEX_UNIT_SP, if (it.toString().isBlank()) 30f else 16f)
         }
 
-        binding.tvClear.setDebouncedClickListener {
+        binding.frameClear.setDebouncedClickListener {
 
             binding.etText.setText("")
         }
@@ -134,7 +134,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         val binding = binding ?: return
 
-        binding.tvReverse.setOnClickListener {
+        binding.frameReverse.setOnClickListener {
 
             viewModel.switchReverse()
         }

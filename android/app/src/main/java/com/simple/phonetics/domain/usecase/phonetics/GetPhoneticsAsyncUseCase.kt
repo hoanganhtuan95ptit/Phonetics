@@ -75,6 +75,9 @@ class GetPhoneticsAsyncUseCase(
             sentenceObject.phonetics = sentenceObject.text.split(*wordDelimiters.toTypedArray()).map {
 
                 it.removeSpecialCharacters()
+            }.filter {
+
+                it.isNotBlank()
             }.map {
 
                 Phonetics(it)

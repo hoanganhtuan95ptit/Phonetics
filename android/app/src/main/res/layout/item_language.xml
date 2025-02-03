@@ -10,12 +10,14 @@
     android:orientation="horizontal"
     android:padding="16dp"
     app:rv_cornerRadius="16dp"
-    app:rv_strokeWidth="1dp">
+    app:rv_strokeWidth="1dp"
+    tools:ignore="HardcodedText">
 
     <ImageView
         android:id="@+id/iv_flag"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:contentDescription="flag"
         android:scaleType="centerCrop" />
 
     <TextView

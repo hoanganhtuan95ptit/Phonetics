@@ -6,11 +6,13 @@
     android:layout_marginHorizontal="16dp"
     android:orientation="horizontal"
     android:paddingHorizontal="16dp"
-    android:paddingVertical="4dp">
+    android:paddingVertical="4dp"
+    tools:ignore="HardcodedText">
 
     <ImageView
         android:layout_width="40dp"
         android:layout_height="24dp"
+        android:contentDescription="dot"
         android:paddingHorizontal="18dp"
         android:paddingVertical="10dp"
         android:scaleType="centerCrop"
