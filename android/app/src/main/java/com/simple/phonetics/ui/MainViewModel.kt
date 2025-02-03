@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModels.BaseViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
+import com.simple.phonetics.domain.usecase.GetKeyTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.utils.appTranslate

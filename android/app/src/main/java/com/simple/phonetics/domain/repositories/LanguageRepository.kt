@@ -1,8 +1,6 @@
 package com.simple.phonetics.domain.repositories
 
 import com.simple.phonetics.entities.Language
-import com.simple.state.ResultState
-import com.simple.translate.entities.TranslateResponse
 import kotlinx.coroutines.flow.Flow
 
 interface LanguageRepository {

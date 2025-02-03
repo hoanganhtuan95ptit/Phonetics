@@ -3,17 +3,17 @@ package com.simple.phonetics.di
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.SyncUseCase
 import com.simple.phonetics.domain.usecase.TranslateUseCase
-import com.simple.phonetics.domain.usecase.key_translate.GetKeyTranslateAsyncUseCase
+import com.simple.phonetics.domain.usecase.GetKeyTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
-import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
-import com.simple.phonetics.domain.usecase.voice.StartSpeakUseCase
-import com.simple.phonetics.domain.usecase.voice.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
+import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
+import com.simple.phonetics.domain.usecase.voice.StartSpeakUseCase
+import com.simple.phonetics.domain.usecase.voice.StopSpeakUseCase
 import org.koin.dsl.module
 
 @JvmField

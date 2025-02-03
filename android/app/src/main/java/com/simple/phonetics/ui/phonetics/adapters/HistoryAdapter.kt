@@ -3,7 +3,6 @@ package com.simple.phonetics.ui.phonetics.adapters
 import android.view.View
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.databinding.ItemPhoneticsHistoryBinding
 
 class HistoryAdapter(onItemClick: (View, HistoryViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<HistoryViewItem, ItemPhoneticsHistoryBinding>(onItemClick) {

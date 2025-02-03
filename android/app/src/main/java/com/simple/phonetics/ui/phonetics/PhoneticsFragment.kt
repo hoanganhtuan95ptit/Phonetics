@@ -18,7 +18,6 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
-import com.simple.adapter.SpaceAdapter
 import com.simple.coreapp.ui.adapters.EmptyAdapter
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
