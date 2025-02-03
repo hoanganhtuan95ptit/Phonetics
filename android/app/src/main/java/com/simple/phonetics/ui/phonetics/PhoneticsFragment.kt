@@ -19,7 +19,9 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.adapter.SpaceAdapter
-import com.simple.coreapp.ui.adapters.TextAdapter
+import com.simple.coreapp.ui.adapters.EmptyAdapter
+import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
+import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.ui.view.round.setBackground
 import com.simple.coreapp.utils.autoCleared
@@ -143,7 +145,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         val binding = binding ?: return
 
-        val textAdapter = TextAdapter { view, item ->
+        val clickTextAdapter = ClickTextAdapter { view, item ->
 
         }
 
@@ -157,7 +159,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.etText.setText(item.id)
         }
 
-        adapter = MultiAdapter(textAdapter, phoneticsAdapter, historyAdapter, SentenceAdapter(), SpaceAdapter(), com.simple.coreapp.ui.adapters.EmptyAdapter()).apply {
+        adapter = MultiAdapter(clickTextAdapter, phoneticsAdapter, historyAdapter, EmptyAdapter(), SentenceAdapter(), NoneTextAdapter()).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -172,7 +174,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         val binding = binding ?: return
 
-        val textAdapter = TextAdapter { view, item ->
+        val textAdapter = ClickTextAdapter { view, item ->
 
             PhoneticsConfigFragment().show(childFragmentManager, "")
         }
@@ -246,7 +248,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             val binding = binding ?: return@observe
 
             binding.tvClear.text = it.text
-            binding.tvClear.setVisible(it.isShow)
+            binding.frameClear.setVisible(it.isShow)
             binding.tvClear.delegate.setBackground(it.background)
 
             unlockTransition(TAG.CLEAR.name)
@@ -267,7 +269,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             val binding = binding ?: return@observe
 
             binding.tvReverse.text = it.text
-            binding.tvReverse.setVisible(it.isShow)
+            binding.frameReverse.setVisible(it.isShow)
             binding.tvReverse.delegate.setBackground(it.background)
 
             unlockTransition(TAG.REVERSE.name)
