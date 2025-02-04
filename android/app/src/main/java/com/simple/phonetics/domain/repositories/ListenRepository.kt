@@ -3,7 +3,7 @@ package com.simple.phonetics.domain.repositories
 import com.simple.state.ResultState
 import kotlinx.coroutines.flow.Flow
 
-interface VoiceRepository {
+interface ListenRepository {
 
     suspend fun getVoiceListSupportAsync(languageCode: String): ResultState<List<Int>>
 

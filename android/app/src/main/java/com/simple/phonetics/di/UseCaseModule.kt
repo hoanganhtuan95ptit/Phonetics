@@ -11,9 +11,11 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
+import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
+import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
-import com.simple.phonetics.domain.usecase.voice.StartSpeakUseCase
-import com.simple.phonetics.domain.usecase.voice.StopSpeakUseCase
+import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
+import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import org.koin.dsl.module
 
 @JvmField
@@ -61,6 +63,19 @@ val useCaseModule = module {
 
 
     single {
+        StopListenUseCase(get())
+    }
+
+    single {
+        StartListenUseCase(get())
+    }
+
+    single {
+        GetVoiceAsyncUseCase(get(), get())
+    }
+
+
+    single {
         StopSpeakUseCase(get())
     }
 
@@ -68,9 +83,6 @@ val useCaseModule = module {
         StartSpeakUseCase(get())
     }
 
-    single {
-        GetVoiceAsyncUseCase(get(), get())
-    }
 
     single {
         DetectStateUseCase(getAll())

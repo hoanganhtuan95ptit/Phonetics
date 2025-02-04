@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.asFlow
@@ -33,11 +34,12 @@ import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
+import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentPhoneticsBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.config.PhoneticsConfigFragment
+import com.simple.phonetics.ui.config.ConfigFragment
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
@@ -49,6 +51,7 @@ import com.simple.phonetics.ui.phonetics.view.LanguageView
 import com.simple.phonetics.ui.phonetics.view.LanguageViewImpl
 import com.simple.phonetics.ui.phonetics.view.PasteView
 import com.simple.phonetics.ui.phonetics.view.PasteViewImpl
+import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.state.toSuccess
 
@@ -148,9 +151,13 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         }
 
-        val phoneticsAdapter = PhoneticsAdapter { _, phoneticsViewItem ->
+        val phoneticsAdapter = PhoneticsAdapter { _, item ->
 
-            startSpeak(text = phoneticsViewItem.data.text)
+            val fragment = SpeakFragment()
+            fragment.arguments = bundleOf(Param.TEXT to item.data.text)
+
+            fragment.show(childFragmentManager, "")
+//            startSpeak(text = item.data.text)
         }
 
         val historyAdapter = HistoryAdapter { _, item ->
@@ -175,7 +182,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         val textAdapter = ClickTextAdapter { view, item ->
 
-            PhoneticsConfigFragment().show(childFragmentManager, "")
+            ConfigFragment().show(childFragmentManager, "")
         }
 
         adapterConfig = MultiAdapter(textAdapter).apply {

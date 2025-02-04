@@ -53,8 +53,12 @@ class GetPhoneticsAsyncUseCase(
         }
 
         // lưu lịch sử tìm kiếm phiên âm
-        val id = getId(textWrap)
-        historyDao.insertOrUpdate(RoomHistory(id = id, text = textWrap))
+        if (param.saveToHistory) {
+
+            val id = getId(textWrap)
+
+            historyDao.insertOrUpdate(RoomHistory(id = id, text = textWrap))
+        }
 
 
         // tìm các trường hợp tách dòng
@@ -197,6 +201,8 @@ class GetPhoneticsAsyncUseCase(
         val isReverse: Boolean,
 
         val inputLanguageCode: String,
-        val outputLanguageCode: String
+        val outputLanguageCode: String,
+
+        val saveToHistory: Boolean = true
     )
 }

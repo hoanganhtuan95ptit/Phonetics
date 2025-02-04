@@ -3,7 +3,7 @@ package com.simple.phonetics.data.repositories
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
-import com.simple.phonetics.domain.repositories.VoiceRepository
+import com.simple.phonetics.domain.repositories.ListenRepository
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendEvent
 import com.simple.state.ResultState
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 
-class VoiceRepositoryImpl : VoiceRepository {
+class ListenRepositoryImpl : ListenRepository {
 
     override suspend fun getVoiceListSupportAsync(languageCode: String): ResultState<List<Int>> = channelFlow {
 
@@ -51,7 +51,7 @@ class VoiceRepositoryImpl : VoiceRepository {
 
     override suspend fun startSpeakText(text: String, languageCode: String, voiceId: Int, voiceSpeed: Float): Flow<ResultState<String>> = channelFlow {
 
-        listenerEvent(EventName.SPEAK_TEXT_RESPONSE) {
+        listenerEvent(EventName.START_LISTEN_TEXT_RESPONSE) {
 
             when (it) {
 
@@ -78,7 +78,7 @@ class VoiceRepositoryImpl : VoiceRepository {
         }
 
         sendEvent(
-            EventName.SPEAK_TEXT_REQUEST,
+            EventName.START_LISTEN_TEXT_REQUEST,
             mapOf(
                 Param.TEXT to text,
                 Param.LANGUAGE_CODE to languageCode,
@@ -95,7 +95,7 @@ class VoiceRepositoryImpl : VoiceRepository {
 
     override suspend fun stopSpeakText(): ResultState<String> {
 
-        sendEvent(EventName.STOP_SPEAK_TEXT_REQUEST, Unit)
+        sendEvent(EventName.STOP_LISTEN_TEXT_REQUEST, Unit)
 
         return ResultState.Success("")
     }
