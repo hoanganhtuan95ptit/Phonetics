@@ -5,6 +5,7 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.language.LanguageViewModel
 import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
+import com.simple.phonetics.ui.speak.SpeakViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -25,6 +26,10 @@ val viewModelModule = module {
 
     viewModel {
         ConfigViewModel(get(), get(), get(), get())
+    }
+
+    viewModel {
+        SpeakViewModel(get(), get(), get(), get(), get(), get(), get())
     }
 
     viewModel {

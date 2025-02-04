@@ -13,7 +13,6 @@ import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
-import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.ui.view.round.Background
@@ -35,19 +34,13 @@ import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
-import com.simple.phonetics.domain.usecase.voice.StartSpeakUseCase
-import com.simple.phonetics.domain.usecase.voice.StopSpeakUseCase
+import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
+import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.entities.Sentence
+import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.phonetics.ui.phonetics.adapters.HistoryViewItem
-import com.simple.phonetics.ui.phonetics.adapters.PhoneticsViewItem
-import com.simple.phonetics.ui.phonetics.adapters.SentenceViewItem
-import com.simple.phonetics.utils.AppSize
-import com.simple.phonetics.utils.AppTheme
-import com.simple.phonetics.utils.appSize
-import com.simple.phonetics.utils.appTheme
-import com.simple.phonetics.utils.appTranslate
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
@@ -63,12 +56,12 @@ import kotlinx.coroutines.launch
 
 class PhoneticsViewModel(
     private val detectUseCase: DetectUseCase,
-    private val stopSpeakUseCase: StopSpeakUseCase,
-    private val startSpeakUseCase: StartSpeakUseCase,
+    private val stopListenUseCase: StopListenUseCase,
+    private val startListenUseCase: StartListenUseCase,
     private val detectStateUseCase: DetectStateUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
-) : TransitionViewModel() {
+) : CommonViewModel() {
 
     private val itemLoading = listOf(
         LoadingViewItem(R.layout.item_phonetics_loading),
@@ -79,31 +72,6 @@ class PhoneticsViewModel(
         LoadingViewItem(R.layout.item_phonetics_loading),
         LoadingViewItem(R.layout.item_phonetics_loading)
     )
-
-    val size: LiveData<AppSize> = mediatorLiveData {
-
-        appSize.collect {
-
-            postDifferentValue(it)
-        }
-    }
-
-    val theme: LiveData<AppTheme> = mediatorLiveData {
-
-        appTheme.collect {
-
-            postDifferentValue(it)
-        }
-    }
-
-    @VisibleForTesting
-    val translate: LiveData<Map<String, String>> = mediatorLiveData {
-
-        appTranslate.collect {
-
-            postDifferentValue(it)
-        }
-    }
 
     val title: LiveData<CharSequence> = combineSources(theme, translate) {
 
@@ -464,7 +432,7 @@ class PhoneticsViewModel(
 
         speakState.postValue(ResultState.Start)
 
-        val param = StartSpeakUseCase.Param(
+        val param = StartListenUseCase.Param(
             text = text,
 
             languageCode = inputLanguage.value?.id ?: Language.EN,
@@ -475,7 +443,7 @@ class PhoneticsViewModel(
 
         var job: Job? = null
 
-        job = startSpeakUseCase.execute(param).launchCollect(viewModelScope) { state ->
+        job = startListenUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
             speakState.postValue(state)
 
@@ -491,7 +459,7 @@ class PhoneticsViewModel(
 
     fun stopSpeak() = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        stopSpeakUseCase.execute()
+        stopListenUseCase.execute()
     }
 
     fun getTextFromImage(path: String) = viewModelScope.launch(handler + Dispatchers.IO) {
@@ -517,85 +485,6 @@ class PhoneticsViewModel(
 
             detectState.postValue(ResultState.Failed(it))
         }
-    }
-
-    private fun Any.toViewItem(index: Int, total: Int, phoneticsCode: String, isSupportTranslate: Boolean, theme: AppTheme, translate: Map<String, String>): List<ViewItem> = arrayListOf<ViewItem>().apply {
-
-        val item = this@toViewItem
-
-        if (item is Phonetics) item.toViewItem(
-            id = "${index * 1000}",
-            phoneticsCode = phoneticsCode,
-            theme = theme
-        ).let {
-
-            add(it)
-            return@apply
-        }
-
-
-        if (item !is Sentence) {
-
-            return@apply
-        }
-
-
-        item.phonetics.mapIndexed { indexPhonetic, phonetic ->
-
-            phonetic.toViewItem(
-                id = "${index * 1000 + indexPhonetic}",
-                phoneticsCode = phoneticsCode,
-                theme = theme
-            )
-        }.let {
-
-            addAll(it)
-        }
-
-        if (isSupportTranslate) item.translateState.let { translateState ->
-
-            val textPair = when (translateState) {
-
-                is ResultState.Start -> {
-                    translate["translating"].orEmpty() to theme.colorOnSurface
-                }
-
-                is ResultState.Success -> {
-                    translateState.data to theme.colorOnSurface
-                }
-
-                else -> {
-                    translate["translate_failed"].orEmpty() to theme.colorError
-                }
-            }
-
-            SentenceViewItem(
-                id = "${index * 1000}",
-
-                data = item,
-
-                text = textPair.first.with(ForegroundColorSpan(textPair.second)),
-                isLast = index == total
-            )
-        }.let {
-
-            add(it)
-        }
-    }
-
-    private fun Phonetics.toViewItem(id: String, phoneticsCode: String, theme: AppTheme): ViewItem {
-
-        val codeAndIpa = this.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
-
-        val ipa = (codeAndIpa?.get(phoneticsCode) ?: codeAndIpa?.toList()?.first()?.second)?.firstOrNull().orEmpty()
-
-        return PhoneticsViewItem(
-            id = id,
-            data = this,
-
-            ipa = ipa.with(ForegroundColorSpan(if (this.ipa.size > 1) theme.colorPrimary else theme.colorError)),
-            text = this.text.with(ForegroundColorSpan(theme.colorOnSurface)),
-        )
     }
 
     data class SpeakInfo(

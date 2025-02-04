@@ -1,23 +1,26 @@
 package com.simple.phonetics.ui.view
 
-import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
-import android.speech.tts.Voice
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.asFlow
+import com.simple.core.utils.AppException
+import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.phonetics.EventName
-import com.simple.phonetics.EventName.GET_VOICE_RESPONSE
-import com.simple.phonetics.EventName.SPEAK_TEXT_RESPONSE
 import com.simple.phonetics.Param
+import com.simple.phonetics.SpeakState
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendEvent
 import com.simple.state.ResultState
-import kotlinx.coroutines.flow.first
 import java.util.Locale
 
 interface SpeakView {
@@ -27,29 +30,52 @@ interface SpeakView {
 
 class SpeakViewImpl : SpeakView {
 
-    private val speakInitStatus = MediatorLiveData<Int>()
 
     override fun setupSpeak(activity: MainActivity) {
 
-        val textToSpeech = TextToSpeech(activity) { status ->
+        val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
 
-            speakInitStatus.postValue(status)
+        listenerEvent(activity.lifecycle, EventName.CHECK_SUPPORT_SPEAK_TEXT_REQUEST) {
+
+            if (it !is Map<*, *>) {
+
+                return@listenerEvent
+            }
+
+            val languageCode = it[Param.LANGUAGE_CODE].asObjectOrNull<String>()
+            val languageWrap = languageCode?.languageWrap()
+
+            val isSupport = languageWrap != null
+                    && !SpeechRecognizer.isRecognitionAvailable(activity)
+                    && Locale(languageCode).runCatching { isO3Language }.getOrNull() == null
+
+            if (isSupport) {
+
+                sendEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_RESPONSE, ResultState.Success(SpeakState.READY))
+            } else {
+
+                sendEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_RESPONSE, ResultState.Failed(AppException("")))
+            }
         }
 
-        listenerEvent(activity.lifecycle, EventName.GET_VOICE_REQUEST) {
+        listenerEvent(activity.lifecycle, EventName.START_SPEAK_TEXT_REQUEST) {
 
-            getVoice(textToSpeech = textToSpeech, params = it)
-        }
+            if (it !is Map<*, *>) {
 
-        listenerEvent(activity.lifecycle, EventName.SPEAK_TEXT_REQUEST) {
+                return@listenerEvent
+            }
 
-            speakText(textToSpeech = textToSpeech, params = it)
+            val languageWrap = it[Param.LANGUAGE_CODE].asObjectOrNull<String>()?.languageWrap()
+
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, languageWrap)
+            speechRecognizer?.startListening(intent)
         }
 
         listenerEvent(activity.lifecycle, EventName.STOP_SPEAK_TEXT_REQUEST) {
 
-            sendEvent(SPEAK_TEXT_RESPONSE, ResultState.Failed(RuntimeException("stop speak")))
-            textToSpeech.stop()
+            speechRecognizer.stopListen()
         }
 
         activity.lifecycle.addObserver(object : LifecycleEventObserver {
@@ -57,122 +83,99 @@ class SpeakViewImpl : SpeakView {
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
 
                 when (event) {
-                    Lifecycle.Event.ON_PAUSE -> textToSpeech.stopSpeak()
-                    Lifecycle.Event.ON_DESTROY -> textToSpeech.shutdown()
+                    Lifecycle.Event.ON_PAUSE -> {
+
+                        speechRecognizer.stopListen()
+                    }
+
+                    Lifecycle.Event.ON_DESTROY -> {
+
+                        speechRecognizer.stopListen()
+                        speechRecognizer.cancel()
+                        speechRecognizer.destroy()
+                    }
+
                     else -> Unit
                 }
             }
+        })
 
-            private fun TextToSpeech.stopSpeak() {
+        speechRecognizer?.setRecognitionListener(object : RecognitionListener {
 
-                sendEvent(SPEAK_TEXT_RESPONSE, ResultState.Success(""))
+            override fun onReadyForSpeech(params: Bundle) {
+                // Sẵn sàng nhận dạng giọng nói
 
-                stop()
+//                Log.d("tuanha", "onReadyForSpeech: ")
+                sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Running(SpeakState.READY))
+            }
+
+            override fun onBeginningOfSpeech() {
+                // Người dùng bắt đầu nói
+
+//                Log.d("tuanha", "onBeginningOfSpeech: ")
+                sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Running(SpeakState.RECORD_END))
+            }
+
+            override fun onRmsChanged(rmsdB: Float) {
+                // Cường độ âm thanh thay đổi
+//                Log.d("tuanha", "onRmsChanged: ")
+            }
+
+            override fun onBufferReceived(buffer: ByteArray) {
+                // Nhận dữ liệu âm thanh
+//                Log.d("tuanha", "onBufferReceived: ")
+            }
+
+            override fun onEndOfSpeech() {
+                // Người dùng đã ngừng nói
+//                Log.d("tuanha", "onEndOfSpeech: ")
+                sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Running(SpeakState.RECORD_END))
+            }
+
+            override fun onError(error: Int) {
+                // Xử lý lỗi khi nhận dạng giọng nói
+//                Log.d("tuanha", "onError: $error")
+                sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Failed(AppException("$error")))
+            }
+
+            override fun onResults(results: Bundle) {
+                // Kết quả nhận dạng giọng nói
+
+                val matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+
+                if (matches != null) {
+//                    Log.d("tuanha", "onResults: ${matches.toList()}")
+                    sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Success(matches[0]))
+                }
+            }
+
+            override fun onPartialResults(partialResults: Bundle) {
+                // Kết quả nhận dạng phần nào
+            }
+
+            override fun onEvent(eventType: Int, params: Bundle) {
+                // Xử lý các sự kiện đặc biệt
+//                Log.d("tuanha", "onEvent: ")
             }
         })
     }
 
-    private suspend fun getVoice(textToSpeech: TextToSpeech, params: Any) {
+    private fun SpeechRecognizer.stopListen() {
 
-        val status = speakInitStatus.asFlow().first()
-
-        if (status == TextToSpeech.ERROR || params !is Map<*, *>) {
-
-            sendEvent(GET_VOICE_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
-            return
-        }
-
-        val languageCode = params[Param.LANGUAGE_CODE] as String
-
-        textToSpeech.setLanguage(languageCode = languageCode)
-
-        val voiceList = textToSpeech.getVoice(languageCode = languageCode)
-
-
-        if (voiceList.isEmpty()) {
-
-            sendEvent(GET_VOICE_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
-        } else {
-
-            sendEvent(GET_VOICE_RESPONSE, ResultState.Success(voiceList.mapIndexed { index, voice -> index }))
-        }
+        stopListening()
     }
 
-    private suspend fun speakText(textToSpeech: TextToSpeech, params: Any) {
-
-        val speak = textToSpeech
-        val status = speakInitStatus.asFlow().first()
-
-        if (status == TextToSpeech.ERROR || params !is Map<*, *>) {
-
-            sendEvent(SPEAK_TEXT_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
-            return
-        }
-
-        val text = params[Param.TEXT] as String
-        val voiceIndex = params[Param.VOICE_ID] as Int
-        val speakSpeed = params[Param.VOICE_SPEED] as Float
-        val languageCode = params[Param.LANGUAGE_CODE] as String
-
-        speak.setLanguage(languageCode = languageCode)
-
-        val voice = speak.getVoice(languageCode).getOrNull(voiceIndex)
-
-        if (voice == null) {
-
-            sendEvent(SPEAK_TEXT_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
-            return
-        }
-
-        speak.setVoice(voice)
-        speak.setSpeechRate(speakSpeed)
-
-        speak.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-
-            override fun onStart(p0: String?) {
-
-                sendEvent(SPEAK_TEXT_RESPONSE, ResultState.Running(""))
-            }
-
-            override fun onDone(p0: String?) {
-
-                sendEvent(SPEAK_TEXT_RESPONSE, ResultState.Success(""))
-            }
-
-            @Deprecated("Deprecated in Java", ReplaceWith("viewModel.updateSpeakStatus(false)"))
-            override fun onError(p0: String?) {
-
-                sendEvent(SPEAK_TEXT_RESPONSE, ResultState.Failed(RuntimeException(p0 ?: "")))
-            }
-        })
-
-        speak.speak(text, TextToSpeech.QUEUE_FLUSH, null, "1")
-    }
-
-    private fun TextToSpeech.getVoice(languageCode: String): List<Voice> {
-
-        return voices?.filter {
-
-            it.locale == languageCode.toLocale()
-        }?.mapIndexed { index, voice ->
-
-            voice
-        } ?: emptyList()
-    }
-
-    private fun TextToSpeech.setLanguage(languageCode: String) {
-
-        language = languageCode.toLocale()
-    }
-
-    private fun String.toLocale() = when (this) {
-        Language.EN -> Locale.US
-        Language.KO -> Locale.KOREA
-        Language.JA -> Locale.JAPAN
-        "de" -> Locale.GERMANY
-        "fr" -> Locale.FRANCE
-        "zh" -> Locale.SIMPLIFIED_CHINESE
+    private fun String.languageWrap() = when (this) {
+        Language.EN -> "en-US"
+        Language.VI -> "vi-VN"
+        "es" -> "es-ES"
+        "fr" -> "fr-FR"
+        "de" -> "de-DE"
+        "zh" -> "zh-CN"
+        Language.JA -> "ja-JP"
+        Language.KO -> "ko-KR"
+        "hi" -> "hi-IN"
+        "ar" -> "ar-SA"
         else -> null
     }
-
 }

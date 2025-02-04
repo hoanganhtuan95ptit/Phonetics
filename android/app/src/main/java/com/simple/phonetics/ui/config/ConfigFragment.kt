@@ -15,11 +15,11 @@ import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.phonetics.Id
-import com.simple.phonetics.databinding.DialogConfigBinding
+import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 
-class PhoneticsConfigFragment : BaseViewModelSheetFragment<DialogConfigBinding, ConfigViewModel>() {
+class ConfigFragment : BaseViewModelSheetFragment<DialogListBinding, ConfigViewModel>() {
 
     override val viewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)

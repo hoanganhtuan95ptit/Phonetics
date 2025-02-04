@@ -34,6 +34,7 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
 import com.simple.phonetics.entities.Language
+import com.simple.phonetics.ui.base.CommonViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.appTheme
@@ -50,25 +51,7 @@ class ConfigViewModel(
     private val getVoiceAsyncUseCase: GetVoiceAsyncUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
     private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
-) : BaseViewModel() {
-
-    val theme: LiveData<AppTheme> = mediatorLiveData {
-
-        appTheme.collect {
-
-            postDifferentValue(it)
-        }
-    }
-
-    @VisibleForTesting
-    val translate: LiveData<Map<String, String>> = mediatorLiveData {
-
-        appTranslate.collect {
-
-            postDifferentValue(it)
-        }
-    }
-
+) : CommonViewModel() {
 
     val inputLanguage: LiveData<Language> = mediatorLiveData {
 
@@ -490,7 +473,7 @@ class ConfigViewModel(
         data = data,
         text = text,
         textStyle = TextStyle(
-            textSize = 14f,
+            textSize = 16f,
             textGravity = Gravity.CENTER
         ),
         padding = Padding(
