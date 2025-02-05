@@ -153,11 +153,16 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         val phoneticsAdapter = PhoneticsAdapter { _, item ->
 
-            val fragment = SpeakFragment()
-            fragment.arguments = bundleOf(Param.TEXT to item.data.text)
+            if (viewModel.isSupportSpeak.value == true) {
 
-            fragment.show(childFragmentManager, "")
-//            startSpeak(text = item.data.text)
+                val fragment = SpeakFragment()
+                fragment.arguments = bundleOf(Param.TEXT to item.data.text)
+
+                fragment.show(childFragmentManager, "")
+            } else if (viewModel.isSupportListen.value == true) {
+
+                startSpeak(text = item.data.text)
+            }
         }
 
         val historyAdapter = HistoryAdapter { _, item ->
@@ -239,7 +244,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             unlockTransition(TAG.IMAGE.name)
         }
 
-        speakInfo.observe(viewLifecycleOwner) {
+        listenInfo.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
 

@@ -4,10 +4,12 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.SpaceViewItem
@@ -34,6 +36,7 @@ import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
+import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
@@ -52,6 +55,7 @@ import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 class PhoneticsViewModel(
@@ -60,6 +64,7 @@ class PhoneticsViewModel(
     private val startListenUseCase: StartListenUseCase,
     private val detectStateUseCase: DetectStateUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
+    private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
 ) : CommonViewModel() {
 
@@ -94,6 +99,21 @@ class PhoneticsViewModel(
 
     @VisibleForTesting
     val outputLanguage: LiveData<Language> = MediatorLiveData()
+
+
+    @VisibleForTesting
+    val speakState: LiveData<ResultState<Boolean>> = mediatorLiveData {
+
+        checkSupportSpeakAsyncUseCase.execute().collect {
+
+            postValue(it)
+        }
+    }
+
+    val isSupportSpeak: LiveData<Boolean> = combineSources(speakState) {
+
+        postValue(speakState.value?.toSuccess()?.data == true)
+    }
 
 
     val detectState: LiveData<ResultState<String>> = MediatorLiveData()
@@ -163,20 +183,19 @@ class PhoneticsViewModel(
 
 
     @VisibleForTesting
-    val speakState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
+    val listenState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
-    @VisibleForTesting
-    val isSupportSpeak: LiveData<Boolean> = MediatorLiveData(true)
+    val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
 
-    val speakInfo: LiveData<SpeakInfo> = combineSources(text, speakState, isSupportSpeak) {
+    val listenInfo: LiveData<ListenInfo> = combineSources(text, listenState, isSupportListen) {
 
         val text = text.get()
-        val speakState = speakState.get()
-        val isSupportSpeak = isSupportSpeak.get() && text.isNotBlank()
+        val listenState = listenState.get()
+        val isSupportListen = isSupportListen.get() && text.isNotBlank()
 
-        val info = SpeakInfo(
-            isShowPlay = !speakState.isRunning() && isSupportSpeak,
-            isShowPause = speakState.isRunning() && isSupportSpeak
+        val info = ListenInfo(
+            isShowPlay = !listenState.isRunning() && isSupportListen,
+            isShowPause = listenState.isRunning() && isSupportListen
         )
 
         postDifferentValue(info)
@@ -303,7 +322,7 @@ class PhoneticsViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, translate, phoneticsCode, phoneticsState, isSupportTranslate) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, translate, speakState, phoneticsCode, phoneticsState, isSupportTranslate) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -331,7 +350,9 @@ class PhoneticsViewModel(
                 isSupportTranslate = isSupportTranslate,
 
                 theme = theme,
-                translate = translate
+                translate = translate,
+
+                isShowDown = speakState.value?.toSuccess()?.data == true
             )
         }.let {
 
@@ -387,10 +408,17 @@ class PhoneticsViewModel(
         postDifferentValueIfActive(viewItemList)
     }
 
-    val isShowLoading: LiveData<Boolean> = listenerSources(speakState, detectState) {
+    val isShowLoading: LiveData<Boolean> = listenerSources(listenState, detectState) {
 
-        postDifferentValue(speakState.value.isStart() || detectState.value.isRunning())
+        postDifferentValue(listenState.value.isStart() || detectState.value.isRunning())
     }
+
+
+    init {
+
+        isSupportSpeak.asFlow().launchIn(viewModelScope)
+    }
+
 
     fun getPhonetics(text: String) {
 
@@ -404,7 +432,7 @@ class PhoneticsViewModel(
 
     fun updateSupportSpeak(b: Boolean) {
 
-        this.isSupportSpeak.postDifferentValue(b)
+        this.isSupportListen.postDifferentValue(b)
     }
 
     fun updatePhoneticSelect(code: String) {
@@ -430,7 +458,7 @@ class PhoneticsViewModel(
 
     fun startSpeak(text: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        speakState.postValue(ResultState.Start)
+        listenState.postValue(ResultState.Start)
 
         val param = StartListenUseCase.Param(
             text = text,
@@ -445,7 +473,7 @@ class PhoneticsViewModel(
 
         job = startListenUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
-            speakState.postValue(state)
+            listenState.postValue(state)
 
             state.doSuccess {
                 job?.cancel()
@@ -487,7 +515,7 @@ class PhoneticsViewModel(
         }
     }
 
-    data class SpeakInfo(
+    data class ListenInfo(
         val isShowPlay: Boolean = false,
         val isShowPause: Boolean = false,
     )

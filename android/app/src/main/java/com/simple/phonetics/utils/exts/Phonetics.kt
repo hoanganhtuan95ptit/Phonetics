@@ -11,12 +11,13 @@ import com.simple.phonetics.utils.AppTheme
 import com.simple.state.ResultState
 
 
-fun Any.toViewItem(index: Int, total: Int, phoneticsCode: String, isSupportTranslate: Boolean, theme: AppTheme, translate: Map<String, String>): List<ViewItem> = arrayListOf<ViewItem>().apply {
+fun Any.toViewItem(index: Int, total: Int, phoneticsCode: String, isShowDown: Boolean, isSupportTranslate: Boolean, theme: AppTheme, translate: Map<String, String>): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
     val item = this@toViewItem
 
     if (item is Phonetics) item.toViewItem(
         id = "${index * 1000}",
+        isShowDown = isShowDown,
         phoneticsCode = phoneticsCode,
         theme = theme
     ).let {
@@ -36,6 +37,7 @@ fun Any.toViewItem(index: Int, total: Int, phoneticsCode: String, isSupportTrans
 
         phonetic.toViewItem(
             id = "${index * 1000 + indexPhonetic}",
+            isShowDown = isShowDown,
             phoneticsCode = phoneticsCode,
             theme = theme
         )
@@ -75,7 +77,7 @@ fun Any.toViewItem(index: Int, total: Int, phoneticsCode: String, isSupportTrans
     }
 }
 
-fun Phonetics.toViewItem(id: String, phoneticsCode: String, theme: AppTheme): ViewItem {
+fun Phonetics.toViewItem(id: String, isShowDown: Boolean, phoneticsCode: String, theme: AppTheme): ViewItem {
 
     val codeAndIpa = this.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
 
@@ -87,5 +89,7 @@ fun Phonetics.toViewItem(id: String, phoneticsCode: String, theme: AppTheme): Vi
 
         ipa = ipa.with(ForegroundColorSpan(if (this.ipa.size > 1) theme.colorPrimary else theme.colorError)),
         text = this.text.with(ForegroundColorSpan(theme.colorOnSurface)),
+
+        isShowDown = isShowDown
     )
 }

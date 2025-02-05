@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface SpeakRepository {
 
+    suspend fun checkSpeak(languageCode: String): Boolean
+
     suspend fun startSpeakText(languageCode: String): Flow<ResultState<String>>
 
     suspend fun stopSpeakText(): ResultState<String>

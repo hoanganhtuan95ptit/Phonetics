@@ -141,6 +141,7 @@ class SpeakViewModel(
                 total = listItem.lastIndex,
 
                 phoneticsCode = phoneticsCode,
+                isShowDown = false,
                 isSupportTranslate = false,
 
                 theme = theme,

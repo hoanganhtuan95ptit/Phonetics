@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModels.BaseViewModel
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
@@ -32,13 +31,11 @@ import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.TranslateUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
+import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.CommonViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
-import com.simple.phonetics.utils.AppTheme
-import com.simple.phonetics.utils.appTheme
-import com.simple.phonetics.utils.appTranslate
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
