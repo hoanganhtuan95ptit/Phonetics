@@ -88,11 +88,11 @@ dependencies {
 
     implementation hoanganhtuan95Dependencies.analytics
     implementation hoanganhtuan95Dependencies.analytics_log
-    implementation hoanganhtuan95Dependencies.analytics_firebase
+    releaseImplementation hoanganhtuan95Dependencies.analytics_firebase
 
     implementation hoanganhtuan95Dependencies.crashlytics
     implementation hoanganhtuan95Dependencies.crashlytics_log
-    implementation hoanganhtuan95Dependencies.crashlytics_firebase
+    releaseImplementation hoanganhtuan95Dependencies.crashlytics_firebase
 
     implementation hoanganhtuan95Dependencies.detect
     implementation hoanganhtuan95Dependencies.detect_mlkit
@@ -107,10 +107,10 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
 
-    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
-    implementation("com.google.firebase:firebase-crashlytics")
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-perf")
+    releaseImplementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+    releaseImplementation("com.google.firebase:firebase-crashlytics")
+    releaseImplementation("com.google.firebase:firebase-analytics")
+    releaseImplementation("com.google.firebase:firebase-perf")
 
     implementation 'com.google.android.play:review-ktx:2.0.1'
 

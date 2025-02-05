@@ -7,7 +7,7 @@ import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.databinding.ItemPhoneticsBinding
 import com.simple.phonetics.entities.Phonetics
 
-class PhoneticsAdapter(onItemClick: (View, PhoneticsViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<PhoneticsViewItem, ItemPhoneticsBinding>(onItemClick) {
+class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null) : ViewItemAdapter<PhoneticsViewItem, ItemPhoneticsBinding>(onItemClick) {
 
     override fun bind(binding: ItemPhoneticsBinding, viewType: Int, position: Int, item: PhoneticsViewItem, payloads: MutableList<Any>) {
         super.bind(binding, viewType, position, item, payloads)
