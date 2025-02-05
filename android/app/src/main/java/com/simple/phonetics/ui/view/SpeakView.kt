@@ -1,13 +1,10 @@
 package com.simple.phonetics.ui.view
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -46,16 +43,10 @@ class SpeakViewImpl : SpeakView {
             val languageWrap = languageCode?.languageWrap()
 
             val isSupport = languageWrap != null
-                    && !SpeechRecognizer.isRecognitionAvailable(activity)
-                    && Locale(languageCode).runCatching { isO3Language }.getOrNull() == null
+                    && SpeechRecognizer.isRecognitionAvailable(activity)
+                    && Locale(languageCode).runCatching { isO3Language }.getOrNull() != null
 
-            if (isSupport) {
-
-                sendEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_RESPONSE, ResultState.Success(SpeakState.READY))
-            } else {
-
-                sendEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_RESPONSE, ResultState.Failed(AppException("")))
-            }
+            sendEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_RESPONSE, isSupport)
         }
 
         listenerEvent(activity.lifecycle, EventName.START_SPEAK_TEXT_REQUEST) {

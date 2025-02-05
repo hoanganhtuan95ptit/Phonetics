@@ -10,8 +10,28 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.first
 
 class SpeakRepositoryImpl : SpeakRepository {
+
+    override suspend fun checkSpeak(languageCode: String): Boolean = channelFlow<Boolean> {
+
+        listenerEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_RESPONSE) {
+
+            trySend(it.asObjectOrNull<Boolean>() ?: false)
+        }
+
+        sendEvent(
+            EventName.CHECK_SUPPORT_SPEAK_TEXT_REQUEST,
+            mapOf(
+                Param.LANGUAGE_CODE to languageCode,
+            )
+        )
+
+        awaitClose {
+
+        }
+    }.first()
 
     override suspend fun startSpeakText(languageCode: String): Flow<ResultState<String>> = channelFlow {
 
