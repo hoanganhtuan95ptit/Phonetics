@@ -34,9 +34,11 @@ import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
+import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentPhoneticsBinding
+import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.config.ConfigFragment
@@ -149,6 +151,13 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         val clickTextAdapter = ClickTextAdapter { view, item ->
 
+            if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) {
+
+                val fragment = SpeakFragment()
+                fragment.arguments = bundleOf(Param.TEXT to (item.data as Sentence).text)
+
+                fragment.show(childFragmentManager, "")
+            }
         }
 
         val phoneticsAdapter = PhoneticsAdapter { _, item ->

@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.speak
 
-import android.graphics.Color
 import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
@@ -11,16 +10,14 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
-import com.simple.core.utils.AppException
-import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.ui.view.round.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
@@ -28,8 +25,8 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.R
-import com.simple.phonetics.SpeakState
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
@@ -46,11 +43,8 @@ import com.simple.state.doFailed
 import com.simple.state.doStart
 import com.simple.state.doSuccess
 import com.simple.state.isCompleted
-import com.simple.state.isFailed
 import com.simple.state.isRunning
 import com.simple.state.isStart
-import com.simple.state.isSuccess
-import com.simple.state.toFailed
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
@@ -84,6 +78,7 @@ class SpeakViewModel(
     @VisibleForTesting
     val phoneticsCode: LiveData<String> = MediatorLiveData()
 
+    @VisibleForTesting
     val inputLanguage: LiveData<Language> = mediatorLiveData {
 
         getLanguageInputAsyncUseCase.execute().collect {
@@ -92,6 +87,7 @@ class SpeakViewModel(
         }
     }
 
+    @VisibleForTesting
     val outputLanguage: LiveData<Language> = mediatorLiveData {
 
         getLanguageOutputAsyncUseCase.execute().collect {
@@ -100,6 +96,17 @@ class SpeakViewModel(
         }
     }
 
+    val listenState: LiveData<ResultState<String>> = MediatorLiveData()
+
+    val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
+
+
+    val speakState: LiveData<ResultState<String>> = MediatorLiveData()
+
+    val isSupportSpeak: LiveData<Boolean> = MediatorLiveData(true)
+
+
+    @VisibleForTesting
     val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, inputLanguage, outputLanguage) {
 
         val param = GetPhoneticsAsyncUseCase.Param(
@@ -116,14 +123,13 @@ class SpeakViewModel(
         }
     }
 
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, phoneticsCode, phoneticsState) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, phoneticsCode, phoneticsState, isSupportListen) {
 
         val theme = theme.get()
         val translate = translate.get()
 
         val state = phoneticsState.get()
         val phoneticsCode = phoneticsCode.get()
-//        val isSupportTranslate = isSupportTranslate.get()
 
         state.doStart {
 
@@ -134,6 +140,7 @@ class SpeakViewModel(
         val viewItemList = arrayListOf<ViewItem>()
 
         val listItem = state.toSuccess()?.data.orEmpty()
+
         listItem.flatMapIndexed { indexItem: Int, item: Any ->
 
             item.toViewItem(
@@ -141,7 +148,9 @@ class SpeakViewModel(
                 total = listItem.lastIndex,
 
                 phoneticsCode = phoneticsCode,
-                isShowDown = false,
+
+                isShowSpeak = false,
+                isShowListen = isSupportListen.value == true,
                 isSupportTranslate = false,
 
                 theme = theme,
@@ -155,18 +164,6 @@ class SpeakViewModel(
         postDifferentValueIfActive(viewItemList)
     }
 
-    val listenState: LiveData<ResultState<String>> = MediatorLiveData()
-
-    @VisibleForTesting
-    val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
-
-
-    val speakState: LiveData<ResultState<String>> = MediatorLiveData()
-
-    @VisibleForTesting
-    val isSupportSpeak: LiveData<Boolean> = MediatorLiveData(true)
-
-
     val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, listenState, isSupportListen, speakState, isSupportSpeak, phoneticsViewItemList) {
 
         val list = arrayListOf<ViewItem>()
@@ -177,10 +174,8 @@ class SpeakViewModel(
             list.add(SpaceViewItem(id = "SPACE_PHONETICS", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
         }
 
-        Log.d("tuanha", "viewItemList: ")
         val size = size.value ?: return@listenerSources
 
-        Log.d("tuanha", "viewItemList:1 ")
         val speakState = speakState.value
         val isSupportSpeak = isSupportSpeak.value ?: false
 
@@ -288,9 +283,21 @@ class SpeakViewModel(
             list.add(it)
         }
 
-        Log.d("tuanha", "viewItemList3: ")
+
         postDifferentValueIfActive(list)
     }
+
+
+    val trust: LiveData<Event<Boolean>> = combineSources(speakState, text) {
+
+        val text = text.value ?: return@combineSources
+        val speakState = speakState.value ?: return@combineSources
+
+        val result = speakState.toSuccess()?.data
+
+        postDifferentValue(result.equals(text, true).toEvent())
+    }
+
 
     fun updateText(it: String) {
 
@@ -308,12 +315,12 @@ class SpeakViewModel(
     }
 
 
-    fun startListen(voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startListen(text: String? = null, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         listenState.postValue(ResultState.Start)
 
         val param = StartListenUseCase.Param(
-            text = text.value.orEmpty(),
+            text = text ?: this@SpeakViewModel.text.value.orEmpty(),
 
             languageCode = inputLanguage.value?.id ?: Language.EN,
 
@@ -355,8 +362,7 @@ class SpeakViewModel(
 
         job = startSpeakUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
-            Log.d("tuanha", "startSpeak: ${state.javaClass.simpleName}")
-
+            Log.d("tuanha", "startSpeak: ${state.javaClass.simpleName} -> ${state.toRunning()?.data}")
             speakState.postValue(state)
 
             state.doSuccess {

@@ -4,6 +4,7 @@ import android.view.View
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.utils.ext.setVisible
+import com.simple.image.setImage
 import com.simple.phonetics.databinding.ItemPhoneticsBinding
 import com.simple.phonetics.entities.Phonetics
 
@@ -14,7 +15,7 @@ class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null)
 
         if (payloads.contains(PAYLOAD_IPA)) refreshIpa(binding, item)
         if (payloads.contains(PAYLOAD_TEXT)) refreshText(binding, item)
-        if (payloads.contains(PAYLOAD_DOWN)) refreshDown(binding, item)
+        if (payloads.contains(PAYLOAD_IMAGE)) refreshImage(binding, item)
     }
 
     override fun bind(binding: ItemPhoneticsBinding, viewType: Int, position: Int, item: PhoneticsViewItem) {
@@ -22,22 +23,23 @@ class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null)
 
         refreshIpa(binding, item)
         refreshText(binding, item)
-        refreshDown(binding, item)
+        refreshImage(binding, item)
     }
 
     private fun refreshIpa(binding: ItemPhoneticsBinding, item: PhoneticsViewItem) {
 
-        binding.tvIpa.setText(item.ipa)
+        binding.tvIpa.text = item.ipa
     }
 
     private fun refreshText(binding: ItemPhoneticsBinding, item: PhoneticsViewItem) {
 
-        binding.tvText.setText(item.text)
+        binding.tvText.text = item.text
     }
 
-    private fun refreshDown(binding: ItemPhoneticsBinding, item: PhoneticsViewItem) {
+    private fun refreshImage(binding: ItemPhoneticsBinding, item: PhoneticsViewItem) {
 
-        binding.ivDown.setVisible(item.isShowDown)
+        binding.ivDown.setImage(item.image)
+        binding.ivDown.setVisible(item.image != 0)
     }
 }
 
@@ -48,7 +50,7 @@ data class PhoneticsViewItem(
     var ipa: CharSequence = "",
     var text: CharSequence = "",
 
-    var isShowDown: Boolean = false
+    var image: Int = 0
 ) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(
@@ -58,10 +60,10 @@ data class PhoneticsViewItem(
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
         ipa to PAYLOAD_IPA,
         text to PAYLOAD_TEXT,
-        isShowDown to PAYLOAD_DOWN
+        image to PAYLOAD_IMAGE
     )
 }
 
 private const val PAYLOAD_IPA = "PAYLOAD_IPA"
 private const val PAYLOAD_TEXT = "PAYLOAD_TEXT"
-private const val PAYLOAD_DOWN = "PAYLOAD_DOWN"
+private const val PAYLOAD_IMAGE = "PAYLOAD_DOWN"

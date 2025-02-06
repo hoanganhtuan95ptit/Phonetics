@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -26,7 +27,6 @@ interface SpeakView {
 }
 
 class SpeakViewImpl : SpeakView {
-
 
     override fun setupSpeak(activity: MainActivity) {
 
@@ -76,11 +76,13 @@ class SpeakViewImpl : SpeakView {
                 when (event) {
                     Lifecycle.Event.ON_PAUSE -> {
 
+                        Log.d("tuanha", "onStateChanged: ON_PAUSE")
                         speechRecognizer.stopListen()
                     }
 
                     Lifecycle.Event.ON_DESTROY -> {
 
+                        Log.d("tuanha", "onStateChanged: ON_DESTROY")
                         speechRecognizer.stopListen()
                         speechRecognizer.cancel()
                         speechRecognizer.destroy()
@@ -96,15 +98,15 @@ class SpeakViewImpl : SpeakView {
             override fun onReadyForSpeech(params: Bundle) {
                 // Sẵn sàng nhận dạng giọng nói
 
-//                Log.d("tuanha", "onReadyForSpeech: ")
+                Log.d("tuanha", "onReadyForSpeech: ")
                 sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Running(SpeakState.READY))
             }
 
             override fun onBeginningOfSpeech() {
                 // Người dùng bắt đầu nói
 
-//                Log.d("tuanha", "onBeginningOfSpeech: ")
-                sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Running(SpeakState.RECORD_END))
+                Log.d("tuanha", "onBeginningOfSpeech: ")
+                sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Running(SpeakState.RECORD_START))
             }
 
             override fun onRmsChanged(rmsdB: Float) {
@@ -119,13 +121,13 @@ class SpeakViewImpl : SpeakView {
 
             override fun onEndOfSpeech() {
                 // Người dùng đã ngừng nói
-//                Log.d("tuanha", "onEndOfSpeech: ")
+                Log.d("tuanha", "onEndOfSpeech: ")
                 sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Running(SpeakState.RECORD_END))
             }
 
             override fun onError(error: Int) {
                 // Xử lý lỗi khi nhận dạng giọng nói
-//                Log.d("tuanha", "onError: $error")
+                Log.d("tuanha", "onError: $error")
                 sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Failed(AppException("$error")))
             }
 
@@ -135,7 +137,7 @@ class SpeakViewImpl : SpeakView {
                 val matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
 
                 if (matches != null) {
-//                    Log.d("tuanha", "onResults: ${matches.toList()}")
+                    Log.d("tuanha", "onResults: ${matches.toList()}")
                     sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Success(matches[0]))
                 }
             }
