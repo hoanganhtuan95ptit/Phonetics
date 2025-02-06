@@ -1,11 +1,9 @@
 package com.simple.phonetics.utils.exts
 
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
-import com.simple.coreapp.ui.adapters.texts.TextViewItem
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
@@ -117,7 +115,7 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
             right = DP.DP_16
         ),
 
-        text = "Thử phát âm",
+        text = translate["action_try_speak"].orEmpty(),
         textPadding = Padding(
             left = DP.DP_18 + DP.DP_8 * 2,
             top = DP.DP_8,
@@ -170,7 +168,7 @@ fun Phonetics.toViewItem(
         id = id,
         data = this,
 
-        ipa = text.with(ForegroundColorSpan(if (ipaList.size <= 1) theme.colorPrimary else theme.colorError)),
+        ipa = text.with(ForegroundColorSpan(if (ipaList.size > 1) theme.colorPrimary else theme.colorError)),
         text = this.text.with(ForegroundColorSpan(theme.colorOnSurface)),
 
         image = image

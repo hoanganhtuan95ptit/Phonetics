@@ -107,10 +107,10 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
 
-    releaseImplementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     releaseImplementation("com.google.firebase:firebase-crashlytics")
     releaseImplementation("com.google.firebase:firebase-analytics")
-    releaseImplementation("com.google.firebase:firebase-perf")
+    implementation("com.google.firebase:firebase-perf")
 
     implementation 'com.google.android.play:review-ktx:2.0.1'
 

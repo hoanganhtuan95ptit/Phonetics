@@ -19,12 +19,12 @@ class GetKeyTranslateAsyncUseCase(
     suspend fun execute(): Flow<Map<String, String>> = channelFlow {
 
         // call api để lấy bản dịch
-        languageRepository.getLanguageOutputAsync().distinctUntilChanged().map {
+        languageRepository.getLanguageOutputAsync().distinctUntilChanged().launchCollect(this) {
 
-            val list = appRepository.getKeyTranslate(it.id)
+            val list = appRepository.runCatching { getKeyTranslate(it.id) }.getOrNull() ?: return@launchCollect
 
             appRepository.updateKeyTranslate(list)
-        }.launchIn(this)
+        }
 
 
         // lấy bản dịch hiện có

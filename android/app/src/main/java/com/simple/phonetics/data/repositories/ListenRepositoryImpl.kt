@@ -90,6 +90,7 @@ class ListenRepositoryImpl : ListenRepository {
 
         awaitClose {
 
+            sendEvent(EventName.STOP_LISTEN_TEXT_REQUEST, Unit)
         }
     }
 
