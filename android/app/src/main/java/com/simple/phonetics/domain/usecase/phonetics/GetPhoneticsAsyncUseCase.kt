@@ -129,7 +129,7 @@ class GetPhoneticsAsyncUseCase(
     private fun getId(textNew: String): String {
 
         val textNewNormalize = textNew.normalize()
-        val textOldNormalize = textOld.lowercase()
+        val textOldNormalize = textOld
 
         // thực hiện lấy id
         val id = historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.id ?: if (textNewNormalize.startsWith(textOldNormalize) || textOldNormalize.startsWith(textNewNormalize)) {
@@ -139,7 +139,7 @@ class GetPhoneticsAsyncUseCase(
         }
 
         this@GetPhoneticsAsyncUseCase.id = id
-        this@GetPhoneticsAsyncUseCase.textOld = textNew
+        this@GetPhoneticsAsyncUseCase.textOld = textNewNormalize
 
         return id
     }
