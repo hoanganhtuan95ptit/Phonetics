@@ -115,7 +115,8 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
             right = DP.DP_16
         ),
 
-        text = translate["action_try_speak"].orEmpty(),
+        text = translate["action_try_speak"].orEmpty().with(ForegroundColorSpan(theme.colorPrimary)),
+
         textPadding = Padding(
             left = DP.DP_18 + DP.DP_8 * 2,
             top = DP.DP_8,
@@ -132,6 +133,7 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
         ),
 
         imageLeft = R.drawable.ic_microphone_24dp,
+
         imageLeftSize = Size(
             width = DP.DP_18,
             height = DP.DP_24

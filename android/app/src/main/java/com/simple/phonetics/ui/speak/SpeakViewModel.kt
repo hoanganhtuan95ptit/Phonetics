@@ -53,11 +53,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class SpeakViewModel(
-    private val stopListenUseCase: StopListenUseCase,
-    private val startListenUseCase: StartListenUseCase,
-
     private val stopSpeakUseCase: StopSpeakUseCase,
     private val startSpeakUseCase: StartSpeakUseCase,
+
+    private val stopListenUseCase: StopListenUseCase,
+    private val startListenUseCase: StartListenUseCase,
 
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
@@ -249,7 +249,7 @@ class SpeakViewModel(
             id = ID.LISTEN,
 
             image = if (listenState == null || listenState.isStart() || listenState.isCompleted()) {
-                R.drawable.ic_play_24dp
+                R.drawable.ic_volume_24dp
             } else {
                 R.drawable.ic_pause_24dp
             },
@@ -393,7 +393,7 @@ class SpeakViewModel(
             languageCode = inputLanguage.value?.id ?: Language.EN,
         )
 
-         startSpeakUseCase.execute(param).launchCollect(viewModelScope) { state ->
+        startSpeakUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
             val stateWrap = state
 

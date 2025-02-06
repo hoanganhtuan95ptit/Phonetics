@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
@@ -22,12 +21,11 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.entities.Language
+import com.simple.phonetics.ui.base.CommonViewModel
 import com.simple.phonetics.ui.language.adapters.LanguageLoadingViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
 import com.simple.phonetics.utils.AppTheme
-import com.simple.phonetics.utils.appTheme
-import com.simple.phonetics.utils.appTranslate
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isSuccess
@@ -40,24 +38,7 @@ class LanguageViewModel(
     private val getLanguageSupportUseCase: GetLanguageSupportUseCase,
     private val updateLanguageInputUseCase: UpdateLanguageInputUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
-) : TransitionViewModel() {
-
-    val theme: LiveData<AppTheme> = mediatorLiveData {
-
-        appTheme.collect {
-
-            postDifferentValue(it)
-        }
-    }
-
-    @VisibleForTesting
-    val translate: LiveData<Map<String, String>> = mediatorLiveData {
-
-        appTranslate.collect {
-
-            postDifferentValue(it)
-        }
-    }
+) : CommonViewModel() {
 
     val headerInfo: LiveData<HeaderInfo> = combineSources(theme, translate) {
 

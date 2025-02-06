@@ -13,7 +13,6 @@
     app:rv_strokeDashGap="10dp"
     app:rv_strokeDashWidth="10dp"
     app:rv_strokeWidth="1dp"
-    tools:background="@drawable/bg_language_state"
     tools:rv_strokeColor="?attr/colorDivider">
 
     <com.simple.coreapp.ui.view.round.RoundView
@@ -22,8 +21,7 @@
         android:layout_height="50dp"
         android:alpha="0.2"
         android:scaleType="centerCrop"
-        app:rv_cornerRadius="16dp"
-        tools:background="@drawable/bg_corner_8dp_solid_loading" />
+        app:rv_cornerRadius="16dp" />
 
     <com.simple.coreapp.ui.view.round.RoundView
         android:id="@+id/tv_name"
@@ -32,7 +30,6 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:alpha="0.2"
-        app:rv_cornerRadius="16dp"
-        tools:background="@drawable/bg_corner_24dp_solid_loading" />
+        app:rv_cornerRadius="16dp" />
 
 </com.simple.coreapp.ui.view.round.RoundLinearLayout>
