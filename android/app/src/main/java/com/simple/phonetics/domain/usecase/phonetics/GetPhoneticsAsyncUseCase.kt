@@ -133,10 +133,9 @@ class GetPhoneticsAsyncUseCase(
     private fun getId(textNew: String): String {
 
         val textNewNormalize = textNew.normalize()
-        val textOldNormalize = textOld
 
         // thực hiện lấy id
-        val id = historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.id ?: if (textNewNormalize.startsWith(textOldNormalize) || textOldNormalize.startsWith(textNewNormalize)) {
+        val id = historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.id ?: if (textNewNormalize.startsWith(textOld) || textOld.startsWith(textNewNormalize)) {
             id
         } else {
             UUID.randomUUID().toString()
