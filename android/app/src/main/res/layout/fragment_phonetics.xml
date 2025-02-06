@@ -164,7 +164,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="start read text"
                             android:padding="12dp"
-                            android:src="@drawable/ic_play_24dp"
+                            android:src="@drawable/ic_volume_24dp"
                             android:visibility="gone"
                             tools:visibility="visible" />
 
