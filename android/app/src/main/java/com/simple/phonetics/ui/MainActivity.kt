@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.phonetics.Deeplink
+import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.view.ListenView
 import com.simple.phonetics.ui.view.ListenViewImpl
@@ -61,7 +63,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
             if (it == null) {
 
-                sendDeeplink(Deeplink.LANGUAGE)
+                sendDeeplink(Deeplink.LANGUAGE, extras = bundleOf(Param.FIRST to true))
             } else {
 
                 sendDeeplink(Deeplink.PHONETICS)

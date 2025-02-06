@@ -70,6 +70,7 @@ class SpeakRepositoryImpl : SpeakRepository {
 
         awaitClose {
 
+            sendEvent(EventName.STOP_SPEAK_TEXT_REQUEST, Unit)
         }
     }
 

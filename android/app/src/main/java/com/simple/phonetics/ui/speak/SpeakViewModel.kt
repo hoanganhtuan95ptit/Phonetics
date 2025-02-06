@@ -1,6 +1,6 @@
 package com.simple.phonetics.ui.speak
 
-import android.util.Log
+import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -14,9 +14,11 @@ import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.ui.view.round.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
@@ -45,7 +47,6 @@ import com.simple.state.doSuccess
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isStart
-import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -106,6 +107,17 @@ class SpeakViewModel(
     val isSupportSpeak: LiveData<Boolean> = MediatorLiveData(true)
 
 
+    val trust: LiveData<Event<Boolean>> = combineSources(text, speakState) {
+
+        val text = text.value ?: return@combineSources
+        val speakState = speakState.value ?: return@combineSources
+
+        val result = speakState.toSuccess()?.data
+
+        postDifferentValue(result.equals(text, true).toEvent())
+    }
+
+
     @VisibleForTesting
     val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, inputLanguage, outputLanguage) {
 
@@ -164,7 +176,7 @@ class SpeakViewModel(
         postDifferentValueIfActive(viewItemList)
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, listenState, isSupportListen, speakState, isSupportSpeak, phoneticsViewItemList) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, phoneticsViewItemList, listenState, isSupportListen, speakState, isSupportSpeak, trust) {
 
         val list = arrayListOf<ViewItem>()
 
@@ -175,6 +187,7 @@ class SpeakViewModel(
         }
 
         val size = size.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSources
 
         val speakState = speakState.value
         val isSupportSpeak = isSupportSpeak.value ?: false
@@ -185,23 +198,51 @@ class SpeakViewModel(
         if (speakState is ResultState.Success) NoneTextViewItem(
             id = "1",
 
-            text = speakState.data,
+            text = speakState.data.with(
+                ForegroundColorSpan(
+                    if (trust.value?.peekContent() == true) {
+                        theme.colorOnPrimaryVariant
+                    } else {
+                        theme.colorOnErrorVariant
+                    }
+                )
+            ),
 
             textStyle = TextStyle(
                 textGravity = Gravity.CENTER
             ),
             size = Size(
-                width = ViewGroup.LayoutParams.MATCH_PARENT,
+                width = ViewGroup.LayoutParams.WRAP_CONTENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
             ),
             textSize = Size(
-                width = ViewGroup.LayoutParams.MATCH_PARENT,
+                width = ViewGroup.LayoutParams.WRAP_CONTENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
+            ),
+            textPadding = Padding(
+                left = DP.DP_16,
+                top = DP.DP_8,
+                right = DP.DP_16,
+                bottom = DP.DP_8
+            ),
+            textBackground = Background(
+                strokeColor = if (trust.value?.peekContent() == true) {
+                    theme.colorPrimary
+                } else {
+                    theme.colorError
+                },
+                strokeWidth = DP.DP_1,
+                cornerRadius = DP.DP_8,
+                backgroundColor = if (trust.value?.peekContent() == true) {
+                    theme.colorPrimaryVariant
+                } else {
+                    theme.colorErrorVariant
+                }
             )
         ).let {
 
             list.add(it)
-            list.add(SpaceViewItem(id = "SPACE_PHONETICS_1", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_56))
+            list.add(SpaceViewItem(id = "SPACE_PHONETICS_1", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
         }
 
         if (isSupportListen) ImageStateViewItem(
@@ -221,10 +262,10 @@ class SpeakViewModel(
             ),
 
             padding = Padding(
-                left = DP.DP_16,
-                top = DP.DP_16,
-                right = DP.DP_16,
-                bottom = DP.DP_16
+                left = DP.DP_18,
+                top = DP.DP_18,
+                right = DP.DP_18,
+                bottom = DP.DP_18
             )
         ).let {
 
@@ -264,6 +305,12 @@ class SpeakViewModel(
             imageSize = Size(
                 width = DP.DP_56,
                 height = DP.DP_56
+            ),
+            imagePadding = Padding(
+                left = DP.DP_8,
+                top = DP.DP_8,
+                right = DP.DP_8,
+                bottom = DP.DP_8
             )
         ).let {
 
@@ -286,18 +333,6 @@ class SpeakViewModel(
 
         postDifferentValueIfActive(list)
     }
-
-
-    val trust: LiveData<Event<Boolean>> = combineSources(speakState, text) {
-
-        val text = text.value ?: return@combineSources
-        val speakState = speakState.value ?: return@combineSources
-
-        val result = speakState.toSuccess()?.data
-
-        postDifferentValue(result.equals(text, true).toEvent())
-    }
-
 
     fun updateText(it: String) {
 
@@ -358,20 +393,11 @@ class SpeakViewModel(
             languageCode = inputLanguage.value?.id ?: Language.EN,
         )
 
-        var job: Job? = null
+         startSpeakUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
-        job = startSpeakUseCase.execute(param).launchCollect(viewModelScope) { state ->
+            val stateWrap = state
 
-            Log.d("tuanha", "startSpeak: ${state.javaClass.simpleName} -> ${state.toRunning()?.data}")
-            speakState.postValue(state)
-
-            state.doSuccess {
-                job?.cancel()
-            }
-
-            state.doFailed {
-                job?.cancel()
-            }
+            speakState.postValue(stateWrap)
         }
     }
 

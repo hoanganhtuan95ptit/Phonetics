@@ -43,5 +43,7 @@
         <item name="colorLoading">#5b5b5b</item>
         <item name="colorDivider">#B1B1B1</item>
         <item name="colorAccent">#1ED760</item>
+
+        <item name="colorOnErrorVariant">#000000</item>
     </style>
 </resources>

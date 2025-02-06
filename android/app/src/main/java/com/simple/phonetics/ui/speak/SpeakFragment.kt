@@ -3,6 +3,7 @@ package com.simple.phonetics.ui.speak
 import android.Manifest
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.asFlow
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -12,12 +13,11 @@ import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
-import com.simple.coreapp.utils.extentions.observeQueue
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
-import com.simple.phonetics.ui.congratulations.CongratulationFragment
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.speak.adapters.ImageStateAdapter
 import com.simple.state.isCompleted
@@ -80,13 +80,6 @@ class SpeakFragment : BaseViewModelSheetFragment<DialogListBinding, SpeakViewMod
 
     private fun observeData() = with(viewModel) {
 
-        trust.observe(viewLifecycleOwner) {
-
-            val visible = it.getContentIfNotHandled() ?: return@observe
-
-            if (visible) CongratulationFragment().show(childFragmentManager, "")
-        }
-
         theme.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
@@ -95,9 +88,9 @@ class SpeakFragment : BaseViewModelSheetFragment<DialogListBinding, SpeakViewMod
             binding.root.delegate.setBgSelector()
         }
 
-        viewItemList.observeQueue(viewLifecycleOwner) {
+        viewItemList.asFlow().launchCollect(viewLifecycleOwner) {
 
-            val binding = binding ?: return@observeQueue
+            val binding = binding ?: return@launchCollect
 
             binding.recyclerView.submitListAwait(it)
         }

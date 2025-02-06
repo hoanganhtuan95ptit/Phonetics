@@ -20,6 +20,7 @@
   "message_completed_sync_translate": "Translation synchronized successfully",
   "action_clear": "Clear",
   "action_reverse": "Reverse",
+  "action_try_speak": "Try speak",
   "action_confirm_change_language": "Change phonetic language",
   "speed_lever": "Speed $lever",
   "voice_index": "Voice $index",
