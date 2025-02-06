@@ -322,7 +322,7 @@ class PhoneticsViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, translate, speakState, phoneticsCode, phoneticsState, isSupportTranslate) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(size, theme, translate, phoneticsCode, phoneticsState, isSupportSpeak, isSupportListen, isSupportTranslate) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -340,6 +340,7 @@ class PhoneticsViewModel(
         val viewItemList = arrayListOf<ViewItem>()
 
         val listItem = state.toSuccess()?.data.orEmpty()
+
         listItem.flatMapIndexed { indexItem: Int, item: Any ->
 
             item.toViewItem(
@@ -352,7 +353,8 @@ class PhoneticsViewModel(
                 theme = theme,
                 translate = translate,
 
-                isShowDown = speakState.value?.toSuccess()?.data == true
+                isShowSpeak = isSupportSpeak.value == true,
+                isShowListen = isSupportListen.value == true
             )
         }.let {
 

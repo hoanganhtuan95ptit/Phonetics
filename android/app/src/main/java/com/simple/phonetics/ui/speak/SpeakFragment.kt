@@ -1,12 +1,13 @@
 package com.simple.phonetics.ui.speak
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
-import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.utils.autoCleared
@@ -16,7 +17,7 @@ import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
-import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
+import com.simple.phonetics.ui.congratulations.CongratulationFragment
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.speak.adapters.ImageStateAdapter
 import com.simple.state.isCompleted
@@ -44,46 +45,29 @@ class SpeakFragment : BaseViewModelSheetFragment<DialogListBinding, SpeakViewMod
 
         val binding = binding ?: return
 
-        val clickTextAdapter = ClickTextAdapter { view, item ->
+        val phoneticsAdapter = PhoneticsAdapter { view, item ->
 
-        }
+            if (viewModel.isSupportListen.value == true) {
 
-        val phoneticsAdapter = PhoneticsAdapter { _, item ->
-
-        }
-
-        val voiceSpeedAdapter = VoiceSpeedAdapter { _, item ->
-
+                listen(text = item.data.text)
+            }
         }
 
         val imageStateAdapter = ImageStateAdapter { view, item ->
 
-            val voiceState = viewModel.listenState.value
+            if (item.id == SpeakViewModel.ID.LISTEN) {
 
-            if (item.id == SpeakViewModel.ID.LISTEN) if (voiceState.isRunning()) {
-
-                viewModel.stopListen()
-            } else if (voiceState == null || voiceState.isCompleted()) viewModel.startListen(
-
-                voiceId = configViewModel.voiceSelect.value ?: 0,
-                voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
-            )
-
-
-            val speakState = viewModel.speakState.value
-
-            if (item.id == SpeakViewModel.ID.SPEAK) if (speakState.isRunning()) {
-
-                viewModel.stopSpeak()
-            } else if (speakState == null || speakState.isCompleted()) {
-
-                viewModel.startSpeak()
-            }
-
-
+                listen()
+            } else if (item.id == SpeakViewModel.ID.SPEAK) PermissionX.init(this.requireActivity())
+                .permissions(REQUIRED_PERMISSIONS_RECORD_AUDIO.toList())
+                .request { allGranted, _, _ ->
+                    if (allGranted) {
+                        speak()
+                    }
+                }
         }
 
-        adapter = MultiAdapter(clickTextAdapter, phoneticsAdapter, voiceSpeedAdapter, imageStateAdapter, NoneTextAdapter()).apply {
+        adapter = MultiAdapter(phoneticsAdapter, imageStateAdapter, NoneTextAdapter()).apply {
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW
@@ -95,6 +79,13 @@ class SpeakFragment : BaseViewModelSheetFragment<DialogListBinding, SpeakViewMod
     }
 
     private fun observeData() = with(viewModel) {
+
+        trust.observe(viewLifecycleOwner) {
+
+            val visible = it.getContentIfNotHandled() ?: return@observe
+
+            if (visible) CongratulationFragment().show(childFragmentManager, "")
+        }
 
         theme.observe(viewLifecycleOwner) {
 
@@ -131,5 +122,37 @@ class SpeakFragment : BaseViewModelSheetFragment<DialogListBinding, SpeakViewMod
 
             viewModel.updatePhoneticSelect(it)
         }
+    }
+
+    private fun speak() {
+
+        val speakState = viewModel.speakState.value
+
+        if (speakState.isRunning()) {
+
+            viewModel.stopSpeak()
+        } else if (speakState == null || speakState.isCompleted()) {
+
+            viewModel.startSpeak()
+        }
+    }
+
+    private fun listen(text: String? = null) {
+
+        val voiceState = viewModel.listenState.value
+
+        if (voiceState.isRunning()) {
+
+            viewModel.stopListen()
+        } else if (voiceState == null || voiceState.isCompleted()) viewModel.startListen(
+            text = text,
+            voiceId = configViewModel.voiceSelect.value ?: 0,
+            voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
+        )
+    }
+
+    companion object {
+
+        private val REQUIRED_PERMISSIONS_RECORD_AUDIO = arrayOf(Manifest.permission.RECORD_AUDIO)
     }
 }

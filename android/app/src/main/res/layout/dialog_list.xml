@@ -12,4 +12,5 @@
         android:paddingHorizontal="24dp"
         android:paddingTop="16dp"
         android:paddingBottom="100dp" />
+
 </com.simple.coreapp.ui.view.round.RoundFrameLayout>

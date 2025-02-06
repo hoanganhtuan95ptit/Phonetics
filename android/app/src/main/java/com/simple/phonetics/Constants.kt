@@ -53,10 +53,11 @@ object Id {
 
     const val IPA = "IPA"
     const val VOICE = "VOICE"
+    const val SENTENCE = "SENTENCE"
     const val TRANSLATE = "TRANSLATE"
 }
 
-object SpeakState{
+object SpeakState {
 
     const val READY = "READY"
     const val RECORD_END = "RECORD_END"
