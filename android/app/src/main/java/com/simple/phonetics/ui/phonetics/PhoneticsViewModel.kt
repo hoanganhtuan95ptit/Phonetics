@@ -220,22 +220,26 @@ class PhoneticsViewModel(
         postDifferentValue(info)
     }
 
-    val enterInfo: LiveData<EnterInfo> = combineSources(theme, translate, isReverse, outputLanguage) {
+    val enterInfo: LiveData<EnterInfo> = combineSources(theme, translate, isReverse, outputLanguage, inputLanguage) {
 
         val theme = theme.get()
         val translate = translate.get()
+        val inputLanguage = inputLanguage.get()
         val outputLanguage = outputLanguage.get()
 
-        val hint = if (isReverse.value == true) {
-            translate["hint_enter_language_text"].orEmpty().replace("\$language_name", outputLanguage.name)
+        val languageName = if (isReverse.value == true) {
+            outputLanguage.name
         } else {
-            translate["hint_enter_text"].orEmpty()
+            inputLanguage.name
         }
+
+        val hint = translate["hint_enter_language_text"].orEmpty()
+            .replace("\$language_name", languageName)
 
         val info = EnterInfo(
             hint = hint
                 .with(ForegroundColorSpan(theme.colorOnSurfaceVariant))
-                .with(outputLanguage.name, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+                .with(languageName, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
             textColor = theme.colorOnSurface,
         )
 

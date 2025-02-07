@@ -14,7 +14,7 @@ private const val TABLE_NAME = "phonetic_history"
 @Dao
 interface HistoryDao {
 
-    @Query("SELECT * FROM $TABLE_NAME WHERE 1=1 ORDER BY timeCreate DESC")
+    @Query("SELECT * FROM $TABLE_NAME WHERE 1=1 ORDER BY timeCreate DESC LIMIT 30")
     fun getRoomListByAsync(): Flow<List<RoomHistory>>
 
     @Query("SELECT * FROM $TABLE_NAME WHERE text COLLATE NOCASE == :text")
