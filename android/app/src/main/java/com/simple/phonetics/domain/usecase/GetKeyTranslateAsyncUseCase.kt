@@ -3,6 +3,7 @@ package com.simple.phonetics.domain.usecase
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
+import com.simple.phonetics.entities.KeyTranslate
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -18,15 +19,6 @@ class GetKeyTranslateAsyncUseCase(
 
     suspend fun execute(): Flow<Map<String, String>> = channelFlow {
 
-        // call api để lấy bản dịch
-        languageRepository.getLanguageOutputAsync().distinctUntilChanged().launchCollect(this) {
-
-            val list = appRepository.runCatching { getKeyTranslate(it.id) }.getOrNull() ?: return@launchCollect
-
-            appRepository.updateKeyTranslate(list)
-        }
-
-
         // lấy bản dịch hiện có
         languageRepository.getLanguageOutputAsync().flatMapLatest {
 
@@ -35,6 +27,14 @@ class GetKeyTranslateAsyncUseCase(
 
             trySend(it)
         }
+
+        // call api để lấy bản dịch
+        languageRepository.getLanguageOutputAsync().distinctUntilChanged().map {
+
+            val list = appRepository.runCatching { getKeyTranslate(it.id) }.getOrNull() ?: return@map emptyList<KeyTranslate>()
+
+            appRepository.updateKeyTranslate(list)
+        }.launchIn(this)
 
         awaitClose {
 

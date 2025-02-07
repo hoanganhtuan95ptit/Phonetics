@@ -69,7 +69,7 @@ class LanguageRepositoryImpl(
         awaitClose()
     }
 
-    override suspend fun syncLanguageSupport(languageCode: String): List<Language> {
+    override suspend fun getLanguageSupport(languageCode: String): List<Language> {
 
         val list = api.getLanguageSupport(languageCode = languageCode)
 
