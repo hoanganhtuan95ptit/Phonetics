@@ -303,14 +303,19 @@ class SpeakViewModel(
             ),
 
             imageSize = Size(
-                width = DP.DP_56,
-                height = DP.DP_56
+                width = DP.DP_60,
+                height = DP.DP_60
             ),
             imagePadding = Padding(
-                left = DP.DP_8,
-                top = DP.DP_8,
-                right = DP.DP_8,
-                bottom = DP.DP_8
+                left = DP.DP_16,
+                top = DP.DP_16,
+                right = DP.DP_16,
+                bottom = DP.DP_16
+            ),
+            imageBackground = Background(
+                strokeWidth = DP.DP_2,
+                strokeColor = theme.colorPrimary,
+                cornerRadius = DP.DP_16
             )
         ).let {
 
