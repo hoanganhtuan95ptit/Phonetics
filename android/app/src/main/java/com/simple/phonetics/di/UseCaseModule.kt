@@ -2,7 +2,6 @@ package com.simple.phonetics.di
 
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.GetKeyTranslateAsyncUseCase
-import com.simple.phonetics.domain.usecase.SyncUseCase
 import com.simple.phonetics.domain.usecase.TranslateUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
@@ -21,10 +20,6 @@ import org.koin.dsl.module
 
 @JvmField
 val useCaseModule = module {
-
-    single {
-        SyncUseCase(getAll())
-    }
 
     single {
         TranslateUseCase(get())
