@@ -16,7 +16,7 @@ object Param {
 object Deeplink {
 
     const val LANGUAGE = "app://language"
-    const val PHONETICS = "app://PHONETICS"
+    const val PHONETICS = "app://phonetics"
 }
 
 object Payload {
