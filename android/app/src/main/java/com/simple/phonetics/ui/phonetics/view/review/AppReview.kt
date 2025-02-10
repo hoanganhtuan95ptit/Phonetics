@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
@@ -64,6 +63,7 @@ class AppReviewImpl : AppReview {
 
             if (info.show) {
 
+                logAnalytics("open_rate_confirm")
                 sendDeeplink(Deeplink.CONFIRM, extras = extras)
             } else if (viewModel.rateEnable.value == true) {
 
@@ -80,6 +80,8 @@ class AppReviewImpl : AppReview {
             if (it !is Bundle) return@listenerEvent
 
             val resultCode = it.getInt(RESULT_CODE)
+
+            logAnalytics("rate_confirm_with_result_code_$resultCode")
 
             if (resultCode == 1) {
 
