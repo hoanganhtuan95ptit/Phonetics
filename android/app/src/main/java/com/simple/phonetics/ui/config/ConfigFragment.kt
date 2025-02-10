@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.config
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.ComponentActivity
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -14,10 +15,14 @@ import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
+import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Id
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
+import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
+import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.showAwaitDismiss
 
 class ConfigFragment : BaseViewModelSheetFragment<DialogListBinding, ConfigViewModel>() {
 
@@ -84,5 +89,24 @@ class ConfigFragment : BaseViewModelSheetFragment<DialogListBinding, ConfigViewM
 
             binding.recyclerView.submitListAwait(it)
         }
+    }
+}
+
+@com.tuanha.deeplink.annotation.Deeplink
+class ConfigDeeplink : DeeplinkHandler {
+
+    override fun getDeeplink(): String {
+        return Deeplink.CONFIG
+    }
+
+    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+
+        if (activity !is MainActivity) return false
+
+        val fragment = ConfigFragment()
+        fragment.arguments = extras
+        fragment.showAwaitDismiss(activity.supportFragmentManager, tag ="")
+
+        return true
     }
 }

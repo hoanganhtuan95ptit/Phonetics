@@ -16,6 +16,8 @@ object Param {
 
 object Deeplink {
 
+    const val SPEAK = "app://speak"
+    const val CONFIG = "app://config"
     const val CONFIRM = "app://confirm"
     const val LANGUAGE = "app://language"
     const val PHONETICS = "app://phonetics"

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.Param
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewBindingSheetFragment
@@ -12,11 +11,10 @@ import com.simple.coreapp.utils.ext.doOnHeightStatusAndHeightNavigationChange
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.Deeplink
-import com.simple.phonetics.R
 import com.simple.phonetics.databinding.DialogConfirmVerticalV2Binding
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.language.LanguageFragment
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.showAwaitDismiss
 import com.simple.phonetics.utils.sendEvent
 
 class ConfirmDialogFragment : BaseViewBindingSheetFragment<DialogConfirmVerticalV2Binding>() {
@@ -24,7 +22,7 @@ class ConfirmDialogFragment : BaseViewBindingSheetFragment<DialogConfirmVertical
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        doOnHeightStatusAndHeightNavigationChange { heightStatusBar, heightNavigationBar ->
+        doOnHeightStatusAndHeightNavigationChange { _, heightNavigationBar ->
 
             binding?.root?.setPadding(0, 0, 0, heightNavigationBar)
         }
@@ -78,7 +76,7 @@ class ConfirmDeeplink : DeeplinkHandler {
 
         val fragment = ConfirmDialogFragment()
         fragment.arguments = extras
-        fragment.show(activity.supportFragmentManager, "")
+        fragment.showAwaitDismiss(activity.supportFragmentManager)
 
         return true
     }

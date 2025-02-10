@@ -41,7 +41,6 @@ import com.simple.phonetics.databinding.FragmentPhoneticsBinding
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.config.ConfigFragment
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
@@ -55,6 +54,7 @@ import com.simple.phonetics.ui.phonetics.view.review.AppReview
 import com.simple.phonetics.ui.phonetics.view.review.AppReviewImpl
 import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
 
 
@@ -153,10 +153,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) {
 
-                val fragment = SpeakFragment()
-                fragment.arguments = bundleOf(Param.TEXT to (item.data as Sentence).text)
-
-                fragment.show(childFragmentManager, "")
+                sendDeeplink(Deeplink.SPEAK, extras = bundleOf(Param.TEXT to (item.data as Sentence).text))
             }
         }
 
@@ -164,10 +161,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
             if (viewModel.isSupportSpeak.value == true) {
 
-                val fragment = SpeakFragment()
-                fragment.arguments = bundleOf(Param.TEXT to item.data.text)
-
-                fragment.show(childFragmentManager, "")
+                sendDeeplink(Deeplink.SPEAK, extras = bundleOf(Param.TEXT to item.data.text))
             } else if (viewModel.isSupportListen.value == true) {
 
                 startSpeak(text = item.data.text)
@@ -196,7 +190,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         val textAdapter = ClickTextAdapter { view, item ->
 
-            ConfigFragment().show(childFragmentManager, "")
+            sendDeeplink(Deeplink.CONFIG)
         }
 
         adapterConfig = MultiAdapter(textAdapter).apply {
