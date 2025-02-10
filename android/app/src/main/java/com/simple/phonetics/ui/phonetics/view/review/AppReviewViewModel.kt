@@ -56,7 +56,7 @@ class AppReviewViewModel(
             return@combineSources
         }
 
-        if (rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 0) RateInfo(
+        if (rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3) RateInfo(
             show = true,
             image = R.raw.anim_rate,
             title = translate["rate_title"].orEmpty(),
