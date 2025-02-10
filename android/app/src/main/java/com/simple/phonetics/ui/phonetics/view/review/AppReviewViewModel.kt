@@ -89,7 +89,6 @@ class AppReviewViewModel(
     }
 
     data class RateInfo(
-
         val show: Boolean,
 
         val image: Int = 0,
