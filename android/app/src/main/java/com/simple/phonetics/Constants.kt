@@ -2,6 +2,7 @@ package com.simple.phonetics
 
 object Param {
 
+    const val RATE = "RATE"
     const val TEXT = "TEXT"
     const val FIRST = "FIRST"
     const val LANGUAGE_CODE = "LANGUAGE_CODE"
@@ -15,6 +16,7 @@ object Param {
 
 object Deeplink {
 
+    const val CONFIRM = "app://confirm"
     const val LANGUAGE = "app://language"
     const val PHONETICS = "app://phonetics"
 }

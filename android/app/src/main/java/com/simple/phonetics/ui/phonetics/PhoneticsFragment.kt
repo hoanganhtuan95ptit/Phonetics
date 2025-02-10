@@ -45,14 +45,14 @@ import com.simple.phonetics.ui.config.ConfigFragment
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
-import com.simple.phonetics.ui.phonetics.view.AppReview
-import com.simple.phonetics.ui.phonetics.view.AppReviewImpl
 import com.simple.phonetics.ui.phonetics.view.ImageView
 import com.simple.phonetics.ui.phonetics.view.ImageViewImpl
 import com.simple.phonetics.ui.phonetics.view.LanguageView
 import com.simple.phonetics.ui.phonetics.view.LanguageViewImpl
 import com.simple.phonetics.ui.phonetics.view.PasteView
 import com.simple.phonetics.ui.phonetics.view.PasteViewImpl
+import com.simple.phonetics.ui.phonetics.view.review.AppReview
+import com.simple.phonetics.ui.phonetics.view.review.AppReviewImpl
 import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.state.toSuccess
@@ -312,17 +312,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             val binding = binding ?: return@observe
 
             binding.progress.setVisible(it)
-        }
-
-        historyViewItemList.observe(viewLifecycleOwner) {
-
-            val binding = binding ?: return@observe
-
-            // hiện rate
-            if (binding.etText.text.isBlank() && it.isNotEmpty()) {
-
-                showReview()
-            }
         }
     }
 

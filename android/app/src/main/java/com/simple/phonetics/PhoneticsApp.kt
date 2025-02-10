@@ -19,6 +19,8 @@ class PhoneticsApp : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
 
+        share = this
+
         startKoin {
 
             androidContext(this@PhoneticsApp)
@@ -35,5 +37,10 @@ class PhoneticsApp : Application() {
                 repositoryModule,
             )
         }
+    }
+
+    companion object {
+
+        lateinit var share: Application
     }
 }

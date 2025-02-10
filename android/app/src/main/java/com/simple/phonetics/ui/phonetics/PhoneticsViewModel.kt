@@ -112,7 +112,7 @@ class PhoneticsViewModel(
 
     val isSupportSpeak: LiveData<Boolean> = combineSources(speakState) {
 
-        postValue(speakState.value?.toSuccess()?.data == true)
+        postDifferentValue(speakState.value?.toSuccess()?.data == true)
     }
 
 
