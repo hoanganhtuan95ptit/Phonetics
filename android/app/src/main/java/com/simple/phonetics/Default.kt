@@ -30,7 +30,11 @@ val DEFAULT_TRANSLATE = mapOf(
     "speed_lever" to "Speed \$lever",
     "voice_index" to "Voice \$index",
     "translating" to "Translating",
-    "translate_failed" to "Translation failed"
+    "translate_failed" to "Translation failed",
+    "rate_title" to "Rate app",
+    "rate_message" to "We’d love your feedback to make the app even better. Your review means a lot! \uD83C\uDF1F",
+    "rate_action_positive" to "Rate",
+    "rate_action_negative" to "Late"
 )
 
 val DEFAULT_LANGUAGE = listOf(
