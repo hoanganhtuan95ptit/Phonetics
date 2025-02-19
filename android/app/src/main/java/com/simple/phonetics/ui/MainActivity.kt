@@ -17,8 +17,8 @@ import com.simple.phonetics.ui.view.ListenView
 import com.simple.phonetics.ui.view.ListenViewImpl
 import com.simple.phonetics.ui.view.SpeakView
 import com.simple.phonetics.ui.view.SpeakViewImpl
-import com.simple.phonetics.utils.NavigationView
-import com.simple.phonetics.utils.NavigationViewImpl
+import com.simple.phonetics.utils.DeeplinkView
+import com.simple.phonetics.utils.DeeplinkViewImpl
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.phonetics.utils.setupSize
 import com.simple.phonetics.utils.setupTheme
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(),
     SpeakView by SpeakViewImpl(),
     ListenView by ListenViewImpl(),
-    NavigationView by NavigationViewImpl() {
+    DeeplinkView by DeeplinkViewImpl() {
 
     private val activityViewModel: TransitionGlobalViewModel by viewModels()
 
@@ -38,7 +38,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         setupTheme(this)
         setupSpeak(this)
         setupListen(this)
-        setupNavigation(this)
+        setupDeeplink(this)
 
         observeData()
 

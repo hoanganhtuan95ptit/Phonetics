@@ -16,6 +16,7 @@ import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.submitListAwait
+import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
@@ -24,7 +25,6 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.speak.adapters.ImageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
-import com.simple.phonetics.utils.exts.showAwaitDismiss
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
@@ -168,7 +168,7 @@ class SpeakDeeplink : DeeplinkHandler {
 
         val fragment = SpeakFragment()
         fragment.arguments = extras
-        fragment.showAwaitDismiss(activity.supportFragmentManager)
+        fragment.showOrAwaitDismiss(activity.supportFragmentManager, "")
 
         return true
     }

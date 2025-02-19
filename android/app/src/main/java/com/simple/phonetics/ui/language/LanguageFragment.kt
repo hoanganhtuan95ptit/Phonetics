@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.language
 
 import android.os.Bundle
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
@@ -12,13 +13,16 @@ import androidx.transition.Fade
 import androidx.transition.TransitionSet
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
+import com.simple.coreapp.ui.view.round.Background
 import com.simple.coreapp.ui.view.round.setBackground
 import com.simple.coreapp.utils.autoCleared
+import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
 import com.simple.coreapp.utils.ext.setVisible
+import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.beginTransitionAwait
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.phonetics.Deeplink
@@ -32,6 +36,7 @@ import com.simple.phonetics.ui.language.adapters.LanguageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.setImageDrawable
 import com.simple.phonetics.utils.sendDeeplink
+import com.simple.phonetics.utils.sendToast
 import com.simple.state.ResultState
 import com.simple.state.isSuccess
 
@@ -144,10 +149,11 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
 
         changeLanguageState.asFlow().launchCollect(viewLifecycleOwner) {
 
+            val theme = theme.value ?: return@launchCollect
             val binding = binding ?: return@launchCollect
 
-            if (it.isSuccess()) if (arguments?.containsKey(Param.ROOT_TRANSITION_NAME) != true) sendDeeplink(
-                Deeplink.PHONETICS,
+            if (it is ResultState.Success) if (arguments?.containsKey(Param.ROOT_TRANSITION_NAME) != true) sendDeeplink(
+                deepLink = Deeplink.PHONETICS,
                 extras = bundleOf(
                     Param.ROOT_TRANSITION_NAME to ""
                 ),
@@ -159,10 +165,15 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
                 activity?.supportFragmentManager?.popBackStack()
             }
 
-            if (it is ResultState.Failed) {
-
-                showToast(it.cause.message.orEmpty(), it)
-            }
+            if (it is ResultState.Failed) sendToast(
+                extras = bundleOf(
+                    com.simple.coreapp.Param.MESSAGE to it.cause.message.orEmpty().with(ForegroundColorSpan(theme.colorOnErrorVariant)),
+                    com.simple.coreapp.Param.BACKGROUND to Background(
+                        backgroundColor = theme.colorErrorVariant,
+                        cornerRadius = DP.DP_16,
+                    )
+                )
+            )
         }
     }
 

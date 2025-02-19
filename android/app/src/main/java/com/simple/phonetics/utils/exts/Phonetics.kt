@@ -50,7 +50,7 @@ fun Any.toViewItem(
         return@apply
     }
 
-    if (isShowSpeak && item.phonetics.size > 2) {
+    if (isShowSpeak && item.phonetics.size >= 2) {
 
         add(item.toSpeakViewItem(index, theme, translate))
     }
@@ -136,10 +136,9 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
 
         imageLeftSize = Size(
             width = DP.DP_18,
-            height = DP.DP_24
+            height = DP.DP_40
         ),
         imageLeftMargin = Margin(
-            top = DP.DP_8,
             left = DP.DP_10,
             right = DP.DP_8,
         )

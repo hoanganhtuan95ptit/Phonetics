@@ -50,13 +50,14 @@ class AppReviewImpl : AppReview {
             val info = event.getContentIfNotHandled() ?: return@launchCollect
 
             val extras = bundleOf(
-                com.simple.coreapp.Param.PARAM_IMAGE to info.image,
+                com.simple.coreapp.Param.CANCEL to false,
+                com.simple.coreapp.Param.ANIM to info.anim,
 
-                com.simple.coreapp.Param.PARAM_TITLE to info.title,
-                com.simple.coreapp.Param.PARAM_MESSAGE to info.message,
+                com.simple.coreapp.Param.TITLE to info.title,
+                com.simple.coreapp.Param.MESSAGE to info.message,
 
-                com.simple.coreapp.Param.PARAM_POSITIVE to info.positive,
-                com.simple.coreapp.Param.PARAM_NEGATIVE to info.negative,
+                com.simple.coreapp.Param.POSITIVE to info.positive,
+                com.simple.coreapp.Param.NEGATIVE to info.negative,
 
                 com.simple.coreapp.Param.KEY_REQUEST to keyRequest
             )
@@ -64,6 +65,10 @@ class AppReviewImpl : AppReview {
             if (info.show) {
 
                 logAnalytics("open_rate_confirm")
+            }
+
+            if (info.show) {
+
                 sendDeeplink(Deeplink.CONFIRM, extras = extras)
             } else if (viewModel.rateEnable.value == true) {
 

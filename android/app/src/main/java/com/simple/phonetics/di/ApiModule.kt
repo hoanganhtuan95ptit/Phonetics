@@ -1,6 +1,7 @@
 package com.simple.phonetics.di
 
 import com.simple.phonetics.data.api.Api
+import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -19,6 +20,7 @@ val apiModule = module {
 
         OkHttpClient
             .Builder()
+            .connectionSpecs(listOf(ConnectionSpec.MODERN_TLS))
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .connectTimeout(20, TimeUnit.SECONDS)
