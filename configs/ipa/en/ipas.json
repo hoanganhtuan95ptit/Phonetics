@@ -1,0 +1,248 @@
+[
+  {
+    "ipa": "/iː/",
+    "examples": ["see", "meet", "team", "leaf", "green", "machine", "police", "people", "key", "unique"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/i_.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/ɪ/",
+    "examples": ["sit", "hit", "bit", "ship", "think", "middle", "visit", "image", "busy", "build"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɪ.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/e/",
+    "examples": ["bed", "set", "red", "pen", "yes", "head", "bread", "friend", "said", "again"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/e.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/æ/",
+    "examples": ["cat", "map", "black", "man", "apple", "sad", "hand", "answer", "bank", "laugh"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/æ.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/ɑː/",
+    "examples": ["father", "car", "start", "hard", "glass", "bath", "calm", "palm", "bra", "spa"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɑ_.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/ɔː/",
+    "examples": ["thought", "saw", "law", "caught", "walk", "talk", "more", "door", "floor", "four"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɔ_.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/ʊ/",
+    "examples": ["put", "look", "book", "foot", "good", "should", "could", "would", "woman", "wolf"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ʊ.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/uː/",
+    "examples": ["blue", "food", "moon", "true", "group", "fruit", "juice", "shoe", "two", "move"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/u_.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/ʌ/",
+    "examples": ["cup", "sun", "up", "love", "blood", "come", "some", "money", "young", "tough"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ʌ.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/ɜː/",
+    "examples": ["bird", "her", "turn", "learn", "word", "work", "world", "nurse", "hurt", "earth"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɜ_.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/ə/",
+    "examples": ["about", "common", "standard", "sofa", "banana", "supply", "support", "measure", "treasure", "pleasure"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ə.mp3",
+    "type": "vowels"
+  },
+  {
+    "ipa": "/eɪ/",
+    "examples": ["day", "say", "make", "take", "name", "face", "place", "great", "break", "steak"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/eɪ.mp3",
+    "type": "diphthongs"
+  },
+  {
+    "ipa": "/aɪ/",
+    "examples": ["my", "time", "high", "light", "right", "find", "mind", "child", "kind", "fight"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/aɪ.mp3",
+    "type": "diphthongs"
+  },
+  {
+    "ipa": "/ɔɪ/",
+    "examples": ["boy", "toy", "joy", "oil", "coin", "noise", "voice", "choice", "join", "point"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɔɪ.mp3",
+    "type": "diphthongs"
+  },
+  {
+    "ipa": "/aʊ/",
+    "examples": ["now", "how", "cow", "house", "out", "about", "mouth", "sound", "round", "found"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/aʊ.mp3",
+    "type": "diphthongs"
+  },
+  {
+    "ipa": "/oʊ/",
+    "examples": ["go", "no", "so", "home", "boat", "road", "coat", "show", "know", "though"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/oʊ.mp3",
+    "type": "diphthongs"
+  },
+  {
+    "ipa": "/ɪə/",
+    "examples": ["here", "near", "fear", "beer", "deer", "clear", "cheer", "ear", "tear", "year"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɪə.mp3",
+    "type": "diphthongs"
+  },
+  {
+    "ipa": "/eə/",
+    "examples": ["air", "care", "share", "bear", "wear", "where", "there", "their", "hair", "fair"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/eə.mp3",
+    "type": "diphthongs"
+  },
+  {
+    "ipa": "/ʊə/",
+    "examples": ["tour", "cure", "pure", "sure", "poor", "moor", "endure", "secure", "mature", "obscure"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ʊə.mp3",
+    "type": "diphthongs"
+  },
+  {
+    "ipa": "/p/",
+    "examples": ["pen", "spin", "tip", "happy", "spy", "apple", "lip", "map", "cup", "hop"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/p.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/b/",
+    "examples": ["boy", "web", "big", "about", "baby", "table", "rub", "club", "job", "rob"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/b.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/t/",
+    "examples": ["ten", "two", "tea", "city", "later", "little", "cat", "hat", "sit", "cut"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/t.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/d/",
+    "examples": ["day", "ladder", "odd", "add", "dog", "red", "bed", "head", "road", "food"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/d.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/k/",
+    "examples": ["cat", "sky", "key", "school", "back", "lock", "cake", "make", "book", "cook"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/k.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/g/",
+    "examples": ["go", "get", "give", "big", "dog", "egg", "bag", "leg", "frog", "glue"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/g.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/f/",
+    "examples": ["fish", "fall", "fun", "phone", "leaf", "off", "cough", "laugh", "enough", "photo"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/f.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/v/",
+    "examples": ["voice", "live", "very", "love", "have", "move", "leave", "five", "van", "vase"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/v.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/θ/",
+    "examples": ["think", "thing", "bath", "math", "both", "teeth", "thick", "thin", "thank", "three"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/θ.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/ð/",
+    "examples": ["this", "that", "there", "other", "mother", "father", "brother", "smooth", "clothe", "breathe"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ð.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/s/",
+    "examples": ["see", "sun", "city", "pass", "face", "rice", "ice", "bus", "yes", "kiss"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/s.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/z/",
+    "examples": ["zoo", "zero", "zone", "buzz", "lazy", "haze", "rose", "nose", "has", "is"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/z.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/ʃ/",
+    "examples": ["she", "ship", "wish", "fish", "nation", "special", "sure", "pressure", "machine", "ocean"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ʃ.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/ʒ/",
+    "examples": ["measure", "pleasure", "vision", "decision", "beige", "treasure", "usual", "casual", "fusion", "illusion"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ʒ.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/h/",
+    "examples": ["hot", "happy", "house", "head", "hand", "hello", "help", "hope", "high", "home"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/h.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/m/",
+    "examples": ["man", "mother", "make", "summer", "name", "time", "come", "home", "room", "dream"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/m.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/n/",
+    "examples": ["no", "now", "name", "sun", "fun", "ten", "pen", "man", "can", "win"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/n.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/ŋ/",
+    "examples": ["sing", "long", "thing", "ring", "song", "king", "wing", "bring", "spring", "morning"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ŋ.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/l/",
+    "examples": ["like", "love", "light", "little", "fall", "ball", "call", "tell", "well", "feel"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/l.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/r/",
+    "examples": ["red", "right", "run", "river", "road", "rain", "room", "read", "write", "cry"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/r.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/j/",
+    "examples": ["yes", "you", "year", "young", "yellow", "yard", "yoga", "yesterday", "yell", "yacht"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/j.mp3",
+    "type": "consonants"
+  },
+  {
+    "ipa": "/w/",
+    "examples": ["we", "wet", "win", "wind", "wood", "work", "word", "world", "week", "wish"],
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/w.mp3",
+    "type": "consonants"
+  }
+]
