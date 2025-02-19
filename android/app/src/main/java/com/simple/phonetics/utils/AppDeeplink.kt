@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.phonetics.Deeplink
 import com.tuanha.deeplink.DeeplinkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,11 +34,42 @@ private val list: List<DeeplinkHandler> by lazy {
     DeeplinkManager.navigation().filterIsInstance<DeeplinkHandler>()
 }
 
+
 private val appDeeplink by lazy {
 
     MutableSharedFlow<Pair<String, Pair<Bundle?, Map<String, View>?>>>(replay = 1, extraBufferCapacity = Int.MAX_VALUE, onBufferOverflow = BufferOverflow.SUSPEND)
 }
 
+private val toastDeeplink by lazy {
+
+    MutableSharedFlow<Pair<String, Pair<Bundle?, Map<String, View>?>>>(replay = 1, extraBufferCapacity = Int.MAX_VALUE, onBufferOverflow = BufferOverflow.SUSPEND)
+}
+
+private val confirmDeeplink by lazy {
+
+    MutableSharedFlow<Pair<String, Pair<Bundle?, Map<String, View>?>>>(replay = 1, extraBufferCapacity = Int.MAX_VALUE, onBufferOverflow = BufferOverflow.SUSPEND)
+}
+
+
+fun sendToast(data: Map<String, Any>) {
+
+    sendToast(extras = bundleOf(*data.toList().toTypedArray()))
+}
+
+fun sendToast(extras: Bundle? = null) {
+
+    sendDeeplink(deepLink = Deeplink.TOAST, extras = extras)
+}
+
+fun sendConfirm(data: Map<String, Any>) {
+
+    sendConfirm(extras = bundleOf(*data.toList().toTypedArray()))
+}
+
+fun sendConfirm(extras: Bundle? = null) {
+
+    sendDeeplink(deepLink = Deeplink.CONFIRM, extras = extras)
+}
 
 fun sendDeeplink(deepLink: String, data: Map<String, Any>, sharedElement: Map<String, View>) {
 
@@ -46,21 +78,36 @@ fun sendDeeplink(deepLink: String, data: Map<String, Any>, sharedElement: Map<St
 
 fun sendDeeplink(deepLink: String, extras: Bundle? = null, sharedElement: Map<String, View>? = null) = CoroutineScope(Dispatchers.Main.immediate).launch {
 
-    if (!appDeeplink.replayCache.toMap().containsKey(deepLink)) {
+    val deepLinkFlow = if (deepLink.startsWith(Deeplink.TOAST)) {
+        toastDeeplink
+    } else if (deepLink.startsWith(Deeplink.CONFIRM)) {
+        confirmDeeplink
+    } else {
+        appDeeplink
+    }
 
-        appDeeplink.emit(deepLink to (extras to sharedElement))
+    if (deepLinkFlow != appDeeplink || !deepLinkFlow.replayCache.toMap().containsKey(deepLink)) {
+
+        deepLinkFlow.emit(deepLink to (extras to sharedElement))
     }
 }
 
 
-interface NavigationView {
+interface DeeplinkView {
 
-    fun setupNavigation(activity: ComponentActivity)
+    fun setupDeeplink(activity: ComponentActivity)
 }
 
-class NavigationViewImpl : NavigationView {
+class DeeplinkViewImpl : DeeplinkView {
 
-    override fun setupNavigation(activity: ComponentActivity) {
+    override fun setupDeeplink(activity: ComponentActivity) {
+
+        setupDeepLink(activity, appDeeplink)
+        setupDeepLink(activity, toastDeeplink)
+        setupDeepLink(activity, confirmDeeplink)
+    }
+
+    private fun setupDeepLink(activity: ComponentActivity, deeplinkFlow: MutableSharedFlow<Pair<String, Pair<Bundle?, Map<String, View>?>>>) {
 
         var job: Job? = null
 
@@ -68,7 +115,7 @@ class NavigationViewImpl : NavigationView {
 
             job?.cancel()
 
-            job = appDeeplink.launchCollect(activity) {
+            job = deeplinkFlow.launchCollect(activity) {
 
                 val deepLink = it.first
 
@@ -82,7 +129,7 @@ class NavigationViewImpl : NavigationView {
 
                 if (navigation?.navigation(activity, deepLink, extras, sharedElement) == true) {
 
-                    appDeeplink.resetReplayCache()
+                    deeplinkFlow.resetReplayCache()
                 }
             }
         }

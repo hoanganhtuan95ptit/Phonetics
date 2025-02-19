@@ -1,8 +1,13 @@
 package com.simple.phonetics.ui.phonetics.view.review
 
+import android.text.style.ForegroundColorSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.simple.coreapp.ui.view.round.Background
+import com.simple.coreapp.utils.ext.ButtonInfo
+import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
@@ -36,8 +41,9 @@ class AppReviewViewModel(
     }
 
     @VisibleForTesting
-    val rateInfo: LiveData<RateInfo> = combineSources(translate, rate, rateEnable) {
+    val rateInfo: LiveData<RateInfo> = combineSources(theme, translate, rate, rateEnable) {
 
+        val theme = theme.value ?: return@combineSources
         val translate = translate.value ?: return@combineSources
 
         val rate = rate.value ?: return@combineSources
@@ -58,11 +64,25 @@ class AppReviewViewModel(
 
         if (rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3) RateInfo(
             show = true,
-            image = R.raw.anim_rate,
+            anim = R.raw.anim_rate,
             title = translate["rate_title"].orEmpty(),
             message = translate["rate_message"].orEmpty(),
-            positive = translate["rate_action_positive"].orEmpty(),
-            negative = translate["rate_action_negative"].orEmpty(),
+            positive = ButtonInfo(
+                text = translate["rate_action_positive"].orEmpty().with(ForegroundColorSpan(theme.colorOnPrimary)),
+                background = Background(
+                    backgroundColor = theme.colorPrimary,
+                    cornerRadius = DP.DP_16
+                )
+            ),
+            negative = ButtonInfo(
+                text = translate["rate_action_negative"].orEmpty().with(ForegroundColorSpan(theme.colorOnSurfaceVariant)),
+                background = Background(
+                    backgroundColor = theme.colorBackground,
+                    strokeColor = theme.colorOnSurfaceVariant,
+                    strokeWidth = DP.DP_1,
+                    cornerRadius = DP.DP_16
+                )
+            ),
         ).apply {
 
             postDifferentValue(this)
@@ -91,12 +111,12 @@ class AppReviewViewModel(
     data class RateInfo(
         val show: Boolean,
 
-        val image: Int = 0,
+        val anim: Int = 0,
 
-        val title: String = "",
-        val message: String = "",
+        val title: CharSequence = "",
+        val message: CharSequence = "",
 
-        val positive: String = "",
-        val negative: String = ""
+        val positive: ButtonInfo? = null,
+        val negative: ButtonInfo? = null
     )
 }
