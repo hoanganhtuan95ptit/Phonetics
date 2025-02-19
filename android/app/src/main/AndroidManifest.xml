@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -27,22 +27,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Phonetics"
         tools:targetApi="31">
-
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
-<!--            android:value="@string/ad_app_id" />-->
-
-<!--        <meta-data-->
-<!--            android:name="io.sentry.dsn"-->
-<!--            android:value="@string/sentry_dsn" />&lt;!&ndash;can remove&ndash;&gt;-->
-
-<!--        <meta-data-->
-<!--            android:name="io.sentry.attach-screenshot"-->
-<!--            android:value="@string/sentry_attach_screenshot" />&lt;!&ndash;can remove&ndash;&gt;-->
-
-<!--        <meta-data-->
-<!--            android:name="io.sentry.attach-view-hierarchy"-->
-<!--            android:value="@string/sentry_attach_view_hierarchy" />&lt;!&ndash;can remove&ndash;&gt;-->
 
         <activity
             android:name=".ui.MainActivity"

@@ -4,18 +4,23 @@ import android.Manifest
 import android.app.Activity
 import android.content.ContentUris
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import com.permissionx.guolindev.PermissionX
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
 import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
 import com.simple.state.doSuccess
+import java.io.File
+import java.io.IOException
 
 interface ImageView {
 
@@ -99,6 +104,33 @@ class ImageViewImpl() : ImageView {
         } else {
 
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        private fun ActivityResultLauncher<String>.launchTakeImageFromGallery() {
+            launch("image/*")
+        }
+
+        private fun ActivityResultLauncher<Intent>.launchTakeImageFromCamera(context: Context, imageName: String): File? {
+
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+            val photoFile: File?
+
+            try {
+
+                val storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) ?: return null
+
+                photoFile = File.createTempFile(imageName, ".jpg", storageDir)
+            } catch (_: IOException) {
+
+                return null
+            }
+
+            val photoURI = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", photoFile)
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+            launch(takePictureIntent)
+
+            return photoFile
         }
 
         private fun getFilePath(context: Context, uri: Uri): String? {
