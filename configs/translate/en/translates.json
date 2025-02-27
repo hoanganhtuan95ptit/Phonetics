@@ -29,5 +29,13 @@
   "rate_title": "Rate app",
   "rate_message": "We’d love your feedback to make the app even better. Your review means a lot! \uD83C\uDF1F",
   "rate_action_positive": "Rate",
-  "rate_action_negative": "Late"
+  "rate_action_negative": "Late",
+  "title_ipa": "Ipa",
+  "ipa_screen_title": "Ipa list",
+  "ipa_detail_screen_vowels_long": "Vowels long",
+  "ipa_detail_screen_vowels_short": "Vowels short",
+  "ipa_detail_screen_diphthongs": "Diphthongs",
+  "ipa_detail_screen_consonants_voiced": "Consonants voiced",
+  "ipa_detail_screen_consonants_unvoiced": "Consonants unvoiced",
+  "ipa_detail_screen_title_example": "Example"
 }
