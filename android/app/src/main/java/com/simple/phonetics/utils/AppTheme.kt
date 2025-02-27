@@ -1,6 +1,7 @@
 package com.simple.phonetics.utils
 
 import android.app.Activity
+import android.graphics.Color
 import com.simple.coreapp.utils.extentions.getColorFromAttr
 import com.simple.phonetics.R
 import kotlinx.coroutines.channels.BufferOverflow
@@ -31,6 +32,12 @@ data class AppTheme(
 
     val colorBackgroundVariant: Int,
     val colorOnBackgroundVariant: Int,
+
+    val vowelsLong: Int = Color.parseColor("#FCE9DA"),
+    val vowelsShort: Int = Color.parseColor("#FEF3ED"),
+    val consonantsVoiced: Int = Color.parseColor("#92B2D8"),
+    val consonantsUnvoiced: Int = Color.parseColor("#FCE9DA"),
+    val diphthongs: Int = Color.parseColor("#E4B795"),
 )
 
 

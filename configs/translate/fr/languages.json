@@ -1,0 +1,157 @@
+[
+  {
+    "id": "en",
+    "listIpa": [
+      {
+        "code": "UK",
+        "name": "Anglais - Royaume-Uni",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"
+      },
+      {
+        "code": "US",
+        "name": "Anglais - États-Unis",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt"
+      }
+    ],
+    "name": "Anglais",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/en.webp"
+  },
+  {
+    "id": "vi",
+    "listIpa": [
+      {
+        "code": "N",
+        "name": "Nord",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_N.txt"
+      },
+      {
+        "code": "C",
+        "name": "Centre",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_C.txt"
+      },
+      {
+        "code": "S",
+        "name": "Sud",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/vi_S.txt"
+      }
+    ],
+    "name": "Vietnamien",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/vi.webp"
+  },
+  {
+    "id": "zh",
+    "listIpa": [
+      {
+        "code": "zh_Hans",
+        "name": "Chinois simplifié",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_hans.txt"
+      },
+      {
+        "code": "zh_Hant",
+        "name": "Chinois traditionnel",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/zh_hant.txt"
+      },
+      {
+        "code": "yue",
+        "name": "Cantonais",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/yue.txt"
+      }
+    ],
+    "name": "Chinois",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_zh.webp"
+  },
+  {
+    "id": "es",
+    "listIpa": [
+      {
+        "code": "es_ES",
+        "name": "Espagnol (Espagne)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/es_ES.txt"
+      },
+      {
+        "code": "es_MX",
+        "name": "Espagnol (Mexique)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/es_MX.txt"
+      }
+    ],
+    "name": "Espagne, Mexique",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_es.webp"
+  },
+  {
+    "id": "fr",
+    "listIpa": [
+      {
+        "code": "fr_FR",
+        "name": "Français (France)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fr_FR.txt"
+      },
+      {
+        "code": "fr_QC",
+        "name": "Français (Québec)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fr_QC.txt"
+      }
+    ],
+    "name": "France, Québec",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fr.webp"
+  },
+  {
+    "id": "ar",
+    "listIpa": [
+      {
+        "code": "ar",
+        "name": "Arabe (standard moderne)",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/ar.txt"
+      }
+    ],
+    "name": "Arabe",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_ar.webp"
+  },
+  {
+    "id": "de",
+    "listIpa": [
+      {
+        "code": "de",
+        "name": "Allemand",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/de.txt"
+      }
+    ],
+    "name": "Allemagne",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_de.webp"
+  },
+  {
+    "id": "eo",
+    "listIpa": [
+      {
+        "code": "eo",
+        "name": "Espéranto",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/eo.txt"
+      }
+    ],
+    "name": "Espéranto",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_eo.webp"
+  },
+  {
+    "id": "fa",
+    "listIpa": [
+      {
+        "code": "fa",
+        "name": "Persan",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fa.txt"
+      }
+    ],
+    "name": "Iran",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fa.webp"
+  },
+  {
+    "id": "fi",
+    "listIpa": [
+      {
+        "code": "fi",
+        "name": "Finnois",
+        "source": "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/fi.txt"
+      }
+    ],
+    "name": "Finlande",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/data/refs/heads/main/flag/lens_flag_fi.webp"
+  }
+]

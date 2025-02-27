@@ -1,6 +1,7 @@
 package com.simple.phonetics.data.api
 
 import com.simple.phonetics.BuildConfig
+import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Language
 import okhttp3.ResponseBody
 
@@ -13,6 +14,9 @@ private val BRANCH: String
     get() = if (BuildConfig.DEBUG) "develop" else "main"
 
 interface Api {
+
+    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/ipa/{language_code}/ipas.json")
+    suspend fun syncIPA(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<Ipa>
 
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/translate/{language_code}/translates.json")
     suspend fun syncTranslate(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): Map<String, String>

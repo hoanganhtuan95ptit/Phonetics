@@ -1,6 +1,6 @@
 package com.simple.phonetics.domain.repositories
 
-import com.simple.phonetics.entities.Ipa
+import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetics
 
 interface PhoneticRepository {
@@ -11,5 +11,5 @@ interface PhoneticRepository {
 
     suspend fun insertOrUpdate(phonetics: List<Phonetics>)
 
-    suspend fun getSourcePhonetic(it: Ipa): String
+    suspend fun getSourcePhonetic(it: Language.IpaSource): String
 }

@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -35,15 +34,12 @@ import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
-import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.CommonViewModel
 import com.simple.phonetics.utils.exts.toViewItem
-import com.simple.phonetics.ui.phonetics.adapters.HistoryViewItem
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
@@ -65,7 +61,6 @@ class PhoneticsViewModel(
     private val detectStateUseCase: DetectStateUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
-    private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
 ) : CommonViewModel() {
 
     private val itemLoading = listOf(
@@ -248,62 +243,6 @@ class PhoneticsViewModel(
 
 
     @VisibleForTesting
-    val historyState: LiveData<ResultState<List<Sentence>>> = mediatorLiveData {
-
-        postDifferentValue(ResultState.Start)
-
-        getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
-
-            postDifferentValue(ResultState.Success(list))
-        }
-    }
-
-    val historyViewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, historyState) {
-
-        val theme = theme.get()
-        val translate = translate.get()
-
-        val historyState = historyState.get()
-
-        if (historyState !is ResultState.Success) {
-
-            return@combineSources
-        }
-
-
-        val viewItemList = arrayListOf<ViewItem>()
-
-        historyState.toSuccess()?.data.orEmpty().mapIndexed { _, sentence ->
-
-            HistoryViewItem(
-                id = sentence.text,
-                text = sentence.text.with(ForegroundColorSpan(theme.colorOnSurface)),
-            )
-        }.let {
-
-            viewItemList.addAll(it)
-        }
-
-        if (viewItemList.isNotEmpty()) NoneTextViewItem(
-
-            text = translate["title_history"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
-            textStyle = TextStyle(
-                textSize = 20f
-            )
-        ).let {
-
-            viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY", height = DP.DP_16))
-            viewItemList.add(0, it)
-            viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_8))
-            viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
-        }
-
-        postDifferentValueIfActive(viewItemList)
-    }
-
-
-    @VisibleForTesting
     val phoneticsCode: LiveData<String> = MediatorLiveData()
 
     @VisibleForTesting
@@ -357,8 +296,8 @@ class PhoneticsViewModel(
                 theme = theme,
                 translate = translate,
 
-                isShowSpeak = isSupportSpeak.value == true,
-                isShowListen = isSupportListen.value == true
+                isSupportSpeak = isSupportSpeak.value == true,
+                isSupportListen = isSupportListen.value == true
             )
         }.let {
 
@@ -388,21 +327,32 @@ class PhoneticsViewModel(
         postDifferentValue(emptyList())
     }
 
-    val listViewItem: LiveData<List<ViewItem>> = combineSources(theme, translate, historyViewItemList, phoneticsViewItemList) {
+    val ipaViewItemList: LiveData<List<ViewItem>> = MediatorLiveData()
+
+    val historyViewItemList: LiveData<List<ViewItem>> = MediatorLiveData()
+
+    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, ipaViewItemList, historyViewItemList, phoneticsViewItemList) {
 
         val translate = translate.get()
+        val ipaViewItemList = ipaViewItemList.getOrEmpty()
         val historyViewItemList = historyViewItemList.getOrEmpty()
         val phoneticsViewItemList = phoneticsViewItemList.getOrEmpty()
 
         val viewItemList = arrayListOf<ViewItem>()
         viewItemList.addAll(phoneticsViewItemList)
 
-        if (viewItemList.isEmpty()) {
+
+        if (phoneticsViewItemList.isEmpty()) {
+
+            viewItemList.addAll(ipaViewItemList)
+        }
+
+        if (phoneticsViewItemList.isEmpty()) {
 
             viewItemList.addAll(historyViewItemList)
         }
 
-        if (viewItemList.isEmpty()) com.simple.coreapp.ui.adapters.EmptyViewItem(
+        if (historyViewItemList.isEmpty() && phoneticsViewItemList.isEmpty()) com.simple.coreapp.ui.adapters.EmptyViewItem(
             id = "EMPTY",
             message = translate["message_result_empty"].orEmpty(),
             imageRes = R.raw.anim_empty
@@ -410,6 +360,8 @@ class PhoneticsViewModel(
 
             viewItemList.add(it)
         }
+
+        viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
 
         postDifferentValueIfActive(viewItemList)
     }
@@ -460,6 +412,16 @@ class PhoneticsViewModel(
     fun updateOutputLanguage(language: Language) {
 
         this.outputLanguage.postDifferentValue(language)
+    }
+
+    fun updateIpaViewItemList(it: List<ViewItem>) {
+
+        ipaViewItemList.postDifferentValue(it)
+    }
+
+    fun updateHistoryViewItemList(it: List<ViewItem>) {
+
+        historyViewItemList.postDifferentValue(it)
     }
 
     fun startSpeak(text: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {

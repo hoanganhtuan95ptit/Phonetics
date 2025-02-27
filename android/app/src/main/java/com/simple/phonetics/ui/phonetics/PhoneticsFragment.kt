@@ -9,12 +9,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.ChangeBounds
-import androidx.transition.Fade
-import androidx.transition.TransitionSet
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -26,12 +22,9 @@ import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.ui.view.round.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
-import com.simple.coreapp.utils.extentions.beginTransitionAwait
 import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
-import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Id
@@ -41,6 +34,7 @@ import com.simple.phonetics.databinding.FragmentPhoneticsBinding
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
@@ -50,18 +44,25 @@ import com.simple.phonetics.ui.phonetics.view.LanguageView
 import com.simple.phonetics.ui.phonetics.view.LanguageViewImpl
 import com.simple.phonetics.ui.phonetics.view.PasteView
 import com.simple.phonetics.ui.phonetics.view.PasteViewImpl
+import com.simple.phonetics.ui.phonetics.view.history.HistoryView
+import com.simple.phonetics.ui.phonetics.view.history.HistoryViewImpl
+import com.simple.phonetics.ui.phonetics.view.ipa.IpaView
+import com.simple.phonetics.ui.phonetics.view.ipa.IpaViewImpl
 import com.simple.phonetics.ui.phonetics.view.review.AppReview
 import com.simple.phonetics.ui.phonetics.view.review.AppReviewImpl
-import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.launchCollectWithCache
+import com.simple.phonetics.utils.exts.submitListAwait
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
 
 
 class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>(),
+    IpaView by IpaViewImpl(),
     AppReview by AppReviewImpl(),
     PasteView by PasteViewImpl(),
     ImageView by ImageViewImpl(),
+    HistoryView by HistoryViewImpl(),
     LanguageView by LanguageViewImpl() {
 
     private val configViewModel: ConfigViewModel by lazy {
@@ -83,9 +84,12 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             }
         })
 
-        setupPaste(this)
+        setupIpa(this)
         setupImage(this)
+        setupPaste(this)
+        setupHistory(this)
         setupAppView(this)
+        setupHistory(this)
         setupLanguage(this)
 
         setupSpeak()
@@ -149,12 +153,34 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         val binding = binding ?: return
 
+        val ipaAdapter = IpaAdapters { view, item ->
+
+            val transitionName = view.transitionName ?: item.id
+
+            sendDeeplink(
+                deepLink = Deeplink.IPA_DETAIL,
+                extras = bundleOf(Param.IPA to item.data, Param.ROOT_TRANSITION_NAME to transitionName),
+                sharedElement = mapOf(transitionName to view)
+            )
+        }
+
+        val historyAdapter = HistoryAdapter { _, item ->
+
+            binding.etText.setText(item.id)
+        }
+
         val clickTextAdapter = ClickTextAdapter { view, item ->
 
-            if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) {
+            val transitionName = view.transitionName ?: item.id
 
-                sendDeeplink(Deeplink.SPEAK, extras = bundleOf(Param.TEXT to (item.data as Sentence).text))
-            }
+            if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) sendDeeplink(
+                deepLink = Deeplink.SPEAK,
+                extras = bundleOf(Param.TEXT to (item.data as Sentence).text)
+            ) else if (item.id.startsWith(Id.IPA_LIST)) sendDeeplink(
+                deepLink = Deeplink.IPA_LIST,
+                extras = bundleOf(Param.ROOT_TRANSITION_NAME to transitionName),
+                sharedElement = mapOf(transitionName to view)
+            )
         }
 
         val phoneticsAdapter = PhoneticsAdapter { _, item ->
@@ -168,12 +194,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             }
         }
 
-        val historyAdapter = HistoryAdapter { _, item ->
-
-            binding.etText.setText(item.id)
-        }
-
-        adapter = MultiAdapter(clickTextAdapter, phoneticsAdapter, historyAdapter, EmptyAdapter(), SentenceAdapter(), NoneTextAdapter()).apply {
+        adapter = MultiAdapter(ipaAdapter, historyAdapter, clickTextAdapter, phoneticsAdapter, EmptyAdapter(), SentenceAdapter(), NoneTextAdapter()).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -289,16 +310,11 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             unlockTransition(TAG.REVERSE.name)
         }
 
-        listViewItem.asFlow().launchCollect(viewLifecycleOwner) {
+        viewItemList.launchCollectWithCache(viewLifecycleOwner) { data, isFirst ->
 
-            val binding = binding ?: return@launchCollect
+            val binding = binding ?: return@launchCollectWithCache
 
-            viewModel.awaitTransition()
-
-            binding.recyclerView.submitListAwait(it)
-
-            val transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))
-            binding.recyclerView.beginTransitionAwait(transition)
+            binding.recyclerView.submitListAwait(transitionFragment = this@PhoneticsFragment, viewItemList = data, isFirst = isFirst, tag = com.simple.phonetics.TAG.VIEW_ITEM_LIST.name)
         }
 
         isShowLoading.observe(viewLifecycleOwner) {
@@ -316,16 +332,11 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             viewModel.updateSupportSpeak(it.toSuccess()?.data.orEmpty().isNotEmpty())
         }
 
-        listConfig.asFlow().launchCollect(viewLifecycleOwner) {
+        listConfig.launchCollectWithCache(viewLifecycleOwner) { data, isFirst ->
 
-            val binding = binding ?: return@launchCollect
+            val binding = binding ?: return@launchCollectWithCache
 
-            viewModel.awaitTransition()
-
-            binding.recFilter.submitListAwait(it)
-
-            val transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))
-            binding.recFilter.beginTransitionAwait(transition)
+            binding.recFilter.submitListAwait(transitionFragment = this@PhoneticsFragment, viewItemList = data, isFirst = isFirst, tag = TAG.CONFIG_VIEW_ITEM_LIST.name)
         }
 
         phoneticSelect.observe(viewLifecycleOwner) {
@@ -355,7 +366,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
     }
 
     private enum class TAG {
-        ENTER, IMAGE, CLEAR, TITLE, THEME, SPEAK, REVERSE,
+        ENTER, IMAGE, CLEAR, TITLE, THEME, SPEAK, REVERSE, CONFIG_VIEW_ITEM_LIST
     }
 }
 

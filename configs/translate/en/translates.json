@@ -31,7 +31,7 @@
   "rate_action_positive": "Rate",
   "rate_action_negative": "Late",
   "title_ipa": "Ipa",
-  "ipa_screen_title": "Ipa list",
+  "ipa_list_screen_title": "Ipa list",
   "ipa_detail_screen_vowels_long": "Vowels long",
   "ipa_detail_screen_vowels_short": "Vowels short",
   "ipa_detail_screen_diphthongs": "Diphthongs",

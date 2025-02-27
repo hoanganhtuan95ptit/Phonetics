@@ -1,7 +1,12 @@
 package com.simple.phonetics
 
+enum class TAG{
+    VIEW_ITEM_LIST
+}
+
 object Param {
 
+    const val IPA = "IPA"
     const val RATE = "RATE"
     const val TEXT = "TEXT"
     const val FIRST = "FIRST"
@@ -21,15 +26,20 @@ object Deeplink {
     const val CONFIG = "app://config"
     const val CONFIRM = "app://confirm"
     const val LANGUAGE = "app://language"
+    const val IPA_LIST = "app://ipa_list"
     const val PHONETICS = "app://phonetics"
+    const val IPA_DETAIL = "app://ipa_detail"
 }
 
 object Payload {
 
     const val NAME = "NAME"
     const val THEME = "THEME"
+    const val IMAGE = "IMAGE"
     const val SELECTED = "SELECTED"
     const val NAME_COLOR = "NAME_COLOR"
+    const val BACKGROUND = "BACKGROUND"
+    const val LOADING_STATUS = "LOADING_STATUS"
     const val BACKGROUND_COLOR = "BACKGROUND_COLOR"
 }
 
@@ -59,6 +69,7 @@ object Id {
     const val IPA = "IPA"
     const val VOICE = "VOICE"
     const val SENTENCE = "SENTENCE"
+    const val IPA_LIST = "IPA_LIST"
     const val TRANSLATE = "TRANSLATE"
 }
 

@@ -8,8 +8,15 @@ data class Language(
     val name: String = "",
     val image: String = "",
 
-    val listIpa: List<Ipa> = emptyList(),
+    val listIpa: List<IpaSource> = emptyList(),
 ) {
+
+    @Keep
+    data class IpaSource(
+        val code: String = "",
+        val name: String = "",
+        val source: String = ""
+    )
 
     companion object {
 
@@ -20,10 +27,3 @@ data class Language(
         const val JA = "ja"
     }
 }
-
-@Keep
-data class Ipa(
-    val code: String = "",
-    val name: String = "",
-    val source: String = ""
-)

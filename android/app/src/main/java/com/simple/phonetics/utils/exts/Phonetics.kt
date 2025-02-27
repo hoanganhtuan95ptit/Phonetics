@@ -1,12 +1,15 @@
 package com.simple.phonetics.utils.exts
 
 import android.text.style.ForegroundColorSpan
+import android.view.Gravity
+import android.view.ViewGroup
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
+import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.ui.view.round.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
@@ -23,8 +26,10 @@ import com.simple.state.ResultState
 fun Any.toViewItem(
     index: Int, total: Int, phoneticsCode: String,
 
-    isShowSpeak: Boolean = false,
-    isShowListen: Boolean = false,
+    isShowSpeak: Boolean = true,
+
+    isSupportSpeak: Boolean = false,
+    isSupportListen: Boolean = false,
     isSupportTranslate: Boolean = false,
 
     theme: AppTheme, translate: Map<String, String>
@@ -34,9 +39,12 @@ fun Any.toViewItem(
 
     if (item is Phonetics) item.toViewItem(
         id = "${index * 1000}",
-        isShowSpeak = isShowSpeak,
-        isShowListen = isShowListen,
+
+        isSupportSpeak = isSupportSpeak,
+        isSupportListen = isSupportListen,
+
         phoneticsCode = phoneticsCode,
+
         theme = theme
     ).let {
 
@@ -50,7 +58,7 @@ fun Any.toViewItem(
         return@apply
     }
 
-    if (isShowSpeak && item.phonetics.size >= 2) {
+    if (isShowSpeak && isSupportSpeak && item.phonetics.size >= 2) {
 
         add(item.toSpeakViewItem(index, theme, translate))
     }
@@ -59,9 +67,12 @@ fun Any.toViewItem(
 
         phonetic.toViewItem(
             id = "${index * 1000 + indexPhonetic}",
-            isShowSpeak = isShowSpeak,
-            isShowListen = isShowListen,
+
+            isSupportSpeak = isSupportSpeak,
+            isSupportListen = isSupportListen,
+
             phoneticsCode = phoneticsCode,
+
             theme = theme
         )
     }.let {
@@ -116,7 +127,13 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
         ),
 
         text = translate["action_try_speak"].orEmpty().with(ForegroundColorSpan(theme.colorPrimary)),
-
+        textStyle = TextStyle(
+            textGravity = Gravity.CENTER_VERTICAL
+        ),
+        textSize = Size(
+            width = ViewGroup.LayoutParams.MATCH_PARENT,
+            height = DP.DP_40,
+        ),
         textPadding = Padding(
             left = DP.DP_18 + DP.DP_8 * 2,
             top = DP.DP_8,
@@ -147,8 +164,10 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
 
 fun Phonetics.toViewItem(
     id: String,
-    isShowSpeak: Boolean = false,
-    isShowListen: Boolean = false,
+
+    isSupportSpeak: Boolean = false,
+    isSupportListen: Boolean = false,
+
     phoneticsCode: String, theme: AppTheme
 ): ViewItem {
 
@@ -157,9 +176,9 @@ fun Phonetics.toViewItem(
     val ipaList = (codeAndIpa?.get(phoneticsCode) ?: codeAndIpa?.toList()?.first()?.second).orEmpty()
     val text = ipaList.joinToString(separator = " - ")
 
-    val image = if (isShowSpeak) {
+    val image = if (isSupportSpeak) {
         R.drawable.img_down
-    } else if (isShowListen) {
+    } else if (isSupportListen) {
         R.drawable.img_volume
     } else {
         0
