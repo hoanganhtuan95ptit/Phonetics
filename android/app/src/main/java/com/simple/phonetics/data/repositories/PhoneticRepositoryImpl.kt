@@ -3,7 +3,7 @@ package com.simple.phonetics.data.repositories
 import com.simple.phonetics.data.api.Api
 import com.simple.phonetics.data.dao.PhoneticsDao
 import com.simple.phonetics.domain.repositories.PhoneticRepository
-import com.simple.phonetics.entities.Ipa
+import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetics
 
 class PhoneticRepositoryImpl(
@@ -20,7 +20,7 @@ class PhoneticRepositoryImpl(
         return textAndPhonetics
     }
 
-    override suspend fun getSourcePhonetic(it: Ipa): String {
+    override suspend fun getSourcePhonetic(it: Language.IpaSource): String {
 
         return api.syncPhonetics(it.source).string()
     }

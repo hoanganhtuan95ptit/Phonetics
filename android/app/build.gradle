@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 
+    id 'kotlin-parcelize'
     id 'kotlin-kapt'
 
     id 'com.google.gms.google-services'
@@ -87,11 +88,11 @@ dependencies {
     implementation hoanganhtuan95Dependencies.adapter
 
     implementation hoanganhtuan95Dependencies.analytics
-    implementation hoanganhtuan95Dependencies.analytics_log
+    debugImplementation hoanganhtuan95Dependencies.analytics_log
     releaseImplementation hoanganhtuan95Dependencies.analytics_firebase
 
     implementation hoanganhtuan95Dependencies.crashlytics
-    implementation hoanganhtuan95Dependencies.crashlytics_log
+    debugImplementation hoanganhtuan95Dependencies.crashlytics_log
     releaseImplementation hoanganhtuan95Dependencies.crashlytics_firebase
 
     implementation hoanganhtuan95Dependencies.detect
@@ -119,7 +120,7 @@ dependencies {
 
     implementation "com.airbnb.android:lottie:$lottie_version"
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    
+
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
     implementation 'com.google.android.material:material:1.13.0-alpha08'

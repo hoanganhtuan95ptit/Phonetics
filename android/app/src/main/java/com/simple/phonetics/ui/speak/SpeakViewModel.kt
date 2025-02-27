@@ -161,8 +161,8 @@ class SpeakViewModel(
 
                 phoneticsCode = phoneticsCode,
 
-                isShowSpeak = false,
-                isShowListen = isSupportListen.value == true,
+                isSupportSpeak = false,
+                isSupportListen = isSupportListen.value == true,
                 isSupportTranslate = false,
 
                 theme = theme,

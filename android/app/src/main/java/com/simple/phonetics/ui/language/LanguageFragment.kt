@@ -38,7 +38,6 @@ import com.simple.phonetics.utils.exts.setImageDrawable
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.phonetics.utils.sendToast
 import com.simple.state.ResultState
-import com.simple.state.isSuccess
 
 class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageViewModel>() {
 

@@ -1,6 +1,5 @@
 package com.simple.phonetics
 
-import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Language
 
 val DEFAULT_TRANSLATE = mapOf(
@@ -43,12 +42,12 @@ val DEFAULT_LANGUAGE = listOf(
         name = "English",
         image = "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/flags/en.webp",
         listIpa = listOf(
-            Ipa(
+            Language.IpaSource(
                 code = "UK",
                 name = "English - UK",
                 source = "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_UK.txt"
             ),
-            Ipa(
+            Language.IpaSource(
                 code = "US",
                 name = "English - US",
                 source = "https://raw.githubusercontent.com/hoanganhtuan95ptit/ipa-dict/master/data/en_US.txt"
