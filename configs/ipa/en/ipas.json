@@ -422,7 +422,7 @@
       "challenge"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/tʃ.mp3",
-    "type": "consonants_voiced"
+    "type": "consonants_unvoiced"
   },
   {
     "ipa": "/k/",
