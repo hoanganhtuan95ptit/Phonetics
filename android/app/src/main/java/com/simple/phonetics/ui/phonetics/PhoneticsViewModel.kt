@@ -361,7 +361,8 @@ class PhoneticsViewModel(
             viewItemList.add(it)
         }
 
-        viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
+        viewItemList.add(SpaceViewItem(id = "BOTTOM_0", height = DP.DP_350))
+        viewItemList.add(SpaceViewItem(id = "BOTTOM_1", height = DP.DP_100))
 
         postDifferentValueIfActive(viewItemList)
     }
