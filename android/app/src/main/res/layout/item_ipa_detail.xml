@@ -16,8 +16,7 @@
 
         <TextView
             android:id="@+id/tv_ipa"
-            style="?attr/textHeadline6"
-            android:textSize="22sp"
+            style="?attr/textHeadline4"
             tools:text="@string/app_name" />
 
         <FrameLayout

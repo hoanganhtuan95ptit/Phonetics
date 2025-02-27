@@ -89,7 +89,7 @@ class IpaListFragment : TransitionFragment<FragmentListBinding, IpaListViewModel
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW
-            layoutManager.justifyContent = JustifyContent.FLEX_START
+            layoutManager.justifyContent = JustifyContent.CENTER
 
             binding.recyclerView.adapter = this
             binding.recyclerView.layoutManager = layoutManager

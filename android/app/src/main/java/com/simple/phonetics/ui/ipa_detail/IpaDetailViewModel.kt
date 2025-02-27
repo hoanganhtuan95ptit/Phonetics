@@ -166,12 +166,12 @@ class IpaDetailViewModel(
 
             data = ipa,
 
-            ipa = ipa.ipa,
+            ipa = ipa.ipa.with(ForegroundColorSpan(theme.colorOnSurface)),
 
             image = if (listenState.isRunning()) {
-                R.drawable.ic_pause_24dp
+                R.drawable.ic_pause_black_24dp
             } else {
-                R.drawable.ic_play_24dp
+                R.drawable.ic_play_black_24dp
             },
             isShowLoading = listenState.isStart(),
 
