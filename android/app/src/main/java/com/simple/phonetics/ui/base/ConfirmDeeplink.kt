@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import com.simple.coreapp.Param
 import com.simple.coreapp.ui.dialogs.confirm.VerticalConfirmDialogFragment
-import com.simple.coreapp.ui.view.round.Background
+import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.phonetics.Deeplink

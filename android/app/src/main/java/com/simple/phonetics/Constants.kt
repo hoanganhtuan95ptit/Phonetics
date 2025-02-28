@@ -34,8 +34,11 @@ object Deeplink {
 object Payload {
 
     const val NAME = "NAME"
+    const val SIZE = "SIZE"
     const val THEME = "THEME"
     const val IMAGE = "IMAGE"
+    const val MARGIN = "MARGIN"
+    const val PADDING = "PADDING"
     const val SELECTED = "SELECTED"
     const val NAME_COLOR = "NAME_COLOR"
     const val BACKGROUND = "BACKGROUND"

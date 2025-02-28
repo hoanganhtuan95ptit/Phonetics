@@ -2,7 +2,8 @@ package com.simple.phonetics.ui.language.adapters
 
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.view.round.setBackground
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.setBackground
 import com.simple.phonetics.databinding.ItemLanguageLoadingBinding
 import java.util.UUID
 
@@ -20,7 +21,7 @@ open class LanguageLoadingAdapter() : ViewItemAdapter<LanguageLoadingViewItem, I
 
 class LanguageLoadingViewItem(
     var loadingColor: Int,
-    var background: com.simple.coreapp.ui.view.round.Background,
+    var background: Background,
 ) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(

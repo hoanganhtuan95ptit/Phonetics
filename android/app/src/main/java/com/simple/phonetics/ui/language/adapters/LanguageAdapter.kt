@@ -4,7 +4,8 @@ import android.view.View
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.view.round.setBackground
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.setBackground
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemLanguageBinding
@@ -15,15 +16,8 @@ class LanguageAdapter(onItemClick: (View, LanguageViewItem) -> Unit) : ViewItemA
     override fun bind(binding: ItemLanguageBinding, viewType: Int, position: Int, item: LanguageViewItem, payloads: MutableList<Any>) {
         super.bind(binding, viewType, position, item, payloads)
 
-        if (payloads.contains(Payload.NAME)) {
-
-            refreshName(binding, item)
-        }
-
-        if (payloads.contains(Payload.THEME)) {
-
-            refreshTheme(binding, item)
-        }
+        if (payloads.contains(Payload.NAME)) refreshName(binding, item)
+        if (payloads.contains(Payload.THEME)) refreshTheme(binding, item)
     }
 
     override fun bind(binding: ItemLanguageBinding, viewType: Int, position: Int, item: LanguageViewItem) {
@@ -53,7 +47,7 @@ data class LanguageViewItem(
     val image: String,
     val isSelected: Boolean,
 
-    val background: com.simple.coreapp.ui.view.round.Background,
+    val background: Background,
 ) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(

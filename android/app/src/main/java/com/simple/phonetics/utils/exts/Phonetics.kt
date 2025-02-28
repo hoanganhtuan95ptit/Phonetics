@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
+import com.simple.coreapp.ui.view.DEFAULT_PADDING
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.ui.view.round.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Id
@@ -120,11 +122,17 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
         id = "${Id.SENTENCE}_${index}",
         data = this,
 
-        margin = Margin(
-            top = DP.DP_16,
-            bottom = DP.DP_8,
-            right = DP.DP_16
+        size = Size(
+            width = ViewGroup.LayoutParams.WRAP_CONTENT,
+            height = DP.DP_40
         ),
+        margin = Margin(
+            left = DP.DP_4,
+            right = DP.DP_12,
+            top = DP.DP_12,
+            bottom = DP.DP_12
+        ),
+        background = DEFAULT_BACKGROUND,
 
         text = translate["action_try_speak"].orEmpty().with(ForegroundColorSpan(theme.colorPrimary)),
         textStyle = TextStyle(
@@ -150,15 +158,14 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
         ),
 
         imageLeft = R.drawable.ic_microphone_24dp,
-
         imageLeftSize = Size(
             width = DP.DP_18,
             height = DP.DP_40
         ),
         imageLeftMargin = Margin(
-            left = DP.DP_10,
-            right = DP.DP_8,
-        )
+            marginHorizontal = DP.DP_8
+        ),
+        imageLeftPadding = DEFAULT_PADDING
     )
 }
 
@@ -191,6 +198,11 @@ fun Phonetics.toViewItem(
         ipa = text.with(ForegroundColorSpan(if (ipaList.size > 1) theme.colorPrimary else theme.colorError)),
         text = this.text.with(ForegroundColorSpan(theme.colorOnSurface)),
 
-        image = image
+        image = image,
+
+        padding = Padding(
+            paddingVertical = DP.DP_12,
+            paddingHorizontal = DP.DP_4
+        )
     )
 }

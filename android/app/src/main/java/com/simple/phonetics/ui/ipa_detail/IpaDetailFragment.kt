@@ -13,6 +13,7 @@ import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.utils.autoCleared
+import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getParcelableOrNull
 import com.simple.coreapp.utils.ext.getViewModel
@@ -103,6 +104,7 @@ class IpaDetailFragment : TransitionFragment<FragmentListBinding, IpaDetailViewM
             layoutManager.justifyContent = JustifyContent.FLEX_START
 
             binding.recyclerView.adapter = this
+            binding.recyclerView.updatePadding(left = DP.DP_16, right = DP.DP_16)
             binding.recyclerView.layoutManager = layoutManager
         }
     }

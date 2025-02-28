@@ -4,7 +4,9 @@ import android.text.style.ForegroundColorSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.view.round.Background
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.Margin
+import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
@@ -31,14 +33,15 @@ class IpaListViewModel(
     @VisibleForTesting
     val ipaState: LiveData<ResultState<List<Ipa>>> = mediatorLiveData {
 
-        getIpaStateAsyncUseCase.execute().collect {
+        getIpaStateAsyncUseCase.execute(param = GetIpaStateAsyncUseCase.Param(sync = false)).collect {
 
             postValue(it)
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, ipaState) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, ipaState) {
 
+        val size = size.value ?: return@combineSources
         val theme = theme.value ?: return@combineSources
 
         val state = ipaState.value ?: return@combineSources
@@ -62,6 +65,13 @@ class IpaListViewModel(
                 ipa = it.ipa,
                 text = it.examples.firstOrNull().orEmpty().with(ForegroundColorSpan(theme.colorOnSurface)),
 
+                size = Size(
+                    width = (size.width - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
+                    height = DP.DP_90
+                ),
+                margin = Margin(
+                    margin = DP.DP_4
+                ),
                 background = Background(
                     cornerRadius = DP.DP_16,
                     backgroundColor = it.BackgroundColor(theme = theme)

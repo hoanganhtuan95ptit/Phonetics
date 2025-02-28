@@ -16,7 +16,7 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.ui.view.round.Background
+import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
@@ -168,6 +168,7 @@ class PhoneticsViewModel(
             text = translate["action_reverse"].orEmpty().with(ForegroundColorSpan(textColor)),
             isShow = isSupportReverse,
             background = Background(
+                strokeWidth = DP.DP_1,
                 strokeColor = theme.colorPrimary,
                 backgroundColor = backgroundColor
             )
@@ -207,6 +208,7 @@ class PhoneticsViewModel(
             text = translate["action_clear"].orEmpty().with(ForegroundColorSpan(theme.colorPrimary)),
             isShow = text.isNotBlank(),
             background = Background(
+                strokeWidth = DP.DP_1,
                 strokeColor = theme.colorPrimary,
                 backgroundColor = Color.TRANSPARENT
             ),

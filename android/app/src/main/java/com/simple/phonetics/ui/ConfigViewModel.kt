@@ -17,7 +17,7 @@ import com.simple.coreapp.ui.adapters.texts.TextViewItem
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.ui.view.round.Background
+import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources

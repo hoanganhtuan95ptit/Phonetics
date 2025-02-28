@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
@@ -114,7 +115,8 @@ class LanguageViewModel(
                 name = it.name.with(ForegroundColorSpan(if (isSelected) theme.colorOnPrimaryVariant else theme.colorOnSurface)),
                 image = it.image,
                 isSelected = isSelected,
-                background = com.simple.coreapp.ui.view.round.Background(
+                background = Background(
+                    strokeWidth = DP.DP_1,
                     strokeColor = if (isSelected) theme.colorPrimary else theme.colorDivider,
                     strokeDashGap = DP.DP_4,
                     strokeDashWidth = DP.DP_4,
@@ -161,7 +163,8 @@ class LanguageViewModel(
                 .with(ForegroundColorSpan(if (isSelected) theme.colorOnPrimary else theme.colorOnSurface)),
             isClickable = isClickable,
             isShowLoading = changeLanguageState != null && !changeLanguageState.isCompleted(),
-            background = com.simple.coreapp.ui.view.round.Background(
+            background = Background(
+                strokeWidth = DP.DP_1,
                 strokeColor = if (isSelected) theme.colorPrimary else theme.colorDivider,
                 backgroundColor = if (isSelected) theme.colorPrimary else Color.TRANSPARENT
             )
@@ -221,7 +224,7 @@ class LanguageViewModel(
 
     private fun AppTheme.toLoadingViewItem() = LanguageLoadingViewItem(
         loadingColor = colorLoading,
-        background = com.simple.coreapp.ui.view.round.Background(
+        background = Background(
             strokeColor = colorDivider,
             strokeDashGap = DP.DP_4,
             strokeDashWidth = DP.DP_4,
@@ -306,6 +309,6 @@ class LanguageViewModel(
         val isClickable: Boolean,
         val isShowLoading: Boolean,
 
-        val background: com.simple.coreapp.ui.view.round.Background,
+        val background: Background,
     )
 }

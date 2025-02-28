@@ -3,8 +3,8 @@ package com.simple.phonetics.ui.ipa_detail.adapters
 import android.view.View
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.view.round.Background
-import com.simple.coreapp.ui.view.round.setBackground
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.Payload
 import com.simple.phonetics.R

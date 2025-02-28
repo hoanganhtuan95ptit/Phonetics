@@ -46,6 +46,7 @@ class HistoryViewModel(
 
         if (historyState !is ResultState.Success) {
 
+            postDifferentValue(emptyList())
             return@combineSources
         }
 

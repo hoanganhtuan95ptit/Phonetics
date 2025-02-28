@@ -19,8 +19,9 @@ import com.simple.coreapp.ui.adapters.EmptyAdapter
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
-import com.simple.coreapp.ui.view.round.setBackground
+import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
+import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
@@ -202,6 +203,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.justifyContent = JustifyContent.FLEX_START
             binding.recyclerView.layoutManager = layoutManager
+            binding.recyclerView.updatePadding(left = DP.DP_12, right = DP.DP_12)
         }
     }
 
