@@ -10,15 +10,16 @@ import androidx.lifecycle.LiveData
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
+import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.ui.view.round.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
+import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
@@ -36,14 +37,17 @@ class IpaViewModel(
     @VisibleForTesting
     val ipaState: LiveData<ResultState<List<Ipa>>> = mediatorLiveData {
 
+        postValue(ResultState.Start)
+
         getIpaStateAsyncUseCase.execute().collect {
 
             postValue(it)
         }
     }
 
-    val ipaViewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, ipaState) {
+    val ipaViewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, ipaState) {
 
+        val size = size.value ?: return@combineSources
         val theme = theme.value ?: return@combineSources
         val translate = translate.value ?: return@combineSources
 
@@ -51,6 +55,7 @@ class IpaViewModel(
 
         if (state !is ResultState.Success) {
 
+            postDifferentValue(emptyList())
             return@combineSources
         }
 
@@ -62,7 +67,7 @@ class IpaViewModel(
             id = "TITLE_IPA",
             text = translate["title_ipa"].orEmpty()
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
-            textSize = 20f
+            textSize = 20f,
         ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_IPA_0", height = DP.DP_16))
@@ -80,6 +85,13 @@ class IpaViewModel(
                 ipa = it.ipa,
                 text = it.examples.firstOrNull().orEmpty().with(ForegroundColorSpan(theme.colorOnSurface)),
 
+                size = Size(
+                    width = (size.width - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
+                    height = DP.DP_90
+                ),
+                margin = Margin(
+                    margin = DP.DP_4
+                ),
                 background = Background(
                     cornerRadius = DP.DP_16,
                     backgroundColor = it.BackgroundColor(theme = theme)
@@ -104,14 +116,18 @@ class IpaViewModel(
                 left = DP.DP_16,
                 right = DP.DP_16
             ),
+
             margin = Margin(
-                top = DP.DP_8
+                marginVertical = DP.DP_4,
+                marginHorizontal = DP.DP_4
             ),
             background = Background(
                 strokeColor = theme.colorPrimary,
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
-            )
+            ),
+
+            imageLeft = null
         ).let {
 
             viewItemList.add(it)

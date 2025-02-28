@@ -5,15 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.launchCollect
 import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 
 fun <T> LiveData<T>.launchCollect(
-    lifecycleOwner: androidx.lifecycle.LifecycleOwner,
+    lifecycleOwner: LifecycleOwner,
 
     start: CoroutineStart = CoroutineStart.DEFAULT,
     context: CoroutineContext = EmptyCoroutineContext,
@@ -38,15 +39,21 @@ fun <T> LiveData<T>.launchCollectWithCache(
     start: CoroutineStart = CoroutineStart.DEFAULT,
     context: CoroutineContext = EmptyCoroutineContext,
 
-    collector: suspend (data: T?, isFirst: Boolean) -> Unit
+    collector: suspend (data: T, isFirst: Boolean) -> Unit
 ) = lifecycleOwner.lifecycleScope.launch(start = start, context = context) {
 
-    val data = value
+    var data = value
 
-    collector(data, true)
+    if (data != null) collector(data, true)
 
     asFlow().collect {
 
-        collector(it, false)
+        val diff = data == null || withContext(context + Dispatchers.IO) {
+            data != it
+        }
+
+        if (diff) collector(it, false)
+
+        data = null
     }
 }

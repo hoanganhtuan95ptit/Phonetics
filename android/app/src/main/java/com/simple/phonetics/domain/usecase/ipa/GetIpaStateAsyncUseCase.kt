@@ -8,22 +8,40 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flatMapLatest
 
 class GetIpaStateAsyncUseCase(
     private val ipaRepository: IpaRepository,
     private val languageRepository: LanguageRepository
 ) {
 
-    suspend fun execute(): Flow<ResultState<List<Ipa>>> = channelFlow {
+    suspend fun execute(param: Param = Param()): Flow<ResultState<List<Ipa>>> = channelFlow {
 
-        languageRepository.getLanguageInputAsync().launchCollect(this) {
+        if (param.sync) languageRepository.getLanguageInputAsync().launchCollect(this) {
 
-            val ipaList = ipaRepository.syncIpa(languageCode = it.id)
+            runCatching {
 
-            trySend(ResultState.Success(ipaList))
+                val languageCode = it.id
+
+                val ipaList = ipaRepository.syncIpa(languageCode = languageCode)
+
+                ipaRepository.insertOrUpdate(languageCode = languageCode, list = ipaList)
+            }
+        }
+
+        languageRepository.getLanguageInputAsync().flatMapLatest {
+
+            val languageCode = it.id
+
+            ipaRepository.getIpaAsync(languageCode = languageCode)
+        }.launchCollect(this) {
+
+            trySend(ResultState.Success(it))
         }
 
         awaitClose {
         }
     }
+
+    data class Param(val sync: Boolean = true)
 }

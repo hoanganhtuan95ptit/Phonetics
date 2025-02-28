@@ -5,7 +5,6 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
-import androidx.lifecycle.asFlow
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -14,17 +13,15 @@ import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.utils.autoCleared
+import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.IpaAdapters
-import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailAdapters
 import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.speak.adapters.ImageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
@@ -89,9 +86,10 @@ class IpaListFragment : TransitionFragment<FragmentListBinding, IpaListViewModel
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW
-            layoutManager.justifyContent = JustifyContent.CENTER
+            layoutManager.justifyContent = JustifyContent.FLEX_START
 
             binding.recyclerView.adapter = this
+            binding.recyclerView.updatePadding(left = DP.DP_12, right = DP.DP_12)
             binding.recyclerView.layoutManager = layoutManager
         }
     }

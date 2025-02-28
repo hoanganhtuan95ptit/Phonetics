@@ -13,8 +13,8 @@ import androidx.transition.Fade
 import androidx.transition.TransitionSet
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
-import com.simple.coreapp.ui.view.round.Background
-import com.simple.coreapp.ui.view.round.setBackground
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation

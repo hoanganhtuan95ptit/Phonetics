@@ -13,7 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.view.round.Background
+import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
@@ -129,6 +129,8 @@ class IpaDetailViewModel(
     @VisibleForTesting
     val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(ipa, inputLanguage, outputLanguage) {
 
+        postValue(ResultState.Start)
+
         val param = GetPhoneticsAsyncUseCase.Param(
             text = ipa.get().examples.joinToString(separator = " ") { it },
             isReverse = false,
@@ -221,7 +223,7 @@ class IpaDetailViewModel(
         postDifferentValueIfActive(viewItemList)
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, phoneticsViewItemList, listenState, isSupportSpeak, isSupportListen) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSources(phoneticsViewItemList) {
 
         val list = arrayListOf<ViewItem>()
 
