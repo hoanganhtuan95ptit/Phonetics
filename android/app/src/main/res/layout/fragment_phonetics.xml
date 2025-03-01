@@ -51,7 +51,7 @@
                 android:id="@+id/tool_bar"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <com.simple.coreapp.ui.view.round.RoundFrameLayout
                     android:id="@+id/frame_content"

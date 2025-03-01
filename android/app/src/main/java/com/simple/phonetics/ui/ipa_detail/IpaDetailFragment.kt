@@ -129,7 +129,7 @@ class IpaDetailFragment : TransitionFragment<FragmentListBinding, IpaDetailViewM
 
             val binding = binding ?: return@launchCollectWithCache
 
-            binding.recyclerView.submitListAwait(transitionFragment = this@IpaDetailFragment, viewItemList = data, isFirst = isFirst, tag = TAG.VIEW_ITEM_LIST.name)
+            binding.recyclerView.submitListAwait(fragment = this@IpaDetailFragment, viewItemList = data, isFirst = isFirst, tag = TAG.VIEW_ITEM_LIST.name)
         }
 
         arguments?.getParcelableOrNull<Ipa>(Param.IPA)?.let {

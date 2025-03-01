@@ -99,7 +99,7 @@ class IpaListFragment : TransitionFragment<FragmentListBinding, IpaListViewModel
 
             val binding = binding ?: return@launchCollectWithCache
 
-            binding.recyclerView.submitListAwait(transitionFragment = this@IpaListFragment, viewItemList = data, isFirst = isFirst, tag = com.simple.phonetics.TAG.VIEW_ITEM_LIST.name)
+            binding.recyclerView.submitListAwait(fragment = this@IpaListFragment, viewItemList = data, isFirst = isFirst, tag = com.simple.phonetics.TAG.VIEW_ITEM_LIST.name)
         }
     }
 }

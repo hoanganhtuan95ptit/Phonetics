@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
+import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.utils.ext.handler
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +13,17 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
+fun <T> LiveData<T>.observeWithTransition(fragment: TransitionFragment<*, *>, owner: LifecycleOwner, tag: String = "", block: (T) -> Unit) {
+
+    fragment.lockTransition(tag = tag)
+
+    observe(owner) {
+
+        block(it)
+
+        fragment.unlockTransition(tag = tag)
+    }
+}
 
 fun <T> LiveData<T>.launchCollect(
     lifecycleOwner: LifecycleOwner,
