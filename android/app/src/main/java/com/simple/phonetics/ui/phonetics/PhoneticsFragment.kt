@@ -51,6 +51,7 @@ import com.simple.phonetics.ui.phonetics.view.review.AppReviewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.launchCollectWithCache
+import com.simple.phonetics.utils.exts.observeWithTransition
 import com.simple.phonetics.utils.exts.submitListAwait
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
@@ -224,11 +225,11 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
     private fun observeData() = with(viewModel) {
 
-        lockTransition(TAG.THEME.name, TAG.TITLE.name, TAG.ENTER.name, TAG.CLEAR.name, TAG.REVERSE.name)
+        val fragment = this@PhoneticsFragment
 
-        theme.observe(viewLifecycleOwner) {
+        theme.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.THEME.name) {
 
-            val binding = binding ?: return@observe
+            val binding = binding ?: return@observeWithTransition
 
             binding.ivRead.setColorFilter(it.colorPrimary)
             binding.ivStop.setColorFilter(it.colorPrimary)
@@ -242,79 +243,65 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.frameContent.delegate.backgroundColor = it.colorBackground
 
             binding.frameRootContent.setBackgroundColor(it.colorBackgroundVariant)
-
-            unlockTransition(TAG.THEME.name)
         }
 
-        title.observe(viewLifecycleOwner) {
+        title.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.TITLE.name) {
 
-            val binding = binding ?: return@observe
+            val binding = binding ?: return@observeWithTransition
 
             binding.tvTitle.text = it
-
-            unlockTransition(TAG.TITLE.name)
         }
 
-        imageInfo.observe(viewLifecycleOwner) {
+        clearInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.CLEAR.name) {
 
-            val binding = binding ?: return@observe
+            val binding = binding ?: return@observeWithTransition
+
+            binding.tvClear.text = it.text
+            binding.frameClear.setVisible(it.isShow)
+            binding.tvClear.delegate.setBackground(it.background)
+        }
+
+        enterInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.ENTER.name) {
+
+            val binding = binding ?: return@observeWithTransition
+
+            binding.etText.hint = it.hint
+            binding.etText.setTextColor(it.textColor)
+        }
+
+        imageInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.IMAGE.name) {
+
+            val binding = binding ?: return@observeWithTransition
 
             binding.ivPicture.setImage(it.image, CircleCrop())
             binding.ivPicture.setVisible(it.isShowImage)
 
             binding.ivCamera.setVisible(it.isShowInput)
             binding.ivGallery.setVisible(it.isShowInput)
-
-            unlockTransition(TAG.IMAGE.name)
         }
 
-        listenInfo.observe(viewLifecycleOwner) {
+        listenInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.LISTEN.name) {
 
-            val binding = binding ?: return@observe
+            val binding = binding ?: return@observeWithTransition
 
-            binding.ivStop.setVisible(it.isShowPause)
             binding.ivRead.setVisible(it.isShowPlay)
-
-            unlockTransition(TAG.SPEAK.name)
+            binding.ivStop.setVisible(it.isShowPause)
         }
 
-        clearInfo.observe(viewLifecycleOwner) {
+        reverseInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.REVERSE.name) {
 
-            val binding = binding ?: return@observe
-
-            binding.tvClear.text = it.text
-            binding.frameClear.setVisible(it.isShow)
-            binding.tvClear.delegate.setBackground(it.background)
-
-            unlockTransition(TAG.CLEAR.name)
-        }
-
-        enterInfo.observe(viewLifecycleOwner) {
-
-            val binding = binding ?: return@observe
-
-            binding.etText.hint = it.hint
-            binding.etText.setTextColor(it.textColor)
-
-            unlockTransition(TAG.ENTER.name)
-        }
-
-        reverseInfo.observe(viewLifecycleOwner) {
-
-            val binding = binding ?: return@observe
+            val binding = binding ?: return@observeWithTransition
 
             binding.tvReverse.text = it.text
             binding.frameReverse.setVisible(it.isShow)
             binding.tvReverse.delegate.setBackground(it.background)
-
-            unlockTransition(TAG.REVERSE.name)
         }
 
         viewItemList.launchCollectWithCache(viewLifecycleOwner) { data, isFirst ->
 
             val binding = binding ?: return@launchCollectWithCache
 
-            binding.recyclerView.submitListAwait(transitionFragment = this@PhoneticsFragment, viewItemList = data, isFirst = isFirst, tag = com.simple.phonetics.TAG.VIEW_ITEM_LIST.name)
+            binding.recyclerView.submitListAwait(fragment = fragment, viewItemList = data, isFirst = isFirst, tag = com.simple.phonetics.TAG.VIEW_ITEM_LIST.name)
         }
 
         isShowLoading.observe(viewLifecycleOwner) {
@@ -336,7 +323,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
             val binding = binding ?: return@launchCollectWithCache
 
-            binding.recFilter.submitListAwait(transitionFragment = this@PhoneticsFragment, viewItemList = data, isFirst = isFirst, tag = TAG.CONFIG_VIEW_ITEM_LIST.name)
+            binding.recFilter.submitListAwait(fragment = this@PhoneticsFragment, viewItemList = data, isFirst = isFirst, tag = TAG.CONFIG_VIEW_ITEM_LIST.name)
         }
 
         phoneticSelect.observe(viewLifecycleOwner) {
@@ -366,7 +353,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
     }
 
     private enum class TAG {
-        ENTER, IMAGE, CLEAR, TITLE, THEME, SPEAK, REVERSE, CONFIG_VIEW_ITEM_LIST
+        ENTER, IMAGE, CLEAR, TITLE, THEME, LISTEN, REVERSE, CONFIG_VIEW_ITEM_LIST
     }
 }
 

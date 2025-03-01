@@ -112,13 +112,13 @@ class PhoneticsViewModel(
         postValue(isSupported)
     }
 
-    val imageInfo: LiveData<ImageInfo> = combineSources(detectState, isSupportDetect) {
+    val imageInfo: LiveData<ImageInfo> = listenerSources(detectState, isSupportDetect) {
 
-        val detectState = detectState.get()
-        val isSupportDetect = isSupportDetect.get()
+        val detectState = detectState.value
+        val isSupportDetect = isSupportDetect.value ?: return@listenerSources
 
         val info = ImageInfo(
-            image = detectState.toRunning()?.data.orEmpty(),
+            image = detectState?.toRunning()?.data.orEmpty(),
             isShowImage = !detectState.isCompleted(),
             isShowInput = isSupportDetect
         )
@@ -170,11 +170,11 @@ class PhoneticsViewModel(
 
     val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
 
-    val listenInfo: LiveData<ListenInfo> = combineSources(text, listenState, isSupportListen) {
+    val listenInfo: LiveData<ListenInfo> = listenerSources(text, listenState, isSupportListen) {
 
-        val text = text.get()
-        val listenState = listenState.get()
-        val isSupportListen = isSupportListen.get() && text.isNotBlank()
+        val text = text.value ?: return@listenerSources
+        val listenState = listenState.value
+        val isSupportListen = isSupportListen.value ?: return@listenerSources && text.isNotBlank()
 
         val info = ListenInfo(
             isShowPlay = !listenState.isRunning() && isSupportListen,

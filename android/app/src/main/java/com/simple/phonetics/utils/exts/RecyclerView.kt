@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 suspend fun RecyclerView.submitListAwait(
-    transitionFragment: TransitionFragment<*, *>,
+    fragment: TransitionFragment<*, *>,
     viewItemList: List<ViewItem>,
     isFirst: Boolean = false,
     tag: String = ""
@@ -26,11 +26,11 @@ suspend fun RecyclerView.submitListAwait(
     val isAnim = !isFirst
 
     if (isFirst) {
-        transitionFragment.lockTransition(tag = tag)
+        fragment.lockTransition(tag = tag)
     }
 
     if (isAnim) {
-        transitionFragment.viewModel.awaitTransition()
+        fragment.viewModel.awaitTransition()
     }
 
     submitListAwait(viewItemList = viewItemList)
@@ -40,7 +40,7 @@ suspend fun RecyclerView.submitListAwait(
     }
 
     if (isFirst) {
-        transitionFragment.unlockTransition(tag = tag)
+        fragment.unlockTransition(tag = tag)
     }
 }
 
