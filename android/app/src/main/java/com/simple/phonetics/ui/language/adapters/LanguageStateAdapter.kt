@@ -3,16 +3,15 @@ package com.simple.phonetics.ui.language.adapters
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.phonetics.databinding.ItemLanguageStateBinding
+import com.tuanha.adapter.annotation.AdapterPreview
 
+@AdapterPreview
 class LanguageStateAdapter : ViewItemAdapter<LanguageStateViewItem, ItemLanguageStateBinding>() {
 
     override fun bind(binding: ItemLanguageStateBinding, viewType: Int, position: Int, item: LanguageStateViewItem, payloads: MutableList<Any>) {
         super.bind(binding, viewType, position, item, payloads)
 
-        if (payloads.contains(Payload.NAME)) {
-
-            bindingName(binding, item)
-        }
+        if (payloads.contains(Payload.NAME)) bindingName(binding, item)
     }
 
     override fun bind(binding: ItemLanguageStateBinding, viewType: Int, position: Int, item: LanguageStateViewItem) {
@@ -22,8 +21,7 @@ class LanguageStateAdapter : ViewItemAdapter<LanguageStateViewItem, ItemLanguage
     }
 
     private fun bindingName(binding: ItemLanguageStateBinding, item: LanguageStateViewItem) {
-
-        binding.tvValue.setText(item.name)
+        binding.tvValue.text = item.name
     }
 }
 

@@ -5,8 +5,10 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.phonetics.databinding.ItemLanguageLoadingBinding
+import com.tuanha.adapter.annotation.AdapterPreview
 import java.util.UUID
 
+@AdapterPreview
 open class LanguageLoadingAdapter() : ViewItemAdapter<LanguageLoadingViewItem, ItemLanguageLoadingBinding>() {
 
     override fun bind(binding: ItemLanguageLoadingBinding, viewType: Int, position: Int, item: LanguageLoadingViewItem) {

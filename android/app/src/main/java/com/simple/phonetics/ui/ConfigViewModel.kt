@@ -14,10 +14,10 @@ import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.adapters.texts.TextViewItem
+import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
@@ -31,7 +31,6 @@ import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.TranslateUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
-import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.CommonViewModel
@@ -381,7 +380,7 @@ class ConfigViewModel(
 
             val text = translate["title_phonetic"].orEmpty()
 
-            list.add(createTitleTextView(id = "title_phonetic", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "TITLE_PHONETIC", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -390,7 +389,7 @@ class ConfigViewModel(
 
             val text = translate["title_translate"].orEmpty()
 
-            list.add(createTitleTextView(id = "title_translate", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "TITLE_TRANSLATE", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -399,7 +398,7 @@ class ConfigViewModel(
 
             val text = translate["title_voice_speed"].orEmpty()
 
-            list.add(createTitleTextView(id = "title_voice_speed", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "TITLE_VOICE_SPEED", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
@@ -408,7 +407,7 @@ class ConfigViewModel(
 
             val text = translate["title_voice"].orEmpty()
 
-            list.add(createTitleTextView(id = "title_voice", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "TITLE_VOICE", text = text.with(ForegroundColorSpan(theme.colorOnSurface))))
 
             list.addAll(it)
         }
