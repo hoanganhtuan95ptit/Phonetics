@@ -39,6 +39,11 @@ import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingAdapter
+import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingViewItem
+import com.simple.phonetics.utils.AppTheme
+import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.state.ResultState
 import com.simple.state.doFailed
@@ -62,16 +67,6 @@ class PhoneticsViewModel(
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
 ) : CommonViewModel() {
-
-    private val itemLoading = listOf(
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading)
-    )
 
     val title: LiveData<CharSequence> = combineSources(theme, translate) {
 
@@ -278,7 +273,7 @@ class PhoneticsViewModel(
 
         state.doStart {
 
-            postDifferentValue(itemLoading)
+            postDifferentValue(getPhoneticLoadingViewItem(theme))
             return@combineSources
         }
 
@@ -306,21 +301,14 @@ class PhoneticsViewModel(
             viewItemList.addAll(it)
         }
 
-        if (viewItemList.isNotEmpty()) NoneTextViewItem(
-
+        if (viewItemList.isNotEmpty()) TitleViewItem(
+            id = "TITLE_RESULT",
             text = translate["title_result"].orEmpty()
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
-            textStyle = TextStyle(
-                textSize = 20f
-            ),
-            size = Size(
-                width = ViewGroup.LayoutParams.MATCH_PARENT
-            )
         ).let {
 
             viewItemList.add(0, it)
             viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_8))
-            viewItemList.add(SpaceViewItem(id = "BOTTOM", height = DP.DP_100))
         }
 
         postDifferentValueIfActive(viewItemList)

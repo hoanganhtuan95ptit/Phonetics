@@ -36,8 +36,9 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.IpaAdapters
+import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingAdapter
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
-import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
 import com.simple.phonetics.ui.phonetics.view.ImageView
 import com.simple.phonetics.ui.phonetics.view.ImageViewImpl
@@ -195,7 +196,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             }
         }
 
-        adapter = MultiAdapter(ipaAdapter, historyAdapter, clickTextAdapter, phoneticsAdapter, EmptyAdapter(), SentenceAdapter(), NoneTextAdapter()).apply {
+        adapter = MultiAdapter(ipaAdapter, historyAdapter, clickTextAdapter, phoneticsAdapter, EmptyAdapter(), SentenceAdapter(), NoneTextAdapter(), PhoneticsLoadingAdapter()).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null

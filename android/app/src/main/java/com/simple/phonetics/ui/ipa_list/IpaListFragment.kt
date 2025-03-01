@@ -9,7 +9,6 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
-import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.utils.autoCleared
@@ -22,8 +21,6 @@ import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.IpaAdapters
-import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
-import com.simple.phonetics.ui.speak.adapters.ImageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.launchCollectWithCache
 import com.simple.phonetics.utils.exts.submitListAwait
@@ -42,7 +39,8 @@ class IpaListFragment : TransitionFragment<FragmentListBinding, IpaListViewModel
 
         binding.root.doOnChangeHeightStatusAndHeightNavigation(viewLifecycleOwner) { heightStatusBar: Int, heightNavigationBar: Int ->
 
-            binding.root.updatePadding(top = heightStatusBar, bottom = heightNavigationBar)
+            binding.root.updatePadding(top = heightStatusBar)
+            binding.recyclerView.updatePadding(left = DP.DP_12, right = DP.DP_12, bottom = heightNavigationBar + DP.DP_24)
         }
 
         binding.frameHeader.icBack.setDebouncedClickListener {
@@ -70,26 +68,13 @@ class IpaListFragment : TransitionFragment<FragmentListBinding, IpaListViewModel
             )
         }
 
-        val clickTextAdapter = ClickTextAdapter { view, item ->
-
-        }
-
-        val phoneticsAdapter = PhoneticsAdapter { view, item ->
-
-        }
-
-        val imageStateAdapter = ImageStateAdapter { view, item ->
-
-        }
-
-        adapter = MultiAdapter(ipaAdapter, clickTextAdapter, phoneticsAdapter, imageStateAdapter, NoneTextAdapter()).apply {
+        adapter = MultiAdapter(ipaAdapter, NoneTextAdapter()).apply {
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW
             layoutManager.justifyContent = JustifyContent.FLEX_START
 
             binding.recyclerView.adapter = this
-            binding.recyclerView.updatePadding(left = DP.DP_12, right = DP.DP_12)
             binding.recyclerView.layoutManager = layoutManager
         }
     }

@@ -65,7 +65,7 @@ fun setupTheme(activity: Activity) {
         colorErrorVariant = activity.getColorFromAttr(com.simple.coreapp.R.attr.colorErrorVariant),
         colorOnErrorVariant = activity.getColorFromAttr(R.attr.colorOnErrorVariant),
 
-        colorLoading = activity.getColorFromAttr(com.simple.coreapp.R.attr.colorLoading),
+        colorLoading = Color.parseColor("#D1D2D4"),
 
         colorBackground = activity.getColorFromAttr(android.R.attr.colorBackground),
         colorOnBackground = activity.getColorFromAttr(com.google.android.material.R.attr.colorOnBackground),

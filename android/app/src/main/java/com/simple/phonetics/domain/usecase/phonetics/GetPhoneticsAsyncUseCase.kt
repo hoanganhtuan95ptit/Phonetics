@@ -42,7 +42,6 @@ class GetPhoneticsAsyncUseCase(
 
         offerActive(ResultState.Start)
 
-
         // nếu đang bật chế độ đảo ngược thì thực hiện dịch nội dung
         val textWrap = if (param.isReverse) {
 
