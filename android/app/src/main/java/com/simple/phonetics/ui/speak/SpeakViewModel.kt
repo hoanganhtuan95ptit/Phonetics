@@ -39,6 +39,7 @@ import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.CommonViewModel
 import com.simple.phonetics.ui.speak.adapters.ImageStateViewItem
+import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.state.ResultState
 import com.simple.state.doFailed
@@ -63,16 +64,6 @@ class SpeakViewModel(
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
     private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
 ) : CommonViewModel() {
-
-    private val itemLoading = listOf(
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading)
-    )
 
     val text: LiveData<String> = MediatorLiveData()
 
@@ -145,7 +136,7 @@ class SpeakViewModel(
 
         state.doStart {
 
-            postDifferentValue(itemLoading)
+            postDifferentValue(getPhoneticLoadingViewItem(theme = theme))
             return@combineSources
         }
 

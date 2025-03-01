@@ -22,7 +22,8 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingAdapter
 import com.simple.phonetics.ui.speak.adapters.ImageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.state.isCompleted
@@ -72,7 +73,7 @@ class SpeakFragment : BaseViewModelSheetFragment<DialogListBinding, SpeakViewMod
                 }
         }
 
-        adapter = MultiAdapter(phoneticsAdapter, imageStateAdapter, NoneTextAdapter()).apply {
+        adapter = MultiAdapter(phoneticsAdapter, imageStateAdapter, NoneTextAdapter(), PhoneticsLoadingAdapter()).apply {
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW

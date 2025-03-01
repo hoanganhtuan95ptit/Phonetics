@@ -29,8 +29,9 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailAdapters
-import com.simple.phonetics.ui.phonetics.adapters.PhoneticsAdapter
-import com.simple.phonetics.ui.speak.adapters.ImageStateAdapter
+import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingAdapter
+import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailLoadingAdapters
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.launchCollectWithCache
 import com.simple.phonetics.utils.exts.submitListAwait
@@ -53,7 +54,9 @@ class IpaDetailFragment : TransitionFragment<FragmentListBinding, IpaDetailViewM
 
         binding.root.doOnChangeHeightStatusAndHeightNavigation(viewLifecycleOwner) { heightStatusBar: Int, heightNavigationBar: Int ->
 
-            binding.root.updatePadding(top = heightStatusBar, bottom = heightNavigationBar)
+            binding.root.updatePadding(top = heightStatusBar)
+            binding.recyclerView.updatePadding(left = DP.DP_12, right = DP.DP_12, bottom = heightNavigationBar + DP.DP_24)
+
         }
 
         binding.frameHeader.icBack.setDebouncedClickListener {
@@ -97,14 +100,13 @@ class IpaDetailFragment : TransitionFragment<FragmentListBinding, IpaDetailViewM
             viewModel.startListen(item.data)
         }
 
-        adapter = MultiAdapter(clickTextAdapter, phoneticsAdapter, ipaDetailAdapters, NoneTextAdapter()).apply {
+        adapter = MultiAdapter(clickTextAdapter, phoneticsAdapter, ipaDetailAdapters, NoneTextAdapter(), PhoneticsLoadingAdapter(), IpaDetailLoadingAdapters()).apply {
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW
             layoutManager.justifyContent = JustifyContent.FLEX_START
 
             binding.recyclerView.adapter = this
-            binding.recyclerView.updatePadding(left = DP.DP_16, right = DP.DP_16)
             binding.recyclerView.layoutManager = layoutManager
         }
     }

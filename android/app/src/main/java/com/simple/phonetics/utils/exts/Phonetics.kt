@@ -19,11 +19,25 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.phonetics.adapters.PhoneticsViewItem
+import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingViewItem
+import com.simple.phonetics.ui.base.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.phonetics.adapters.SentenceViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.state.ResultState
 
+fun getPhoneticLoadingViewItem(theme: AppTheme, background: Background? = null): List<ViewItem> = arrayListOf<ViewItem>().apply {
+
+    val backgroundWrap = background ?: Background(
+        cornerRadius = DP.DP_100,
+        backgroundColor = theme.colorLoading
+    )
+
+    add(PhoneticsLoadingViewItem(id = "1", background = backgroundWrap))
+    add(PhoneticsLoadingViewItem(id = "2", background = backgroundWrap))
+    add(PhoneticsLoadingViewItem(id = "3", background = backgroundWrap))
+    add(PhoneticsLoadingViewItem(id = "4", background = backgroundWrap))
+    add(PhoneticsLoadingViewItem(id = "5", background = backgroundWrap))
+}
 
 fun Any.toViewItem(
     index: Int, total: Int, phoneticsCode: String,
@@ -201,8 +215,10 @@ fun Phonetics.toViewItem(
         image = image,
 
         padding = Padding(
-            paddingVertical = DP.DP_12,
-            paddingHorizontal = DP.DP_4
+            top = DP.DP_12,
+            bottom = DP.DP_12,
+            left = DP.DP_4,
+            right = DP.DP_12
         )
     )
 }

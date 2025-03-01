@@ -3,6 +3,7 @@ package com.simple.phonetics.utils.exts
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.Fade
+import androidx.transition.Scene
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
@@ -72,10 +73,9 @@ suspend fun RecyclerView.transitionAwait(transition: Transition = TransitionSet(
         }
     }
 
-    TransitionManager.beginDelayedTransition(this@transitionAwait, transition.addListener(transitionListener))
+    TransitionManager.go(Scene(this@transitionAwait), transition.addListener(transitionListener))
 
     awaitClose {
         transition.removeListener(transitionListener)
-        TransitionManager.endTransitions(this@transitionAwait)
     }
 }.first()

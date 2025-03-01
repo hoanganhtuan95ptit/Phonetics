@@ -10,7 +10,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.simple.adapter.LoadingViewItem
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
@@ -34,9 +33,12 @@ import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailViewItem
+import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.state.ResultState
 import com.simple.state.doFailed
@@ -61,16 +63,6 @@ class IpaDetailViewModel(
 ) : CommonViewModel() {
 
     private var job: Job? = null
-
-    private val itemLoading = listOf(
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading),
-        LoadingViewItem(R.layout.item_phonetics_loading)
-    )
 
     val ipa: LiveData<Ipa> = MediatorLiveData()
 
@@ -145,6 +137,7 @@ class IpaDetailViewModel(
         }
     }
 
+    @VisibleForTesting
     val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, ipa, phoneticsCode, phoneticsState, isSupportSpeak, isSupportListen, listenState) {
 
         val theme = theme.value ?: return@listenerSources
@@ -157,7 +150,7 @@ class IpaDetailViewModel(
 
         state.doStart {
 
-            postDifferentValue(itemLoading)
+            postDifferentValue(getLoadingViewItem(theme))
             return@listenerSources
         }
 
@@ -326,4 +319,18 @@ class IpaDetailViewModel(
             mediaPlayer.release()
         }
     }.first()
+
+    private fun getLoadingViewItem(theme: AppTheme): List<ViewItem> = arrayListOf<ViewItem>().apply {
+
+        val background = Background(
+            cornerRadius = DP.DP_24,
+            backgroundColor = theme.colorLoading
+        )
+
+        add(IpaDetailLoadingViewItem(id = "1", background = background))
+
+        add(SpaceViewItem(id = "2", height = DP.DP_24))
+
+        addAll(getPhoneticLoadingViewItem(theme = theme))
+    }
 }

@@ -61,7 +61,7 @@ class IpaViewModel(
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        val ipaList = state.data.runCatching { subList(0, 5) }.getOrNull().orEmpty()
+        val ipaList = state.data.runCatching { subList(0, 4) }.getOrNull().orEmpty()
 
         if (ipaList.isNotEmpty()) TitleViewItem(
             id = "TITLE_IPA",
@@ -87,7 +87,7 @@ class IpaViewModel(
 
                 size = Size(
                     width = (size.width - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
-                    height = DP.DP_90
+                    height = DP.DP_76
                 ),
                 margin = Margin(
                     margin = DP.DP_4
@@ -104,9 +104,10 @@ class IpaViewModel(
 
         if (ipaList.isNotEmpty()) ClickTextViewItem(
             id = Id.IPA_LIST,
-            text = "...".with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
+            text = translate["action_view_all_ipa"].orEmpty()
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
             textSize = Size(
-                height = DP.DP_90,
+                height = DP.DP_76,
                 width = ViewGroup.LayoutParams.WRAP_CONTENT
             ),
             textStyle = TextStyle(
@@ -127,7 +128,8 @@ class IpaViewModel(
                 cornerRadius = DP.DP_16
             ),
 
-            imageLeft = null
+            imageLeft = null,
+            imageRight = null
         ).let {
 
             viewItemList.add(it)
