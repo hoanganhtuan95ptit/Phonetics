@@ -10,7 +10,6 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
-import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
@@ -23,9 +22,9 @@ import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
-import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingAdapter
 import com.simple.phonetics.ui.speak.adapters.ImageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
@@ -73,7 +72,7 @@ class SpeakFragment : BaseViewModelSheetFragment<DialogListBinding, SpeakViewMod
                 }
         }
 
-        adapter = MultiAdapter(phoneticsAdapter, imageStateAdapter, NoneTextAdapter(), PhoneticsLoadingAdapter()).apply {
+        adapter = MultiAdapter(phoneticsAdapter, imageStateAdapter, *ListPreviewAdapter()).apply {
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW

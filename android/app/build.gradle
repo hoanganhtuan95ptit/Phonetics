@@ -101,10 +101,13 @@ dependencies {
     implementation hoanganhtuan95Dependencies.translate
     implementation hoanganhtuan95Dependencies.translate_mlkit
 
-    implementation 'androidx.core:core-splashscreen:1.1.0-rc01'
-
     implementation 'com.github.hoanganhtuan95ptit.core:deeplink-annotation:1.2.1'
     kapt 'com.github.hoanganhtuan95ptit.core:deeplink-processor:1.2.1'
+
+    implementation 'com.github.hoanganhtuan95ptit.core:adapter-annotation:1.2.27'
+    kapt 'com.github.hoanganhtuan95ptit.core:adapter-processor:1.2.27'
+
+    implementation 'androidx.core:core-splashscreen:1.1.0-rc01'
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
 

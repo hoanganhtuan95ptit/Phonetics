@@ -31,9 +31,8 @@ import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentLanguageBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
-import com.simple.phonetics.ui.language.adapters.LanguageLoadingAdapter
-import com.simple.phonetics.ui.language.adapters.LanguageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.setImageDrawable
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.phonetics.utils.sendToast
@@ -91,7 +90,7 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
             viewModel.updateLanguageSelected(item.data)
         }
 
-        adapter = MultiAdapter(languageAdapter, LanguageStateAdapter(), LanguageLoadingAdapter()).apply {
+        adapter = MultiAdapter(languageAdapter, *ListPreviewAdapter()).apply {
 
             setRecyclerView(binding.recyclerView)
         }

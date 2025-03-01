@@ -9,7 +9,6 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
-import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
@@ -22,6 +21,7 @@ import com.simple.phonetics.databinding.FragmentListBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.launchCollectWithCache
 import com.simple.phonetics.utils.exts.submitListAwait
 import com.simple.phonetics.utils.sendDeeplink
@@ -68,7 +68,7 @@ class IpaListFragment : TransitionFragment<FragmentListBinding, IpaListViewModel
             )
         }
 
-        adapter = MultiAdapter(ipaAdapter, NoneTextAdapter()).apply {
+        adapter = MultiAdapter(ipaAdapter, *ListPreviewAdapter()).apply {
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW

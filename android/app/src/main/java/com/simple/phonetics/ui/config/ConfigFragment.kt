@@ -9,7 +9,6 @@ import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
@@ -23,6 +22,7 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.ListPreviewAdapter
 
 class ConfigFragment : BaseViewModelSheetFragment<DialogListBinding, ConfigViewModel>() {
 
@@ -63,7 +63,7 @@ class ConfigFragment : BaseViewModelSheetFragment<DialogListBinding, ConfigViewM
             viewModel.updateVoiceSpeed(item.current)
         }
 
-        adapter = MultiAdapter(clickTextAdapter, voiceSpeedAdapter, NoneTextAdapter()).apply {
+        adapter = MultiAdapter(clickTextAdapter, voiceSpeedAdapter, *ListPreviewAdapter()).apply {
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW

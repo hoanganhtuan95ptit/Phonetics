@@ -10,7 +10,6 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
@@ -28,11 +27,10 @@ import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailAdapters
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
-import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingAdapter
-import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailLoadingAdapters
+import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailAdapters
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.launchCollectWithCache
 import com.simple.phonetics.utils.exts.submitListAwait
 import com.simple.phonetics.utils.sendDeeplink
@@ -100,7 +98,7 @@ class IpaDetailFragment : TransitionFragment<FragmentListBinding, IpaDetailViewM
             viewModel.startListen(item.data)
         }
 
-        adapter = MultiAdapter(clickTextAdapter, phoneticsAdapter, ipaDetailAdapters, NoneTextAdapter(), PhoneticsLoadingAdapter(), IpaDetailLoadingAdapters()).apply {
+        adapter = MultiAdapter(clickTextAdapter, phoneticsAdapter, ipaDetailAdapters, *ListPreviewAdapter()).apply {
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW

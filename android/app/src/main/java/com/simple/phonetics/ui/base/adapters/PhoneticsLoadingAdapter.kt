@@ -8,7 +8,9 @@ import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemPhoneticsLoadingBinding
+import com.tuanha.adapter.annotation.AdapterPreview
 
+@AdapterPreview
 class PhoneticsLoadingAdapter(onItemClick: ((View, PhoneticsLoadingViewItem) -> Unit)? = null) : ViewItemAdapter<PhoneticsLoadingViewItem, ItemPhoneticsLoadingBinding>(onItemClick) {
 
     override fun bind(binding: ItemPhoneticsLoadingBinding, viewType: Int, position: Int, item: PhoneticsLoadingViewItem, payloads: MutableList<Any>) {

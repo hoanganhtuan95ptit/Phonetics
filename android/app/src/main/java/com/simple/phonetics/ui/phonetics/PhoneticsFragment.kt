@@ -15,9 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
-import com.simple.coreapp.ui.adapters.EmptyAdapter
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.ui.adapters.texts.NoneTextAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
@@ -37,9 +35,7 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
-import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingAdapter
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
-import com.simple.phonetics.ui.phonetics.adapters.SentenceAdapter
 import com.simple.phonetics.ui.phonetics.view.ImageView
 import com.simple.phonetics.ui.phonetics.view.ImageViewImpl
 import com.simple.phonetics.ui.phonetics.view.LanguageView
@@ -53,6 +49,7 @@ import com.simple.phonetics.ui.phonetics.view.ipa.IpaViewImpl
 import com.simple.phonetics.ui.phonetics.view.review.AppReview
 import com.simple.phonetics.ui.phonetics.view.review.AppReviewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.launchCollectWithCache
 import com.simple.phonetics.utils.exts.submitListAwait
 import com.simple.phonetics.utils.sendDeeplink
@@ -196,7 +193,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             }
         }
 
-        adapter = MultiAdapter(ipaAdapter, historyAdapter, clickTextAdapter, phoneticsAdapter, EmptyAdapter(), SentenceAdapter(), NoneTextAdapter(), PhoneticsLoadingAdapter()).apply {
+        adapter = MultiAdapter(ipaAdapter, historyAdapter, clickTextAdapter, phoneticsAdapter, *ListPreviewAdapter()).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -217,7 +214,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             sendDeeplink(Deeplink.CONFIG)
         }
 
-        adapterConfig = MultiAdapter(textAdapter).apply {
+        adapterConfig = MultiAdapter(textAdapter, *ListPreviewAdapter()).apply {
 
             binding.recFilter.adapter = this
 

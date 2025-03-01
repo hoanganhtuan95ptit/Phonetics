@@ -11,7 +11,9 @@ import com.simple.phonetics.R
 import com.simple.phonetics.databinding.ItemIpaDetailBinding
 import com.simple.phonetics.databinding.ItemIpaDetailLoadingBinding
 import com.simple.phonetics.entities.Ipa
+import com.tuanha.adapter.annotation.AdapterPreview
 
+@AdapterPreview
 class IpaDetailLoadingAdapters(onItemClick: (View, IpaDetailLoadingViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<IpaDetailLoadingViewItem, ItemIpaDetailLoadingBinding>(onItemClick) {
 
     override fun bind(binding: ItemIpaDetailLoadingBinding, viewType: Int, position: Int, item: IpaDetailLoadingViewItem, payloads: MutableList<Any>) {
