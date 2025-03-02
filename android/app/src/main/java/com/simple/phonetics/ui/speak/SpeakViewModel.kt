@@ -37,7 +37,7 @@ import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.CommonViewModel
-import com.simple.phonetics.ui.speak.adapters.ImageStateViewItem
+import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.state.ResultState
@@ -277,8 +277,13 @@ class SpeakViewModel(
         if (isSupportSpeak) ImageStateViewItem(
             id = ID.SPEAK,
 
+            anim = if (speakState.isRunning()) {
+                R.raw.anim_recording
+            } else {
+                null
+            },
             image = if (speakState.isRunning()) {
-                R.drawable.ic_speaking_24dp
+                null
             } else if (speakState == null || speakState.isStart() || speakState.isCompleted()) {
                 R.drawable.ic_microphone_24dp
             } else {
@@ -291,6 +296,11 @@ class SpeakViewModel(
                 width = (size.width - 2 * DP.DP_24) / 3,
                 height = DP.DP_70
             ),
+            background = Background(
+                strokeWidth = DP.DP_2,
+                strokeColor = theme.colorPrimary,
+                cornerRadius = DP.DP_16
+            ),
 
             imageSize = Size(
                 width = DP.DP_60,
@@ -301,11 +311,6 @@ class SpeakViewModel(
                 top = DP.DP_16,
                 right = DP.DP_16,
                 bottom = DP.DP_16
-            ),
-            imageBackground = Background(
-                strokeWidth = DP.DP_2,
-                strokeColor = theme.colorPrimary,
-                cornerRadius = DP.DP_16
             )
         ).let {
 
