@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.speak.adapters
+package com.simple.phonetics.ui.base.adapters
 
 import android.view.View
 import com.simple.adapter.ViewItemAdapter
@@ -51,7 +51,13 @@ class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _
 
     private fun refreshImage(binding: ItemImageStateBinding, item: ImageStateViewItem) {
 
-        binding.ivImage.setImage(item.image)
+        if (item.anim != null) {
+            binding.ivImage.setAnimation(item.anim)
+            binding.ivImage.playAnimation()
+        }
+        if (item.image != null) {
+            binding.ivImage.setImage(item.image)
+        }
     }
 
     private fun refreshLoading(binding: ItemImageStateBinding, item: ImageStateViewItem) {
@@ -96,7 +102,7 @@ class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _
 
     private fun refreshImageBackground(binding: ItemImageStateBinding, item: ImageStateViewItem) {
 
-        binding.ivImage.delegate.setBackground(item.imageBackground)
+//        binding.ivImage.delegate.setBackground(item.imageBackground)
     }
 }
 
@@ -105,7 +111,8 @@ data class ImageStateViewItem(
 
     val data: Any? = null,
 
-    val image: Int,
+    val anim: Int? = null,
+    val image: Int? = null,
 
     val isLoading: Boolean,
 
@@ -125,7 +132,9 @@ data class ImageStateViewItem(
     )
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
-        image to PAYLOAD_IMAGE,
+
+        (anim ?: image ?: PAYLOAD_IMAGE) to PAYLOAD_IMAGE,
+
         isLoading to PAYLOAD_LOADING,
 
         (size ?: PAYLOAD_SIZE) to PAYLOAD_SIZE,

@@ -152,10 +152,12 @@ class PhoneticsViewModel(
             Color.TRANSPARENT
 
         val info = ReverseInfo(
-            text = translate["action_reverse"].orEmpty().with(ForegroundColorSpan(textColor)),
+            text = translate["action_reverse"].orEmpty()
+                .with(ForegroundColorSpan(textColor)),
             isShow = isSupportReverse,
             background = Background(
                 strokeWidth = DP.DP_1,
+                cornerRadius = DP.DP_8,
                 strokeColor = theme.colorPrimary,
                 backgroundColor = backgroundColor
             )
@@ -192,10 +194,12 @@ class PhoneticsViewModel(
         val translate = translate.get()
 
         val info = ClearInfo(
-            text = translate["action_clear"].orEmpty().with(ForegroundColorSpan(theme.colorPrimary)),
+            text = translate["action_clear"].orEmpty()
+                .with(ForegroundColorSpan(theme.colorPrimary)),
             isShow = text.isNotBlank(),
             background = Background(
                 strokeWidth = DP.DP_1,
+                cornerRadius = DP.DP_8,
                 strokeColor = theme.colorPrimary,
                 backgroundColor = Color.TRANSPARENT
             ),
