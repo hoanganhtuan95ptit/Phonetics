@@ -18,6 +18,7 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
 import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
+import com.simple.phonetics.utils.exts.observeWithTransition
 import com.simple.state.doSuccess
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -37,30 +38,6 @@ class DetectViewImpl : DetectView {
         val viewModel: PhoneticsViewModel by fragment.viewModel()
 
         val detectViewModel: DetectViewModel by fragment.viewModel()
-
-
-        viewModel.isReverse.observe(fragment.viewLifecycleOwner) {
-
-            detectViewModel.updateReverse(it)
-        }
-
-        viewModel.detectState.observe(fragment.viewLifecycleOwner) { state ->
-
-            fragment.binding ?: return@observe
-
-            state.doSuccess {
-
-                binding.etText.setText(it)
-            }
-        }
-
-        detectViewModel.detectInfo.observe(fragment.viewLifecycleOwner) {
-
-            fragment.binding ?: return@observe
-
-            binding.ivCamera.setVisible(it.isShow)
-            binding.ivGallery.setVisible(it.isShow)
-        }
 
 
         var currentPhotoPath: String? = null
@@ -89,6 +66,7 @@ class DetectViewImpl : DetectView {
             }
         }
 
+
         binding.ivGallery.setDebouncedClickListener {
 
             PermissionX.init(fragment.requireActivity())
@@ -109,6 +87,30 @@ class DetectViewImpl : DetectView {
                         currentPhotoPath = takeImageFromCameraResult.launchTakeImageFromCamera(fragment.requireContext(), "image")?.absolutePath ?: return@request
                     }
                 }
+        }
+
+
+        viewModel.isReverse.observe(fragment.viewLifecycleOwner) {
+
+            detectViewModel.updateReverse(it)
+        }
+
+        viewModel.detectState.observe(fragment.viewLifecycleOwner) { state ->
+
+            fragment.binding ?: return@observe
+
+            state.doSuccess {
+
+                binding.etText.setText(it)
+            }
+        }
+
+        detectViewModel.detectInfo.observeWithTransition(fragment = fragment, owner = fragment.viewLifecycleOwner, tag = this.javaClass.simpleName) {
+
+            fragment.binding ?: return@observeWithTransition
+
+            binding.ivCamera.setVisible(it.isShow)
+            binding.ivGallery.setVisible(it.isShow)
         }
     }
 

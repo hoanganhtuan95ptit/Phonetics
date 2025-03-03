@@ -9,6 +9,7 @@ import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
 import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
+import com.simple.phonetics.utils.exts.observeWithTransition
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,9 +45,9 @@ class MicrophoneViewImpl : MicrophoneView {
             microphoneViewModel.updateReverse(it)
         }
 
-        microphoneViewModel.microphoneInfo.observe(fragment.viewLifecycleOwner) {
+        microphoneViewModel.microphoneInfo.observeWithTransition(fragment = fragment, owner = fragment.viewLifecycleOwner, tag = this.javaClass.simpleName) {
 
-            val binding = fragment.binding ?: return@observe
+            val binding = fragment.binding ?: return@observeWithTransition
 
             binding.ivMicrophone.setVisible(it.isShow)
         }
