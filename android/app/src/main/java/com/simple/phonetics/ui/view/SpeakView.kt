@@ -38,6 +38,7 @@ class SpeakViewImpl : SpeakView {
                 return@listenerEvent
             }
 
+            val taskId = it[Param.TASK_ID].asObjectOrNull<String>()
             val languageCode = it[Param.LANGUAGE_CODE].asObjectOrNull<String>()
             val languageWrap = languageCode?.languageWrap()
 
@@ -45,7 +46,12 @@ class SpeakViewImpl : SpeakView {
                     && SpeechRecognizer.isRecognitionAvailable(activity)
                     && Locale(languageCode).runCatching { isO3Language }.getOrNull() != null
 
-            sendEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_RESPONSE, isSupport)
+            val data = mapOf(
+                Param.TASK_ID to taskId,
+                Param.IS_SUPPORT to isSupport
+            )
+
+            sendEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_RESPONSE, data)
         }
 
         listenerEvent(activity.lifecycle, EventName.START_SPEAK_TEXT_REQUEST) {

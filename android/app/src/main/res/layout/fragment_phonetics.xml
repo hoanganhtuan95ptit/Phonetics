@@ -96,8 +96,8 @@
                                 android:gravity="center"
                                 android:paddingHorizontal="8dp"
                                 tools:rv_cornerRadius="8dp"
-                                tools:rv_strokeWidth="1dp"
                                 tools:rv_strokeColor="?attr/colorPrimary"
+                                tools:rv_strokeWidth="1dp"
                                 tools:text="Reverse"
                                 tools:textColor="?attr/colorAccent" />
                         </FrameLayout>
@@ -117,8 +117,8 @@
                                 android:gravity="center"
                                 android:paddingHorizontal="8dp"
                                 tools:rv_cornerRadius="8dp"
-                                tools:rv_strokeWidth="1dp"
                                 tools:rv_strokeColor="?attr/colorPrimary"
+                                tools:rv_strokeWidth="1dp"
                                 tools:text="Clear"
                                 tools:textColor="?attr/colorAccent" />
                         </FrameLayout>
@@ -139,7 +139,9 @@
                             android:layout_height="56dp"
                             android:contentDescription="take text from microphone"
                             android:paddingHorizontal="8dp"
-                            android:src="@drawable/ic_microphone_24dp" />
+                            android:src="@drawable/ic_microphone_24dp"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
                         <ImageView
                             android:id="@+id/iv_gallery"

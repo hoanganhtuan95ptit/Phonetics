@@ -8,7 +8,6 @@ import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.utils.extentions.submitListAwait
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
@@ -16,31 +15,17 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-suspend fun RecyclerView.submitListAwait(
-    fragment: TransitionFragment<*, *>,
+suspend fun RecyclerView.submitListAwaitV2(
     viewItemList: List<ViewItem>,
-    isFirst: Boolean = false,
-    tag: String = ""
+    isFirst: Boolean = false
 ) {
 
     val isAnim = !isFirst
-
-    if (isFirst) {
-        fragment.lockTransition(tag = tag)
-    }
-
-    if (isAnim) {
-        fragment.viewModel.awaitTransition()
-    }
 
     submitListAwait(viewItemList = viewItemList)
 
     if (isAnim) {
         transitionAwait()
-    }
-
-    if (isFirst) {
-        fragment.unlockTransition(tag = tag)
     }
 }
 

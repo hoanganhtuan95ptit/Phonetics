@@ -11,22 +11,30 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
+import java.util.UUID
 
 class SpeakRepositoryImpl : SpeakRepository {
 
-    override suspend fun checkSpeak(languageCode: String): Boolean = channelFlow<Boolean> {
+    override suspend fun checkSpeak(languageCode: String): Boolean = channelFlow {
+
+        val taskId = UUID.randomUUID().toString()
 
         listenerEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_RESPONSE) {
 
-            trySend(it.asObjectOrNull<Boolean>() ?: false)
+            val responseMap = it.asObjectOrNull<Map<String, Any>>() ?: emptyMap()
+
+            val id = responseMap[Param.TASK_ID].asObjectOrNull<String>()
+            val isSupport = responseMap[Param.IS_SUPPORT].asObjectOrNull<Boolean>() ?: false
+
+            if (taskId == id) trySend(isSupport)
         }
 
-        sendEvent(
-            EventName.CHECK_SUPPORT_SPEAK_TEXT_REQUEST,
-            mapOf(
-                Param.LANGUAGE_CODE to languageCode,
-            )
+        val extras = mapOf(
+            Param.TASK_ID to taskId,
+            Param.LANGUAGE_CODE to languageCode,
         )
+
+        sendEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_REQUEST, data = extras)
 
         awaitClose {
 

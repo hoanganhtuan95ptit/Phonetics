@@ -17,13 +17,14 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
+import com.simple.phonetics.TAG
 import com.simple.phonetics.databinding.FragmentListBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
-import com.simple.phonetics.utils.exts.launchCollectWithCache
-import com.simple.phonetics.utils.exts.submitListAwait
+import com.simple.phonetics.utils.exts.observeWithTransitionV2
+import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 
 class IpaListFragment : TransitionFragment<FragmentListBinding, IpaListViewModel>() {
@@ -81,6 +82,8 @@ class IpaListFragment : TransitionFragment<FragmentListBinding, IpaListViewModel
 
     private fun observeData() = with(viewModel) {
 
+        val fragment = this@IpaListFragment
+
         theme.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
@@ -95,11 +98,11 @@ class IpaListFragment : TransitionFragment<FragmentListBinding, IpaListViewModel
             binding.frameHeader.tvTitle.text = it
         }
 
-        viewItemList.launchCollectWithCache(viewLifecycleOwner) { data, isFirst ->
+        viewItemList.observeWithTransitionV2(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.VIEW_ITEM_LIST.name) { data, isFirst ->
 
-            val binding = binding ?: return@launchCollectWithCache
+            val binding = binding ?: return@observeWithTransitionV2
 
-            binding.recyclerView.submitListAwait(fragment = this@IpaListFragment, viewItemList = data, isFirst = isFirst, tag = com.simple.phonetics.TAG.VIEW_ITEM_LIST.name)
+            binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
     }
 }

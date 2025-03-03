@@ -31,8 +31,8 @@ import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailAdapters
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
-import com.simple.phonetics.utils.exts.launchCollectWithCache
-import com.simple.phonetics.utils.exts.submitListAwait
+import com.simple.phonetics.utils.exts.observeWithTransitionV2
+import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
 
@@ -111,6 +111,8 @@ class IpaDetailFragment : TransitionFragment<FragmentListBinding, IpaDetailViewM
 
     private fun observeData() = with(viewModel) {
 
+        val fragment = this@IpaDetailFragment
+
         theme.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
@@ -125,11 +127,11 @@ class IpaDetailFragment : TransitionFragment<FragmentListBinding, IpaDetailViewM
             binding.frameHeader.tvTitle.text = it
         }
 
-        viewItemList.launchCollectWithCache(viewLifecycleOwner) { data, isFirst ->
+        viewItemList.observeWithTransitionV2(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.VIEW_ITEM_LIST.name) { data, isFirst ->
 
-            val binding = binding ?: return@launchCollectWithCache
+            val binding = binding ?: return@observeWithTransitionV2
 
-            binding.recyclerView.submitListAwait(fragment = this@IpaDetailFragment, viewItemList = data, isFirst = isFirst, tag = TAG.VIEW_ITEM_LIST.name)
+            binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
 
         arguments?.getParcelableOrNull<Ipa>(Param.IPA)?.let {

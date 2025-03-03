@@ -114,7 +114,7 @@ data class ImageStateViewItem(
     val anim: Int? = null,
     val image: Int? = null,
 
-    val isLoading: Boolean,
+    val isLoading: Boolean = false,
 
     val size: Size? = null,
     val margin: Margin? = null,

@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetics.view
+package com.simple.phonetics.ui.phonetics.view.detect
 
 import android.Manifest
 import android.app.Activity
@@ -15,23 +15,53 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.permissionx.guolindev.PermissionX
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.extentions.launchTakeImageFromCamera
-import com.simple.coreapp.utils.extentions.launchTakeImageFromGallery
+import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
+import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
 import com.simple.state.doSuccess
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.IOException
 
-interface ImageView {
+interface DetectView {
 
-    fun setupImage(fragment: PhoneticsFragment)
+    fun setupDetect(fragment: PhoneticsFragment)
 }
 
-class ImageViewImpl() : ImageView {
+class DetectViewImpl : DetectView {
 
-    override fun setupImage(fragment: PhoneticsFragment) {
+    override fun setupDetect(fragment: PhoneticsFragment) {
 
-        val viewModel = fragment.viewModel
+        val binding = fragment.binding ?: return
+
+        val viewModel: PhoneticsViewModel by fragment.viewModel()
+
+        val detectViewModel: DetectViewModel by fragment.viewModel()
+
+
+        viewModel.isReverse.observe(fragment.viewLifecycleOwner) {
+
+            detectViewModel.updateReverse(it)
+        }
+
+        viewModel.detectState.observe(fragment.viewLifecycleOwner) { state ->
+
+            fragment.binding ?: return@observe
+
+            state.doSuccess {
+
+                binding.etText.setText(it)
+            }
+        }
+
+        detectViewModel.detectInfo.observe(fragment.viewLifecycleOwner) {
+
+            fragment.binding ?: return@observe
+
+            binding.ivCamera.setVisible(it.isShow)
+            binding.ivGallery.setVisible(it.isShow)
+        }
+
 
         var currentPhotoPath: String? = null
 
@@ -58,18 +88,6 @@ class ImageViewImpl() : ImageView {
                 viewModel.getTextFromImage(it)
             }
         }
-
-        viewModel.detectState.observe(fragment.viewLifecycleOwner) {
-
-            val binding = fragment.binding ?: return@observe
-
-            it.doSuccess {
-
-                binding.etText.setText(it)
-            }
-        }
-
-        val binding = fragment.binding ?: return
 
         binding.ivGallery.setDebouncedClickListener {
 

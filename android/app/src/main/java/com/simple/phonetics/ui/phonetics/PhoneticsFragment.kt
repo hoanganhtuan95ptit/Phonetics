@@ -36,23 +36,25 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.phonetics.adapters.HistoryAdapter
-import com.simple.phonetics.ui.phonetics.view.ImageView
-import com.simple.phonetics.ui.phonetics.view.ImageViewImpl
 import com.simple.phonetics.ui.phonetics.view.LanguageView
 import com.simple.phonetics.ui.phonetics.view.LanguageViewImpl
 import com.simple.phonetics.ui.phonetics.view.PasteView
 import com.simple.phonetics.ui.phonetics.view.PasteViewImpl
+import com.simple.phonetics.ui.phonetics.view.detect.DetectView
+import com.simple.phonetics.ui.phonetics.view.detect.DetectViewImpl
 import com.simple.phonetics.ui.phonetics.view.history.HistoryView
 import com.simple.phonetics.ui.phonetics.view.history.HistoryViewImpl
 import com.simple.phonetics.ui.phonetics.view.ipa.IpaView
 import com.simple.phonetics.ui.phonetics.view.ipa.IpaViewImpl
+import com.simple.phonetics.ui.phonetics.view.microphone.MicrophoneView
+import com.simple.phonetics.ui.phonetics.view.microphone.MicrophoneViewImpl
 import com.simple.phonetics.ui.phonetics.view.review.AppReview
 import com.simple.phonetics.ui.phonetics.view.review.AppReviewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
-import com.simple.phonetics.utils.exts.launchCollectWithCache
 import com.simple.phonetics.utils.exts.observeWithTransition
-import com.simple.phonetics.utils.exts.submitListAwait
+import com.simple.phonetics.utils.exts.observeWithTransitionV2
+import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
 
@@ -61,9 +63,10 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
     IpaView by IpaViewImpl(),
     AppReview by AppReviewImpl(),
     PasteView by PasteViewImpl(),
-    ImageView by ImageViewImpl(),
+    DetectView by DetectViewImpl(),
     HistoryView by HistoryViewImpl(),
-    LanguageView by LanguageViewImpl() {
+    LanguageView by LanguageViewImpl(),
+    MicrophoneView by MicrophoneViewImpl() {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
@@ -85,12 +88,13 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
         })
 
         setupIpa(this)
-        setupImage(this)
         setupPaste(this)
+        setupDetect(this)
         setupHistory(this)
         setupAppView(this)
         setupHistory(this)
         setupLanguage(this)
+        setupMicrophone(this)
 
         setupSpeak()
         setupInput()
@@ -274,10 +278,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             val binding = binding ?: return@observeWithTransition
 
             binding.ivPicture.setImage(it.image, CircleCrop())
-            binding.ivPicture.setVisible(it.isShowImage)
-
-            binding.ivCamera.setVisible(it.isShowInput)
-            binding.ivGallery.setVisible(it.isShowInput)
+            binding.ivPicture.setVisible(it.isShow)
         }
 
         listenInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.LISTEN.name) {
@@ -297,11 +298,11 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.tvReverse.delegate.setBackground(it.background)
         }
 
-        viewItemList.launchCollectWithCache(viewLifecycleOwner) { data, isFirst ->
+        viewItemList.observeWithTransitionV2(fragment = fragment, owner = viewLifecycleOwner, tag = com.simple.phonetics.TAG.VIEW_ITEM_LIST.name) { data, isFirst ->
 
-            val binding = binding ?: return@launchCollectWithCache
+            val binding = binding ?: return@observeWithTransitionV2
 
-            binding.recyclerView.submitListAwait(fragment = fragment, viewItemList = data, isFirst = isFirst, tag = com.simple.phonetics.TAG.VIEW_ITEM_LIST.name)
+            binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
 
         isShowLoading.observe(viewLifecycleOwner) {
@@ -314,16 +315,18 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
     private fun observePhoneticsConfigData() = with(configViewModel) {
 
+        val fragment = this@PhoneticsFragment
+
         voiceState.observe(viewLifecycleOwner) {
 
             viewModel.updateSupportSpeak(it.toSuccess()?.data.orEmpty().isNotEmpty())
         }
 
-        listConfig.launchCollectWithCache(viewLifecycleOwner) { data, isFirst ->
+        listConfig.observeWithTransitionV2(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.CONFIG_VIEW_ITEM_LIST.name) { data, isFirst ->
 
-            val binding = binding ?: return@launchCollectWithCache
+            val binding = binding ?: return@observeWithTransitionV2
 
-            binding.recFilter.submitListAwait(fragment = this@PhoneticsFragment, viewItemList = data, isFirst = isFirst, tag = TAG.CONFIG_VIEW_ITEM_LIST.name)
+            binding.recFilter.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
 
         phoneticSelect.observe(viewLifecycleOwner) {

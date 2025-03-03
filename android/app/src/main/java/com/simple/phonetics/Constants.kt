@@ -10,8 +10,11 @@ object Param {
     const val RATE = "RATE"
     const val TEXT = "TEXT"
     const val FIRST = "FIRST"
+    const val TASK_ID = "TASK_ID"
+    const val REVERSE = "REVERSE"
+    const val IS_SUPPORT = "IS_SUPPORT"
+    const val KEY_REQUEST = "KEY_REQUEST"
     const val LANGUAGE_CODE = "LANGUAGE_CODE"
-    const val TRANSITION_DURATION = "TRANSITION_DURATION"
 
     const val VOICE_ID = "VOICE_ID"
     const val VOICE_SPEED = "VOICE_SPEED"
@@ -28,6 +31,7 @@ object Deeplink {
     const val LANGUAGE = "app://language"
     const val IPA_LIST = "app://ipa_list"
     const val PHONETICS = "app://phonetics"
+    const val RECORDING = "app://recording"
     const val IPA_DETAIL = "app://ipa_detail"
 }
 
@@ -65,6 +69,8 @@ object EventName {
 
     const val CHECK_SUPPORT_SPEAK_TEXT_REQUEST = "CHECK_SUPPORT_SPEAK_TEXT_REQUEST"
     const val CHECK_SUPPORT_SPEAK_TEXT_RESPONSE = "CHECK_SUPPORT_SPEAK_TEXT_RESPONSE"
+
+    const val MICROPHONE = "MICROPHONE"
 }
 
 object Id {
