@@ -214,7 +214,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
         val binding = binding ?: return
 
-        val textAdapter = ClickTextAdapter { view, item ->
+        val textAdapter = ClickTextAdapter { _, _ ->
 
             sendDeeplink(Deeplink.CONFIG)
         }
@@ -230,6 +230,14 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
     private fun observeData() = with(viewModel) {
 
         val fragment = this@PhoneticsFragment
+
+        imageInfo.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.ivPicture.setImage(it.image, CircleCrop())
+            binding.ivPicture.setVisible(it.isShow)
+        }
 
         theme.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.THEME.name) {
 
@@ -256,15 +264,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.tvTitle.text = it
         }
 
-        clearInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.CLEAR.name) {
-
-            val binding = binding ?: return@observeWithTransition
-
-            binding.tvClear.text = it.text
-            binding.frameClear.setVisible(it.isShow)
-            binding.tvClear.delegate.setBackground(it.background)
-        }
-
         enterInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.ENTER.name) {
 
             val binding = binding ?: return@observeWithTransition
@@ -273,12 +272,13 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.etText.setTextColor(it.textColor)
         }
 
-        imageInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.IMAGE.name) {
+        clearInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.CLEAR.name) {
 
             val binding = binding ?: return@observeWithTransition
 
-            binding.ivPicture.setImage(it.image, CircleCrop())
-            binding.ivPicture.setVisible(it.isShow)
+            binding.tvClear.text = it.text
+            binding.frameClear.setVisible(it.isShow)
+            binding.tvClear.delegate.setBackground(it.background)
         }
 
         listenInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.LISTEN.name) {
@@ -356,7 +356,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
     }
 
     private enum class TAG {
-        ENTER, IMAGE, CLEAR, TITLE, THEME, LISTEN, REVERSE, CONFIG_VIEW_ITEM_LIST
+        ENTER, CLEAR, TITLE, THEME, LISTEN, REVERSE, CONFIG_VIEW_ITEM_LIST
     }
 }
 
