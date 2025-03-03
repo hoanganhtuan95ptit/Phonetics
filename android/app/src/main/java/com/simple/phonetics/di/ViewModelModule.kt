@@ -7,9 +7,12 @@ import com.simple.phonetics.ui.ipa_detail.IpaDetailViewModel
 import com.simple.phonetics.ui.ipa_list.IpaListViewModel
 import com.simple.phonetics.ui.language.LanguageViewModel
 import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
+import com.simple.phonetics.ui.phonetics.view.detect.DetectViewModel
 import com.simple.phonetics.ui.phonetics.view.history.HistoryViewModel
 import com.simple.phonetics.ui.phonetics.view.ipa.IpaViewModel
+import com.simple.phonetics.ui.phonetics.view.microphone.MicrophoneViewModel
 import com.simple.phonetics.ui.phonetics.view.review.AppReviewViewModel
+import com.simple.phonetics.ui.recording.RecordingViewModel
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -25,6 +28,7 @@ val viewModelModule = module {
         TransitionGlobalViewModel()
     }
 
+    
     viewModel {
         AppReviewViewModel(get())
     }
@@ -37,14 +41,16 @@ val viewModelModule = module {
         ConfigViewModel(get(), get(), get(), get())
     }
 
+
     viewModel {
         SpeakViewModel(get(), get(), get(), get(), get(), get(), get())
     }
 
 
     viewModel {
-        IpaViewModel(get())
+        RecordingViewModel(get(), get(), get(), get())
     }
+
 
     viewModel {
         IpaListViewModel(get())
@@ -56,11 +62,22 @@ val viewModelModule = module {
 
 
     viewModel {
+        IpaViewModel(get())
+    }
+
+    viewModel {
         HistoryViewModel(get())
     }
 
+    viewModel {
+        DetectViewModel(get(), get(), get())
+    }
 
     viewModel {
-        PhoneticsViewModel(get(), get(), get(), get(), get(), get())
+        MicrophoneViewModel(get(), get(), get())
+    }
+
+    viewModel {
+        PhoneticsViewModel(get(), get(), get(), get(), get())
     }
 }

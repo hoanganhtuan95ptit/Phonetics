@@ -27,7 +27,6 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
-import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
@@ -55,7 +54,6 @@ class PhoneticsViewModel(
     private val detectUseCase: DetectUseCase,
     private val stopListenUseCase: StopListenUseCase,
     private val startListenUseCase: StartListenUseCase,
-    private val detectStateUseCase: DetectStateUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
 ) : CommonViewModel() {
@@ -100,34 +98,19 @@ class PhoneticsViewModel(
 
     val detectState: LiveData<ResultState<String>> = MediatorLiveData()
 
-    @VisibleForTesting
-    val isSupportDetect: LiveData<Boolean> = combineSources(inputLanguage) {
-
-        val inputLanguage = inputLanguage.value ?: return@combineSources
-
-        postValue(false)
-
-        val isSupported = detectStateUseCase.execute(DetectStateUseCase.Param(inputLanguage.id))
-
-        postValue(isSupported)
-    }
-
-    val imageInfo: LiveData<ImageInfo> = listenerSources(detectState, isSupportDetect) {
+    val imageInfo: LiveData<ImageInfo> = listenerSources(detectState) {
 
         val detectState = detectState.value
-        val isSupportDetect = isSupportDetect.value ?: return@listenerSources
 
         val info = ImageInfo(
             image = detectState?.toRunning()?.data.orEmpty(),
-            isShowImage = !detectState.isCompleted(),
-            isShowInput = isSupportDetect
+            isShow = !detectState.isCompleted(),
         )
 
         postDifferentValue(info)
     }
 
 
-    @VisibleForTesting
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)
 
     @VisibleForTesting
@@ -477,8 +460,7 @@ class PhoneticsViewModel(
 
     data class ImageInfo(
         val image: String,
-        val isShowInput: Boolean = false,
-        val isShowImage: Boolean = false,
+        val isShow: Boolean = false,
     )
 
     data class EnterInfo(
