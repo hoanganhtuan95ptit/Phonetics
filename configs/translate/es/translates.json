@@ -2,11 +2,12 @@
   "title_language": "Seleccionar idioma",
   "title_translate": "Traducir:",
   "title_voice": "Voz:",
-  "title_voice_speed": "Velocidad de la voz:",
+  "title_voice_speed": "Velocidad de voz:",
   "title_result": "Resultado:",
   "title_history": "Historial:",
   "title_phonetic": "Fonética:",
   "title_ipa": "IPA:",
+
   "ipa_list_screen_title": "Lista de IPA",
   "ipa_detail_screen_vowels_long": "Vocales largas",
   "ipa_detail_screen_vowels_short": "Vocales cortas",
@@ -14,29 +15,37 @@
   "ipa_detail_screen_consonants_voiced": "Consonantes sonoras",
   "ipa_detail_screen_consonants_unvoiced": "Consonantes sordas",
   "ipa_detail_screen_title_example": "Ejemplo:",
-  "hint_enter_text": "¡Introduce texto aquí!",
+
+  "hint_enter_text": "¡Introduce el texto aquí!",
   "hint_enter_language_text": "¡Introduce $language_name aquí!",
+
   "message_start_sync": "Iniciando sincronización...",
   "message_sync_completed": "Sincronización completada",
   "message_result_empty": "¡Aún no hay contenido!",
-  "message_select_language": "Selecciona el idioma para encontrar fonética",
+  "message_select_language": "Selecciona el idioma para encontrar la fonética",
   "message_support_translate": "Traducción compatible",
   "message_translate_download": "Descargando traducción...",
   "message_start_sync_phonetics": "Sincronizando fonética $ipa_name $percent%",
   "message_completed_sync_phonetics": "Fonética $ipa_name sincronizada con éxito",
   "message_start_sync_translate": "Sincronizando traducción $percent%",
   "message_completed_sync_translate": "Traducción sincronizada con éxito",
+
   "action_clear": "Borrar",
   "action_reverse": "Invertir",
   "action_try_speak": "Intentar hablar",
   "action_confirm_change_language": "Cambiar idioma fonético",
   "action_view_all_ipa": "Ver todo",
+
   "speed_lever": "Velocidad $lever",
   "voice_index": "Voz $index",
+
   "translating": "Traduciendo",
-  "translate_failed": "Error en la traducción",
+  "translate_failed": "La traducción ha fallado",
+
   "rate_title": "Calificar la aplicación",
-  "rate_message": "¡Nos encantaría recibir tus comentarios para mejorar la aplicación! Tu opinión es muy importante. \uD83C\uDF1F",
+  "rate_message": "Nos encantaría recibir tus comentarios para mejorar la aplicación. ¡Tu reseña es muy importante! \uD83C\uDF1F",
   "rate_action_positive": "Calificar",
-  "rate_action_negative": "Más tarde"
+  "rate_action_negative": "Más tarde",
+
+  "recording_screen_title": "Por favor, habla en $language_name"
 }

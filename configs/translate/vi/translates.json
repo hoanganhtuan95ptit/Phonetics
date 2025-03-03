@@ -7,6 +7,7 @@
   "title_history": "Lịch sử:",
   "title_phonetic": "Phiên âm:",
   "title_ipa": "IPA:",
+
   "ipa_list_screen_title": "Danh sách IPA",
   "ipa_detail_screen_vowels_long": "Nguyên âm dài",
   "ipa_detail_screen_vowels_short": "Nguyên âm ngắn",
@@ -14,29 +15,37 @@
   "ipa_detail_screen_consonants_voiced": "Phụ âm hữu thanh",
   "ipa_detail_screen_consonants_unvoiced": "Phụ âm vô thanh",
   "ipa_detail_screen_title_example": "Ví dụ:",
-  "hint_enter_text": "Nhập văn bản vào đây!",
-  "hint_enter_language_text": "Nhập $language_name vào đây!",
-  "message_start_sync": "Đang bắt đầu đồng bộ...",
+
+  "hint_enter_text": "Nhập văn bản tại đây!",
+  "hint_enter_language_text": "Nhập $language_name tại đây!",
+
+  "message_start_sync": "Bắt đầu đồng bộ...",
   "message_sync_completed": "Đồng bộ hoàn tất",
   "message_result_empty": "Chưa có nội dung!",
   "message_select_language": "Chọn ngôn ngữ bạn muốn tìm phiên âm",
-  "message_support_translate": "Hỗ trợ dịch",
+  "message_support_translate": "Hỗ trợ dịch thuật",
   "message_translate_download": "Đang tải bản dịch...",
   "message_start_sync_phonetics": "Đang đồng bộ phiên âm $ipa_name $percent%",
   "message_completed_sync_phonetics": "Phiên âm $ipa_name đã đồng bộ thành công",
   "message_start_sync_translate": "Đang đồng bộ bản dịch $percent%",
   "message_completed_sync_translate": "Bản dịch đã đồng bộ thành công",
+
   "action_clear": "Xóa",
   "action_reverse": "Đảo ngược",
   "action_try_speak": "Thử nói",
-  "action_confirm_change_language": "Đổi ngôn ngữ phiên âm",
+  "action_confirm_change_language": "Thay đổi ngôn ngữ phiên âm",
   "action_view_all_ipa": "Xem tất cả",
+
   "speed_lever": "Tốc độ $lever",
   "voice_index": "Giọng $index",
+
   "translating": "Đang dịch",
   "translate_failed": "Dịch thất bại",
+
   "rate_title": "Đánh giá ứng dụng",
-  "rate_message": "Chúng tôi rất mong nhận được phản hồi của bạn để cải thiện ứng dụng! Đánh giá của bạn rất quan trọng. \uD83C\uDF1F",
+  "rate_message": "Chúng tôi rất mong nhận được ý kiến đóng góp của bạn để cải thiện ứng dụng. Đánh giá của bạn rất quan trọng! \uD83C\uDF1F",
   "rate_action_positive": "Đánh giá",
-  "rate_action_negative": "Để sau"
+  "rate_action_negative": "Để sau",
+
+  "recording_screen_title": "Vui lòng nói bằng $language_name"
 }
