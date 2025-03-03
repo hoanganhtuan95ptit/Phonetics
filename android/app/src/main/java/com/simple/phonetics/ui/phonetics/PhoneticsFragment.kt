@@ -239,6 +239,13 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.ivPicture.setVisible(it.isShow)
         }
 
+        isShowLoading.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+
+            binding.progress.setVisible(it)
+        }
+
         theme.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.THEME.name) {
 
             val binding = binding ?: return@observeWithTransition
@@ -304,13 +311,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
-
-        isShowLoading.observe(viewLifecycleOwner) {
-
-            val binding = binding ?: return@observe
-
-            binding.progress.setVisible(it)
-        }
     }
 
     private fun observePhoneticsConfigData() = with(configViewModel) {
@@ -320,13 +320,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
         voiceState.observe(viewLifecycleOwner) {
 
             viewModel.updateSupportSpeak(it.toSuccess()?.data.orEmpty().isNotEmpty())
-        }
-
-        listConfig.observeWithTransitionV2(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.CONFIG_VIEW_ITEM_LIST.name) { data, isFirst ->
-
-            val binding = binding ?: return@observeWithTransitionV2
-
-            binding.recFilter.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
 
         phoneticSelect.observe(viewLifecycleOwner) {
@@ -342,6 +335,13 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
         outputLanguage.observe(viewLifecycleOwner) {
 
             viewModel.updateOutputLanguage(it)
+        }
+
+        listConfig.observeWithTransitionV2(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.CONFIG_VIEW_ITEM_LIST.name) { data, isFirst ->
+
+            val binding = binding ?: return@observeWithTransitionV2
+
+            binding.recFilter.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
     }
 
