@@ -28,7 +28,7 @@ val viewModelModule = module {
         TransitionGlobalViewModel()
     }
 
-    
+
     viewModel {
         AppReviewViewModel(get())
     }

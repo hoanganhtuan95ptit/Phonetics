@@ -82,7 +82,7 @@ class IpaViewModel(
 
                 data = it,
 
-                ipa = it.ipa,
+                ipa = it.ipa.with(ForegroundColorSpan(theme.colorOnSurface)),
                 text = it.examples.firstOrNull().orEmpty().with(ForegroundColorSpan(theme.colorOnSurface)),
 
                 size = Size(
