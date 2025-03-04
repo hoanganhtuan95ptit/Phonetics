@@ -21,19 +21,23 @@ class UpdateLanguageInputUseCase(
 
         val listState = linkedMapOf<String, State>()
 
-        listState.put("start", State.START)
+        listState["start"] = State.START
         trySend(ResultState.Running(listState))
 
-        param.language.listIpa.forEach {
 
-            listState.put(it.name, State.SYNC_PHONETICS(it.name, 0f))
+        param.language.listIpa.forEach { source ->
+
+            val code = source.code
+
+            listState[code] = State.SYNC_PHONETICS(code, 0f)
             trySend(ResultState.Running(listState))
+
 
             var count = 0
 
             val data = kotlin.runCatching {
 
-                phoneticRepository.getSourcePhonetic(it)
+                phoneticRepository.getSourcePhonetic(source)
             }.getOrElse {
 
                 trySend(ResultState.Failed(it))
@@ -57,7 +61,7 @@ class UpdateLanguageInputUseCase(
 
                 count += dataSplit.length
 
-                val phoneticMap = phoneticRepository.toPhonetics(dataSplit, it.code)
+                val phoneticMap = phoneticRepository.toPhonetics(dataSplit, source.code)
 
                 val phoneticsOldMap = phoneticRepository.getPhonetics(phoneticMap.keys.toList()).associateBy {
                     it.text
@@ -74,7 +78,7 @@ class UpdateLanguageInputUseCase(
 
                 phoneticRepository.insertOrUpdate(phoneticMap.values.toList())
 
-                listState.put(it.name, State.SYNC_PHONETICS(it.name, count * 1f / dataLength))
+                listState[code] = State.SYNC_PHONETICS(code, count * 1f / dataLength)
                 trySend(ResultState.Running(listState))
             }
         }
@@ -84,7 +88,7 @@ class UpdateLanguageInputUseCase(
 
             for (i in 0..90) {
 
-                listState.put("SYNC_TRANSLATE", State.SYNC_TRANSLATE("SYNC_TRANSLATE", i / 100f))
+                listState["SYNC_TRANSLATE"] = State.SYNC_TRANSLATE("SYNC_TRANSLATE", i / 100f)
                 trySend(ResultState.Running(listState))
 
 
@@ -103,14 +107,14 @@ class UpdateLanguageInputUseCase(
 
         job.cancel()
 
-        listState.put("SYNC_TRANSLATE", State.SYNC_TRANSLATE("SYNC_TRANSLATE", 100f))
+        listState["SYNC_TRANSLATE"] = State.SYNC_TRANSLATE("SYNC_TRANSLATE", 100f)
         trySend(ResultState.Running(listState))
 
 
         languageRepository.updateLanguageInput(param.language)
 
 
-        listState.put("COMPLETED", State.COMPLETED)
+        listState["COMPLETED"] = State.COMPLETED
         trySend(ResultState.Success(listState))
 
 
