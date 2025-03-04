@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -220,10 +219,19 @@ class RecordingViewModel(
 
     fun startSpeak() = viewModelScope.launch(handler + Dispatchers.IO) {
 
+        val inputLanguage = inputLanguage.value ?: return@launch
+        val outputLanguage = outputLanguage.value ?: return@launch
+
+        val languageCode = if (isReverse.value == true) {
+            outputLanguage.id
+        } else {
+            inputLanguage.id
+        }
+
         speakState.postValue(ResultState.Start)
 
         val param = StartSpeakUseCase.Param(
-            languageCode = inputLanguage.value?.id ?: Language.EN,
+            languageCode = languageCode,
         )
 
         startSpeakUseCase.execute(param).launchCollect(viewModelScope) { state ->
