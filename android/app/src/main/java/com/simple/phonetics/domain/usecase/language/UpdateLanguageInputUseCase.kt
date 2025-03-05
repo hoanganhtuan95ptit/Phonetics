@@ -21,15 +21,16 @@ class UpdateLanguageInputUseCase(
 
         val listState = linkedMapOf<String, State>()
 
-        listState["start"] = State.START
+        listState["start"] = State.Start
         trySend(ResultState.Running(listState))
 
 
         param.language.listIpa.forEach { source ->
 
+            val name = source.name
             val code = source.code
 
-            listState[code] = State.SYNC_PHONETICS(code, 0f)
+            listState[code] = State.SyncPhonetics(code = code, name = name, percent = 0f)
             trySend(ResultState.Running(listState))
 
 
@@ -78,7 +79,7 @@ class UpdateLanguageInputUseCase(
 
                 phoneticRepository.insertOrUpdate(phoneticMap.values.toList())
 
-                listState[code] = State.SYNC_PHONETICS(code, count * 1f / dataLength)
+                listState[code] = State.SyncPhonetics(code = code, name = name, percent = count * 1f / dataLength)
                 trySend(ResultState.Running(listState))
             }
         }
@@ -88,7 +89,7 @@ class UpdateLanguageInputUseCase(
 
             for (i in 0..90) {
 
-                listState["SYNC_TRANSLATE"] = State.SYNC_TRANSLATE("SYNC_TRANSLATE", i / 100f)
+                listState["SYNC_TRANSLATE"] = State.SyncTranslate("SYNC_TRANSLATE", i / 100f)
                 trySend(ResultState.Running(listState))
 
 
@@ -101,20 +102,18 @@ class UpdateLanguageInputUseCase(
             val languageOutput = languageRepository.getLanguageOutput()
 
             appRepository.translate(param.language.id, languageOutput.id, "hello")
-        }.getOrElse {
-
         }
 
         job.cancel()
 
-        listState["SYNC_TRANSLATE"] = State.SYNC_TRANSLATE("SYNC_TRANSLATE", 100f)
+        listState["SYNC_TRANSLATE"] = State.SyncTranslate("SYNC_TRANSLATE", 100f)
         trySend(ResultState.Running(listState))
 
 
         languageRepository.updateLanguageInput(param.language)
 
 
-        listState["COMPLETED"] = State.COMPLETED
+        listState["COMPLETED"] = State.Completed
         trySend(ResultState.Success(listState))
 
 
@@ -123,13 +122,13 @@ class UpdateLanguageInputUseCase(
 
     sealed class State(val value: Int) {
 
-        data object START : State(0)
+        data object Start : State(0)
 
-        data class SYNC_PHONETICS(val name: String, val percent: Float) : State(1)
+        data object Completed : State(Int.MAX_VALUE)
 
-        data class SYNC_TRANSLATE(val name: String, val percent: Float) : State(2)
+        data class SyncTranslate(val name: String, val percent: Float) : State(2)
 
-        data object COMPLETED : State(Int.MAX_VALUE)
+        data class SyncPhonetics(val code: String, val name: String, val percent: Float) : State(1)
     }
 
     data class Param(
