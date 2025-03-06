@@ -112,7 +112,13 @@ class LanguageViewModel(
 
             val isSelected = it.id == languageSelected?.id
 
-            val name = translate["language_" + it.id.lowercase()] ?: it.name
+            val key = "language_" + it.id.lowercase()
+
+            val name = if (translate.containsKey(key)) {
+                translate[key] ?: it.name
+            } else {
+                it.name
+            }
 
             LanguageViewItem(
                 data = it,
@@ -284,7 +290,13 @@ class LanguageViewModel(
 
     private fun UpdateLanguageInputUseCase.State.SyncPhonetics.toViewItem(theme: AppTheme, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
 
-        val ipaName = translate["ipa_" + code.lowercase()] ?: name
+        val key = "ipa_" + code.lowercase()
+
+        val ipaName = if (translate.containsKey(key)) {
+            translate[key] ?: name
+        } else {
+            name
+        }
 
         val percentWrap = (percent * 100).toInt()
 

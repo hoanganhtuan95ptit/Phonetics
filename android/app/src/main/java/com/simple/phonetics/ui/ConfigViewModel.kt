@@ -84,7 +84,13 @@ class ConfigViewModel(
 
         language.listIpa.map {
 
-            val ipaName = translate["ipa_" + it.code.lowercase()] ?: it.name
+            val key = "ipa_" + it.code.lowercase()
+
+            val ipaName = if (translate.containsKey(key)) {
+                translate[key] ?: it.name
+            } else {
+                it.name
+            }
 
             val isSelect = it.code == phoneticSelect
 
