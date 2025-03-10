@@ -52,11 +52,15 @@ import com.simple.phonetics.ui.phonetics.view.review.AppReview
 import com.simple.phonetics.ui.phonetics.view.review.AppReviewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
+import com.simple.phonetics.utils.exts.getCurrentOffset
+import com.simple.phonetics.utils.exts.getState
 import com.simple.phonetics.utils.exts.observeWithTransition
 import com.simple.phonetics.utils.exts.observeWithTransitionV2
+import com.simple.phonetics.utils.exts.setCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
+import kotlin.math.absoluteValue
 
 
 class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticsViewModel>(),
@@ -83,7 +87,19 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
 
             override fun handleOnBackPressed() {
-                activity?.finish()
+
+                val binding = binding ?: return
+
+                if (binding.etText.text.isNotEmpty()) if (binding.appBarLayout.getCurrentOffset().absoluteValue >= binding.appBarLayout.totalScrollRange.absoluteValue / 2) {
+
+                    binding.appBarLayout.setExpanded(true, true)
+                } else {
+
+                    binding.etText.setText("")
+                } else {
+
+                    activity?.finish()
+                }
             }
         })
 
@@ -202,6 +218,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
+            binding.recyclerView.setItemViewCacheSize(10)
 
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.justifyContent = JustifyContent.FLEX_START
@@ -222,6 +239,8 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
         adapterConfig = MultiAdapter(textAdapter, *ListPreviewAdapter()).apply {
 
             binding.recFilter.adapter = this
+            binding.recFilter.itemAnimator = null
+            binding.recFilter.setItemViewCacheSize(10)
 
             binding.recFilter.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         }

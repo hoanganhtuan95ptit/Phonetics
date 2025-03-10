@@ -65,11 +65,13 @@ class ConfigFragment : BaseViewModelSheetFragment<DialogListBinding, ConfigViewM
 
         adapter = MultiAdapter(clickTextAdapter, voiceSpeedAdapter, *ListPreviewAdapter()).apply {
 
+            binding.recyclerView.adapter = this
+            binding.recyclerView.itemAnimator = null
+            binding.recyclerView.setItemViewCacheSize(10)
+
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW
             layoutManager.justifyContent = JustifyContent.FLEX_START
-
-            binding.recyclerView.adapter = this
             binding.recyclerView.layoutManager = layoutManager
         }
     }

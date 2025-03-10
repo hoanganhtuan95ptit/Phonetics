@@ -74,11 +74,13 @@ class SpeakFragment : BaseViewModelSheetFragment<DialogListBinding, SpeakViewMod
 
         adapter = MultiAdapter(phoneticsAdapter, imageStateAdapter, *ListPreviewAdapter()).apply {
 
+            binding.recyclerView.adapter = this
+            binding.recyclerView.itemAnimator = null
+            binding.recyclerView.setItemViewCacheSize(10)
+
             val layoutManager = FlexboxLayoutManager(context)
             layoutManager.flexDirection = FlexDirection.ROW
             layoutManager.justifyContent = JustifyContent.CENTER
-
-            binding.recyclerView.adapter = this
             binding.recyclerView.layoutManager = layoutManager
         }
     }
