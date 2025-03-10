@@ -9,9 +9,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.ChangeBounds
-import androidx.transition.Fade
-import androidx.transition.TransitionSet
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.ui.view.Background
@@ -24,8 +21,6 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.with
-import com.simple.coreapp.utils.extentions.beginTransitionAwait
-import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
@@ -34,7 +29,10 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
-import com.simple.phonetics.utils.exts.setImageDrawable
+import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
+import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
+import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
+import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.phonetics.utils.sendToast
 import com.simple.state.ResultState
@@ -65,9 +63,9 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
 
         val isFirst = arguments?.getBoolean(Param.FIRST) == true
 
-        binding.icBack.setInvisible(isFirst)
-        binding.icBack.isClickable = !isFirst
-        binding.icBack.setDebouncedClickListener {
+        binding.frameHeader.icBack.setInvisible(isFirst)
+        binding.frameHeader.icBack.isClickable = !isFirst
+        binding.frameHeader.icBack.setDebouncedClickListener {
 
             activity?.supportFragmentManager?.popBackStack()
         }
@@ -103,51 +101,40 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
 
     private fun observeData() = with(viewModel) {
 
-        lockTransition(TAG.THEME.name, TAG.HEADER.name, TAG.BUTTON_INFO.name)
+        val fragment = this@LanguageFragment
 
-        theme.observe(viewLifecycleOwner) {
+        theme.collectWithLockTransitionUntilData(fragment = fragment, tag = "THEME") {
 
-            val binding = binding ?: return@observe
+            val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.icBack.setImageDrawable(requireActivity(), R.drawable.ic_arrow_left_on_surface, it.colorOnBackground)
             binding.root.setBackgroundColor(it.colorBackground)
-
-            unlockTransition(TAG.THEME.name)
+            binding.frameHeader.icBack.setColorFilter(it.colorOnBackground)
         }
 
-        headerInfo.observe(viewLifecycleOwner) {
+        headerInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "HEADER") {
 
-            val binding = binding ?: return@observe
+            val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.tvTitle.text = it.title
-            binding.tvMessage.text = it.message
-
-            unlockTransition(TAG.HEADER.name)
+            binding.frameHeader.tvTitle.text = it.title
+            binding.frameHeader.tvMessage.text = it.message
         }
 
-        buttonInfo.asFlow().launchCollect(viewLifecycleOwner) {
+        buttonInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON_INFO") {
 
-            val binding = binding?.frameConfirm ?: return@launchCollect
+            val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
 
             binding.btnConfirm.text = it.text
             binding.progress.setVisible(it.isShowLoading)
 
             binding.root.isClickable = it.isClickable
             binding.root.delegate.setBackground(it.background)
-
-            unlockTransition(TAG.BUTTON_INFO.name)
         }
 
-        languageViewItemList.asFlow().launchCollect(viewLifecycleOwner) { data ->
+        languageViewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFirst ->
 
-            val binding = binding ?: return@launchCollect
+            val binding = binding ?: return@collectWithLockTransitionIfCached
 
-            awaitTransition()
-
-            binding.recyclerView.submitListAwait(data)
-
-            val transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))
-            binding.recyclerView.beginTransitionAwait(transition)
+            binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
 
         changeLanguageState.asFlow().launchCollect(viewLifecycleOwner) {
@@ -178,13 +165,6 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
                 )
             )
         }
-    }
-
-    private enum class TAG {
-
-        THEME,
-        HEADER,
-        BUTTON_INFO,
     }
 }
 

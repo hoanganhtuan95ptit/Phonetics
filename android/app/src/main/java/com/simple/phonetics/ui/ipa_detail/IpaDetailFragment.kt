@@ -31,7 +31,7 @@ import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailAdapters
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
-import com.simple.phonetics.utils.exts.observeWithTransitionV2
+import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
@@ -129,9 +129,9 @@ class IpaDetailFragment : TransitionFragment<FragmentListBinding, IpaDetailViewM
             binding.frameHeader.tvTitle.text = it
         }
 
-        viewItemList.observeWithTransitionV2(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.VIEW_ITEM_LIST.name) { data, isFirst ->
+        viewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFirst ->
 
-            val binding = binding ?: return@observeWithTransitionV2
+            val binding = binding ?: return@collectWithLockTransitionIfCached
 
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
