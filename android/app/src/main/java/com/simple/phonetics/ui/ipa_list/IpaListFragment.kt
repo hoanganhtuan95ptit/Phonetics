@@ -5,9 +5,7 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
+import androidx.recyclerview.widget.GridLayoutManager
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.utils.autoCleared
@@ -71,12 +69,11 @@ class IpaListFragment : TransitionFragment<FragmentListBinding, IpaListViewModel
 
         adapter = MultiAdapter(ipaAdapter, *ListPreviewAdapter()).apply {
 
-            val layoutManager = FlexboxLayoutManager(context)
-            layoutManager.flexDirection = FlexDirection.ROW
-            layoutManager.justifyContent = JustifyContent.FLEX_START
-
             binding.recyclerView.adapter = this
-            binding.recyclerView.layoutManager = layoutManager
+            binding.recyclerView.itemAnimator = null
+            binding.recyclerView.setItemViewCacheSize(10)
+
+            binding.recyclerView.layoutManager = GridLayoutManager(context, 3)
         }
     }
 

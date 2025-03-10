@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.ChangeBounds
 import androidx.transition.Fade
 import androidx.transition.TransitionSet
@@ -92,7 +93,11 @@ class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageVie
 
         adapter = MultiAdapter(languageAdapter, *ListPreviewAdapter()).apply {
 
-            setRecyclerView(binding.recyclerView)
+            binding.recyclerView.adapter = this
+            binding.recyclerView.itemAnimator = null
+            binding.recyclerView.setItemViewCacheSize(10)
+
+            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
