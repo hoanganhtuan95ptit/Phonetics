@@ -53,10 +53,8 @@ import com.simple.phonetics.ui.phonetics.view.review.AppReviewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.getCurrentOffset
-import com.simple.phonetics.utils.exts.getState
-import com.simple.phonetics.utils.exts.observeWithTransition
-import com.simple.phonetics.utils.exts.observeWithTransitionV2
-import com.simple.phonetics.utils.exts.setCurrentOffset
+import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
+import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
@@ -265,9 +263,9 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.progress.setVisible(it)
         }
 
-        theme.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.THEME.name) {
+        theme.collectWithLockTransitionUntilData(fragment = fragment, tag = "THEME") {
 
-            val binding = binding ?: return@observeWithTransition
+            val binding = binding ?: return@collectWithLockTransitionUntilData
 
             binding.ivRead.setColorFilter(it.colorPrimary)
             binding.ivStop.setColorFilter(it.colorPrimary)
@@ -283,50 +281,50 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.frameRootContent.setBackgroundColor(it.colorBackgroundVariant)
         }
 
-        title.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.TITLE.name) {
+        title.collectWithLockTransitionUntilData(fragment = fragment, tag = "TITLE") {
 
-            val binding = binding ?: return@observeWithTransition
+            val binding = binding ?: return@collectWithLockTransitionUntilData
 
             binding.tvTitle.text = it
         }
 
-        enterInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.ENTER.name) {
+        enterInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "ENTER") {
 
-            val binding = binding ?: return@observeWithTransition
+            val binding = binding ?: return@collectWithLockTransitionUntilData
 
             binding.etText.hint = it.hint
             binding.etText.setTextColor(it.textColor)
         }
 
-        clearInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.CLEAR.name) {
+        clearInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "CLEAR") {
 
-            val binding = binding ?: return@observeWithTransition
+            val binding = binding ?: return@collectWithLockTransitionUntilData
 
             binding.tvClear.text = it.text
             binding.frameClear.setVisible(it.isShow)
             binding.tvClear.delegate.setBackground(it.background)
         }
 
-        listenInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.LISTEN.name) {
+        listenInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "LISTEN") {
 
-            val binding = binding ?: return@observeWithTransition
+            val binding = binding ?: return@collectWithLockTransitionUntilData
 
             binding.ivRead.setVisible(it.isShowPlay)
             binding.ivStop.setVisible(it.isShowPause)
         }
 
-        reverseInfo.observeWithTransition(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.REVERSE.name) {
+        reverseInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "REVERSE") {
 
-            val binding = binding ?: return@observeWithTransition
+            val binding = binding ?: return@collectWithLockTransitionUntilData
 
             binding.tvReverse.text = it.text
             binding.frameReverse.setVisible(it.isShow)
             binding.tvReverse.delegate.setBackground(it.background)
         }
 
-        viewItemList.observeWithTransitionV2(fragment = fragment, owner = viewLifecycleOwner, tag = com.simple.phonetics.TAG.VIEW_ITEM_LIST.name) { data, isFirst ->
+        viewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFirst ->
 
-            val binding = binding ?: return@observeWithTransitionV2
+            val binding = binding ?: return@collectWithLockTransitionIfCached
 
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
@@ -356,9 +354,9 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             viewModel.updateOutputLanguage(it)
         }
 
-        listConfig.observeWithTransitionV2(fragment = fragment, owner = viewLifecycleOwner, tag = TAG.CONFIG_VIEW_ITEM_LIST.name) { data, isFirst ->
+        listConfig.collectWithLockTransitionIfCached(fragment = fragment, tag = "CONFIG_VIEW_ITEM_LIST") { data, isFirst ->
 
-            val binding = binding ?: return@observeWithTransitionV2
+            val binding = binding ?: return@collectWithLockTransitionIfCached
 
             binding.recFilter.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
@@ -372,10 +370,6 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             voiceId = configViewModel.voiceSelect.value ?: 0,
             voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
         )
-    }
-
-    private enum class TAG {
-        ENTER, CLEAR, TITLE, THEME, LISTEN, REVERSE, CONFIG_VIEW_ITEM_LIST
     }
 }
 

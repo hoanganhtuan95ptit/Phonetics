@@ -1,6 +1,5 @@
 package com.simple.phonetics.utils.exts
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
@@ -9,16 +8,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-fun <T> LiveData<T>.observeWithTransition(
+fun <T> LiveData<T>.collectWithLockTransitionUntilData(
     fragment: TransitionFragment<*, *>,
-    owner: LifecycleOwner,
     tag: String = "",
-    block: (data: T) -> Unit
-) {
+    block: suspend (data: T) -> Unit
+) = fragment.viewLifecycleOwner.lifecycleScope.launch {
 
     fragment.lockTransition(tag = tag)
 
-    observe(owner) {
+    asFlow().collect {
 
         block(it)
 
@@ -26,12 +24,11 @@ fun <T> LiveData<T>.observeWithTransition(
     }
 }
 
-fun <T> LiveData<T>.observeWithTransitionV2(
+fun <T> LiveData<T>.collectWithLockTransitionIfCached(
     fragment: TransitionFragment<*, *>,
-    owner: LifecycleOwner,
     tag: String = "",
     block: suspend (data: T, isFirst: Boolean) -> Unit
-) = owner.lifecycleScope.launch {
+) = fragment.viewLifecycleOwner.lifecycleScope.launch {
 
     var data = value
 
@@ -50,7 +47,7 @@ fun <T> LiveData<T>.observeWithTransitionV2(
             data != it
         }
 
-        if (diff){
+        if (diff) {
 
             fragment.viewModel.awaitTransition()
 

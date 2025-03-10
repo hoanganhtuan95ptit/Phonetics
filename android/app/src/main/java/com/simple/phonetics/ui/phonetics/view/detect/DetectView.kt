@@ -18,7 +18,7 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.ui.phonetics.PhoneticsFragment
 import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
-import com.simple.phonetics.utils.exts.observeWithTransition
+import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.state.doSuccess
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -105,9 +105,9 @@ class DetectViewImpl : DetectView {
             }
         }
 
-        detectViewModel.detectInfo.observeWithTransition(fragment = fragment, owner = fragment.viewLifecycleOwner, tag = this.javaClass.simpleName) {
+        detectViewModel.detectInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "DETECT") {
 
-            fragment.binding ?: return@observeWithTransition
+            fragment.binding ?: return@collectWithLockTransitionUntilData
 
             binding.ivCamera.setVisible(it.isShow)
             binding.ivGallery.setVisible(it.isShow)

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
 
     <ImageView
         android:id="@+id/ic_back"
@@ -13,7 +14,7 @@
         android:layout_marginVertical="4dp"
         android:contentDescription="back"
         android:padding="8dp"
-        tools:src="@drawable/ic_arrow_left_on_surface" />
+        android:src="@drawable/ic_arrow_left_on_surface" />
 
     <TextView
         android:id="@+id/tv_title"
