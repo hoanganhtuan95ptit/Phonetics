@@ -6,7 +6,6 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.asFlow
 import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
@@ -15,6 +14,7 @@ import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
@@ -22,6 +22,7 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
+import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.sendEvent
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
@@ -60,7 +61,14 @@ class RecordingFragment : BaseViewModelSheetFragment<DialogListBinding, Recordin
             binding.recyclerView.itemAnimator = null
             binding.recyclerView.setItemViewCacheSize(10)
 
-            val layoutManager = FlexboxLayoutManager(context)
+            val layoutManager = createFlexboxLayoutManager(context = context) {
+
+                logCrashlytics(
+                    event = "RECORDING",
+                    throwable = it,
+                    "VIEW_ITEM_SIZE" to "${viewModel.viewItemList.value?.size}"
+                )
+            }
             layoutManager.flexDirection = FlexDirection.ROW
             layoutManager.justifyContent = JustifyContent.CENTER
             binding.recyclerView.layoutManager = layoutManager

@@ -17,11 +17,11 @@ import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getParcelableOrNull
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
-import com.simple.phonetics.TAG
 import com.simple.phonetics.databinding.FragmentListBinding
 import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Sentence
@@ -32,6 +32,7 @@ import com.simple.phonetics.ui.ipa_detail.adapters.IpaDetailAdapters
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
+import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
@@ -104,7 +105,14 @@ class IpaDetailFragment : TransitionFragment<FragmentListBinding, IpaDetailViewM
             binding.recyclerView.itemAnimator = null
             binding.recyclerView.setItemViewCacheSize(10)
 
-            val layoutManager = FlexboxLayoutManager(context)
+            val layoutManager = createFlexboxLayoutManager(context = context) {
+
+                logCrashlytics(
+                    event = "IPA_DETAIL",
+                    throwable = it,
+                    "VIEW_ITEM_SIZE" to "${viewModel.viewItemList.value?.size}"
+                )
+            }
             layoutManager.flexDirection = FlexDirection.ROW
             layoutManager.justifyContent = JustifyContent.FLEX_START
             binding.recyclerView.layoutManager = layoutManager
