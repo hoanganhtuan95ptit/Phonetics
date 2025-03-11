@@ -24,6 +24,7 @@ import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
+import com.simple.crashlytics.logCrashlytics
 import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Id
@@ -55,6 +56,7 @@ import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
+import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
@@ -218,7 +220,15 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, Phonetics
             binding.recyclerView.itemAnimator = null
             binding.recyclerView.setItemViewCacheSize(10)
 
-            val layoutManager = FlexboxLayoutManager(context)
+            val layoutManager = createFlexboxLayoutManager(context = context) {
+
+                logCrashlytics(
+                    event = "PHONETICS",
+                    throwable = it,
+                    "VIEW_ITEM_SIZE" to "${viewModel.viewItemList.value?.size}"
+                )
+            }
+
             layoutManager.justifyContent = JustifyContent.FLEX_START
             binding.recyclerView.layoutManager = layoutManager
             binding.recyclerView.updatePadding(left = DP.DP_12, right = DP.DP_12)

@@ -52,7 +52,7 @@ com.google.android.material.transformation.FabTransformationBehavior
 com.simple.phonetics.databinding.ItemPhoneticsLoadingBinding
 com.google.mlkit.vision.common.internal.ImageUtils
 com.google.android.gms.internal.mlkit_vision_text_common.zzsc
-com.google.android.flexbox.FlexboxLayoutManager$LayoutParams
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager$LayoutParams
 androidx.work.OverwritingInputMerger
 androidx.media.AudioAttributesImplBase
 com.simple.detect.entities.Paragraph$Creator
@@ -214,7 +214,7 @@ com.google.mlkit.vision.common.internal.zza
 com.google.android.gms.signin.internal.zaa
 com.google.mlkit.common.sdkinternal.MlKitContext
 com.google.android.material.slider.Slider
-com.google.android.flexbox.FlexboxLayoutManager
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager
 com.google.android.material.stateful.ExtendableSavedState
 com.simple.detect.entities.DetectOptionKt
 com.google.mlkit.common.sdkinternal.model.RemoteModelManagerInterface
@@ -366,7 +366,7 @@ com.google.android.material.datepicker.MaterialTextInputPicker
 androidx.constraintlayout.utils.widget.MotionTelltales
 com.google.android.material.button.MaterialButton$SavedState
 com.google.mlkit.common.internal.MlKitInitProvider
-com.google.android.flexbox.FlexboxLayout$LayoutParams
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout$LayoutParams
 com.google.mlkit.nl.translate.internal.zze
 com.google.mlkit.vision.text.pipeline.zbh
 com.simple.coreapp.ui.base.fragments.BaseTransitionFragment
@@ -627,7 +627,7 @@ androidx.appcompat.widget.AppCompatAutoCompleteTextView
 android.support.v4.media.session.ParcelableVolumeInfo
 com.google.mlkit.nl.translate.internal.zzp
 com.google.mlkit.common.model.zzc
-com.google.android.flexbox.FlexboxLayoutManager$SavedState
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager$SavedState
 androidx.transition.ChangeScroll
 androidx.constraintlayout.widget.ConstraintHelper
 com.simple.coreapp.utils.AutoClearedValue$2$viewLifecycleOwnerLiveDataObserver$1$1
@@ -785,7 +785,7 @@ com.google.mlkit.common.internal.zzd
 com.google.mlkit.common.sdkinternal.OptionalModuleUtils
 androidx.fragment.app.FragmentManagerState
 androidx.viewpager.widget.ViewPager$LayoutParams
-com.google.android.flexbox.FlexboxLayout
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout
 com.google.mlkit.nl.translate.internal.zzai
 com.google.mlkit.nl.languageid.zza
 android.support.v4.media.session.PlaybackStateCompat
@@ -797,7 +797,7 @@ com.google.mlkit.vision.text.TextRecognizerOptionsInterface
 com.simple.coreapp.ui.view.round.RoundRelativeLayout
 com.google.mlkit.common.model.RemoteModelSource
 com.google.mlkit.common.sdkinternal.CloseGuard$Factory
-com.google.android.flexbox.FlexItem
+com.simple.phonetics.ui.base.views.flexbox.FlexItem
 com.google.mlkit.vision.text.Text$TextBlock
 com.google.mlkit.common.sdkinternal.model.LegacyModelMigrator
 androidx.lifecycle.LegacySavedStateHandleController$tryToAddRecreator$1
@@ -2111,7 +2111,7 @@ com.google.android.material.R$id: int mtrl_picker_header_toggle
 androidx.constraintlayout.widget.R$id: int accessibility_custom_action_8
 com.google.android.material.R$style: int TextAppearance_AppCompat_Widget_Switch
 com.airbnb.lottie.R$styleable: int Spinner_android_dropDownWidth
-com.google.android.flexbox.R$styleable: int FlexboxLayout_alignItems
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_alignItems
 com.google.android.material.R$attr: int elevationOverlayEnabled
 androidx.preference.R$attr: int buttonBarButtonStyle
 com.google.android.material.R$color: int m3_sys_color_light_on_primary_container
@@ -3072,7 +3072,7 @@ androidx.constraintlayout.widget.R$styleable: int AppCompatTheme_alertDialogButt
 androidx.constraintlayout.widget.R$id: int x_right
 androidx.preference.R$attr: int colorControlActivated
 androidx.constraintlayout.widget.R$styleable: int KeyTimeCycle_motionProgress
-com.google.android.flexbox.R$styleable: int FlexboxLayout_showDividerHorizontal
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_showDividerHorizontal
 com.google.android.material.R$styleable: int AppCompatTheme_actionModePopupWindowStyle
 androidx.preference.R$styleable: int Spinner_popupTheme
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbcp: java.lang.String zbf
@@ -3424,7 +3424,7 @@ com.fasterxml.jackson.databind.deser.std.ArrayBlockingQueueDeserializer: long se
 com.google.android.material.R$styleable: int NavigationBarView_menu
 com.google.mlkit.vision.common.InputImage: int IMAGE_FORMAT_YUV_420_888
 com.google.mlkit.common.sdkinternal.ModelType: com.google.mlkit.common.sdkinternal.ModelType UNKNOWN
-com.google.android.flexbox.R$styleable: int FlexboxLayout_Layout_layout_flexGrow
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_Layout_layout_flexGrow
 androidx.constraintlayout.widget.R$styleable: int Constraint_layout_goneMarginLeft
 androidx.constraintlayout.widget.R$styleable: int Constraint_layout_constraintVertical_bias
 androidx.constraintlayout.widget.R$id: int north
@@ -4066,7 +4066,7 @@ com.google.android.material.R$style: int ThemeOverlay_Material3_MaterialCalendar
 com.google.android.material.R$attr: int counterEnabled
 com.google.android.material.R$dimen: int material_clock_hand_padding
 androidx.preference.R$styleable: int Preference_android_title
-com.google.android.flexbox.R$styleable: int FlexboxLayout_alignContent
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_alignContent
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbajt: com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbut zbd
 androidx.preference.R$styleable: int Toolbar_titleTextAppearance
 androidx.drawerlayout.R$dimen: int compat_control_corner_material
@@ -4227,7 +4227,7 @@ com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbaly: com.goog
 com.google.android.material.R$id: int search_go_btn
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbac: boolean zbj
 com.airbnb.lottie.R$styleable: int AppCompatTheme_borderlessButtonStyle
-com.google.android.flexbox.R$styleable: int FlexboxLayout_Layout_layout_minHeight
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_Layout_layout_minHeight
 com.google.android.material.R$styleable: int ConstraintSet_flow_lastVerticalStyle
 com.google.android.material.R$styleable: int Badge_verticalOffset
 com.google.android.material.R$styleable: int ActionBar_titleTextStyle
@@ -7850,7 +7850,7 @@ com.google.android.material.R$dimen: int notification_top_pad
 com.google.android.material.R$style: int Widget_MaterialComponents_TimePicker_Clock
 com.permissionx.guolindev.R$id: int accessibility_custom_action_23
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbahq: com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbahq zbb
-com.google.android.flexbox.R$styleable: int FlexboxLayout_dividerDrawableHorizontal
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_dividerDrawableHorizontal
 com.google.android.material.R$styleable: int MaterialCardView_shapeAppearanceOverlay
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbaar: double zbj
 com.google.android.material.R$styleable: int PropertySet_android_alpha
@@ -8016,7 +8016,7 @@ com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbiy: java.lang
 androidx.constraintlayout.widget.R$styleable: int KeyPosition_framePosition
 com.google.android.material.R$color: int m3_sys_color_light_primary
 androidx.appcompat.R$style: int Base_Widget_AppCompat_ButtonBar_AlertDialog
-com.google.android.flexbox.R$styleable: int FlexboxLayout_dividerDrawableVertical
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_dividerDrawableVertical
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbzi: boolean zbf
 androidx.preference.R$styleable: int Preference_android_order
 androidx.constraintlayout.widget.R$styleable: int ConstraintSet_layout_constraintHeight_default
@@ -8516,7 +8516,7 @@ com.google.android.material.R$attr: int tabGravity
 com.google.android.material.R$attr: int drawableRightCompat
 com.google.android.libraries.vision.visionkit.pipeline.zbbi: com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbei zbg
 androidx.constraintlayout.widget.R$id: int action_bar_activity_content
-com.google.android.flexbox.R$styleable: int FlexboxLayout_Layout_layout_alignSelf
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_Layout_layout_alignSelf
 com.google.android.material.R$id: int tag_unhandled_key_event_manager
 androidx.constraintlayout.widget.R$styleable: int ConstraintSet_layout_editor_absoluteY
 androidx.appcompat.R$color: int bright_foreground_inverse_material_light
@@ -8562,7 +8562,7 @@ com.google.android.material.R$color: int m3_timepicker_display_stroke_color
 com.google.android.material.R$color: int material_dynamic_primary90
 com.google.android.material.R$style: int Theme_AppCompat_DayNight_Dialog
 com.airbnb.lottie.R$styleable: int[] MenuGroup
-com.google.android.flexbox.R$styleable: int FlexboxLayout_justifyContent
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_justifyContent
 androidx.preference.R$styleable: int MenuGroup_android_checkableBehavior
 kotlinx.coroutines.AwaitAll$AwaitAllNode: java.lang.Object _disposer
 androidx.constraintlayout.widget.R$id: int text2
@@ -9369,7 +9369,7 @@ com.simple.coreapp.R$attr: int colorOnNegative
 com.airbnb.lottie.R$attr: int lottieAnimationViewStyle
 androidx.preference.R$styleable: int AppCompatTheme_android_windowIsFloating
 com.airbnb.lottie.R$styleable: int AppCompatTheme_actionModeCutDrawable
-com.google.android.flexbox.FlexboxLayoutManager$SavedState: android.os.Parcelable$Creator CREATOR
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager$SavedState: android.os.Parcelable$Creator CREATOR
 com.google.android.material.R$styleable: int TextInputLayout_endIconContentDescription
 com.google.android.material.R$dimen: int m3_btn_dialog_btn_spacing
 com.google.android.material.R$color: int mtrl_btn_text_btn_bg_color_selector
@@ -10190,7 +10190,7 @@ androidx.preference.R$styleable: int AppCompatTheme_textColorAlertDialogListItem
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbabb: int zbd
 androidx.appcompat.R$layout: int abc_search_view
 com.google.android.material.R$dimen: int design_tab_text_size
-com.google.android.flexbox.R$styleable: int FlexboxLayout_flexWrap
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_flexWrap
 com.google.android.material.R$styleable: int Layout_layout_constraintGuide_percent
 com.google.android.material.R$styleable: int Constraint_pivotAnchor
 androidx.appcompat.resources.R$styleable: int AnimatedStateListDrawableCompat_android_exitFadeDuration
@@ -10489,7 +10489,7 @@ com.google.android.material.R$style: int Theme_AppCompat_Light_Dialog
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbakc: com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbut zbe
 androidx.preference.R$styleable: int DialogPreference_android_positiveButtonText
 com.google.android.material.R$attr: int textAppearanceBodySmall
-com.google.android.flexbox.R$styleable: int FlexboxLayout_Layout_layout_maxWidth
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_Layout_layout_maxWidth
 com.google.android.material.R$dimen: int notification_large_icon_width
 androidx.appcompat.R$string: int abc_menu_space_shortcut_label
 com.google.android.material.R$id: int tag_accessibility_clickable_spans
@@ -12049,7 +12049,7 @@ com.google.mlkit.nl.languageid.internal.zzf: com.google.android.gms.internal.mlk
 androidx.constraintlayout.widget.R$styleable: int MotionLabel_android_textColor
 androidx.constraintlayout.widget.R$styleable: int CustomAttribute_customIntegerValue
 com.airbnb.lottie.R$attr: int actionButtonStyle
-com.google.android.flexbox.R$styleable: int FlexboxLayout_Layout_layout_flexShrink
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_Layout_layout_flexShrink
 androidx.appcompat.R$style: int Base_TextAppearance_AppCompat_Display2
 com.google.android.material.R$styleable: int NavigationBarView_itemBackground
 androidx.constraintlayout.widget.R$styleable: int Layout_layout_constraintBottom_creator
@@ -12122,7 +12122,7 @@ com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbaeb: com.goog
 androidx.appcompat.R$attr: int colorControlNormal
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbaca: int zbk
 com.google.android.material.R$styleable: int TextInputLayout_expandedHintEnabled
-com.google.android.flexbox.R$styleable: int FlexboxLayout_maxLine
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_maxLine
 com.google.android.material.R$dimen: int m3_navigation_item_horizontal_padding
 com.permissionx.guolindev.R$id: int action_bar_activity_content
 androidx.preference.R$id: int icon_frame
@@ -12442,7 +12442,7 @@ androidx.preference.R$attr: int defaultQueryHint
 com.google.android.material.R$color: int abc_tint_seek_thumb
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbahp: com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbuq zbe
 com.airbnb.lottie.R$attr: int fontProviderPackage
-com.google.android.flexbox.R$styleable: int[] FlexboxLayout_Layout
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int[] FlexboxLayout_Layout
 com.google.android.material.R$style: int Widget_MaterialComponents_ActionBar_Surface
 androidx.constraintlayout.widget.R$styleable: int MotionLabel_android_typeface
 com.google.android.material.R$color: int m3_ref_palette_dynamic_primary70
@@ -12912,7 +12912,7 @@ com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbcf: com.googl
 androidx.preference.R$attr: int drawableRightCompat
 com.google.mlkit.nl.translate.internal.TranslateJni: com.google.mlkit.nl.translate.internal.zzaf zzb
 com.fasterxml.jackson.databind.deser.impl.MethodProperty: long serialVersionUID
-com.google.android.flexbox.R$styleable: int FlexboxLayout_Layout_layout_flexBasisPercent
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_Layout_layout_flexBasisPercent
 com.google.android.material.R$style: int MaterialAlertDialog_MaterialComponents_Title_Text_CenterStacked
 com.google.android.material.R$attr: int forceApplySystemWindowInsetTop
 com.google.android.material.R$dimen: int mtrl_bottomappbar_height
@@ -12926,7 +12926,7 @@ com.google.android.material.R$dimen: int abc_dialog_list_padding_bottom_no_butto
 com.google.android.material.R$style: int ShapeAppearanceOverlay_MaterialAlertDialog_Material3
 com.google.android.material.R$styleable: int KeyTimeCycle_android_translationZ
 com.google.android.material.R$id: int chip2
-com.google.android.flexbox.R$styleable: int FlexboxLayout_flexDirection
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_flexDirection
 androidx.preference.R$attr: int maxButtonHeight
 androidx.constraintlayout.widget.R$styleable: int[] ColorStateListItem
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbaj: com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbaj zbb
@@ -13557,7 +13557,7 @@ androidx.drawerlayout.R$dimen: int compat_button_padding_vertical_material
 com.google.android.libraries.vision.visionkit.pipeline.zbcx: com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbeo zbq
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbafx: java.lang.Object zbe
 com.airbnb.lottie.R$styleable: int AppCompatImageView_android_src
-com.google.android.flexbox.R$styleable: int FlexboxLayout_Layout_layout_order
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_Layout_layout_order
 com.google.android.material.R$styleable: int SearchView_defaultQueryHint
 androidx.constraintlayout.widget.R$styleable: int GradientColor_android_endColor
 androidx.constraintlayout.widget.R$styleable: int AppCompatTheme_buttonBarStyle
@@ -13635,7 +13635,7 @@ androidx.preference.R$layout: int preference_widget_seekbar_material
 androidx.constraintlayout.widget.R$id: int accessibility_custom_action_4
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbmc: java.lang.String zbu
 com.google.android.material.R$styleable: int Constraint_layout_constraintHorizontal_chainStyle
-com.google.android.flexbox.R$styleable: int FlexboxLayout_Layout_layout_minWidth
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_Layout_layout_minWidth
 com.google.android.material.R$style: int Widget_AppCompat_SeekBar_Discrete
 com.google.android.material.R$style: int TextAppearance_AppCompat_Body1
 com.google.android.material.R$styleable: int AppCompatTheme_alertDialogTheme
@@ -13788,7 +13788,7 @@ com.airbnb.lottie.R$styleable: int AppCompatTheme_tooltipFrameBackground
 com.google.android.material.R$styleable: int SwitchCompat_thumbTintMode
 androidx.appcompat.R$styleable: int AppCompatTextView_firstBaselineToTopHeight
 com.google.android.material.R$color: int m3_chip_text_color
-com.google.android.flexbox.FlexboxLayoutManager$LayoutParams: android.os.Parcelable$Creator CREATOR
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager$LayoutParams: android.os.Parcelable$Creator CREATOR
 com.airbnb.lottie.R$styleable: int FontFamilyFont_fontWeight
 androidx.constraintlayout.widget.R$styleable: int Constraint_android_maxWidth
 com.airbnb.lottie.R$styleable: int AppCompatTheme_textColorAlertDialogListItem
@@ -14701,7 +14701,7 @@ androidx.constraintlayout.widget.R$styleable: int Constraint_chainUseRtl
 com.airbnb.lottie.R$styleable: int PopupWindow_android_popupAnimationStyle
 com.google.android.material.R$style: int TextAppearance_AppCompat_Tooltip
 com.google.android.material.R$attr: int colorTertiary
-com.google.android.flexbox.R$styleable: int FlexboxLayout_Layout_layout_wrapBefore
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_Layout_layout_wrapBefore
 com.google.mlkit.common.sdkinternal.model.RemoteModelDownloadManager: android.util.LongSparseArray zzd
 androidx.appcompat.R$styleable: int View_android_theme
 com.google.android.material.R$color: int m3_dynamic_primary_text_disable_only
@@ -15091,7 +15091,7 @@ com.simple.adapter.R$layout: int item_load_more
 com.google.android.material.R$id: int transition_layout_save
 androidx.preference.R$styleable: int FontFamilyFont_fontStyle
 com.google.android.material.R$dimen: int m3_sys_motion_easing_legacy_decelerate_control_y1
-com.google.android.flexbox.R$styleable: int FlexboxLayout_showDividerVertical
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_showDividerVertical
 com.google.android.material.R$style: int Widget_MaterialComponents_CircularProgressIndicator_Medium
 androidx.constraintlayout.widget.R$styleable: int Layout_layout_constraintHeight_percent
 com.airbnb.lottie.R$styleable: int MenuItem_android_numericShortcut
@@ -15122,7 +15122,7 @@ androidx.appcompat.R$attr: int editTextStyle
 com.google.android.material.R$styleable: int[] FontFamily
 com.google.android.material.R$styleable: int Layout_layout_constrainedHeight
 com.google.android.material.R$dimen: int abc_dialog_min_width_major
-com.google.android.flexbox.FlexboxLayout$LayoutParams: android.os.Parcelable$Creator CREATOR
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout$LayoutParams: android.os.Parcelable$Creator CREATOR
 androidx.constraintlayout.widget.R$styleable: int Transform_transformPivotTarget
 androidx.preference.R$styleable: int PreferenceTheme_preferenceCategoryTitleTextAppearance
 com.google.android.material.R$string: int path_password_eye_mask_visible
@@ -15191,7 +15191,7 @@ androidx.constraintlayout.widget.R$styleable: int Constraint_android_orientation
 androidx.constraintlayout.widget.R$styleable: int[] AnimatedStateListDrawableItem
 androidx.constraintlayout.widget.R$id: int sharedValueUnset
 com.google.android.material.slider.BaseSlider$SliderState: android.os.Parcelable$Creator CREATOR
-com.google.android.flexbox.R$styleable: int FlexboxLayout_showDivider
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_showDivider
 com.google.android.material.R$attr: int stackFromEnd
 com.airbnb.lottie.R$styleable: int ActionMode_height
 com.google.android.libraries.vision.visionkit.pipeline.zbj: int zbd
@@ -15396,7 +15396,7 @@ com.google.android.material.R$color: int abc_color_highlight_material
 androidx.preference.R$attr: int panelMenuListWidth
 androidx.appcompat.R$styleable: int TextAppearance_android_textColor
 com.google.android.material.R$styleable: int ImageFilterView_altSrc
-com.google.android.flexbox.R$styleable: int[] FlexboxLayout
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int[] FlexboxLayout
 com.airbnb.lottie.R$styleable: int LinearLayoutCompat_measureWithLargestChild
 androidx.preference.R$id: int search_plate
 com.google.android.material.R$id: int tag_accessibility_pane_title
@@ -15733,7 +15733,7 @@ androidx.appcompat.R$drawable: int abc_star_half_black_48dp
 com.google.android.material.R$id: int fixed
 androidx.constraintlayout.widget.R$styleable: int KeyTimeCycle_android_rotationY
 androidx.constraintlayout.widget.R$styleable: int KeyTimeCycle_android_scaleX
-com.google.android.flexbox.R$styleable: int FlexboxLayout_Layout_layout_maxHeight
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_Layout_layout_maxHeight
 com.airbnb.lottie.R$styleable: int TextAppearance_android_textSize
 androidx.constraintlayout.widget.R$id: int packed
 com.google.android.material.R$color: int dim_foreground_disabled_material_dark
@@ -16287,7 +16287,7 @@ androidx.appcompat.R$attr: int contentDescription
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbbk: int zbi
 com.google.android.material.R$drawable: int ic_m3_chip_check
 com.google.android.material.R$string: int m3_sys_motion_easing_standard
-com.google.android.flexbox.R$styleable: int FlexboxLayout_dividerDrawable
+com.simple.phonetics.ui.base.views.flexbox.R$styleable: int FlexboxLayout_dividerDrawable
 com.google.android.material.R$styleable: int[] AnimatedStateListDrawableCompat
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbje: com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbjk zbe
 com.google.android.material.R$dimen: int design_textinput_caption_translate_y
@@ -17191,7 +17191,7 @@ com.simple.phonetics.data.dao.PhoneticsRoomDatabase_Impl: void access$700(com.si
 com.google.android.gms.internal.mlkit_common.zzlp: com.google.android.gms.internal.mlkit_common.zzlp[] values()
 com.google.mlkit.common.sdkinternal.ModelType: com.google.mlkit.common.sdkinternal.ModelType[] values()
 androidx.transition.Slide: Slide(android.content.Context,android.util.AttributeSet)
-com.google.android.flexbox.FlexboxLayout: void setShowDividerHorizontal(int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setShowDividerHorizontal(int)
 com.google.mlkit.common.sdkinternal.zzs: zzs()
 com.google.android.material.bottomappbar.BottomAppBar: com.google.android.material.bottomappbar.BottomAppBar$Behavior getBehavior()
 com.google.android.material.textfield.TextInputLayout: float getBoxCornerRadiusTopStart()
@@ -17486,7 +17486,7 @@ androidx.cardview.widget.CardView: float getRadius()
 com.google.mlkit.common.sdkinternal.CloseGuard: CloseGuard(java.lang.Object,int,com.google.mlkit.common.sdkinternal.Cleaner,java.lang.Runnable,com.google.android.gms.internal.mlkit_common.zzpr)
 com.google.android.material.navigation.NavigationView: void setOverScrollMode(int)
 kotlinx.coroutines.android.AndroidDispatcherFactory: AndroidDispatcherFactory()
-com.google.android.flexbox.FlexboxLayoutManager: FlexboxLayoutManager(android.content.Context,android.util.AttributeSet,int,int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager: FlexboxLayoutManager(android.content.Context,android.util.AttributeSet,int,int)
 com.fasterxml.jackson.databind.SerializationFeature: com.fasterxml.jackson.databind.SerializationFeature[] values()
 com.fasterxml.jackson.databind.MapperFeature: com.fasterxml.jackson.databind.MapperFeature[] values()
 androidx.appcompat.widget.Toolbar: android.graphics.drawable.Drawable getCollapseIcon()
@@ -17528,7 +17528,7 @@ com.google.android.material.appbar.AppBarLayout: void setStatusBarForegroundReso
 androidx.work.NetworkType: androidx.work.NetworkType valueOf(java.lang.String)
 androidx.core.view.WindowInsetsCompat$Impl: androidx.core.graphics.Insets getMandatorySystemGestureInsets()
 com.google.mlkit.common.sdkinternal.zzr: void onFailure(java.lang.Exception)
-com.google.android.flexbox.FlexboxLayoutManager$LayoutParams: FlexboxLayoutManager$LayoutParams(android.content.Context,android.util.AttributeSet)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager$LayoutParams: FlexboxLayoutManager$LayoutParams(android.content.Context,android.util.AttributeSet)
 com.google.android.material.button.MaterialButtonToggleGroup: MaterialButtonToggleGroup(android.content.Context,android.util.AttributeSet)
 com.simple.coreapp.databinding.ItemOptionBinding: ItemOptionBinding(androidx.appcompat.widget.LinearLayoutCompat,android.widget.ImageView,android.widget.TextView)
 androidx.appcompat.widget.AppCompatSpinner: void setSupportBackgroundTintMode(android.graphics.PorterDuff$Mode)
@@ -17540,7 +17540,7 @@ com.google.mlkit.nl.translate.Translator: com.google.android.gms.tasks.Task tran
 androidx.viewpager2.widget.ViewPager2: int getPageSize()
 androidx.constraintlayout.widget.ConstraintAttribute$AttributeType: androidx.constraintlayout.widget.ConstraintAttribute$AttributeType valueOf(java.lang.String)
 androidx.cardview.widget.CardView: void setMaxCardElevation(float)
-com.google.android.flexbox.FlexboxLayout: int getMaxLine()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getMaxLine()
 com.google.mlkit.common.sdkinternal.zza: zza(java.lang.ref.ReferenceQueue,java.util.Set)
 com.google.mlkit.vision.text.internal.TextRecognizerImpl: int getDetectorType()
 com.simple.phonetics.databinding.ItemPhoneticsLoadingBinding: ItemPhoneticsLoadingBinding(androidx.constraintlayout.widget.ConstraintLayout,android.view.View)
@@ -18189,7 +18189,7 @@ kotlin.reflect.jvm.internal.impl.serialization.deserialization.builtins.BuiltIns
 com.google.android.material.textfield.TextInputLayout: void setHelperTextTextAppearance(int)
 com.google.android.gms.common.SignInButton: SignInButton(android.content.Context,android.util.AttributeSet)
 androidx.core.view.WindowInsetsCompat$Impl28: androidx.core.view.DisplayCutoutCompat getDisplayCutout()
-com.google.android.flexbox.FlexboxLayout: int getFlexItemCount()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getFlexItemCount()
 com.google.mlkit.vision.common.internal.ImageUtils: ImageUtils()
 androidx.appcompat.widget.Toolbar: int getTitleMarginBottom()
 com.google.android.material.progressindicator.BaseProgressIndicator: int getHideAnimationBehavior()
@@ -18248,7 +18248,7 @@ androidx.appcompat.widget.AppCompatImageButton: void setSupportBackgroundTintLis
 androidx.viewpager.widget.ViewPager: int getClientWidth()
 androidx.viewpager2.widget.ViewPager2: void setCurrentItem(int)
 com.google.android.material.textfield.TextInputLayout: int getHelperTextCurrentTextColor()
-com.google.android.flexbox.FlexboxLayout: FlexboxLayout(android.content.Context,android.util.AttributeSet)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: FlexboxLayout(android.content.Context,android.util.AttributeSet)
 androidx.core.widget.TextViewCompat$Api16Impl: int getMinLines(android.widget.TextView)
 androidx.appcompat.view.menu.ListMenuItemView: void setSubMenuArrowVisible(boolean)
 com.google.android.material.divider.MaterialDivider: void setDividerInsetStartResource(int)
@@ -18363,7 +18363,7 @@ androidx.preference.PreferenceGroup: PreferenceGroup(android.content.Context,and
 com.google.android.material.textfield.TextInputLayout: TextInputLayout(android.content.Context,android.util.AttributeSet,int)
 androidx.appcompat.widget.AppCompatImageButton: void setSupportImageTintList(android.content.res.ColorStateList)
 com.google.android.material.button.MaterialButton: void setIconResource(int)
-com.google.android.flexbox.FlexboxLayout: void setShowDividerVertical(int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setShowDividerVertical(int)
 com.google.android.material.appbar.MaterialToolbar: void setNavigationIcon(android.graphics.drawable.Drawable)
 androidx.appcompat.widget.AppCompatAutoCompleteTextView: void setCustomSelectionActionModeCallback(android.view.ActionMode$Callback)
 androidx.appcompat.widget.ActionBarContextView: void setContentHeight(int)
@@ -18442,7 +18442,7 @@ com.google.android.material.textfield.TextInputEditText: com.google.android.mate
 com.google.mlkit.vision.common.internal.ImageConvertUtils: android.graphics.Bitmap getUpRightBitmap(com.google.mlkit.vision.common.InputImage)
 com.google.android.material.snackbar.SnackbarContentLayout: android.widget.TextView getMessageView()
 com.airbnb.lottie.LottieAnimationView: java.lang.String getImageAssetsFolder()
-com.google.android.flexbox.FlexboxLayout: void setDividerDrawableHorizontal(android.graphics.drawable.Drawable)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setDividerDrawableHorizontal(android.graphics.drawable.Drawable)
 androidx.recyclerview.widget.RecyclerView: void setLayoutManager(androidx.recyclerview.widget.RecyclerView$LayoutManager)
 com.google.mlkit.nl.translate.internal.zzi: boolean zzi(com.google.mlkit.common.model.RemoteModel,java.lang.String)
 com.google.mlkit.vision.text.internal.TextRecognizerTaskWithResource: TextRecognizerTaskWithResource(com.google.android.gms.internal.mlkit_vision_text_common.zzrd,com.google.mlkit.vision.text.internal.zzl,com.google.mlkit.vision.text.TextRecognizerOptionsInterface)
@@ -18505,7 +18505,7 @@ androidx.constraintlayout.utils.widget.ImageFilterButton: void setRound(float)
 kotlin.reflect.KVariance: kotlin.reflect.KVariance[] values()
 com.google.mlkit.vision.text.pipeline.zbk: zbk()
 com.google.mlkit.nl.translate.internal.zzac: void zze()
-com.google.android.flexbox.FlexboxLayout: int getAlignContent()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getAlignContent()
 androidx.swiperefreshlayout.widget.SwipeRefreshLayout: int getProgressCircleDiameter()
 com.google.mlkit.common.sdkinternal.model.RemoteModelLoaderHelper: java.nio.MappedByteBuffer loadModelAtPath(java.lang.String)
 com.google.android.libraries.vision.visionkit.pipeline.alt.PipelineException: java.util.List getComponentStatuses()
@@ -18701,7 +18701,7 @@ com.google.android.material.circularreveal.cardview.CircularRevealCardView: com.
 androidx.constraintlayout.helper.widget.Flow: void setLastHorizontalStyle(int)
 androidx.fragment.app.FragmentContainerView: FragmentContainerView(android.content.Context,android.util.AttributeSet,int)
 com.google.android.material.textfield.TextInputLayout: int getBoxCollapsedPaddingTop()
-com.google.android.flexbox.FlexboxLayout: java.util.List getFlexLines()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: java.util.List getFlexLines()
 com.google.android.material.navigation.NavigationBarMenuView: int getSelectedItemId()
 androidx.preference.DialogPreference: DialogPreference(android.content.Context,android.util.AttributeSet,int)
 com.google.mlkit.nl.translate.zzh: zzh()
@@ -18872,7 +18872,7 @@ kotlin.reflect.jvm.internal.impl.load.java.ErasedOverridabilityCondition: kotlin
 com.google.android.material.button.MaterialButton: MaterialButton(android.content.Context,android.util.AttributeSet)
 androidx.window.core.SpecificationComputer$VerificationMode: androidx.window.core.SpecificationComputer$VerificationMode valueOf(java.lang.String)
 com.simple.phonetics.databinding.ItemPhoneticsHistoryBinding: ItemPhoneticsHistoryBinding(androidx.constraintlayout.widget.ConstraintLayout,android.widget.TextView,android.view.View)
-com.google.android.flexbox.FlexboxLayout: int getShowDividerHorizontal()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getShowDividerHorizontal()
 androidx.drawerlayout.widget.DrawerLayout: void setDrawerLockMode(int)
 com.google.mlkit.nl.translate.zzi: <clinit>()
 com.google.android.material.textfield.TextInputLayout: android.graphics.Typeface getTypeface()
@@ -18992,7 +18992,7 @@ com.simple.adapter.databinding.ItemLoadingBinding: android.view.View getRoot()
 com.google.mlkit.nl.translate.internal.zzad: com.google.android.gms.internal.mlkit_translate.zzv zza(java.lang.String)
 androidx.viewpager.widget.ViewPager: int getPageMargin()
 androidx.appcompat.view.menu.ListMenuItemView: ListMenuItemView(android.content.Context,android.util.AttributeSet)
-com.google.android.flexbox.FlexboxLayout: int getSumOfCrossSize()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getSumOfCrossSize()
 com.google.android.material.navigationrail.NavigationRailView: int getMaxItemCount()
 com.google.mlkit.vision.text.pipeline.zbo: com.google.mlkit.vision.text.pipeline.zbo zbc(int,android.os.RemoteException)
 androidx.lifecycle.ProcessLifecycleInitializer: ProcessLifecycleInitializer()
@@ -19072,7 +19072,7 @@ androidx.slidingpanelayout.widget.SlidingPaneLayout: SlidingPaneLayout(android.c
 com.google.mlkit.nl.languageid.IdentifiedLanguage: java.lang.String getLanguageTag()
 androidx.core.widget.PopupWindowCompat$Api23Impl: boolean getOverlapAnchor(android.widget.PopupWindow)
 androidx.core.view.DisplayCutoutCompat$Api28Impl: int getSafeInsetRight(android.view.DisplayCutout)
-com.google.android.flexbox.FlexboxLayout: java.util.List getFlexLinesInternal()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: java.util.List getFlexLinesInternal()
 com.google.mlkit.common.sdkinternal.model.zzd: zzd(com.google.mlkit.common.sdkinternal.model.RemoteModelDownloadManager,long,com.google.android.gms.tasks.TaskCompletionSource,com.google.mlkit.common.sdkinternal.model.zzc)
 com.google.mlkit.nl.languageid.internal.LanguageIdentifierDelegate: void init()
 kotlin.reflect.jvm.internal.impl.metadata.ProtoBuf$MemberKind: kotlin.reflect.jvm.internal.impl.metadata.ProtoBuf$MemberKind valueOf(java.lang.String)
@@ -19273,7 +19273,7 @@ com.google.android.material.floatingactionbutton.FloatingActionButton: com.googl
 androidx.lifecycle.ProcessLifecycleInitializer: java.lang.Object create(android.content.Context)
 androidx.preference.PreferenceCategory: PreferenceCategory(android.content.Context,android.util.AttributeSet,int)
 androidx.appcompat.widget.AppCompatImageView: void setBackgroundResource(int)
-com.google.android.flexbox.FlexboxLayout: void setFlexDirection(int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setFlexDirection(int)
 com.google.mlkit.common.model.RemoteModelSource: java.lang.String zza()
 androidx.viewpager.widget.PagerTitleStrip: void setTextColor(int)
 androidx.appcompat.widget.SwitchCompat: void setThumbResource(int)
@@ -19295,7 +19295,7 @@ com.google.mlkit.nl.translate.internal.zzt: void zzg()
 kotlin.reflect.jvm.internal.calls.AnnotationConstructorCaller$CallMode: kotlin.reflect.jvm.internal.calls.AnnotationConstructorCaller$CallMode[] values()
 com.google.mlkit.vision.text.Text$Symbol: java.lang.String getText()
 com.google.mlkit.common.sdkinternal.model.RemoteModelDownloadManager: RemoteModelDownloadManager(com.google.mlkit.common.sdkinternal.MlKitContext,com.google.mlkit.common.model.RemoteModel,com.google.mlkit.common.sdkinternal.model.ModelFileHelper,com.google.mlkit.common.sdkinternal.model.RemoteModelFileManager,com.google.mlkit.common.sdkinternal.model.ModelInfoRetrieverInterop,com.google.android.gms.internal.mlkit_common.zzpr)
-com.google.android.flexbox.FlexboxLayout: void setJustifyContent(int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setJustifyContent(int)
 com.google.android.material.button.MaterialButton: void setIconGravity(int)
 com.google.mlkit.common.model.LocalModel: int hashCode()
 com.simple.phonetics.data.dao.PhoneticsRoomDatabase_Impl: java.util.List access$1000(com.simple.phonetics.data.dao.PhoneticsRoomDatabase_Impl)
@@ -19642,7 +19642,7 @@ com.simple.detect.mlkit.MlkitDetectInitializer: void create(android.content.Cont
 com.google.mlkit.common.model.DownloadConditions: boolean isWifiRequired()
 androidx.core.view.PointerIconCompat$Api24Impl: android.view.PointerIcon create(android.graphics.Bitmap,float,float)
 com.fasterxml.jackson.core.JsonGenerator$Feature: com.fasterxml.jackson.core.JsonGenerator$Feature[] values()
-com.google.android.flexbox.FlexboxLayout: void setDividerDrawableVertical(android.graphics.drawable.Drawable)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setDividerDrawableVertical(android.graphics.drawable.Drawable)
 com.google.android.material.tabs.TabLayout: void setTabIconTint(android.content.res.ColorStateList)
 com.fasterxml.jackson.databind.deser.DeserializerFactory: DeserializerFactory()
 androidx.appcompat.widget.AppCompatEditText: android.view.textclassifier.TextClassifier getTextClassifier()
@@ -19704,7 +19704,7 @@ androidx.vectordrawable.graphics.drawable.VectorDrawableCompat$VFullPath: float 
 com.google.android.material.chip.Chip: void setChipIconSize(float)
 com.simple.coreapp.databinding.ItemLoadMoreBinding: com.simple.coreapp.databinding.ItemLoadMoreBinding inflate(android.view.LayoutInflater)
 androidx.core.text.ICUCompat$Api24Impl: android.icu.util.ULocale forLocale(java.util.Locale)
-com.google.android.flexbox.FlexboxLayout: android.graphics.drawable.Drawable getDividerDrawableVertical()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: android.graphics.drawable.Drawable getDividerDrawableVertical()
 com.simple.phonetics.data.dao.RoomPhoneticHistory: long getTimeCreate()
 com.google.android.material.navigation.NavigationView: void setTopInsetScrimEnabled(boolean)
 androidx.constraintlayout.widget.ConstraintHelper: int[] getReferencedIds()
@@ -19821,7 +19821,7 @@ androidx.constraintlayout.utils.widget.MotionLabel: float getRoundPercent()
 com.bumptech.glide.manager.SupportRequestManagerFragment: SupportRequestManagerFragment()
 com.google.mlkit.common.sdkinternal.model.ModelLoader$ModelContentHandler: void constructModel(java.nio.MappedByteBuffer)
 com.google.mlkit.vision.text.latin.TextRecognizerOptions$Builder: com.google.mlkit.vision.text.latin.TextRecognizerOptions$Builder setExecutor(java.util.concurrent.Executor)
-com.google.android.flexbox.FlexboxLayout: void setShowDivider(int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setShowDivider(int)
 com.google.android.material.floatingactionbutton.FloatingActionButton: void setCompatPressedTranslationZResource(int)
 com.google.mlkit.vision.text.zzc: java.lang.Object zza(java.lang.Object)
 com.simple.phonetics.data.dao.PhoneticsRoomDatabase_Impl: com.simple.phonetics.data.dao.PhoneticsHistoryDao providerPhoneticsHistoryDao()
@@ -19866,7 +19866,7 @@ kotlin.reflect.jvm.internal.impl.storage.LockBasedStorageManager$NotValue: kotli
 com.google.mlkit.common.internal.model.zzf: zzf(com.google.mlkit.common.internal.model.zzg)
 com.google.mlkit.common.sdkinternal.model.RemoteModelDownloadManager: com.google.mlkit.common.MlKitException zzl(java.lang.Long)
 com.google.mlkit.vision.text.pipeline.zbb: boolean equals(java.lang.Object)
-com.google.android.flexbox.FlexboxLayout: void setFlexLines(java.util.List)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setFlexLines(java.util.List)
 com.google.android.material.textfield.TextInputLayout: void setCounterMaxLength(int)
 androidx.profileinstaller.ProfileInstallReceiver: ProfileInstallReceiver()
 androidx.constraintlayout.widget.ConstraintHelper: ConstraintHelper(android.content.Context,android.util.AttributeSet,int)
@@ -19930,7 +19930,7 @@ com.google.android.material.checkbox.MaterialCheckBox: void setCenterIfNoTextEna
 androidx.appcompat.widget.SwitchCompat: void setTrackTintList(android.content.res.ColorStateList)
 com.google.mlkit.vision.common.internal.MobileVisionBase: <clinit>()
 com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton: ExtendedFloatingActionButton(android.content.Context,android.util.AttributeSet,int)
-com.google.android.flexbox.FlexboxLayout: void setDividerDrawable(android.graphics.drawable.Drawable)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setDividerDrawable(android.graphics.drawable.Drawable)
 androidx.constraintlayout.motion.widget.MotionLayout: void setInterpolatedProgress(float)
 com.simple.coreapp.entities.Config: void writeToParcel(android.os.Parcel,int)
 com.google.mlkit.nl.translate.internal.zzy: java.lang.Object then(com.google.android.gms.tasks.Task)
@@ -20176,7 +20176,7 @@ com.google.mlkit.nl.languageid.LanguageIdentificationOptions$Builder: com.google
 com.google.mlkit.nl.languageid.internal.LanguageIdentifierImpl: java.lang.String zzc(com.google.mlkit.nl.languageid.internal.zzg,java.lang.String,boolean)
 com.simple.phonetics.data.dao.RoomPhoneticHistory: void setId(java.lang.String)
 androidx.appcompat.widget.AppCompatAutoCompleteTextView: void setSupportBackgroundTintMode(android.graphics.PorterDuff$Mode)
-com.google.android.flexbox.FlexboxLayout: int getLargestMainSize()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getLargestMainSize()
 com.fasterxml.jackson.core.JsonFactory: com.fasterxml.jackson.core.JsonParser createParser(byte[])
 com.google.mlkit.vision.text.internal.TextRecognizerImpl: TextRecognizerImpl(com.google.mlkit.vision.text.internal.TextRecognizerTaskWithResource,java.util.concurrent.Executor,com.google.android.gms.internal.mlkit_vision_text_common.zzrd,com.google.mlkit.vision.text.TextRecognizerOptionsInterface)
 com.google.mlkit.common.sdkinternal.MLTask: MLTask(com.google.mlkit.common.sdkinternal.TaskQueue)
@@ -20338,7 +20338,7 @@ com.google.android.libraries.vision.visionkit.pipeline.alt.zbc: void zbb(com.goo
 com.google.mlkit.nl.languageid.LanguageIdentificationOptions: LanguageIdentificationOptions(java.lang.Float,java.util.concurrent.Executor,com.google.mlkit.nl.languageid.zza)
 com.google.android.gms.internal.mlkit_common.zzbh: java.lang.Object invokeAny(java.util.Collection,long,java.util.concurrent.TimeUnit)
 androidx.constraintlayout.utils.widget.ImageFilterView: float getRound()
-com.google.android.flexbox.FlexboxLayout: int getFlexWrap()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getFlexWrap()
 com.bumptech.glide.request.SingleRequest$Status: com.bumptech.glide.request.SingleRequest$Status[] values()
 com.google.android.material.appbar.CollapsingToolbarLayout: void setCollapsedTitleTextColor(android.content.res.ColorStateList)
 com.simple.coreapp.databinding.ItemLoadMoreBinding: androidx.constraintlayout.widget.ConstraintLayout getRoot()
@@ -20395,7 +20395,7 @@ com.google.android.material.slider.RangeSlider: int getHaloRadius()
 androidx.vectordrawable.graphics.drawable.VectorDrawableCompat$VGroup: void setRotation(float)
 androidx.core.view.WindowInsetsCompat$BuilderImpl: void applyInsetTypes()
 com.google.android.material.textfield.TextInputLayout: void setPrefixTextColor(android.content.res.ColorStateList)
-com.google.android.flexbox.FlexboxLayout: int getShowDividerVertical()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getShowDividerVertical()
 androidx.constraintlayout.widget.ConstraintLayout: void setOnConstraintsChanged(androidx.constraintlayout.widget.ConstraintsChangedListener)
 com.google.android.material.switchmaterial.SwitchMaterial: android.content.res.ColorStateList getMaterialThemeColorsThumbTintList()
 com.simple.coreapp.entities.Config$Creator: java.lang.Object[] newArray(int)
@@ -20425,7 +20425,7 @@ androidx.constraintlayout.widget.Barrier: void setType(int)
 com.simple.phonetics.data.dao.PhoneticsDao: void insertOrUpdate(java.util.List)
 androidx.appcompat.widget.ButtonBarLayout: void setAllowStacking(boolean)
 androidx.appcompat.widget.ContentFrameLayout: android.util.TypedValue getFixedHeightMinor()
-com.google.android.flexbox.FlexboxLayout$LayoutParams: FlexboxLayout$LayoutParams(android.content.Context,android.util.AttributeSet)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout$LayoutParams: FlexboxLayout$LayoutParams(android.content.Context,android.util.AttributeSet)
 com.google.mlkit.vision.text.bundled.common.BundledTextRecognizerCreator: com.google.mlkit.vision.text.bundled.common.zba newTextRecognizerWithOptions(com.google.android.gms.dynamic.IObjectWrapper,com.google.android.gms.internal.mlkit_vision_text_bundled_common.zboo)
 com.simple.phonetics.data.dao.PhoneticsHistoryDao_Impl$3: java.lang.Object call()
 com.google.mlkit.nl.languageid.LanguageIdentifier: com.google.android.gms.tasks.Task identifyPossibleLanguages(java.lang.String)
@@ -20469,7 +20469,7 @@ com.google.android.material.appbar.AppBarLayout: int getTopInset()
 androidx.appcompat.widget.SearchView: int getInputType()
 androidx.drawerlayout.widget.DrawerLayout: void setDrawerElevation(float)
 com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton: void setShowMotionSpec(com.google.android.material.animation.MotionSpec)
-com.google.android.flexbox.FlexboxLayout: void setMaxLine(int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setMaxLine(int)
 androidx.core.view.ViewParentCompat$Api21Impl: void onNestedPreScroll(android.view.ViewParent,android.view.View,int,int,int[])
 com.fasterxml.jackson.core.JsonParser$Feature: com.fasterxml.jackson.core.JsonParser$Feature valueOf(java.lang.String)
 com.simple.phonetics.data.dao.PhoneticsRoomDatabase_Impl$1: PhoneticsRoomDatabase_Impl$1(com.simple.phonetics.data.dao.PhoneticsRoomDatabase_Impl,int)
@@ -20512,7 +20512,7 @@ com.google.mlkit.common.sdkinternal.model.LegacyModelMigrator: LegacyModelMigrat
 com.google.android.material.appbar.CollapsingToolbarLayout: void setStatusBarScrim(android.graphics.drawable.Drawable)
 com.google.mlkit.nl.languageid.bundled.internal.zbb: void zba(java.lang.Throwable,java.lang.Throwable)
 androidx.appcompat.widget.AppCompatToggleButton: void setSupportCompoundDrawablesTintMode(android.graphics.PorterDuff$Mode)
-com.google.android.flexbox.FlexboxLayout: void setAlignItems(int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setAlignItems(int)
 androidx.appcompat.view.menu.ListMenuItemView: android.view.LayoutInflater getInflater()
 androidx.core.view.WindowCompat$Api30Impl: void setDecorFitsSystemWindows(android.view.Window,boolean)
 kotlin.reflect.jvm.internal.impl.load.java.typeEnhancement.MutabilityQualifier: kotlin.reflect.jvm.internal.impl.load.java.typeEnhancement.MutabilityQualifier[] values()
@@ -20941,7 +20941,7 @@ com.google.android.material.card.MaterialCardView: void setCardForegroundColor(a
 com.google.mlkit.nl.translate.internal.zzt: void zzk()
 com.simple.coreapp.databinding.ItemOptionBinding: android.view.View getRoot()
 androidx.appcompat.widget.AppCompatSpinner: void setBackgroundResource(int)
-com.google.android.flexbox.FlexboxLayout: void setAlignContent(int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setAlignContent(int)
 com.google.mlkit.common.sdkinternal.model.RemoteModelDownloadManager: java.io.File zzi(java.lang.String)
 com.google.android.material.internal.VisibilityAwareImageButton: int getUserSetVisibility()
 androidx.appcompat.widget.AppCompatCheckBox: void setSupportBackgroundTintList(android.content.res.ColorStateList)
@@ -20964,7 +20964,7 @@ androidx.core.view.WindowInsetsCompat$BuilderImpl: WindowInsetsCompat$BuilderImp
 com.bumptech.glide.MemoryCategory: com.bumptech.glide.MemoryCategory[] values()
 androidx.appcompat.app.AppCompatDelegate$Api33Impl: void localeManagerSetApplicationLocales(java.lang.Object,android.os.LocaleList)
 androidx.core.view.ViewCompat$Api28Impl: java.lang.Object requireViewById(android.view.View,int)
-com.google.android.flexbox.FlexboxLayout: int getAlignItems()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getAlignItems()
 com.google.android.material.tabs.TabLayout$TabView: void setSelected(boolean)
 com.google.android.material.chip.Chip: void setTextStartPaddingResource(int)
 kotlin.reflect.jvm.internal.impl.serialization.deserialization.builtins.BuiltInsLoaderImpl: kotlin.reflect.jvm.internal.impl.descriptors.PackageFragmentProvider createPackageFragmentProvider(kotlin.reflect.jvm.internal.impl.storage.StorageManager,kotlin.reflect.jvm.internal.impl.descriptors.ModuleDescriptor,java.lang.Iterable,kotlin.reflect.jvm.internal.impl.descriptors.deserialization.PlatformDependentDeclarationFilter,kotlin.reflect.jvm.internal.impl.descriptors.deserialization.AdditionalClassPartsProvider,boolean)
@@ -21350,7 +21350,7 @@ com.google.android.libraries.vision.visionkit.pipeline.alt.zbc: void zbf()
 com.google.mlkit.common.internal.zzg: java.lang.Object create(com.google.firebase.components.ComponentContainer)
 com.google.mlkit.nl.languageid.IdentifiedLanguage: java.lang.String toString()
 com.google.android.material.button.MaterialButton: void setStrokeWidth(int)
-com.google.android.flexbox.FlexboxLayout: int getJustifyContent()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getJustifyContent()
 com.google.android.material.divider.MaterialDivider: void setDividerThickness(int)
 androidx.work.impl.background.systemjob.SystemJobService: SystemJobService()
 kotlin.collections.builders.SerializedCollection: java.lang.Object readResolve()
@@ -21437,7 +21437,7 @@ com.simple.phonetics.data.dao.PhoneticsHistoryDao: void insertOrUpdate(com.simpl
 androidx.appcompat.widget.AppCompatTextHelper$Api26Impl: int getAutoSizeStepGranularity(android.widget.TextView)
 org.koin.android.scope.ScopeService: ScopeService()
 com.google.mlkit.common.sdkinternal.zzv: zzv(java.util.concurrent.Executor,java.lang.Runnable,com.google.mlkit.common.sdkinternal.zzu)
-com.google.android.flexbox.FlexboxLayout: int getFlexDirection()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: int getFlexDirection()
 com.google.mlkit.common.sdkinternal.model.CustomModelLoader: com.google.mlkit.common.model.LocalModel createLocalModelByNewlyDownloadedModel()
 com.google.android.material.chip.Chip: void setChipDrawable(com.google.android.material.chip.ChipDrawable)
 com.google.mlkit.nl.translate.internal.zzac: boolean zzf()
@@ -21687,7 +21687,7 @@ com.google.mlkit.vision.common.internal.BitmapInStreamingChecker: void check(com
 com.google.mlkit.vision.text.Text$Element: java.util.List getSymbols()
 com.airbnb.lottie.LottieAnimationView: void setMinFrame(int)
 com.google.android.material.button.MaterialButton: void setBackgroundTintMode(android.graphics.PorterDuff$Mode)
-com.google.android.flexbox.FlexboxLayout: void setFlexWrap(int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: void setFlexWrap(int)
 androidx.vectordrawable.graphics.drawable.VectorDrawableCompat$VFullPath: float getTrimPathEnd()
 com.google.android.material.internal.ForegroundLinearLayout: void setForeground(android.graphics.drawable.Drawable)
 com.airbnb.lottie.LottieAnimationView: void setMinProgress(float)
@@ -22184,7 +22184,7 @@ androidx.vectordrawable.graphics.drawable.VectorDrawableCompat$VectorDrawableCom
 com.google.mlkit.nl.translate.TranslatorOptions: java.lang.String zze()
 androidx.appcompat.widget.Toolbar: java.util.ArrayList getCurrentMenuItems()
 com.simple.phonetics.data.dao.PhoneticsRoomDatabase_Impl$1: void dropAllTables(androidx.sqlite.db.SupportSQLiteDatabase)
-com.google.android.flexbox.FlexboxLayout: android.graphics.drawable.Drawable getDividerDrawableHorizontal()
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: android.graphics.drawable.Drawable getDividerDrawableHorizontal()
 androidx.core.graphics.drawable.DrawableCompat$Api21Impl: android.graphics.ColorFilter getColorFilter(android.graphics.drawable.Drawable)
 androidx.core.view.WindowInsetsCompat$Impl: void setStableInsets(androidx.core.graphics.Insets)
 com.google.android.material.navigation.NavigationBarView: int getItemPaddingTop()
@@ -22230,7 +22230,7 @@ com.simple.coreapp.databinding.ItemLoadingBinding: android.view.View getRoot()
 com.google.android.material.bottomnavigation.BottomNavigationView: BottomNavigationView(android.content.Context,android.util.AttributeSet,int)
 androidx.constraintlayout.utils.widget.ImageFilterView: void setWarmth(float)
 androidx.core.view.accessibility.AccessibilityManagerCompat$Api19Impl: boolean removeTouchExplorationStateChangeListenerWrapper(android.view.accessibility.AccessibilityManager,androidx.core.view.accessibility.AccessibilityManagerCompat$TouchExplorationStateChangeListener)
-com.google.android.flexbox.FlexboxLayout: FlexboxLayout(android.content.Context,android.util.AttributeSet,int)
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout: FlexboxLayout(android.content.Context,android.util.AttributeSet,int)
 androidx.slidingpanelayout.widget.SlidingPaneLayout: void setParallaxDistance(int)
 com.fasterxml.jackson.annotation.Nulls: com.fasterxml.jackson.annotation.Nulls valueOf(java.lang.String)
 com.permissionx.guolindev.databinding.PermissionxDefaultDialogLayoutBinding: PermissionxDefaultDialogLayoutBinding(android.widget.LinearLayout,android.widget.TextView,android.widget.Button,android.widget.LinearLayout,android.widget.LinearLayout,android.widget.Button,android.widget.LinearLayout)

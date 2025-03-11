@@ -17955,10 +17955,10 @@ com.google.android.datatransport.runtime.time.TimeModule_UptimeClockFactory$Inst
 com.google.android.datatransport.runtime.time.WallTime
 com.google.android.datatransport.runtime.util.PriorityMapping:
     public void <init>()
-com.google.android.flexbox.AlignContent
-com.google.android.flexbox.AlignItems
-com.google.android.flexbox.AlignSelf
-com.google.android.flexbox.FlexContainer:
+com.simple.phonetics.ui.base.views.flexbox.AlignContent
+com.simple.phonetics.ui.base.views.flexbox.AlignItems
+com.simple.phonetics.ui.base.views.flexbox.AlignSelf
+com.simple.phonetics.ui.base.views.flexbox.FlexContainer:
     public static final int NOT_SET
     public abstract void addView(android.view.View)
     public abstract void addView(android.view.View,int)
@@ -17972,8 +17972,8 @@ com.google.android.flexbox.FlexContainer:
     public abstract void setFlexWrap(int)
     public abstract void setJustifyContent(int)
     public abstract void setMaxLine(int)
-com.google.android.flexbox.FlexDirection
-com.google.android.flexbox.FlexItem:
+com.simple.phonetics.ui.base.views.flexbox.FlexDirection
+com.simple.phonetics.ui.base.views.flexbox.FlexItem:
     public static final float FLEX_BASIS_PERCENT_DEFAULT
     public static final float FLEX_GROW_DEFAULT
     public static final float FLEX_SHRINK_DEFAULT
@@ -17992,18 +17992,18 @@ com.google.android.flexbox.FlexItem:
     public abstract void setOrder(int)
     public abstract void setWidth(int)
     public abstract void setWrapBefore(boolean)
-com.google.android.flexbox.FlexLine:
+com.simple.phonetics.ui.base.views.flexbox.FlexLine:
     public int getFirstIndex()
     public int getMainSize()
     public float getTotalFlexGrow()
     public float getTotalFlexShrink()
-com.google.android.flexbox.FlexWrap
-com.google.android.flexbox.FlexboxHelper:
+com.simple.phonetics.ui.base.views.flexbox.FlexWrap
+com.simple.phonetics.ui.base.views.flexbox.FlexboxHelper:
     private static final int INITIAL_CAPACITY
     private static final long MEASURE_SPEC_WIDTH_MASK
-com.google.android.flexbox.FlexboxItemDecoration
-com.google.android.flexbox.FlexboxLayout$DividerMode
-com.google.android.flexbox.FlexboxLayout$LayoutParams:
+com.simple.phonetics.ui.base.views.flexbox.FlexboxItemDecoration
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout$DividerMode
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout$LayoutParams:
     public void <init>(int,int)
     public void setAlignSelf(int)
     public void setFlexBasisPercent(float)
@@ -18015,17 +18015,17 @@ com.google.android.flexbox.FlexboxLayout$LayoutParams:
     public void setOrder(int)
     public void setWidth(int)
     public void setWrapBefore(boolean)
-com.google.android.flexbox.FlexboxLayout:
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayout:
     public static final int SHOW_DIVIDER_BEGINNING
     public static final int SHOW_DIVIDER_END
     public static final int SHOW_DIVIDER_MIDDLE
     public static final int SHOW_DIVIDER_NONE
     public void <init>(android.content.Context)
-com.google.android.flexbox.FlexboxLayoutManager$LayoutParams:
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager$LayoutParams:
     public void <init>(android.view.ViewGroup$LayoutParams)
     public void <init>(android.view.ViewGroup$MarginLayoutParams)
     public void <init>(androidx.recyclerview.widget.RecyclerView$LayoutParams)
-    public void <init>(com.google.android.flexbox.FlexboxLayoutManager$LayoutParams)
+    public void <init>(com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager$LayoutParams)
     public void setAlignSelf(int)
     public void setFlexBasisPercent(float)
     public void setFlexGrow(float)
@@ -18036,12 +18036,12 @@ com.google.android.flexbox.FlexboxLayoutManager$LayoutParams:
     public void setOrder(int)
     public void setWidth(int)
     public void setWrapBefore(boolean)
-com.google.android.flexbox.FlexboxLayoutManager$LayoutState:
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager$LayoutState:
     private static final int ITEM_DIRECTION_TAIL
     private static final int LAYOUT_END
     private static final int LAYOUT_START
     private static final int SCROLLING_OFFSET_NaN
-com.google.android.flexbox.FlexboxLayoutManager:
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager:
     private static final boolean DEBUG
     private static final java.lang.String TAG
     public void <init>(android.content.Context,int)
@@ -18055,12 +18055,12 @@ com.google.android.flexbox.FlexboxLayoutManager:
     public void setAlignContent(int)
     public void setMaxLine(int)
     public void setRecycleChildrenOnDetach(boolean)
-com.google.android.flexbox.JustifyContent
-com.google.android.flexbox.R$attr
-com.google.android.flexbox.R$id
-com.google.android.flexbox.R$styleable:
+com.simple.phonetics.ui.base.views.flexbox.JustifyContent
+com.simple.phonetics.ui.base.views.flexbox.R$attr
+com.simple.phonetics.ui.base.views.flexbox.R$id
+com.simple.phonetics.ui.base.views.flexbox.R$styleable:
     private void <init>()
-com.google.android.flexbox.R
+com.simple.phonetics.ui.base.views.flexbox.R
 com.google.android.gms.actions.ItemListIntents
 com.google.android.gms.actions.NoteIntents
 com.google.android.gms.actions.ReserveIntents
@@ -35016,11 +35016,11 @@ com.google.android.datatransport.runtime.dagger.internal.DoubleCheck:
     public static final synthetic boolean $assertionsDisabled
 com.google.android.datatransport.runtime.dagger.internal.MemoizedSentinel
 com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerScheduler
-com.google.android.flexbox.FlexboxHelper:
+com.simple.phonetics.ui.base.views.flexbox.FlexboxHelper:
     public static final synthetic boolean $assertionsDisabled
-com.google.android.flexbox.FlexboxLayoutManager$AnchorInfo:
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager$AnchorInfo:
     public static final synthetic boolean $assertionsDisabled
-com.google.android.flexbox.FlexboxLayoutManager:
+com.simple.phonetics.ui.base.views.flexbox.FlexboxLayoutManager:
     public static final synthetic boolean $assertionsDisabled
 com.google.android.gms.auth.api.signin.GoogleSignInAccount:
     public android.accounts.Account getAccount()

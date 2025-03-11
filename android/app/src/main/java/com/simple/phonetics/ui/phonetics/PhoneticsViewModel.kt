@@ -139,7 +139,7 @@ class PhoneticsViewModel(
                 .with(ForegroundColorSpan(textColor)),
             isShow = isSupportReverse,
             background = Background(
-                strokeWidth = DP.DP_1,
+                strokeWidth = DP.DP_1 + DP.DP_05.toInt(),
                 cornerRadius = DP.DP_8,
                 strokeColor = theme.colorPrimary,
                 backgroundColor = backgroundColor
@@ -181,7 +181,7 @@ class PhoneticsViewModel(
                 .with(ForegroundColorSpan(theme.colorPrimary)),
             isShow = text.isNotBlank(),
             background = Background(
-                strokeWidth = DP.DP_1,
+                strokeWidth = DP.DP_1 + DP.DP_05.toInt(),
                 cornerRadius = DP.DP_8,
                 strokeColor = theme.colorPrimary,
                 backgroundColor = Color.TRANSPARENT
