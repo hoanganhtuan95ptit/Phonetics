@@ -1,9 +1,19 @@
 {
   "action_clear": "Clear",
   "action_confirm_change_language": "Change phonetic language",
+  "action_play_game": "Play game",
   "action_reverse": "Reverse",
   "action_try_speak": "Try speak",
   "action_view_all_ipa": "View all",
+
+  "game_ipa_wordle_screen_action": "Check",
+  "game_ipa_wordle_screen_action_continue": "Continue",
+  "game_ipa_wordle_screen_action_retry": "Retry",
+  "game_ipa_wordle_screen_message_answer": "$param1 of $param2 is $param3",
+  "game_ipa_wordle_screen_title": "Select $param1 that matches $param2 below?",
+  "game_ipa_wordle_screen_title_answer_failed": "Not exactly",
+  "game_ipa_wordle_screen_title_answer_true": "Great",
+  "game_screen_title": "Game",
 
   "hint_enter_language_text": "Enter $language_name here!",
   "hint_enter_text": "Enter text here!",
@@ -34,9 +44,9 @@
   "ipa_tts": "Isan",
   "ipa_uk": "English - UK",
   "ipa_us": "English - US",
+  "ipa_yue": "Cantonese",
   "ipa_zh_hans": "Simplified Chinese",
   "ipa_zh_hant": "Traditional Chinese",
-  "ipa_yue": "Cantonese",
 
   "ipa_detail_screen_consonants_unvoiced": "Consonants unvoiced",
   "ipa_detail_screen_consonants_voiced": "Consonants voiced",
@@ -90,6 +100,7 @@
 
   "speed_lever": "Speed $lever",
 
+  "title_game": "Entertainment game",
   "title_history": "History:",
   "title_ipa": "Ipa:",
   "title_language": "Select language",
@@ -101,6 +112,10 @@
 
   "translating": "Translating",
   "translate_failed": "Translation failed",
+
+  "type_ipa": "Transcription",
+  "type_text": "Letter",
+  "type_voice": "Pronounce",
 
   "voice_index": "Voice $index"
 }
