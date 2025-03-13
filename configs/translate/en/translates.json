@@ -6,6 +6,12 @@
   "action_try_speak": "Try speak",
   "action_view_all_ipa": "View all",
 
+  "game_config_screen_action_play_game": "Just play the game",
+  "game_config_screen_message_resource_from_history": "Based on previously looked up words",
+  "game_config_screen_message_resource_from_popular": "Based on commonly used words",
+  "game_config_screen_message_resource_limit": "Selection unavailable due to low word count",
+  "game_config_screen_title_resource": "Select play source",
+
   "game_ipa_wordle_screen_action": "Check",
   "game_ipa_wordle_screen_action_continue": "Continue",
   "game_ipa_wordle_screen_action_retry": "Retry",
@@ -13,6 +19,7 @@
   "game_ipa_wordle_screen_title": "Select $param1 that matches $param2 below?",
   "game_ipa_wordle_screen_title_answer_failed": "Not exactly",
   "game_ipa_wordle_screen_title_answer_true": "Great",
+
   "game_screen_title": "Game",
 
   "hint_enter_language_text": "Enter $language_name here!",
@@ -54,6 +61,7 @@
   "ipa_detail_screen_title_example": "Example:",
   "ipa_detail_screen_vowels_long": "Vowels long",
   "ipa_detail_screen_vowels_short": "Vowels short",
+
   "ipa_list_screen_title": "Ipa list",
 
   "language_ar": "Arab",
@@ -98,9 +106,12 @@
 
   "recording_screen_title": "Please speak $language_name",
 
+  "resource_history": "From the search history",
+  "resource_popular": "Popular words",
+
   "speed_lever": "Speed $lever",
 
-  "title_game": "Entertainment game",
+  "title_game": "Entertainment game:",
   "title_history": "History:",
   "title_ipa": "Ipa:",
   "title_language": "Select language",
