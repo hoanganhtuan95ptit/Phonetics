@@ -5,9 +5,26 @@ import com.simple.phonetics.entities.Language
 val DEFAULT_TRANSLATE = mapOf(
     "action_clear" to "Clear",
     "action_confirm_change_language" to "Change phonetic language",
+    "action_play_game" to "Play game",
     "action_reverse" to "Reverse",
     "action_try_speak" to "Try speak",
     "action_view_all_ipa" to "View all",
+
+    "game_config_screen_action_play_game" to "Jump into the game now!",
+    "game_config_screen_message_resource_from_history" to "Based on previously looked up words",
+    "game_config_screen_message_resource_from_popular" to "Based on commonly used words",
+    "game_config_screen_message_resource_limit" to "Selection unavailable due to low word count",
+    "game_config_screen_title_resource" to "Select play source",
+
+    "game_ipa_wordle_screen_action" to "Check",
+    "game_ipa_wordle_screen_action_continue" to "Continue",
+    "game_ipa_wordle_screen_action_retry" to "Retry",
+    "game_ipa_wordle_screen_message_answer" to "\$param1 of \$param2 is \$param3",
+    "game_ipa_wordle_screen_title" to "Select \$param1 that matches \$param2 below?",
+    "game_ipa_wordle_screen_title_answer_failed" to "Not exactly",
+    "game_ipa_wordle_screen_title_answer_true" to "Great",
+
+    "game_screen_title" to "Game",
 
     "hint_enter_language_text" to "Enter \$language_name here!",
     "hint_enter_text" to "Enter text here!",
@@ -38,9 +55,9 @@ val DEFAULT_TRANSLATE = mapOf(
     "ipa_tts" to "Isan",
     "ipa_uk" to "English - UK",
     "ipa_us" to "English - US",
+    "ipa_yue" to "Cantonese",
     "ipa_zh_hans" to "Simplified Chinese",
     "ipa_zh_hant" to "Traditional Chinese",
-    "ipa_yue" to "Cantonese",
 
     "ipa_detail_screen_consonants_unvoiced" to "Consonants unvoiced",
     "ipa_detail_screen_consonants_voiced" to "Consonants voiced",
@@ -48,6 +65,7 @@ val DEFAULT_TRANSLATE = mapOf(
     "ipa_detail_screen_title_example" to "Example:",
     "ipa_detail_screen_vowels_long" to "Vowels long",
     "ipa_detail_screen_vowels_short" to "Vowels short",
+
     "ipa_list_screen_title" to "Ipa list",
 
     "language_ar" to "Arab",
@@ -92,8 +110,12 @@ val DEFAULT_TRANSLATE = mapOf(
 
     "recording_screen_title" to "Please speak \$language_name",
 
+    "resource_history" to "From the search history",
+    "resource_popular" to "From the popular list",
+
     "speed_lever" to "Speed \$lever",
 
+    "title_game" to "Entertainment game:",
     "title_history" to "History:",
     "title_ipa" to "Ipa:",
     "title_language" to "Select language",
@@ -105,6 +127,10 @@ val DEFAULT_TRANSLATE = mapOf(
 
     "translating" to "Translating",
     "translate_failed" to "Translation failed",
+
+    "type_ipa" to "Transcription",
+    "type_text" to "Letter",
+    "type_voice" to "Pronounce",
 
     "voice_index" to "Voice \$index"
 )

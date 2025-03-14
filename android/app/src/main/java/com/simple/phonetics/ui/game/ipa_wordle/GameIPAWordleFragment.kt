@@ -31,7 +31,7 @@ import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
-import com.simple.phonetics.entities.Phonetics
+import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.game.GameConfigViewModel
@@ -124,7 +124,7 @@ class GameIPAWordleFragment : TransitionFragment<FragmentListHeaderHorizontalBin
         val clickTextAdapter = ClickTextAdapter { view, item ->
 
             if (item.id.startsWith(Id.CHOOSE)) {
-                viewModel.updateChoose(item.data.asObjectOrNull<Phonetics>() ?: return@ClickTextAdapter)
+                viewModel.updateChoose(item.data.asObjectOrNull<Phonetic>() ?: return@ClickTextAdapter)
             }
         }
 

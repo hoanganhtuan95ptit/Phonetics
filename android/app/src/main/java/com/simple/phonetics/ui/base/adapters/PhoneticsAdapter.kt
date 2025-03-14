@@ -10,7 +10,7 @@ import com.simple.coreapp.utils.ext.setVisible
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemPhoneticsBinding
-import com.simple.phonetics.entities.Phonetics
+import com.simple.phonetics.entities.Phonetic
 
 class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null) : ViewItemAdapter<PhoneticsViewItem, ItemPhoneticsBinding>(onItemClick) {
 
@@ -52,7 +52,7 @@ class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null)
 
 data class PhoneticsViewItem(
     val id: String,
-    val data: Phonetics,
+    val data: Phonetic,
 
     var ipa: CharSequence = "",
     var text: CharSequence = "",

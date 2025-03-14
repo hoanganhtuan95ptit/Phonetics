@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.dao
 
+import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Entity
 import androidx.room.Insert
@@ -32,6 +33,7 @@ interface HistoryDao {
     fun insertOrUpdate(rooms: List<RoomHistory>)
 }
 
+@Keep
 @Entity(
     tableName = TABLE_NAME,
     primaryKeys = ["id"]

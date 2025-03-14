@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.dao.ipa
 
+import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Entity
@@ -48,6 +49,7 @@ interface IpaDao {
     fun insertOrUpdate(rooms: List<RoomIpa>)
 }
 
+@Keep
 @Entity(
     tableName = TABLE_NAME,
     primaryKeys = ["ipa"]

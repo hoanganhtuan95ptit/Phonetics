@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.dao.word
 
+import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Entity
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 
-private const val TABLE_NAME = "popular"
+private const val TABLE_NAME = "words"
 
 @Dao
 interface WordDao {
@@ -60,6 +61,7 @@ interface WordDao {
     fun getCountAsync(resource: String, languageCode: String): Flow<Int>
 }
 
+@Keep
 @Entity(
     tableName = TABLE_NAME,
     primaryKeys = ["text"]
@@ -89,7 +91,7 @@ open class RoomWord(
 }
 
 @Database(entities = [RoomWord::class], version = 1, exportSchema = false)
-abstract class PopularRoomDatabase : RoomDatabase() {
+abstract class WordRoomDatabase : RoomDatabase() {
 
-    abstract fun providerPopularDao(): WordDao
+    abstract fun providerWordDao(): WordDao
 }
