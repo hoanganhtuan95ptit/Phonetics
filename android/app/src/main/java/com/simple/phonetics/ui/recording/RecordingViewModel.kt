@@ -35,7 +35,7 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCas
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
@@ -50,7 +50,7 @@ class RecordingViewModel(
 
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
     private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
-) : CommonViewModel() {
+) : BaseViewModel() {
 
     @VisibleForTesting
     val inputLanguage: LiveData<Language> = mediatorLiveData {

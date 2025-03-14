@@ -24,7 +24,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.entities.Ipa
-import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.TitleViewItem
@@ -32,7 +32,7 @@ import com.simple.state.ResultState
 
 class IpaHomeViewModel(
     private val getIpaStateAsyncUseCase: GetIpaStateAsyncUseCase,
-) : CommonViewModel() {
+) : BaseViewModel() {
 
     @VisibleForTesting
     val ipaState: LiveData<ResultState<List<Ipa>>> = mediatorLiveData {

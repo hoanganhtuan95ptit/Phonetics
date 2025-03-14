@@ -21,7 +21,7 @@ import org.koin.dsl.module
 @JvmField
 val repositoryModule = module {
 
-    single<AppRepository> { AppRepositoryImpl(get(), get(), getAll()) }
+    single<AppRepository> { AppRepositoryImpl(get(), get(), get(), getAll()) }
 
     single<IpaRepository> { IpaRepositoryImpl(get(), get()) }
 

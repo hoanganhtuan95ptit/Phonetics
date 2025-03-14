@@ -16,7 +16,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.state.ResultState
@@ -24,7 +24,7 @@ import com.simple.state.toSuccess
 
 class HistoryHomeViewModel(
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
-) : CommonViewModel() {
+) : BaseViewModel() {
 
     @VisibleForTesting
     val historyState: LiveData<ResultState<List<Sentence>>> = mediatorLiveData {

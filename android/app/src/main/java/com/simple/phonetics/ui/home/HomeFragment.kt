@@ -39,6 +39,7 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.home.adapters.HistoryAdapter
 import com.simple.phonetics.ui.home.view.LanguageHomeView
 import com.simple.phonetics.ui.home.view.LanguageHomeViewImpl
@@ -73,7 +74,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 
-class HomeFragment : TransitionFragment<FragmentHomeBinding, HomeViewModel>(),
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     IpaHomeView by IpaHomeViewImpl(),
     GameHomeView by GameHomeViewImpl(),
     PasteHomeView by PasteHomeViewImpl(),

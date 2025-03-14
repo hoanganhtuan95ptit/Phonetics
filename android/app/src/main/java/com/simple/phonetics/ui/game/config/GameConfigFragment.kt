@@ -23,13 +23,14 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.sendEvent
 
-class GameConfigFragment : BaseViewModelSheetFragment<DialogListBinding, GameConfigViewModel>() {
+class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewModel>() {
 
     override val viewModel: GameConfigViewModel by lazy {
         getViewModel(requireActivity(), GameConfigViewModel::class)

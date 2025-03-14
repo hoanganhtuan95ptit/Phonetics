@@ -20,12 +20,13 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 
-class ConfigFragment : BaseViewModelSheetFragment<DialogListBinding, ConfigViewModel>() {
+class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 
     override val viewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)

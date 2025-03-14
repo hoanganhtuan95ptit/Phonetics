@@ -34,13 +34,15 @@ object HashMapConverter {
     fun stringToHashMap(concatenatedStrings: String): HashMap<String, List<String>> = concatenatedStrings.toObjectOrNull<HashMap<String, List<String>>>() ?: hashMapOf()
 }
 
-@Database(entities = [RoomHistory::class, RoomPhonetic::class], version = VERSION, exportSchema = false)
+@Database(entities = [RoomHistory::class, RoomPhonetic::class, KeyTranslateRoom::class], version = VERSION, exportSchema = false)
 @TypeConverters(ListStringConverter::class, HashMapConverter::class)
 abstract class PhoneticRoomDatabase : RoomDatabase() {
 
     abstract fun providerHistoryDao(): HistoryDao
 
     abstract fun providerPhoneticDao(): PhoneticDao
+
+    abstract fun providerKeyTranslateDao(): KeyTranslateDao
 }
 
 object PhoneticRoomDatabaseConstants {
@@ -53,9 +55,9 @@ object PhoneticRoomDatabaseConstants {
         }
     }
 
-    const val VERSION = 2
+    const val VERSION = 1
 
     fun instant(context: Context) = Room.databaseBuilder(context, PhoneticRoomDatabase::class.java, "phonetics_database")
-        .addMigrations(MIGRATION_1_2)
+//        .addMigrations(MIGRATION_1_2)
         .build()
 }

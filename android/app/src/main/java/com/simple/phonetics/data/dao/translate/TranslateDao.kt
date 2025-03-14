@@ -40,6 +40,9 @@ interface TranslateDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(list: List<RoomTranslate>)
+
+    @Query("SELECT COUNT(*) FROM $TABLE_NAME")
+    fun getCount(): Int
 }
 
 @Keep

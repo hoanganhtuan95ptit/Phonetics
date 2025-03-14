@@ -22,7 +22,7 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.language.adapters.LanguageLoadingViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
@@ -39,7 +39,7 @@ class LanguageViewModel(
     private val getLanguageSupportUseCase: GetLanguageSupportUseCase,
     private val updateLanguageInputUseCase: UpdateLanguageInputUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
-) : CommonViewModel() {
+) : BaseViewModel() {
 
     val headerInfo: LiveData<HeaderInfo> = combineSources(theme, translate) {
 
