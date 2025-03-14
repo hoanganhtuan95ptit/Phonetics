@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
@@ -192,6 +193,8 @@ class GameConfigViewModel(
         }
 
         this.resourceSelected.postDifferentValue(resource)
+
+        logAnalytics("game_config_resource_" + resource.value.lowercase())
     }
 }
 

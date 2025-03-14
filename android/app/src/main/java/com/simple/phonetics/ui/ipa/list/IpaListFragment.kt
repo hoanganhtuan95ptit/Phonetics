@@ -7,7 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.GridLayoutManager
 import com.simple.adapter.MultiAdapter
-import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
@@ -30,6 +30,12 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
 
     private var adapter by autoCleared<MultiAdapter>()
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        logAnalytics("ipa_list_show")
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

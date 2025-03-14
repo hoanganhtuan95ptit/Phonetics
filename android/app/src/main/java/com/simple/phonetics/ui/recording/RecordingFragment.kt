@@ -95,7 +95,7 @@ class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewMode
             if (data.isNotEmpty()) {
 
                 sendEvent(arguments.getString(Param.KEY_REQUEST).orEmpty(), data)
-                dismiss()
+                if (isAdded && !isStateSaved) dismiss()
             }
         }
 

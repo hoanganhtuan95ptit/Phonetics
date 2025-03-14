@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
+import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
@@ -41,6 +42,11 @@ class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewMo
 
     private var adapter by autoCleared<MultiAdapter>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        logAnalytics("game_config_show")
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

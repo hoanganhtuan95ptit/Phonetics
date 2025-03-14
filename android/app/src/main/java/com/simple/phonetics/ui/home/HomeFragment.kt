@@ -18,7 +18,6 @@ import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
-import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
@@ -26,6 +25,7 @@ import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
+import com.simple.coreapp.utils.extentions.isActive
 import com.simple.crashlytics.logCrashlytics
 import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
@@ -448,7 +448,7 @@ class PhoneticsDeeplink : DeeplinkHandler {
             fragmentTransaction.addSharedElement(u, t)
         }
 
-        fragmentTransaction.replace(R.id.fragment_container, fragment, "")
+        if (isActive()) fragmentTransaction.replace(R.id.fragment_container, fragment, "")
             .addToBackStack("")
             .commit()
 

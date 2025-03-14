@@ -27,15 +27,7 @@ class PhoneticRepositoryImpl(
 
     override suspend fun getPhonetics(phonetics: List<String>): List<Phonetic> {
 
-        return phoneticDao.getRoomListByTextList(phonetics).map {
-
-            Phonetic(
-                text = it.text,
-            ).apply {
-
-                ipa = it.ipa
-            }
-        }
+        return phoneticDao.getListByTextList(phonetics)
     }
 
     override suspend fun insertOrUpdate(phonetics: List<Phonetic>) {

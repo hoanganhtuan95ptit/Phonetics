@@ -8,6 +8,7 @@ import androidx.core.view.updatePadding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.utils.autoCleared
@@ -147,6 +148,8 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
         arguments?.getParcelableOrNull<Ipa>(Param.IPA)?.let {
 
             this.updateIpa(it)
+
+            logAnalytics("ipa_detail_show_" + it.ipa.lowercase())
         }
     }
 

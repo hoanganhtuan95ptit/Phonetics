@@ -5,7 +5,7 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
-import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.phonetics.Deeplink
@@ -22,6 +22,12 @@ import com.simple.phonetics.utils.sendDeeplink
 
 class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>(),
     DeeplinkView by DeeplinkViewImpl() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        logAnalytics("game_show")
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
