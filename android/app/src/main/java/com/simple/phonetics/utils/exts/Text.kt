@@ -1,12 +1,16 @@
 package com.simple.phonetics.utils.exts
 
+import android.view.Gravity
 import android.view.ViewGroup
+import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
+import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.DEFAULT_MARGIN
 import com.simple.coreapp.ui.view.DEFAULT_PADDING
 import com.simple.coreapp.ui.view.DEFAULT_SIZE
 import com.simple.coreapp.ui.view.Margin
+import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
@@ -14,7 +18,9 @@ import com.simple.coreapp.utils.ext.DP
 fun TitleViewItem(
     id: String,
     text: CharSequence,
-    textSize: Float = 20f
+
+    textSize: Float = 20f,
+    textMargin: Margin = DEFAULT_MARGIN,
 ) = NoneTextViewItem(
     id = id,
     text = text,
@@ -22,7 +28,7 @@ fun TitleViewItem(
         textSize = textSize
     ),
     textSize = DEFAULT_SIZE,
-    textMargin = DEFAULT_MARGIN,
+    textMargin = textMargin,
     textPadding = DEFAULT_PADDING,
     textBackground = DEFAULT_BACKGROUND,
 
@@ -35,4 +41,77 @@ fun TitleViewItem(
     ),
     padding = DEFAULT_PADDING,
     background = DEFAULT_BACKGROUND
+)
+
+fun OptionViewItem(
+    id: String,
+
+    data: Any? = null,
+
+    text: CharSequence,
+
+    strokeColor: Int,
+    backgroundColor: Int,
+) = ClickTextViewItem(
+    id = id,
+    data = data,
+    text = text,
+    textStyle = TextStyle(
+        textSize = 16f,
+        textGravity = Gravity.START
+    ),
+    padding = Padding(
+        top = DP.DP_6,
+        right = DP.DP_8,
+        bottom = DP.DP_6
+    ),
+    textPadding = Padding(
+        top = DP.DP_8,
+        bottom = DP.DP_8,
+        left = DP.DP_16,
+        right = DP.DP_16
+    ),
+    textBackground = Background(
+        cornerRadius = DP.DP_100,
+        strokeWidth = DP.DP_1,
+        strokeColor = strokeColor,
+        backgroundColor = backgroundColor
+    )
+)
+
+fun ButtonViewItem(
+    id: String,
+
+    data: Any? = null,
+
+    text: CharSequence,
+
+    strokeColor: Int,
+    backgroundColor: Int,
+) = ClickTextViewItem(
+    id = id,
+    data = data,
+    text = text,
+    textStyle = TextStyle(
+        textSize = 18f,
+        textGravity = Gravity.CENTER
+    ),
+    textSize = Size(
+        width = ViewGroup.LayoutParams.MATCH_PARENT,
+        height = ViewGroup.LayoutParams.MATCH_PARENT
+    ),
+    textPadding = Padding(
+        paddingVertical = DP.DP_16,
+        paddingHorizontal = DP.DP_16,
+    ),
+    textBackground = Background(
+        cornerRadius = DP.DP_100,
+        strokeWidth = DP.DP_1,
+        strokeColor = strokeColor,
+        backgroundColor = backgroundColor
+    ),
+    size = Size(
+        width = ViewGroup.LayoutParams.MATCH_PARENT,
+        height = ViewGroup.LayoutParams.WRAP_CONTENT
+    )
 )

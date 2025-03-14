@@ -11,11 +11,13 @@ class GetPhoneticsHistoryAsyncUseCase(
 
     suspend fun execute(param: Param?): Flow<List<Sentence>> {
 
-        return historyDao.getRoomListByAsync().map { list ->
+        return historyDao.getRoomListByAsync(limit = param?.limit ?: 30).map { list ->
 
             list.map { Sentence(it.text) }
         }
     }
 
-    class Param()
+    data class Param(
+        val limit: Int
+    )
 }

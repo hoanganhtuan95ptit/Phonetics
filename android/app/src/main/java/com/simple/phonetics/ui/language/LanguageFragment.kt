@@ -24,20 +24,19 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
-import com.simple.phonetics.databinding.FragmentLanguageBinding
+import com.simple.phonetics.databinding.FragmentListHeaderVerticalBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.phonetics.utils.sendToast
 import com.simple.state.ResultState
 
-class LanguageFragment : TransitionFragment<FragmentLanguageBinding, LanguageViewModel>() {
+class LanguageFragment : TransitionFragment<FragmentListHeaderVerticalBinding, LanguageViewModel>() {
 
     private var adapter by autoCleared<MultiAdapter>()
 

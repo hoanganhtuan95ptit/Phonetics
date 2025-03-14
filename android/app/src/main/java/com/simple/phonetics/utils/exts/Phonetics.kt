@@ -21,9 +21,15 @@ import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingViewItem
 import com.simple.phonetics.ui.base.adapters.PhoneticsViewItem
-import com.simple.phonetics.ui.phonetics.adapters.SentenceViewItem
+import com.simple.phonetics.ui.phonetic.adapters.SentenceViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.state.ResultState
+
+fun Phonetics(text: String, ipa: HashMap<String, List<String>>) = Phonetics(
+    text = text
+).apply {
+    this.ipa = ipa
+}
 
 fun getPhoneticLoadingViewItem(theme: AppTheme, background: Background? = null): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
