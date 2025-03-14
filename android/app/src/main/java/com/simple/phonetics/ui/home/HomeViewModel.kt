@@ -32,7 +32,7 @@ import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
@@ -56,7 +56,7 @@ class HomeViewModel(
     private val startListenUseCase: StartListenUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
-) : CommonViewModel() {
+) : BaseViewModel() {
 
     val title: LiveData<CharSequence> = combineSources(theme, translate) {
 

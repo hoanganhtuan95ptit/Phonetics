@@ -34,6 +34,7 @@ import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
+import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.game.GameFragment
 import com.simple.phonetics.utils.DeeplinkHandler
@@ -50,7 +51,7 @@ import com.simple.state.isSuccess
 import kotlinx.coroutines.delay
 import java.util.UUID
 
-class GameIPAWordleFragment : TransitionFragment<FragmentListHeaderHorizontalBinding, GameIPAWordleViewModel>() {
+class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, GameIPAWordleViewModel>() {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
@@ -61,37 +62,6 @@ class GameIPAWordleFragment : TransitionFragment<FragmentListHeaderHorizontalBin
     }
 
     private var adapter by autoCleared<MultiAdapter>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        val window = activity?.window ?: return
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) window.decorView.setOnApplyWindowInsetsListener { view, insets ->
-
-            // Adjust padding to avoid overlap
-            view.setPadding(0, 0, 0, 0)
-
-            insets
-        } else {
-            // For Android 14 and below
-            window.statusBarColor = Color.TRANSPARENT
-            window.navigationBarColor = Color.TRANSPARENT
-        }
-
-        super.onCreate(savedInstanceState)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-
-            val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-            windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
-        } else {
-
-            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

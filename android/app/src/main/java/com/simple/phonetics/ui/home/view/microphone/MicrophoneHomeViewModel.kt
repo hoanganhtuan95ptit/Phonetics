@@ -12,13 +12,13 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 
 class MicrophoneHomeViewModel(
     private val checkSupportSpeakUseCase: CheckSupportSpeakUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
     private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
-) : CommonViewModel() {
+) : BaseViewModel() {
 
     @VisibleForTesting
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)

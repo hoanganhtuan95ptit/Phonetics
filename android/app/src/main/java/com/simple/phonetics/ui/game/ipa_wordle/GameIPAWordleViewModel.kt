@@ -44,8 +44,8 @@ import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Word
-import com.simple.phonetics.ui.base.CommonViewModel
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.exts.TitleViewItem
@@ -66,7 +66,7 @@ class GameIPAWordleViewModel(
     private val startListenUseCase: StartListenUseCase,
     private val getPhoneticsRandomUseCase: GetPhoneticsRandomUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
-) : CommonViewModel() {
+) : BaseViewModel() {
 
     val inputLanguage: LiveData<Language> = mediatorLiveData {
 
@@ -137,7 +137,6 @@ class GameIPAWordleViewModel(
         val list = arrayListOf<ViewItem>()
 
         val param1 = quiz.answerType.getName(translate = translate)
-
         val param2 = quiz.questionType.getName(translate = translate)
 
         TitleViewItem(
@@ -152,7 +151,7 @@ class GameIPAWordleViewModel(
             )
         ).let {
 
-            list.add(SpaceViewItem(id = "SPACE_QUESTION_ANSWER", height = DP.DP_16))
+            list.add(SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_16))
             list.add(it)
         }
 

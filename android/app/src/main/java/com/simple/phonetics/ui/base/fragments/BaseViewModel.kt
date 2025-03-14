@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.base
+package com.simple.phonetics.ui.base.fragments
 
 import androidx.lifecycle.LiveData
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
@@ -10,7 +10,7 @@ import com.simple.phonetics.utils.appSize
 import com.simple.phonetics.utils.appTheme
 import com.simple.phonetics.utils.appTranslate
 
-abstract class CommonViewModel : TransitionViewModel() {
+abstract class BaseViewModel : TransitionViewModel() {
 
     val size: LiveData<AppSize> = mediatorLiveData {
 

@@ -27,13 +27,13 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Word
-import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 
 class GameHomeViewModel(
     private val countWordAsyncUseCase: CountWordAsyncUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
-) : CommonViewModel() {
+) : BaseViewModel() {
 
     val inputLanguage: LiveData<Language> = mediatorLiveData {
 

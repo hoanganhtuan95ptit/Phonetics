@@ -16,13 +16,16 @@ val daoModule = module {
     }
 
     single {
+        get<PhoneticRoomDatabase>().providerHistoryDao()
+    }
+
+    single {
         get<PhoneticRoomDatabase>().providerPhoneticDao()
     }
 
     single {
-        get<PhoneticRoomDatabase>().providerHistoryDao()
+        get<PhoneticRoomDatabase>().providerKeyTranslateDao()
     }
-
 
     single {
         Room.databaseBuilder(get(), IpaRoomDatabase::class.java, "ipa_database")

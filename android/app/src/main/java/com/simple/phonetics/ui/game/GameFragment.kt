@@ -13,13 +13,14 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentContainerHeaderHorizontalBinding
 import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.DeeplinkView
 import com.simple.phonetics.utils.DeeplinkViewImpl
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.sendDeeplink
 
-class GameFragment : TransitionFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>(),
+class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>(),
     DeeplinkView by DeeplinkViewImpl() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

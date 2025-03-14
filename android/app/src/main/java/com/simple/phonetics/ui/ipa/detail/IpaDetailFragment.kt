@@ -27,6 +27,7 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailAdapters
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
@@ -36,7 +37,7 @@ import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
 
-class IpaDetailFragment : TransitionFragment<FragmentListHeaderHorizontalBinding, IpaDetailViewModel>() {
+class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaDetailViewModel>() {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)

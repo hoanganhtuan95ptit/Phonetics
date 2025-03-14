@@ -20,6 +20,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
+import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
@@ -28,7 +29,7 @@ import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
 
-class RecordingFragment : BaseViewModelSheetFragment<DialogListBinding, RecordingViewModel>() {
+class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewModel>() {
 
     private var adapter by autoCleared<MultiAdapter>()
 

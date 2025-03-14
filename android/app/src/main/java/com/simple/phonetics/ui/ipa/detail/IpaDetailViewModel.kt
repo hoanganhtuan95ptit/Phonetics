@@ -32,7 +32,7 @@ import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.ui.base.CommonViewModel
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailViewItem
 import com.simple.phonetics.utils.AppTheme
@@ -60,7 +60,7 @@ class IpaDetailViewModel(
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
     private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase,
     private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase
-) : CommonViewModel() {
+) : BaseViewModel() {
 
     private var job: Job? = null
 
