@@ -42,7 +42,7 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.entities.Phonetics
+import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.CommonViewModel
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
@@ -79,7 +79,7 @@ class GameIPAWordleViewModel(
     val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
 
     @VisibleForTesting
-    val phoneticState: LiveData<ResultState<List<Phonetics>>> = combineSources(resourceSelected) {
+    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(resourceSelected) {
 
         postDifferentValue(ResultState.Start)
 
@@ -111,7 +111,7 @@ class GameIPAWordleViewModel(
     }
 
     @VisibleForTesting
-    val choose: LiveData<Phonetics> = MediatorLiveData(null)
+    val choose: LiveData<Phonetic> = MediatorLiveData(null)
 
     val listenState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
@@ -370,9 +370,9 @@ class GameIPAWordleViewModel(
     }
     val stateInfoEvent: LiveData<Event<StateInfo>> = stateInfo.toEvent()
 
-    fun updateChoose(phonetics: Phonetics?) {
+    fun updateChoose(phonetic: Phonetic?) {
 
-        choose.postValue(phonetics)
+        choose.postValue(phonetic)
     }
 
     fun checkChoose() = viewModelScope.launch(handler + Dispatchers.IO) {
@@ -475,10 +475,10 @@ class GameIPAWordleViewModel(
     )
 
     private class Quiz(
-        val answers: List<Phonetics>,
+        val answers: List<Phonetic>,
         val answerType: Type,
 
-        val question: Phonetics,
+        val question: Phonetic,
         val questionType: Type,
     ) {
 

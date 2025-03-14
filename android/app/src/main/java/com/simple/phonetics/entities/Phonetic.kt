@@ -1,6 +1,6 @@
 package com.simple.phonetics.entities
 
-class Phonetics(
+class Phonetic(
     val text: String
 ) {
 

@@ -1,30 +1,28 @@
 package com.simple.phonetics.di
 
 import androidx.room.Room
+import com.simple.phonetics.data.dao.PhoneticRoomDatabase
+import com.simple.phonetics.data.dao.PhoneticRoomDatabaseConstants
 import com.simple.phonetics.data.dao.ipa.IpaRoomDatabase
-import com.simple.phonetics.data.dao.PhoneticsRoomDatabase
-import com.simple.phonetics.data.dao.word.PopularRoomDatabase
+import com.simple.phonetics.data.dao.translate.TranslateRoomDatabase
+import com.simple.phonetics.data.dao.word.WordRoomDatabase
 import org.koin.dsl.module
 
 @JvmField
 val daoModule = module {
 
     single {
-        Room.databaseBuilder(get(), PhoneticsRoomDatabase::class.java, "phonetics_database")
-            .build()
+        PhoneticRoomDatabaseConstants.instant(context = get())
     }
 
     single {
-        get<PhoneticsRoomDatabase>().providerKeyTranslateDao()
+        get<PhoneticRoomDatabase>().providerPhoneticDao()
     }
 
     single {
-        get<PhoneticsRoomDatabase>().providerPhoneticsDao()
+        get<PhoneticRoomDatabase>().providerHistoryDao()
     }
 
-    single {
-        get<PhoneticsRoomDatabase>().providerHistoryDao()
-    }
 
     single {
         Room.databaseBuilder(get(), IpaRoomDatabase::class.java, "ipa_database")
@@ -32,7 +30,12 @@ val daoModule = module {
     }
 
     single {
-        Room.databaseBuilder(get(), PopularRoomDatabase::class.java, "popular_database")
-            .build().providerPopularDao()
+        Room.databaseBuilder(get(), WordRoomDatabase::class.java, "word_database")
+            .build().providerWordDao()
+    }
+
+    single {
+        Room.databaseBuilder(get(), TranslateRoomDatabase::class.java, "translate_database")
+            .build().providerTranslateDao()
     }
 }

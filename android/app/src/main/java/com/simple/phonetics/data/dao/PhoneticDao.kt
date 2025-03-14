@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.dao
 
+import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Entity
 import androidx.room.Insert
@@ -7,25 +8,24 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.simple.phonetics.entities.Phonetics
-import com.simple.phonetics.utils.exts.Phonetics
+import com.simple.phonetics.entities.Phonetic
 
 private const val TABLE_NAME = "phonetics"
 
 @Dao
-interface PhoneticsDao {
+interface PhoneticDao {
 
     @Query("SELECT * FROM $TABLE_NAME WHERE text COLLATE NOCASE IN (:textList)")
-    fun getRoomListByTextList(textList: List<String>): List<RoomPhonetics>
+    fun getRoomListByTextList(textList: List<String>): List<RoomPhonetic>
 
     @Query("DELETE FROM $TABLE_NAME")
     fun deleteAll()
 
-    fun insertOrUpdateEntities(entities: List<Phonetics>) {
+    fun insertOrUpdateEntities(entities: List<Phonetic>) {
 
         entities.map {
 
-            RoomPhonetics(ipa = it.ipa, text = it.text)
+            RoomPhonetic(ipa = it.ipa, text = it.text)
         }.let {
 
             insertOrUpdate(it)
@@ -33,30 +33,31 @@ interface PhoneticsDao {
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOrUpdate(room: RoomPhonetics)
+    fun insertOrUpdate(room: RoomPhonetic)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOrUpdate(rooms: List<RoomPhonetics>)
+    fun insertOrUpdate(rooms: List<RoomPhonetic>)
 }
 
+@Keep
 @Entity(
     tableName = TABLE_NAME,
     primaryKeys = ["text"]
 )
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-open class RoomPhonetics(
+open class RoomPhonetic(
     var text: String = "",
     var ipa: HashMap<String, List<String>> = hashMapOf()
 ) {
     companion object {
 
-        fun Phonetics.toRoom() = RoomPhonetics(
+        fun Phonetic.toRoom() = RoomPhonetic(
             text = text,
             ipa = ipa,
         )
 
-        fun RoomPhonetics.toEntity() = Phonetics(
+        fun RoomPhonetic.toEntity() = Phonetic(
             text = text,
         ).apply {
 

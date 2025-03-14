@@ -3,7 +3,6 @@ package com.simple.phonetics.domain.usecase
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
-import com.simple.phonetics.entities.KeyTranslate
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -12,42 +11,47 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 
-class GetKeyTranslateAsyncUseCase(
+class GetTranslateAsyncUseCase(
     private val appRepository: AppRepository,
     private val languageRepository: LanguageRepository,
 ) {
 
     suspend fun execute(): Flow<Map<String, String>> = channelFlow {
 
+        // call api để lấy bản dịch
+        languageRepository.getLanguageOutputAsync().launchCollect(this) {
+
+            runCatching {
+
+                val languageCode = it.id
+
+                val map = appRepository.syncTranslate(languageCode = languageCode)
+
+                appRepository.updateTranslate(languageCode = languageCode, map = map)
+            }
+        }
+
         // lấy bản dịch hiện có
         languageRepository.getLanguageOutputAsync().flatMapLatest {
 
-            getKeyTranslateAsync(langCode = it.id)
+            getKeyTranslateAsync(languageCode = it.id)
         }.launchCollect(this) {
 
             trySend(it)
         }
-
-        // call api để lấy bản dịch
-        languageRepository.getLanguageOutputAsync().distinctUntilChanged().map {
-
-            val list = appRepository.runCatching { getKeyTranslate(it.id) }.getOrNull() ?: return@map emptyList<KeyTranslate>()
-
-            appRepository.updateKeyTranslate(list)
-        }.launchIn(this)
 
         awaitClose {
 
         }
     }
 
-    private suspend fun getKeyTranslateAsync(langCode: String) = appRepository.getKeyTranslateAsync(langCode).map { keyTranslates ->
+    private suspend fun getKeyTranslateAsync(languageCode: String) = appRepository.getTranslateAsync(languageCode = languageCode).map { keyTranslates ->
 
         val map = KeyTranslateMap()
 
-        if (keyTranslates.isNotEmpty()) keyTranslates.forEach {
+        if (keyTranslates.isNotEmpty()) {
 
-            map[it.key] = it.value
+            map.putAll(keyTranslates)
         } else {
 
             map.putAll(appRepository.getKeyTranslateDefault())

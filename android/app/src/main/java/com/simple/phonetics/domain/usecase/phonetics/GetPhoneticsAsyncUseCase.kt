@@ -7,7 +7,7 @@ import com.simple.phonetics.data.dao.RoomHistory
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
-import com.simple.phonetics.entities.Phonetics
+import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getLineDelimiters
@@ -17,7 +17,6 @@ import com.simple.phonetics.utils.exts.removeSpecialCharacters
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
@@ -91,7 +90,7 @@ class GetPhoneticsAsyncUseCase(
 
             sentenceObject.phonetics = wordList.map {
 
-                Phonetics(it)
+                Phonetic(it)
             }
 
             sentenceObject

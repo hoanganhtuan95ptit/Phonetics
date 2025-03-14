@@ -17,7 +17,7 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
-import com.simple.phonetics.entities.Phonetics
+import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingViewItem
 import com.simple.phonetics.ui.base.adapters.PhoneticsViewItem
@@ -25,7 +25,7 @@ import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.state.ResultState
 
-fun Phonetics(text: String, ipa: HashMap<String, List<String>>) = Phonetics(
+fun Phonetics(text: String, ipa: HashMap<String, List<String>>) = Phonetic(
     text = text
 ).apply {
     this.ipa = ipa
@@ -59,7 +59,7 @@ fun Any.toViewItem(
 
     val item = this@toViewItem
 
-    if (item is Phonetics) item.toViewItem(
+    if (item is Phonetic) item.toViewItem(
         id = "${index * 1000}",
 
         isSupportSpeak = isSupportSpeak,
@@ -189,7 +189,7 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
     )
 }
 
-fun Phonetics.toViewItem(
+fun Phonetic.toViewItem(
     id: String,
 
     isSupportSpeak: Boolean = false,

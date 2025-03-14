@@ -3,7 +3,7 @@ package com.simple.phonetics.domain.usecase.phonetics
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
-import com.simple.phonetics.entities.Phonetics
+import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Word
 import kotlinx.coroutines.flow.first
 
@@ -13,7 +13,7 @@ class GetPhoneticsRandomUseCase(
     private val languageRepository: LanguageRepository
 ) {
 
-    suspend fun execute(param: Param): List<Phonetics> {
+    suspend fun execute(param: Param): List<Phonetic> {
 
         val languageCode = languageRepository.getLanguageInputAsync().first().id
 

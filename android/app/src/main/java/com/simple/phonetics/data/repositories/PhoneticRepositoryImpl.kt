@@ -1,23 +1,23 @@
 package com.simple.phonetics.data.repositories
 
 import com.simple.phonetics.data.api.Api
-import com.simple.phonetics.data.dao.PhoneticsDao
+import com.simple.phonetics.data.dao.PhoneticDao
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.entities.Phonetics
+import com.simple.phonetics.entities.Phonetic
 
 class PhoneticRepositoryImpl(
     private val api: Api,
-    private val phoneticsDao: PhoneticsDao
+    private val phoneticDao: PhoneticDao
 ) : PhoneticRepository {
 
-    override suspend fun toPhonetics(dataSplit: String, code: String): Map<String, Phonetics> {
+    override suspend fun toPhonetics(dataSplit: String, code: String): Map<String, Phonetic> {
 
-        val textAndPhonetics = hashMapOf<String, Phonetics>()
+        val textAndPhonetic = hashMapOf<String, Phonetic>()
 
-        dataSplit.toPhonetics(textAndPhonetics, code)
+        dataSplit.toPhonetics(textAndPhonetic, code)
 
-        return textAndPhonetics
+        return textAndPhonetic
     }
 
     override suspend fun getSourcePhonetic(it: Language.IpaSource): String {
@@ -25,11 +25,11 @@ class PhoneticRepositoryImpl(
         return api.syncPhonetics(it.source).string()
     }
 
-    override suspend fun getPhonetics(phonetics: List<String>): List<Phonetics> {
+    override suspend fun getPhonetics(phonetics: List<String>): List<Phonetic> {
 
-        return phoneticsDao.getRoomListByTextList(phonetics).map {
+        return phoneticDao.getRoomListByTextList(phonetics).map {
 
-            Phonetics(
+            Phonetic(
                 text = it.text,
             ).apply {
 
@@ -38,12 +38,12 @@ class PhoneticRepositoryImpl(
         }
     }
 
-    override suspend fun insertOrUpdate(phonetics: List<Phonetics>) {
+    override suspend fun insertOrUpdate(phonetics: List<Phonetic>) {
 
-        phoneticsDao.insertOrUpdateEntities(phonetics)
+        phoneticDao.insertOrUpdateEntities(phonetics)
     }
 
-    private fun String.toPhonetics(textAndPhonetics: HashMap<String, Phonetics>, ipaCode: String) = split("\n").mapNotNull { phonetics ->
+    private fun String.toPhonetics(textAndPhonetic: HashMap<String, Phonetic>, ipaCode: String) = split("\n").mapNotNull { phonetics ->
 
         val split = phonetics.split("\t", ", ").mapNotNull { ipa -> ipa.trim().takeIf { it.isNotBlank() } }.toMutableList()
 
@@ -63,9 +63,9 @@ class PhoneticRepositoryImpl(
         }
 
 
-        val item = textAndPhonetics[text] ?: Phonetics(text).apply {
+        val item = textAndPhonetic[text] ?: Phonetic(text).apply {
 
-            textAndPhonetics[text] = this
+            textAndPhonetic[text] = this
         }
 
         if (item.ipa.isEmpty() || (!item.ipa.values.flatten().containsAll(ipa) && !ipa.containsAll(item.ipa.values.flatten()))) {

@@ -8,5 +8,5 @@ class Sentence(
 
     var translateState: ResultState<String> = ResultState.Start
 
-    var phonetics: List<Phonetics> = emptyList()
+    var phonetics: List<Phonetic> = emptyList()
 }

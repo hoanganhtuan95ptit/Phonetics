@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModels.BaseViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.phonetics.domain.usecase.GetKeyTranslateAsyncUseCase
+import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.word.GetWordStateAsyncUseCase
 import com.simple.phonetics.entities.Language
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.launchIn
 class MainViewModel(
     private val getLanguageInputUseCase: GetLanguageInputUseCase,
     private val getWordStateAsyncUseCase: GetWordStateAsyncUseCase,
-    private val getKeyTranslateAsyncUseCase: GetKeyTranslateAsyncUseCase
+    private val getTranslateAsyncUseCase: GetTranslateAsyncUseCase
 ) : BaseViewModel() {
 
     @VisibleForTesting
@@ -34,7 +34,7 @@ class MainViewModel(
     @VisibleForTesting
     val keyTranslateSync: LiveData<Map<String, String>> = mediatorLiveData {
 
-        getKeyTranslateAsyncUseCase.execute().collect {
+        getTranslateAsyncUseCase.execute().collect {
 
             appTranslate.tryEmit(it)
         }
