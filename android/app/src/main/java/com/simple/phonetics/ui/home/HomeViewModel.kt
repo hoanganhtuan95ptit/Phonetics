@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic
+package com.simple.phonetics.ui.home
 
 import android.graphics.Color
 import android.graphics.Typeface
@@ -50,7 +50,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
-class PhoneticViewModel(
+class HomeViewModel(
     private val detectUseCase: DetectUseCase,
     private val stopListenUseCase: StopListenUseCase,
     private val startListenUseCase: StartListenUseCase,

@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.view
+package com.simple.phonetics.ui.home.view
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -8,23 +8,23 @@ import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.ConfigViewModel
-import com.simple.phonetics.ui.phonetic.PhoneticsFragment
-import com.simple.phonetics.ui.phonetic.PhoneticViewModel
+import com.simple.phonetics.ui.home.HomeFragment
+import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.utils.sendDeeplink
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-interface LanguageView {
+interface LanguageHomeView {
 
-    fun setupLanguage(fragment: PhoneticsFragment)
+    fun setupLanguage(fragment: HomeFragment)
 }
 
-class LanguageViewImpl() : LanguageView {
+class LanguageHomeViewImpl() : LanguageHomeView {
 
-    override fun setupLanguage(fragment: PhoneticsFragment) {
+    override fun setupLanguage(fragment: HomeFragment) {
 
         fragment.lockTransition(TAG_LANGUAGE)
 
-        val viewModel by fragment.viewModels<PhoneticViewModel>()
+        val viewModel by fragment.viewModels<HomeViewModel>()
         val configViewModel by fragment.activityViewModel<ConfigViewModel>()
 
         configViewModel.inputLanguage.observe(fragment.viewLifecycleOwner) {

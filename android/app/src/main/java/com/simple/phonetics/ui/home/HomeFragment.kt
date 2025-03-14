@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic
+package com.simple.phonetics.ui.home
 
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -33,35 +33,35 @@ import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
-import com.simple.phonetics.databinding.FragmentPhoneticsBinding
+import com.simple.phonetics.databinding.FragmentHomeBinding
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
-import com.simple.phonetics.ui.phonetic.adapters.HistoryAdapter
-import com.simple.phonetics.ui.phonetic.view.LanguageView
-import com.simple.phonetics.ui.phonetic.view.LanguageViewImpl
-import com.simple.phonetics.ui.phonetic.view.PasteView
-import com.simple.phonetics.ui.phonetic.view.PasteViewImpl
-import com.simple.phonetics.ui.phonetic.view.detect.DetectView
-import com.simple.phonetics.ui.phonetic.view.detect.DetectViewImpl
-import com.simple.phonetics.ui.phonetic.view.game.GameView
-import com.simple.phonetics.ui.phonetic.view.game.GameViewImpl
-import com.simple.phonetics.ui.phonetic.view.history.HistoryView
-import com.simple.phonetics.ui.phonetic.view.history.HistoryViewImpl
-import com.simple.phonetics.ui.phonetic.view.ipa.IpaView
-import com.simple.phonetics.ui.phonetic.view.ipa.IpaViewImpl
-import com.simple.phonetics.ui.phonetic.view.microphone.MicrophoneView
-import com.simple.phonetics.ui.phonetic.view.microphone.MicrophoneViewImpl
-import com.simple.phonetics.ui.phonetic.view.review.AppReview
-import com.simple.phonetics.ui.phonetic.view.review.AppReviewImpl
+import com.simple.phonetics.ui.home.adapters.HistoryAdapter
+import com.simple.phonetics.ui.home.view.LanguageHomeView
+import com.simple.phonetics.ui.home.view.LanguageHomeViewImpl
+import com.simple.phonetics.ui.home.view.PasteHomeView
+import com.simple.phonetics.ui.home.view.PasteHomeViewImpl
+import com.simple.phonetics.ui.home.view.detect.DetectHomeView
+import com.simple.phonetics.ui.home.view.detect.DetectHomeViewImpl
+import com.simple.phonetics.ui.home.view.game.GameHomeView
+import com.simple.phonetics.ui.home.view.game.GameHomeViewImpl
+import com.simple.phonetics.ui.home.view.history.HistoryHomeView
+import com.simple.phonetics.ui.home.view.history.HistoryHomeViewImpl
+import com.simple.phonetics.ui.home.view.ipa.IpaHomeView
+import com.simple.phonetics.ui.home.view.ipa.IpaHomeViewImpl
+import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeView
+import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewImpl
+import com.simple.phonetics.ui.home.view.review.AppReviewHomeView
+import com.simple.phonetics.ui.home.view.review.AppReviewHomeViewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
-import com.simple.phonetics.utils.exts.getCurrentOffset
-import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
+import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
@@ -73,15 +73,15 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 
-class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticViewModel>(),
-    IpaView by IpaViewImpl(),
-    GameView by GameViewImpl(),
-    AppReview by AppReviewImpl(),
-    PasteView by PasteViewImpl(),
-    DetectView by DetectViewImpl(),
-    HistoryView by HistoryViewImpl(),
-    LanguageView by LanguageViewImpl(),
-    MicrophoneView by MicrophoneViewImpl() {
+class HomeFragment : TransitionFragment<FragmentHomeBinding, HomeViewModel>(),
+    IpaHomeView by IpaHomeViewImpl(),
+    GameHomeView by GameHomeViewImpl(),
+    PasteHomeView by PasteHomeViewImpl(),
+    DetectHomeView by DetectHomeViewImpl(),
+    HistoryHomeView by HistoryHomeViewImpl(),
+    LanguageHomeView by LanguageHomeViewImpl(),
+    AppReviewHomeView by AppReviewHomeViewImpl(),
+    MicrophoneHomeView by MicrophoneHomeViewImpl() {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
@@ -271,7 +271,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticV
 
     private fun observeData() = with(viewModel) {
 
-        val fragment = this@PhoneticsFragment
+        val fragment = this@HomeFragment
 
         imageInfo.observe(viewLifecycleOwner) {
 
@@ -357,7 +357,7 @@ class PhoneticsFragment : TransitionFragment<FragmentPhoneticsBinding, PhoneticV
 
     private fun observePhoneticsConfigData() = with(configViewModel) {
 
-        val fragment = this@PhoneticsFragment
+        val fragment = this@HomeFragment
 
         voiceState.observe(viewLifecycleOwner) {
 
@@ -436,7 +436,7 @@ class PhoneticsDeeplink : DeeplinkHandler {
 
         if (activity !is MainActivity) return false
 
-        val fragment = PhoneticsFragment()
+        val fragment = HomeFragment()
         fragment.arguments = extras
 
         val fragmentTransaction = activity.supportFragmentManager

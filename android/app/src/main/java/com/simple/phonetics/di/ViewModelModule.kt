@@ -9,13 +9,13 @@ import com.simple.phonetics.ui.game.ipa_wordle.GameIPAWordleViewModel
 import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
 import com.simple.phonetics.ui.ipa.list.IpaListViewModel
 import com.simple.phonetics.ui.language.LanguageViewModel
-import com.simple.phonetics.ui.phonetic.PhoneticViewModel
-import com.simple.phonetics.ui.phonetic.view.detect.DetectViewModel
-import com.simple.phonetics.ui.phonetic.view.game.GameHomeViewModel
-import com.simple.phonetics.ui.phonetic.view.history.HistoryViewModel
-import com.simple.phonetics.ui.phonetic.view.ipa.IpaViewModel
-import com.simple.phonetics.ui.phonetic.view.microphone.MicrophoneViewModel
-import com.simple.phonetics.ui.phonetic.view.review.AppReviewViewModel
+import com.simple.phonetics.ui.home.HomeViewModel
+import com.simple.phonetics.ui.home.view.detect.DetectHomeViewModel
+import com.simple.phonetics.ui.home.view.game.GameHomeViewModel
+import com.simple.phonetics.ui.home.view.history.HistoryHomeViewModel
+import com.simple.phonetics.ui.home.view.ipa.IpaHomeViewModel
+import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewModel
+import com.simple.phonetics.ui.home.view.review.AppReviewHomeViewModel
 import com.simple.phonetics.ui.recording.RecordingViewModel
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -25,7 +25,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
 
     viewModel {
-        MainViewModel(get(), get())
+        MainViewModel(get(), get(), get())
     }
 
     viewModel {
@@ -33,7 +33,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        AppReviewViewModel(get())
+        AppReviewHomeViewModel(get())
     }
 
     viewModel {
@@ -64,11 +64,11 @@ val viewModelModule = module {
 
 
     viewModel {
-        IpaViewModel(get(), get())
+        IpaHomeViewModel(get())
     }
 
     viewModel {
-        HistoryViewModel(get())
+        HistoryHomeViewModel(get())
     }
 
     viewModel {
@@ -76,15 +76,15 @@ val viewModelModule = module {
     }
 
     viewModel {
-        DetectViewModel(get(), get(), get())
+        DetectHomeViewModel(get(), get(), get())
     }
 
     viewModel {
-        MicrophoneViewModel(get(), get(), get())
+        MicrophoneHomeViewModel(get(), get(), get())
     }
 
     viewModel {
-        PhoneticViewModel(get(), get(), get(), get(), get())
+        HomeViewModel(get(), get(), get(), get(), get())
     }
 
 

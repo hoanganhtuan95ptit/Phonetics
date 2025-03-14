@@ -6,21 +6,27 @@ import com.simple.phonetics.data.dao.HistoryDao
 import com.simple.phonetics.data.dao.RoomHistory
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
-import com.simple.phonetics.entities.Language
+import com.simple.phonetics.domain.repositories.WordRepository
 import com.simple.phonetics.entities.Phonetics
 import com.simple.phonetics.entities.Sentence
+import com.simple.phonetics.entities.Word
+import com.simple.phonetics.utils.exts.getLineDelimiters
+import com.simple.phonetics.utils.exts.getWordDelimiters
+import com.simple.phonetics.utils.exts.normalize
+import com.simple.phonetics.utils.exts.removeSpecialCharacters
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
-import java.text.Normalizer
 import java.util.UUID
 
 class GetPhoneticsAsyncUseCase(
     private val historyDao: HistoryDao,
     private val appRepository: AppRepository,
+    private val wordRepository: WordRepository,
     private val phoneticRepository: PhoneticRepository
 ) {
 
@@ -64,10 +70,10 @@ class GetPhoneticsAsyncUseCase(
         val lineDelimiters = getLineDelimiters()
 
         // tìm các trường hợp tách chữ
-        val wordDelimiters = getWordDelimiters(param)
+        val wordDelimiters = getWordDelimiters(languageCode = param.inputLanguageCode)
 
         // tách dòng
-        val list = textWrap.split(*lineDelimiters.toTypedArray()).mapIndexedNotNull { _, line ->
+        val sentenceList = textWrap.split(*lineDelimiters.toTypedArray()).mapIndexedNotNull { _, line ->
 
             if (line.isBlank()) {
                 return@mapIndexedNotNull null
@@ -75,13 +81,15 @@ class GetPhoneticsAsyncUseCase(
 
             val sentenceObject = Sentence(line)
 
-            sentenceObject.phonetics = sentenceObject.text.split(*wordDelimiters.toTypedArray()).map {
+            val wordList = sentenceObject.text.split(*wordDelimiters.toTypedArray()).map {
 
                 it.removeSpecialCharacters()
             }.filter {
 
                 it.isNotBlank()
-            }.map {
+            }
+
+            sentenceObject.phonetics = wordList.map {
 
                 Phonetics(it)
             }
@@ -90,17 +98,17 @@ class GetPhoneticsAsyncUseCase(
         }
 
 
-        offerActive(ResultState.Success(list))
+        offerActive(ResultState.Success(sentenceList))
 
 
         // tìm kiếm phiên âm
-        launch {
+        val ipaJob = launch {
 
-            val phonetics = phoneticRepository.getPhonetics(list.flatMap { sentence -> sentence.phonetics.map { it.text } })
+            val phonetics = phoneticRepository.getPhonetics(sentenceList.flatMap { sentence -> sentence.phonetics.map { it.text } })
 
             val mapTextAndPhonetics = phonetics.associateBy { it.text }
 
-            list.flatMap {
+            sentenceList.flatMap {
 
                 it.phonetics
             }.forEach {
@@ -108,18 +116,29 @@ class GetPhoneticsAsyncUseCase(
                 it.ipa = mapTextAndPhonetics[it.text]?.ipa ?: hashMapOf()
             }
 
-            offerActive(ResultState.Success(list))
+            offerActive(ResultState.Success(sentenceList))
         }
 
         // thực hiện dịch
         launch {
 
-            list.forEach {
+            sentenceList.forEach {
 
                 it.translateState = translateState(text = it.text, languageCodeInput = param.inputLanguageCode, languageCodeOutput = param.outputLanguageCode)
 
-                offerActive(ResultState.Success(list))
+                offerActive(ResultState.Success(sentenceList))
             }
+        }
+
+        // thự hiện lưu những từ đã tra phiên âm
+        if (param.saveToHistory) launch {
+
+            // đợi cho luồng lấy IPA hoàn thành thì mới lưu vào db
+            ipaJob.join()
+
+            val wordList = sentenceList.flatMap { it.phonetics }.filter { it.ipa.isNotEmpty() }.map { it.text }
+
+            wordRepository.insertOrUpdate(resource = Word.Resource.History.value, languageCode = param.inputLanguageCode, wordList)
         }
 
 
@@ -134,7 +153,7 @@ class GetPhoneticsAsyncUseCase(
         val textNewNormalize = textNew.normalize()
 
         // thực hiện lấy id
-        val id = historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.id ?: if (textNewNormalize.startsWith(textOld) || textOld.startsWith(textNewNormalize)) {
+        val id = historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.id ?: if (textNewNormalize.contains(textOld) || textOld.contains(textNewNormalize)) {
             id
         } else {
             UUID.randomUUID().toString()
@@ -168,30 +187,6 @@ class GetPhoneticsAsyncUseCase(
 
         return state.toSuccess()?.data?.firstOrNull()?.translateState ?: ResultState.Failed(RuntimeException(""))
     }
-
-    private fun getLineDelimiters(): List<String> {
-
-        return arrayListOf(".", "!", "?", "\n")
-    }
-
-    private fun getWordDelimiters(param: Param): List<String> {
-
-        val wordDelimiters = arrayListOf(" ", "\n", ":")
-        if (param.inputLanguageCode in listOf(Language.ZH, Language.JA, Language.KO)) {
-
-            wordDelimiters.add("")
-        }
-
-        return wordDelimiters
-    }
-
-    private fun String.normalize() = Normalizer.normalize(this, Normalizer.Form.NFD)
-        .replace(Regex("\\p{M}"), "")
-        .replace(Regex("[^\\p{IsAlphabetic}\\p{IsDigit}\\p{IsWhitespace}\\p{Punct}\\p{So}]"), "")
-
-    // Regex để chỉ giữ lại chữ cái, số, khoảng trắng, và các ký tự Unicode khác
-    private fun String.removeSpecialCharacters(): String = this
-        .replace(Regex("[^\\p{L}\\p{N}\\p{Z}\\p{So}]"), "")
 
     data class Param(
         val text: String,

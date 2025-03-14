@@ -9,10 +9,10 @@ fun getLineDelimiters(): List<String> {
     return arrayListOf(".", "!", "?", "\n")
 }
 
-fun getWordDelimiters(inputLanguageCode: String): List<String> {
+fun getWordDelimiters(languageCode: String): List<String> {
 
     val wordDelimiters = arrayListOf(" ", "\n", ":")
-    if (inputLanguageCode in listOf(Language.ZH, Language.JA, Language.KO)) {
+    if (languageCode in listOf(Language.ZH, Language.JA, Language.KO)) {
 
         wordDelimiters.add("")
     }

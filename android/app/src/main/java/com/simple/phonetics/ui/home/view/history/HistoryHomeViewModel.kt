@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.view.history
+package com.simple.phonetics.ui.home.view.history
 
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
@@ -17,12 +17,12 @@ import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.CommonViewModel
-import com.simple.phonetics.ui.phonetic.adapters.HistoryViewItem
+import com.simple.phonetics.ui.home.adapters.HistoryViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
 
-class HistoryViewModel(
+class HistoryHomeViewModel(
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
 ) : CommonViewModel() {
 

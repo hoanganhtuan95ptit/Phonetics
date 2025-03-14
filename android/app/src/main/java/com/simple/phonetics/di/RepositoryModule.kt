@@ -1,6 +1,7 @@
 package com.simple.phonetics.di
 
 import com.simple.phonetics.data.repositories.AppRepositoryImpl
+import com.simple.phonetics.data.repositories.HistoryRepositoryImpl
 import com.simple.phonetics.data.repositories.IpaRepositoryImpl
 import com.simple.phonetics.data.repositories.LanguageRepositoryImpl
 import com.simple.phonetics.data.repositories.ListenRepositoryImpl
@@ -8,6 +9,7 @@ import com.simple.phonetics.data.repositories.PhoneticRepositoryImpl
 import com.simple.phonetics.data.repositories.WordRepositoryImpl
 import com.simple.phonetics.data.repositories.SpeakRepositoryImpl
 import com.simple.phonetics.domain.repositories.AppRepository
+import com.simple.phonetics.domain.repositories.HistoryRepository
 import com.simple.phonetics.domain.repositories.IpaRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.ListenRepository
@@ -30,6 +32,8 @@ val repositoryModule = module {
     single<PhoneticRepository> { PhoneticRepositoryImpl(get(), get()) }
 
     single<LanguageRepository> { LanguageRepositoryImpl(get(), get()) }
+
+    single<HistoryRepository> { HistoryRepositoryImpl(get()) }
 
     single<WordRepository> { WordRepositoryImpl(get(), get()) }
 }

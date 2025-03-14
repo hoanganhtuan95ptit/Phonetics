@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.view.game
+package com.simple.phonetics.ui.home.view.game
 
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan

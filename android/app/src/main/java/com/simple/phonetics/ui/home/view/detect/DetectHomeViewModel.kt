@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.view.microphone
+package com.simple.phonetics.ui.home.view.detect
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -8,14 +8,14 @@ import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
-import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.CommonViewModel
 
-class MicrophoneViewModel(
-    private val checkSupportSpeakUseCase: CheckSupportSpeakUseCase,
+class DetectHomeViewModel(
+    private val detectStateUseCase: DetectStateUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
     private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
 ) : CommonViewModel() {
@@ -42,7 +42,7 @@ class MicrophoneViewModel(
     }
 
     @VisibleForTesting
-    val isSupportSpeak: LiveData<Boolean> = combineSources(isReverse, inputLanguage, outputLanguage) {
+    val isSupportDetect: LiveData<Boolean> = combineSources(isReverse, inputLanguage, outputLanguage) {
 
         val isReverse = isReverse.get()
         val inputLanguage = inputLanguage.get()
@@ -54,15 +54,15 @@ class MicrophoneViewModel(
             inputLanguage.id
         }
 
-        postDifferentValue(checkSupportSpeakUseCase.execute(CheckSupportSpeakUseCase.Param(languageCode = languageCode)))
+        postDifferentValueIfActive(detectStateUseCase.execute(DetectStateUseCase.Param(languageCode = languageCode)))
     }
 
-    val microphoneInfo: LiveData<MicrophoneInfo> = combineSources(isSupportSpeak) {
+    val detectInfo: LiveData<DetectInfo> = combineSources(isSupportDetect) {
 
-        val isSupportSpeak = isSupportSpeak.get()
+        val isSupportDetect = isSupportDetect.get()
 
-        val info = MicrophoneInfo(
-            isShow = isSupportSpeak
+        val info = DetectInfo(
+            isShow = isSupportDetect
         )
 
         postDifferentValueIfActive(info)
@@ -73,7 +73,7 @@ class MicrophoneViewModel(
         isReverse.postDifferentValue(it)
     }
 
-    data class MicrophoneInfo(
+    data class DetectInfo(
         val isShow: Boolean
     )
 }

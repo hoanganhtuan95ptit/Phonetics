@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.view.review
+package com.simple.phonetics.ui.home.view.review
 
 import android.content.Context
 import android.content.Intent
@@ -20,7 +20,7 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
-import com.simple.phonetics.ui.phonetic.PhoneticsFragment
+import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
 import kotlinx.coroutines.Dispatchers
@@ -32,16 +32,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
 
-interface AppReview {
+interface AppReviewHomeView {
 
-    fun setupAppView(fragment: PhoneticsFragment)
+    fun setupAppView(fragment: HomeFragment)
 }
 
-class AppReviewImpl : AppReview {
+class AppReviewHomeViewImpl : AppReviewHomeView {
 
-    override fun setupAppView(fragment: PhoneticsFragment) {
+    override fun setupAppView(fragment: HomeFragment) {
 
-        val viewModel: AppReviewViewModel by fragment.viewModel()
+        val viewModel: AppReviewHomeViewModel by fragment.viewModel()
 
         val keyRequest = "RATE_KEY_REQUEST"
 
@@ -93,10 +93,10 @@ class AppReviewImpl : AppReview {
                 openStore(fragment)
             }
 
-            val rate = if (resultCode == 1) AppReviewViewModel.Rate(
-                status = AppReviewViewModel.Rate.Status.OPEN_RATE.value
-            ) else AppReviewViewModel.Rate(
-                status = AppReviewViewModel.Rate.Status.DISMISS.value,
+            val rate = if (resultCode == 1) AppReviewHomeViewModel.Rate(
+                status = AppReviewHomeViewModel.Rate.Status.OPEN_RATE.value
+            ) else AppReviewHomeViewModel.Rate(
+                status = AppReviewHomeViewModel.Rate.Status.DISMISS.value,
                 date = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
             )
 
@@ -109,13 +109,13 @@ class AppReviewImpl : AppReview {
 
             fragment.viewModel.awaitTransition()
 
-            val rate = sharedPreferences.getString(Param.RATE, "").toObjectOrNull<AppReviewViewModel.Rate>()
+            val rate = sharedPreferences.getString(Param.RATE, "").toObjectOrNull<AppReviewHomeViewModel.Rate>()
             viewModel.updateRate(rate)
         }
     }
 
 
-    private suspend fun openReview(fragment: PhoneticsFragment) {
+    private suspend fun openReview(fragment: HomeFragment) {
 
         val manager = ReviewManagerFactory.create(fragment.context ?: return)
 
@@ -162,7 +162,7 @@ class AppReviewImpl : AppReview {
         }.firstOrNull()
     }
 
-    private fun openStore(fragment: PhoneticsFragment) {
+    private fun openStore(fragment: HomeFragment) {
 
         val context = fragment.context ?: return
 

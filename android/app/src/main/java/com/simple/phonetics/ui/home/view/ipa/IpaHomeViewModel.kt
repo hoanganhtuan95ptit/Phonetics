@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.view.ipa
+package com.simple.phonetics.ui.home.view.ipa
 
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
@@ -23,7 +23,6 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
-import com.simple.phonetics.domain.usecase.word.GetPopularStateAsyncUseCase
 import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.ui.base.CommonViewModel
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
@@ -31,21 +30,9 @@ import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.state.ResultState
 
-class IpaViewModel(
+class IpaHomeViewModel(
     private val getIpaStateAsyncUseCase: GetIpaStateAsyncUseCase,
-    private val getPopularStateAsyncUseCase: GetPopularStateAsyncUseCase
 ) : CommonViewModel() {
-
-    @VisibleForTesting
-    val popularState: LiveData<ResultState<Int>> = mediatorLiveData {
-
-        postValue(ResultState.Start)
-
-        getPopularStateAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
 
     @VisibleForTesting
     val ipaState: LiveData<ResultState<List<Ipa>>> = mediatorLiveData {

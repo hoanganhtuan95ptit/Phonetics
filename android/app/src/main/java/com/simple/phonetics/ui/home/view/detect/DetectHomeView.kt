@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.view.detect
+package com.simple.phonetics.ui.home.view.detect
 
 import android.Manifest
 import android.app.Activity
@@ -16,28 +16,28 @@ import androidx.core.content.FileProvider
 import com.permissionx.guolindev.PermissionX
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
-import com.simple.phonetics.ui.phonetic.PhoneticsFragment
-import com.simple.phonetics.ui.phonetic.PhoneticViewModel
+import com.simple.phonetics.ui.home.HomeFragment
+import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.state.doSuccess
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.IOException
 
-interface DetectView {
+interface DetectHomeView {
 
-    fun setupDetect(fragment: PhoneticsFragment)
+    fun setupDetect(fragment: HomeFragment)
 }
 
-class DetectViewImpl : DetectView {
+class DetectHomeViewImpl : DetectHomeView {
 
-    override fun setupDetect(fragment: PhoneticsFragment) {
+    override fun setupDetect(fragment: HomeFragment) {
 
         val binding = fragment.binding ?: return
 
-        val viewModel: PhoneticViewModel by fragment.viewModel()
+        val viewModel: HomeViewModel by fragment.viewModel()
 
-        val detectViewModel: DetectViewModel by fragment.viewModel()
+        val detectHomeViewModel: DetectHomeViewModel by fragment.viewModel()
 
 
         var currentPhotoPath: String? = null
@@ -92,7 +92,7 @@ class DetectViewImpl : DetectView {
 
         viewModel.isReverse.observe(fragment.viewLifecycleOwner) {
 
-            detectViewModel.updateReverse(it)
+            detectHomeViewModel.updateReverse(it)
         }
 
         viewModel.detectState.observe(fragment.viewLifecycleOwner) { state ->
@@ -105,7 +105,7 @@ class DetectViewImpl : DetectView {
             }
         }
 
-        detectViewModel.detectInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "DETECT") {
+        detectHomeViewModel.detectInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "DETECT") {
 
             fragment.binding ?: return@collectWithLockTransitionUntilData
 
