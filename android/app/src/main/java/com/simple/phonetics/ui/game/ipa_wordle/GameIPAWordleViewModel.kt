@@ -207,6 +207,7 @@ class GameIPAWordleViewModel(
             ClickTextViewItem(
                 id = "${Id.CHOOSE}_$index",
                 data = phonetic,
+
                 text = if (quiz.answerType == Quiz.Type.TEXT)
                     phonetic.text
                 else
