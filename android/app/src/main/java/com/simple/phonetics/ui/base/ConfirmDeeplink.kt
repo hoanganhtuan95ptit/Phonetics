@@ -10,6 +10,7 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.phonetics.Deeplink
+import com.simple.phonetics.EventName
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.appTheme
@@ -57,6 +58,8 @@ class ConfirmDeeplink : DeeplinkHandler {
         )
         fragment.arguments?.putAll(extras ?: bundleOf())
         fragment.showOrAwaitDismiss(activity.supportFragmentManager, "")
+
+        sendEvent(EventName.DISMISS, bundleOf())
 
         return true
     }
