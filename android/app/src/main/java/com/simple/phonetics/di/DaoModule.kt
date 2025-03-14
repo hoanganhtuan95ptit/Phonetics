@@ -1,8 +1,9 @@
 package com.simple.phonetics.di
 
 import androidx.room.Room
-import com.simple.phonetics.data.dao.IpaRoomDatabase
+import com.simple.phonetics.data.dao.ipa.IpaRoomDatabase
 import com.simple.phonetics.data.dao.PhoneticsRoomDatabase
+import com.simple.phonetics.data.dao.word.PopularRoomDatabase
 import org.koin.dsl.module
 
 @JvmField
@@ -28,5 +29,10 @@ val daoModule = module {
     single {
         Room.databaseBuilder(get(), IpaRoomDatabase::class.java, "ipa_database")
             .build().providerIpaDao()
+    }
+
+    single {
+        Room.databaseBuilder(get(), PopularRoomDatabase::class.java, "popular_database")
+            .build().providerPopularDao()
     }
 }

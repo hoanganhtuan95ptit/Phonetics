@@ -11,6 +11,8 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
+import com.simple.phonetics.domain.usecase.word.GetPopularStateAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
@@ -18,6 +20,7 @@ import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
+import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import org.koin.dsl.module
 
 @JvmField
@@ -29,6 +32,10 @@ val useCaseModule = module {
 
     single {
         GetKeyTranslateAsyncUseCase(get(), get())
+    }
+
+    single {
+        GetPhoneticsRandomUseCase(get(), get(), get())
     }
 
     single {
@@ -97,5 +104,14 @@ val useCaseModule = module {
 
     single {
         GetIpaStateAsyncUseCase(get(), get())
+    }
+
+
+    single {
+        CountWordAsyncUseCase(get())
+    }
+
+    single {
+        GetPopularStateAsyncUseCase(get(), get())
     }
 }

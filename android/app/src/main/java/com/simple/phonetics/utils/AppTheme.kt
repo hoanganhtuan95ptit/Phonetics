@@ -21,6 +21,8 @@ data class AppTheme(
     val colorOnSurfaceVariant: Int,
 
     val colorError: Int,
+    val colorOnError: Int,
+
     val colorErrorVariant: Int,
     val colorOnErrorVariant: Int,
 
@@ -60,10 +62,11 @@ fun setupTheme(activity: Activity) {
         colorOnSurface = activity.getColorFromAttr(com.google.android.material.R.attr.colorOnSurface),
         colorOnSurfaceVariant = activity.getColorFromAttr(com.google.android.material.R.attr.colorOnSurfaceVariant),
 
-        colorError = activity.getColorFromAttr(com.google.android.material.R.attr.colorError),
+        colorError = Color.parseColor("#E9201F"),
+        colorOnError = Color.parseColor("#FFFFFF"),
 
-        colorErrorVariant = activity.getColorFromAttr(com.simple.coreapp.R.attr.colorErrorVariant),
-        colorOnErrorVariant = activity.getColorFromAttr(R.attr.colorOnErrorVariant),
+        colorErrorVariant = Color.parseColor("#FFDFE2"),
+        colorOnErrorVariant = Color.parseColor("#E9201F"),
 
         colorLoading = Color.parseColor("#D1D2D4"),
 

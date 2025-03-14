@@ -7,9 +7,7 @@ import androidx.room.TypeConverters
 import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObjectOrNull
 
-const val versionDao = 1
-
-@Database(entities = [RoomHistory::class, RoomPhonetics::class, KeyTranslateRoom::class], version = versionDao, exportSchema = false)
+@Database(entities = [RoomHistory::class, RoomPhonetics::class, KeyTranslateRoom::class], version = 1, exportSchema = false)
 @TypeConverters(ListStringConverter::class, HashMapConverter::class)
 abstract class PhoneticsRoomDatabase : RoomDatabase() {
 

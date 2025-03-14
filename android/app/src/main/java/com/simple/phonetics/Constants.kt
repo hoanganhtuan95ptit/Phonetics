@@ -1,20 +1,18 @@
 package com.simple.phonetics
 
-enum class TAG{
-    VIEW_ITEM_LIST
-}
-
 object Param {
 
     const val IPA = "IPA"
     const val RATE = "RATE"
     const val TEXT = "TEXT"
     const val FIRST = "FIRST"
+    const val RESULT = "RESULT"
     const val TASK_ID = "TASK_ID"
     const val REVERSE = "REVERSE"
     const val IS_SUPPORT = "IS_SUPPORT"
     const val KEY_REQUEST = "KEY_REQUEST"
     const val LANGUAGE_CODE = "LANGUAGE_CODE"
+    const val POSITIVE_BACKGROUND = "POSITIVE_BACKGROUND"
 
     const val VOICE_ID = "VOICE_ID"
     const val VOICE_SPEED = "VOICE_SPEED"
@@ -33,6 +31,10 @@ object Deeplink {
     const val PHONETICS = "app://phonetics"
     const val RECORDING = "app://recording"
     const val IPA_DETAIL = "app://ipa_detail"
+
+    const val GAME = "app://game"
+    const val GAME_CONFIG = "app://game_config"
+    const val GAME_IPA_WORDLE = "app://game_ipa_wordle"
 }
 
 object Payload {
@@ -50,7 +52,14 @@ object Payload {
     const val BACKGROUND_COLOR = "BACKGROUND_COLOR"
 }
 
+object Constants {
+
+    const val WORD_COUNT_MIN = 10
+}
+
 object EventName {
+
+    const val DISMISS = "DISMISS"
 
     const val GET_VOICE_REQUEST = "GET_VOICE_REQUEST"
     const val GET_VOICE_RESPONSE = "GET_VOICE_RESPONSE"
@@ -76,7 +85,12 @@ object EventName {
 object Id {
 
     const val IPA = "IPA"
+    const val GAME = "GAME"
     const val VOICE = "VOICE"
+    const val LISTEN = "LISTEN"
+    const val CHOOSE = "CHOOSE"
+    const val BUTTON = "BUTTON"
+    const val RESOURCE = "RESOURCE"
     const val SENTENCE = "SENTENCE"
     const val IPA_LIST = "IPA_LIST"
     const val TRANSLATE = "TRANSLATE"

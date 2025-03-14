@@ -3,15 +3,19 @@ package com.simple.phonetics.di
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainViewModel
-import com.simple.phonetics.ui.ipa_detail.IpaDetailViewModel
-import com.simple.phonetics.ui.ipa_list.IpaListViewModel
+import com.simple.phonetics.ui.game.GameViewModel
+import com.simple.phonetics.ui.game.GameConfigViewModel
+import com.simple.phonetics.ui.game.ipa_wordle.GameIPAWordleViewModel
+import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
+import com.simple.phonetics.ui.ipa.list.IpaListViewModel
 import com.simple.phonetics.ui.language.LanguageViewModel
-import com.simple.phonetics.ui.phonetics.PhoneticsViewModel
-import com.simple.phonetics.ui.phonetics.view.detect.DetectViewModel
-import com.simple.phonetics.ui.phonetics.view.history.HistoryViewModel
-import com.simple.phonetics.ui.phonetics.view.ipa.IpaViewModel
-import com.simple.phonetics.ui.phonetics.view.microphone.MicrophoneViewModel
-import com.simple.phonetics.ui.phonetics.view.review.AppReviewViewModel
+import com.simple.phonetics.ui.phonetic.PhoneticViewModel
+import com.simple.phonetics.ui.phonetic.view.detect.DetectViewModel
+import com.simple.phonetics.ui.phonetic.view.game.GameHomeViewModel
+import com.simple.phonetics.ui.phonetic.view.history.HistoryViewModel
+import com.simple.phonetics.ui.phonetic.view.ipa.IpaViewModel
+import com.simple.phonetics.ui.phonetic.view.microphone.MicrophoneViewModel
+import com.simple.phonetics.ui.phonetic.view.review.AppReviewViewModel
 import com.simple.phonetics.ui.recording.RecordingViewModel
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -27,7 +31,6 @@ val viewModelModule = module {
     viewModel {
         TransitionGlobalViewModel()
     }
-
 
     viewModel {
         AppReviewViewModel(get())
@@ -46,7 +49,6 @@ val viewModelModule = module {
         SpeakViewModel(get(), get(), get(), get(), get(), get(), get())
     }
 
-
     viewModel {
         RecordingViewModel(get(), get(), get(), get())
     }
@@ -62,11 +64,15 @@ val viewModelModule = module {
 
 
     viewModel {
-        IpaViewModel(get())
+        IpaViewModel(get(), get())
     }
 
     viewModel {
         HistoryViewModel(get())
+    }
+
+    viewModel {
+        GameHomeViewModel(get(), get())
     }
 
     viewModel {
@@ -78,6 +84,19 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PhoneticsViewModel(get(), get(), get(), get(), get())
+        PhoneticViewModel(get(), get(), get(), get(), get())
+    }
+
+
+    viewModel {
+        GameViewModel()
+    }
+
+    viewModel {
+        GameConfigViewModel(get(), get())
+    }
+
+    viewModel {
+        GameIPAWordleViewModel(get(), get(), get(), get())
     }
 }

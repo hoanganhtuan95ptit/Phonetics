@@ -1,13 +1,17 @@
 package com.simple.phonetics.utils
 
+import android.app.Activity
+import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.Deeplink
 import com.tuanha.deeplink.DeeplinkManager
@@ -25,7 +29,16 @@ interface DeeplinkHandler {
 
     fun acceptDeeplink(deepLink: String): Boolean = deepLink == getDeeplink()
 
-    suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean
+    suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+
+        return if (componentCallbacks is ComponentActivity) navigation(componentCallbacks, deepLink, extras, sharedElement)
+        else false
+    }
+
+    suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+
+        return false
+    }
 }
 
 
@@ -95,27 +108,33 @@ fun sendDeeplink(deepLink: String, extras: Bundle? = null, sharedElement: Map<St
 
 interface DeeplinkView {
 
-    fun setupDeeplink(activity: ComponentActivity)
+    fun setupDeeplink(componentCallbacks: ComponentCallbacks)
 }
 
 class DeeplinkViewImpl : DeeplinkView {
 
-    override fun setupDeeplink(activity: ComponentActivity) {
+    override fun setupDeeplink(componentCallbacks: ComponentCallbacks) {
 
-        setupDeepLink(activity, appDeeplink)
-        setupDeepLink(activity, toastDeeplink)
-        setupDeepLink(activity, confirmDeeplink)
+        setupDeepLink(componentCallbacks, appDeeplink)
+
+        if (componentCallbacks is Activity) {
+
+            setupDeepLink(componentCallbacks, toastDeeplink)
+            setupDeepLink(componentCallbacks, confirmDeeplink)
+        }
     }
 
-    private fun setupDeepLink(activity: ComponentActivity, deeplinkFlow: MutableSharedFlow<Pair<String, Pair<Bundle?, Map<String, View>?>>>) {
+    private fun setupDeepLink(componentCallbacks: ComponentCallbacks, deeplinkFlow: MutableSharedFlow<Pair<String, Pair<Bundle?, Map<String, View>?>>>) {
 
         var job: Job? = null
 
-        activity.launchRepeatOnLifecycle(Lifecycle.State.RESUMED) {
+        val lifecycleOwner = componentCallbacks.asObjectOrNull<ComponentActivity>() ?: componentCallbacks.asObjectOrNull<Fragment>() ?: return
+
+        lifecycleOwner.launchRepeatOnLifecycle(Lifecycle.State.RESUMED) {
 
             job?.cancel()
 
-            job = deeplinkFlow.launchCollect(activity) {
+            job = deeplinkFlow.launchCollect(lifecycleOwner) {
 
                 val deepLink = it.first
 
@@ -127,7 +146,7 @@ class DeeplinkViewImpl : DeeplinkView {
                     list.find { it.acceptDeeplink(deepLink) }
                 }
 
-                if (navigation?.navigation(activity, deepLink, extras, sharedElement) == true) {
+                if (navigation?.navigation(componentCallbacks, deepLink, extras, sharedElement) == true) {
 
                     deeplinkFlow.resetReplayCache()
                 }
