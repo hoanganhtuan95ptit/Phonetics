@@ -7,10 +7,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface AppRepository {
 
+    @Deprecated("remove")
     suspend fun getAllTranslateOld(): List<KeyTranslate>
 
+    @Deprecated("remove")
     suspend fun getKeyTranslate(langCode: String): List<KeyTranslate>
 
+    @Deprecated("remove")
     suspend fun getKeyTranslateAsync(langCode: String): Flow<List<KeyTranslate>>
 
 

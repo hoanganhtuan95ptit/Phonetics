@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 private const val TABLE_NAME = "key_translate"
 
 @Dao
+@Deprecated("remove")
 interface KeyTranslateDao {
 
     suspend fun insert(vararg entity: KeyTranslate) {
@@ -40,6 +41,7 @@ interface KeyTranslateDao {
 }
 
 @Keep
+@Deprecated("remove")
 @Entity(tableName = TABLE_NAME, primaryKeys = ["key", "langCode"])
 data class KeyTranslateRoom(
     @ColumnInfo(name = "key") val key: String,
