@@ -8,6 +8,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.simple.phonetics.data.dao.RoomPhonetic.Companion.toEntity
+import com.simple.phonetics.data.dao.RoomPhonetic.Companion.toRoom
 import com.simple.phonetics.entities.Phonetic
 
 private const val TABLE_NAME = "phonetics"
@@ -15,17 +17,27 @@ private const val TABLE_NAME = "phonetics"
 @Dao
 interface PhoneticDao {
 
+    fun getListByTextList(textList: List<String>): List<Phonetic> = textList.chunked(300).flatMap {
+
+        getRoomListByTextList(textList = it).map { room ->
+
+            room.toEntity()
+        }
+    }
+
     @Query("SELECT * FROM $TABLE_NAME WHERE text COLLATE NOCASE IN (:textList)")
     fun getRoomListByTextList(textList: List<String>): List<RoomPhonetic>
 
+
     @Query("DELETE FROM $TABLE_NAME")
     fun deleteAll()
+
 
     fun insertOrUpdateEntities(entities: List<Phonetic>) {
 
         entities.map {
 
-            RoomPhonetic(ipa = it.ipa, text = it.text)
+            it.toRoom()
         }.let {
 
             insertOrUpdate(it)
