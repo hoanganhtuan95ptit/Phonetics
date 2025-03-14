@@ -26,8 +26,10 @@ import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.updateMargin
+import com.simple.coreapp.utils.extentions.Event
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Deeplink
+import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
@@ -37,6 +39,7 @@ import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.game.GameFragment
+import com.simple.phonetics.ui.game.GameViewModel
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
@@ -45,13 +48,22 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
+import com.simple.state.doFailed
+import com.simple.state.doSuccess
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isSuccess
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.first
 import java.util.UUID
 
 class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, GameIPAWordleViewModel>() {
+
+    private val gameViewModel: GameViewModel by lazy {
+        getViewModel(requireParentFragment(), GameViewModel::class)
+    }
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
@@ -84,6 +96,7 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
         setupRecyclerView()
 
         observeData()
+        observeGameData()
         observeGameConfigData()
     }
 
@@ -100,7 +113,10 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
 
         val imageStateAdapter = ImageStateAdapter { view, item ->
 
-            if (item.id == Id.LISTEN) listen()
+            if (item.id == Id.LISTEN) {
+
+                listen()
+            }
         }
 
         adapter = MultiAdapter(clickTextAdapter, imageStateAdapter, *ListPreviewAdapter()).apply {
@@ -126,15 +142,24 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
 
         val fragment = this@GameIPAWordleFragment
 
-        val keyRequest = "GAME_IPA_WORDLE_KEY_REQUEST"
+        checkState.observe(viewLifecycleOwner) {
 
-        listenerEvent(fragment.viewLifecycleOwner.lifecycle, keyRequest) {
+            it.doSuccess {
+                gameViewModel.updateAnswerCorrect(true)
+            }
 
-            if (it !is Bundle) return@listenerEvent
+            it.doFailed {
+                gameViewModel.updateAnswerCorrect(false)
+            }
+        }
 
-            val binding = binding?.frameConfirm ?: return@listenerEvent
+        stateInfoEvent.asFlow().launchCollect(viewLifecycleOwner) { event ->
 
-            delay(350)
+            val info = event.getContentIfNotHandled() ?: return@launchCollect
+
+            showPopupInfo(info)
+
+            val binding = binding ?: return@launchCollect
 
             val transitionName = UUID.randomUUID().toString()
             binding.root.transitionName = transitionName
@@ -147,26 +172,6 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
 
                 viewModel.updateChoose(null)
             }
-        }
-
-        stateInfoEvent.asFlow().launchCollect(viewLifecycleOwner) { event ->
-
-            val info = event.getContentIfNotHandled() ?: return@launchCollect
-
-            val extras = bundleOf(
-                Param.CANCEL to false,
-
-                Param.TITLE to info.title,
-                Param.MESSAGE to info.message,
-
-                Param.BACKGROUND to info.background,
-
-                Param.POSITIVE to info.positive,
-
-                Param.KEY_REQUEST to keyRequest
-            )
-
-            sendDeeplink(Deeplink.CONFIRM, extras = extras)
         }
 
 
@@ -197,6 +202,14 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
         }
     }
 
+    private fun observeGameData() = with(gameViewModel) {
+
+        consecutiveCorrectAnswers.observe(viewLifecycleOwner) {
+
+            viewModel.updateConsecutiveCorrectAnswers(it)
+        }
+    }
+
     private fun observeGameConfigData() = with(gameConfigViewModel) {
 
         resourceSelected.observe(viewLifecycleOwner) {
@@ -217,6 +230,33 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
             voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
         )
     }
+
+    private suspend fun showPopupInfo(info: GameIPAWordleViewModel.StateInfo) = channelFlow {
+
+        listenerEvent(coroutineScope = this, EventName.DISMISS) {
+
+            trySend(Unit)
+        }
+
+        val extras = bundleOf(
+            Param.CANCEL to false,
+
+            Param.ANIM to info.anim,
+
+            Param.TITLE to info.title,
+            Param.MESSAGE to info.message,
+
+            Param.BACKGROUND to info.background,
+
+            Param.POSITIVE to info.positive,
+        )
+
+        sendDeeplink(Deeplink.CONFIRM, extras = extras)
+
+        awaitClose {
+
+        }
+    }.first()
 }
 
 @com.tuanha.deeplink.annotation.Deeplink

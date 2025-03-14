@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
+import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
@@ -273,13 +274,19 @@ class GameIPAWordleViewModel(
         postDifferentValue(info)
     }
 
+
     val checkState: LiveData<ResultState<String>> = MediatorLiveData()
     val checkStateEvent: LiveData<Event<ResultState<String>>> = checkState.toEvent()
 
-    val stateInfo: LiveData<StateInfo> = combineSources(theme, translate, quiz, choose, checkStateEvent) {
+
+    val consecutiveCorrectAnswers: LiveData<Int> = MediatorLiveData(0)
+
+
+    val stateInfo: LiveData<StateInfo> = combineSources(theme, translate, quiz, choose, checkStateEvent, consecutiveCorrectAnswers) {
 
         val quiz = quiz.get()
         val checkState = checkStateEvent.get().getContentIfNotHandled() ?: return@combineSources
+        val consecutiveCorrectAnswers = consecutiveCorrectAnswers.value.orZero()
 
 
         if (!checkState.isCompleted()) {
@@ -288,6 +295,16 @@ class GameIPAWordleViewModel(
 
         val theme = theme.get()
         val translate = translate.get()
+
+        val anim = if (checkState.isSuccess() && consecutiveCorrectAnswers % 5 == 0) listOf(
+            R.raw.anim_congratulations_1,
+            R.raw.anim_congratulations_2,
+            R.raw.anim_congratulations_3,
+            R.raw.anim_congratulations_4,
+            R.raw.anim_congratulations_5
+        ).random() else {
+            null
+        }
 
         val param1 = quiz.answerType.getName(translate = translate).let {
 
@@ -335,6 +352,8 @@ class GameIPAWordleViewModel(
             .trim()
 
         val info = StateInfo(
+            anim = anim,
+
             title = title,
             message = message,
 
@@ -426,7 +445,13 @@ class GameIPAWordleViewModel(
     }
 
     fun updateResource(it: Word.Resource) {
+
         resourceSelected.postDifferentValue(it)
+    }
+
+    fun updateConsecutiveCorrectAnswers(count: Int) {
+
+        consecutiveCorrectAnswers.postDifferentValue(count)
     }
 
     private fun getLoadingViewItem(theme: AppTheme): List<ViewItem> = arrayListOf<ViewItem>().apply {
@@ -459,6 +484,8 @@ class GameIPAWordleViewModel(
     }
 
     data class StateInfo(
+        val anim: Int? = null,
+
         val title: CharSequence,
         val message: CharSequence,
 
