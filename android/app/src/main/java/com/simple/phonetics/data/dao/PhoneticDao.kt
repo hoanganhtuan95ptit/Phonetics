@@ -17,11 +17,17 @@ private const val TABLE_NAME = "phonetics"
 @Dao
 interface PhoneticDao {
 
-    fun getListByTextList(textList: List<String>): List<Phonetic> = textList.chunked(300).flatMap {
+    fun getListByTextList(textList: List<String>): List<Phonetic> = textList.chunked(300).flatMap { list ->
 
-        getRoomListByTextList(textList = it).map { room ->
+        getRoomListByTextList(textList = list).groupBy {
 
-            room.toEntity()
+            it.text.lowercase()
+        }.mapValues {
+
+            it.value.first()
+        }.values.map {
+
+            it.toEntity()
         }
     }
 
