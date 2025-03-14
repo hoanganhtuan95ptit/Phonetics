@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.view.microphone
+package com.simple.phonetics.ui.home.view.microphone
 
 import androidx.core.os.bundleOf
 import com.simple.core.utils.extentions.asObjectOrNull
@@ -7,25 +7,25 @@ import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
-import com.simple.phonetics.ui.phonetic.PhoneticsFragment
-import com.simple.phonetics.ui.phonetic.PhoneticViewModel
+import com.simple.phonetics.ui.home.HomeFragment
+import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-interface MicrophoneView {
+interface MicrophoneHomeView {
 
-    fun setupMicrophone(fragment: PhoneticsFragment)
+    fun setupMicrophone(fragment: HomeFragment)
 }
 
-class MicrophoneViewImpl : MicrophoneView {
+class MicrophoneHomeViewImpl : MicrophoneHomeView {
 
-    override fun setupMicrophone(fragment: PhoneticsFragment) {
+    override fun setupMicrophone(fragment: HomeFragment) {
 
-        val viewModel: PhoneticViewModel by fragment.viewModel()
+        val viewModel: HomeViewModel by fragment.viewModel()
 
-        val microphoneViewModel: MicrophoneViewModel by fragment.viewModel()
+        val microphoneHomeViewModel: MicrophoneHomeViewModel by fragment.viewModel()
 
 
         fragment.binding?.ivMicrophone?.setDebouncedClickListener {
@@ -42,10 +42,10 @@ class MicrophoneViewImpl : MicrophoneView {
 
         viewModel.isReverse.observe(fragment.viewLifecycleOwner) {
 
-            microphoneViewModel.updateReverse(it)
+            microphoneHomeViewModel.updateReverse(it)
         }
 
-        microphoneViewModel.microphoneInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "MICROPHONE") {
+        microphoneHomeViewModel.microphoneInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "MICROPHONE") {
 
             val binding = fragment.binding ?: return@collectWithLockTransitionUntilData
 

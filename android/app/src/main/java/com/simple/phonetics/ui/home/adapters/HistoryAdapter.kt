@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.adapters
+package com.simple.phonetics.ui.home.adapters
 
 import android.view.View
 import com.simple.adapter.ViewItemAdapter

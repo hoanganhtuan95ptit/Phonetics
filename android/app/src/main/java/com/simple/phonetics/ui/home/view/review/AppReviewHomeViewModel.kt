@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.view.review
+package com.simple.phonetics.ui.home.view.review
 
 import android.text.style.ForegroundColorSpan
 import androidx.annotation.VisibleForTesting
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import java.util.Calendar
 import kotlin.math.absoluteValue
 
-class AppReviewViewModel(
+class AppReviewHomeViewModel(
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
 ) : CommonViewModel() {
 

@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.phonetic.view
+package com.simple.phonetics.ui.home.view
 
 import android.content.ClipboardManager
 import android.content.Context
@@ -9,16 +9,16 @@ import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.clear
 import com.simple.coreapp.utils.extentions.haveText
 import com.simple.coreapp.utils.extentions.text
-import com.simple.phonetics.ui.phonetic.PhoneticsFragment
+import com.simple.phonetics.ui.home.HomeFragment
 
-interface PasteView {
+interface PasteHomeView {
 
-    fun setupPaste(fragment: PhoneticsFragment)
+    fun setupPaste(fragment: HomeFragment)
 }
 
-class PasteViewImpl : PasteView {
+class PasteHomeViewImpl : PasteHomeView {
 
-    override fun setupPaste(fragment: PhoneticsFragment) {
+    override fun setupPaste(fragment: HomeFragment) {
 
         val clipboard = fragment.requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
