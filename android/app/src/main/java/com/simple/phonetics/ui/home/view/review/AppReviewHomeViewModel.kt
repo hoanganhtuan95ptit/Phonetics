@@ -4,7 +4,6 @@ import android.text.style.ForegroundColorSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.asFlow
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
@@ -42,9 +41,10 @@ class AppReviewHomeViewModel(
     }
 
     @VisibleForTesting
-    val rateInfo: LiveData<RateInfo> = combineSources(theme, rate, rateEnable) {
+    val rateInfo: LiveData<RateInfo> = combineSources(theme, translate, rate, rateEnable) {
 
         val theme = theme.value ?: return@combineSources
+        val translate = translate.value ?: return@combineSources
 
         val rate = rate.value ?: return@combineSources
         val rateEnable = rateEnable.value ?: return@combineSources
@@ -62,7 +62,6 @@ class AppReviewHomeViewModel(
             return@combineSources
         }
 
-        val translate = translate.asFlow().firstOrNull() ?: return@combineSources
 
         if (rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3) RateInfo(
             show = true,
