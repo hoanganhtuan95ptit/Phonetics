@@ -6,7 +6,7 @@
   "action_try_speak": "Try speak",
   "action_view_all_ipa": "View all",
 
-  "game_config_screen_action_play_game": "Just play the game",
+  "game_config_screen_action_play_game": "Jump into the game now!",
   "game_config_screen_message_resource_from_history": "Based on previously looked up words",
   "game_config_screen_message_resource_from_popular": "Based on commonly used words",
   "game_config_screen_message_resource_limit": "Selection unavailable due to low word count",
