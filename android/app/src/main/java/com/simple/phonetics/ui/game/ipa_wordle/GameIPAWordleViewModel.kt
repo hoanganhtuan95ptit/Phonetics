@@ -314,7 +314,10 @@ class GameIPAWordleViewModel(
         val theme = theme.get()
         val translate = translate.get()
 
-        val anim = if (checkState.isSuccess() && consecutiveCorrectAnswers % 5 == 0) listOf(
+        val consecutiveCorrectAnswersLimit = 5
+        val isConsecutiveCorrectAnswers = consecutiveCorrectAnswers % consecutiveCorrectAnswersLimit == 0
+
+        val anim = if (checkState.isSuccess() && isConsecutiveCorrectAnswers) listOf(
             R.raw.anim_congratulations_1,
             R.raw.anim_congratulations_2,
             R.raw.anim_congratulations_3,
@@ -371,6 +374,9 @@ class GameIPAWordleViewModel(
 
         val info = StateInfo(
             anim = anim,
+
+            isConsecutiveCorrectAnswer = isConsecutiveCorrectAnswers,
+            consecutiveCorrectAnswerLimit = consecutiveCorrectAnswersLimit,
 
             title = title,
             message = message,
@@ -508,6 +514,9 @@ class GameIPAWordleViewModel(
 
     data class StateInfo(
         val anim: Int? = null,
+
+        val isConsecutiveCorrectAnswer: Boolean? = null,
+        val consecutiveCorrectAnswerLimit: Int? = null,
 
         val title: CharSequence,
         val message: CharSequence,
