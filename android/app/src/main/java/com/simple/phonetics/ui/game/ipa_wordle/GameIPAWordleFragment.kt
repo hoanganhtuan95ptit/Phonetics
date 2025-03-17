@@ -90,6 +90,8 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
         setupRecyclerView()
 
         observeData()
+        observeConfigData()
+
         observeGameData()
         observeGameConfigData()
     }
@@ -196,6 +198,15 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
     }
+
+    private fun observeConfigData() = with(configViewModel) {
+
+        listenerEnable.observe(viewLifecycleOwner) {
+
+            viewModel.updateListenerEnable(it)
+        }
+    }
+
 
     private fun observeGameData() = with(gameViewModel) {
 
