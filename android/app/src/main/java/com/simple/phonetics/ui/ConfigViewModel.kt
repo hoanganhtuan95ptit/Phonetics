@@ -235,6 +235,13 @@ class ConfigViewModel(
         }
     }
 
+    val listenerEnable: LiveData<Boolean> = combineSources(voiceState) {
+
+        val voiceState = voiceState.get()
+
+        postDifferentValue(voiceState.toSuccess()?.data.orEmpty().isNotEmpty())
+    }
+
 
     val voiceSpeed: LiveData<Float> = MediatorLiveData<Float>().apply {
 

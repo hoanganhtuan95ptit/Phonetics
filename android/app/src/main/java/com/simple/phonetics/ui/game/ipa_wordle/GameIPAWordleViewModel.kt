@@ -77,6 +77,10 @@ class GameIPAWordleViewModel(
         }
     }
 
+    @VisibleForTesting
+    val listenEnable: LiveData<Boolean> = MediatorLiveData()
+
+    @VisibleForTesting
     val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
 
     @VisibleForTesting
@@ -89,15 +93,29 @@ class GameIPAWordleViewModel(
         postDifferentValue(ResultState.Success(list))
     }
 
-    private val quiz: LiveData<Quiz> = combineSources(phoneticState) {
+    private val quiz: LiveData<Quiz> = combineSources(listenEnable, phoneticState) {
 
-        val phonetics = phoneticState.get().toSuccess()?.data ?: return@combineSources
+        val listenEnable = listenEnable.value ?: return@combineSources
+        val phoneticState = phoneticState.value ?: return@combineSources
 
-        val answerType = listOf(Quiz.Type.TEXT, Quiz.Type.IPA).random()
+        val phonetics = phoneticState.toSuccess()?.data ?: return@combineSources
+
+        val typeRemoveList = arrayListOf<Quiz.Type>()
+
+        // nếu không hỗ trợ phát âm thì bỏ ra khỏi danh sách
+        if (!listenEnable) {
+            typeRemoveList.add(Quiz.Type.VOICE)
+        }
+
+        val answerType = listOf(Quiz.Type.TEXT, Quiz.Type.IPA).toMutableList().apply {
+
+            removeAll(typeRemoveList)
+        }.random()
 
         val questionType = Quiz.Type.entries.toMutableList().apply {
 
             remove(answerType)
+            removeAll(typeRemoveList)
         }.random()
 
         val quiz = Quiz(
@@ -447,6 +465,11 @@ class GameIPAWordleViewModel(
     fun updateResource(it: Word.Resource) {
 
         resourceSelected.postDifferentValue(it)
+    }
+
+    fun updateListenerEnable(it: Boolean) {
+
+        listenEnable.postDifferentValue(it)
     }
 
     fun updateConsecutiveCorrectAnswers(count: Int) {
