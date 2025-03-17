@@ -26,7 +26,7 @@ class WordRepositoryImpl(
         return wordDao.getCountAsync(resource = resource, languageCode = languageCode)
     }
 
-    override suspend fun getRandom(resource: String, languageCode: String, textLimit: Int, limit: Int): List<String> {
-        return wordDao.getRandom(resource = resource, languageCode = languageCode, textLimit = textLimit, limit = limit)
+    override suspend fun getRandom(resource: String, languageCode: String, textMin: Int, textLimit: Int, limit: Int): List<String> {
+        return wordDao.getRandom(resource = resource, languageCode = languageCode, textMin = textMin, textLimit = textLimit, limit = limit)
     }
 }
