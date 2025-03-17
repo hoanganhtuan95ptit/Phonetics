@@ -12,5 +12,5 @@ interface WordRepository {
 
     suspend fun getCountAsync(resource: String, languageCode: String): Flow<Int>
 
-    suspend fun getRandom(resource: String, languageCode: String, textLimit: Int, limit: Int): List<String>
+    suspend fun getRandom(resource: String, languageCode: String, textMin: Int, textLimit: Int, limit: Int): List<String>
 }

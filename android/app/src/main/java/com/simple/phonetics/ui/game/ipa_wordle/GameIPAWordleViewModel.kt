@@ -84,7 +84,7 @@ class GameIPAWordleViewModel(
 
         postDifferentValue(ResultState.Start)
 
-        val list = getPhoneticsRandomUseCase.execute(GetPhoneticsRandomUseCase.Param(resource = resourceSelected.get(), limit = 4)).shuffled()
+        val list = getPhoneticsRandomUseCase.execute(GetPhoneticsRandomUseCase.Param(resource = resourceSelected.get(), limit = 4, textLengthMax = 10)).shuffled()
 
         postDifferentValue(ResultState.Success(list))
     }

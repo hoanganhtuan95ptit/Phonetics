@@ -34,12 +34,12 @@ interface WordDao {
     fun getRoomListAsync(resource: String, languageCode: String): Flow<List<RoomWord>>
 
 
-    fun getRandom(resource: String, languageCode: String, textLimit: Int, limit: Int): List<String> = getRoomRandom(resource = resource, languageCode = languageCode, textLimit = textLimit, limit = limit).map {
+    fun getRandom(resource: String, languageCode: String, textMin: Int, textLimit: Int, limit: Int): List<String> = getRoomRandom(resource = resource, languageCode = languageCode, textMin = textMin, textLimit = textLimit, limit = limit).map {
         it.text
     }
 
-    @Query("SELECT * FROM $TABLE_NAME WHERE resource = :resource AND languageCode COLLATE NOCASE IN (:languageCode) AND LENGTH(text) < :textLimit ORDER BY RANDOM() LIMIT :limit")
-    fun getRoomRandom(resource: String, languageCode: String, textLimit: Int, limit: Int): List<RoomWord>
+    @Query("SELECT * FROM $TABLE_NAME WHERE resource = :resource AND languageCode COLLATE NOCASE IN (:languageCode) AND LENGTH(text) >= :textMin AND LENGTH(text) < :textLimit ORDER BY RANDOM() LIMIT :limit")
+    fun getRoomRandom(resource: String, languageCode: String, textMin: Int, textLimit: Int, limit: Int): List<RoomWord>
 
 
     fun insertOrUpdate(resource: String, languageCode: String, list: List<String>) {
