@@ -253,7 +253,11 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
             trySend(Unit)
         }
 
-        val extras = bundleOf(
+
+        val extras = if (info.isConsecutiveCorrectAnswer == true) bundleOf(
+
+            com.simple.phonetics.Param.NUMBER to info.consecutiveCorrectAnswerLimit
+        ) else bundleOf(
             Param.CANCEL to false,
 
             Param.ANIM to info.anim,
@@ -266,7 +270,11 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
             Param.POSITIVE to info.positive,
         )
 
-        sendDeeplink(Deeplink.CONFIRM, extras = extras)
+        if (info.isConsecutiveCorrectAnswer == true) {
+            sendDeeplink(Deeplink.GAME_CONGRATULATION, extras = extras)
+        } else {
+            sendDeeplink(Deeplink.CONFIRM, extras = extras)
+        }
 
         awaitClose {
 

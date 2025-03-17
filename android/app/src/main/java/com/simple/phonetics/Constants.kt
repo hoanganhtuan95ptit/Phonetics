@@ -7,6 +7,7 @@ object Param {
     const val TEXT = "TEXT"
     const val FIRST = "FIRST"
     const val RESULT = "RESULT"
+    const val NUMBER = "NUMBER"
     const val TASK_ID = "TASK_ID"
     const val REVERSE = "REVERSE"
     const val IS_SUPPORT = "IS_SUPPORT"
@@ -35,6 +36,7 @@ object Deeplink {
     const val GAME = "app://game"
     const val GAME_CONFIG = "app://game_config"
     const val GAME_IPA_WORDLE = "app://game_ipa_wordle"
+    const val GAME_CONGRATULATION = "app://game_congratulation"
 }
 
 object Payload {
