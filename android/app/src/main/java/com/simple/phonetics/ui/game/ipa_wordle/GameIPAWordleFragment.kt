@@ -1,14 +1,10 @@
 package com.simple.phonetics.ui.game.ipa_wordle
 
 import android.content.ComponentCallbacks
-import android.graphics.Color
-import android.os.Build
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import com.google.android.flexbox.JustifyContent
@@ -16,7 +12,6 @@ import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.Param
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
@@ -26,7 +21,6 @@ import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.updateMargin
-import com.simple.coreapp.utils.extentions.Event
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.EventName
@@ -48,13 +42,13 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
+import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isSuccess
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import java.util.UUID
@@ -157,7 +151,8 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
 
             val info = event.getContentIfNotHandled() ?: return@launchCollect
 
-            showPopupInfo(info)
+            showPopupInfo(info = info, state = checkState.value ?: return@launchCollect)
+
 
             val binding = binding ?: return@launchCollect
 
@@ -231,7 +226,16 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
         )
     }
 
-    private suspend fun showPopupInfo(info: GameIPAWordleViewModel.StateInfo) = channelFlow {
+    private suspend fun showPopupInfo(info: GameIPAWordleViewModel.StateInfo, state: ResultState<String>) = channelFlow {
+
+        val source = if (state.isSuccess()) {
+            R.raw.mp3_answer_correct
+        } else {
+            R.raw.mp3_answer_failed
+        }
+
+        val mediaPlayer = MediaPlayer.create(context, source)
+        mediaPlayer.start()
 
         listenerEvent(coroutineScope = this, EventName.DISMISS) {
 
@@ -255,6 +259,7 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
 
         awaitClose {
 
+            mediaPlayer.release()
         }
     }.first()
 }
