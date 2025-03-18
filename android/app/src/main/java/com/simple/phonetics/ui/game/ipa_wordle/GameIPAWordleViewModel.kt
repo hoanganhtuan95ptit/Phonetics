@@ -161,6 +161,7 @@ class GameIPAWordleViewModel(
             text = translate["game_ipa_wordle_screen_title"].orEmpty()
                 .replace("\$param1", param1)
                 .replace("\$param2", param2)
+                .with(ForegroundColorSpan(theme.colorOnSurface))
                 .with(param1, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface))
                 .with(param2, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
             textMargin = Margin(
@@ -220,14 +221,18 @@ class GameIPAWordleViewModel(
 
         quiz.answers.mapIndexed { index, phonetic ->
 
+            val text = if (quiz.answerType == Quiz.Type.TEXT)
+                phonetic.text
+            else
+                phonetic.ipa.flatMap { it.value }.first()
+
+
             ClickTextViewItem(
                 id = "${Id.CHOOSE}_$index",
                 data = phonetic,
 
-                text = if (quiz.answerType == Quiz.Type.TEXT)
-                    phonetic.text
-                else
-                    phonetic.ipa.flatMap { it.value }.first(),
+                text = text
+                    .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
                 textStyle = TextStyle(
                     textSize = 16f,
                     textGravity = Gravity.CENTER
