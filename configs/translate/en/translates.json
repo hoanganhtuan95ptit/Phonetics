@@ -6,24 +6,45 @@
   "action_try_speak": "Try speak",
   "action_view_all_ipa": "View all",
 
-  "game_config_screen_action_play_game": "Jump into the game now!",
-  "game_config_screen_message_resource_from_history": "Based on previously looked up words",
+  "game_screen_title": "Game",
+
+  "game_config_screen_action_play_game": "Start playing now!",
+  "game_config_screen_title_resource": "Choose game source",
+  "game_config_screen_message_resource_from_history": "Based on previously searched words",
   "game_config_screen_message_resource_from_popular": "Based on commonly used words",
-  "game_config_screen_message_resource_limit": "Selection unavailable due to low word count",
-  "game_config_screen_title_resource": "Select play source",
+  "game_config_screen_message_resource_limit": "Cannot select due to insufficient words",
 
   "game_ipa_wordle_screen_action": "Check",
   "game_ipa_wordle_screen_action_continue": "Continue",
-  "game_ipa_wordle_screen_action_retry": "Retry",
-  "game_ipa_wordle_screen_message_answer": "$param1 of $param2 is $param3",
-  "game_ipa_wordle_screen_title": "Select $param1 that matches $param2 below?",
-  "game_ipa_wordle_screen_title_answer_failed": "Not exactly",
-  "game_ipa_wordle_screen_title_answer_true": "Great",
+  "game_ipa_wordle_screen_action_retry": "Try again",
+  "game_ipa_wordle_screen_title": "Select the correct $param1 for the $param2 below?",
+  "game_ipa_wordle_screen_message_answer": "$param1 in $param2 is $param3",
+  "game_ipa_wordle_screen_title_answer_failed": "Not quite right",
+  "game_ipa_wordle_screen_title_answer_true": "Awesome!",
 
-  "game_screen_title": "Game",
+  "game_congratulation_screen_title": "Congratulations! 🎉",
+  "game_congratulation_screen_message": "Amazing! You've answered correctly $number times in a row! Keep going, don't let your streak slip! 😆👏",
+  "game_congratulation_screen_title_1": "Impressive skills! 😁",
+  "game_congratulation_screen_message_1": "Wow! You've got $number correct in a row! It’d be a shame to break the streak now! 🤭🔥",
+  "game_congratulation_screen_title_2": "Unstoppable! 😎",
+  "game_congratulation_screen_message_2": "You've answered correctly $number times in a row! Are you hacking? Because this is unreal! 🤔😂",
+  "game_congratulation_screen_title_3": "I bow to you! 🙇‍♂️",
+  "game_congratulation_screen_message_3": "$number correct answers in a row! At this rate, you're about to become a grandmaster! Keep it up! 🔥🎯",
+  "game_congratulation_screen_title_4": "A living legend! 🏆",
+  "game_congratulation_screen_message_4": "You've reached legendary status with $number correct answers in a row! All you need now is a fan club! 🤩👏",
+  "game_congratulation_screen_action": "Keep going!",
 
   "hint_enter_language_text": "Enter $language_name here!",
   "hint_enter_text": "Enter text here!",
+
+  "ipa_list_screen_title": "Ipa list",
+
+  "ipa_detail_screen_title_example": "Example:",
+  "ipa_detail_screen_consonants_unvoiced": "Consonants unvoiced",
+  "ipa_detail_screen_consonants_voiced": "Consonants voiced",
+  "ipa_detail_screen_diphthongs": "Diphthongs",
+  "ipa_detail_screen_vowels_long": "Vowels long",
+  "ipa_detail_screen_vowels_short": "Vowels short",
 
   "ipa_c": "Central",
   "ipa_de": "German",
@@ -54,15 +75,6 @@
   "ipa_yue": "Cantonese",
   "ipa_zh_hans": "Simplified Chinese",
   "ipa_zh_hant": "Traditional Chinese",
-
-  "ipa_detail_screen_consonants_unvoiced": "Consonants unvoiced",
-  "ipa_detail_screen_consonants_voiced": "Consonants voiced",
-  "ipa_detail_screen_diphthongs": "Diphthongs",
-  "ipa_detail_screen_title_example": "Example:",
-  "ipa_detail_screen_vowels_long": "Vowels long",
-  "ipa_detail_screen_vowels_short": "Vowels short",
-
-  "ipa_list_screen_title": "Ipa list",
 
   "language_ar": "Arab",
   "language_de": "Germany",
@@ -99,10 +111,10 @@
   "message_sync_completed": "Synchronization completed",
   "message_translate_download": "Downloading translation...",
 
+  "rate_title": "Rate app",
+  "rate_message": "We’d love your feedback to make the app even better. Your review means a lot! 🌟",
   "rate_action_negative": "Late",
   "rate_action_positive": "Rate",
-  "rate_message": "We’d love your feedback to make the app even better. Your review means a lot! 🌟",
-  "rate_title": "Rate app",
 
   "recording_screen_title": "Please speak $language_name",
 

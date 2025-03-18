@@ -22,9 +22,22 @@
 
   "game_screen_title": "Trò chơi",
 
-  "game_congratulation_screen_title": "Xin chúc mừng",
-  "game_congratulation_screen_message": "Tuyệt vời! Bạn đã trả lời đúng $number lần liên tiếp! Hãy tiếp tục cố gắng nhé! \uD83C\uDF89\uD83D\uDC4F",
-  "game_congratulation_screen_action": "Tiếp tục nào",
+  "game_congratulation_screen_title": "Xin chúc mừng! 🎉",
+  "game_congratulation_screen_message": "Tuyệt vời! Bạn đã trả lời đúng $number lần liên tiếp! Hãy tiếp tục đừng để phong độ tụt dốc nha! 😆👏",
+
+  "game_congratulation_screen_title_1": "Giỏi ghê ta! 😁",
+  "game_congratulation_screen_message_1": "Đỉnh thật! Bạn đã đúng $number lần liên tiếp rồi đó! Giờ mà sai thì hơi tiếc nha! 🤭🔥",
+
+  "game_congratulation_screen_title_2": "Ghê thật chứ! 😎",
+  "game_congratulation_screen_message_2": "Bạn đã đúng $number lần liên tiếp! Chắc bạn đang hack đúng không? Không thì sao giỏi vậy được! 🤔😂",
+
+  "game_congratulation_screen_title_3": "Tại hạ xin quỳ! 🙇‍♂️",
+  "game_congratulation_screen_message_3": "Bạn đã đúng $number lần liên tiếp! Trình độ này chắc sắp được phong làm sư phụ rồi! Đừng dừng lại nhé! 🔥🎯",
+
+  "game_congratulation_screen_title_4": "Huyền thoại sống! 🏆",
+  "game_congratulation_screen_message_4": "Bạn đã bước lên con đường huyền thoại với $number lần đúng liên tiếp! Giờ chỉ thiếu fan hâm mộ thôi! 🤩👏",
+
+  "game_congratulation_screen_action": "Tiếp tục nào!",
 
   "hint_enter_language_text": "Nhập $language_name tại đây!",
   "hint_enter_text": "Nhập văn bản tại đây!",
@@ -115,7 +128,7 @@
 
   "speed_lever": "Tốc độ $lever",
 
-  "title_game": "Game gủng gì chưa, Người đẹp \uD83D\uDE01\uD83D\uDE01 ?",
+  "title_game": "Game gủng gì chưa, Người đẹp? 😆🎮",
   "title_history": "Lịch sử:",
   "title_ipa": "IPA:",
   "title_language": "Chọn ngôn ngữ",
