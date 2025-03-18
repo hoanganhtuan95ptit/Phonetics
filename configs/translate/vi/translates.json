@@ -12,6 +12,18 @@
   "game_config_screen_message_resource_limit": "Không thể chọn do số lượng từ quá ít",
   "game_config_screen_title_resource": "Chọn nguồn chơi",
 
+  "game_congratulation_screen_action": "Tiếp tục nào!",
+  "game_congratulation_screen_message": "Tuyệt vời! Bạn đã trả lời đúng $number lần liên tiếp! Hãy tiếp tục đừng để phong độ tụt dốc nha! 😆👏",
+  "game_congratulation_screen_message_1": "Đỉnh thật! Bạn đã đúng $number lần liên tiếp rồi đó! Giờ mà sai thì hơi tiếc nha! 🤭🔥",
+  "game_congratulation_screen_message_2": "Bạn đã đúng $number lần liên tiếp! Chắc bạn đang hack đúng không? Không thì sao giỏi vậy được! 🤔😂",
+  "game_congratulation_screen_message_3": "Bạn đã đúng $number lần liên tiếp! Trình độ này chắc sắp được phong làm sư phụ rồi! Đừng dừng lại nhé! 🔥🎯",
+  "game_congratulation_screen_message_4": "Bạn đã bước lên con đường huyền thoại với $number lần đúng liên tiếp! Giờ chỉ thiếu fan hâm mộ thôi! 🤩👏",
+  "game_congratulation_screen_title": "Xin chúc mừng! 🎉",
+  "game_congratulation_screen_title_1": "Giỏi ghê ta! 😁",
+  "game_congratulation_screen_title_2": "Ghê thật chứ! 😎",
+  "game_congratulation_screen_title_3": "Tại hạ xin bái phục! 🙇‍♂️",
+  "game_congratulation_screen_title_4": "Huyền thoại sống! 🏆",
+
   "game_ipa_wordle_screen_action": "Kiểm tra",
   "game_ipa_wordle_screen_action_continue": "Tiếp tục",
   "game_ipa_wordle_screen_action_retry": "Thử lại",
@@ -22,28 +34,17 @@
 
   "game_screen_title": "Trò chơi",
 
-  "game_congratulation_screen_title": "Xin chúc mừng! 🎉",
-  "game_congratulation_screen_message": "Tuyệt vời! Bạn đã trả lời đúng $number lần liên tiếp! Hãy tiếp tục đừng để phong độ tụt dốc nha! 😆👏",
-
-  "game_congratulation_screen_title_1": "Giỏi ghê ta! 😁",
-  "game_congratulation_screen_message_1": "Đỉnh thật! Bạn đã đúng $number lần liên tiếp rồi đó! Giờ mà sai thì hơi tiếc nha! 🤭🔥",
-
-  "game_congratulation_screen_title_2": "Ghê thật chứ! 😎",
-  "game_congratulation_screen_message_2": "Bạn đã đúng $number lần liên tiếp! Chắc bạn đang hack đúng không? Không thì sao giỏi vậy được! 🤔😂",
-
-  "game_congratulation_screen_title_3": "Tại hạ xin quỳ! 🙇‍♂️",
-  "game_congratulation_screen_message_3": "Bạn đã đúng $number lần liên tiếp! Trình độ này chắc sắp được phong làm sư phụ rồi! Đừng dừng lại nhé! 🔥🎯",
-
-  "game_congratulation_screen_title_4": "Huyền thoại sống! 🏆",
-  "game_congratulation_screen_message_4": "Bạn đã bước lên con đường huyền thoại với $number lần đúng liên tiếp! Giờ chỉ thiếu fan hâm mộ thôi! 🤩👏",
-
-  "game_congratulation_screen_action": "Tiếp tục nào!",
-
   "hint_enter_language_text": "Nhập $language_name tại đây!",
   "hint_enter_text": "Nhập văn bản tại đây!",
 
   "ipa_c": "Trung tâm",
   "ipa_de": "Tiếng Đức",
+  "ipa_detail_screen_consonants_unvoiced": "Phụ âm vô thanh",
+  "ipa_detail_screen_consonants_voiced": "Phụ âm hữu thanh",
+  "ipa_detail_screen_diphthongs": "Nguyên âm đôi",
+  "ipa_detail_screen_title_example": "Ví dụ:",
+  "ipa_detail_screen_vowels_long": "Nguyên âm dài",
+  "ipa_detail_screen_vowels_short": "Nguyên âm ngắn",
   "ipa_eo": "Tiếng Esperanto",
   "ipa_es_es": "Tiếng Tây Ban Nha (Tây Ban Nha)",
   "ipa_es_mx": "Tiếng Tây Ban Nha (Mexico)",
@@ -56,6 +57,7 @@
   "ipa_jam": "Tiếng Creole Jamaica",
   "ipa_km": "Tiếng Khmer",
   "ipa_ko": "Tiếng Hàn",
+  "ipa_list_screen_title": "Danh sách IPA",
   "ipa_ma": "Tiếng Mã Lai (Malaysia và Indonesia)",
   "ipa_n": "Miền Bắc",
   "ipa_nb": "Tiếng Na Uy Bokmål",
@@ -72,19 +74,10 @@
   "ipa_zh_hans": "Tiếng Trung Giản thể",
   "ipa_zh_hant": "Tiếng Trung Phồn thể",
 
-  "ipa_detail_screen_consonants_unvoiced": "Phụ âm vô thanh",
-  "ipa_detail_screen_consonants_voiced": "Phụ âm hữu thanh",
-  "ipa_detail_screen_diphthongs": "Nguyên âm đôi",
-  "ipa_detail_screen_title_example": "Ví dụ:",
-  "ipa_detail_screen_vowels_long": "Nguyên âm dài",
-  "ipa_detail_screen_vowels_short": "Nguyên âm ngắn",
-
-  "ipa_list_screen_title": "Danh sách IPA",
-
   "language_ar": "Ả Rập",
   "language_de": "Đức",
-  "language_eo": "Esperanto",
   "language_en": "Anh",
+  "language_eo": "Esperanto",
   "language_es": "Tây Ban Nha, Mexico",
   "language_fa": "Iran",
   "language_fi": "Phần Lan",
