@@ -3,8 +3,12 @@ package com.simple.phonetics.ui.game.congratulations
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
-import com.simple.core.utils.extentions.orZero
+import androidx.core.os.bundleOf
+import androidx.core.view.updatePadding
 import com.simple.coreapp.ui.view.setBackground
+import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
+import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.EventName
@@ -13,12 +17,29 @@ import com.simple.phonetics.databinding.DialogCongratulationBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.utils.DeeplinkHandler
-import com.simple.phonetics.utils.sendDeeplink
+import com.simple.phonetics.utils.sendEvent
 
 class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, GameCongratulationViewModel>() {
 
+    override fun onDestroy() {
+        super.onDestroy()
+        sendEvent(EventName.DISMISS, bundleOf())
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val binding = binding ?: return
+
+        binding.root.doOnChangeHeightStatusAndHeightNavigation(viewLifecycleOwner) { heightStatusBar: Int, heightNavigationBar: Int ->
+
+            binding.root.updatePadding(bottom = heightStatusBar + DP.DP_24)
+        }
+
+        binding.tvAction.setDebouncedClickListener {
+
+            dismiss()
+        }
 
         observeData()
     }
@@ -28,6 +49,9 @@ class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, Ga
         info.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
+
+            binding.lottieAnimationView.setAnimation(it.anim)
+            binding.lottieAnimationView.playAnimation()
 
             binding.tvTitle.text = it.title
             binding.tvMessage.text = it.message
@@ -47,7 +71,7 @@ class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, Ga
             binding.vAnchor.delegate.setBgSelector()
         }
 
-        arguments?.getInt(Param.NUMBER).orZero().let {
+        (arguments?.getLong(Param.NUMBER) ?: 0L).let {
 
             viewModel.updateNumber(it)
         }
@@ -68,8 +92,6 @@ class GameCongratulationDeeplink : DeeplinkHandler {
         val fragment = CongratulationFragment()
         fragment.arguments = extras
         fragment.showOrAwaitDismiss(activity.supportFragmentManager, "")
-
-        sendDeeplink(EventName.DISMISS)
 
         return true
     }

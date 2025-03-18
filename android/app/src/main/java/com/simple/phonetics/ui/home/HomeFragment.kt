@@ -449,7 +449,7 @@ class PhoneticsDeeplink : DeeplinkHandler {
 
         if (isActive()) fragmentTransaction.replace(R.id.fragment_container, fragment, "")
             .addToBackStack("")
-            .commit()
+            .commitAllowingStateLoss()
 
         return true
     }

@@ -13,7 +13,6 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
-import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
@@ -56,7 +55,6 @@ import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isCompleted
 import com.simple.state.isStart
-import com.simple.state.isSuccess
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -294,38 +292,20 @@ class GameIPAWordleViewModel(
 
 
     val checkState: LiveData<ResultState<String>> = MediatorLiveData()
-    val checkStateEvent: LiveData<Event<ResultState<String>>> = checkState.toEvent()
+
+    val consecutiveCorrectAnswerEvent: LiveData<Event<Pair<Long, Boolean>>> = MediatorLiveData()
 
 
-    val consecutiveCorrectAnswers: LiveData<Int> = MediatorLiveData(0)
-
-
-    val stateInfo: LiveData<StateInfo> = combineSources(theme, translate, quiz, choose, checkStateEvent, consecutiveCorrectAnswers) {
+    val stateInfo: LiveData<StateInfo> = combineSources(theme, translate, quiz, choose, consecutiveCorrectAnswerEvent) {
 
         val quiz = quiz.get()
-        val checkState = checkStateEvent.get().getContentIfNotHandled() ?: return@combineSources
-        val consecutiveCorrectAnswers = consecutiveCorrectAnswers.value.orZero()
+        val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSources
 
-
-        if (!checkState.isCompleted()) {
-            return@combineSources
-        }
 
         val theme = theme.get()
         val translate = translate.get()
 
-        val consecutiveCorrectAnswersLimit = 5
-        val isConsecutiveCorrectAnswers = consecutiveCorrectAnswers % consecutiveCorrectAnswersLimit == 0
-
-        val anim = if (checkState.isSuccess() && isConsecutiveCorrectAnswers) listOf(
-            R.raw.anim_congratulations_1,
-            R.raw.anim_congratulations_2,
-            R.raw.anim_congratulations_3,
-            R.raw.anim_congratulations_4,
-            R.raw.anim_congratulations_5
-        ).random() else {
-            null
-        }
+        val isAnswerCorrect = consecutiveCorrectAnswer.first > 0
 
         val param1 = quiz.answerType.getName(translate = translate).let {
 
@@ -349,13 +329,13 @@ class GameIPAWordleViewModel(
             " $it "
         }
 
-        val textColor = if (checkState.isSuccess()) {
+        val textColor = if (isAnswerCorrect) {
             theme.colorOnPrimaryVariant
         } else {
             theme.colorOnErrorVariant
         }
 
-        val title = (if (checkState.isSuccess()) {
+        val title = (if (isAnswerCorrect) {
             translate["game_ipa_wordle_screen_title_answer_true"].orEmpty()
         } else {
             translate["game_ipa_wordle_screen_title_answer_failed"].orEmpty()
@@ -372,40 +352,36 @@ class GameIPAWordleViewModel(
             .with(param3, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
             .trim()
 
+        val positive = ButtonInfo(
+            text = (if (isAnswerCorrect) {
+                translate["game_ipa_wordle_screen_action_continue"].orEmpty()
+            } else {
+                translate["game_ipa_wordle_screen_action_retry"].orEmpty()
+            }).with(ForegroundColorSpan(theme.colorOnPrimary)),
+            background = Background(
+                strokeWidth = 0,
+                cornerRadius = DP.DP_16,
+                backgroundColor = if (isAnswerCorrect) {
+                    theme.colorPrimary
+                } else {
+                    theme.colorError
+                }
+            )
+        )
+
         val info = StateInfo(
-            anim = anim,
-
-            isConsecutiveCorrectAnswer = isConsecutiveCorrectAnswers,
-            consecutiveCorrectAnswerLimit = consecutiveCorrectAnswersLimit,
-
             title = title,
             message = message,
+            positive = positive,
 
             background = Background(
                 cornerRadius_TR = DP.DP_16,
                 cornerRadius_TL = DP.DP_16,
-                backgroundColor = if (checkState.isSuccess()) {
+                backgroundColor = if (isAnswerCorrect) {
                     theme.colorPrimaryVariant
                 } else {
                     theme.colorErrorVariant
                 }
-            ),
-
-            positive = ButtonInfo(
-                text = (if (checkState.isSuccess()) {
-                    translate["game_ipa_wordle_screen_action_continue"].orEmpty()
-                } else {
-                    translate["game_ipa_wordle_screen_action_retry"].orEmpty()
-                }).with(ForegroundColorSpan(theme.colorOnPrimary)),
-                background = Background(
-                    strokeWidth = 0,
-                    cornerRadius = DP.DP_16,
-                    backgroundColor = if (checkState.isSuccess()) {
-                        theme.colorPrimary
-                    } else {
-                        theme.colorError
-                    }
-                )
             )
         )
 
@@ -478,9 +454,9 @@ class GameIPAWordleViewModel(
         listenEnable.postDifferentValue(it)
     }
 
-    fun updateConsecutiveCorrectAnswers(count: Int) {
+    fun updateConsecutiveCorrectAnswer(event: Event<Pair<Long, Boolean>>) {
 
-        consecutiveCorrectAnswers.postDifferentValue(count)
+        consecutiveCorrectAnswerEvent.postDifferentValue(event)
     }
 
     private fun getLoadingViewItem(theme: AppTheme): List<ViewItem> = arrayListOf<ViewItem>().apply {
@@ -514,9 +490,6 @@ class GameIPAWordleViewModel(
 
     data class StateInfo(
         val anim: Int? = null,
-
-        val isConsecutiveCorrectAnswer: Boolean? = null,
-        val consecutiveCorrectAnswerLimit: Int? = null,
 
         val title: CharSequence,
         val message: CharSequence,

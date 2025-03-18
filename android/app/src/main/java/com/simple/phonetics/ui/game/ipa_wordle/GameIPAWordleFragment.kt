@@ -21,6 +21,7 @@ import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.updateMargin
+import com.simple.coreapp.utils.extentions.get
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.EventName
@@ -156,7 +157,7 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
             showPopupInfo(info = info, state = checkState.value ?: return@launchCollect)
 
 
-            val binding = binding ?: return@launchCollect
+            val binding = binding?.frameConfirm ?: return@launchCollect
 
             val transitionName = UUID.randomUUID().toString()
             binding.root.transitionName = transitionName
@@ -210,9 +211,9 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
 
     private fun observeGameData() = with(gameViewModel) {
 
-        consecutiveCorrectAnswers.observe(viewLifecycleOwner) {
+        consecutiveCorrectAnswerEvent.observe(viewLifecycleOwner) {
 
-            viewModel.updateConsecutiveCorrectAnswers(it)
+            viewModel.updateConsecutiveCorrectAnswer(it)
         }
     }
 
@@ -254,10 +255,13 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
         }
 
 
-        val extras = if (info.isConsecutiveCorrectAnswer == true) bundleOf(
+        val consecutiveCorrectAnswers = gameViewModel.consecutiveCorrectAnswer.get()
 
-            com.simple.phonetics.Param.NUMBER to info.consecutiveCorrectAnswerLimit
+        val extras = if (consecutiveCorrectAnswers.first > 0 && consecutiveCorrectAnswers.second) bundleOf(
+
+            com.simple.phonetics.Param.NUMBER to consecutiveCorrectAnswers.first
         ) else bundleOf(
+
             Param.CANCEL to false,
 
             Param.ANIM to info.anim,
@@ -270,7 +274,7 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
             Param.POSITIVE to info.positive,
         )
 
-        if (info.isConsecutiveCorrectAnswer == true) {
+        if (consecutiveCorrectAnswers.first > 0 && consecutiveCorrectAnswers.second) {
             sendDeeplink(Deeplink.GAME_CONGRATULATION, extras = extras)
         } else {
             sendDeeplink(Deeplink.CONFIRM, extras = extras)
