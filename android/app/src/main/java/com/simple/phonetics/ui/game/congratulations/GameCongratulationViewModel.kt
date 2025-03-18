@@ -12,27 +12,62 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
+import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.phonetics.R
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 
-class GameCongratulationViewModel() : BaseViewModel() {
+class GameCongratulationViewModel : BaseViewModel() {
 
     @VisibleForTesting
-    val number: LiveData<Int> = MediatorLiveData(0)
+    val number: LiveData<Long> = MediatorLiveData(0L)
 
     val info: LiveData<Info> = combineSources(size, theme, translate, number) {
 
-        val size = size.get()
         val theme = theme.get()
         val translate = translate.get()
 
-        val number = "${number.get()}"
+        val number = number.get()
+        val numberStr = "$number"
+
+        val anim = listOf(
+            R.raw.anim_congratulations_1,
+            R.raw.anim_congratulations_2,
+            R.raw.anim_congratulations_3,
+            R.raw.anim_congratulations_4,
+            R.raw.anim_congratulations_5
+        ).random()
+
+        val title = if (number >= 25 && translate.containsKey("game_congratulation_screen_title_4")) {
+            translate["game_congratulation_screen_title_4"].orEmpty()
+        } else if (number >= 20 && translate.containsKey("game_congratulation_screen_title_3")) {
+            translate["game_congratulation_screen_title_3"].orEmpty()
+        } else if (number >= 15 && translate.containsKey("game_congratulation_screen_title_2")) {
+            translate["game_congratulation_screen_title_2"].orEmpty()
+        } else if (number >= 10 && translate.containsKey("game_congratulation_screen_title_1")) {
+            translate["game_congratulation_screen_title_1"].orEmpty()
+        } else {
+            translate["game_congratulation_screen_title"].orEmpty()
+        }
+
+        val message = if (number >= 25 && translate.containsKey("game_congratulation_screen_message_4")) {
+            translate["game_congratulation_screen_message_4"].orEmpty()
+        } else if (number >= 20 && translate.containsKey("game_congratulation_screen_message_3")) {
+            translate["game_congratulation_screen_message_3"].orEmpty()
+        } else if (number >= 15 && translate.containsKey("game_congratulation_screen_message_2")) {
+            translate["game_congratulation_screen_message_2"].orEmpty()
+        } else if (number >= 10 && translate.containsKey("game_congratulation_screen_message_1")) {
+            translate["game_congratulation_screen_message_1"].orEmpty()
+        } else {
+            translate["game_congratulation_screen_message"].orEmpty()
+        }
 
         val info = Info(
-            title = translate["game_congratulation_screen_title"].orEmpty(),
-            message = translate["game_congratulation_screen_message"].orEmpty()
-                .replace("\$number", number)
-                .with(number, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
+            anim = anim,
+            title = title,
+            message = message
+                .replace("\$number", numberStr)
+                .with(numberStr, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
 
             button = ButtonInfo(
                 text = translate["game_congratulation_screen_action"].orEmpty()
@@ -47,11 +82,14 @@ class GameCongratulationViewModel() : BaseViewModel() {
         postDifferentValueIfActive(info)
     }
 
-    fun updateNumber(it: Int) {
+    fun updateNumber(it: Long) {
 
+        number.postDifferentValue(it)
     }
 
     data class Info(
+        val anim: Int,
+
         val title: CharSequence,
         val message: CharSequence,
 
