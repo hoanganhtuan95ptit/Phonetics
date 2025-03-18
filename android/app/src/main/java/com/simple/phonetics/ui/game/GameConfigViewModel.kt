@@ -87,6 +87,7 @@ class GameConfigViewModel(
 
             list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_8))
             list.add(it)
+            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_8))
         }
 
         Word.Resource.entries.map {

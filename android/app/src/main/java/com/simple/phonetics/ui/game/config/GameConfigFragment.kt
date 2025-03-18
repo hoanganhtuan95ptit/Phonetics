@@ -4,14 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
+import androidx.core.view.updatePadding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.utils.autoCleared
+import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
@@ -51,13 +53,20 @@ class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val binding = binding ?: return
+
+        binding.root.doOnChangeHeightStatusAndHeightNavigation(viewLifecycleOwner) { heightStatusBar: Int, heightNavigationBar: Int ->
+
+            binding.recyclerView.updatePadding(bottom = heightNavigationBar + DP.DP_24)
+        }
+
         setupRecyclerView()
 
         observeData()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         sendEvent(EventName.DISMISS, bundleOf(Param.RESULT to result))
     }
 
