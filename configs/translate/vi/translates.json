@@ -27,7 +27,7 @@
   "game_ipa_wordle_screen_action": "Kiểm tra",
   "game_ipa_wordle_screen_action_continue": "Tiếp tục",
   "game_ipa_wordle_screen_action_retry": "Thử lại",
-  "game_ipa_wordle_screen_message_answer": "$param1 trong $param2 là $param3",
+  "game_ipa_wordle_screen_message_answer": "$param1 của $param2 là $param3",
   "game_ipa_wordle_screen_title": "Chọn $param1 phù hợp với $param2 bên dưới?",
   "game_ipa_wordle_screen_title_answer_failed": "Chưa chính xác",
   "game_ipa_wordle_screen_title_answer_true": "Tuyệt vời",
