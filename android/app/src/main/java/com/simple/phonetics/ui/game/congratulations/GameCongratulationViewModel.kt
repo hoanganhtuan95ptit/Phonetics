@@ -64,9 +64,11 @@ class GameCongratulationViewModel : BaseViewModel() {
 
         val info = Info(
             anim = anim,
-            title = title,
+            title = title
+                .with(ForegroundColorSpan(theme.colorOnSurface)),
             message = message
                 .replace("\$number", numberStr)
+                .with(ForegroundColorSpan(theme.colorOnSurface))
                 .with(numberStr, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
 
             button = ButtonInfo(
