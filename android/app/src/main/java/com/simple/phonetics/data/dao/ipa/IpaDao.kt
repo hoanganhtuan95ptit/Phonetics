@@ -47,6 +47,13 @@ interface IpaDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(rooms: List<RoomIpa>)
+
+    
+    @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE languageCode = :languageCode")
+    fun getCount( languageCode: String): Int
+
+    @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE languageCode = :languageCode")
+    fun getCountAsync(languageCode: String): Flow<Int>
 }
 
 @Keep

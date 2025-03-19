@@ -1,7 +1,10 @@
 {
+  "action_check": "Check",
   "action_clear": "Clear",
   "action_confirm_change_language": "Change phonetic language",
+  "action_continue": "Continue",
   "action_play_game": "Play game",
+  "action_retry": "Try again",
   "action_reverse": "Reverse",
   "action_try_speak": "Try speak",
   "action_view_all_ipa": "View all",
@@ -23,6 +26,9 @@
   "game_congratulation_screen_title_2": "Unbelievable! 😎",
   "game_congratulation_screen_title_3": "I bow before you! 🙇‍♂️",
   "game_congratulation_screen_title_4": "A living legend! 🏆",
+
+  "game_ipa_puzzle_screen_message_answer": "The answer is: $param1.",
+  "game_ipa_puzzle_screen_title": "The word $param1 has the pronunciation $param2, but it is incomplete. Please complete the missing part.",
 
   "game_ipa_wordle_screen_action": "Check",
   "game_ipa_wordle_screen_action_continue": "Continue",
@@ -121,6 +127,8 @@
 
   "speed_lever": "Speed $lever",
 
+  "title_answer_failed": "Not quite right",
+  "title_answer_true": "Awesome",
   "title_history": "History:",
   "title_ipa": "Ipa:",
   "title_language": "Select language",

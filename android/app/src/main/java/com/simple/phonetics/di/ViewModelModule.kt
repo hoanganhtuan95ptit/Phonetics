@@ -6,6 +6,7 @@ import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.game.GameViewModel
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.game.congratulations.GameCongratulationViewModel
+import com.simple.phonetics.ui.game.ipa_puzzle.GameIPAPuzzleViewModel
 import com.simple.phonetics.ui.game.ipa_wordle.GameIPAWordleViewModel
 import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
 import com.simple.phonetics.ui.ipa.list.IpaListViewModel
@@ -94,7 +95,11 @@ val viewModelModule = module {
     }
 
     viewModel {
-        GameConfigViewModel(get(), get())
+        GameConfigViewModel(get(), get(), get())
+    }
+
+    viewModel {
+        GameCongratulationViewModel()
     }
 
     viewModel {
@@ -102,6 +107,6 @@ val viewModelModule = module {
     }
 
     viewModel {
-        GameCongratulationViewModel()
+        GameIPAPuzzleViewModel(get(), get(), get())
     }
 }

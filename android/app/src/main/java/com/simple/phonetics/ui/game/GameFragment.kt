@@ -5,8 +5,10 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
+import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
+import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
@@ -19,9 +21,14 @@ import com.simple.phonetics.utils.DeeplinkView
 import com.simple.phonetics.utils.DeeplinkViewImpl
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.sendDeeplink
+import kotlinx.coroutines.launch
 
 class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>(),
     DeeplinkView by DeeplinkViewImpl() {
+
+    private val gameConfigViewModel: GameConfigViewModel by lazy {
+        getViewModel(requireActivity(), GameConfigViewModel::class)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +74,10 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
             binding.root.setBackgroundColor(it.colorBackground)
         }
 
-        sendDeeplink(Deeplink.GAME_IPA_WORDLE, extras = bundleOf(Param.FIRST to true))
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            sendDeeplink(gameConfigViewModel.getNextGame(), extras = bundleOf(Param.FIRST to true))
+        }
     }
 }
 

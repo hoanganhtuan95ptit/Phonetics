@@ -8,6 +8,8 @@ import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
@@ -21,7 +23,9 @@ import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.Constants
+import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Id
+import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import com.simple.phonetics.entities.Language
@@ -30,8 +34,11 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.ButtonViewItem
 import com.simple.phonetics.utils.exts.OptionViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
 
 class GameConfigViewModel(
+    private val countIpaAsyncUseCase: CountIpaAsyncUseCase,
     private val countWordAsyncUseCase: CountWordAsyncUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
 ) : BaseViewModel() {
@@ -41,6 +48,16 @@ class GameConfigViewModel(
         getLanguageInputAsyncUseCase.execute().collect {
 
             postValue(it)
+        }
+    }
+
+    val ipaCount: LiveData<Int> = combineSources(inputLanguage) {
+
+        val inputLanguage = inputLanguage.get()
+
+        countIpaAsyncUseCase.execute(CountIpaAsyncUseCase.Param(languageCode = inputLanguage.id)).collect {
+
+            postDifferentValue(it)
         }
     }
 
@@ -185,6 +202,11 @@ class GameConfigViewModel(
         postDifferentValue(list)
     }
 
+    init {
+
+        ipaCount.asFlow().launchIn(viewModelScope)
+    }
+
     fun updateResource(resource: Word.Resource) {
 
         if (resource == Word.Resource.Popular && wordPopularCount.value.orZero() <= Constants.WORD_COUNT_MIN) {
@@ -196,6 +218,19 @@ class GameConfigViewModel(
         this.resourceSelected.postDifferentValue(resource)
 
         logAnalytics("game_config_resource_" + resource.value.lowercase())
+    }
+
+    suspend fun getNextGame(): String {
+
+        val listGameAvailable = arrayListOf<String>()
+
+        listGameAvailable.add(Deeplink.GAME_IPA_WORDLE)
+
+        if (ipaCount.asFlow().first().orZero() > 0) {
+            listGameAvailable.add(Deeplink.GAME_IPA_PUZZLE)
+        }
+
+        return listGameAvailable.random()
     }
 }
 

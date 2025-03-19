@@ -3,6 +3,7 @@ package com.simple.phonetics.di
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.TranslateUseCase
+import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
@@ -12,7 +13,6 @@ import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
-import com.simple.phonetics.domain.usecase.word.GetWordStateAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
@@ -21,6 +21,7 @@ import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
+import com.simple.phonetics.domain.usecase.word.GetWordStateAsyncUseCase
 import org.koin.dsl.module
 
 @JvmField
@@ -101,6 +102,10 @@ val useCaseModule = module {
         DetectStateUseCase(getAll())
     }
 
+
+    single {
+        CountIpaAsyncUseCase(get())
+    }
 
     single {
         GetIpaStateAsyncUseCase(get(), get())

@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.ipa_wordle
+package com.simple.phonetics.ui.game.ipa_puzzle
 
 import android.graphics.Color
 import android.graphics.Typeface
@@ -14,7 +14,6 @@ import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.Margin
@@ -24,7 +23,6 @@ import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
@@ -36,37 +34,40 @@ import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.Id
-import com.simple.phonetics.R
+import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
-import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
-import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
+import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Word
-import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.state.ResultState
-import com.simple.state.doFailed
-import com.simple.state.doSuccess
-import com.simple.state.isCompleted
 import com.simple.state.isStart
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class GameIPAWordleViewModel(
-    private val stopListenUseCase: StopListenUseCase,
-    private val startListenUseCase: StartListenUseCase,
+class GameIPAPuzzleViewModel(
+    private val getIpaStateAsyncUseCase: GetIpaStateAsyncUseCase,
     private val getPhoneticsRandomUseCase: GetPhoneticsRandomUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
 ) : BaseViewModel() {
 
+    @VisibleForTesting
+    val ipaState: LiveData<ResultState<List<Ipa>>> = mediatorLiveData {
+
+        getIpaStateAsyncUseCase.execute(GetIpaStateAsyncUseCase.Param(sync = false)).collect {
+
+            postValue(it)
+        }
+    }
+
+    @VisibleForTesting
     val inputLanguage: LiveData<Language> = mediatorLiveData {
 
         getLanguageInputAsyncUseCase.execute().collect {
@@ -76,9 +77,6 @@ class GameIPAWordleViewModel(
     }
 
     @VisibleForTesting
-    val listenEnable: LiveData<Boolean> = MediatorLiveData()
-
-    @VisibleForTesting
     val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
 
     @VisibleForTesting
@@ -86,57 +84,64 @@ class GameIPAWordleViewModel(
 
         postDifferentValue(ResultState.Start)
 
-        val list = getPhoneticsRandomUseCase.execute(GetPhoneticsRandomUseCase.Param(resource = resourceSelected.get(), limit = 4, textLengthMax = 10)).shuffled()
+        val list = getPhoneticsRandomUseCase.execute(GetPhoneticsRandomUseCase.Param(resource = resourceSelected.get(), limit = 1, textLengthMin = 3, textLengthMax = 10)).shuffled()
 
         postDifferentValue(ResultState.Success(list))
     }
 
-    private val quiz: LiveData<Quiz> = combineSources(listenEnable, phoneticState) {
+    private val quiz: LiveData<Quiz> = combineSources(ipaState, phoneticState) {
 
-        val listenEnable = listenEnable.value ?: return@combineSources
+        val ipaState = ipaState.value ?: return@combineSources
         val phoneticState = phoneticState.value ?: return@combineSources
 
-        val phonetics = phoneticState.toSuccess()?.data ?: return@combineSources
+        val ipaList = ipaState.toSuccess()?.data ?: return@combineSources
+        val phonetic = phoneticState.toSuccess()?.data?.firstOrNull() ?: return@combineSources
 
-        val typeRemoveList = arrayListOf<Quiz.Type>()
+        val ipaListWrap = ipaList
+            .map { it.ipa.replace("/", "") }
 
-        // nếu không hỗ trợ phát âm thì bỏ ra khỏi danh sách
-        if (!listenEnable) {
-            typeRemoveList.add(Quiz.Type.VOICE)
+        val questionIpaList = getQuestionIpaList(phonetic = phonetic, ipaList = ipaListWrap)
+
+        val ipaMissing = questionIpaList.random()
+        val ipaIncomplete = questionIpaList.map {
+
+            if (it.first == ipaMissing.first) it.copy(
+                second = "____"
+            ) else {
+                it
+            }
         }
 
-        val answerType = listOf(Quiz.Type.TEXT, Quiz.Type.IPA).toMutableList().apply {
+        val answers = ipaListWrap.toMutableList().apply {
 
-            removeAll(typeRemoveList)
-        }.random()
+            remove(ipaMissing.second)
+        }.shuffled().subList(0, 3).toMutableList().apply {
 
-        val questionType = Quiz.Type.entries.toMutableList().apply {
+            add(ipaMissing.second)
+        }.shuffled()
 
-            remove(answerType)
-            removeAll(typeRemoveList)
-        }.random()
+        val question = Quiz.Question(
+            text = phonetic.text,
+            ipaMissing = ipaMissing.second,
+            ipaIncomplete = ipaIncomplete.joinToString("") { it.second }
+        )
 
         val quiz = Quiz(
-            answers = phonetics,
-            answerType = answerType,
-
-            question = phonetics.random(),
-            questionType = questionType
+            answers = answers,
+            question = question,
         )
 
         postDifferentValue(quiz)
     }
 
     @VisibleForTesting
-    val choose: LiveData<Phonetic> = MediatorLiveData(null)
+    val choose: LiveData<String> = MediatorLiveData(null)
 
-    val listenState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
-
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, listenState, phoneticState) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, ipaState, phoneticState) {
 
         val quiz = quiz.value ?: return@listenerSources
         val choose = choose.value
-        val listenState = listenState.value
+        val ipaState = ipaState.value
         val phoneticState = phoneticState.value
 
         val size = size.value ?: return@listenerSources
@@ -144,7 +149,7 @@ class GameIPAWordleViewModel(
         val translate = translate.value ?: return@listenerSources
 
 
-        if (phoneticState.isStart()) {
+        if (ipaState.isStart() || phoneticState.isStart()) {
 
             postDifferentValue(getLoadingViewItem(theme = theme))
             return@listenerSources
@@ -153,17 +158,15 @@ class GameIPAWordleViewModel(
 
         val list = arrayListOf<ViewItem>()
 
-        val param1 = quiz.answerType.getName(translate = translate)
-        val param2 = quiz.questionType.getName(translate = translate)
-
         TitleViewItem(
             id = "TITLE",
             text = translate["game_ipa_wordle_screen_title"].orEmpty()
-                .replace("\$param1", param1)
-                .replace("\$param2", param2)
+                .replace("\$param1", quiz.question.text)
+                .replace("\$param2", quiz.question.ipaIncomplete)
                 .with(ForegroundColorSpan(theme.colorOnSurface))
-                .with(param1, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface))
-                .with(param2, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
+                .with(quiz.question.text, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface))
+                .with(quiz.question.ipaIncomplete, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface))
+                .with("____", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorError)),
             textMargin = Margin(
                 marginHorizontal = DP.DP_8
             )
@@ -173,65 +176,13 @@ class GameIPAWordleViewModel(
             list.add(it)
         }
 
-        (if (quiz.questionType == Quiz.Type.VOICE) ImageStateViewItem(
-            id = Id.LISTEN,
-
-            data = quiz.question,
-
-            image = if (listenState == null || listenState.isStart() || listenState.isCompleted()) {
-                R.drawable.ic_volume_24dp
-            } else {
-                R.drawable.ic_pause_24dp
-            },
-            imageMargin = Margin(
-                margin = DP.DP_40,
-            ),
-
-            isLoading = listenState.isStart(),
-
-            size = Size(
-                width = ViewGroup.LayoutParams.MATCH_PARENT,
-                height = (size.width / 2.5f).toInt()
-            )
-        ) else NoneTextViewItem(
-            id = "TEXT",
-            data = quiz.question,
-            text = (if (quiz.questionType == Quiz.Type.TEXT)
-                quiz.question.text
-            else
-                quiz.question.ipa.flatMap { it.value }.first())
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
-            textStyle = TextStyle(
-                textSize = 30f,
-                textGravity = Gravity.CENTER
-            ),
-            textSize = Size(
-                width = ViewGroup.LayoutParams.MATCH_PARENT,
-                height = ViewGroup.LayoutParams.MATCH_PARENT
-            ),
-            size = Size(
-                width = ViewGroup.LayoutParams.MATCH_PARENT,
-                height = (size.width / 2.5f).toInt()
-            )
-        )).let {
-
-            list.add(it)
-            list.add(SpaceViewItem(id = "SPACE_QUESTION_ANSWER"))
-        }
-
-        quiz.answers.mapIndexed { index, phonetic ->
-
-            val text = if (quiz.answerType == Quiz.Type.TEXT)
-                phonetic.text
-            else
-                phonetic.ipa.flatMap { it.value }.first()
-
+        quiz.answers.mapIndexed { index, answer ->
 
             ClickTextViewItem(
                 id = "${Id.CHOOSE}_$index",
-                data = phonetic,
+                data = answer,
 
-                text = text
+                text = answer
                     .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
                 textStyle = TextStyle(
                     textSize = 16f,
@@ -244,7 +195,7 @@ class GameIPAWordleViewModel(
                 textBackground = Background(
                     cornerRadius = DP.DP_16,
                     strokeWidth = DP.DP_2,
-                    strokeColor = if (phonetic.text.equals(choose?.text, true)) {
+                    strokeColor = if (answer.equals(choose, true)) {
                         theme.colorPrimary
                     } else {
                         theme.colorOnSurfaceVariant
@@ -262,6 +213,7 @@ class GameIPAWordleViewModel(
             )
         }.let {
 
+            list.add(SpaceViewItem(id = "SPACE_OPTION_TITLE", height = DP.DP_24))
             list.addAll(it)
         }
 
@@ -296,11 +248,10 @@ class GameIPAWordleViewModel(
     }
 
 
-    val checkState: LiveData<ResultState<String>> = MediatorLiveData()
-
+    @VisibleForTesting
     val consecutiveCorrectAnswerEvent: LiveData<Event<Pair<Long, Boolean>>> = MediatorLiveData()
 
-
+    @VisibleForTesting
     val stateInfo: LiveData<StateInfo> = combineSources(theme, translate, quiz, choose, consecutiveCorrectAnswerEvent) {
 
         val quiz = quiz.get()
@@ -311,28 +262,6 @@ class GameIPAWordleViewModel(
         val translate = translate.get()
 
         val isAnswerCorrect = consecutiveCorrectAnswer.first > 0
-
-        val param1 = quiz.answerType.getName(translate = translate).let {
-
-            " $it "
-        }
-
-        val param2 = (when (quiz.questionType) {
-            Quiz.Type.VOICE -> translate["type_voice"].orEmpty()
-            Quiz.Type.TEXT -> quiz.question.text
-            else -> quiz.question.ipa.flatMap { it.value }.first()
-        }).let {
-
-            " $it "
-        }
-
-        val param3 = (if (quiz.answerType == Quiz.Type.TEXT)
-            quiz.question.text
-        else
-            quiz.question.ipa.flatMap { it.value }.first()).let {
-
-            " $it "
-        }
 
         val textColor = if (isAnswerCorrect) {
             theme.colorOnPrimaryVariant
@@ -346,15 +275,10 @@ class GameIPAWordleViewModel(
             translate["title_answer_failed"].orEmpty()
         }).with(ForegroundColorSpan(textColor))
 
-        val message = translate["game_ipa_wordle_screen_message_answer"].orEmpty()
-            .replace("\$param1", param1)
-            .replace("\$param2", param2)
-            .replace("\$param3", param3)
-            .replace("  ", " ")
+        val message = translate["game_ipa_puzzle_screen_message_answer"].orEmpty()
+            .replace("\$param1", quiz.question.ipaMissing)
             .with(ForegroundColorSpan(textColor))
-            .with(param1, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
-            .with(param2, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
-            .with(param3, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
+            .with(quiz.question.ipaMissing, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
             .trim()
 
         val positive = ButtonInfo(
@@ -394,9 +318,11 @@ class GameIPAWordleViewModel(
     }
     val stateInfoEvent: LiveData<Event<StateInfo>> = stateInfo.toEvent()
 
-    fun updateChoose(phonetic: Phonetic?) {
+    val checkState: LiveData<ResultState<String>> = MediatorLiveData()
 
-        choose.postValue(phonetic)
+    fun updateChoose(it: String?) {
+
+        choose.postValue(it)
     }
 
     fun checkChoose() = viewModelScope.launch(handler + Dispatchers.IO) {
@@ -406,7 +332,7 @@ class GameIPAWordleViewModel(
 
         checkState.postValue(ResultState.Start)
 
-        val state = if (choose.text.equals(quiz.question.text, true)) {
+        val state = if (choose.equals(quiz.question.ipaMissing, true)) {
             ResultState.Success("")
         } else {
             ResultState.Failed(AppException("", ""))
@@ -415,53 +341,48 @@ class GameIPAWordleViewModel(
         checkState.postValue(state)
     }
 
-    fun startListen(voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
-
-        listenState.postValue(ResultState.Start)
-
-        val param = StartListenUseCase.Param(
-            text = quiz.value?.question?.text.orEmpty(),
-
-            languageCode = inputLanguage.value?.id ?: Language.EN,
-
-            voiceId = voiceId,
-            voiceSpeed = voiceSpeed
-        )
-
-        var job: Job? = null
-
-        job = startListenUseCase.execute(param).launchCollect(viewModelScope) { state ->
-
-            listenState.postValue(state)
-
-            state.doSuccess {
-                job?.cancel()
-            }
-
-            state.doFailed {
-                job?.cancel()
-            }
-        }
-    }
-
-    fun stopListen() = viewModelScope.launch(handler + Dispatchers.IO) {
-
-        stopListenUseCase.execute()
-    }
-
     fun updateResource(it: Word.Resource) {
 
         resourceSelected.postDifferentValue(it)
     }
 
-    fun updateListenerEnable(it: Boolean) {
-
-        listenEnable.postDifferentValue(it)
-    }
-
     fun updateConsecutiveCorrectAnswer(event: Event<Pair<Long, Boolean>>) {
 
         consecutiveCorrectAnswerEvent.postDifferentValue(event)
+    }
+
+    private fun getQuestionIpaList(phonetic: Phonetic, ipaList: List<String>): List<Pair<Int, String>> {
+
+        val questionPhonetic = phonetic.ipa.toList()
+            .flatMap { it.second }
+            .first()
+            .replace("/", "")
+
+        var count = -1
+        val questionIpaList = questionPhonetic.split("").associateBy {
+
+            count++
+        }.toList()
+
+        val questionIpaValidateList = arrayListOf<Pair<Int, String>>()
+
+        var index = 0
+        while (index < questionIpaList.size) {
+
+            val start = index
+
+            var ipa = questionIpaList[start].second
+            while (index + 1 < questionIpaList.size && (questionIpaList[index].second in listOf("ˈ") || (questionIpaList[index].second + questionIpaList[index + 1].second) in ipaList)) {
+
+                ipa += questionIpaList[index + 1].second
+                index++
+            }
+
+            questionIpaValidateList.add(start to ipa)
+            index++
+        }
+
+        return questionIpaValidateList
     }
 
     private fun getLoadingViewItem(theme: AppTheme): List<ViewItem> = arrayListOf<ViewItem>().apply {
@@ -476,21 +397,6 @@ class GameIPAWordleViewModel(
         add(SpaceViewItem(id = "2", height = DP.DP_24))
 
         addAll(getPhoneticLoadingViewItem(theme = theme))
-    }
-
-    private fun Quiz.Type.getName(translate: Map<String, String>): String = when (this) {
-
-        Quiz.Type.IPA -> {
-            translate["type_ipa"].orEmpty()
-        }
-
-        Quiz.Type.VOICE -> {
-            translate["type_voice"].orEmpty()
-        }
-
-        else -> {
-            translate["type_text"].orEmpty()
-        }
     }
 
     data class StateInfo(
@@ -512,15 +418,14 @@ class GameIPAWordleViewModel(
     )
 
     private class Quiz(
-        val answers: List<Phonetic>,
-        val answerType: Type,
-
-        val question: Phonetic,
-        val questionType: Type,
+        val answers: List<String>,
+        val question: Question,
     ) {
 
-        enum class Type {
-            VOICE, IPA, TEXT
-        }
+        class Question(
+            val text: String,
+            val ipaMissing: String,
+            val ipaIncomplete: String,
+        )
     }
 }

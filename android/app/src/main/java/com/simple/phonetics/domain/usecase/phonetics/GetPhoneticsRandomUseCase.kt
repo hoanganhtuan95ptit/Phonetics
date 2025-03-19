@@ -21,7 +21,7 @@ class GetPhoneticsRandomUseCase(
         val textLengthMin = if (getWordDelimiters(languageCode = languageCode).contains("")) {
             0
         } else {
-            2
+            param.textLengthMin
         }
 
         val list = wordRepository.getRandom(
@@ -41,7 +41,8 @@ class GetPhoneticsRandomUseCase(
 
     data class Param(
         val limit: Int,
-        val textLengthMax: Int,
+        val textLengthMin: Int = 2,
+        val textLengthMax: Int = 10,
 
         val resource: Word.Resource,
     )
