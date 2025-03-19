@@ -1,7 +1,10 @@
 {
+  "action_check": "Kiểm tra",
   "action_clear": "Xóa",
   "action_confirm_change_language": "Thay đổi ngôn ngữ phiên âm",
+  "action_continue": "Tiếp tục",
   "action_play_game": "Chơi trò chơi",
+  "action_retry": "Thử lại",
   "action_reverse": "Đảo ngược",
   "action_try_speak": "Thử nói",
   "action_view_all_ipa": "Xem tất cả",
@@ -23,6 +26,9 @@
   "game_congratulation_screen_title_2": "Ghê thật chứ! 😎",
   "game_congratulation_screen_title_3": "Tại hạ xin bái phục! 🙇‍♂️",
   "game_congratulation_screen_title_4": "Huyền thoại sống! 🏆",
+
+  "game_ipa_puzzle_screen_message_answer": "Đáp án là: $param1.",
+  "game_ipa_puzzle_screen_title": "Từ $param1 có cách phát âm là $param2, nhưng chưa đầy đủ. Hãy hoàn thành phần còn thiếu.",
 
   "game_ipa_wordle_screen_action": "Kiểm tra",
   "game_ipa_wordle_screen_action_continue": "Tiếp tục",
@@ -122,6 +128,8 @@
   "speed_lever": "Tốc độ $lever",
 
   "title_game": "Game gủng gì chưa, Người đẹp? 😆🎮",
+  "title_answer_failed": "Chưa chính xác",
+  "title_answer_true": "Tuyệt vời",
   "title_history": "Lịch sử:",
   "title_ipa": "IPA:",
   "title_language": "Chọn ngôn ngữ",

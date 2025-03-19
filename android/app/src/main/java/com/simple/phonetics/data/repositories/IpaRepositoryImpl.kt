@@ -22,4 +22,12 @@ class IpaRepositoryImpl(
     override suspend fun insertOrUpdate(languageCode: String, list: List<Ipa>) {
         ipaDao.insertOrUpdate(languageCode = languageCode, list = list)
     }
+
+    override suspend fun getCount(languageCode: String): Int {
+        return ipaDao.getCount(languageCode = languageCode)
+    }
+
+    override suspend fun getCountAsync(languageCode: String): Flow<Int> {
+        return ipaDao.getCountAsync(languageCode = languageCode)
+    }
 }

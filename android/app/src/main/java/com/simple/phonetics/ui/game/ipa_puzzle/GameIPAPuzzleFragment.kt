@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.ipa_wordle
+package com.simple.phonetics.ui.game.ipa_puzzle
 
 import android.content.ComponentCallbacks
 import android.media.MediaPlayer
@@ -28,9 +28,6 @@ import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
-import com.simple.phonetics.entities.Phonetic
-import com.simple.phonetics.ui.ConfigViewModel
-import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.game.GameFragment
@@ -46,22 +43,16 @@ import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
-import com.simple.state.isCompleted
-import com.simple.state.isRunning
 import com.simple.state.isSuccess
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import java.util.UUID
 
-class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, GameIPAWordleViewModel>() {
+class GameIPAPuzzleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, GameIPAPuzzleViewModel>() {
 
     private val gameViewModel: GameViewModel by lazy {
         getViewModel(requireParentFragment(), GameViewModel::class)
-    }
-
-    private val configViewModel: ConfigViewModel by lazy {
-        getViewModel(requireActivity(), ConfigViewModel::class)
     }
 
     private val gameConfigViewModel: GameConfigViewModel by lazy {
@@ -91,8 +82,6 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
         setupRecyclerView()
 
         observeData()
-        observeConfigData()
-
         observeGameData()
         observeGameConfigData()
     }
@@ -104,19 +93,11 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
         val clickTextAdapter = ClickTextAdapter { view, item ->
 
             if (item.id.startsWith(Id.CHOOSE)) {
-                viewModel.updateChoose(item.data.asObjectOrNull<Phonetic>() ?: return@ClickTextAdapter)
+                viewModel.updateChoose(item.data.asObjectOrNull<String>() ?: return@ClickTextAdapter)
             }
         }
 
-        val imageStateAdapter = ImageStateAdapter { view, item ->
-
-            if (item.id == Id.LISTEN) {
-
-                listen()
-            }
-        }
-
-        adapter = MultiAdapter(clickTextAdapter, imageStateAdapter, *ListPreviewAdapter()).apply {
+        adapter = MultiAdapter(clickTextAdapter, *ListPreviewAdapter()).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -124,7 +105,7 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
             val layoutManager = createFlexboxLayoutManager(context = context) {
 
                 logCrashlytics(
-                    event = "GAME_IPA_WORDLE",
+                    event = "GAME_IPA_PUZZLE",
                     throwable = it,
                     "VIEW_ITEM_SIZE" to "${viewModel.viewItemList.value?.size}"
                 )
@@ -137,7 +118,7 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
 
     private fun observeData() = with(viewModel) {
 
-        val fragment = this@GameIPAWordleFragment
+        val fragment = this@GameIPAPuzzleFragment
 
         checkState.observe(viewLifecycleOwner) {
 
@@ -200,15 +181,6 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
         }
     }
 
-    private fun observeConfigData() = with(configViewModel) {
-
-        listenerEnable.observe(viewLifecycleOwner) {
-
-            viewModel.updateListenerEnable(it)
-        }
-    }
-
-
     private fun observeGameData() = with(gameViewModel) {
 
         consecutiveCorrectAnswerEvent.observe(viewLifecycleOwner) {
@@ -225,20 +197,7 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
         }
     }
 
-    private fun listen() {
-
-        val voiceState = viewModel.listenState.value
-
-        if (voiceState.isRunning()) {
-
-            viewModel.stopListen()
-        } else if (voiceState == null || voiceState.isCompleted()) viewModel.startListen(
-            voiceId = configViewModel.voiceSelect.value ?: 0,
-            voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
-        )
-    }
-
-    private suspend fun showPopupInfo(info: GameIPAWordleViewModel.StateInfo, state: ResultState<String>) = channelFlow {
+    private suspend fun showPopupInfo(info: GameIPAPuzzleViewModel.StateInfo, state: ResultState<String>) = channelFlow {
 
         val source = if (state.isSuccess()) {
             R.raw.mp3_answer_correct
@@ -288,17 +247,17 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
 }
 
 @com.tuanha.deeplink.annotation.Deeplink
-class GameIPAWordleDeeplink : DeeplinkHandler {
+class GameIPAPuzzleDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.GAME_IPA_WORDLE
+        return Deeplink.GAME_IPA_PUZZLE
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
 
         if (componentCallbacks !is GameFragment) return false
 
-        val fragment = GameIPAWordleFragment()
+        val fragment = GameIPAPuzzleFragment()
         fragment.arguments = extras
 
         val fragmentTransaction = componentCallbacks.childFragmentManager
