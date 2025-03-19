@@ -160,7 +160,7 @@ class GameIPAPuzzleViewModel(
 
         TitleViewItem(
             id = "TITLE",
-            text = translate["game_ipa_wordle_screen_title"].orEmpty()
+            text = translate["game_ipa_puzzle_screen_title"].orEmpty()
                 .replace("\$param1", quiz.question.text)
                 .replace("\$param2", quiz.question.ipaIncomplete)
                 .with(ForegroundColorSpan(theme.colorOnSurface))
