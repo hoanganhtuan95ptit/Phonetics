@@ -16,7 +16,6 @@ import com.simple.core.utils.AppException
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
@@ -45,7 +44,7 @@ import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
-import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.exts.TitleViewItem
@@ -65,7 +64,7 @@ class GameIPAWordleViewModel(
     private val startListenUseCase: StartListenUseCase,
     private val getPhoneticsRandomUseCase: GetPhoneticsRandomUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
-) : BaseViewModel() {
+) : GameItemViewModel() {
 
     val inputLanguage: LiveData<Language> = mediatorLiveData {
 
@@ -492,24 +491,6 @@ class GameIPAWordleViewModel(
             translate["type_text"].orEmpty()
         }
     }
-
-    data class StateInfo(
-        val anim: Int? = null,
-
-        val title: CharSequence,
-        val message: CharSequence,
-
-        val background: Background = DEFAULT_BACKGROUND,
-
-        val positive: com.simple.coreapp.utils.ext.ButtonInfo? = null,
-    )
-
-    data class ButtonInfo(
-        val text: CharSequence,
-        val isClickable: Boolean,
-
-        val background: Background = DEFAULT_BACKGROUND
-    )
 
     private class Quiz(
         val answers: List<Phonetic>,

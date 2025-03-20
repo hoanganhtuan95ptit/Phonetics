@@ -13,10 +13,8 @@ import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.base.fragments.BaseFragment
-import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.game.GameViewModel
-import com.simple.phonetics.ui.game.items.ipa_wordle.GameIPAWordleViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
@@ -26,7 +24,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 
-abstract class GameItemFragment<VM : BaseViewModel> : BaseFragment<FragmentListHeaderHorizontalBinding, VM>() {
+abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentListHeaderHorizontalBinding, VM>() {
 
     protected val gameViewModel: GameViewModel by lazy {
         getViewModel(requireParentFragment(), GameViewModel::class)
@@ -58,7 +56,7 @@ abstract class GameItemFragment<VM : BaseViewModel> : BaseFragment<FragmentListH
         }
     }
 
-    protected suspend fun showPopupInfo(info: GameIPAWordleViewModel.StateInfo, state: ResultState<String>) = channelFlow {
+    protected suspend fun showPopupInfo(info: GameItemViewModel.StateInfo, state: ResultState<String>) = channelFlow {
 
         val source = if (state.isSuccess()) {
             R.raw.mp3_answer_correct
@@ -68,6 +66,7 @@ abstract class GameItemFragment<VM : BaseViewModel> : BaseFragment<FragmentListH
 
         val mediaPlayer = MediaPlayer.create(context, source)
         mediaPlayer.start()
+
 
         listenerEvent(coroutineScope = this, EventName.DISMISS) {
 
