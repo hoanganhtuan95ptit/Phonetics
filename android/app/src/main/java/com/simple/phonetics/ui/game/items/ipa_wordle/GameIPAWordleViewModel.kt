@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.ipa_wordle
+package com.simple.phonetics.ui.game.items.ipa_wordle
 
 import android.graphics.Color
 import android.graphics.Typeface

@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.ipa_puzzle
+package com.simple.phonetics.ui.game.items.ipa_puzzle
 
 import android.content.ComponentCallbacks
 import android.media.MediaPlayer

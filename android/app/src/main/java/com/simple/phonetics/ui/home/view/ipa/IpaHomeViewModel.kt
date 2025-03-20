@@ -53,7 +53,7 @@ class IpaHomeViewModel(
 
         val state = ipaState.value ?: return@combineSources
 
-        if (state !is ResultState.Success) {
+        if (!translate.containsKey("title_ipa") || state !is ResultState.Success) {
 
             postDifferentValue(emptyList())
             return@combineSources

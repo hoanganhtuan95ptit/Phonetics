@@ -23760,7 +23760,7 @@ com.simple.coreapp.ui.view.round.RoundFrameLayout:
     public void <init>(android.content.Context)
 com.simple.coreapp.ui.view.round.RoundHorizontalScrollView:
     public void <init>(android.content.Context)
-com.simple.coreapp.ui.view.round.RoundImageView:
+com.simple.coreapp.ui.view.round.RoundLottieAnimationView:
     public void <init>(android.content.Context)
 com.simple.coreapp.ui.view.round.RoundLinearLayout:
     public void <init>(android.content.Context)

@@ -222,13 +222,17 @@ class GameConfigViewModel(
 
     suspend fun getNextGame(): String {
 
+        val translate = translate.asFlow().first()
+
         val listGameAvailable = arrayListOf<String>()
 
-        listGameAvailable.add(Deeplink.GAME_IPA_WORDLE)
+//        listGameAvailable.add(Deeplink.GAME_IPA_WORDLE)
+//
+//        if (translate.containsKey("game_ipa_puzzle_screen_title") && ipaCount.asFlow().first().orZero() > 0) {
+//            listGameAvailable.add(Deeplink.GAME_IPA_PUZZLE)
+//        }
 
-        if (ipaCount.asFlow().first().orZero() > 0) {
-            listGameAvailable.add(Deeplink.GAME_IPA_PUZZLE)
-        }
+        listGameAvailable.add(Deeplink.GAME_IPA_MATCH)
 
         return listGameAvailable.random()
     }

@@ -877,7 +877,7 @@ com.google.android.gms.common.server.response.SafeParcelResponse
 com.google.android.material.appbar.AppBarLayout$LayoutParams
 com.google.android.gms.common.server.response.zan
 com.google.android.gms.common.data.DataHolder
-com.simple.coreapp.ui.view.round.RoundImageView
+com.simple.coreapp.ui.view.round.RoundLottieAnimationView
 com.google.mlkit.common.sdkinternal.model.CustomModelLoader$CustomModelLoaderHelper
 com.google.mlkit.nl.translate.zzb
 com.google.mlkit.vision.text.internal.zzi
@@ -20016,7 +20016,7 @@ com.google.mlkit.common.sdkinternal.MlKitThreadPool: <clinit>()
 androidx.constraintlayout.motion.widget.MotionLayout: void setInteractionEnabled(boolean)
 com.google.mlkit.vision.text.pipeline.zbk: java.lang.Object zba(java.lang.Object)
 androidx.appcompat.widget.AppCompatButton: int getAutoSizeMaxTextSize()
-com.simple.coreapp.ui.view.round.RoundImageView: RoundImageView(android.content.Context,android.util.AttributeSet)
+com.simple.coreapp.ui.view.round.RoundLottieAnimationView: RoundImageView(android.content.Context,android.util.AttributeSet)
 com.google.mlkit.nl.translate.internal.zzi: <clinit>()
 androidx.appcompat.widget.AppCompatButton: void setEmojiCompatEnabled(boolean)
 com.google.android.material.appbar.CollapsingToolbarLayout: void setContentScrimColor(int)
@@ -21030,7 +21030,7 @@ com.google.android.material.internal.ScrimInsetsFrameLayout: ScrimInsetsFrameLay
 androidx.media.AudioAttributesImplBaseParcelizer: void write(androidx.media.AudioAttributesImplBase,androidx.versionedparcelable.VersionedParcel)
 com.google.mlkit.common.sdkinternal.model.RemoteModelFileManager: java.io.File zza(java.io.File)
 androidx.appcompat.widget.AppCompatButton: void setBackgroundResource(int)
-com.simple.coreapp.ui.view.round.RoundImageView: com.simple.coreapp.ui.view.round.RoundViewDelegate getDelegate()
+com.simple.coreapp.ui.view.round.RoundLottieAnimationView: com.simple.coreapp.ui.view.round.RoundViewDelegate getDelegate()
 androidx.constraintlayout.widget.ConstraintHelper: void setReferencedIds(int[])
 com.simple.detect.entities.Sentence$Creator: com.simple.detect.entities.Sentence[] newArray(int)
 androidx.core.widget.TextViewCompat$Api28Impl: java.lang.String[] getDigitStrings(android.icu.text.DecimalFormatSymbols)

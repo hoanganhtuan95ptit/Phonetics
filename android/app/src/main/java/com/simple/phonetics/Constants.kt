@@ -35,6 +35,7 @@ object Deeplink {
 
     const val GAME = "app://game"
     const val GAME_CONFIG = "app://game_config"
+    const val GAME_IPA_MATCH = "app://game_ipa_match"
     const val GAME_IPA_WORDLE = "app://game_ipa_wordle"
     const val GAME_IPA_PUZZLE = "app://game_ipa_puzzle"
     const val GAME_CONGRATULATION = "app://game_congratulation"

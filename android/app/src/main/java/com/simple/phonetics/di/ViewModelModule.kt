@@ -3,14 +3,12 @@ package com.simple.phonetics.di
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainViewModel
-import com.simple.phonetics.ui.game.GameViewModel
 import com.simple.phonetics.ui.game.GameConfigViewModel
+import com.simple.phonetics.ui.game.GameViewModel
 import com.simple.phonetics.ui.game.congratulations.GameCongratulationViewModel
-import com.simple.phonetics.ui.game.ipa_puzzle.GameIPAPuzzleViewModel
-import com.simple.phonetics.ui.game.ipa_wordle.GameIPAWordleViewModel
-import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
-import com.simple.phonetics.ui.ipa.list.IpaListViewModel
-import com.simple.phonetics.ui.language.LanguageViewModel
+import com.simple.phonetics.ui.game.items.ipa_match.GameIPAMatchViewModel
+import com.simple.phonetics.ui.game.items.ipa_puzzle.GameIPAPuzzleViewModel
+import com.simple.phonetics.ui.game.items.ipa_wordle.GameIPAWordleViewModel
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.view.detect.DetectHomeViewModel
 import com.simple.phonetics.ui.home.view.game.GameHomeViewModel
@@ -18,6 +16,9 @@ import com.simple.phonetics.ui.home.view.history.HistoryHomeViewModel
 import com.simple.phonetics.ui.home.view.ipa.IpaHomeViewModel
 import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewModel
 import com.simple.phonetics.ui.home.view.review.AppReviewHomeViewModel
+import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
+import com.simple.phonetics.ui.ipa.list.IpaListViewModel
+import com.simple.phonetics.ui.language.LanguageViewModel
 import com.simple.phonetics.ui.recording.RecordingViewModel
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -103,10 +104,14 @@ val viewModelModule = module {
     }
 
     viewModel {
-        GameIPAWordleViewModel(get(), get(), get(), get())
+        GameIPAPuzzleViewModel(get(), get(), get())
     }
 
     viewModel {
-        GameIPAPuzzleViewModel(get(), get(), get())
+        GameIPAMatchViewModel(get(), get(), get())
+    }
+
+    viewModel {
+        GameIPAWordleViewModel(get(), get(), get(), get())
     }
 }
