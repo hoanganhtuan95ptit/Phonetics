@@ -42,6 +42,8 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
         super.onViewCreated(view, savedInstanceState)
 
         observeData()
+        observeGameData()
+        observeGameConfigData()
     }
 
     private fun observeData() = with(viewModel) {
@@ -53,6 +55,22 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
             binding.root.setBackgroundColor(it.colorBackground)
+        }
+    }
+
+    private fun observeGameData() = with(gameViewModel) {
+
+        consecutiveCorrectAnswerEvent.observe(viewLifecycleOwner) {
+
+            viewModel.updateConsecutiveCorrectAnswer(it)
+        }
+    }
+
+    private fun observeGameConfigData() = with(gameConfigViewModel) {
+
+        resourceSelected.observe(viewLifecycleOwner) {
+
+            viewModel.updateResourceSelected(it)
         }
     }
 

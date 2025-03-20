@@ -42,7 +42,6 @@ import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
-import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
@@ -73,12 +72,6 @@ class GameIPAWordleViewModel(
             postValue(it)
         }
     }
-
-    @VisibleForTesting
-    val listenEnable: LiveData<Boolean> = MediatorLiveData()
-
-    @VisibleForTesting
-    val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
 
     @VisibleForTesting
     val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(resourceSelected) {
@@ -297,9 +290,6 @@ class GameIPAWordleViewModel(
 
     val checkState: LiveData<ResultState<String>> = MediatorLiveData()
 
-    val consecutiveCorrectAnswerEvent: LiveData<Event<Pair<Long, Boolean>>> = MediatorLiveData()
-
-
     val stateInfo: LiveData<StateInfo> = combineSources(theme, translate, quiz, choose, consecutiveCorrectAnswerEvent) {
 
         val quiz = quiz.get()
@@ -446,21 +436,6 @@ class GameIPAWordleViewModel(
     fun stopListen() = viewModelScope.launch(handler + Dispatchers.IO) {
 
         stopListenUseCase.execute()
-    }
-
-    fun updateResource(it: Word.Resource) {
-
-        resourceSelected.postDifferentValue(it)
-    }
-
-    fun updateListenerEnable(it: Boolean) {
-
-        listenEnable.postDifferentValue(it)
-    }
-
-    fun updateConsecutiveCorrectAnswer(event: Event<Pair<Long, Boolean>>) {
-
-        consecutiveCorrectAnswerEvent.postDifferentValue(event)
     }
 
     private fun getLoadingViewItem(theme: AppTheme): List<ViewItem> = arrayListOf<ViewItem>().apply {

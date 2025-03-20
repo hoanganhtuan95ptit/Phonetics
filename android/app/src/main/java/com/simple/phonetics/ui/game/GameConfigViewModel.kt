@@ -226,7 +226,10 @@ class GameConfigViewModel(
 
         val listGameAvailable = arrayListOf<String>()
 
-        listGameAvailable.add(Deeplink.GAME_IPA_MATCH)
+        if (translate.containsKey("game_ipa_match_screen_title")) {
+            listGameAvailable.add(Deeplink.GAME_IPA_MATCH)
+        }
+
         listGameAvailable.add(Deeplink.GAME_IPA_WORDLE)
 
         if (translate.containsKey("game_ipa_puzzle_screen_title") && ipaCount.asFlow().first().orZero() > 0) {
