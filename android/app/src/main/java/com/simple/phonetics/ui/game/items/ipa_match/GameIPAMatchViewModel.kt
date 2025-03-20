@@ -111,9 +111,9 @@ class GameIPAMatchViewModel(
         typeRemoveList.add(Type.NONE)
 
         // nếu không hỗ trợ phát âm thì bỏ ra khỏi danh sách
-//        if (!listenEnable) {
-        typeRemoveList.add(Type.IPA)
-//        }
+        if (!listenEnable) {
+            typeRemoveList.add(Type.VOICE)
+        }
 
 
         val typeFirst = Type.entries.toMutableList().apply {
@@ -167,7 +167,7 @@ class GameIPAMatchViewModel(
 
         TitleViewItem(
             id = "TITLE",
-            text = translate["Ghép các cặp phù hợp với nhau"].orEmpty()
+            text = translate["game_ipa_match_screen_title"].orEmpty()
                 .with(ForegroundColorSpan(theme.colorOnSurface)),
             textMargin = Margin(
                 marginHorizontal = DP.DP_8
@@ -285,9 +285,9 @@ class GameIPAMatchViewModel(
             .with(ForegroundColorSpan(textColor))
 
         val message = if (isAnswerCorrect) {
-            translate["Các cặp đã khớp với nhau"]
+            translate["game_ipa_match_screen_message_answer_correct"]
         } else {
-            translate["Một số cặp đang không khớp lắm"]
+            translate["game_ipa_match_screen_message_answer_failed"]
         }.orEmpty()
             .with(ForegroundColorSpan(textColor))
 
