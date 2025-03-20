@@ -255,10 +255,8 @@ class GameIPAMatchViewModel(
     val consecutiveCorrectAnswerEvent: LiveData<Event<Pair<Long, Boolean>>> = MediatorLiveData()
 
     @VisibleForTesting
-    val stateInfo: LiveData<StateInfo> = combineSources(theme, translate, quiz, choose, consecutiveCorrectAnswerEvent) {
+    val stateInfo: LiveData<StateInfo> = combineSources(theme, translate, consecutiveCorrectAnswerEvent) {
 
-        val quiz = quiz.get()
-        val choose = choose.get()
         val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSources
 
         val theme = theme.get()
@@ -549,7 +547,7 @@ class GameIPAMatchViewModel(
             isLoading = listenState.isStart(),
 
             size = Size(
-                width = (size.width - 2 * DP.DP_16) / 2,
+                width = (size.width - 2 * DP.DP_8) / 2,
                 height = DP.DP_56
             ),
             padding = Padding(
