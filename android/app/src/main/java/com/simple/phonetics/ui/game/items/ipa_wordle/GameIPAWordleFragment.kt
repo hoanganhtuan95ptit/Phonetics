@@ -35,6 +35,8 @@ import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.game.GameFragment
 import com.simple.phonetics.ui.game.GameViewModel
+import com.simple.phonetics.ui.game.items.GameItemFragment
+import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
@@ -54,19 +56,7 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import java.util.UUID
 
-class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, GameIPAWordleViewModel>() {
-
-    private val gameViewModel: GameViewModel by lazy {
-        getViewModel(requireParentFragment(), GameViewModel::class)
-    }
-
-    private val configViewModel: ConfigViewModel by lazy {
-        getViewModel(requireActivity(), ConfigViewModel::class)
-    }
-
-    private val gameConfigViewModel: GameConfigViewModel by lazy {
-        getViewModel(requireActivity(), GameConfigViewModel::class)
-    }
+class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
 
     private var adapter by autoCleared<MultiAdapter>()
 
@@ -237,54 +227,6 @@ class GameIPAWordleFragment : BaseFragment<FragmentListHeaderHorizontalBinding, 
             voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
         )
     }
-
-    private suspend fun showPopupInfo(info: GameIPAWordleViewModel.StateInfo, state: ResultState<String>) = channelFlow {
-
-        val source = if (state.isSuccess()) {
-            R.raw.mp3_answer_correct
-        } else {
-            R.raw.mp3_answer_failed
-        }
-
-        val mediaPlayer = MediaPlayer.create(context, source)
-        mediaPlayer.start()
-
-        listenerEvent(coroutineScope = this, EventName.DISMISS) {
-
-            trySend(Unit)
-        }
-
-
-        val consecutiveCorrectAnswers = gameViewModel.consecutiveCorrectAnswer.get()
-
-        val extras = if (consecutiveCorrectAnswers.first > 0 && consecutiveCorrectAnswers.second) bundleOf(
-
-            com.simple.phonetics.Param.NUMBER to consecutiveCorrectAnswers.first
-        ) else bundleOf(
-
-            Param.CANCEL to false,
-
-            Param.ANIM to info.anim,
-
-            Param.TITLE to info.title,
-            Param.MESSAGE to info.message,
-
-            Param.BACKGROUND to info.background,
-
-            Param.POSITIVE to info.positive,
-        )
-
-        if (consecutiveCorrectAnswers.first > 0 && consecutiveCorrectAnswers.second) {
-            sendDeeplink(Deeplink.GAME_CONGRATULATION, extras = extras)
-        } else {
-            sendDeeplink(Deeplink.CONFIRM, extras = extras)
-        }
-
-        awaitClose {
-
-            mediaPlayer.release()
-        }
-    }.first()
 }
 
 @com.tuanha.deeplink.annotation.Deeplink

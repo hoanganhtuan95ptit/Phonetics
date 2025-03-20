@@ -47,6 +47,7 @@ import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.utils.AppSize
 import com.simple.phonetics.utils.AppTheme
@@ -68,7 +69,7 @@ class GameIPAMatchViewModel(
     private val startListenUseCase: StartListenUseCase,
     private val getPhoneticsRandomUseCase: GetPhoneticsRandomUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
-) : BaseViewModel() {
+) : GameItemViewModel() {
 
     @VisibleForTesting
     val inputLanguage: LiveData<Language> = mediatorLiveData {
@@ -127,9 +128,17 @@ class GameIPAMatchViewModel(
             removeAll(typeRemoveList)
         }.random()
 
+
+        val phoneticListShuffled = phoneticList.shuffled()
+
+        val match = phoneticList.mapIndexed { index, phonetic ->
+            Option(type = typeFirst, phonetic = phonetic) to Option(type = typeSecond, phonetic =  phoneticListShuffled[index])
+        }
+
         val quiz = Quiz(
-            match = phoneticList.map { Option(type = typeFirst, phonetic = it) to Option(type = typeSecond, phonetic = it) },
+            match = match
         )
+
 
         postDifferentValue(quiz)
     }
@@ -556,24 +565,6 @@ class GameIPAMatchViewModel(
             )
         )
     }
-
-    data class StateInfo(
-        val anim: Int? = null,
-
-        val title: CharSequence,
-        val message: CharSequence,
-
-        val background: Background = DEFAULT_BACKGROUND,
-
-        val positive: com.simple.coreapp.utils.ext.ButtonInfo? = null,
-    )
-
-    data class ButtonInfo(
-        val text: CharSequence,
-        val isClickable: Boolean,
-
-        val background: Background = DEFAULT_BACKGROUND
-    )
 
     private class Quiz(
         val match: List<Pair<Option, Option>>,
