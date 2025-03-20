@@ -39,6 +39,7 @@
   "game_ipa_wordle_screen_title_answer_true": "Tuyệt vời",
 
   "game_ipa_match_screen_title": "Ghép các cặp phù hợp với nhau",
+  "game_ipa_match_screen_title_choose": "Các cặp",
   "game_ipa_match_screen_message_answer_correct": "Các cặp đã khớp với nhau",
   "game_ipa_match_screen_message_answer_failed": "Một số cặp đang không khớp lắm",
 
