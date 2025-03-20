@@ -125,7 +125,7 @@ class GameIPAMatchViewModel(
         val phoneticListShuffled = phoneticList.shuffled()
 
         val match = phoneticList.mapIndexed { index, phonetic ->
-            Option(type = typeFirst, phonetic = phonetic) to Option(type = typeSecond, phonetic =  phoneticListShuffled[index])
+            Option(type = typeFirst, phonetic = phonetic) to Option(type = typeSecond, phonetic = phoneticListShuffled[index])
         }
 
         val quiz = Quiz(
@@ -165,20 +165,8 @@ class GameIPAMatchViewModel(
             return@listenerSources
         }
 
+
         val list = arrayListOf<ViewItem>()
-
-        TitleViewItem(
-            id = "TITLE",
-            text = translate["game_ipa_match_screen_title"].orEmpty()
-                .with(ForegroundColorSpan(theme.colorOnSurface)),
-            textMargin = Margin(
-                marginHorizontal = DP.DP_8
-            )
-        ).let {
-
-            list.add(SpaceViewItem(id = "SPACE_TITLE_TOP", height = DP.DP_16))
-            list.add(it)
-        }
 
 
         val chooseList = choose.orEmpty().flatMap {
@@ -186,7 +174,7 @@ class GameIPAMatchViewModel(
             listOf(it.first, it.second)
         }
 
-        chooseList.mapIndexed { index, option ->
+        val chooseViewItemList = chooseList.mapIndexed { index, option ->
 
             val optionPair = chooseList.getOrNull(if (index % 2 == 0) index + 1 else index - 1)
 
@@ -199,13 +187,26 @@ class GameIPAMatchViewModel(
                 newType = option.type,
                 background = Background(strokeColor = if (warning.value == true && !optionPair?.phonetic?.text.equals(option.phonetic.text, true)) theme.colorOnErrorVariant else theme.colorPrimary)
             )
-        }.let {
-
-            list.add(SpaceViewItem(id = "SPACE_CHOOSE_TITLE", height = DP.DP_24))
-            list.addAll(it)
         }
 
-        quiz.match.flatMap {
+        TitleViewItem(
+            id = "TITLE",
+            text = translate["game_ipa_match_screen_title"].orEmpty()
+                .with(ForegroundColorSpan(theme.colorOnSurface)),
+            textMargin = Margin(
+                marginHorizontal = DP.DP_8
+            )
+        ).let {
+
+            list.add(SpaceViewItem(id = "SPACE_CHOOSE_0", height = DP.DP_16))
+            list.add(it)
+
+            list.add(SpaceViewItem(id = "SPACE_CHOOSE_1", height = DP.DP_16))
+            list.addAll(chooseViewItemList)
+        }
+
+
+        val optionViewItemList = quiz.match.flatMap {
 
             listOf(it.first, it.second)
         }.map {
@@ -216,10 +217,22 @@ class GameIPAMatchViewModel(
 
                 background = Background(strokeColor = theme.colorOnSurfaceVariant, strokeDashEnable = true)
             )
-        }.let {
+        }
 
-            list.add(SpaceViewItem(id = "SPACE_OPTION_CHO0SE", height = DP.DP_70))
-            list.addAll(it)
+        TitleViewItem(
+            id = "TITLE_OPTION_CHO0SE",
+            text = translate["game_ipa_match_screen_title_choose"].orEmpty()
+                .with(ForegroundColorSpan(theme.colorOnSurface)),
+            textMargin = Margin(
+                marginHorizontal = DP.DP_8
+            )
+        ).let {
+
+            list.add(SpaceViewItem(id = "SPACE_OPTION_1", height = DP.DP_24))
+            list.add(it)
+
+            list.add(SpaceViewItem(id = "SPACE_OPTION_2", height = DP.DP_8))
+            list.addAll(optionViewItemList)
         }
 
         postDifferentValueIfActive(list)
