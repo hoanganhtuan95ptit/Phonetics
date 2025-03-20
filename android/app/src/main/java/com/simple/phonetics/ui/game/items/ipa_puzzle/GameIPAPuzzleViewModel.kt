@@ -39,7 +39,6 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
-import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.utils.AppTheme
@@ -74,9 +73,6 @@ class GameIPAPuzzleViewModel(
             postValue(it)
         }
     }
-
-    @VisibleForTesting
-    val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
 
     @VisibleForTesting
     val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(resourceSelected) {
@@ -248,9 +244,6 @@ class GameIPAPuzzleViewModel(
 
 
     @VisibleForTesting
-    val consecutiveCorrectAnswerEvent: LiveData<Event<Pair<Long, Boolean>>> = MediatorLiveData()
-
-    @VisibleForTesting
     val stateInfo: LiveData<StateInfo> = combineSources(theme, translate, quiz, choose, consecutiveCorrectAnswerEvent) {
 
         val quiz = quiz.get()
@@ -338,16 +331,6 @@ class GameIPAPuzzleViewModel(
         }
 
         checkState.postValue(state)
-    }
-
-    fun updateResource(it: Word.Resource) {
-
-        resourceSelected.postDifferentValue(it)
-    }
-
-    fun updateConsecutiveCorrectAnswer(event: Event<Pair<Long, Boolean>>) {
-
-        consecutiveCorrectAnswerEvent.postDifferentValue(event)
     }
 
     private fun getQuestionIpaList(phonetic: Phonetic, ipaList: List<String>): List<Pair<Int, String>> {

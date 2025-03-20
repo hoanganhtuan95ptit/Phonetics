@@ -82,9 +82,6 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
 
         observeData()
         observeConfigData()
-
-        observeGameData()
-        observeGameConfigData()
     }
 
     private fun setupRecyclerView() {
@@ -195,23 +192,6 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
         listenerEnable.observe(viewLifecycleOwner) {
 
             viewModel.updateListenerEnable(it)
-        }
-    }
-
-
-    private fun observeGameData() = with(gameViewModel) {
-
-        consecutiveCorrectAnswerEvent.observe(viewLifecycleOwner) {
-
-            viewModel.updateConsecutiveCorrectAnswer(it)
-        }
-    }
-
-    private fun observeGameConfigData() = with(gameConfigViewModel) {
-
-        resourceSelected.observe(viewLifecycleOwner) {
-
-            viewModel.updateResource(it)
         }
     }
 

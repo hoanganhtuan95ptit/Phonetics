@@ -82,13 +82,6 @@ class GameIPAMatchViewModel(
 
 
     @VisibleForTesting
-    val listenEnable: LiveData<Boolean> = MediatorLiveData()
-
-    @VisibleForTesting
-    val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
-
-
-    @VisibleForTesting
     val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(resourceSelected) {
 
         postDifferentValue(ResultState.Start)
@@ -261,9 +254,6 @@ class GameIPAMatchViewModel(
 
 
     @VisibleForTesting
-    val consecutiveCorrectAnswerEvent: LiveData<Event<Pair<Long, Boolean>>> = MediatorLiveData()
-
-    @VisibleForTesting
     val stateInfo: LiveData<StateInfo> = combineSources(theme, translate, consecutiveCorrectAnswerEvent) {
 
         val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSources
@@ -405,21 +395,6 @@ class GameIPAMatchViewModel(
     fun updateWaring(it: Boolean) {
 
         warning.postDifferentValue(it)
-    }
-
-    fun updateListenerEnable(it: Boolean) {
-
-        listenEnable.postDifferentValue(it)
-    }
-
-    fun updateResourceSelected(it: Word.Resource) {
-
-        resourceSelected.postDifferentValue(it)
-    }
-
-    fun updateConsecutiveCorrectAnswer(event: Event<Pair<Long, Boolean>>) {
-
-        consecutiveCorrectAnswerEvent.postDifferentValue(event)
     }
 
     fun startListen(data: Pair<Option, Type>, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {

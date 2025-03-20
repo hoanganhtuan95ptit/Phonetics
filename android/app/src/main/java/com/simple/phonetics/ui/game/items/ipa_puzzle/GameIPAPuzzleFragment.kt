@@ -61,8 +61,6 @@ class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
         setupRecyclerView()
 
         observeData()
-        observeGameData()
-        observeGameConfigData()
     }
 
     private fun setupRecyclerView() {
@@ -157,22 +155,6 @@ class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
-        }
-    }
-
-    private fun observeGameData() = with(gameViewModel) {
-
-        consecutiveCorrectAnswerEvent.observe(viewLifecycleOwner) {
-
-            viewModel.updateConsecutiveCorrectAnswer(it)
-        }
-    }
-
-    private fun observeGameConfigData() = with(gameConfigViewModel) {
-
-        resourceSelected.observe(viewLifecycleOwner) {
-
-            viewModel.updateResource(it)
         }
     }
 }
