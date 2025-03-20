@@ -35,6 +35,8 @@ class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _
 
     override fun bind(binding: ItemImageStateBinding, viewType: Int, position: Int, item: ImageStateViewItem) {
 
+        binding.root.transitionName = item.id
+
         refreshImage(binding, item)
         refreshLoading(binding, item)
 
@@ -102,7 +104,7 @@ class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _
 
     private fun refreshImageBackground(binding: ItemImageStateBinding, item: ImageStateViewItem) {
 
-//        binding.ivImage.delegate.setBackground(item.imageBackground)
+        binding.ivImage.delegate.setBackground(item.imageBackground)
     }
 }
 
