@@ -43,10 +43,15 @@ android {
     }
     buildTypes {
         debug {
+            applicationIdSuffix ".debug"
+            resValue "string", "app_name", "EPhoneDebug"
+
             buildConfigField 'boolean', 'DEBUG', 'true'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
+            resValue "string", "app_name", "EPhonetics"
+
             buildConfigField 'boolean', 'DEBUG', 'false'
             signingConfig signingConfigs.keystore  // can remove
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
