@@ -340,11 +340,15 @@ class GameIPAPuzzleViewModel(
             .first()
             .replace("/", "")
 
-        var count = -1
-        val questionIpaList = questionPhonetic.split("").associateBy {
 
-            count++
-        }.toList()
+        val questionIpaList = questionPhonetic.split("").filter {
+
+            it !in listOf("", "‍")
+        }.mapIndexed { index, s ->
+
+            index to s
+        }
+
 
         val questionIpaValidateList = arrayListOf<Pair<Int, String>>()
 
@@ -354,7 +358,7 @@ class GameIPAPuzzleViewModel(
             val start = index
 
             var ipa = questionIpaList[start].second
-            while (index + 1 < questionIpaList.size && (questionIpaList[index].second in listOf("ˈ") || (questionIpaList[index].second + questionIpaList[index + 1].second) in ipaList)) {
+            while (index + 1 < questionIpaList.size && (questionIpaList[index].second in listOf("ˈ", "ˌ") || (questionIpaList[index].second + questionIpaList[index + 1].second) in ipaList)) {
 
                 ipa += questionIpaList[index + 1].second
                 index++
