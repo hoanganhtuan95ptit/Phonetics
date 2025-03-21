@@ -9,48 +9,11 @@
   "action_try_speak": "Try speak",
   "action_view_all_ipa": "View all",
 
-  "game_config_screen_action_play_game": "Start playing now!",
-  "game_config_screen_message_resource_from_history": "Based on previously searched words",
-  "game_config_screen_message_resource_from_popular": "Based on commonly used words",
-  "game_config_screen_message_resource_limit": "Cannot select due to insufficient words",
-  "game_config_screen_title_resource": "Select game source",
-
-  "game_congratulation_screen_action": "Let's continue!",
-  "game_congratulation_screen_message": "Awesome! You've answered correctly $number times in a row! Keep going and don’t lose your streak! 😆👏",
-  "game_congratulation_screen_message_1": "Incredible! You’ve got $number correct answers in a row! It’d be a shame to miss now! 🤭🔥",
-  "game_congratulation_screen_message_2": "You've answered correctly $number times in a row! Are you hacking? How are you this good? 🤔😂",
-  "game_congratulation_screen_message_3": "You've got $number correct answers in a row! At this rate, you’ll be a master soon! Don’t stop now! 🔥🎯",
-  "game_congratulation_screen_message_4": "You’ve stepped onto the legendary path with $number correct answers in a row! Now all you need is some fans! 🤩👏",
-  "game_congratulation_screen_title": "Congratulations! 🎉",
-  "game_congratulation_screen_title_1": "Impressive! 😁",
-  "game_congratulation_screen_title_2": "Unbelievable! 😎",
-  "game_congratulation_screen_title_3": "I bow before you! 🙇‍♂️",
-  "game_congratulation_screen_title_4": "A living legend! 🏆",
-
-  "game_ipa_puzzle_screen_message_answer": "The answer is: $param1.",
-  "game_ipa_puzzle_screen_title": "The word $param1 has the pronunciation $param2, but it is incomplete. Please complete the missing part.",
-
-  "game_ipa_wordle_screen_action": "Check",
-  "game_ipa_wordle_screen_action_continue": "Continue",
-  "game_ipa_wordle_screen_action_retry": "Try again",
-  "game_ipa_wordle_screen_message_answer": "$param1 of $param2 is $param3",
-  "game_ipa_wordle_screen_title": "Choose the correct $param1 for $param2 below?",
-  "game_ipa_wordle_screen_title_answer_failed": "Not quite right",
-  "game_ipa_wordle_screen_title_answer_true": "Awesome",
-
-  "game_screen_title": "Game",
-
   "hint_enter_language_text": "Enter $language_name here!",
   "hint_enter_text": "Enter text here!",
 
   "ipa_c": "Central",
   "ipa_de": "German",
-  "ipa_detail_screen_consonants_unvoiced": "Consonants unvoiced",
-  "ipa_detail_screen_consonants_voiced": "Consonants voiced",
-  "ipa_detail_screen_diphthongs": "Diphthongs",
-  "ipa_detail_screen_title_example": "Example:",
-  "ipa_detail_screen_vowels_long": "Vowels long",
-  "ipa_detail_screen_vowels_short": "Vowels short",
   "ipa_eo": "Esperanto",
   "ipa_es_es": "Spanish (Spain)",
   "ipa_es_mx": "Spanish (Mexico)",
@@ -63,7 +26,6 @@
   "ipa_jam": "Jamaican Creole",
   "ipa_km": "Khmer",
   "ipa_ko": "Korean",
-  "ipa_list_screen_title": "Ipa list",
   "ipa_ma": "Malay (Malaysian and Indonesian)",
   "ipa_n": "Northern",
   "ipa_nb": "Norwegian Bokmål",
@@ -120,8 +82,6 @@
   "rate_message": "We’d love your feedback to make the app even better. Your review means a lot! 🌟",
   "rate_title": "Rate app",
 
-  "recording_screen_title": "Please speak $language_name",
-
   "resource_history": "From the search history",
   "resource_popular": "From the popular list",
 
@@ -146,5 +106,52 @@
   "type_text": "Letter",
   "type_voice": "Pronounce",
 
-  "voice_index": "Voice $index"
+  "voice_index": "Voice $index",
+
+  "game_config_screen_action_play_game": "Start playing now!",
+  "game_config_screen_message_resource_from_history": "Based on previously searched words",
+  "game_config_screen_message_resource_from_popular": "Based on commonly used words",
+  "game_config_screen_message_resource_limit": "Cannot select due to insufficient words",
+  "game_config_screen_title_resource": "Select game source",
+
+  "game_congratulation_screen_action": "Let's continue!",
+  "game_congratulation_screen_message": "Awesome! You've answered correctly $number times in a row! Keep going and don’t lose your streak! 😆👏",
+  "game_congratulation_screen_message_1": "Incredible! You’ve got $number correct answers in a row! It’d be a shame to miss now! 🤭🔥",
+  "game_congratulation_screen_message_2": "You've answered correctly $number times in a row! Are you hacking? How are you this good? 🤔😂",
+  "game_congratulation_screen_message_3": "You've got $number correct answers in a row! At this rate, you’ll be a master soon! Don’t stop now! 🔥🎯",
+  "game_congratulation_screen_message_4": "You’ve stepped onto the legendary path with $number correct answers in a row! Now all you need is some fans! 🤩👏",
+  "game_congratulation_screen_title": "Congratulations! 🎉",
+  "game_congratulation_screen_title_1": "Impressive! 😁",
+  "game_congratulation_screen_title_2": "Unbelievable! 😎",
+  "game_congratulation_screen_title_3": "I bow before you! 🙇‍♂️",
+  "game_congratulation_screen_title_4": "A living legend! 🏆",
+
+  "game_ipa_puzzle_screen_message_answer": "The answer is: $param1.",
+  "game_ipa_puzzle_screen_title": "The word $param1 has the pronunciation $param2, but it is incomplete. Please complete the missing part.",
+
+  "game_ipa_wordle_screen_action": "Check",
+  "game_ipa_wordle_screen_action_continue": "Continue",
+  "game_ipa_wordle_screen_action_retry": "Try again",
+  "game_ipa_wordle_screen_message_answer": "$param1 of $param2 is $param3",
+  "game_ipa_wordle_screen_title": "Choose the correct $param1 for $param2 below?",
+  "game_ipa_wordle_screen_title_answer_failed": "Not quite right",
+  "game_ipa_wordle_screen_title_answer_true": "Awesome",
+
+  "game_ipa_match_screen_title": "Match the suitable pairs together",
+  "game_ipa_match_screen_title_choose": "The pairs",
+  "game_ipa_match_screen_message_answer_correct": "The pairs have been matched",
+  "game_ipa_match_screen_message_answer_failed": "Some pairs don’t quite match",
+
+  "game_screen_title": "Game",
+
+  "ipa_detail_screen_consonants_unvoiced": "Consonants unvoiced",
+  "ipa_detail_screen_consonants_voiced": "Consonants voiced",
+  "ipa_detail_screen_diphthongs": "Diphthongs",
+  "ipa_detail_screen_title_example": "Example:",
+  "ipa_detail_screen_vowels_long": "Vowels long",
+  "ipa_detail_screen_vowels_short": "Vowels short",
+
+  "ipa_list_screen_title": "Ipa list",
+
+  "recording_screen_title": "Please speak $language_name"
 }

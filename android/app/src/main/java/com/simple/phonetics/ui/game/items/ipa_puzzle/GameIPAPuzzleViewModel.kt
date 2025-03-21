@@ -261,24 +261,29 @@ class GameIPAPuzzleViewModel(
             theme.colorOnErrorVariant
         }
 
-        val title = (if (isAnswerCorrect) {
+        val title = if (isAnswerCorrect) {
             translate["title_answer_true"].orEmpty()
         } else {
             translate["title_answer_failed"].orEmpty()
-        }).with(ForegroundColorSpan(textColor))
+        }.with(ForegroundColorSpan(textColor))
+
+
+        val param1 = "/${quiz.question.ipaMissing}/"
 
         val message = translate["game_ipa_puzzle_screen_message_answer"].orEmpty()
-            .replace("\$param1", quiz.question.ipaMissing)
+            .replace("\$param1", param1)
             .with(ForegroundColorSpan(textColor))
-            .with(quiz.question.ipaMissing, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
+            .with(param1, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
             .trim()
 
+        val buttonText = if (isAnswerCorrect) {
+            translate["action_continue"].orEmpty()
+        } else {
+            translate["action_retry"].orEmpty()
+        }.with(ForegroundColorSpan(theme.colorOnPrimary))
+
         val positive = ButtonInfo(
-            text = (if (isAnswerCorrect) {
-                translate["action_continue"].orEmpty()
-            } else {
-                translate["action_retry"].orEmpty()
-            }).with(ForegroundColorSpan(theme.colorOnPrimary)),
+            text = buttonText,
             background = Background(
                 strokeWidth = 0,
                 cornerRadius = DP.DP_16,
