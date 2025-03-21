@@ -225,11 +225,12 @@ class HomeViewModel(
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage) {
+    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage, phoneticsCode) {
 
         val param = GetPhoneticsAsyncUseCase.Param(
             text = text.get(),
             isReverse = isReverse.get(),
+            phoneticCode = phoneticsCode.get(),
             inputLanguageCode = inputLanguage.get().id,
             outputLanguageCode = outputLanguage.get().id
         )

@@ -103,9 +103,14 @@ class GetPhoneticsAsyncUseCase(
         // tìm kiếm phiên âm
         val ipaJob = launch {
 
-            val phonetics = phoneticRepository.getPhonetics(sentenceList.flatMap { sentence -> sentence.phonetics.map { it.text } })
+            val wordList = sentenceList.flatMap { sentence -> sentence.phonetics.map { it.text } }
 
-            val mapTextAndPhonetics = phonetics.associateBy { it.text }
+            val mapTextAndPhonetics = phoneticRepository.getPhonetics(
+                textList = wordList,
+                phoneticCode = param.phoneticCode
+            ).associateBy {
+                it.text
+            }
 
             sentenceList.flatMap {
 
@@ -129,13 +134,20 @@ class GetPhoneticsAsyncUseCase(
             }
         }
 
-        // thự hiện lưu những từ đã tra phiên âm
+        // thực hiện lưu những từ đã tra phiên âm
         if (param.saveToHistory) launch {
 
             // đợi cho luồng lấy IPA hoàn thành thì mới lưu vào db
             ipaJob.join()
 
-            val wordList = sentenceList.flatMap { it.phonetics }.filter { it.ipa.isNotEmpty() }.map { it.text }
+            // lấy ra những từ có IPA
+            val wordList = sentenceList.flatMap {
+                it.phonetics
+            }.filter {
+                it.ipa[param.phoneticCode].orEmpty().isNotEmpty()
+            }.map {
+                it.text
+            }
 
             wordRepository.insertOrUpdate(resource = Word.Resource.History.value, languageCode = param.inputLanguageCode, wordList)
         }
@@ -192,6 +204,7 @@ class GetPhoneticsAsyncUseCase(
 
         val isReverse: Boolean,
 
+        val phoneticCode: String,
         val inputLanguageCode: String,
         val outputLanguageCode: String,
 

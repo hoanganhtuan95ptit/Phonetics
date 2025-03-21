@@ -30,6 +30,11 @@ class PhoneticRepositoryImpl(
         return phoneticDao.getListByTextList(phonetics)
     }
 
+    override suspend fun getPhonetics(textList: List<String>, phoneticCode: String): List<Phonetic> {
+
+        return phoneticDao.getListByTextList(textList = textList, phoneticCode = phoneticCode)
+    }
+
     override suspend fun insertOrUpdate(phonetics: List<Phonetic>) {
 
         phoneticDao.insertOrUpdateEntities(phonetics)

@@ -36,20 +36,11 @@ class GetPhoneticsRandomUseCase(
         )
 
         val phoneticList = phoneticRepository.getPhonetics(
-            phonetics = wordList
+            textList = wordList,
+            phoneticCode = param.phoneticsCode
         )
 
-        val phoneticValidateList = phoneticList.filter {
-            if (param.phoneticsCode == null) true else it.ipa.containsKey(param.phoneticsCode)
-        }
-
-        val list = if (phoneticValidateList.size >= param.limit) {
-            phoneticValidateList
-        } else {
-            phoneticList
-        }
-
-        return list.subList(0, min(phoneticList.size, param.limit))
+        return phoneticList.subList(0, min(phoneticList.size, param.limit))
     }
 
     data class Param(
@@ -58,6 +49,6 @@ class GetPhoneticsRandomUseCase(
         val textLengthMax: Int = 10,
 
         val resource: Word.Resource,
-        val phoneticsCode: String? = null,
+        val phoneticsCode: String,
     )
 }

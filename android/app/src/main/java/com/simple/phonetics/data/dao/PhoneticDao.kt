@@ -34,6 +34,23 @@ interface PhoneticDao {
     @Query("SELECT * FROM $TABLE_NAME WHERE text COLLATE NOCASE IN (:textList)")
     fun getRoomListByTextList(textList: List<String>): List<RoomPhonetic>
 
+    fun getListByTextList(textList: List<String>, phoneticCode: String): List<Phonetic> = textList.chunked(300).flatMap { list ->
+
+        getRoomListByTextList(textList = list, "%\"$phoneticCode\"%").groupBy {
+
+            it.text.lowercase()
+        }.mapValues {
+
+            it.value.first()
+        }.values.map {
+
+            it.toEntity()
+        }
+    }
+
+    @Query("SELECT * FROM PHONETICS WHERE text COLLATE NOCASE IN (:textList) AND UPPER(ipa) LIKE UPPER(:phoneticCode)")
+    fun getRoomListByTextList(textList: List<String>, phoneticCode: String): List<RoomPhonetic>
+
 
     @Query("DELETE FROM $TABLE_NAME")
     fun deleteAll()
