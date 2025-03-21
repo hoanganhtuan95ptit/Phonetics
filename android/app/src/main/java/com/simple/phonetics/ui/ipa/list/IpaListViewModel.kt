@@ -14,8 +14,8 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.entities.Ipa
-import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.state.ResultState
 

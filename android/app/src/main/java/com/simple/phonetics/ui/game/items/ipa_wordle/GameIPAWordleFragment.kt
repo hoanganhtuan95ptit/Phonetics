@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.game.items.ipa_wordle
 
 import android.content.ComponentCallbacks
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -10,50 +9,35 @@ import androidx.lifecycle.asFlow
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObjectOrNull
-import com.simple.coreapp.Param
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
-import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.updateMargin
-import com.simple.coreapp.utils.extentions.get
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Deeplink
-import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
-import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.entities.Phonetic
-import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
-import com.simple.phonetics.ui.base.fragments.BaseFragment
-import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.game.GameFragment
-import com.simple.phonetics.ui.game.GameViewModel
 import com.simple.phonetics.ui.game.items.GameItemFragment
-import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
-import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isSuccess
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.first
 import java.util.UUID
 
 class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
@@ -159,13 +143,6 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
             }
         }
 
-
-        theme.collectWithLockTransitionUntilData(fragment = fragment, tag = "THEME") {
-
-            val binding = binding ?: return@collectWithLockTransitionUntilData
-
-            binding.root.setBackgroundColor(it.colorBackground)
-        }
 
         buttonInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON") {
 

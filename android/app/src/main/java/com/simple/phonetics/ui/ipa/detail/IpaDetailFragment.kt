@@ -10,7 +10,6 @@ import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation

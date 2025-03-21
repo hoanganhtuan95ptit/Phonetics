@@ -42,6 +42,8 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
         super.onViewCreated(view, savedInstanceState)
 
         observeData()
+        observeConfigData()
+
         observeGameData()
         observeGameConfigData()
     }
@@ -55,6 +57,29 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
             binding.root.setBackgroundColor(it.colorBackground)
+        }
+    }
+
+    private fun observeConfigData() = with(configViewModel) {
+
+        listenerEnable.observe(viewLifecycleOwner) {
+
+            viewModel.updateListenerEnable(it)
+        }
+
+        phoneticSelect.observe(viewLifecycleOwner) {
+
+            viewModel.updatePhoneticCodeSelected(it)
+        }
+
+        inputLanguage.observe(viewLifecycleOwner) {
+
+            viewModel.updateInputLanguage(it)
+        }
+
+        outputLanguage.observe(viewLifecycleOwner) {
+
+            viewModel.updateOutputLanguage(it)
         }
     }
 

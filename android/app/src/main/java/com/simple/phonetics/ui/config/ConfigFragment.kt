@@ -8,7 +8,6 @@ import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.extentions.observeQueue

@@ -72,14 +72,14 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
 
         val clickTextAdapter = ClickTextAdapter { view, item ->
 
-            val data = item.data.asObjectOrNull<Pair<GameIPAMatchViewModel.Option?, GameIPAMatchViewModel.Type?>>() ?: return@ClickTextAdapter
+            val data = item.data.asObjectOrNull<GameIPAMatchPair>() ?: return@ClickTextAdapter
 
             viewModel.updateChoose(data)
         }
 
         val imageStateAdapter = ImageStateAdapter { view, item ->
 
-            val data = item.data.asObjectOrNull<Pair<GameIPAMatchViewModel.Option?, GameIPAMatchViewModel.Type?>>() ?: return@ImageStateAdapter
+            val data = item.data.asObjectOrNull<GameIPAMatchPair>() ?: return@ImageStateAdapter
 
             viewModel.updateChoose(data)
 
@@ -94,7 +94,7 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
             val layoutManager = createFlexboxLayoutManager(context = context) {
 
                 logCrashlytics(
-                    event = "GAME_IPA_PUZZLE",
+                    event = "GAME_IPA_MATCH",
                     throwable = it,
                     "VIEW_ITEM_SIZE" to "${viewModel.viewItemList.value?.size}"
                 )
@@ -149,13 +149,6 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
         }
 
 
-        theme.collectWithLockTransitionUntilData(fragment = fragment, tag = "THEME") {
-
-            val binding = binding ?: return@collectWithLockTransitionUntilData
-
-            binding.root.setBackgroundColor(it.colorBackground)
-        }
-
         buttonInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON") {
 
             val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
@@ -184,10 +177,10 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
         }
     }
 
-    private fun listen(data: Pair<GameIPAMatchViewModel.Option?, GameIPAMatchViewModel.Type?>) {
+    private fun listen(data: GameIPAMatchPair) {
 
         viewModel.startListen(
-            data = Pair(data.first ?: return, data.second ?: return),
+            data = data,
             voiceId = configViewModel.voiceSelect.value ?: 0,
             voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
         )

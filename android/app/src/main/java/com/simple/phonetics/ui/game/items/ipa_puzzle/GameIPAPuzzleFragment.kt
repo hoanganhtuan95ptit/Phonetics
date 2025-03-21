@@ -131,13 +131,6 @@ class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
         }
 
 
-        theme.collectWithLockTransitionUntilData(fragment = fragment, tag = "THEME") {
-
-            val binding = binding ?: return@collectWithLockTransitionUntilData
-
-            binding.root.setBackgroundColor(it.colorBackground)
-        }
-
         buttonInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON") {
 
             val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
