@@ -12,7 +12,6 @@ import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
@@ -72,10 +71,11 @@ class GameIPAPuzzleViewModel(
         postDifferentValue(ResultState.Success(list))
     }
 
-    private val quiz: LiveData<GameIPAPuzzleQuiz> = combineSources(ipaState, phoneticState) {
+    private val quiz: LiveData<GameIPAPuzzleQuiz> = combineSources(ipaState, phoneticState, phoneticCodeSelected) {
 
         val ipaState = ipaState.value ?: return@combineSources
         val phoneticState = phoneticState.value ?: return@combineSources
+        val phoneticCodeSelected = phoneticCodeSelected.value ?: return@combineSources
 
         val ipaList = ipaState.toSuccess()?.data ?: return@combineSources
         val phonetic = phoneticState.toSuccess()?.data?.firstOrNull() ?: return@combineSources
@@ -83,7 +83,7 @@ class GameIPAPuzzleViewModel(
         val ipaListWrap = ipaList
             .map { it.ipa.replace("/", "") }
 
-        val questionIpaList = getQuestionIpaList(phonetic = phonetic, ipaList = ipaListWrap)
+        val questionIpaList = getQuestionIpaList(ipaList = ipaListWrap, phonetic = phonetic, phoneticCode = phoneticCodeSelected)
 
         val ipaMissing = questionIpaList.random()
         val ipaIncomplete = questionIpaList.map {
@@ -232,11 +232,9 @@ class GameIPAPuzzleViewModel(
         checkState.postValue(state)
     }
 
-    private fun getQuestionIpaList(phonetic: Phonetic, ipaList: List<String>): List<Pair<Int, String>> {
+    private fun getQuestionIpaList(phonetic: Phonetic, ipaList: List<String>, phoneticCode: String): List<Pair<Int, String>> {
 
-        val questionPhonetic = phonetic.ipa.toList()
-            .flatMap { it.second }
-            .first()
+        val questionPhonetic = phonetic.ipa[phoneticCode]?.firstOrNull().orEmpty()
             .replace("/", "")
 
 
