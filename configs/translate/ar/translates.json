@@ -9,88 +9,50 @@
   "action_try_speak": "حاول التحدث",
   "action_view_all_ipa": "عرض الكل",
 
-  "game_config_screen_action_play_game": "ابدأ اللعب الآن!",
-  "game_config_screen_message_resource_from_history": "استنادًا إلى الكلمات التي تم البحث عنها سابقًا",
-  "game_config_screen_message_resource_from_popular": "استنادًا إلى الكلمات الشائعة الاستخدام",
-  "game_config_screen_message_resource_limit": "لا يمكن التحديد بسبب نقص الكلمات",
-  "game_config_screen_title_resource": "اختر مصدر اللعبة",
-
-  "game_congratulation_screen_action": "لنواصل!",
-  "game_congratulation_screen_message": "رائع! لقد أجبت بشكل صحيح $number مرات متتالية! استمر ولا تفقد سلسلتك! 😆👏",
-  "game_congratulation_screen_message_1": "لا يصدق! لقد أجبت بشكل صحيح $number مرات متتالية! سيكون من المؤسف أن تخطئ الآن! 🤭🔥",
-  "game_congratulation_screen_message_2": "لقد أجبت بشكل صحيح $number مرات متتالية! هل أنت مخترق؟ كيف أنت جيد هكذا؟ 🤔😂",
-  "game_congratulation_screen_message_3": "لقد حصلت على $number إجابات صحيحة متتالية! بهذا المعدل، ستصبح محترفًا قريبًا! لا تتوقف الآن! 🔥🎯",
-  "game_congratulation_screen_message_4": "لقد دخلت طريق الأسطورة مع $number إجابات صحيحة متتالية! كل ما تحتاجه الآن هو بعض المعجبين! 🤩👏",
-  "game_congratulation_screen_title": "تهانينا! 🎉",
-  "game_congratulation_screen_title_1": "مذهل! 😁",
-  "game_congratulation_screen_title_2": "لا يصدق! 😎",
-  "game_congratulation_screen_title_3": "أنا أنحني أمامك! 🙇‍♂️",
-  "game_congratulation_screen_title_4": "أسطورة حية! 🏆",
-
-  "game_ipa_puzzle_screen_message_answer": "الإجابة هي: $param1.",
-  "game_ipa_puzzle_screen_title": "الكلمة $param1 لها النطق $param2، لكنها غير مكتملة. يرجى إكمال الجزء المفقود.",
-
-  "game_ipa_wordle_screen_action": "تحقق",
-  "game_ipa_wordle_screen_action_continue": "متابعة",
-  "game_ipa_wordle_screen_action_retry": "حاول مرة أخرى",
-  "game_ipa_wordle_screen_message_answer": "$param1 من $param2 هو $param3",
-  "game_ipa_wordle_screen_title": "اختر $param1 الصحيح لـ $param2 أدناه؟",
-  "game_ipa_wordle_screen_title_answer_failed": "ليست الإجابة الصحيحة",
-  "game_ipa_wordle_screen_title_answer_true": "رائع",
-
-  "game_screen_title": "لعبة",
-
   "hint_enter_language_text": "أدخل $language_name هنا!",
   "hint_enter_text": "أدخل النص هنا!",
 
-  "ipa_c": "الوسطى",
-  "ipa_de": "الألمانية",
-  "ipa_detail_screen_consonants_unvoiced": "الحروف الساكنة غير المجهورة",
-  "ipa_detail_screen_consonants_voiced": "الحروف الساكنة المجهورة",
-  "ipa_detail_screen_diphthongs": "الأصوات المزدوجة",
-  "ipa_detail_screen_title_example": "مثال:",
-  "ipa_detail_screen_vowels_long": "حروف العلة الطويلة",
-  "ipa_detail_screen_vowels_short": "حروف العلة القصيرة",
-  "ipa_eo": "الإسبرانتو",
-  "ipa_es_es": "الإسبانية (إسبانيا)",
-  "ipa_es_mx": "الإسبانية (المكسيك)",
-  "ipa_fa": "الفارسية",
-  "ipa_fi": "الفنلندية",
-  "ipa_fr_fr": "الفرنسية (فرنسا)",
-  "ipa_fr_qc": "الفرنسية (كيبيك)",
-  "ipa_is": "الأيسلندية",
-  "ipa_ja": "اليابانية",
-  "ipa_jam": "الكريولية الجامايكية",
-  "ipa_km": "الخميرية",
-  "ipa_ko": "الكورية",
-  "ipa_list_screen_title": "قائمة IPA",
-  "ipa_ma": "الماليزية (ماليزيا وإندونيسيا)",
-  "ipa_n": "الشمالية",
-  "ipa_nb": "النرويجية بوكمال",
-  "ipa_nl": "الهولندية",
-  "ipa_or": "الأوديا",
-  "ipa_ro": "الرومانية",
-  "ipa_s": "الجنوبية",
-  "ipa_sv": "السويدية",
-  "ipa_sw": "السواحلية",
-  "ipa_tts": "الإيسانية",
-  "ipa_uk": "الإنجليزية - المملكة المتحدة",
-  "ipa_us": "الإنجليزية - الولايات المتحدة",
-  "ipa_yue": "الكانتونية",
-  "ipa_zh_hans": "الصينية المبسطة",
-  "ipa_zh_hant": "الصينية التقليدية",
+  "ipa_c": "مركزي",
+  "ipa_de": "ألماني",
+  "ipa_eo": "إسبرانتو",
+  "ipa_es_es": "إسباني (إسبانيا)",
+  "ipa_es_mx": "إسباني (المكسيك)",
+  "ipa_fa": "فارسي",
+  "ipa_fi": "فنلندي",
+  "ipa_fr_fr": "فرنسي (فرنسا)",
+  "ipa_fr_qc": "فرنسي (كيبيك)",
+  "ipa_is": "آيسلندي",
+  "ipa_ja": "ياباني",
+  "ipa_jam": "كريول جامايكي",
+  "ipa_km": "خمير",
+  "ipa_ko": "كوري",
+  "ipa_ma": "ماليزي (ماليزيا وإندونيسيا)",
+  "ipa_n": "شمالي",
+  "ipa_nb": "نرويجي بوكمال",
+  "ipa_nl": "هولندي",
+  "ipa_or": "أوديا",
+  "ipa_ro": "روماني",
+  "ipa_s": "جنوبي",
+  "ipa_sv": "سويدي",
+  "ipa_sw": "سواحيلي",
+  "ipa_tts": "إيسان",
+  "ipa_uk": "إنجليزي - المملكة المتحدة",
+  "ipa_us": "إنجليزي - الولايات المتحدة",
+  "ipa_yue": "كانتوني",
+  "ipa_zh_hans": "صيني مبسط",
+  "ipa_zh_hant": "صيني تقليدي",
 
-  "language_ar": "العربية",
+  "language_ar": "عربي",
   "language_de": "ألمانيا",
-  "language_en": "الإنجليزية",
-  "language_eo": "الإسبرانتو",
+  "language_en": "إنجليزي",
+  "language_eo": "إسبرانتو",
   "language_es": "إسبانيا، المكسيك",
   "language_fa": "إيران",
   "language_fi": "فنلندا",
   "language_fr": "فرنسا، كيبيك",
-  "language_is": "أيسلندا",
+  "language_is": "آيسلندا",
   "language_ja": "اليابان",
-  "language_jam": "الكريولية الجامايكية",
+  "language_jam": "كريول جامايكي",
   "language_km": "كمبوديا",
   "language_ko": "كوريا الجنوبية",
   "language_ma": "ماليزيا، إندونيسيا",
@@ -99,28 +61,26 @@
   "language_or": "الهند",
   "language_ro": "رومانيا",
   "language_sv": "السويد",
-  "language_sw": "السواحلية",
+  "language_sw": "سواحيلي",
   "language_tts": "تايلاند",
-  "language_vi": "الفيتنامية",
-  "language_zh": "الصينية",
+  "language_vi": "فيتنامي",
+  "language_zh": "صيني",
 
   "message_completed_sync_phonetics": "تمت مزامنة الصوتيات $ipa_name بنجاح",
   "message_completed_sync_translate": "تمت مزامنة الترجمة بنجاح",
   "message_result_empty": "لا يوجد محتوى بعد!",
-  "message_select_language": "اختر اللغة التي تريد البحث عن الصوتيات الخاصة بها",
+  "message_select_language": "اختر اللغة التي تريد البحث عن صوتياتها",
   "message_start_sync": "بدء المزامنة...",
-  "message_start_sync_phonetics": "جارٍ مزامنة الصوتيات $ipa_name $percent%",
-  "message_start_sync_translate": "جارٍ مزامنة الترجمة $percent%",
+  "message_start_sync_phonetics": "مزامنة الصوتيات $ipa_name $percent%",
+  "message_start_sync_translate": "مزامنة الترجمة $percent%",
   "message_support_translate": "الترجمة مدعومة",
   "message_sync_completed": "اكتملت المزامنة",
-  "message_translate_download": "جارٍ تنزيل الترجمة...",
+  "message_translate_download": "جارٍ تحميل الترجمة...",
 
-  "rate_action_negative": "متأخر",
-  "rate_action_positive": "قيم",
-  "rate_message": "نحب أن نحصل على ملاحظاتك لجعل التطبيق أفضل. تقييمك يعني لنا الكثير! 🌟",
-  "rate_title": "قيم التطبيق",
-
-  "recording_screen_title": "يرجى التحدث بـ $language_name",
+  "rate_action_negative": "لاحقًا",
+  "rate_action_positive": "تقييم",
+  "rate_message": "نود الحصول على تعليقاتك لجعل التطبيق أفضل. مراجعتك تعني الكثير! 🌟",
+  "rate_title": "تقييم التطبيق",
 
   "resource_history": "من سجل البحث",
   "resource_popular": "من القائمة الشائعة",
@@ -128,23 +88,70 @@
   "speed_lever": "السرعة $lever",
 
   "title_game": "لعبة IPA 🎮",
-  "title_answer_failed": "ليست الإجابة الصحيحة",
+  "title_answer_failed": "غير صحيح تمامًا",
   "title_answer_true": "رائع",
   "title_history": "التاريخ:",
   "title_ipa": "IPA:",
   "title_language": "اختر اللغة",
   "title_phonetic": "الصوتيات:",
   "title_result": "النتيجة:",
-  "title_translate": "الترجمة:",
+  "title_translate": "ترجم:",
   "title_voice": "الصوت:",
   "title_voice_speed": "سرعة الصوت:",
 
   "translating": "جارٍ الترجمة",
   "translate_failed": "فشلت الترجمة",
 
-  "type_ipa": "النطق الصوتي",
-  "type_text": "الحروف",
-  "type_voice": "النطق",
+  "type_ipa": "نسخ صوتي",
+  "type_text": "حرف",
+  "type_voice": "نطق",
 
-  "voice_index": "الصوت $index"
+  "voice_index": "الصوت $index",
+
+  "game_config_screen_action_play_game": "ابدأ اللعب الآن!",
+  "game_config_screen_message_resource_from_history": "بناءً على الكلمات التي تم البحث عنها سابقًا",
+  "game_config_screen_message_resource_from_popular": "بناءً على الكلمات شائعة الاستخدام",
+  "game_config_screen_message_resource_limit": "لا يمكن الاختيار بسبب نقص الكلمات",
+  "game_config_screen_title_resource": "اختر مصدر اللعبة",
+
+  "game_congratulation_screen_action": "لنستمر!",
+  "game_congratulation_screen_message": "رائع! لقد أجبت بشكل صحيح $number مرات متتالية! استمر ولا تفقد سلسلتك! 😆👏",
+  "game_congratulation_screen_message_1": "لا يصدق! لقد حصلت على $number إجابات صحيحة متتالية! سيكون من العار أن تفوت الآن! 🤭🔥",
+  "game_congratulation_screen_message_2": "لقد أجبت بشكل صحيح $number مرات متتالية! هل تقوم بالغش؟ كيف أنت بهذا الجيد؟ 🤔😂",
+  "game_congratulation_screen_message_3": "لقد حصلت على $number إجابات صحيحة متتالية! بهذا المعدل، ستصبح سيدًا قريبًا! لا تتوقف الآن! 🔥🎯",
+  "game_congratulation_screen_message_4": "لقد خطوت على المسار الأسطوري بـ $number إجابات صحيحة متتالية! الآن كل ما تحتاجه هو بعض المعجبين! 🤩👏",
+  "game_congratulation_screen_title": "تهانينا! 🎉",
+  "game_congratulation_screen_title_1": "مثير للإعجاب! 😁",
+  "game_congratulation_screen_title_2": "لا يصدق! 😎",
+  "game_congratulation_screen_title_3": "أنحني أمامك! 🙇‍♂️",
+  "game_congratulation_screen_title_4": "أسطورة حية! 🏆",
+
+  "game_ipa_puzzle_screen_message_answer": "الإجابة هي: $param1.",
+  "game_ipa_puzzle_screen_title": "الكلمة $param1 لها نطق $param2، لكنها غير كاملة. يرجى إكمال الجزء الناقص.",
+
+  "game_ipa_wordle_screen_action": "تحقق",
+  "game_ipa_wordle_screen_action_continue": "متابعة",
+  "game_ipa_wordle_screen_action_retry": "حاول مرة أخرى",
+  "game_ipa_wordle_screen_message_answer": "$param1 من $param2 هو $param3",
+  "game_ipa_wordle_screen_title": "اختر $param1 الصحيح لـ $param2 أدناه؟",
+  "game_ipa_wordle_screen_title_answer_failed": "غير صحيح تمامًا",
+  "game_ipa_wordle_screen_title_answer_true": "رائع",
+
+  "game_ipa_match_screen_title": "قم بمطابقة الأزواج المناسبة معًا",
+  "game_ipa_match_screen_title_choose": "الأزواج",
+  "game_ipa_match_screen_message_answer_correct": "تمت مطابقة الأزواج",
+  "game_ipa_match_screen_message_answer_failed": "بعض الأزواج لا تتطابق تمامًا",
+
+  "game_screen_title": "لعبة",
+
+  "ipa_detail_screen_consonants_unvoiced": "الحروف الساكنة غير المنطوقة",
+  "ipa_detail_screen_consonants_voiced": "الحروف الساكنة المنطوقة",
+  "ipa_detail_screen_diphthongs": "الأحرف المزدوجة",
+  "ipa_detail_screen_title_example": "مثال:",
+  "ipa_detail_screen_vowels_long": "الحروف المتحركة الطويلة",
+  "ipa_detail_screen_vowels_short": "الحروف المتحركة القصيرة",
+
+  "ipa_list_screen_title": "قائمة IPA",
+
+  "recording_screen_title": "يرجى التحدث بـ $language_name"
 }
