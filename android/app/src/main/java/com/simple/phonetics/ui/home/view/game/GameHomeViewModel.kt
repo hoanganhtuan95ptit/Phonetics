@@ -10,6 +10,7 @@ import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
@@ -88,8 +89,8 @@ class GameHomeViewModel(
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
                 .with(" BETA ", StyleSpan(Typeface.BOLD), RoundedBackgroundSpan(backgroundColor = theme.colorErrorVariant, textColor = theme.colorOnErrorVariant)),
             textSize = Size(
-                height = DP.DP_76,
-                width = ViewGroup.LayoutParams.WRAP_CONTENT
+                width = ViewGroup.LayoutParams.MATCH_PARENT,
+                height = ViewGroup.LayoutParams.MATCH_PARENT
             ),
             textStyle = TextStyle(
                 textGravity = Gravity.CENTER
@@ -98,7 +99,12 @@ class GameHomeViewModel(
                 left = DP.DP_16,
                 right = DP.DP_16
             ),
+            textBackground = DEFAULT_BACKGROUND,
 
+            size = Size(
+                height = DP.DP_76,
+                width = ViewGroup.LayoutParams.WRAP_CONTENT
+            ),
             margin = Margin(
                 marginVertical = DP.DP_4,
                 marginHorizontal = DP.DP_4

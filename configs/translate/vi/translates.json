@@ -9,53 +9,11 @@
   "action_try_speak": "Thử nói",
   "action_view_all_ipa": "Xem tất cả",
 
-  "game_config_screen_action_play_game": "Bắt đầu chơi ngay!",
-  "game_config_screen_message_resource_from_history": "Dựa trên các từ đã tra trước đó",
-  "game_config_screen_message_resource_from_popular": "Dựa trên các từ thường dùng",
-  "game_config_screen_message_resource_limit": "Không thể chọn do số lượng từ quá ít",
-  "game_config_screen_title_resource": "Chọn nguồn chơi",
-
-  "game_congratulation_screen_action": "Tiếp tục nào!",
-  "game_congratulation_screen_message": "Tuyệt vời! Bạn đã trả lời đúng $number lần liên tiếp! Hãy tiếp tục đừng để phong độ tụt dốc nha! 😆👏",
-  "game_congratulation_screen_message_1": "Đỉnh thật! Bạn đã đúng $number lần liên tiếp rồi đó! Giờ mà sai thì hơi tiếc nha! 🤭🔥",
-  "game_congratulation_screen_message_2": "Bạn đã đúng $number lần liên tiếp! Chắc bạn đang hack đúng không? Không thì sao giỏi vậy được! 🤔😂",
-  "game_congratulation_screen_message_3": "Bạn đã đúng $number lần liên tiếp! Trình độ này chắc sắp được phong làm sư phụ rồi! Đừng dừng lại nhé! 🔥🎯",
-  "game_congratulation_screen_message_4": "Bạn đã bước lên con đường huyền thoại với $number lần đúng liên tiếp! Giờ chỉ thiếu fan hâm mộ thôi! 🤩👏",
-  "game_congratulation_screen_title": "Xin chúc mừng! 🎉",
-  "game_congratulation_screen_title_1": "Giỏi ghê ta! 😁",
-  "game_congratulation_screen_title_2": "Ghê thật chứ! 😎",
-  "game_congratulation_screen_title_3": "Tại hạ xin bái phục! 🙇‍♂️",
-  "game_congratulation_screen_title_4": "Huyền thoại sống! 🏆",
-
-  "game_ipa_puzzle_screen_message_answer": "Đáp án là: $param1.",
-  "game_ipa_puzzle_screen_title": "Từ $param1 có cách phát âm là $param2, nhưng chưa đầy đủ. Hãy hoàn thành phần còn thiếu.",
-
-  "game_ipa_wordle_screen_action": "Kiểm tra",
-  "game_ipa_wordle_screen_action_continue": "Tiếp tục",
-  "game_ipa_wordle_screen_action_retry": "Thử lại",
-  "game_ipa_wordle_screen_message_answer": "$param1 của $param2 là $param3",
-  "game_ipa_wordle_screen_title": "Chọn $param1 phù hợp với $param2 bên dưới?",
-  "game_ipa_wordle_screen_title_answer_failed": "Chưa chính xác",
-  "game_ipa_wordle_screen_title_answer_true": "Tuyệt vời",
-
-  "game_ipa_match_screen_title": "Ghép các cặp phù hợp với nhau",
-  "game_ipa_match_screen_title_choose": "Các cặp",
-  "game_ipa_match_screen_message_answer_correct": "Các cặp đã khớp với nhau",
-  "game_ipa_match_screen_message_answer_failed": "Một số cặp đang không khớp lắm",
-
-  "game_screen_title": "Trò chơi",
-
   "hint_enter_language_text": "Nhập $language_name tại đây!",
   "hint_enter_text": "Nhập văn bản tại đây!",
 
   "ipa_c": "Trung tâm",
   "ipa_de": "Tiếng Đức",
-  "ipa_detail_screen_consonants_unvoiced": "Phụ âm vô thanh",
-  "ipa_detail_screen_consonants_voiced": "Phụ âm hữu thanh",
-  "ipa_detail_screen_diphthongs": "Nguyên âm đôi",
-  "ipa_detail_screen_title_example": "Ví dụ:",
-  "ipa_detail_screen_vowels_long": "Nguyên âm dài",
-  "ipa_detail_screen_vowels_short": "Nguyên âm ngắn",
   "ipa_eo": "Tiếng Esperanto",
   "ipa_es_es": "Tiếng Tây Ban Nha (Tây Ban Nha)",
   "ipa_es_mx": "Tiếng Tây Ban Nha (Mexico)",
@@ -68,7 +26,6 @@
   "ipa_jam": "Tiếng Creole Jamaica",
   "ipa_km": "Tiếng Khmer",
   "ipa_ko": "Tiếng Hàn",
-  "ipa_list_screen_title": "Danh sách IPA",
   "ipa_ma": "Tiếng Mã Lai (Malaysia và Indonesia)",
   "ipa_n": "Miền Bắc",
   "ipa_nb": "Tiếng Na Uy Bokmål",
@@ -125,8 +82,6 @@
   "rate_message": "Chúng tôi rất mong nhận được phản hồi của bạn để cải thiện ứng dụng. Đánh giá của bạn rất quan trọng! 🌟",
   "rate_title": "Đánh giá ứng dụng",
 
-  "recording_screen_title": "Vui lòng nói $language_name",
-
   "resource_history": "Từ lịch sử tìm kiếm",
   "resource_popular": "Từ danh sách phổ biến",
 
@@ -151,5 +106,52 @@
   "type_text": "Chữ",
   "type_voice": "Phát âm",
 
-  "voice_index": "Giọng $index"
+  "voice_index": "Giọng $index",
+
+  "game_config_screen_action_play_game": "Bắt đầu chơi ngay!",
+  "game_config_screen_message_resource_from_history": "Dựa trên các từ đã tra trước đó",
+  "game_config_screen_message_resource_from_popular": "Dựa trên các từ thường dùng",
+  "game_config_screen_message_resource_limit": "Không thể chọn do số lượng từ quá ít",
+  "game_config_screen_title_resource": "Chọn nguồn chơi",
+
+  "game_congratulation_screen_action": "Tiếp tục nào!",
+  "game_congratulation_screen_message": "Tuyệt vời! Bạn đã trả lời đúng $number lần liên tiếp! Hãy tiếp tục đừng để phong độ tụt dốc nha! 😆👏",
+  "game_congratulation_screen_message_1": "Đỉnh thật! Bạn đã đúng $number lần liên tiếp rồi đó! Giờ mà sai thì hơi tiếc nha! 🤭🔥",
+  "game_congratulation_screen_message_2": "Bạn đã đúng $number lần liên tiếp! Chắc bạn đang hack đúng không? Không thì sao giỏi vậy được! 🤔😂",
+  "game_congratulation_screen_message_3": "Bạn đã đúng $number lần liên tiếp! Trình độ này chắc sắp được phong làm sư phụ rồi! Đừng dừng lại nhé! 🔥🎯",
+  "game_congratulation_screen_message_4": "Bạn đã bước lên con đường huyền thoại với $number lần đúng liên tiếp! Giờ chỉ thiếu fan hâm mộ thôi! 🤩👏",
+  "game_congratulation_screen_title": "Xin chúc mừng! 🎉",
+  "game_congratulation_screen_title_1": "Giỏi ghê ta! 😁",
+  "game_congratulation_screen_title_2": "Ghê thật chứ! 😎",
+  "game_congratulation_screen_title_3": "Tại hạ xin bái phục! 🙇‍♂️",
+  "game_congratulation_screen_title_4": "Huyền thoại sống! 🏆",
+
+  "game_ipa_puzzle_screen_message_answer": "Đáp án là: $param1",
+  "game_ipa_puzzle_screen_title": "Từ $param1 có cách phát âm là $param2, nhưng chưa đầy đủ. Hãy hoàn thành phần còn thiếu.",
+
+  "game_ipa_wordle_screen_action": "Kiểm tra",
+  "game_ipa_wordle_screen_action_continue": "Tiếp tục",
+  "game_ipa_wordle_screen_action_retry": "Thử lại",
+  "game_ipa_wordle_screen_message_answer": "$param1 của $param2 là $param3",
+  "game_ipa_wordle_screen_title": "Chọn $param1 phù hợp với $param2 bên dưới?",
+  "game_ipa_wordle_screen_title_answer_failed": "Chưa chính xác",
+  "game_ipa_wordle_screen_title_answer_true": "Tuyệt vời",
+
+  "game_ipa_match_screen_title": "Ghép các cặp phù hợp với nhau",
+  "game_ipa_match_screen_title_choose": "Các cặp",
+  "game_ipa_match_screen_message_answer_correct": "Các cặp đã khớp với nhau",
+  "game_ipa_match_screen_message_answer_failed": "Một số cặp đang không khớp lắm",
+
+  "game_screen_title": "Trò chơi",
+
+  "ipa_detail_screen_consonants_unvoiced": "Phụ âm vô thanh",
+  "ipa_detail_screen_consonants_voiced": "Phụ âm hữu thanh",
+  "ipa_detail_screen_diphthongs": "Nguyên âm đôi",
+  "ipa_detail_screen_title_example": "Ví dụ:",
+  "ipa_detail_screen_vowels_long": "Nguyên âm dài",
+  "ipa_detail_screen_vowels_short": "Nguyên âm ngắn",
+
+  "ipa_list_screen_title": "Danh sách IPA",
+
+  "recording_screen_title": "Vui lòng nói $language_name"
 }
