@@ -36,8 +36,8 @@ import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.state.ResultState

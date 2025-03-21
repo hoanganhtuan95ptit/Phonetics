@@ -9,7 +9,6 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
-import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.submitListAwait

@@ -7,6 +7,7 @@ import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getWordDelimiters
 import kotlinx.coroutines.flow.first
+import kotlin.math.min
 
 class GetPhoneticsRandomUseCase(
     private val wordRepository: WordRepository,
@@ -24,19 +25,31 @@ class GetPhoneticsRandomUseCase(
             param.textLengthMin
         }
 
-        val list = wordRepository.getRandom(
+        val wordList = wordRepository.getRandom(
             resource = param.resource.value,
             languageCode = languageCode,
 
-            limit = param.limit,
+            limit = 100,
 
             textMin = textLengthMin,
             textLimit = param.textLengthMax
         )
 
-        return phoneticRepository.getPhonetics(
-            phonetics = list
+        val phoneticList = phoneticRepository.getPhonetics(
+            phonetics = wordList
         )
+
+        val phoneticValidateList = phoneticList.filter {
+            if (param.phoneticsCode == null) true else it.ipa.containsKey(param.phoneticsCode)
+        }
+
+        val list = if (phoneticValidateList.size >= param.limit) {
+            phoneticValidateList
+        } else {
+            phoneticList
+        }
+
+        return list.subList(0, min(phoneticList.size, param.limit))
     }
 
     data class Param(
@@ -45,5 +58,6 @@ class GetPhoneticsRandomUseCase(
         val textLengthMax: Int = 10,
 
         val resource: Word.Resource,
+        val phoneticsCode: String? = null,
     )
 }

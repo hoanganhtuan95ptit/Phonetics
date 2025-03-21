@@ -1,17 +1,12 @@
 package com.simple.phonetics.ui
 
 import android.animation.ObjectAnimator
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
 import androidx.core.os.bundleOf
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel

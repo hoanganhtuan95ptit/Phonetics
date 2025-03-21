@@ -104,14 +104,14 @@ val viewModelModule = module {
     }
 
     viewModel {
-        GameIPAPuzzleViewModel(get(), get(), get())
+        GameIPAPuzzleViewModel(get(), get())
     }
 
     viewModel {
-        GameIPAMatchViewModel(get(), get(), get())
+        GameIPAMatchViewModel(get(), get())
     }
 
     viewModel {
-        GameIPAWordleViewModel(get(), get(), get(), get())
+        GameIPAWordleViewModel(get(), get(), get())
     }
 }

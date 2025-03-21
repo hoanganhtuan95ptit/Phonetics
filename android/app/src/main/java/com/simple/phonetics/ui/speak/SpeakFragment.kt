@@ -6,11 +6,9 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.asFlow
 import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
-import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
@@ -22,8 +20,8 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
+import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
