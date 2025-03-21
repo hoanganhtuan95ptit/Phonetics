@@ -119,7 +119,7 @@ class IpaDetailViewModel(
 
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(ipa, inputLanguage, outputLanguage) {
+    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(ipa, inputLanguage, outputLanguage, phoneticsCode) {
 
         postValue(ResultState.Start)
 
@@ -127,6 +127,7 @@ class IpaDetailViewModel(
             text = ipa.get().examples.joinToString(separator = " ") { it },
             isReverse = false,
             saveToHistory = false,
+            phoneticCode = phoneticsCode.get(),
             inputLanguageCode = inputLanguage.get().id,
             outputLanguageCode = outputLanguage.get().id
         )
