@@ -69,8 +69,8 @@ class GameIPAWordleViewModel(
     @VisibleForTesting
     val quiz: LiveData<GameIPAWordleQuiz> = combineSources(listenEnable, phoneticState) {
 
-        val listenEnable = listenEnable.value ?: return@combineSources
-        val phoneticState = phoneticState.value ?: return@combineSources
+        val listenEnable = listenEnable.get()
+        val phoneticState = phoneticState.get()
 
         val phonetics = phoneticState.toSuccess()?.data ?: return@combineSources
 
@@ -114,6 +114,7 @@ class GameIPAWordleViewModel(
         val choose = choose.value
         val listenState = listenState.value
         val phoneticState = phoneticState.value
+        val phoneticCodeSelected = phoneticCodeSelected.value ?: return@listenerSources
 
         val size = size.value ?: return@listenerSources
         val theme = theme.value ?: return@listenerSources
@@ -129,18 +130,18 @@ class GameIPAWordleViewModel(
 
         val list = arrayListOf<ViewItem>()
 
-        getIPAWordleTitleViewItem(size = size, theme = theme, translate = translate, quiz = quiz).let {
+        getIPAWordleTitleViewItem(theme = theme, translate = translate, quiz = quiz).let {
 
             list.add(SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_16))
             list.add(it)
         }
 
-        getIpaWordleQuestionViewItem(size = size, theme = theme, translate = translate, quiz = quiz, listenState = listenState).let {
+        getIpaWordleQuestionViewItem(size = size, theme = theme, quiz = quiz, listenState = listenState, phoneticCode = phoneticCodeSelected).let {
 
             list.add(it)
         }
 
-        getIPAWordleOptionViewItem(size = size, theme = theme, translate = translate, quiz = quiz, choose = choose).let {
+        getIPAWordleOptionViewItem(size = size, theme = theme, quiz = quiz, choose = choose, phoneticCode = phoneticCodeSelected).let {
 
             list.add(SpaceViewItem(id = "SPACE_QUESTION_ANSWER"))
             list.addAll(it)
@@ -177,9 +178,10 @@ class GameIPAWordleViewModel(
     }
 
     @VisibleForTesting
-    val stateInfo: LiveData<StateInfo> = combineSources(size, theme, translate, quiz, choose, consecutiveCorrectAnswerEvent) {
+    val stateInfo: LiveData<StateInfo> = combineSources(size, theme, translate, quiz, choose, phoneticCodeSelected, consecutiveCorrectAnswerEvent) {
 
         val quiz = quiz.get()
+        val phoneticCodeSelected = phoneticCodeSelected.get()
         val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSources
 
         val size = size.get()
@@ -189,10 +191,11 @@ class GameIPAWordleViewModel(
         val isAnswerCorrect = consecutiveCorrectAnswer.first > 0
 
         val info = getIPAWordleStateInfo(
-            size = size,
             theme = theme,
             translate = translate,
             quiz = quiz,
+
+            phoneticCode = phoneticCodeSelected,
             isAnswerCorrect = isAnswerCorrect
         )
 

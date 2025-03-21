@@ -99,6 +99,7 @@ fun getIPAMatchQuestionViewItem(
     warning: Boolean,
     chooseList: List<GameIPAMatchQuiz.Option?>,
     listenState: Map<GameIPAMatchPair, ResultState<String>>,
+    phoneticCode: String,
 ) = arrayListOf<ViewItem>().apply {
 
     val chooseViewItemList = chooseList.mapIndexed { index, option ->
@@ -111,14 +112,16 @@ fun getIPAMatchQuestionViewItem(
             background = Background(strokeColor = theme.colorPrimary, strokeDashEnable = true),
 
             data = GameIPAMatchPair(GameIPAMatchQuiz.Option(GameIPAMatchQuiz.Option.Type.NONE, phonetic = Phonetic("$index")), null),
-            listenState = listenState
+            listenState = listenState,
+            phoneticCode = phoneticCode
         ) else OptionViewItem(
             size = size,
             theme = theme,
             background = Background(strokeColor = if (warning && !optionPair?.phonetic?.text.equals(option.phonetic.text, true)) theme.colorOnErrorVariant else theme.colorPrimary, strokeDashEnable = false),
 
             data = GameIPAMatchPair(option = option, newType = option.type),
-            listenState = listenState
+            listenState = listenState,
+            phoneticCode = phoneticCode
         )
     }
 
@@ -148,6 +151,7 @@ fun getIPAMatchOptionViewItem(
     warning: Boolean,
     chooseList: List<GameIPAMatchQuiz.Option?>,
     listenState: Map<GameIPAMatchPair, ResultState<String>>,
+    phoneticCode: String
 ) = arrayListOf<ViewItem>().apply {
 
     val optionViewItemList = quiz.match.flatMap {
@@ -161,7 +165,8 @@ fun getIPAMatchOptionViewItem(
             background = Background(strokeColor = theme.colorOnSurfaceVariant, strokeDashEnable = true),
 
             data = GameIPAMatchPair(option = it, newType = if (it in chooseList) GameIPAMatchQuiz.Option.Type.NONE else it.type),
-            listenState = listenState
+            listenState = listenState,
+            phoneticCode = phoneticCode
         )
     }
 
@@ -235,12 +240,13 @@ private fun OptionViewItem(
 
     data: GameIPAMatchPair,
     listenState: Map<GameIPAMatchPair, ResultState<String>>,
+    phoneticCode: String,
 ): ViewItem {
 
     return if (data.newType == GameIPAMatchQuiz.Option.Type.VOICE) {
-        OptionVoiceViewItem(size = size, theme = theme, background = background, data = data, listenState = listenState)
+        OptionVoiceViewItem(size = size, theme = theme, background = background, data = data, listenState = listenState, phoneticCode = phoneticCode)
     } else {
-        OptionTextViewItem(size = size, theme = theme, background = background, data = data, listenState = listenState)
+        OptionTextViewItem(size = size, theme = theme, background = background, data = data, listenState = listenState, phoneticCode = phoneticCode)
     }
 }
 
@@ -250,19 +256,22 @@ private fun OptionTextViewItem(
     background: Background,
 
     data: GameIPAMatchPair,
-    listenState: Map<GameIPAMatchPair, ResultState<String>>
+    listenState: Map<GameIPAMatchPair, ResultState<String>>,
+    phoneticCode: String,
 ): ViewItem {
 
+    val phonetic = data.option?.phonetic
+
     val text = if (data.newType == GameIPAMatchQuiz.Option.Type.TEXT) {
-        data.option?.phonetic?.text.orEmpty()
+        phonetic?.text.orEmpty()
     } else if (data.newType == GameIPAMatchQuiz.Option.Type.IPA) {
-        data.option?.phonetic?.ipa?.flatMap { it.value }?.firstOrNull().orEmpty()
+        (phonetic?.ipa?.get(phoneticCode) ?: phonetic?.ipa?.flatMap { it.value })?.firstOrNull().orEmpty()
     } else {
         ""
     }.with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface))
 
     return ClickTextViewItem(
-        id = "${data.option?.phonetic?.text}_${data.option?.type?.name}_${data.newType?.name}",
+        id = "${phonetic?.text}_${data.option?.type?.name}_${data.newType?.name}",
         data = data,
 
         text = text,
@@ -293,7 +302,8 @@ private fun OptionVoiceViewItem(
     background: Background,
 
     data: GameIPAMatchPair,
-    listenState: Map<GameIPAMatchPair, ResultState<String>>
+    listenState: Map<GameIPAMatchPair, ResultState<String>>,
+    phoneticCode: String,
 ): ViewItem {
 
     val state = listenState[data]

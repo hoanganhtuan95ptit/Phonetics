@@ -130,13 +130,14 @@ class GameIPAMatchViewModel(
     @VisibleForTesting
     val listenState: LiveData<HashMap<GameIPAMatchPair, ResultState<String>>> = MediatorLiveData(hashMapOf())
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, warning, listenState, phoneticState) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, warning, listenState, phoneticState, phoneticCodeSelected) {
 
         val quiz = quiz.value
         val choose = choose.value
         val warning = warning.value ?: false
         val listenState = listenState.value.orEmpty()
         val phoneticState = phoneticState.value
+        val phoneticCodeSelected = phoneticCodeSelected.value ?: return@listenerSources
 
         val size = size.value ?: return@listenerSources
         val theme = theme.value ?: return@listenerSources
@@ -156,12 +157,12 @@ class GameIPAMatchViewModel(
             listOf(it.first, it.second)
         }
 
-        getIPAMatchQuestionViewItem(size = size, theme = theme, translate = translate, quiz = quiz, chooseList = chooseList, warning = warning, listenState = listenState).let {
+        getIPAMatchQuestionViewItem(size = size, theme = theme, translate = translate, quiz = quiz, chooseList = chooseList, warning = warning, listenState = listenState, phoneticCode = phoneticCodeSelected).let {
 
             list.addAll(it)
         }
 
-        getIPAMatchOptionViewItem(size = size, theme = theme, translate = translate, quiz = quiz, chooseList = chooseList, warning = warning, listenState = listenState).let {
+        getIPAMatchOptionViewItem(size = size, theme = theme, translate = translate, quiz = quiz, chooseList = chooseList, warning = warning, listenState = listenState, phoneticCode = phoneticCodeSelected).let {
 
             list.addAll(it)
         }

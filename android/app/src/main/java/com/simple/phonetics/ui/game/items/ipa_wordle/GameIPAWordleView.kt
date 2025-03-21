@@ -43,7 +43,14 @@ private fun GameIPAWordleQuiz.Type.getName(translate: Map<String, String>): Stri
     }
 }
 
-fun getIPAWordleStateInfo(size: AppSize, theme: AppTheme, translate: Map<String, String>, quiz: GameIPAWordleQuiz, isAnswerCorrect: Boolean): GameItemViewModel.StateInfo {
+fun getIPAWordleStateInfo(
+    theme: AppTheme,
+    translate: Map<String, String>,
+    quiz: GameIPAWordleQuiz,
+
+    phoneticCode: String,
+    isAnswerCorrect: Boolean
+): GameItemViewModel.StateInfo {
 
     val param1 = quiz.answerType.getName(translate = translate).let {
 
@@ -53,7 +60,7 @@ fun getIPAWordleStateInfo(size: AppSize, theme: AppTheme, translate: Map<String,
     val param2 = (when (quiz.questionType) {
         GameIPAWordleQuiz.Type.VOICE -> translate["type_voice"].orEmpty()
         GameIPAWordleQuiz.Type.TEXT -> quiz.question.text
-        else -> quiz.question.ipa.flatMap { it.value }.first()
+        else -> quiz.question.ipa[phoneticCode]?.firstOrNull().orEmpty()
     }).let {
 
         " $it "
@@ -62,7 +69,7 @@ fun getIPAWordleStateInfo(size: AppSize, theme: AppTheme, translate: Map<String,
     val param3 = (if (quiz.answerType == GameIPAWordleQuiz.Type.TEXT)
         quiz.question.text
     else
-        quiz.question.ipa.flatMap { it.value }.first()).let {
+        quiz.question.ipa[phoneticCode]?.firstOrNull().orEmpty()).let {
 
         " $it "
     }
@@ -126,7 +133,7 @@ fun getIPAWordleStateInfo(size: AppSize, theme: AppTheme, translate: Map<String,
     return info
 }
 
-fun getIPAWordleTitleViewItem(size: AppSize, theme: AppTheme, translate: Map<String, String>, quiz: GameIPAWordleQuiz): ViewItem {
+fun getIPAWordleTitleViewItem(theme: AppTheme, translate: Map<String, String>, quiz: GameIPAWordleQuiz): ViewItem {
 
     val param1 = quiz.answerType.getName(translate = translate)
     val param2 = quiz.questionType.getName(translate = translate)
@@ -145,7 +152,14 @@ fun getIPAWordleTitleViewItem(size: AppSize, theme: AppTheme, translate: Map<Str
     )
 }
 
-fun getIpaWordleQuestionViewItem(size: AppSize, theme: AppTheme, translate: Map<String, String>, quiz: GameIPAWordleQuiz, listenState: ResultState<String>?) = if (quiz.questionType == GameIPAWordleQuiz.Type.VOICE) ImageStateViewItem(
+fun getIpaWordleQuestionViewItem(
+    size: AppSize,
+    theme: AppTheme,
+    quiz: GameIPAWordleQuiz,
+
+    listenState: ResultState<String>?,
+    phoneticCode: String
+) = if (quiz.questionType == GameIPAWordleQuiz.Type.VOICE) ImageStateViewItem(
     id = Id.LISTEN,
 
     data = quiz.question,
@@ -168,10 +182,11 @@ fun getIpaWordleQuestionViewItem(size: AppSize, theme: AppTheme, translate: Map<
 ) else NoneTextViewItem(
     id = "TEXT",
     data = quiz.question,
-    text = (if (quiz.questionType == GameIPAWordleQuiz.Type.TEXT)
+    text = if (quiz.questionType == GameIPAWordleQuiz.Type.TEXT) {
         quiz.question.text
-    else
-        quiz.question.ipa.flatMap { it.value }.first())
+    } else {
+        quiz.question.ipa[phoneticCode]?.firstOrNull().orEmpty()
+    }
         .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
     textStyle = TextStyle(
         textSize = 30f,
@@ -187,12 +202,19 @@ fun getIpaWordleQuestionViewItem(size: AppSize, theme: AppTheme, translate: Map<
     )
 )
 
-fun getIPAWordleOptionViewItem(size: AppSize, theme: AppTheme, translate: Map<String, String>, quiz: GameIPAWordleQuiz, choose: Phonetic?) = quiz.answers.mapIndexed { index, phonetic ->
+fun getIPAWordleOptionViewItem(
+    size: AppSize,
+    theme: AppTheme,
+    quiz: GameIPAWordleQuiz,
+
+    choose: Phonetic?,
+    phoneticCode: String
+) = quiz.answers.mapIndexed { index, phonetic ->
 
     val text = if (quiz.answerType == GameIPAWordleQuiz.Type.TEXT)
         phonetic.text
     else
-        phonetic.ipa.flatMap { it.value }.first()
+        phonetic.ipa[phoneticCode]?.firstOrNull().orEmpty()
 
 
     ClickTextViewItem(
