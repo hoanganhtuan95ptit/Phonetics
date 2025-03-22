@@ -29,6 +29,8 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
     ListenView by ListenViewImpl(),
     DeeplinkView by DeeplinkViewImpl() {
 
+    private val configViewModel: ConfigViewModel by viewModels()
+
     private val activityViewModel: TransitionGlobalViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +43,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         setupDeeplink(this)
 
         observeData()
+        observeConfigData()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) splashScreen.setOnExitAnimationListener { splashScreenView ->
 
@@ -69,5 +72,13 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
                 sendDeeplink(Deeplink.PHONETICS)
             }
         }
+    }
+
+    private fun observeConfigData() = with(configViewModel) {
+
+//        phoneticSelect.observe(this@MainActivity) {
+//
+//            appPhoneticCodeSelected.tryEmit(it)
+//        }
     }
 }

@@ -10,7 +10,6 @@ import com.simple.phonetics.utils.AppSize
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.appInputLanguage
 import com.simple.phonetics.utils.appOutputLanguage
-import com.simple.phonetics.utils.appPhoneticCodeSelected
 import com.simple.phonetics.utils.appSize
 import com.simple.phonetics.utils.appTheme
 import com.simple.phonetics.utils.appTranslate
