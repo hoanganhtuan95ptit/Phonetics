@@ -66,11 +66,6 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
 
             viewModel.updateListenerEnable(it)
         }
-
-        phoneticSelect.observe(viewLifecycleOwner) {
-
-            viewModel.updatePhoneticCodeSelected(it)
-        }
     }
 
     private fun observeGameData() = with(gameViewModel) {
