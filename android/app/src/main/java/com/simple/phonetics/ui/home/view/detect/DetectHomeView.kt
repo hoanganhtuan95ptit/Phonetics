@@ -16,10 +16,12 @@ import androidx.core.content.FileProvider
 import com.permissionx.guolindev.PermissionX
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
+import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.state.doSuccess
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.IOException
@@ -36,6 +38,8 @@ class DetectHomeViewImpl : DetectHomeView {
         val binding = fragment.binding ?: return
 
         val viewModel: HomeViewModel by fragment.viewModel()
+
+        val configViewModel: ConfigViewModel by fragment.activityViewModel()
 
         val detectHomeViewModel: DetectHomeViewModel by fragment.viewModel()
 
@@ -95,9 +99,10 @@ class DetectHomeViewImpl : DetectHomeView {
             detectHomeViewModel.updateReverse(it)
         }
 
-        viewModel.detectState.observe(fragment.viewLifecycleOwner) { state ->
+        viewModel.detectStateEvent.observe(fragment.viewLifecycleOwner) { event ->
 
             fragment.binding ?: return@observe
+            val state = event.getContentIfNotHandled() ?: return@observe
 
             state.doSuccess {
 

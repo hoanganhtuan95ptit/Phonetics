@@ -16,6 +16,7 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
+import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
@@ -24,6 +25,7 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
@@ -75,13 +77,6 @@ class HomeViewModel(
     val text: MediatorLiveData<Pair<String, String>> = MediatorLiveData("" to "")
 
     @VisibleForTesting
-    val inputLanguage: LiveData<Language> = MediatorLiveData()
-
-    @VisibleForTesting
-    val outputLanguage: LiveData<Language> = MediatorLiveData()
-
-
-    @VisibleForTesting
     val speakState: LiveData<ResultState<Boolean>> = mediatorLiveData {
 
         checkSupportSpeakAsyncUseCase.execute().collect {
@@ -96,7 +91,9 @@ class HomeViewModel(
     }
 
 
+    @VisibleForTesting
     val detectState: LiveData<ResultState<String>> = MediatorLiveData()
+    val detectStateEvent: LiveData<Event<ResultState<String>>> = detectState.toEvent()
 
     val imageInfo: LiveData<ImageInfo> = listenerSources(detectState) {
 
@@ -219,13 +216,10 @@ class HomeViewModel(
 
 
     @VisibleForTesting
-    val phoneticsCode: LiveData<String> = MediatorLiveData()
-
-    @VisibleForTesting
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage, phoneticsCode) {
+    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage, phoneticCodeSelected) {
 
         val text = text.get()
 
@@ -234,7 +228,7 @@ class HomeViewModel(
             textNew = text.second,
 
             isReverse = isReverse.get(),
-            phoneticCode = phoneticsCode.get(),
+            phoneticCode = phoneticCodeSelected.get(),
             inputLanguageCode = inputLanguage.get().id,
             outputLanguageCode = outputLanguage.get().id
         )
@@ -246,13 +240,13 @@ class HomeViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(size, theme, translate, phoneticsCode, phoneticsState, isSupportSpeak, isSupportListen, isSupportTranslate) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(size, theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportListen, isSupportTranslate) {
 
         val theme = theme.get()
         val translate = translate.get()
 
         val state = phoneticsState.get()
-        val phoneticsCode = phoneticsCode.get()
+        val phoneticsCode = phoneticCodeSelected.get()
         val isSupportTranslate = isSupportTranslate.get()
 
         state.doStart {
@@ -367,21 +361,6 @@ class HomeViewModel(
     fun updateSupportSpeak(b: Boolean) {
 
         this.isSupportListen.postDifferentValue(b)
-    }
-
-    fun updateInputLanguage(language: Language) {
-
-        this.inputLanguage.postDifferentValue(language)
-    }
-
-    fun updateOutputLanguage(language: Language) {
-
-        this.outputLanguage.postDifferentValue(language)
-    }
-
-    fun updatePhoneticSelect(code: String) {
-
-        this.phoneticsCode.postDifferentValue(code)
     }
 
     fun updateSupportTranslate(b: Boolean) {

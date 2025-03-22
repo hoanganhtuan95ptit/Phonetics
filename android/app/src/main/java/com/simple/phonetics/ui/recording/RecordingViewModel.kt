@@ -24,17 +24,13 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toPx
 import com.simple.phonetics.R
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
-import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.state.ResultState
@@ -46,29 +42,8 @@ import kotlinx.coroutines.launch
 
 class RecordingViewModel(
     private val stopSpeakUseCase: StopSpeakUseCase,
-    private val startSpeakUseCase: StartSpeakUseCase,
-
-    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
-    private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
+    private val startSpeakUseCase: StartSpeakUseCase
 ) : BaseViewModel() {
-
-    @VisibleForTesting
-    val inputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageInputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
-
-    @VisibleForTesting
-    val outputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageOutputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
 
 
     @VisibleForTesting

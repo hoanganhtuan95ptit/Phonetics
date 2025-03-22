@@ -75,28 +75,6 @@ class IpaDetailViewModel(
     }
 
 
-    @VisibleForTesting
-    val phoneticsCode: LiveData<String> = MediatorLiveData()
-
-    @VisibleForTesting
-    val inputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageInputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
-
-    @VisibleForTesting
-    val outputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageOutputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
-
-
     val listenState: LiveData<ResultState<String>> = MediatorLiveData()
 
 
@@ -119,7 +97,7 @@ class IpaDetailViewModel(
 
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(ipa, inputLanguage, outputLanguage, phoneticsCode) {
+    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(ipa, inputLanguage, outputLanguage, phoneticCodeSelected) {
 
         postValue(ResultState.Start)
 
@@ -128,7 +106,7 @@ class IpaDetailViewModel(
 
             isReverse = false,
             saveToHistory = false,
-            phoneticCode = phoneticsCode.get(),
+            phoneticCode = phoneticCodeSelected.get(),
             inputLanguageCode = inputLanguage.get().id,
             outputLanguageCode = outputLanguage.get().id
         )
@@ -140,7 +118,7 @@ class IpaDetailViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, ipa, phoneticsCode, phoneticsState, isSupportSpeak, isSupportListen, listenState) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, ipa, phoneticCodeSelected, phoneticsState, isSupportSpeak, isSupportListen, listenState) {
 
         val theme = theme.value ?: return@listenerSources
         val translate = translate.value ?: return@listenerSources
@@ -148,7 +126,7 @@ class IpaDetailViewModel(
         val ipa = ipa.value ?: return@listenerSources
         val state = phoneticsState.value ?: return@listenerSources
         val listenState = listenState.value
-        val phoneticsCode = phoneticsCode.value ?: return@listenerSources
+        val phoneticsCode = phoneticCodeSelected.value ?: return@listenerSources
 
         state.doStart {
 
@@ -239,11 +217,6 @@ class IpaDetailViewModel(
     fun updateSupportListen(it: Boolean) {
 
         isSupportListen.postDifferentValue(it)
-    }
-
-    fun updatePhoneticSelect(it: String) {
-
-        phoneticsCode.postDifferentValue(it)
     }
 
     fun startListen(data: Ipa) {

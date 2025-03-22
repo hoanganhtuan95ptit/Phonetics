@@ -44,7 +44,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
         setupRecyclerView()
 
         observeData()
-        observePhoneticsConfigData()
+        observeConfigData()
     }
 
     private fun setupRecyclerView() {
@@ -119,7 +119,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
         }
     }
 
-    private fun observePhoneticsConfigData() = with(configViewModel) {
+    private fun observeConfigData() = with(configViewModel) {
 
         voiceState.observe(viewLifecycleOwner) {
 
@@ -128,7 +128,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
         phoneticSelect.observe(viewLifecycleOwner) {
 
-            viewModel.updatePhoneticSelect(it)
+            viewModel.updatePhoneticCodeSelected(it)
         }
     }
 

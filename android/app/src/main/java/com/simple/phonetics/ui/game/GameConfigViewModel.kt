@@ -20,15 +20,12 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.Constants
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
-import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.ButtonViewItem
@@ -39,17 +36,8 @@ import kotlinx.coroutines.flow.launchIn
 
 class GameConfigViewModel(
     private val countIpaAsyncUseCase: CountIpaAsyncUseCase,
-    private val countWordAsyncUseCase: CountWordAsyncUseCase,
-    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
+    private val countWordAsyncUseCase: CountWordAsyncUseCase
 ) : BaseViewModel() {
-
-    val inputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageInputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
 
     val ipaCount: LiveData<Int> = combineSources(inputLanguage) {
 

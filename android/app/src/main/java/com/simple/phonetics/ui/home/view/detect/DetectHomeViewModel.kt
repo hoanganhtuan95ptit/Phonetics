@@ -5,41 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
-import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 
 class DetectHomeViewModel(
-    private val detectStateUseCase: DetectStateUseCase,
-    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
-    private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
+    private val detectStateUseCase: DetectStateUseCase
 ) : BaseViewModel() {
 
     @VisibleForTesting
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)
-
-    @VisibleForTesting
-    val inputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageInputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
-
-    @VisibleForTesting
-    val outputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageOutputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
 
     @VisibleForTesting
     val isSupportDetect: LiveData<Boolean> = combineSources(isReverse, inputLanguage, outputLanguage) {

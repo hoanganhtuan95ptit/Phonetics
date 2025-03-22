@@ -1,7 +1,9 @@
 package com.simple.phonetics.ui.home.view.game
 
+import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 interface GameHomeView {
@@ -14,6 +16,8 @@ class GameHomeViewImpl : GameHomeView {
     override fun setupGame(fragment: HomeFragment) {
 
         val viewModel: HomeViewModel by fragment.viewModel()
+
+        val configViewModel: ConfigViewModel by fragment.activityViewModel()
 
         val gameHomeViewModel: GameHomeViewModel by fragment.viewModel()
 

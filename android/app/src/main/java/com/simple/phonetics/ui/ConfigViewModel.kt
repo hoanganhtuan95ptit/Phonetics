@@ -29,10 +29,7 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.TranslateUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
-import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.state.ResultState
@@ -44,27 +41,8 @@ import com.simple.state.toSuccess
 
 class ConfigViewModel(
     private val translateUseCase: TranslateUseCase,
-    private val getVoiceAsyncUseCase: GetVoiceAsyncUseCase,
-    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
-    private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
+    private val getVoiceAsyncUseCase: GetVoiceAsyncUseCase
 ) : BaseViewModel() {
-
-    val inputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageInputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
-
-    val outputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageOutputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
-
 
     val phoneticSelect: LiveData<String> = combineSources(inputLanguage) {
 

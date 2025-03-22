@@ -10,6 +10,7 @@ import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.utils.autoCleared
+import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
@@ -17,6 +18,7 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
+import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
@@ -29,6 +31,10 @@ import com.simple.state.isRunning
 import com.simple.state.toSuccess
 
 class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewModel>() {
+
+    private val configViewModel: ConfigViewModel by lazy {
+        getViewModel(requireActivity(), ConfigViewModel::class)
+    }
 
     private var adapter by autoCleared<MultiAdapter>()
 

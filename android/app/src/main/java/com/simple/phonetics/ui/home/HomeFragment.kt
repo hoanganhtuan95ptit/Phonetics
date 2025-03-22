@@ -367,17 +367,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
         phoneticSelect.observe(viewLifecycleOwner) {
 
-            viewModel.updatePhoneticSelect(it)
+            viewModel.updatePhoneticCodeSelected(it)
         }
 
         translateEnable.observe(viewLifecycleOwner) {
 
             viewModel.updateSupportTranslate(it)
-        }
-
-        outputLanguage.observe(viewLifecycleOwner) {
-
-            viewModel.updateOutputLanguage(it)
         }
 
         listConfig.collectWithLockTransitionIfCached(fragment = fragment, tag = "CONFIG_VIEW_ITEM_LIST") { data, isFirst ->

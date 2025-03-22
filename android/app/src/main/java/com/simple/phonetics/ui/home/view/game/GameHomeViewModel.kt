@@ -5,6 +5,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
@@ -19,32 +20,21 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.Constants
 import com.simple.phonetics.Id
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
-import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.spans.RoundedBackgroundSpan
 
 class GameHomeViewModel(
-    private val countWordAsyncUseCase: CountWordAsyncUseCase,
-    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
+    private val countWordAsyncUseCase: CountWordAsyncUseCase
 ) : BaseViewModel() {
 
-    val inputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageInputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
-
+    @VisibleForTesting
     val wordPopularCount: LiveData<Int> = combineSources(inputLanguage) {
 
         val inputLanguage = inputLanguage.get()

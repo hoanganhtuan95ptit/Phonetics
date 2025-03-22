@@ -161,7 +161,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
         phoneticSelect.observe(viewLifecycleOwner) {
 
-            viewModel.updatePhoneticSelect(it)
+            viewModel.updatePhoneticCodeSelected(it)
         }
     }
 }

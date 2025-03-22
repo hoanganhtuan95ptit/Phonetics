@@ -29,8 +29,6 @@ class LanguageHomeViewImpl() : LanguageHomeView {
 
         configViewModel.inputLanguage.observe(fragment.viewLifecycleOwner) {
 
-            viewModel.updateInputLanguage(it)
-
             val binding = fragment.binding ?: return@observe
 
             binding.ivLanguage.setImage(it.image, CircleCrop())
