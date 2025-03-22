@@ -365,11 +365,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             viewModel.updateSupportSpeak(it)
         }
 
-        phoneticSelect.observe(viewLifecycleOwner) {
-
-            viewModel.updatePhoneticCodeSelected(it)
-        }
-
         translateEnable.observe(viewLifecycleOwner) {
 
             viewModel.updateSupportTranslate(it)

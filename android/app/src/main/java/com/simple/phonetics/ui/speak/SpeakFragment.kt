@@ -125,11 +125,6 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
             viewModel.updateSupportSpeak(it.toSuccess()?.data.orEmpty().isNotEmpty())
         }
-
-        phoneticSelect.observe(viewLifecycleOwner) {
-
-            viewModel.updatePhoneticCodeSelected(it)
-        }
     }
 
     private fun speak() {

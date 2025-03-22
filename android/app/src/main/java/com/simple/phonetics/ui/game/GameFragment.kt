@@ -59,7 +59,6 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
         setupDeeplink(this)
 
         observeData()
-        observeConfigData()
     }
 
     private fun observeData() = with(viewModel) {
@@ -83,14 +82,6 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
         viewLifecycleOwner.lifecycleScope.launch {
 
             sendDeeplink(gameConfigViewModel.getNextGame(), extras = bundleOf(Param.FIRST to true))
-        }
-    }
-
-    private fun observeConfigData() = with(configViewModel) {
-
-        phoneticSelect.observe(viewLifecycleOwner) {
-
-            viewModel.updatePhoneticCodeSelected(it)
         }
     }
 }

@@ -158,11 +158,6 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             viewModel.updateSupportListen(it.toSuccess()?.data.orEmpty().isNotEmpty())
         }
-
-        phoneticSelect.observe(viewLifecycleOwner) {
-
-            viewModel.updatePhoneticCodeSelected(it)
-        }
     }
 }
 

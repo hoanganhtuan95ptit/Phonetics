@@ -43,6 +43,7 @@ val viewModelModule = module {
         LanguageViewModel(get(), get(), get())
     }
 
+
     viewModel {
         ConfigViewModel(get(), get())
     }
