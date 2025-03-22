@@ -6,7 +6,6 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.postDifferentValue
-import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 
