@@ -84,11 +84,11 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
         val binding = binding ?: return
 
-        val languageAdapter = LanguageAdapter { view, item ->
+        val languageAdapter = LanguageAdapter { _, item ->
 
             viewModel.updateLanguageSelected(item.data)
 
-            logAnalytics("ipa_${item.data.id}")
+            logAnalytics("language_code_${item.data.id}")
         }
 
         adapter = MultiAdapter(languageAdapter, *ListPreviewAdapter()).apply {

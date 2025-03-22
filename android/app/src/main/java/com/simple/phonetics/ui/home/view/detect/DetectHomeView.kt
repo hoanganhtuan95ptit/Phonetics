@@ -101,6 +101,7 @@ class DetectHomeViewImpl : DetectHomeView {
 
             state.doSuccess {
 
+                viewModel.getPhonetics("")
                 binding.etText.setText(it)
             }
         }

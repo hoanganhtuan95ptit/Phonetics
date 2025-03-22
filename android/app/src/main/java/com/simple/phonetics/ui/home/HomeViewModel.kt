@@ -72,7 +72,7 @@ class HomeViewModel(
 
 
     @VisibleForTesting
-    val text: LiveData<String> = MediatorLiveData("")
+    val text: MediatorLiveData<Pair<String, String>> = MediatorLiveData("" to "")
 
     @VisibleForTesting
     val inputLanguage: LiveData<Language> = MediatorLiveData()
@@ -159,7 +159,7 @@ class HomeViewModel(
 
         val text = text.value ?: return@listenerSources
         val listenState = listenState.value
-        val isSupportListen = isSupportListen.value ?: return@listenerSources && text.isNotBlank()
+        val isSupportListen = isSupportListen.value ?: return@listenerSources && text.second.isNotBlank()
 
         val info = ListenInfo(
             isShowPlay = !listenState.isRunning() && isSupportListen,
@@ -179,7 +179,7 @@ class HomeViewModel(
         val info = ClearInfo(
             text = translate["action_clear"].orEmpty()
                 .with(ForegroundColorSpan(theme.colorPrimary)),
-            isShow = text.isNotBlank(),
+            isShow = text.second.isNotBlank(),
             background = Background(
                 strokeWidth = DP.DP_1 + DP.DP_05.toInt(),
                 cornerRadius = DP.DP_8,
@@ -227,8 +227,12 @@ class HomeViewModel(
     @VisibleForTesting
     val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage, phoneticsCode) {
 
+        val text = text.get()
+
         val param = GetPhoneticsAsyncUseCase.Param(
-            text = text.get(),
+            textOld = text.first,
+            textNew = text.second,
+
             isReverse = isReverse.get(),
             phoneticCode = phoneticsCode.get(),
             inputLanguageCode = inputLanguage.get().id,
@@ -346,7 +350,13 @@ class HomeViewModel(
 
     fun getPhonetics(text: String) {
 
-        this.text.postDifferentValue(text)
+        if (text.isBlank()) {
+
+            this.text.value = "" to text
+        } else {
+
+            this.text.postDifferentValue(this.text.value?.second.orEmpty() to text)
+        }
     }
 
     fun switchReverse() {
@@ -359,6 +369,16 @@ class HomeViewModel(
         this.isSupportListen.postDifferentValue(b)
     }
 
+    fun updateInputLanguage(language: Language) {
+
+        this.inputLanguage.postDifferentValue(language)
+    }
+
+    fun updateOutputLanguage(language: Language) {
+
+        this.outputLanguage.postDifferentValue(language)
+    }
+
     fun updatePhoneticSelect(code: String) {
 
         this.phoneticsCode.postDifferentValue(code)
@@ -368,16 +388,6 @@ class HomeViewModel(
 
         this.isSupportReverse.postDifferentValue(b)
         this.isSupportTranslate.postDifferentValue(b)
-    }
-
-    fun updateInputLanguage(language: Language) {
-
-        this.inputLanguage.postDifferentValue(language)
-    }
-
-    fun updateOutputLanguage(language: Language) {
-
-        this.outputLanguage.postDifferentValue(language)
     }
 
     fun updateTypeViewItemList(type: Int, it: List<ViewItem>) {

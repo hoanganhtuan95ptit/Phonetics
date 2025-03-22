@@ -112,7 +112,8 @@ class SpeakViewModel(
     val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, inputLanguage, outputLanguage, phoneticsCode) {
 
         val param = GetPhoneticsAsyncUseCase.Param(
-            text = text.get(),
+            textNew = text.get(),
+
             isReverse = false,
             saveToHistory = false,
             phoneticCode = phoneticsCode.get(),
