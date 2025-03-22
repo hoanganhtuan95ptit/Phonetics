@@ -61,10 +61,10 @@ class SpeakViewModel(
 
     val text: LiveData<String> = MediatorLiveData()
 
+
     val listenState: LiveData<ResultState<String>> = MediatorLiveData()
 
     val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
-
 
     val speakState: LiveData<ResultState<String>> = MediatorLiveData()
 
@@ -144,6 +144,11 @@ class SpeakViewModel(
 
     val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, phoneticsViewItemList, listenState, isSupportListen, speakState, isSupportSpeak, trust) {
 
+        val theme = theme.value ?: return@listenerSources
+
+        val speakState = speakState.value
+
+
         val list = arrayListOf<ViewItem>()
 
         phoneticsViewItemList.value.orEmpty().let {
@@ -151,15 +156,6 @@ class SpeakViewModel(
             list.addAll(it)
             list.add(SpaceViewItem(id = "SPACE_PHONETICS", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
         }
-
-        val size = size.value ?: return@listenerSources
-        val theme = theme.value ?: return@listenerSources
-
-        val speakState = speakState.value
-        val isSupportSpeak = isSupportSpeak.value ?: false
-
-        val listenState = listenState.value
-        val isSupportListen = isSupportListen.value ?: false
 
         if (speakState is ResultState.Success) NoneTextViewItem(
             id = "1",
@@ -211,47 +207,14 @@ class SpeakViewModel(
             list.add(SpaceViewItem(id = "SPACE_PHONETICS_1", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
         }
 
-        if (isSupportListen) ImageStateViewItem(
-            id = ID.LISTEN,
+        postDifferentValueIfActive(list)
+    }
 
-            image = if (listenState == null || listenState.isStart() || listenState.isCompleted()) {
-                R.drawable.ic_volume_24dp
-            } else {
-                R.drawable.ic_pause_24dp
-            },
+    val speakInfo: LiveData<SpeakInfo> = listenerSources(size, theme, translate, isSupportSpeak, speakState) {
 
-            isLoading = listenState.isStart(),
+        val speakState = speakState.value
 
-            size = Size(
-                width = (size.width - 2 * DP.DP_24) / 3,
-                height = DP.DP_56
-            ),
-
-            padding = Padding(
-                left = DP.DP_18,
-                top = DP.DP_18,
-                right = DP.DP_18,
-                bottom = DP.DP_18
-            )
-        ).let {
-
-            list.add(it)
-        } else NoneTextViewItem(
-            id = "ID_SPEAK_1",
-            text = "",
-
-            size = Size(
-                width = (size.width - 2 * DP.DP_24) / 3,
-                height = DP.DP_56
-            ),
-        ).let {
-
-            list.add(it)
-        }
-
-
-        if (isSupportSpeak) ImageStateViewItem(
-            id = ID.SPEAK,
+        val info = SpeakInfo(
 
             anim = if (speakState.isRunning()) {
                 R.raw.anim_recording
@@ -268,47 +231,31 @@ class SpeakViewModel(
 
             isLoading = speakState.isStart(),
 
-            size = Size(
-                width = (size.width - 2 * DP.DP_24) / 3,
-                height = DP.DP_70
-            ),
-            background = Background(
-                strokeWidth = DP.DP_2,
-                strokeColor = theme.colorPrimary,
-                cornerRadius = DP.DP_16
-            ),
+            isShow = isSupportSpeak.value == true,
+        )
 
-            imageSize = Size(
-                width = DP.DP_60,
-                height = DP.DP_60
-            ),
-            imagePadding = Padding(
-                left = DP.DP_16,
-                top = DP.DP_16,
-                right = DP.DP_16,
-                bottom = DP.DP_16
-            )
-        ).let {
-
-            list.add(it)
-        }
-
-        NoneTextViewItem(
-            id = "ID_SPEAK_2",
-            text = "",
-
-            size = Size(
-                width = (size.width - 2 * DP.DP_24) / 3,
-                height = DP.DP_56
-            ),
-        ).let {
-
-            list.add(it)
-        }
-
-
-        postDifferentValueIfActive(list)
+        postDifferentValue(info)
     }
+
+    val listenInfo: LiveData<ListenInfo> = listenerSources(size, theme, translate, isSupportListen, listenState) {
+
+        val listenState = listenState.value
+
+        val info = ListenInfo(
+
+            image = if (listenState == null || listenState.isStart() || listenState.isCompleted()) {
+                R.drawable.ic_volume_24dp
+            } else {
+                R.drawable.ic_pause_24dp
+            },
+
+            isShow = isSupportListen.value == true,
+            isLoading = listenState.isStart()
+        )
+
+        postDifferentValue(info)
+    }
+
 
     fun updateText(it: String) {
 
@@ -381,4 +328,17 @@ class SpeakViewModel(
         const val SPEAK = "SPEAK"
         const val LISTEN = "LISTEN"
     }
+
+    data class SpeakInfo(
+        val anim: Int?,
+        val image: Int?,
+        val isShow: Boolean,
+        val isLoading: Boolean
+    )
+
+    data class ListenInfo(
+        val image: Int,
+        val isShow: Boolean,
+        val isLoading: Boolean
+    )
 }

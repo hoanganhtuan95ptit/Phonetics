@@ -4,23 +4,32 @@ import android.Manifest
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
+import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.Padding
+import com.simple.coreapp.ui.view.setBackground
+import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.autoCleared
+import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics
+import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
-import com.simple.phonetics.databinding.DialogListBinding
+import com.simple.phonetics.databinding.DialogSpeakBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.utils.DeeplinkHandler
@@ -30,7 +39,7 @@ import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
 
-class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
+class SpeakFragment : BaseSheetFragment<DialogSpeakBinding, SpeakViewModel>() {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
@@ -41,17 +50,59 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val binding = binding ?: return
+
+        binding.root.doOnChangeHeightStatusAndHeightNavigation(viewLifecycleOwner) { heightStatusBar: Int, heightNavigationBar: Int ->
+
+            binding.root.updatePadding(bottom = heightNavigationBar + DP.DP_24)
+        }
+
+        setupSpeak()
+        setupListener()
         setupRecyclerView()
 
         observeData()
         observeConfigData()
     }
 
+    private fun setupSpeak() {
+
+        val binding = binding ?: return
+
+        binding.frameSpeak.root.setPadding(
+            Padding(padding = DP.DP_16)
+        )
+
+        binding.frameSpeak.root.setDebouncedClickListener {
+
+            PermissionX.init(this.requireActivity())
+                .permissions(REQUIRED_PERMISSIONS_RECORD_AUDIO.toList())
+                .request { allGranted, _, _ ->
+
+                if (allGranted) speak()
+            }
+        }
+    }
+
+    private fun setupListener() {
+
+        val binding = binding ?: return
+
+        binding.frameListen.root.setPadding(
+            Padding(padding = DP.DP_18)
+        )
+
+        binding.frameListen.root.setDebouncedClickListener {
+
+            listen()
+        }
+    }
+
     private fun setupRecyclerView() {
 
         val binding = binding ?: return
 
-        val phoneticsAdapter = PhoneticsAdapter { view, item ->
+        val phoneticsAdapter = PhoneticsAdapter { _, item ->
 
             if (viewModel.isSupportListen.value == true) {
 
@@ -59,25 +110,10 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
             }
         }
 
-        val imageStateAdapter = ImageStateAdapter { view, item ->
-
-            if (item.id == SpeakViewModel.ID.LISTEN) {
-
-                listen()
-            } else if (item.id == SpeakViewModel.ID.SPEAK) PermissionX.init(this.requireActivity())
-                .permissions(REQUIRED_PERMISSIONS_RECORD_AUDIO.toList())
-                .request { allGranted, _, _ ->
-                    if (allGranted) {
-                        speak()
-                    }
-                }
-        }
-
-        adapter = MultiAdapter(phoneticsAdapter, imageStateAdapter, *ListPreviewAdapter()).apply {
+        adapter = MultiAdapter(phoneticsAdapter, *ListPreviewAdapter()).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
-            binding.recyclerView.setItemViewCacheSize(10)
 
             val layoutManager = createFlexboxLayoutManager(context = context) {
 
@@ -101,6 +137,40 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
             binding.root.delegate.backgroundColor = it.colorBackground
             binding.root.delegate.setBgSelector()
+
+            val speakBackground = Background(
+                strokeWidth = DP.DP_2,
+                strokeColor = it.colorPrimary,
+                cornerRadius = DP.DP_16
+            )
+
+            binding.frameSpeak.root.delegate.setBackground(speakBackground)
+        }
+
+        speakInfo.observe(viewLifecycleOwner) {
+
+            val binding = binding?.frameSpeak ?: return@observe
+
+            if (it.anim != null) {
+                binding.ivImage.setAnimation(it.anim)
+                binding.ivImage.playAnimation()
+            }
+            if (it.image != null) {
+                binding.ivImage.setImage(it.image)
+            }
+
+            binding.root.setVisible(it.isShow)
+            binding.progressBar.setVisible(it.isLoading)
+        }
+
+        listenInfo.observe(viewLifecycleOwner) {
+
+            val binding = binding?.frameListen ?: return@observe
+
+            binding.ivImage.setImage(it.image)
+
+            binding.root.setVisible(it.isShow)
+            binding.progressBar.setVisible(it.isLoading)
         }
 
         viewItemList.asFlow().launchCollect(viewLifecycleOwner) {
