@@ -33,7 +33,6 @@ import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
 import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
@@ -269,8 +268,6 @@ class SpeakViewModel(
 
     fun startListen(text: String? = null, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        listenState.postValue(ResultState.Start)
-
         val param = StartListenUseCase.Param(
             text = text ?: this@SpeakViewModel.text.value.orEmpty(),
 
@@ -280,8 +277,9 @@ class SpeakViewModel(
             voiceSpeed = voiceSpeed
         )
 
-        var job: Job? = null
+        listenState.postValue(ResultState.Start)
 
+        var job: Job? = null
         job = startListenUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
             listenState.postValue(state)
@@ -304,29 +302,21 @@ class SpeakViewModel(
 
     fun startSpeak() = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        speakState.postValue(ResultState.Start)
-
         val param = StartSpeakUseCase.Param(
             languageCode = inputLanguage.value?.id ?: Language.EN,
         )
 
+        speakState.postValue(ResultState.Start)
+
         startSpeakUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
-            val stateWrap = state
-
-            speakState.postValue(stateWrap)
+            speakState.postValue(state)
         }
     }
 
     fun stopSpeak() = viewModelScope.launch(handler + Dispatchers.IO) {
 
         stopSpeakUseCase.execute()
-    }
-
-    object ID {
-
-        const val SPEAK = "SPEAK"
-        const val LISTEN = "LISTEN"
     }
 
     data class SpeakInfo(
