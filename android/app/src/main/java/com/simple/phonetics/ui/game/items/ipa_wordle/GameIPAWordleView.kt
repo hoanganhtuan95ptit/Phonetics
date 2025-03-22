@@ -80,11 +80,11 @@ fun getIPAWordleStateInfo(
         theme.colorOnErrorVariant
     }
 
-    val title = (if (isAnswerCorrect) {
-        translate["title_answer_true"].orEmpty()
+    val title = if (isAnswerCorrect) {
+        translate["title_answer_true"]
     } else {
-        translate["title_answer_failed"].orEmpty()
-    }).with(ForegroundColorSpan(textColor))
+        translate["title_answer_failed"]
+    }
 
     val message = translate["game_ipa_wordle_screen_message_answer"].orEmpty()
         .replace("\$param1", param1)
@@ -97,12 +97,16 @@ fun getIPAWordleStateInfo(
         .with(param3, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
         .trim()
 
+
+    val buttonText = if (isAnswerCorrect) {
+        translate["action_continue"]
+    } else {
+        translate["action_retry"]
+    }
+
     val positive = ButtonInfo(
-        text = (if (isAnswerCorrect) {
-            translate["action_continue"].orEmpty()
-        } else {
-            translate["action_retry"].orEmpty()
-        }).with(ForegroundColorSpan(theme.colorOnPrimary)),
+        text = buttonText.orEmpty()
+            .with(ForegroundColorSpan(theme.colorOnPrimary)),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
@@ -115,7 +119,8 @@ fun getIPAWordleStateInfo(
     )
 
     val info = GameItemViewModel.StateInfo(
-        title = title,
+        title = title.orEmpty()
+            .with(ForegroundColorSpan(textColor)),
         message = message,
         positive = positive,
 
