@@ -11,8 +11,10 @@ import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.setBackground
+import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
@@ -79,8 +81,8 @@ class SpeakFragment : BaseSheetFragment<DialogSpeakBinding, SpeakViewModel>() {
                 .permissions(REQUIRED_PERMISSIONS_RECORD_AUDIO.toList())
                 .request { allGranted, _, _ ->
 
-                if (allGranted) speak()
-            }
+                    if (allGranted) speak()
+                }
         }
     }
 
@@ -89,7 +91,11 @@ class SpeakFragment : BaseSheetFragment<DialogSpeakBinding, SpeakViewModel>() {
         val binding = binding ?: return
 
         binding.frameListen.root.setPadding(
-            Padding(padding = DP.DP_18)
+            Padding(padding = DP.DP_12)
+        )
+
+        binding.frameListen.ivImage.setMargin(
+            Margin(margin = DP.DP_8)
         )
 
         binding.frameListen.root.setDebouncedClickListener {
