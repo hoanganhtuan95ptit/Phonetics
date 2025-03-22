@@ -37,29 +37,27 @@ fun getIPAMatchStateInfo(size: AppSize, theme: AppTheme, translate: Map<String, 
         theme.colorOnErrorVariant
     }
 
-    val text = if (isAnswerCorrect) {
-        translate["action_continue"]
-    } else {
-        translate["action_retry"]
-    }.orEmpty()
-        .with(ForegroundColorSpan(theme.colorOnPrimary))
-
     val title = if (isAnswerCorrect) {
         translate["title_answer_true"]
     } else {
         translate["title_answer_failed"]
-    }.orEmpty()
-        .with(ForegroundColorSpan(textColor))
+    }
 
     val message = if (isAnswerCorrect) {
         translate["game_ipa_match_screen_message_answer_correct"]
     } else {
         translate["game_ipa_match_screen_message_answer_failed"]
-    }.orEmpty()
-        .with(ForegroundColorSpan(textColor))
+    }
+
+    val buttonText = if (isAnswerCorrect) {
+        translate["action_continue"]
+    } else {
+        translate["action_retry"]
+    }
 
     val positive = ButtonInfo(
-        text = text,
+        text = buttonText.orEmpty()
+            .with(ForegroundColorSpan(theme.colorOnPrimary)),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
@@ -72,8 +70,10 @@ fun getIPAMatchStateInfo(size: AppSize, theme: AppTheme, translate: Map<String, 
     )
 
     val info = GameItemViewModel.StateInfo(
-        title = title,
-        message = message,
+        title = title.orEmpty()
+            .with(ForegroundColorSpan(textColor)),
+        message = message.orEmpty()
+            .with(ForegroundColorSpan(textColor)),
         positive = positive,
 
         background = Background(
@@ -263,18 +263,19 @@ private fun OptionTextViewItem(
     val phonetic = data.option?.phonetic
 
     val text = if (data.newType == GameIPAMatchQuiz.Option.Type.TEXT) {
-        phonetic?.text.orEmpty()
+        phonetic?.text
     } else if (data.newType == GameIPAMatchQuiz.Option.Type.IPA) {
-        (phonetic?.ipa?.get(phoneticCode) ?: phonetic?.ipa?.flatMap { it.value })?.firstOrNull().orEmpty()
+        (phonetic?.ipa?.get(phoneticCode) ?: phonetic?.ipa?.flatMap { it.value })?.firstOrNull()
     } else {
         ""
-    }.with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface))
+    }
 
     return ClickTextViewItem(
         id = "${phonetic?.text}_${data.option?.type?.name}_${data.newType?.name}",
         data = data,
 
-        text = text,
+        text = text.orEmpty()
+            .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
         textStyle = TextStyle(
             textSize = 16f,
             textGravity = Gravity.CENTER
