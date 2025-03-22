@@ -28,7 +28,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
 
     viewModel {
-        MainViewModel(get(), get(), get())
+        MainViewModel(get(), get(), get(), get(), get())
     }
 
     viewModel {
@@ -44,16 +44,16 @@ val viewModelModule = module {
     }
 
     viewModel {
-        ConfigViewModel(get(), get(), get(), get())
+        ConfigViewModel(get(), get())
     }
 
 
     viewModel {
-        SpeakViewModel(get(), get(), get(), get(), get(), get(), get())
+        SpeakViewModel(get(), get(), get(), get(), get())
     }
 
     viewModel {
-        RecordingViewModel(get(), get(), get(), get())
+        RecordingViewModel(get(), get())
     }
 
 
@@ -75,15 +75,15 @@ val viewModelModule = module {
     }
 
     viewModel {
-        GameHomeViewModel(get(), get())
+        GameHomeViewModel(get())
     }
 
     viewModel {
-        DetectHomeViewModel(get(), get(), get())
+        DetectHomeViewModel(get())
     }
 
     viewModel {
-        MicrophoneHomeViewModel(get(), get(), get())
+        MicrophoneHomeViewModel(get())
     }
 
     viewModel {
@@ -96,7 +96,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        GameConfigViewModel(get(), get(), get())
+        GameConfigViewModel(get(), get())
     }
 
     viewModel {

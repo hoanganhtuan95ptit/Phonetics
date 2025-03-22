@@ -22,14 +22,11 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.R
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
@@ -59,33 +56,10 @@ class SpeakViewModel(
     private val stopListenUseCase: StopListenUseCase,
     private val startListenUseCase: StartListenUseCase,
 
-    private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
-    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
-    private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
+    private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
 ) : BaseViewModel() {
 
     val text: LiveData<String> = MediatorLiveData()
-
-    @VisibleForTesting
-    val phoneticsCode: LiveData<String> = MediatorLiveData()
-
-    @VisibleForTesting
-    val inputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageInputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
-
-    @VisibleForTesting
-    val outputLanguage: LiveData<Language> = mediatorLiveData {
-
-        getLanguageOutputAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
 
     val listenState: LiveData<ResultState<String>> = MediatorLiveData()
 
@@ -109,14 +83,14 @@ class SpeakViewModel(
 
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, inputLanguage, outputLanguage, phoneticsCode) {
+    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, inputLanguage, outputLanguage, phoneticCodeSelected) {
 
         val param = GetPhoneticsAsyncUseCase.Param(
             textNew = text.get(),
 
             isReverse = false,
             saveToHistory = false,
-            phoneticCode = phoneticsCode.get(),
+            phoneticCode = phoneticCodeSelected.get(),
             inputLanguageCode = inputLanguage.get().id,
             outputLanguageCode = outputLanguage.get().id
         )
@@ -127,13 +101,13 @@ class SpeakViewModel(
         }
     }
 
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, phoneticsCode, phoneticsState, isSupportListen) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, phoneticCodeSelected, phoneticsState, isSupportListen) {
 
         val theme = theme.get()
         val translate = translate.get()
 
         val state = phoneticsState.get()
-        val phoneticsCode = phoneticsCode.get()
+        val phoneticsCode = phoneticCodeSelected.get()
 
         state.doStart {
 
@@ -345,12 +319,6 @@ class SpeakViewModel(
 
         isSupportListen.postDifferentValue(it)
     }
-
-    fun updatePhoneticSelect(it: String) {
-
-        phoneticsCode.postDifferentValue(it)
-    }
-
 
     fun startListen(text: String? = null, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 

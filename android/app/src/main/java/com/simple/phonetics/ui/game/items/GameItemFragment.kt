@@ -71,16 +71,6 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
 
             viewModel.updatePhoneticCodeSelected(it)
         }
-
-        inputLanguage.observe(viewLifecycleOwner) {
-
-            viewModel.updateInputLanguage(it)
-        }
-
-        outputLanguage.observe(viewLifecycleOwner) {
-
-            viewModel.updateOutputLanguage(it)
-        }
     }
 
     private fun observeGameData() = with(gameViewModel) {
