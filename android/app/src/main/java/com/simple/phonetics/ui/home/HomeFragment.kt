@@ -198,6 +198,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
         val historyAdapter = HistoryAdapter { _, item ->
 
+            viewModel.getPhonetics("")
             binding.etText.setText(item.id)
         }
 

@@ -12,7 +12,6 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getLineDelimiters
 import com.simple.phonetics.utils.exts.getWordDelimiters
-import com.simple.phonetics.utils.exts.normalize
 import com.simple.phonetics.utils.exts.removeSpecialCharacters
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
@@ -30,13 +29,12 @@ class GetPhoneticsAsyncUseCase(
 ) {
 
     private var id: String = ""
-    private var textOld: String = ""
 
     suspend fun execute(param: Param?): Flow<ResultState<List<Any>>> = channelFlow {
         checkNotNull(param)
 
 
-        val text = param.text.replace("  ", " ").trim().lowercase()
+        val text = param.textNew.replace("  ", " ").trim().lowercase()
 
         if (text.isBlank()) {
 
@@ -59,7 +57,7 @@ class GetPhoneticsAsyncUseCase(
         // lưu lịch sử tìm kiếm phiên âm
         if (param.saveToHistory) {
 
-            val id = getId(textWrap)
+            val id = getId(textOld = param.textOld, textNew = textWrap)
 
             historyDao.insertOrUpdate(RoomHistory(id = id, text = textWrap))
         }
@@ -159,19 +157,16 @@ class GetPhoneticsAsyncUseCase(
     /**
      * kiểm tra xem có cần tạo id mới không, và trả về id
      */
-    private fun getId(textNew: String): String {
-
-        val textNewNormalize = textNew.normalize()
+    private fun getId(textOld: String, textNew: String): String {
 
         // thực hiện lấy id
-        val id = historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.id ?: if (textNewNormalize.contains(textOld) || textOld.contains(textNewNormalize)) {
-            id
-        } else {
+        val id = historyDao.getRoomListByTextAsync(textNew).firstOrNull()?.id ?: if (textOld.isBlank()) {
             UUID.randomUUID().toString()
+        } else {
+            id
         }
 
         this@GetPhoneticsAsyncUseCase.id = id
-        this@GetPhoneticsAsyncUseCase.textOld = textNewNormalize
 
         return id
     }
@@ -200,7 +195,8 @@ class GetPhoneticsAsyncUseCase(
     }
 
     data class Param(
-        val text: String,
+        val textOld: String = "",
+        val textNew: String = "",
 
         val isReverse: Boolean,
 

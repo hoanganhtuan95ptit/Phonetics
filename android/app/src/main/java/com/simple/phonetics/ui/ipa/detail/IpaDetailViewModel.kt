@@ -124,7 +124,8 @@ class IpaDetailViewModel(
         postValue(ResultState.Start)
 
         val param = GetPhoneticsAsyncUseCase.Param(
-            text = ipa.get().examples.joinToString(separator = " ") { it },
+            textNew = ipa.get().examples.joinToString(separator = " ") { it },
+
             isReverse = false,
             saveToHistory = false,
             phoneticCode = phoneticsCode.get(),

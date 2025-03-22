@@ -10,6 +10,8 @@ import com.simple.coreapp.utils.extentions.clear
 import com.simple.coreapp.utils.extentions.haveText
 import com.simple.coreapp.utils.extentions.text
 import com.simple.phonetics.ui.home.HomeFragment
+import com.simple.phonetics.ui.home.HomeViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 interface PasteHomeView {
 
@@ -19,6 +21,8 @@ interface PasteHomeView {
 class PasteHomeViewImpl : PasteHomeView {
 
     override fun setupPaste(fragment: HomeFragment) {
+
+        val viewModel: HomeViewModel by fragment.viewModel()
 
         val clipboard = fragment.requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
@@ -31,7 +35,7 @@ class PasteHomeViewImpl : PasteHomeView {
 
         clipboard.addPrimaryClipChangedListener(onPrimaryClipChangedListener)
 
-        fragment.lifecycle.addObserver(object :LifecycleEventObserver{
+        fragment.lifecycle.addObserver(object : LifecycleEventObserver {
 
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
                 when (event) {
@@ -51,6 +55,7 @@ class PasteHomeViewImpl : PasteHomeView {
 
         binding.ivPaste.setOnClickListener {
 
+            viewModel.getPhonetics("")
             binding.etText.setText(clipboard.text() ?: "")
 
             clipboard.clear()

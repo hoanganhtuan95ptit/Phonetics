@@ -36,7 +36,11 @@ class MicrophoneHomeViewImpl : MicrophoneHomeView {
 
         listenerEvent(lifecycle = fragment.viewLifecycleOwner.lifecycle, eventName = EventName.MICROPHONE) {
 
-            fragment.binding?.etText?.setText(it.asObjectOrNull<String>() ?: return@listenerEvent)
+            val result = it.asObjectOrNull<String>() ?: return@listenerEvent
+            val binding = fragment.binding ?: return@listenerEvent
+
+            viewModel.getPhonetics("")
+            binding.etText.setText(result)
         }
 
 
