@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
 import androidx.core.view.updatePadding
@@ -24,6 +25,7 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.coreapp.utils.ext.listenerOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
@@ -44,6 +46,9 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
@@ -60,7 +65,6 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         bindingConfirmSpeak = LayoutConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
 
@@ -82,8 +86,28 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
             binding.root.updatePadding(bottom = heightNavigationBar + DP.DP_24)
             bindingConfirmSpeak.root.updatePadding(bottom = heightNavigationBar + DP.DP_24)
+        }
 
-            binding.recyclerView.updatePadding(bottom = heightNavigationBar + DP.DP_24 + DP.DP_70)
+        channelFlow {
+
+            val frameAction = bindingConfirmSpeak?.root ?: return@channelFlow
+
+            val onGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+
+                override fun onGlobalLayout() {
+                    bindingConfirmSpeak ?: return
+                    trySend(frameAction.height)
+                }
+            }
+
+            frameAction.viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener)
+
+            awaitClose {
+                frameAction.viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
+            }
+        }.distinctUntilChanged().launchCollect(viewLifecycleOwner) {
+
+            binding.recyclerView.updatePadding(bottom = it)
         }
 
 
@@ -201,6 +225,15 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
             binding.root.setVisible(it.isShow)
             binding.progressBar.setVisible(it.isLoading)
+        }
+
+        resultInfo.observe(viewLifecycleOwner) {
+
+            val binding = bindingConfirmSpeak ?: return@observe
+
+            binding.tvMessage.text = it.result
+            binding.tvMessage.setVisible(it.isShow)
+            binding.tvMessage.delegate.setBackground(it.background)
         }
 
         viewItemList.asFlow().launchCollect(viewLifecycleOwner) {
