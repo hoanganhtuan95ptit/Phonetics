@@ -9,8 +9,10 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
-import com.simple.coreapp.utils.ext.getViewModel
+import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
@@ -18,7 +20,6 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
-import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
@@ -31,10 +32,6 @@ import com.simple.state.isRunning
 import com.simple.state.toSuccess
 
 class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewModel>() {
-
-    private val configViewModel: ConfigViewModel by lazy {
-        getViewModel(requireActivity(), ConfigViewModel::class)
-    }
 
     private var adapter by autoCleared<MultiAdapter>()
 
@@ -65,7 +62,6 @@ class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewMode
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
-            binding.recyclerView.setItemViewCacheSize(10)
 
             val layoutManager = createFlexboxLayoutManager(context = context) {
 
@@ -87,8 +83,8 @@ class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewMode
 
             val binding = binding ?: return@observe
 
-            binding.root.delegate.backgroundColor = it.colorBackground
-            binding.root.delegate.setBgSelector()
+            binding.root.delegate.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
         }
 
         speakState.observe(viewLifecycleOwner) {

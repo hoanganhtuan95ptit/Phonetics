@@ -8,7 +8,10 @@ import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
+import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
@@ -68,7 +71,6 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
-            binding.recyclerView.setItemViewCacheSize(10)
 
             val layoutManager = createFlexboxLayoutManager(context = context) {
 
@@ -90,7 +92,8 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 
             val binding = binding ?: return@observe
 
-            binding.root.delegate.backgroundColor = it.colorBackground
+            binding.root.delegate.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
         }
 
         viewItemList.observeQueue(viewLifecycleOwner) {

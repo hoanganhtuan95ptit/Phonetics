@@ -2,7 +2,10 @@ package com.simple.phonetics.ui.speak
 
 import android.Manifest
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
@@ -29,7 +32,8 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
-import com.simple.phonetics.databinding.DialogSpeakBinding
+import com.simple.phonetics.databinding.DialogListBinding
+import com.simple.phonetics.databinding.LayoutConfirmSpeakBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
@@ -41,23 +45,47 @@ import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
 
-class SpeakFragment : BaseSheetFragment<DialogSpeakBinding, SpeakViewModel>() {
+class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
+
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
     }
 
+
     private var adapter by autoCleared<MultiAdapter>()
+
+    private var bindingConfirmSpeak by autoCleared<LayoutConfirmSpeakBinding>()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        bindingConfirmSpeak = LayoutConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
+
+        val layoutParam = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+        layoutParam.gravity = Gravity.BOTTOM
+
+        container?.addView(bindingConfirmSpeak?.root, layoutParam)
+
 
         val binding = binding ?: return
 
         binding.root.doOnChangeHeightStatusAndHeightNavigation(viewLifecycleOwner) { heightStatusBar: Int, heightNavigationBar: Int ->
 
+            this.binding ?: return@doOnChangeHeightStatusAndHeightNavigation
+            val bindingConfirmSpeak = bindingConfirmSpeak ?: return@doOnChangeHeightStatusAndHeightNavigation
+
             binding.root.updatePadding(bottom = heightNavigationBar + DP.DP_24)
+            bindingConfirmSpeak.root.updatePadding(bottom = heightNavigationBar + DP.DP_24)
+
+            binding.recyclerView.updatePadding(bottom = heightNavigationBar + DP.DP_24 + DP.DP_70)
         }
+
 
         setupSpeak()
         setupListener()
@@ -69,7 +97,7 @@ class SpeakFragment : BaseSheetFragment<DialogSpeakBinding, SpeakViewModel>() {
 
     private fun setupSpeak() {
 
-        val binding = binding ?: return
+        val binding = bindingConfirmSpeak ?: return
 
         binding.frameSpeak.root.setPadding(
             Padding(padding = DP.DP_16)
@@ -88,7 +116,7 @@ class SpeakFragment : BaseSheetFragment<DialogSpeakBinding, SpeakViewModel>() {
 
     private fun setupListener() {
 
-        val binding = binding ?: return
+        val binding = bindingConfirmSpeak ?: return
 
         binding.frameListen.root.setPadding(
             Padding(padding = DP.DP_12)
@@ -140,22 +168,18 @@ class SpeakFragment : BaseSheetFragment<DialogSpeakBinding, SpeakViewModel>() {
         theme.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
+            val bindingConfigSpeak = bindingConfirmSpeak ?: return@observe
 
-            binding.root.delegate.backgroundColor = it.colorBackground
-            binding.root.delegate.setBgSelector()
+            binding.root.delegate.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
 
-            val speakBackground = Background(
-                strokeWidth = DP.DP_2,
-                strokeColor = it.colorPrimary,
-                cornerRadius = DP.DP_16
-            )
-
-            binding.frameSpeak.root.delegate.setBackground(speakBackground)
+            bindingConfigSpeak.root.setBackgroundColor(it.colorBackground)
+            bindingConfigSpeak.frameSpeak.root.delegate.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.colorPrimary, cornerRadius = DP.DP_16))
         }
 
         speakInfo.observe(viewLifecycleOwner) {
 
-            val binding = binding?.frameSpeak ?: return@observe
+            val binding = bindingConfirmSpeak?.frameSpeak ?: return@observe
 
             if (it.anim != null) {
                 binding.ivImage.setAnimation(it.anim)
@@ -171,7 +195,7 @@ class SpeakFragment : BaseSheetFragment<DialogSpeakBinding, SpeakViewModel>() {
 
         listenInfo.observe(viewLifecycleOwner) {
 
-            val binding = binding?.frameListen ?: return@observe
+            val binding = bindingConfirmSpeak?.frameListen ?: return@observe
 
             binding.ivImage.setImage(it.image)
 

@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.simple.coreapp.ui.view.round.RoundFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.simple.coreapp.ui.view.round.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:rv_cornerRadius="16dp">
+
+    <com.simple.coreapp.ui.view.round.RoundView
+        android:id="@+id/v_anchor"
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -13,4 +21,4 @@
         android:paddingTop="16dp"
         android:paddingBottom="100dp" />
 
-</com.simple.coreapp.ui.view.round.RoundFrameLayout>
+</com.simple.coreapp.ui.view.round.RoundLinearLayout>

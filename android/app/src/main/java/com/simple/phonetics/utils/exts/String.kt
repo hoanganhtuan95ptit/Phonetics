@@ -6,7 +6,7 @@ import java.text.Normalizer
 
 fun getLineDelimiters(): List<String> {
 
-    return arrayListOf(".", "!", "?", "\n")
+    return arrayListOf(".", "!", "?", "\n", "。")
 }
 
 fun getWordDelimiters(languageCode: String): List<String> {
