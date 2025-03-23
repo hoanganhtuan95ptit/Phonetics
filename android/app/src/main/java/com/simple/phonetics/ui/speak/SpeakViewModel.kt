@@ -1,19 +1,12 @@
 package com.simple.phonetics.ui.speak
 
 import android.text.style.ForegroundColorSpan
-import android.view.Gravity
-import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.ui.view.Padding
-import com.simple.coreapp.ui.view.Size
-import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
@@ -65,20 +58,10 @@ class SpeakViewModel(
 
     val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
 
+
     val speakState: LiveData<ResultState<String>> = MediatorLiveData()
 
     val isSupportSpeak: LiveData<Boolean> = MediatorLiveData(true)
-
-
-    val trust: LiveData<Event<Boolean>> = combineSources(text, speakState) {
-
-        val text = text.value ?: return@combineSources
-        val speakState = speakState.value ?: return@combineSources
-
-        val result = speakState.toSuccess()?.data
-
-        postDifferentValue(result.equals(text, true).toEvent())
-    }
 
 
     @VisibleForTesting
@@ -100,7 +83,7 @@ class SpeakViewModel(
         }
     }
 
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, phoneticCodeSelected, phoneticsState, isSupportListen) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, phoneticCodeSelected, phoneticsState, isSupportListen) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -139,74 +122,6 @@ class SpeakViewModel(
         }
 
         postDifferentValueIfActive(viewItemList)
-    }
-
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, phoneticsViewItemList, listenState, isSupportListen, speakState, isSupportSpeak, trust) {
-
-        val theme = theme.value ?: return@listenerSources
-
-        val speakState = speakState.value
-
-
-        val list = arrayListOf<ViewItem>()
-
-        phoneticsViewItemList.value.orEmpty().let {
-
-            list.addAll(it)
-            list.add(SpaceViewItem(id = "SPACE_PHONETICS", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
-        }
-
-        if (speakState is ResultState.Success) NoneTextViewItem(
-            id = "1",
-
-            text = speakState.data.with(
-                ForegroundColorSpan(
-                    if (trust.value?.peekContent() == true) {
-                        theme.colorOnPrimaryVariant
-                    } else {
-                        theme.colorOnErrorVariant
-                    }
-                )
-            ),
-
-            textStyle = TextStyle(
-                textGravity = Gravity.CENTER
-            ),
-            size = Size(
-                width = ViewGroup.LayoutParams.WRAP_CONTENT,
-                height = ViewGroup.LayoutParams.WRAP_CONTENT
-            ),
-            textSize = Size(
-                width = ViewGroup.LayoutParams.WRAP_CONTENT,
-                height = ViewGroup.LayoutParams.WRAP_CONTENT
-            ),
-            textPadding = Padding(
-                left = DP.DP_16,
-                top = DP.DP_8,
-                right = DP.DP_16,
-                bottom = DP.DP_8
-            ),
-            textBackground = Background(
-                strokeColor = if (trust.value?.peekContent() == true) {
-                    theme.colorPrimary
-                } else {
-                    theme.colorError
-                },
-                strokeWidth = DP.DP_1,
-                cornerRadius = DP.DP_8,
-                backgroundColor = if (trust.value?.peekContent() == true) {
-                    theme.colorPrimaryVariant
-                } else {
-                    theme.colorErrorVariant
-                }
-            )
-        ).let {
-
-            list.add(it)
-            list.add(SpaceViewItem(id = "SPACE_PHONETICS_1", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
-        }
-
-        postDifferentValueIfActive(list)
     }
 
     val speakInfo: LiveData<SpeakInfo> = listenerSources(size, theme, translate, isSupportSpeak, speakState) {
@@ -255,6 +170,34 @@ class SpeakViewModel(
         postDifferentValue(info)
     }
 
+    val resultInfo: LiveData<ResultInfo> = listenerSources(size, theme, translate, text, speakState) {
+
+        val theme = theme.value ?: return@listenerSources
+
+        val text = text.value ?: return@listenerSources
+        val speakState = speakState.value
+
+        val speakResult = speakState?.toSuccess()?.data.orEmpty()
+
+        val isCorrect = speakResult.equals(text, true)
+
+        val background = Background(
+            strokeColor = if (isCorrect) theme.colorPrimary else theme.colorError,
+            strokeWidth = DP.DP_1,
+            cornerRadius = DP.DP_8,
+            backgroundColor = if (isCorrect) theme.colorPrimaryVariant else theme.colorErrorVariant
+        )
+
+        val info = ResultInfo(
+            result = speakResult
+                .with(ForegroundColorSpan(if (isCorrect) theme.colorOnPrimaryVariant else theme.colorOnErrorVariant)),
+            isShow = speakState.isCompleted(),
+            background = background
+        )
+
+        postDifferentValue(info)
+    }
+
 
     fun updateText(it: String) {
 
@@ -265,6 +208,7 @@ class SpeakViewModel(
 
         isSupportListen.postDifferentValue(it)
     }
+
 
     fun startListen(text: String? = null, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
@@ -318,6 +262,15 @@ class SpeakViewModel(
 
         stopSpeakUseCase.execute()
     }
+
+
+    data class ResultInfo(
+        val result: CharSequence,
+
+        val isShow: Boolean,
+
+        val background: Background
+    )
 
     data class SpeakInfo(
         val anim: Int?,

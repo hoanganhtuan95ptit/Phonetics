@@ -77,7 +77,6 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
-            binding.recyclerView.setItemViewCacheSize(10)
 
             binding.recyclerView.layoutManager = GridLayoutManager(context, 3)
         }

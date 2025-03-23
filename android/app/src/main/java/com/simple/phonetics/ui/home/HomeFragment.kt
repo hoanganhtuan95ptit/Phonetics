@@ -234,7 +234,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
-            binding.recyclerView.setItemViewCacheSize(10)
 
             val layoutManager = createFlexboxLayoutManager(context = context) {
 

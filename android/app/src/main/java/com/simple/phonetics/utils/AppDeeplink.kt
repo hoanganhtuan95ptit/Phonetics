@@ -7,10 +7,12 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.withResumed
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.Deeplink
@@ -19,7 +21,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -126,39 +131,37 @@ class DeeplinkViewImpl : DeeplinkView {
 
     private fun setupDeepLink(componentCallbacks: ComponentCallbacks, deeplinkFlow: MutableSharedFlow<Pair<String, Pair<Bundle?, Map<String, View>?>>>) {
 
-        var job: Job? = null
-
         val lifecycleOwner = componentCallbacks.asObjectOrNull<ComponentActivity>() ?: componentCallbacks.asObjectOrNull<Fragment>() ?: return
 
-        lifecycleOwner.launchRepeatOnLifecycle(Lifecycle.State.RESUMED) {
+        deeplinkFlow.launchCollect(lifecycleOwner) {
 
-            job?.cancel()
+            lifecycleOwner.awaitResume()
 
-            job = deeplinkFlow.launchCollect(lifecycleOwner) {
+            val deepLink = it.first
 
-                val deepLink = it.first
+            val extras = it.second.first
+            val sharedElement = it.second.second
 
-                val extras = it.second.first
-                val sharedElement = it.second.second
+            val navigation = withContext(Dispatchers.IO) {
 
-                val navigation = withContext(Dispatchers.IO) {
+                list.find { it.acceptDeeplink(deepLink) }
+            }
 
-                    list.find { it.acceptDeeplink(deepLink) }
-                }
+            if (navigation?.navigation(componentCallbacks, deepLink, extras, sharedElement) == true) {
 
-                if (navigation?.navigation(componentCallbacks, deepLink, extras, sharedElement) == true) {
-
-                    deeplinkFlow.resetReplayCache()
-                }
+                deeplinkFlow.resetReplayCache()
             }
         }
     }
 
-    private fun LifecycleOwner.launchRepeatOnLifecycle(
-        state: Lifecycle.State,
-        block: suspend CoroutineScope.() -> Unit
-    ) = lifecycleScope.launch {
+    private suspend fun LifecycleOwner.awaitResume() = channelFlow {
 
-        lifecycle.repeatOnLifecycle(state, block)
-    }
+        withResumed {
+            trySend(Unit)
+        }
+
+        awaitClose {
+
+        }
+    }.first()
 }
