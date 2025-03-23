@@ -11,6 +11,8 @@ import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
@@ -34,6 +36,7 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.sendEvent
 
 class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewModel>() {
+
 
     override val viewModel: GameConfigViewModel by lazy {
         getViewModel(requireActivity(), GameConfigViewModel::class)
@@ -90,7 +93,6 @@ class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewMo
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
-            binding.recyclerView.setItemViewCacheSize(10)
 
             val layoutManager = createFlexboxLayoutManager(context = context) {
 
@@ -112,7 +114,8 @@ class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewMo
 
             val binding = binding ?: return@observe
 
-            binding.root.delegate.backgroundColor = it.colorBackground
+            binding.root.delegate.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
         }
 
         viewItemList.observeQueue(viewLifecycleOwner) {
