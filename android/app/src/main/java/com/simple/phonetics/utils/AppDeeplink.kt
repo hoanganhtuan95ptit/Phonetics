@@ -7,11 +7,7 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.withResumed
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.launchCollect
@@ -19,7 +15,6 @@ import com.simple.phonetics.Deeplink
 import com.tuanha.deeplink.DeeplinkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.MutableSharedFlow

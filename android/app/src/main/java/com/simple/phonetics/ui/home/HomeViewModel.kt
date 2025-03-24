@@ -30,9 +30,9 @@ import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
-import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
+import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
