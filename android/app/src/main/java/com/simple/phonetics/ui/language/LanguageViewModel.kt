@@ -19,7 +19,7 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
+import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -36,9 +36,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LanguageViewModel(
-    private val getLanguageSupportUseCase: GetLanguageSupportUseCase,
     private val updateLanguageInputUseCase: UpdateLanguageInputUseCase,
-    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase
+    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
+    private val getLanguageSupportAsyncUseCase: GetLanguageSupportAsyncUseCase
 ) : BaseViewModel() {
 
     val headerInfo: LiveData<HeaderInfo> = combineSources(theme, translate) {
@@ -79,7 +79,7 @@ class LanguageViewModel(
 
         postValue(ResultState.Start)
 
-        getLanguageSupportUseCase.execute().collect {
+        getLanguageSupportAsyncUseCase.execute(GetLanguageSupportAsyncUseCase.Param(sync = false)).collect {
 
             postValue(it)
         }

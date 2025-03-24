@@ -8,7 +8,7 @@ import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
+import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
@@ -36,6 +36,10 @@ val useCaseModule = module {
     }
 
     single {
+        GetLanguageSupportAsyncUseCase(get())
+    }
+
+    single {
         GetPhoneticsRandomUseCase(get(), get(), get())
     }
 
@@ -57,10 +61,6 @@ val useCaseModule = module {
 
     single {
         GetLanguageOutputAsyncUseCase(get())
-    }
-
-    single {
-        GetLanguageSupportUseCase(get())
     }
 
     single {

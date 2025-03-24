@@ -10,27 +10,28 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 
-class GetLanguageSupportUseCase(
+class GetLanguageSupportAsyncUseCase(
     private val languageRepository: LanguageRepository
 ) {
 
-    suspend fun execute(): Flow<ResultState<List<Language>>> = channelFlow {
+    suspend fun execute(param: Param): Flow<ResultState<List<Language>>> = channelFlow {
 
         languageRepository.getLanguageSupportedOrDefaultAsync().launchCollect(this) {
 
             trySend(ResultState.Success(it))
         }
 
-        languageRepository.getLanguageOutputAsync().map {
+        if (param.sync) languageRepository.getLanguageOutputAsync().launchCollect(this) {
 
-            languageRepository.runCatching { getLanguageSupport(it.id) }
-        }.launchIn(this)
-
+            runCatching {
+                languageRepository.getLanguageSupport(it.id)
+            }
+        }
 
         awaitClose {
 
         }
     }
 
-    data class Param(val default: Boolean)
+    data class Param(val sync: Boolean)
 }
