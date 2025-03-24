@@ -256,8 +256,8 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
                 playVibrate()
             }
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                playMedia(if (isCorrect) R.raw.mp3_answer_correct else R.raw.mp3_answer_failed)
+            if (isCorrect) viewLifecycleOwner.lifecycleScope.launch {
+                playMedia(R.raw.mp3_answer_correct)
             }
         }
 

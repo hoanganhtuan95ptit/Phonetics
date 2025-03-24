@@ -186,7 +186,7 @@ class SpeakViewModel(
 
         val isCorrect = speakResult.equals(text, true)
 
-        postDifferentValue(isCorrect)
+        postValue(isCorrect)
     }
     val isCorrectEvent: LiveData<Event<Boolean>> = isCorrect.toEvent()
 
