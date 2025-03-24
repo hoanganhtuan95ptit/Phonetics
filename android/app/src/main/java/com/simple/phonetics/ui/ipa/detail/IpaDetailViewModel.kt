@@ -29,7 +29,7 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
-import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
+import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -55,7 +55,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class IpaDetailViewModel(
-    private val startListenUseCase: StartListenUseCase,
+    private val startReadingUseCase: StartReadingUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
     private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase,
@@ -233,7 +233,7 @@ class IpaDetailViewModel(
 
         listenState.postValue(ResultState.Start)
 
-        val param = StartListenUseCase.Param(
+        val param = StartReadingUseCase.Param(
             text = text,
 
             languageCode = inputLanguage.value?.id ?: Language.EN,
@@ -244,7 +244,7 @@ class IpaDetailViewModel(
 
         var job: Job? = null
 
-        job = startListenUseCase.execute(param).launchCollect(viewModelScope) { state ->
+        job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
             listenState.postValue(state)
 

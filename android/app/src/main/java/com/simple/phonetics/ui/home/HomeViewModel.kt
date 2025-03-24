@@ -31,8 +31,8 @@ import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
-import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
-import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
+import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
+import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
@@ -54,8 +54,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val detectUseCase: DetectUseCase,
-    private val stopListenUseCase: StopListenUseCase,
-    private val startListenUseCase: StartListenUseCase,
+    private val stopReadingUseCase: StopReadingUseCase,
+    private val startReadingUseCase: StartReadingUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
 ) : BaseViewModel() {
@@ -382,7 +382,7 @@ class HomeViewModel(
 
         listenState.postValue(ResultState.Start)
 
-        val param = StartListenUseCase.Param(
+        val param = StartReadingUseCase.Param(
             text = text,
 
             languageCode = inputLanguage.value?.id ?: Language.EN,
@@ -393,7 +393,7 @@ class HomeViewModel(
 
         var job: Job? = null
 
-        job = startListenUseCase.execute(param).launchCollect(viewModelScope) { state ->
+        job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
             listenState.postValue(state)
 
@@ -409,7 +409,7 @@ class HomeViewModel(
 
     fun stopSpeak() = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        stopListenUseCase.execute()
+        stopReadingUseCase.execute()
     }
 
     fun getTextFromImage(path: String) = viewModelScope.launch(handler + Dispatchers.IO) {

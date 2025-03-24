@@ -14,7 +14,6 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
 import com.simple.core.utils.extentions.toArrayList
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
@@ -28,7 +27,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
-import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
+import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.game.items.GameItemViewModel
@@ -43,7 +42,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.max
 
 class GameIPAMatchViewModel(
-    private val startListenUseCase: StartListenUseCase,
+    private val startReadingUseCase: StartReadingUseCase,
     private val getPhoneticsRandomUseCase: GetPhoneticsRandomUseCase
 ) : GameItemViewModel() {
 
@@ -300,7 +299,7 @@ class GameIPAMatchViewModel(
 
         val map = listenState.value ?: return@launch
 
-        val param = StartListenUseCase.Param(
+        val param = StartReadingUseCase.Param(
             text = data.option?.phonetic?.text ?: return@launch,
 
             languageCode = inputLanguage.value?.id ?: Language.EN,
@@ -315,7 +314,7 @@ class GameIPAMatchViewModel(
 
         var job: Job? = null
 
-        job = startListenUseCase.execute(param).launchCollect(viewModelScope) { state ->
+        job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
             map[data] = state
             listenState.postValue(map)
