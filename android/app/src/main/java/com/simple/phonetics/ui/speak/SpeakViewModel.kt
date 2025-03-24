@@ -11,18 +11,20 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
+import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
-import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
-import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
+import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
+import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
@@ -34,6 +36,7 @@ import com.simple.state.doSuccess
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isStart
+import com.simple.state.isSuccess
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -168,16 +171,34 @@ class SpeakViewModel(
         postDifferentValue(info)
     }
 
-    val resultInfo: LiveData<ResultInfo> = listenerSources(size, theme, translate, text, speakState) {
+    @VisibleForTesting
+    val isCorrect: LiveData<Boolean> = combineSources(text, speakState) {
 
-        val theme = theme.value ?: return@listenerSources
-
-        val text = text.value ?: return@listenerSources
+        val text = text.value ?: return@combineSources
         val speakState = speakState.value
+
+        if (!speakState.isSuccess()) {
+
+            return@combineSources
+        }
 
         val speakResult = speakState?.toSuccess()?.data.orEmpty()
 
         val isCorrect = speakResult.equals(text, true)
+
+        postDifferentValue(isCorrect)
+    }
+    val isCorrectEvent: LiveData<Event<Boolean>> = isCorrect.toEvent()
+
+    val resultInfo: LiveData<ResultInfo> = listenerSources(size, theme, translate, isCorrect, speakState) {
+
+        val theme = theme.value ?: return@listenerSources
+
+        val speakState = speakState.value
+
+        val speakResult = speakState?.toSuccess()?.data.orEmpty()
+
+        val isCorrect = isCorrect.value == true
 
         val background = Background(
             strokeColor = if (isCorrect) theme.colorPrimary else theme.colorError,
@@ -189,7 +210,7 @@ class SpeakViewModel(
         val info = ResultInfo(
             result = speakResult
                 .with(ForegroundColorSpan(if (isCorrect) theme.colorOnPrimaryVariant else theme.colorOnErrorVariant)),
-            isShow = speakState.isCompleted(),
+            isShow = speakState.isSuccess(),
             background = background
         )
 
