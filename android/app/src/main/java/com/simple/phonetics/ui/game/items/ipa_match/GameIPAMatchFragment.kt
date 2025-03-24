@@ -130,7 +130,7 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
             if (state.isFailed()) {
 
                 viewModel.updateWaring(true)
-                delay(2000)
+                delay(1500)
                 viewModel.updateWaring(false)
             }
 

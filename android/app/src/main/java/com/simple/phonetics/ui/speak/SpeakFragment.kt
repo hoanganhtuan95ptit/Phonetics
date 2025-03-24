@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
+import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
@@ -25,7 +26,6 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
-import com.simple.coreapp.utils.ext.listenerOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
@@ -34,6 +34,7 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
+import com.simple.phonetics.R
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutConfirmSpeakBinding
 import com.simple.phonetics.ui.ConfigViewModel
@@ -43,12 +44,16 @@ import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.simple.phonetics.utils.exts.playMedia
+import com.simple.phonetics.utils.exts.playVibrate
 import com.simple.state.isCompleted
+import com.simple.state.isFailed
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
@@ -234,6 +239,26 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
             binding.tvMessage.text = it.result
             binding.tvMessage.setVisible(it.isShow)
             binding.tvMessage.delegate.setBackground(it.background)
+        }
+
+        speakState.asFlow().launchCollect(viewLifecycleOwner) {
+
+            if (it.isFailed()) viewLifecycleOwner.lifecycleScope.launch {
+                playVibrate()
+            }
+        }
+
+        isCorrectEvent.asFlow().launchCollect(viewLifecycleOwner) {
+
+            val isCorrect = it.getContentIfNotHandled() ?: return@launchCollect
+
+            if (!isCorrect) viewLifecycleOwner.lifecycleScope.launch {
+                playVibrate()
+            }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                playMedia(if (isCorrect) R.raw.mp3_answer_correct else R.raw.mp3_answer_failed)
+            }
         }
 
         viewItemList.asFlow().launchCollect(viewLifecycleOwner) {
