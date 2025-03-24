@@ -11,20 +11,18 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
-import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
-import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
-import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
-import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
+import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
+import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
@@ -45,8 +43,8 @@ class SpeakViewModel(
     private val stopSpeakUseCase: StopSpeakUseCase,
     private val startSpeakUseCase: StartSpeakUseCase,
 
-    private val stopListenUseCase: StopListenUseCase,
-    private val startListenUseCase: StartListenUseCase,
+    private val stopReadingUseCase: StopReadingUseCase,
+    private val startReadingUseCase: StartReadingUseCase,
 
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
 ) : BaseViewModel() {
@@ -212,7 +210,7 @@ class SpeakViewModel(
 
     fun startListen(text: String? = null, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        val param = StartListenUseCase.Param(
+        val param = StartReadingUseCase.Param(
             text = text ?: this@SpeakViewModel.text.value.orEmpty(),
 
             languageCode = inputLanguage.value?.id ?: Language.EN,
@@ -224,7 +222,7 @@ class SpeakViewModel(
         listenState.postValue(ResultState.Start)
 
         var job: Job? = null
-        job = startListenUseCase.execute(param).launchCollect(viewModelScope) { state ->
+        job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
             listenState.postValue(state)
 
@@ -240,7 +238,7 @@ class SpeakViewModel(
 
     fun stopListen() = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        stopListenUseCase.execute()
+        stopReadingUseCase.execute()
     }
 
 

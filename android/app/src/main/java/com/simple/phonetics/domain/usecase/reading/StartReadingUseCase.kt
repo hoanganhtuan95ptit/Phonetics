@@ -1,16 +1,16 @@
-package com.simple.phonetics.domain.usecase.voice
+package com.simple.phonetics.domain.usecase.reading
 
-import com.simple.phonetics.domain.repositories.ListenRepository
+import com.simple.phonetics.domain.repositories.ReadingRepository
 import com.simple.state.ResultState
 import kotlinx.coroutines.flow.Flow
 
-class StartListenUseCase(
-    private val listenRepository: ListenRepository
+class StartReadingUseCase(
+    private val readingRepository: ReadingRepository
 ) {
 
     suspend fun execute(param: Param): Flow<ResultState<String>> {
 
-        return listenRepository.startSpeakText(
+        return readingRepository.startReading(
             text = param.text,
 
             languageCode = param.languageCode,

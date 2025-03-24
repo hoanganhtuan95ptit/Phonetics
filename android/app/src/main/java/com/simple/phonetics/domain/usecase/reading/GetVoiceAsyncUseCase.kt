@@ -1,13 +1,13 @@
-package com.simple.phonetics.domain.usecase.voice
+package com.simple.phonetics.domain.usecase.reading
 
 import com.simple.phonetics.domain.repositories.LanguageRepository
-import com.simple.phonetics.domain.repositories.ListenRepository
+import com.simple.phonetics.domain.repositories.ReadingRepository
 import com.simple.state.ResultState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class GetVoiceAsyncUseCase(
-    private val listenRepository: ListenRepository,
+    private val readingRepository: ReadingRepository,
     private val languageRepository: LanguageRepository
 ) {
 
@@ -15,7 +15,7 @@ class GetVoiceAsyncUseCase(
 
         return languageRepository.getLanguageInputAsync().map {
 
-            listenRepository.getVoiceListSupportAsync(it.id)
+            readingRepository.getSupportedVoices(it.id)
         }
     }
 }

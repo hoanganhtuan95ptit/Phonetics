@@ -17,9 +17,9 @@ import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
-import com.simple.phonetics.domain.usecase.voice.GetVoiceAsyncUseCase
-import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
-import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
+import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
+import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.GetWordStateAsyncUseCase
 import org.koin.dsl.module
@@ -69,11 +69,11 @@ val useCaseModule = module {
 
 
     single {
-        StopListenUseCase(get())
+        StopReadingUseCase(get())
     }
 
     single {
-        StartListenUseCase(get())
+        StartReadingUseCase(get())
     }
 
     single {

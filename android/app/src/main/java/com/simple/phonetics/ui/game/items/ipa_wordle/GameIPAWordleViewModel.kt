@@ -25,8 +25,8 @@ import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
-import com.simple.phonetics.domain.usecase.voice.StartListenUseCase
-import com.simple.phonetics.domain.usecase.voice.StopListenUseCase
+import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
+import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.game.items.GameItemViewModel
@@ -40,8 +40,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class GameIPAWordleViewModel(
-    private val stopListenUseCase: StopListenUseCase,
-    private val startListenUseCase: StartListenUseCase,
+    private val stopReadingUseCase: StopReadingUseCase,
+    private val startReadingUseCase: StartReadingUseCase,
     private val getPhoneticsRandomUseCase: GetPhoneticsRandomUseCase
 ) : GameItemViewModel() {
 
@@ -230,7 +230,7 @@ class GameIPAWordleViewModel(
 
     fun startListen(voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        val param = StartListenUseCase.Param(
+        val param = StartReadingUseCase.Param(
             text = quiz.value?.question?.text ?: return@launch,
 
             languageCode = inputLanguage.value?.id ?: Language.EN,
@@ -243,7 +243,7 @@ class GameIPAWordleViewModel(
 
         var job: Job? = null
 
-        job = startListenUseCase.execute(param).launchCollect(viewModelScope) { state ->
+        job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
             listenState.postValue(state)
 
@@ -259,6 +259,6 @@ class GameIPAWordleViewModel(
 
     fun stopListen() = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        stopListenUseCase.execute()
+        stopReadingUseCase.execute()
     }
 }

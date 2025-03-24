@@ -10,7 +10,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import com.simple.phonetics.EventName
 import com.simple.phonetics.EventName.GET_VOICE_RESPONSE
-import com.simple.phonetics.EventName.START_LISTEN_TEXT_RESPONSE
+import com.simple.phonetics.EventName.START_READING_TEXT_RESPONSE
 import com.simple.phonetics.Param
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
@@ -41,14 +41,14 @@ class ListenViewImpl : ListenView {
             getVoice(textToSpeech = textToSpeech, params = it)
         }
 
-        listenerEvent(activity.lifecycle, EventName.START_LISTEN_TEXT_REQUEST) {
+        listenerEvent(activity.lifecycle, EventName.START_READING_TEXT_REQUEST) {
 
             speakText(textToSpeech = textToSpeech, params = it)
         }
 
-        listenerEvent(activity.lifecycle, EventName.STOP_LISTEN_TEXT_REQUEST) {
+        listenerEvent(activity.lifecycle, EventName.STOP_READING_TEXT_REQUEST) {
 
-            sendEvent(START_LISTEN_TEXT_RESPONSE, ResultState.Failed(RuntimeException("stop speak")))
+            sendEvent(START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException("stop speak")))
             textToSpeech.stop()
         }
 
@@ -65,7 +65,7 @@ class ListenViewImpl : ListenView {
 
             private fun TextToSpeech.stopSpeak() {
 
-                sendEvent(START_LISTEN_TEXT_RESPONSE, ResultState.Success(""))
+                sendEvent(START_READING_TEXT_RESPONSE, ResultState.Success(""))
 
                 stop()
             }
@@ -105,7 +105,7 @@ class ListenViewImpl : ListenView {
 
         if (status == TextToSpeech.ERROR || params !is Map<*, *>) {
 
-            sendEvent(START_LISTEN_TEXT_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
+            sendEvent(START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
             return
         }
 
@@ -120,7 +120,7 @@ class ListenViewImpl : ListenView {
 
         if (voice == null) {
 
-            sendEvent(START_LISTEN_TEXT_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
+            sendEvent(START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
             return
         }
 
@@ -131,18 +131,18 @@ class ListenViewImpl : ListenView {
 
             override fun onStart(p0: String?) {
 
-                sendEvent(START_LISTEN_TEXT_RESPONSE, ResultState.Running(""))
+                sendEvent(START_READING_TEXT_RESPONSE, ResultState.Running(""))
             }
 
             override fun onDone(p0: String?) {
 
-                sendEvent(START_LISTEN_TEXT_RESPONSE, ResultState.Success(""))
+                sendEvent(START_READING_TEXT_RESPONSE, ResultState.Success(""))
             }
 
             @Deprecated("Deprecated in Java", ReplaceWith("viewModel.updateSpeakStatus(false)"))
             override fun onError(p0: String?) {
 
-                sendEvent(START_LISTEN_TEXT_RESPONSE, ResultState.Failed(RuntimeException(p0 ?: "")))
+                sendEvent(START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException(p0 ?: "")))
             }
         })
 
