@@ -22,7 +22,6 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.entities.State
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.language.adapters.LanguageLoadingViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
@@ -86,7 +85,7 @@ class LanguageViewModel(
         }
     }
 
-    val changeLanguageState: LiveData<ResultState<Map<String, State>>> = MediatorLiveData()
+    val changeLanguageState: LiveData<ResultState<Map<String, UpdateLanguageInputUseCase.State>>> = MediatorLiveData()
 
     val languageViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, languageSelected, languageListState, changeLanguageState) {
 
@@ -247,7 +246,7 @@ class LanguageViewModel(
         )
     )
 
-    private fun ResultState<Map<String, State>>.toViewItem() = arrayListOf<ViewItem>().apply {
+    private fun ResultState<Map<String, UpdateLanguageInputUseCase.State>>.toViewItem() = arrayListOf<ViewItem>().apply {
 
         val list = this@toViewItem.toSuccess()?.data?.values ?: this@toViewItem.toRunning()?.data?.values ?: return@apply
 
@@ -257,31 +256,31 @@ class LanguageViewModel(
         }
     }
 
-    private fun State.toViewItem() = arrayListOf<ViewItem>().apply {
+    private fun UpdateLanguageInputUseCase.State.toViewItem() = arrayListOf<ViewItem>().apply {
 
         val theme = theme.value ?: return@apply
         val translate = translate.value ?: return@apply
 
-        if (this@toViewItem is State.Start) LanguageStateViewItem(
-            data = State.Start.javaClass.simpleName,
+        if (this@toViewItem is UpdateLanguageInputUseCase.State.Start) LanguageStateViewItem(
+            data = UpdateLanguageInputUseCase.State.Start.javaClass.simpleName,
             name = translate["message_start_sync"].orEmpty()
         ).let {
 
             add(it)
         }
 
-        if (this@toViewItem is State.SyncPhonetics) this@toViewItem.toViewItem(theme = theme, translate = translate).let {
+        if (this@toViewItem is UpdateLanguageInputUseCase.State.SyncPhonetics) this@toViewItem.toViewItem(theme = theme, translate = translate).let {
 
             addAll(it)
         }
 
-        if (this@toViewItem is State.SyncTranslate) this@toViewItem.toViewItem(theme = theme, translate = translate).let {
+        if (this@toViewItem is UpdateLanguageInputUseCase.State.SyncTranslate) this@toViewItem.toViewItem(theme = theme, translate = translate).let {
 
             addAll(it)
         }
 
-        if (this@toViewItem is State.Completed) LanguageStateViewItem(
-            data = State.Completed.javaClass.simpleName,
+        if (this@toViewItem is UpdateLanguageInputUseCase.State.Completed) LanguageStateViewItem(
+            data = UpdateLanguageInputUseCase.State.Completed.javaClass.simpleName,
             name = translate["message_sync_completed"].orEmpty()
         ).let {
 
@@ -289,7 +288,7 @@ class LanguageViewModel(
         }
     }
 
-    private fun State.SyncPhonetics.toViewItem(theme: AppTheme, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
+    private fun UpdateLanguageInputUseCase.State.SyncPhonetics.toViewItem(theme: AppTheme, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
 
         val key = "ipa_" + code.lowercase()
 
@@ -318,17 +317,17 @@ class LanguageViewModel(
         add(viewItem)
     }
 
-    private fun State.SyncTranslate.toViewItem(theme: AppTheme, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
+    private fun UpdateLanguageInputUseCase.State.SyncTranslate.toViewItem(theme: AppTheme, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
 
         val percentWrap = (percent * 100).toInt()
 
         val viewItem = if (percentWrap < 100) LanguageStateViewItem(
-            data = name,
+            data = "SYNC_TRANSLATE",
             name = translate["message_start_sync_translate"].orEmpty()
                 .replace("\$percent", percentWrap.toString())
                 .with("${percentWrap}%", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
         ) else LanguageStateViewItem(
-            data = name,
+            data = "SYNC_TRANSLATE",
             name = translate["message_completed_sync_translate"].orEmpty()
         )
 
