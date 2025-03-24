@@ -10,6 +10,7 @@ import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.GetWordStateAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.utils.appInputLanguage
@@ -23,13 +24,12 @@ class MainViewModel(
     private val getWordStateAsyncUseCase: GetWordStateAsyncUseCase,
     private val getTranslateAsyncUseCase: GetTranslateAsyncUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
-    private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
+    private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase,
+    private val getLanguageSupportAsyncUseCase: GetLanguageSupportAsyncUseCase
 ) : BaseViewModel() {
 
     @VisibleForTesting
-    val wordSync: LiveData<ResultState<Int>> = mediatorLiveData {
-
-        postValue(ResultState.Start)
+    val wordAsync: LiveData<ResultState<Int>> = mediatorLiveData {
 
         getWordStateAsyncUseCase.execute().collect {
 
@@ -38,7 +38,16 @@ class MainViewModel(
     }
 
     @VisibleForTesting
-    val translate: LiveData<Map<String, String>> = mediatorLiveData {
+    val languageAsync: LiveData<ResultState<List<Language>>> = mediatorLiveData {
+
+        getLanguageSupportAsyncUseCase.execute(GetLanguageSupportAsyncUseCase.Param(sync = true)).collect {
+
+            postValue(it)
+        }
+    }
+
+    @VisibleForTesting
+    val translateAsync: LiveData<Map<String, String>> = mediatorLiveData {
 
         getTranslateAsyncUseCase.execute().collect {
 
@@ -69,8 +78,10 @@ class MainViewModel(
 
     init {
 
-        wordSync.asFlow().launchIn(viewModelScope)
-        translate.asFlow().launchIn(viewModelScope)
+        wordAsync.asFlow().launchIn(viewModelScope)
+        languageAsync.asFlow().launchIn(viewModelScope)
+        translateAsync.asFlow().launchIn(viewModelScope)
+
         inputLanguage.asFlow().launchIn(viewModelScope)
         outputLanguage.asFlow().launchIn(viewModelScope)
     }
