@@ -155,7 +155,7 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
                 )
             ) else {
 
-                activity?.supportFragmentManager?.popBackStackImmediate()
+                activity?.supportFragmentManager?.popBackStack()
             }
 
             val theme = theme.value ?: return@launchCollect
