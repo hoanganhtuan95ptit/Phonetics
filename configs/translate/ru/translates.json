@@ -73,7 +73,7 @@
   "message_start_sync": "Начало синхронизации...",
   "message_start_sync_phonetics": "Синхронизация фонетики $ipa_name $percent%",
   "message_start_sync_translate": "Синхронизация перевода $percent%",
-  "message_support_translate": "Перевод поддерживается",
+  "message_support_translate": "Поддерживается перевод",
   "message_sync_completed": "Синхронизация завершена",
   "message_translate_download": "Загрузка перевода...",
 
