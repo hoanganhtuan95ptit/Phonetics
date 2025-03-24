@@ -4,6 +4,7 @@ import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.entities.Language
+import com.simple.phonetics.entities.State
 import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
@@ -118,17 +119,6 @@ class UpdateLanguageInputUseCase(
 
 
         awaitClose()
-    }
-
-    sealed class State(val value: Int) {
-
-        data object Start : State(0)
-
-        data object Completed : State(Int.MAX_VALUE)
-
-        data class SyncTranslate(val name: String, val percent: Float) : State(2)
-
-        data class SyncPhonetics(val code: String, val name: String, val percent: Float) : State(1)
     }
 
     data class Param(
