@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 suspend fun playVibrate() = channelFlow {
 
     val context = PhoneticsApp.share
-    val duration = 350L
 
     val vibrator = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
         val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
@@ -24,21 +23,22 @@ suspend fun playVibrate() = channelFlow {
         context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     }
 
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-        val effect = VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE)
+    val pattern = longArrayOf(0, 300, 200, 300, 500) // Độ trễ, rung, dừng, rung, dừng
+
+    if (vibrator.hasVibrator()) if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        val effect = VibrationEffect.createWaveform(pattern, -1) // -1: không lặp lại
         vibrator.vibrate(effect)
     } else {
         @Suppress("DEPRECATION")
-        vibrator.vibrate(duration)
+        vibrator.vibrate(pattern, -1)
     }
 
     launch {
-        delay(100)
+        delay(360L)
         trySend(Unit)
     }
 
     awaitClose {
-
         vibrator.cancel()
     }
 }.first()
