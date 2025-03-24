@@ -13,13 +13,13 @@ import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
+import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
+import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
-import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
-import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
-import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.GetWordStateAsyncUseCase
 import org.koin.dsl.module

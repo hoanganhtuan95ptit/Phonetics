@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.home.view
 
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.image.setImage
@@ -9,7 +8,7 @@ import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
-import com.simple.phonetics.ui.home.HomeViewModel
+import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.sendDeeplink
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
@@ -22,18 +21,13 @@ class LanguageHomeViewImpl() : LanguageHomeView {
 
     override fun setupLanguage(fragment: HomeFragment) {
 
-        fragment.lockTransition(TAG_LANGUAGE)
-
-        val viewModel by fragment.viewModels<HomeViewModel>()
         val configViewModel by fragment.activityViewModel<ConfigViewModel>()
 
-        configViewModel.inputLanguage.observe(fragment.viewLifecycleOwner) {
+        configViewModel.inputLanguage.collectWithLockTransitionUntilData(fragment, "HOME_LANGUAGE") {
 
-            val binding = fragment.binding ?: return@observe
+            val binding = fragment.binding ?: return@collectWithLockTransitionUntilData
 
             binding.ivLanguage.setImage(it.image, CircleCrop())
-
-            fragment.unlockTransition(TAG_LANGUAGE)
         }
 
         val binding = fragment.binding ?: return
