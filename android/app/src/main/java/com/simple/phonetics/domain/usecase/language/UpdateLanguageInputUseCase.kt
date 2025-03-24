@@ -4,12 +4,14 @@ import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.entities.State
 import com.simple.state.ResultState
+import com.simple.state.isCompleted
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class UpdateLanguageInputUseCase(
@@ -22,95 +24,52 @@ class UpdateLanguageInputUseCase(
 
         val listState = linkedMapOf<String, State>()
 
-        listState["start"] = State.Start
+        listState["START"] = State.Start
         trySend(ResultState.Running(listState))
 
+        // đồng bộ IPA
+        val ipaState = phoneticRepository.syncPhonetic(language = param.language).filter {
 
-        param.language.listIpa.forEach { source ->
+            if (it is ResultState.Running) {
 
-            val name = source.name
-            val code = source.code
+                val source = it.data.first
+                val percent = it.data.second
 
-            listState[code] = State.SyncPhonetics(code = code, name = name, percent = 0f)
-            trySend(ResultState.Running(listState))
-
-
-            var count = 0
-
-            val data = kotlin.runCatching {
-
-                phoneticRepository.getSourcePhonetic(source)
-            }.getOrElse {
-
-                trySend(ResultState.Failed(it))
-                awaitClose()
-                return@channelFlow
-            }
-
-            val limit = 10 * 1000
-            val dataLength = data.length
-
-            while (count < dataLength) {
-
-                val start = count
-                val end = if (dataLength < count + limit) {
-                    dataLength
-                } else {
-                    count + limit
-                }
-
-                val dataSplit = data.substring(start, end)
-
-                count += dataSplit.length
-
-                val phoneticMap = phoneticRepository.toPhonetics(dataSplit, source.code)
-
-                val phoneticsOldMap = phoneticRepository.getPhonetics(phoneticMap.keys.toList()).associateBy {
-                    it.text
-                }
-
-                phoneticMap.values.map { phonetic ->
-
-                    val ipaOld = phoneticsOldMap[phonetic.text]?.ipa ?: phonetic.ipa
-
-                    phonetic.ipa.putAll(ipaOld)
-
-                    phonetic
-                }
-
-                phoneticRepository.insertOrUpdate(phoneticMap.values.toList())
-
-                listState[code] = State.SyncPhonetics(code = code, name = name, percent = count * 1f / dataLength)
+                listState[source.code] = State.SyncPhonetics(code = source.code, name = source.name, percent = percent)
                 trySend(ResultState.Running(listState))
             }
+
+            it.isCompleted()
+        }.first()
+
+        if (ipaState is ResultState.Failed) {
+
+            trySend(ipaState)
+            awaitClose()
+            return@channelFlow
         }
 
 
-        val job = launch {
+        // Đồng bộ translate
+        val translateState = syncTranslate(language = param.language).filter {
 
-            for (i in 0..90) {
+            if (it is ResultState.Running) {
 
-                listState["SYNC_TRANSLATE"] = State.SyncTranslate("SYNC_TRANSLATE", i / 100f)
+                listState["SYNC_TRANSLATE"] = it.data
                 trySend(ResultState.Running(listState))
-
-
-                delay(200)
             }
+
+            it.isCompleted()
+        }.first()
+
+        if (translateState is ResultState.Failed) {
+
+            trySend(translateState)
+            awaitClose()
+            return@channelFlow
         }
 
-        runCatching {
-
-            val languageOutput = languageRepository.getLanguageOutput()
-
-            appRepository.translate(param.language.id, languageOutput.id, "hello")
-        }
-
-        job.cancel()
-
-        listState["SYNC_TRANSLATE"] = State.SyncTranslate("SYNC_TRANSLATE", 100f)
-        trySend(ResultState.Running(listState))
-
-
+        // lưu lại ngôn ngữ tìm kiếm phiên âm
         languageRepository.updateLanguageInput(param.language)
 
 
@@ -121,7 +80,47 @@ class UpdateLanguageInputUseCase(
         awaitClose()
     }
 
+    private fun syncTranslate(language: Language) = channelFlow {
+
+        val job = launch {
+
+            for (i in 0..90) {
+
+                trySend(ResultState.Running(State.SyncTranslate(i / 100f)))
+
+                delay(200)
+            }
+        }
+
+        runCatching {
+
+            val languageOutput = languageRepository.getLanguageOutput()
+
+            appRepository.translate(language.id, languageOutput.id, "hello")
+        }
+
+        job.cancel()
+
+        trySend(ResultState.Success(State.SyncTranslate(100f)))
+
+        awaitClose {
+
+        }
+    }
+
+
     data class Param(
         val language: Language
     )
+
+    sealed class State(val value: Int = 0) {
+
+        data object Start : State()
+
+        data object Completed : State(Int.MAX_VALUE)
+
+        data class SyncTranslate(val percent: Float) : State(2)
+
+        data class SyncPhonetics(val code: String, val name: String, val percent: Float) : State(1)
+    }
 }

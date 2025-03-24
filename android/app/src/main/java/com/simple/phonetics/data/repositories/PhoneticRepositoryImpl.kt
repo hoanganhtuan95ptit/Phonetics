@@ -1,23 +1,70 @@
 package com.simple.phonetics.data.repositories
 
 import com.simple.phonetics.data.api.Api
+import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.data.dao.PhoneticDao
 import com.simple.phonetics.domain.repositories.PhoneticRepository
+import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
+import com.simple.state.ResultState
+import com.simple.state.isCompleted
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import java.util.Calendar
 
 class PhoneticRepositoryImpl(
     private val api: Api,
+    private val appCache: AppCache,
     private val phoneticDao: PhoneticDao
 ) : PhoneticRepository {
 
-    override suspend fun toPhonetics(dataSplit: String, code: String): Map<String, Phonetic> {
+    override suspend fun syncPhonetic(language: Language): Flow<ResultState<Pair<Language.IpaSource, Float>>> = channelFlow {
 
-        val textAndPhonetic = hashMapOf<String, Phonetic>()
+        language.listIpa.forEach { source ->
 
-        dataSplit.toPhonetics(textAndPhonetic, code)
+            trySend(ResultState.Running(source to 0f))
 
-        return textAndPhonetic
+            val state = syncPhonetic(source).filter {
+
+                if (it is ResultState.Running) {
+
+                    trySend(ResultState.Running(source to it.data))
+                }
+
+                it.isCompleted()
+            }.first()
+
+            if (state is ResultState.Success) {
+
+                trySend(ResultState.Running(source to 1f))
+            }
+
+            if (state is ResultState.Failed) {
+
+                trySend(state)
+                awaitClose()
+                return@channelFlow
+            }
+        }
+
+        trySend(ResultState.Success(Language.IpaSource() to 1f))
+
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+
+        appCache.setData("LANGUAGE_${language.id.uppercase()}_PHONETIC_UPDATE_DATE", calendar.timeInMillis)
+
+        awaitClose {
+
+        }
     }
 
     override suspend fun getSourcePhonetic(it: Language.IpaSource): String {
@@ -38,6 +85,72 @@ class PhoneticRepositoryImpl(
     override suspend fun insertOrUpdate(phonetics: List<Phonetic>) {
 
         phoneticDao.insertOrUpdateEntities(phonetics)
+    }
+
+
+    private fun syncPhonetic(source: Language.IpaSource): Flow<ResultState<Float>> = channelFlow {
+
+        val data = kotlin.runCatching {
+
+            getSourcePhonetic(source)
+        }.getOrElse {
+
+            trySend(ResultState.Failed(it))
+            awaitClose()
+            return@channelFlow
+        }
+
+        var count = 0
+        val limit = 10 * 1000
+        val dataLength = data.length
+
+        while (count < dataLength) {
+
+            val start = count
+            val end = if (dataLength < count + limit) {
+                dataLength
+            } else {
+                count + limit
+            }
+
+            val dataSplit = data.substring(start, end)
+
+            count += dataSplit.length
+
+            val phoneticMap = toPhonetics(dataSplit, source.code)
+
+            val phoneticsOldMap = getPhonetics(phoneticMap.keys.toList()).associateBy {
+                it.text
+            }
+
+            phoneticMap.values.map { phonetic ->
+
+                val ipaOld = phoneticsOldMap[phonetic.text]?.ipa ?: phonetic.ipa
+
+                phonetic.ipa.putAll(ipaOld)
+
+                phonetic
+            }
+
+            insertOrUpdate(phoneticMap.values.toList())
+
+            trySend(ResultState.Running(count * 1f / dataLength))
+        }
+
+        trySend(ResultState.Success(1f))
+
+        awaitClose {
+
+        }
+    }
+
+    private fun toPhonetics(dataSplit: String, code: String): Map<String, Phonetic> {
+
+        val textAndPhonetic = hashMapOf<String, Phonetic>()
+
+        dataSplit.toPhonetics(textAndPhonetic, code)
+
+        return textAndPhonetic
     }
 
     private fun String.toPhonetics(textAndPhonetic: HashMap<String, Phonetic>, ipaCode: String) = split("\n").mapNotNull { phonetics ->

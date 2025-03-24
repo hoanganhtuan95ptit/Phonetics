@@ -15,6 +15,7 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.awaitResumed
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
@@ -140,8 +141,9 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
         changeLanguageState.asFlow().launchCollect(viewLifecycleOwner) {
 
-            val theme = theme.value ?: return@launchCollect
             val binding = binding ?: return@launchCollect
+
+            awaitResumed()
 
             if (it is ResultState.Success) if (arguments?.containsKey(Param.ROOT_TRANSITION_NAME) != true) sendDeeplink(
                 deepLink = Deeplink.PHONETICS,
@@ -153,8 +155,10 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
                 )
             ) else {
 
-                activity?.supportFragmentManager?.popBackStack()
+                activity?.supportFragmentManager?.popBackStackImmediate()
             }
+
+            val theme = theme.value ?: return@launchCollect
 
             if (it is ResultState.Failed) sendToast(
                 extras = bundleOf(
