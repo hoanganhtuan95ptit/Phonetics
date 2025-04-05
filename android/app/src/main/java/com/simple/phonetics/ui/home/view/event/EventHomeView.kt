@@ -1,10 +1,10 @@
 package com.simple.phonetics.ui.home.view.event
 
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
+import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
@@ -62,8 +62,6 @@ class EventHomeViewImpl : EventHomeView {
 
             val result = it.asObjectOrNull<Int>()
 
-            Log.d("tuanha", "showEventAwait: ")
-
             if (result == 1) {
 
                 sendDeeplink(info.event.positiveDeepLink)
@@ -92,6 +90,8 @@ class EventHomeViewImpl : EventHomeView {
         )
 
         sendConfirm(deepLink = Deeplink.EVENT, extras = extras)
+
+        logAnalytics("event_show_${info.event.name.lowercase()}")
 
         awaitClose {
 
