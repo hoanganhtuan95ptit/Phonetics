@@ -117,7 +117,6 @@ class EventHomeViewModel(
     fun updateShowEvent() = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val event = eventState.value?.toSuccess()?.data ?: return@launch
-
         updateEventShowUseCase.execute(UpdateEventShowUseCase.Param(eventId = event.id))
     }
 

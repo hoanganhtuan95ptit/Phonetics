@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.home.view.event
 
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -60,6 +61,8 @@ class EventHomeViewImpl : EventHomeView {
         listenerEvent(keyRequest) {
 
             val result = it.asObjectOrNull<Int>()
+
+            Log.d("tuanha", "showEventAwait: ")
 
             if (result == 1) {
 
