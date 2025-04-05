@@ -10,7 +10,6 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.simple.adapter.MultiAdapter
-import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
@@ -88,8 +87,6 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
         val languageAdapter = LanguageAdapter { _, item ->
 
             viewModel.updateLanguageSelected(item.data)
-
-            logAnalytics("language_code_${item.data.id}")
         }
 
         adapter = MultiAdapter(languageAdapter, *ListPreviewAdapter()).apply {

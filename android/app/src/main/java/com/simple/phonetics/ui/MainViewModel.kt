@@ -5,7 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModels.BaseViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.simple.analytics.logAnalytics
+import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.mediatorLiveData
+import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.SyncDataUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
@@ -18,7 +21,9 @@ import com.simple.phonetics.utils.appInputLanguage
 import com.simple.phonetics.utils.appOutputLanguage
 import com.simple.phonetics.utils.appTranslate
 import com.simple.state.ResultState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val syncDataUseCase: SyncDataUseCase,
@@ -70,6 +75,7 @@ class MainViewModel(
         getLanguageInputAsyncUseCase.execute().collect {
 
             appInputLanguage.tryEmit(it)
+            logAnalytics("input_language_code_${it.id}")
         }
     }
 
@@ -78,6 +84,7 @@ class MainViewModel(
         getLanguageOutputAsyncUseCase.execute().collect {
 
             appOutputLanguage.tryEmit(it)
+            logAnalytics("output_language_code_${it.id}")
         }
     }
 
@@ -96,5 +103,10 @@ class MainViewModel(
 
         inputLanguage.asFlow().launchIn(viewModelScope)
         outputLanguage.asFlow().launchIn(viewModelScope)
+
+        viewModelScope.launch(handler + Dispatchers.IO) {
+
+            logAnalytics("version_name_${BuildConfig.VERSION_NAME.replace(".", "_")}")
+        }
     }
 }
