@@ -20,16 +20,16 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.flow.first
 import java.util.Locale
 
-interface ListenView {
+interface ReadView {
 
-    fun setupListen(activity: MainActivity)
+    fun setupRead(activity: MainActivity)
 }
 
-class ListenViewImpl : ListenView {
+class ReadViewImpl : ReadView {
 
     private val speakInitStatus = MediatorLiveData<Int>()
 
-    override fun setupListen(activity: MainActivity) {
+    override fun setupRead(activity: MainActivity) {
 
         val textToSpeech = TextToSpeech(activity) { status ->
 
