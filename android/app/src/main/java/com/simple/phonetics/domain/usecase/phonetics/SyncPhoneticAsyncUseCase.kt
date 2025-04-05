@@ -1,5 +1,6 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
+import com.simple.analytics.logAnalytics
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
@@ -47,6 +48,8 @@ class SyncPhoneticAsyncUseCase(
             awaitClose()
             return@channelFlow
         }
+
+        logAnalytics("re_sync_phonetic")
 
         // đồng bộ IPA
         val ipaState = phoneticRepository.syncPhonetic(language = inputLanguage, limit = 1000).filter {

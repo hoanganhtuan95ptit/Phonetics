@@ -13,15 +13,15 @@ import org.koin.dsl.module
 @JvmField
 val taskModule = module {
 
-    single { WordSyncTask(get(), get(), get()) } bind SyncTask::class
+    single { WordSyncTask(get(), get(), get(), get()) } bind SyncTask::class
 
-    single { IpaSyncTask(get()) } bind SyncTask::class
+    single { IpaSyncTask(get(), get()) } bind SyncTask::class
 
-    single { EventSyncTask(get()) } bind SyncTask::class
+    single { EventSyncTask(get(), get(), get()) } bind SyncTask::class
 
     single { ConfigSyncTask(get()) } bind SyncTask::class
 
     single { LanguageSyncTask(get()) } bind SyncTask::class
 
-    single { TranslateSyncTask(get()) } bind SyncTask::class
+    single { TranslateSyncTask(get(), get()) } bind SyncTask::class
 }

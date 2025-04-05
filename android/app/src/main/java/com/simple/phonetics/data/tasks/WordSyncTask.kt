@@ -1,18 +1,23 @@
 package com.simple.phonetics.data.tasks
 
 import com.simple.phonetics.domain.repositories.HistoryRepository
+import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
 import com.simple.phonetics.domain.tasks.SyncTask
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getWordDelimiters
 import com.simple.phonetics.utils.exts.getWords
+import kotlinx.coroutines.flow.first
 
 class WordSyncTask(
     private val wordRepository: WordRepository,
     private val historyRepository: HistoryRepository,
     private val phoneticRepository: PhoneticRepository,
+    private val languageRepository: LanguageRepository
 ) : SyncTask {
+
+    private var languageCodeOld: String? = null
 
     override fun priority(): Int {
         return Int.MAX_VALUE - 2
@@ -20,10 +25,14 @@ class WordSyncTask(
 
     override suspend fun executeTask(param: SyncTask.Param) {
 
-        val languageCode = param.inputLanguage.id
+        val languageCode = languageRepository.getLanguageInputAsync().first().id
+
+        if (languageCodeOld == languageCode) return
 
         syncPopular(languageCode = languageCode)
         syncHistory(languageCode = languageCode)
+
+        languageCodeOld = languageCode
     }
 
     /**
