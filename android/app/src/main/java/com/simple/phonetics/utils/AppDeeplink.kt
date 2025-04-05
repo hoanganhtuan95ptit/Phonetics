@@ -74,15 +74,22 @@ fun sendToast(extras: Bundle? = null) {
     sendDeeplink(deepLink = Deeplink.TOAST, extras = extras)
 }
 
-fun sendConfirm(data: Map<String, Any>) {
-
-    sendConfirm(extras = bundleOf(*data.toList().toTypedArray()))
-}
 
 fun sendConfirm(extras: Bundle? = null) {
 
-    sendDeeplink(deepLink = Deeplink.CONFIRM, extras = extras)
+    sendConfirm(deepLink = Deeplink.CONFIRM, extras = extras)
 }
+
+fun sendConfirm(data: Map<String, Any>) {
+
+    sendConfirm(deepLink = Deeplink.CONFIRM, extras = bundleOf(*data.toList().toTypedArray()))
+}
+
+fun sendConfirm(deepLink: String, extras: Bundle? = null) = CoroutineScope(Dispatchers.Main.immediate).launch {
+
+    confirmDeeplink.emit(deepLink to (extras to emptyMap()))
+}
+
 
 fun sendDeeplink(deepLink: String, data: Map<String, Any>, sharedElement: Map<String, View>) {
 

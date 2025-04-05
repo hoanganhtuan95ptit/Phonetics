@@ -2,7 +2,10 @@ package com.simple.phonetics.di
 
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
+import com.simple.phonetics.domain.usecase.SyncDataUseCase
 import com.simple.phonetics.domain.usecase.TranslateUseCase
+import com.simple.phonetics.domain.usecase.event.GetCurrentEventAsyncUseCase
+import com.simple.phonetics.domain.usecase.event.UpdateEventShowUseCase
 import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
@@ -26,6 +29,10 @@ import org.koin.dsl.module
 
 @JvmField
 val useCaseModule = module {
+
+    single {
+        SyncDataUseCase(get(), get())
+    }
 
     single {
         TranslateUseCase(get())
@@ -118,5 +125,14 @@ val useCaseModule = module {
 
     single {
         GetWordStateAsyncUseCase(get(), get(), get(), get())
+    }
+
+
+    single {
+        UpdateEventShowUseCase(get())
+    }
+
+    single {
+        GetCurrentEventAsyncUseCase(get())
     }
 }

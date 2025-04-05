@@ -11,11 +11,12 @@ import com.simple.phonetics.ui.game.items.ipa_puzzle.GameIPAPuzzleViewModel
 import com.simple.phonetics.ui.game.items.ipa_wordle.GameIPAWordleViewModel
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.view.detect.DetectHomeViewModel
+import com.simple.phonetics.ui.home.view.event.EventHomeViewModel
 import com.simple.phonetics.ui.home.view.game.GameHomeViewModel
 import com.simple.phonetics.ui.home.view.history.HistoryHomeViewModel
 import com.simple.phonetics.ui.home.view.ipa.IpaHomeViewModel
 import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewModel
-import com.simple.phonetics.ui.home.view.review.AppReviewHomeViewModel
+import com.simple.phonetics.ui.home.view.review.ReviewHomeViewModel
 import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
 import com.simple.phonetics.ui.ipa.list.IpaListViewModel
 import com.simple.phonetics.ui.language.LanguageViewModel
@@ -28,7 +29,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
 
     viewModel {
-        MainViewModel(get(), get(), get(), get(), get(), get())
+        MainViewModel(get(), get(), get(), get(), get(), get(), get())
     }
 
     viewModel {
@@ -36,7 +37,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        AppReviewHomeViewModel(get())
+        ReviewHomeViewModel(get())
     }
 
     viewModel {
@@ -66,6 +67,10 @@ val viewModelModule = module {
         IpaDetailViewModel(get(), get(), get(), get(), get())
     }
 
+
+    viewModel {
+        EventHomeViewModel(get(), get(), get())
+    }
 
     viewModel {
         IpaHomeViewModel(get())

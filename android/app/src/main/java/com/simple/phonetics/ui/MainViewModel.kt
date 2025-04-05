@@ -7,6 +7,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
+import com.simple.phonetics.domain.usecase.SyncDataUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
@@ -20,6 +21,7 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.flow.launchIn
 
 class MainViewModel(
+    private val syncDataUseCase: SyncDataUseCase,
     private val getLanguageInputUseCase: GetLanguageInputUseCase,
     private val getWordStateAsyncUseCase: GetWordStateAsyncUseCase,
     private val getTranslateAsyncUseCase: GetTranslateAsyncUseCase,
@@ -27,6 +29,14 @@ class MainViewModel(
     private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase,
     private val getLanguageSupportAsyncUseCase: GetLanguageSupportAsyncUseCase
 ) : BaseViewModel() {
+
+    @VisibleForTesting
+    val sync: LiveData<ResultState<Unit>> = mediatorLiveData {
+
+        syncDataUseCase.execute().collect {
+
+        }
+    }
 
     @VisibleForTesting
     val wordAsync: LiveData<ResultState<Int>> = mediatorLiveData {
@@ -77,6 +87,8 @@ class MainViewModel(
     }
 
     init {
+
+        sync.asFlow().launchIn(viewModelScope)
 
         wordAsync.asFlow().launchIn(viewModelScope)
         languageAsync.asFlow().launchIn(viewModelScope)

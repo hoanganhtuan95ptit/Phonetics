@@ -1,10 +1,16 @@
 package com.simple.phonetics.data.repositories
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.DEFAULT_TRANSLATE
 import com.simple.phonetics.data.api.Api
+import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.data.dao.KeyTranslateDao
 import com.simple.phonetics.data.dao.translate.TranslateDao
 import com.simple.phonetics.domain.repositories.AppRepository
+import com.simple.phonetics.entities.Event
 import com.simple.phonetics.entities.KeyTranslate
 import com.simple.state.ResultState
 import com.simple.task.executeSyncByPriority
@@ -16,10 +22,13 @@ import kotlinx.coroutines.flow.map
 
 class AppRepositoryImpl(
     private val api: Api,
+    private val cache: AppCache,
     private val translateDao: TranslateDao,
     private val keyTranslateDao: KeyTranslateDao,
     private val listTranslateTask: List<TranslateTask>
 ) : AppRepository {
+
+    private val events: LiveData<List<Event>> = MutableLiveData()
 
     override suspend fun getKeyTranslate(langCode: String): List<KeyTranslate> {
 
@@ -80,5 +89,25 @@ class AppRepositoryImpl(
         val translateState = listTranslateTask.executeSyncByPriority(TranslateTask.Param(input = input, outputCode = languageCodeOutput))
 
         return translateState
+    }
+
+    override fun getEventIdShow(): String? {
+        return cache.getData("EVENT_ID_SHOW", "")
+    }
+
+    override fun updateEventIdShow(id: String) {
+        cache.setData("EVENT_ID_SHOW", id)
+    }
+
+    override suspend fun syncEvents(languageCode: String): List<Event> {
+        return api.syncEvent(languageCode = languageCode)
+    }
+
+    override suspend fun getEventsAsync(): Flow<List<Event>> {
+        return events.asFlow()
+    }
+
+    override suspend fun updateEvents(list: List<Event>) {
+        events.postValue(list)
     }
 }

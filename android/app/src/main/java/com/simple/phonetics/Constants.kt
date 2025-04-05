@@ -25,6 +25,7 @@ object Deeplink {
 
     const val TOAST = "app://toast"
     const val SPEAK = "app://speak"
+    const val EVENT = "app://event"
     const val CONFIG = "app://config"
     const val CONFIRM = "app://confirm"
     const val LANGUAGE = "app://language"

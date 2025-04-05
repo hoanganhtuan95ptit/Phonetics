@@ -1,7 +1,5 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
-import android.util.Log
-import com.simple.core.utils.extentions.toJson
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
@@ -42,10 +40,7 @@ class GetPhoneticsRandomUseCase(
             phoneticCode = param.phoneticsCode
         )
 
-        return phoneticList.subList(0, min(phoneticList.size, param.limit)).apply {
-
-            Log.d("tuanha", "execute: ${toJson()}")
-        }
+        return phoneticList.subList(0, min(phoneticList.size, param.limit))
     }
 
     data class Param(
