@@ -1,12 +1,19 @@
 package com.simple.phonetics.data.tasks
 
 import com.simple.phonetics.domain.repositories.AppRepository
+import com.simple.phonetics.domain.repositories.HistoryRepository
+import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.tasks.SyncTask
 import com.simple.phonetics.entities.Event
+import kotlinx.coroutines.flow.first
 
 class EventSyncTask(
     private val appRepository: AppRepository,
+    private val historyRepository: HistoryRepository,
+    private val languageRepository: LanguageRepository
 ) : SyncTask {
+
+    private var languageCodeOld: String? = null
 
     override fun priority(): Int {
         return Int.MAX_VALUE - 1
@@ -14,10 +21,18 @@ class EventSyncTask(
 
     override suspend fun executeTask(param: SyncTask.Param) {
 
-        val languageCode = param.outputLanguage.id
+        // nếu không có lịch sử thì không cần đồng bộ event nữa
+        if (historyRepository.get(limit = 1).isEmpty()) {
+            return
+        }
+
+        val languageCode = languageRepository.getLanguageOutputAsync().first().id
+
+        if (languageCodeOld == languageCode) return
 
         val events: List<Event> = appRepository.syncEvents(languageCode = languageCode)
-
         appRepository.updateEvents(events)
+
+        languageCodeOld = languageCode
     }
 }
