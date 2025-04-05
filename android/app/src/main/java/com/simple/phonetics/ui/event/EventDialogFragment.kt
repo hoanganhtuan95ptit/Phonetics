@@ -3,10 +3,8 @@ package com.simple.phonetics.ui.event
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.setFragmentResult
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.Param
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewBindingSheetFragment
@@ -23,6 +21,7 @@ import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.databinding.DialogEventBinding
 import com.simple.phonetics.utils.DeeplinkHandler
+import com.simple.phonetics.utils.sendEvent
 
 class EventDialogFragment : BaseViewBindingSheetFragment<DialogEventBinding>() {
 
@@ -87,7 +86,7 @@ class EventDialogFragment : BaseViewBindingSheetFragment<DialogEventBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        setFragmentResult(arguments?.getString(Param.KEY_REQUEST).orEmpty(), bundleOf(Param.RESULT_CODE to result))
+        sendEvent(arguments?.getString(Param.KEY_REQUEST).orEmpty(), result)
     }
 }
 
