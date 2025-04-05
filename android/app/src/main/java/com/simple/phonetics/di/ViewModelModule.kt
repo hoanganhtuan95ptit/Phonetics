@@ -16,6 +16,7 @@ import com.simple.phonetics.ui.home.view.game.GameHomeViewModel
 import com.simple.phonetics.ui.home.view.history.HistoryHomeViewModel
 import com.simple.phonetics.ui.home.view.ipa.IpaHomeViewModel
 import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewModel
+import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeViewModel
 import com.simple.phonetics.ui.home.view.review.ReviewHomeViewModel
 import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
 import com.simple.phonetics.ui.ipa.list.IpaListViewModel
@@ -86,6 +87,10 @@ val viewModelModule = module {
 
     viewModel {
         DetectHomeViewModel(get())
+    }
+
+    viewModel {
+        PhoneticHomeViewModel(get())
     }
 
     viewModel {

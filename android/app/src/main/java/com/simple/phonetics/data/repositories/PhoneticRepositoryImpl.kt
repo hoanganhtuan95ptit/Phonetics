@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
-import java.util.Calendar
 
 class PhoneticRepositoryImpl(
     private val api: Api,
@@ -21,13 +20,13 @@ class PhoneticRepositoryImpl(
     private val phoneticDao: PhoneticDao
 ) : PhoneticRepository {
 
-    override suspend fun syncPhonetic(language: Language): Flow<ResultState<Pair<Language.IpaSource, Float>>> = channelFlow {
+    override suspend fun syncPhonetic(language: Language, limit: Int): Flow<ResultState<Pair<Language.IpaSource, Float>>> = channelFlow {
 
         language.listIpa.forEach { source ->
 
             trySend(ResultState.Running(source to 0f))
 
-            val state = syncPhonetic(source).filter {
+            val state = syncPhonetic(source = source, limit = limit).filter {
 
                 if (it is ResultState.Running) {
 
@@ -52,18 +51,16 @@ class PhoneticRepositoryImpl(
 
         trySend(ResultState.Success(Language.IpaSource() to 1f))
 
-        val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-
-        appCache.setData("LANGUAGE_${language.id.uppercase()}_PHONETIC_UPDATE_DATE", calendar.timeInMillis)
+        appCache.setData("LANGUAGE_${language.id.uppercase()}_PHONETIC_UPDATE_DATE", System.currentTimeMillis())
 
         awaitClose {
 
         }
+    }
+
+    override suspend fun getLastTimeSyncPhonetic(language: Language): Long {
+
+        return appCache.getData("LANGUAGE_${language.id.uppercase()}_PHONETIC_UPDATE_DATE", 0L)
     }
 
     override suspend fun getSourcePhonetic(it: Language.IpaSource): String {
@@ -87,7 +84,7 @@ class PhoneticRepositoryImpl(
     }
 
 
-    private fun syncPhonetic(source: Language.IpaSource): Flow<ResultState<Float>> = channelFlow {
+    private fun syncPhonetic(limit: Int = 10 * 1000, source: Language.IpaSource): Flow<ResultState<Float>> = channelFlow {
 
         val data = kotlin.runCatching {
 
@@ -100,7 +97,6 @@ class PhoneticRepositoryImpl(
         }
 
         var count = 0
-        val limit = 10 * 1000
         val dataLength = data.length
 
         while (count < dataLength) {

@@ -49,6 +49,15 @@ class SyncDataUseCase(
     private suspend fun sync(languageInput: Language, languageOutput: Language) {
 
         syncEvent(languageOutputCode = languageOutput.id)
+
+        syncConfig()
+    }
+
+    private suspend fun syncConfig() = runCatching {
+
+        val events: Map<String, String> = appRepository.syncConfigs()
+
+        appRepository.updateConfigs(events)
     }
 
     private suspend fun syncEvent(languageOutputCode: String) = runCatching {

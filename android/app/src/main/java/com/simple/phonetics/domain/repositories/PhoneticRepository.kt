@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface PhoneticRepository {
 
-    suspend fun syncPhonetic(language: Language): Flow<ResultState<Pair<Language.IpaSource, Float>>>
+    suspend fun syncPhonetic(language: Language, limit: Int = 10 * 1000): Flow<ResultState<Pair<Language.IpaSource, Float>>>
+
+    suspend fun getLastTimeSyncPhonetic(language: Language): Long
 
     suspend fun getPhonetics(phonetics: List<String>): List<Phonetic>
 
