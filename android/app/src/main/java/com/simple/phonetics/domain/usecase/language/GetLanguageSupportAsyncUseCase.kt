@@ -7,8 +7,6 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 
 class GetLanguageSupportAsyncUseCase(
     private val languageRepository: LanguageRepository
@@ -19,13 +17,6 @@ class GetLanguageSupportAsyncUseCase(
         languageRepository.getLanguageSupportedOrDefaultAsync().launchCollect(this) {
 
             trySend(ResultState.Success(it))
-        }
-
-        if (param.sync) languageRepository.getLanguageOutputAsync().launchCollect(this) {
-
-            runCatching {
-                languageRepository.getLanguageSupport(it.id)
-            }
         }
 
         awaitClose {

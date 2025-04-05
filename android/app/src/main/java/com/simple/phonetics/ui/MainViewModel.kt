@@ -14,8 +14,6 @@ import com.simple.phonetics.domain.usecase.SyncDataUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
-import com.simple.phonetics.domain.usecase.word.GetWordStateAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.utils.appInputLanguage
 import com.simple.phonetics.utils.appOutputLanguage
@@ -28,11 +26,9 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val syncDataUseCase: SyncDataUseCase,
     private val getLanguageInputUseCase: GetLanguageInputUseCase,
-    private val getWordStateAsyncUseCase: GetWordStateAsyncUseCase,
     private val getTranslateAsyncUseCase: GetTranslateAsyncUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
-    private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase,
-    private val getLanguageSupportAsyncUseCase: GetLanguageSupportAsyncUseCase
+    private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase
 ) : BaseViewModel() {
 
     @VisibleForTesting
@@ -40,24 +36,6 @@ class MainViewModel(
 
         syncDataUseCase.execute().collect {
 
-        }
-    }
-
-    @VisibleForTesting
-    val wordAsync: LiveData<ResultState<Int>> = mediatorLiveData {
-
-        getWordStateAsyncUseCase.execute().collect {
-
-            postValue(it)
-        }
-    }
-
-    @VisibleForTesting
-    val languageAsync: LiveData<ResultState<List<Language>>> = mediatorLiveData {
-
-        getLanguageSupportAsyncUseCase.execute(GetLanguageSupportAsyncUseCase.Param(sync = true)).collect {
-
-            postValue(it)
         }
     }
 
@@ -97,8 +75,6 @@ class MainViewModel(
 
         sync.asFlow().launchIn(viewModelScope)
 
-        wordAsync.asFlow().launchIn(viewModelScope)
-        languageAsync.asFlow().launchIn(viewModelScope)
         translateAsync.asFlow().launchIn(viewModelScope)
 
         inputLanguage.asFlow().launchIn(viewModelScope)
