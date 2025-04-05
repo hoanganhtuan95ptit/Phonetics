@@ -33,6 +33,13 @@ interface AppRepository {
     suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>>
 
 
+    suspend fun syncConfigs(): Map<String, String>
+
+    suspend fun getConfigsAsync(): Flow<Map<String, String>>
+
+    suspend fun updateConfigs(map: Map<String, String>)
+
+
     fun getEventIdShow(): String?
 
     fun updateEventIdShow(id: String)

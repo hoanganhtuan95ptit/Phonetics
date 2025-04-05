@@ -16,6 +16,7 @@ import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
+import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
@@ -127,6 +128,9 @@ val useCaseModule = module {
         GetWordStateAsyncUseCase(get(), get(), get(), get())
     }
 
+    single {
+        SyncPhoneticAsyncUseCase(get(), get(), get())
+    }
 
     single {
         UpdateEventShowUseCase(get())

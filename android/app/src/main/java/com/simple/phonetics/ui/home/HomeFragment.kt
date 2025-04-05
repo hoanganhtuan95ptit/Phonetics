@@ -57,6 +57,8 @@ import com.simple.phonetics.ui.home.view.ipa.IpaHomeView
 import com.simple.phonetics.ui.home.view.ipa.IpaHomeViewImpl
 import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeView
 import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewImpl
+import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeView
+import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeViewImpl
 import com.simple.phonetics.ui.home.view.review.ReviewHomeView
 import com.simple.phonetics.ui.home.view.review.ReviewHomeViewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
@@ -83,6 +85,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     ReviewHomeView by ReviewHomeViewImpl(),
     DetectHomeView by DetectHomeViewImpl(),
     HistoryHomeView by HistoryHomeViewImpl(),
+    PhoneticHomeView by PhoneticHomeViewImpl(),
     LanguageHomeView by LanguageHomeViewImpl(),
     MicrophoneHomeView by MicrophoneHomeViewImpl() {
 
@@ -125,6 +128,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         setupDetect(this)
         setupHistory(this)
         setupHistory(this)
+        setupPhonetic(this)
         setupLanguage(this)
         setupMicrophone(this)
 

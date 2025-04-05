@@ -3,6 +3,7 @@ package com.simple.phonetics.data.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
+import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.DEFAULT_TRANSLATE
 import com.simple.phonetics.data.api.Api
@@ -29,6 +30,8 @@ class AppRepositoryImpl(
 ) : AppRepository {
 
     private val events: LiveData<List<Event>> = MutableLiveData()
+
+    private val configs: LiveData<Map<String, String>> = MutableLiveData()
 
     override suspend fun getKeyTranslate(langCode: String): List<KeyTranslate> {
 
@@ -90,6 +93,20 @@ class AppRepositoryImpl(
 
         return translateState
     }
+
+
+    override suspend fun syncConfigs(): Map<String, String> {
+        return api.syncConfig()
+    }
+
+    override suspend fun getConfigsAsync(): Flow<Map<String, String>> {
+        return configs.asFlow()
+    }
+
+    override suspend fun updateConfigs(map: Map<String, String>) {
+        configs.postDifferentValue(map)
+    }
+
 
     override fun getEventIdShow(): String? {
         return cache.getData("EVENT_ID_SHOW", "")
