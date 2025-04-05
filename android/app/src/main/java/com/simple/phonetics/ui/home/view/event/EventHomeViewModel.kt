@@ -70,18 +70,22 @@ class EventHomeViewModel(
 
             image = event.image,
 
-            title = translate[event.title].orEmpty(),
-            message = translate[event.message].orEmpty(),
+            title = translate[event.title].orEmpty()
+                .with(ForegroundColorSpan(theme.colorOnSurface)),
+            message = translate[event.message].orEmpty()
+                .with(ForegroundColorSpan(theme.colorOnSurfaceVariant)),
 
             positive = ButtonInfo(
-                text = translate[event.positive].orEmpty().with(ForegroundColorSpan(theme.colorOnPrimary)),
+                text = translate[event.positive].orEmpty()
+                    .with(ForegroundColorSpan(theme.colorOnPrimary)),
                 background = Background(
                     backgroundColor = theme.colorPrimary,
                     cornerRadius = DP.DP_16
                 )
             ),
             negative = if (event.negative.isNotBlank()) ButtonInfo(
-                text = translate[event.negative].orEmpty().with(ForegroundColorSpan(theme.colorOnSurfaceVariant)),
+                text = translate[event.negative].orEmpty()
+                    .with(ForegroundColorSpan(theme.colorOnSurfaceVariant)),
                 background = Background(
                     backgroundColor = theme.colorBackground,
                     strokeColor = theme.colorOnSurfaceVariant,
