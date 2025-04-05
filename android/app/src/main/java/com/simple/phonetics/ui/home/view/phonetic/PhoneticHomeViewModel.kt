@@ -28,10 +28,10 @@ class PhoneticHomeViewModel(
     @VisibleForTesting
     val phoneticState: LiveData<ResultState<Map<String, SyncPhoneticAsyncUseCase.State>>> = mediatorLiveData {
 
-        syncPhoneticAsyncUseCase.execute().collect {
+//        syncPhoneticAsyncUseCase.execute().collect {
 
 //            postValue(it)
-        }
+//        }
     }
 
     val pairViewList: LiveData<List<Pair<String, CharSequence>>> = combineSources(theme, translate, phoneticState) {
