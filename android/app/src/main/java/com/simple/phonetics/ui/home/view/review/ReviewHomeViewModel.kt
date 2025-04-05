@@ -21,49 +21,41 @@ import kotlinx.coroutines.flow.firstOrNull
 import java.util.Calendar
 import kotlin.math.absoluteValue
 
-class AppReviewHomeViewModel(
+class ReviewHomeViewModel(
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
 ) : BaseViewModel() {
 
     @VisibleForTesting
+    val rate: LiveData<Rate> = MediatorLiveData()
+
+    @VisibleForTesting
+    val show: LiveData<Boolean> = MediatorLiveData()
+
     val historyList: LiveData<List<Sentence>> = mediatorLiveData {
 
         postDifferentValue(getPhoneticsHistoryAsyncUseCase.execute(null).firstOrNull().orEmpty())
     }
 
     @VisibleForTesting
-    val rate: LiveData<Rate> = MediatorLiveData()
-
-
-    val rateEnable: LiveData<Boolean> = combineSources(historyList) {
-
-        postDifferentValue(historyList.value.orEmpty().isNotEmpty())
-    }
-
-    @VisibleForTesting
-    val rateInfo: LiveData<RateInfo> = combineSources(theme, translate, rate, rateEnable) {
+    val rateInfo: LiveData<RateInfo> = combineSources(theme, translate, rate, show, historyList) {
 
         val theme = theme.value ?: return@combineSources
         val translate = translate.value ?: return@combineSources
 
         val rate = rate.value ?: return@combineSources
-        val rateEnable = rateEnable.value ?: return@combineSources
+        val show = show.value ?: return@combineSources
+        val historyList = historyList.value ?: return@combineSources
 
-        if (!rateEnable) {
-
-            postDifferentValue(RateInfo(show = false))
-            return@combineSources
-        }
+        val isValidate = rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3
 
         // nếu người dùng đã xác nhận mở rate
-        if (rate.status == Rate.Status.OPEN_RATE.value) {
+        if (show == false || historyList.isEmpty() || rate.status == Rate.Status.OPEN_RATE.value || !isValidate) {
 
             postDifferentValue(RateInfo(show = false))
             return@combineSources
         }
 
-
-        if (rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3) RateInfo(
+        RateInfo(
             show = true,
             anim = R.raw.anim_rate,
             title = translate["rate_title"].orEmpty(),
@@ -93,11 +85,13 @@ class AppReviewHomeViewModel(
     val rateInfoEvent: LiveData<Event<RateInfo>> = rateInfo.toEvent()
 
 
-    fun updateRate(rate: Rate?) {
-
-        this.rate.postDifferentValue(rate ?: Rate())
+    fun show() {
+        show.postDifferentValue(true)
     }
 
+    fun updateRate(rate: Rate?) {
+        this.rate.postDifferentValue(rate ?: Rate())
+    }
 
     data class Rate(
         val date: Int = 0,

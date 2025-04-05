@@ -47,6 +47,8 @@ import com.simple.phonetics.ui.home.view.PasteHomeView
 import com.simple.phonetics.ui.home.view.PasteHomeViewImpl
 import com.simple.phonetics.ui.home.view.detect.DetectHomeView
 import com.simple.phonetics.ui.home.view.detect.DetectHomeViewImpl
+import com.simple.phonetics.ui.home.view.event.EventHomeView
+import com.simple.phonetics.ui.home.view.event.EventHomeViewImpl
 import com.simple.phonetics.ui.home.view.game.GameHomeView
 import com.simple.phonetics.ui.home.view.game.GameHomeViewImpl
 import com.simple.phonetics.ui.home.view.history.HistoryHomeView
@@ -55,8 +57,8 @@ import com.simple.phonetics.ui.home.view.ipa.IpaHomeView
 import com.simple.phonetics.ui.home.view.ipa.IpaHomeViewImpl
 import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeView
 import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewImpl
-import com.simple.phonetics.ui.home.view.review.AppReviewHomeView
-import com.simple.phonetics.ui.home.view.review.AppReviewHomeViewImpl
+import com.simple.phonetics.ui.home.view.review.ReviewHomeView
+import com.simple.phonetics.ui.home.view.review.ReviewHomeViewImpl
 import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
@@ -77,10 +79,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     IpaHomeView by IpaHomeViewImpl(),
     GameHomeView by GameHomeViewImpl(),
     PasteHomeView by PasteHomeViewImpl(),
+    EventHomeView by EventHomeViewImpl(),
+    ReviewHomeView by ReviewHomeViewImpl(),
     DetectHomeView by DetectHomeViewImpl(),
     HistoryHomeView by HistoryHomeViewImpl(),
     LanguageHomeView by LanguageHomeViewImpl(),
-    AppReviewHomeView by AppReviewHomeViewImpl(),
     MicrophoneHomeView by MicrophoneHomeViewImpl() {
 
     private val configViewModel: ConfigViewModel by lazy {
@@ -117,9 +120,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         setupIpa(this)
         setupGame(this)
         setupPaste(this)
+        setupEvent(this)
+        setupReview(this)
         setupDetect(this)
         setupHistory(this)
-        setupAppView(this)
         setupHistory(this)
         setupLanguage(this)
         setupMicrophone(this)
@@ -352,6 +356,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
+
+            showEvent()
+            showReview()
         }
     }
 

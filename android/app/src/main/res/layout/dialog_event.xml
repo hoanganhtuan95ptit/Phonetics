@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.simple.coreapp.ui.view.round.RoundLinearLayout
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="156dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="?attr/textHeadline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            tools:text="Hello" />
+
+        <TextView
+            android:id="@+id/tv_message"
+            style="?attr/textBody2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:paddingBottom="36dp"
+            tools:text="This is a message" />
+
+        <com.simple.coreapp.ui.view.round.RoundTextView
+            android:id="@+id/tv_positive"
+            style="?attr/textHeadline6"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            tools:text="OK" />
+
+        <com.simple.coreapp.ui.view.round.RoundTextView
+            android:id="@+id/tv_negative"
+            style="?attr/textHeadline6"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            tools:text="Cancel" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+    </com.simple.coreapp.ui.view.round.RoundLinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.simple.coreapp.ui.view.round.RoundView
+            android:id="@+id/anchor"
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="16dp" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/iv_logo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
+    </LinearLayout>
+
+</FrameLayout>

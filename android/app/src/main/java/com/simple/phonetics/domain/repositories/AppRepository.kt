@@ -1,5 +1,6 @@
 package com.simple.phonetics.domain.repositories
 
+import com.simple.phonetics.entities.Event
 import com.simple.phonetics.entities.KeyTranslate
 import com.simple.state.ResultState
 import com.simple.translate.entities.TranslateResponse
@@ -30,4 +31,16 @@ interface AppRepository {
 
 
     suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>>
+
+
+    fun getEventIdShow(): String?
+
+    fun updateEventIdShow(id: String)
+
+    suspend fun syncEvents(languageCode: String): List<Event>
+
+    suspend fun getEventsAsync(): Flow<List<Event>>
+
+    suspend fun updateEvents(list: List<Event>)
+
 }

@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.review.ReviewManagerFactory
@@ -16,6 +18,7 @@ import com.simple.core.utils.extentions.toObjectOrNull
 import com.simple.coreapp.Param.RESULT_CODE
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
@@ -25,6 +28,7 @@ import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -32,16 +36,20 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
 
-interface AppReviewHomeView {
+interface ReviewHomeView {
 
-    fun setupAppView(fragment: HomeFragment)
+    fun setupReview(fragment: HomeFragment)
+
+    fun showReview()
 }
 
-class AppReviewHomeViewImpl : AppReviewHomeView {
+class ReviewHomeViewImpl : ReviewHomeView {
 
-    override fun setupAppView(fragment: HomeFragment) {
+    private val show: LiveData<Boolean> = MediatorLiveData()
 
-        val viewModel: AppReviewHomeViewModel by fragment.viewModel()
+    override fun setupReview(fragment: HomeFragment) {
+
+        val viewModel: ReviewHomeViewModel by fragment.viewModel()
 
         val keyRequest = "RATE_KEY_REQUEST"
 
@@ -70,10 +78,16 @@ class AppReviewHomeViewImpl : AppReviewHomeView {
             if (info.show) {
 
                 sendDeeplink(Deeplink.CONFIRM, extras = extras)
-            } else if (viewModel.rateEnable.value == true) {
+            } else if (viewModel.historyList.value?.isNotEmpty() == true) {
 
                 openReview(fragment)
             }
+        }
+
+        show.asFlow().launchCollect(fragment.viewLifecycleOwner) {
+
+            delay(350)
+            viewModel.show()
         }
 
         val sharedPreferences: SharedPreferences by lazy {
@@ -93,10 +107,10 @@ class AppReviewHomeViewImpl : AppReviewHomeView {
                 openStore(fragment)
             }
 
-            val rate = if (resultCode == 1) AppReviewHomeViewModel.Rate(
-                status = AppReviewHomeViewModel.Rate.Status.OPEN_RATE.value
-            ) else AppReviewHomeViewModel.Rate(
-                status = AppReviewHomeViewModel.Rate.Status.DISMISS.value,
+            val rate = if (resultCode == 1) ReviewHomeViewModel.Rate(
+                status = ReviewHomeViewModel.Rate.Status.OPEN_RATE.value
+            ) else ReviewHomeViewModel.Rate(
+                status = ReviewHomeViewModel.Rate.Status.DISMISS.value,
                 date = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
             )
 
@@ -107,13 +121,14 @@ class AppReviewHomeViewImpl : AppReviewHomeView {
 
         fragment.viewLifecycleOwner.lifecycleScope.launch(handler + Dispatchers.IO) {
 
-            fragment.viewModel.awaitTransition()
-
-            val rate = sharedPreferences.getString(Param.RATE, "").toObjectOrNull<AppReviewHomeViewModel.Rate>()
+            val rate = sharedPreferences.getString(Param.RATE, "").toObjectOrNull<ReviewHomeViewModel.Rate>()
             viewModel.updateRate(rate)
         }
     }
 
+    override fun showReview() {
+        show.postDifferentValue(true)
+    }
 
     private suspend fun openReview(fragment: HomeFragment) {
 

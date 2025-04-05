@@ -1,6 +1,7 @@
 package com.simple.phonetics.data.api
 
 import com.simple.phonetics.BuildConfig
+import com.simple.phonetics.entities.Event
 import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Language
 import okhttp3.ResponseBody
@@ -17,6 +18,9 @@ interface Api {
 
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/ipa/{language_code}/ipas.json")
     suspend fun syncIPA(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<Ipa>
+
+    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/event/{language_code}/events.json")
+    suspend fun syncEvent(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<Event>
 
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/popular/{language_code}/populars.json")
     suspend fun syncPopular(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<String>
