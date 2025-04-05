@@ -448,7 +448,8 @@ class PhoneticsDeeplink : DeeplinkHandler {
             fragmentTransaction.addSharedElement(u, t)
         }
 
-        if (isActive()) fragmentTransaction.replace(R.id.fragment_container, fragment, "")
+        if (isActive()) fragmentTransaction
+            .replace(R.id.fragment_container, fragment, "")
             .addToBackStack("")
             .commitAllowingStateLoss()
 

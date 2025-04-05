@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
     android:orientation="vertical"
-    android:transitionName="select_language"
     tools:ignore="HardcodedText">
 
     <include

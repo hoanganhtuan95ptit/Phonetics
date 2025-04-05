@@ -142,10 +142,15 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
             awaitResumed()
 
+
+            if (binding.root.transitionName == null) {
+                binding.root.transitionName = "select_language"
+            }
+
             if (it is ResultState.Success) if (arguments?.containsKey(Param.ROOT_TRANSITION_NAME) != true) sendDeeplink(
                 deepLink = Deeplink.PHONETICS,
                 extras = bundleOf(
-                    Param.ROOT_TRANSITION_NAME to ""
+                    Param.ROOT_TRANSITION_NAME to "1"
                 ),
                 sharedElement = mapOf(
                     binding.root.transitionName to binding.root
