@@ -14,8 +14,8 @@ import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.ActivityMainBinding
-import com.simple.phonetics.ui.view.ListenView
-import com.simple.phonetics.ui.view.ListenViewImpl
+import com.simple.phonetics.ui.view.ReadView
+import com.simple.phonetics.ui.view.ReadViewImpl
 import com.simple.phonetics.ui.view.SpeakView
 import com.simple.phonetics.ui.view.SpeakViewImpl
 import com.simple.phonetics.utils.DeeplinkView
@@ -27,8 +27,8 @@ import com.simple.phonetics.utils.setupTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(),
+    ReadView by ReadViewImpl(),
     SpeakView by SpeakViewImpl(),
-    ListenView by ListenViewImpl(),
     DeeplinkView by DeeplinkViewImpl() {
 
     private val configViewModel: ConfigViewModel by lazy {
@@ -41,9 +41,9 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         super.onCreate(savedInstanceState)
 
         setupSize(this)
+        setupRead(this)
         setupTheme(this)
         setupSpeak(this)
-        setupListen(this)
         setupDeeplink(this)
 
         observeData()
