@@ -1,50 +1,29 @@
-package com.simple.phonetics.domain.usecase.word
+package com.simple.phonetics.data.tasks
 
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.domain.repositories.HistoryRepository
-import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
+import com.simple.phonetics.domain.tasks.SyncTask
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getWordDelimiters
 import com.simple.phonetics.utils.exts.getWords
-import com.simple.state.ResultState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.flatMapLatest
 
-class GetWordStateAsyncUseCase(
+class WordSyncTask(
     private val wordRepository: WordRepository,
     private val historyRepository: HistoryRepository,
     private val phoneticRepository: PhoneticRepository,
-    private val languageRepository: LanguageRepository
-) {
+) : SyncTask {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun execute(): Flow<ResultState<Int>> = channelFlow {
+    override fun priority(): Int {
+        return Int.MAX_VALUE - 2
+    }
 
-        languageRepository.getLanguageInputAsync().launchCollect(this) {
+    override suspend fun executeTask(param: SyncTask.Param) {
 
-            val languageCode = it.id
+        val languageCode = param.inputLanguage.id
 
-            syncPopular(languageCode = languageCode)
-            syncHistory(languageCode = languageCode)
-        }
-
-        languageRepository.getLanguageInputAsync().flatMapLatest {
-
-            val languageCode = it.id
-
-            wordRepository.getCountAsync(resource = Word.Resource.Popular.value, languageCode = languageCode)
-        }.launchCollect(this) {
-
-            trySend(ResultState.Success(it))
-        }
-
-        awaitClose {
-        }
+        syncPopular(languageCode = languageCode)
+        syncHistory(languageCode = languageCode)
     }
 
     /**
@@ -106,6 +85,4 @@ class GetWordStateAsyncUseCase(
 
         wordRepository.insertOrUpdate(resource = resource, languageCode = languageCode, list = wordAvailableList)
     }
-
-    data class Param(val sync: Boolean = true)
 }

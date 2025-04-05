@@ -25,14 +25,13 @@ import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
-import com.simple.phonetics.domain.usecase.word.GetWordStateAsyncUseCase
 import org.koin.dsl.module
 
 @JvmField
 val useCaseModule = module {
 
     single {
-        SyncDataUseCase(get(), get())
+        SyncDataUseCase(getAll(), get())
     }
 
     single {
@@ -122,10 +121,6 @@ val useCaseModule = module {
 
     single {
         CountWordAsyncUseCase(get())
-    }
-
-    single {
-        GetWordStateAsyncUseCase(get(), get(), get(), get())
     }
 
     single {

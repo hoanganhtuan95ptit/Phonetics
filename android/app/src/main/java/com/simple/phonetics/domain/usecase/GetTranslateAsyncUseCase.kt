@@ -16,22 +16,6 @@ class GetTranslateAsyncUseCase(
 
     suspend fun execute(): Flow<Map<String, String>> = channelFlow {
 
-        // đông bộ dự liệu translate cú sang bảng mới
-        copyTranslate()
-
-        // call api để lấy bản dịch
-        languageRepository.getLanguageOutputAsync().launchCollect(this) {
-
-            runCatching {
-
-                val languageCode = it.id
-
-                val map = appRepository.syncTranslate(languageCode = languageCode)
-
-                appRepository.updateTranslate(languageCode = languageCode, map = map)
-            }
-        }
-
         // lấy bản dịch hiện có
         languageRepository.getLanguageOutputAsync().flatMapLatest {
 
@@ -43,19 +27,6 @@ class GetTranslateAsyncUseCase(
 
         awaitClose {
 
-        }
-    }
-
-    private suspend fun copyTranslate() {
-
-        if (appRepository.getCountTranslate() > 0) return
-
-        appRepository.getAllTranslateOld().groupBy { it.langCode }.mapValues { entry ->
-
-            entry.value.map { it.key to it.value }.toMap()
-        }.map {
-
-            appRepository.updateTranslate(languageCode = it.key, map = it.value)
         }
     }
 

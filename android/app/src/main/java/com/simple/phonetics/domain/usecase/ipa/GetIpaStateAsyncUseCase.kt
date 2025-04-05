@@ -17,18 +17,6 @@ class GetIpaStateAsyncUseCase(
 
     suspend fun execute(param: Param = Param()): Flow<ResultState<List<Ipa>>> = channelFlow {
 
-        if (param.sync) languageRepository.getLanguageInputAsync().launchCollect(this) {
-
-            runCatching {
-
-                val languageCode = it.id
-
-                val ipaList = ipaRepository.syncIpa(languageCode = languageCode)
-
-                ipaRepository.insertOrUpdate(languageCode = languageCode, list = ipaList)
-            }
-        }
-
         languageRepository.getLanguageInputAsync().flatMapLatest {
 
             val languageCode = it.id
