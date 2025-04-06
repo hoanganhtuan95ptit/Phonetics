@@ -19,6 +19,7 @@ import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
+import com.simple.phonetics.utils.showAds
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isFailed
@@ -49,6 +50,10 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
 
         observeGameData()
         observeGameConfigData()
+
+        if (arguments?.getString(Param.ROOT_TRANSITION_NAME, "").orEmpty().isNotEmpty()) {
+            showAds()
+        }
     }
 
     private fun observeData() = with(viewModel) {
