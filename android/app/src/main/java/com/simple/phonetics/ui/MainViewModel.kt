@@ -94,8 +94,8 @@ class MainViewModel(
 
                 count++
 
-                for (i in 3..10) if (count % i == 0L) {
-                    logAnalytics("ads_show_with_${count / i}")
+                for (i in 3..20) if (count % i == 0L) {
+                    logAnalytics("ads_show_with_$i")
                 }
             }
         }

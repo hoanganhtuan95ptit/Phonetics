@@ -1,5 +1,6 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
+import android.util.Log
 import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.coreapp.utils.extentions.offerActiveAwait
 import com.simple.phonetics.data.dao.HistoryDao
@@ -80,7 +81,7 @@ class GetPhoneticsAsyncUseCase(
 
             val wordList = sentenceObject.text.split(*wordDelimiters.toTypedArray()).map {
 
-                it.removeSpecialCharacters()
+                it.lowercase().removeSpecialCharacters()
             }.filter {
 
                 it.isNotBlank()
@@ -88,7 +89,7 @@ class GetPhoneticsAsyncUseCase(
 
             sentenceObject.phonetics = wordList.map {
 
-                Phonetic(it)
+                Phonetic(text = it)
             }
 
             sentenceObject
@@ -107,7 +108,7 @@ class GetPhoneticsAsyncUseCase(
                 textList = wordList,
                 phoneticCode = param.phoneticCode
             ).associateBy {
-                it.text
+                it.text.lowercase()
             }
 
             sentenceList.flatMap {
