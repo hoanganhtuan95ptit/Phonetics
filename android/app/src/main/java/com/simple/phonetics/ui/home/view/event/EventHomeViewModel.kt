@@ -73,7 +73,7 @@ class EventHomeViewModel(
             title = translate[event.title].orEmpty()
                 .with(ForegroundColorSpan(theme.colorOnSurface)),
             message = translate[event.message].orEmpty()
-                .with(ForegroundColorSpan(theme.colorOnSurfaceVariant)),
+                .with(ForegroundColorSpan(theme.colorOnSurface)),
 
             positive = ButtonInfo(
                 text = translate[event.positive].orEmpty()

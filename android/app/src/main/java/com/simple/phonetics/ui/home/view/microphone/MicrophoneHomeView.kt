@@ -13,6 +13,7 @@ import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
+import com.simple.phonetics.utils.showAds
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -44,6 +45,8 @@ class MicrophoneHomeViewImpl : MicrophoneHomeView {
 
             viewModel.getPhonetics("")
             binding.etText.setText(result)
+
+            showAds()
         }
 
         observeData(fragment = fragment, viewModel = viewModel, configViewModel = configViewModel, microphoneHomeViewModel = microphoneHomeViewModel)

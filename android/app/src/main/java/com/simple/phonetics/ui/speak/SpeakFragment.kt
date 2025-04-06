@@ -46,6 +46,7 @@ import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
+import com.simple.phonetics.utils.showAds
 import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isRunning
@@ -122,6 +123,8 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
         observeData()
         observeConfigData()
+
+        showAds()
     }
 
     private fun setupSpeak() {

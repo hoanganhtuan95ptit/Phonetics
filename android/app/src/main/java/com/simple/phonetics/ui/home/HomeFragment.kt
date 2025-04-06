@@ -70,6 +70,7 @@ import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.sendDeeplink
+import com.simple.phonetics.utils.showAds
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -208,6 +209,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
             viewModel.getPhonetics("")
             binding.etText.setText(item.id)
+
+            showAds()
         }
 
         val clickTextAdapter = ClickTextAdapter { view, item ->

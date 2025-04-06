@@ -11,6 +11,7 @@ import com.simple.coreapp.utils.extentions.haveText
 import com.simple.coreapp.utils.extentions.text
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
+import com.simple.phonetics.utils.showAds
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 interface PasteHomeView {
@@ -59,6 +60,7 @@ class PasteHomeViewImpl : PasteHomeView {
             binding.etText.setText(clipboard.text() ?: "")
 
             clipboard.clear()
+            showAds()
         }
     }
 }

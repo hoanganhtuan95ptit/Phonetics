@@ -14,7 +14,6 @@ import com.simple.phonetics.Deeplink
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentContainerHeaderHorizontalBinding
-import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.DeeplinkHandler
@@ -26,10 +25,6 @@ import kotlinx.coroutines.launch
 
 class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>(),
     DeeplinkView by DeeplinkViewImpl() {
-
-    private val configViewModel: ConfigViewModel by lazy {
-        getViewModel(requireActivity(), ConfigViewModel::class)
-    }
 
     private val gameConfigViewModel: GameConfigViewModel by lazy {
         getViewModel(requireActivity(), GameConfigViewModel::class)
