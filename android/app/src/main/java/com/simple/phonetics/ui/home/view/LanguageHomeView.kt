@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.home.view
 
-import androidx.core.os.bundleOf
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.image.setImage
@@ -9,7 +8,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.simple.phonetics.utils.sendDeeplink
+import com.tuanha.deeplink.sendDeeplink
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 interface LanguageHomeView {
@@ -36,7 +35,7 @@ class LanguageHomeViewImpl() : LanguageHomeView {
 
             val transitionName = binding.ivLanguage.transitionName
 
-            sendDeeplink(Deeplink.LANGUAGE, extras = bundleOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivLanguage))
+            sendDeeplink(Deeplink.LANGUAGE, extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivLanguage))
         }
     }
 

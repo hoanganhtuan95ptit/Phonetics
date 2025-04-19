@@ -106,9 +106,6 @@ dependencies {
     implementation hoanganhtuan95Dependencies.translate
     implementation hoanganhtuan95Dependencies.translate_mlkit
 
-    implementation 'com.github.hoanganhtuan95ptit.core:deeplink-annotation:1.2.1'
-    kapt 'com.github.hoanganhtuan95ptit.core:deeplink-processor:1.2.1'
-
     implementation 'com.github.hoanganhtuan95ptit.core:adapter-annotation:1.2.27'
     kapt 'com.github.hoanganhtuan95ptit.core:adapter-processor:1.2.27'
 
@@ -132,4 +129,10 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
     implementation 'com.google.android.material:material:1.13.0-alpha08'
+
+//    implementation 'com.github.hoanganhtuan95ptit.MultiTypeAdapter:adapter:1.0.5'
+//    kapt 'com.github.hoanganhtuan95ptit.MultiTypeAdapter:adapter-processor:1.0.5'
+
+    implementation 'com.github.hoanganhtuan95ptit.Deeplink:deeplink:1.0.4'
+    kapt 'com.github.hoanganhtuan95ptit.Deeplink:deeplink-processor:1.0.4'
 }

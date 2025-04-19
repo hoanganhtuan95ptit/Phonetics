@@ -11,8 +11,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.utils.listenerEvent
-import com.simple.phonetics.utils.sendConfirm
-import com.simple.phonetics.utils.sendDeeplink
+import com.tuanha.deeplink.sendDeeplink
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -73,7 +72,7 @@ class EventHomeViewImpl : EventHomeView {
             trySend(Unit)
         }
 
-        val extras = bundleOf(
+        val extras = mapOf(
             com.simple.coreapp.Param.CANCEL to false,
             com.simple.coreapp.Param.IMAGE to info.image,
 
@@ -89,7 +88,7 @@ class EventHomeViewImpl : EventHomeView {
             com.simple.coreapp.Param.KEY_REQUEST to keyRequest
         )
 
-        sendConfirm(deepLink = Deeplink.EVENT, extras = extras)
+        sendDeeplink(deepLink = Deeplink.EVENT, extras = extras)
 
         logAnalytics("event_show_${info.event.name.lowercase()}")
 

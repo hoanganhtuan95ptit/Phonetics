@@ -1,8 +1,8 @@
 package com.simple.phonetics.ui.ipa.detail
 
+import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import com.google.android.flexbox.FlexDirection
@@ -29,13 +29,13 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailAdapters
-import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.toSuccess
+import com.tuanha.deeplink.DeeplinkHandler
+import com.tuanha.deeplink.sendDeeplink
 
 class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaDetailViewModel>() {
 
@@ -77,7 +77,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) {
 
-                sendDeeplink(Deeplink.SPEAK, extras = bundleOf(Param.TEXT to (item.data as Sentence).text))
+                sendDeeplink(Deeplink.SPEAK, extras = mapOf(Param.TEXT to (item.data as Sentence).text))
             }
         }
 
@@ -85,7 +85,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             if (viewModel.isSupportSpeak.value == true) {
 
-                sendDeeplink(Deeplink.SPEAK, extras = bundleOf(Param.TEXT to item.data.text))
+                sendDeeplink(Deeplink.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
             } else if (viewModel.isSupportListen.value == true) viewModel.startListen(
                 text = item.data.text,
 
@@ -167,14 +167,14 @@ class IpaDetailDeeplink : DeeplinkHandler {
         return Deeplink.IPA_DETAIL
     }
 
-    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        if (activity !is MainActivity) return false
+        if (componentCallbacks !is MainActivity) return false
 
         val fragment = IpaDetailFragment()
-        fragment.arguments = extras
+        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
 
-        val fragmentTransaction = activity.supportFragmentManager
+        val fragmentTransaction = componentCallbacks.supportFragmentManager
             .beginTransaction()
 
         sharedElement?.forEach { (t, u) ->

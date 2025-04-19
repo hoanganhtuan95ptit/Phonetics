@@ -1,8 +1,9 @@
 package com.simple.phonetics.ui.event
 
+import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
-import androidx.activity.ComponentActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
 import com.simple.core.utils.extentions.orZero
@@ -20,8 +21,8 @@ import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.image.setImage
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.databinding.DialogEventBinding
-import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.sendEvent
+import com.tuanha.deeplink.DeeplinkHandler
 
 class EventDialogFragment : BaseViewBindingSheetFragment<DialogEventBinding>() {
 
@@ -97,12 +98,12 @@ class EventDeeplink : DeeplinkHandler {
         return Deeplink.EVENT
     }
 
-    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(activity: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         if (activity !is FragmentActivity) return false
 
         val fragment = EventDialogFragment()
-        fragment.arguments = extras
+        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
         fragment.showOrAwaitDismiss(activity.supportFragmentManager, tag = "")
 
         return true

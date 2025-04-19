@@ -1,8 +1,8 @@
 package com.simple.phonetics.ui.ipa.list
 
+import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,11 +19,11 @@ import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.ui.base.fragments.BaseFragment
-import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.simple.phonetics.utils.sendDeeplink
+import com.tuanha.deeplink.DeeplinkHandler
+import com.tuanha.deeplink.sendDeeplink
 
 class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaListViewModel>() {
 
@@ -68,7 +68,7 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
 
             sendDeeplink(
                 deepLink = Deeplink.IPA_DETAIL,
-                extras = bundleOf(Param.IPA to item.data, Param.ROOT_TRANSITION_NAME to transitionName),
+                extras = mapOf(Param.IPA to item.data, Param.ROOT_TRANSITION_NAME to transitionName),
                 sharedElement = mapOf(transitionName to view)
             )
         }
@@ -116,14 +116,14 @@ class IpaListDeeplink : DeeplinkHandler {
         return Deeplink.IPA_LIST
     }
 
-    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        if (activity !is MainActivity) return false
+        if (componentCallbacks !is MainActivity) return false
 
         val fragment = IpaListFragment()
-        fragment.arguments = extras
+        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
 
-        val fragmentTransaction = activity.supportFragmentManager
+        val fragmentTransaction = componentCallbacks.supportFragmentManager
             .beginTransaction()
 
         sharedElement?.forEach { (t, u) ->
