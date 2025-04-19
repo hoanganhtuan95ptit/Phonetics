@@ -1,8 +1,9 @@
 package com.simple.phonetics.ui.config
 
+import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
-import androidx.activity.ComponentActivity
+import androidx.core.os.bundleOf
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
@@ -24,9 +25,9 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
-import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.tuanha.deeplink.DeeplinkHandler
 
 class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 
@@ -112,12 +113,12 @@ class ConfigDeeplink : DeeplinkHandler {
         return Deeplink.CONFIG
     }
 
-    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(activity: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         if (activity !is MainActivity) return false
 
         val fragment = ConfigFragment()
-        fragment.arguments = extras
+        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
         fragment.showOrAwaitDismiss(activity.supportFragmentManager, tag = "")
 
         return true

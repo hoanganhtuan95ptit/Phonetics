@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
@@ -25,7 +24,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.utils.listenerEvent
-import com.simple.phonetics.utils.sendDeeplink
+import com.tuanha.deeplink.sendDeeplink
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
@@ -57,7 +56,7 @@ class ReviewHomeViewImpl : ReviewHomeView {
 
             val info = event.getContentIfNotHandled() ?: return@launchCollect
 
-            val extras = bundleOf(
+            val extras = mapOf(
                 com.simple.coreapp.Param.CANCEL to false,
                 com.simple.coreapp.Param.ANIM to info.anim,
 

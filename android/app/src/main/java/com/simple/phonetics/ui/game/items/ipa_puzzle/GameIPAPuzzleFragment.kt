@@ -24,16 +24,16 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.game.GameFragment
 import com.simple.phonetics.ui.game.items.GameItemFragment
-import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.simple.phonetics.utils.sendDeeplink
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isSuccess
+import com.tuanha.deeplink.DeeplinkHandler
+import com.tuanha.deeplink.sendDeeplink
 import java.util.UUID
 
 class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
@@ -122,7 +122,7 @@ class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
 
             if (checkState.value.isSuccess()) sendDeeplink(
                 deepLink = gameConfigViewModel.getNextGame(),
-                extras = bundleOf(com.simple.phonetics.Param.ROOT_TRANSITION_NAME to transitionName),
+                extras = mapOf(com.simple.phonetics.Param.ROOT_TRANSITION_NAME to transitionName),
                 sharedElement = mapOf(transitionName to binding.root)
             ) else {
 
@@ -159,12 +159,12 @@ class GameIPAPuzzleDeeplink : DeeplinkHandler {
         return Deeplink.GAME_IPA_PUZZLE
     }
 
-    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         if (componentCallbacks !is GameFragment) return false
 
         val fragment = GameIPAPuzzleFragment()
-        fragment.arguments = extras
+        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
 
         val fragmentTransaction = componentCallbacks.childFragmentManager
             .beginTransaction()

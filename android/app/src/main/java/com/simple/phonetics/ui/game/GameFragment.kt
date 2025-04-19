@@ -1,8 +1,8 @@
 package com.simple.phonetics.ui.game
 
+import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
@@ -16,15 +16,12 @@ import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentContainerHeaderHorizontalBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
-import com.simple.phonetics.utils.DeeplinkHandler
-import com.simple.phonetics.utils.DeeplinkView
-import com.simple.phonetics.utils.DeeplinkViewImpl
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.simple.phonetics.utils.sendDeeplink
+import com.tuanha.deeplink.DeeplinkHandler
+import com.tuanha.deeplink.sendDeeplink
 import kotlinx.coroutines.launch
 
-class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>(),
-    DeeplinkView by DeeplinkViewImpl() {
+class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>() {
 
     private val gameConfigViewModel: GameConfigViewModel by lazy {
         getViewModel(requireActivity(), GameConfigViewModel::class)
@@ -51,8 +48,6 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
             activity?.supportFragmentManager?.popBackStack()
         }
 
-        setupDeeplink(this)
-
         observeData()
     }
 
@@ -76,7 +71,7 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
 
         viewLifecycleOwner.lifecycleScope.launch {
 
-            sendDeeplink(gameConfigViewModel.getNextGame(), extras = bundleOf(Param.FIRST to true))
+            sendDeeplink(gameConfigViewModel.getNextGame(), extras = mapOf(Param.FIRST to true))
         }
     }
 }
@@ -88,14 +83,14 @@ class GameDeeplink : DeeplinkHandler {
         return Deeplink.GAME
     }
 
-    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        if (activity !is MainActivity) return false
+        if (componentCallbacks !is MainActivity) return false
 
         val fragment = GameFragment()
-        fragment.arguments = extras
+        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
 
-        val fragmentTransaction = activity.supportFragmentManager
+        val fragmentTransaction = componentCallbacks.supportFragmentManager
             .beginTransaction()
 
         sharedElement?.forEach { (t, u) ->

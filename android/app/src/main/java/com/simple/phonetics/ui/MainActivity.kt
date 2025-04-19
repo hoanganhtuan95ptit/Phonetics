@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
-import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
@@ -18,18 +17,15 @@ import com.simple.phonetics.ui.view.ReadView
 import com.simple.phonetics.ui.view.ReadViewImpl
 import com.simple.phonetics.ui.view.SpeakView
 import com.simple.phonetics.ui.view.SpeakViewImpl
-import com.simple.phonetics.utils.DeeplinkView
-import com.simple.phonetics.utils.DeeplinkViewImpl
 import com.simple.phonetics.utils.appPhoneticCodeSelected
-import com.simple.phonetics.utils.sendDeeplink
 import com.simple.phonetics.utils.setupSize
 import com.simple.phonetics.utils.setupTheme
+import com.tuanha.deeplink.sendDeeplink
 import kotlinx.coroutines.launch
 
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(),
     ReadView by ReadViewImpl(),
-    SpeakView by SpeakViewImpl(),
-    DeeplinkView by DeeplinkViewImpl() {
+    SpeakView by SpeakViewImpl() {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(this, ConfigViewModel::class)
@@ -44,7 +40,6 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         setupRead(this)
         setupTheme(this)
         setupSpeak(this)
-        setupDeeplink(this)
 
         observeData()
         observeConfigData()
@@ -70,7 +65,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
             if (it == null) {
 
-                sendDeeplink(Deeplink.LANGUAGE, extras = bundleOf(Param.FIRST to true))
+                sendDeeplink(Deeplink.LANGUAGE, extras = mapOf(Param.FIRST to true))
             } else {
 
                 sendDeeplink(Deeplink.PHONETICS)

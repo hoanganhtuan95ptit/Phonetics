@@ -1,13 +1,14 @@
 package com.simple.phonetics.ui.speak
 
 import android.Manifest
+import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
-import androidx.activity.ComponentActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
@@ -41,7 +42,6 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
-import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.playMedia
@@ -51,6 +51,7 @@ import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
+import com.tuanha.deeplink.DeeplinkHandler
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -328,13 +329,13 @@ class SpeakDeeplink : DeeplinkHandler {
         return Deeplink.SPEAK
     }
 
-    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        if (activity !is MainActivity) return false
+        if (componentCallbacks !is MainActivity) return false
 
         val fragment = SpeakFragment()
-        fragment.arguments = extras
-        fragment.showOrAwaitDismiss(activity.supportFragmentManager, "")
+        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
+        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, "")
 
         return true
     }

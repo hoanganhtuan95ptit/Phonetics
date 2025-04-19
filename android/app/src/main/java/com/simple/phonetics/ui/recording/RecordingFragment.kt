@@ -1,9 +1,11 @@
 package com.simple.phonetics.ui.recording
 
 import android.Manifest
+import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
+import androidx.core.os.bundleOf
 import androidx.lifecycle.asFlow
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
@@ -23,13 +25,13 @@ import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
-import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.sendEvent
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
+import com.tuanha.deeplink.DeeplinkHandler
 
 class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewModel>() {
 
@@ -139,13 +141,13 @@ class RecordingDeeplink : DeeplinkHandler {
         return Deeplink.RECORDING
     }
 
-    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        if (activity !is MainActivity) return false
+        if (componentCallbacks !is MainActivity) return false
 
         val fragment = RecordingFragment()
-        fragment.arguments = extras
-        fragment.showOrAwaitDismiss(activity.supportFragmentManager, "")
+        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
+        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, "")
 
         return true
     }

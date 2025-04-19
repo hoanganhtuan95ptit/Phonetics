@@ -1,14 +1,13 @@
 package com.simple.phonetics.ui.base
 
-import android.os.Bundle
+import android.content.ComponentCallbacks
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import com.simple.coreapp.ui.dialogs.ToastDialog
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.phonetics.Deeplink
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.utils.DeeplinkHandler
+import com.tuanha.deeplink.DeeplinkHandler
 
 @com.tuanha.deeplink.annotation.Deeplink
 class ToastDeeplink : DeeplinkHandler {
@@ -17,13 +16,13 @@ class ToastDeeplink : DeeplinkHandler {
         return Deeplink.TOAST
     }
 
-    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        if (activity !is MainActivity) return false
+        if (componentCallbacks !is MainActivity) return false
 
         val fragment = ToastDialog.newInstance()
-        fragment.arguments?.putAll(extras ?: bundleOf())
-        fragment.showOrAwaitDismiss(activity.supportFragmentManager, "")
+        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
+        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, "")
 
         return true
     }

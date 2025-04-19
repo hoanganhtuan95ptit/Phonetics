@@ -2,7 +2,7 @@ package com.simple.phonetics.ui.game.items
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
+import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.extentions.get
 import com.simple.phonetics.Deeplink
@@ -18,12 +18,13 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
 import com.simple.phonetics.utils.listenerEvent
-import com.simple.phonetics.utils.sendDeeplink
 import com.simple.phonetics.utils.showAds
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isSuccess
+import com.tuanha.deeplink.sendDeeplink
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -111,14 +112,14 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
 
         val consecutiveCorrectAnswers = gameViewModel.consecutiveCorrectAnswer.get()
 
-        val extras = if (consecutiveCorrectAnswers.first > 0 && consecutiveCorrectAnswers.second) bundleOf(
+        val extras = if (consecutiveCorrectAnswers.first > 0 && consecutiveCorrectAnswers.second) mapOf(
 
             Param.NUMBER to consecutiveCorrectAnswers.first
-        ) else bundleOf(
+        ) else mapOf(
 
             com.simple.coreapp.Param.CANCEL to false,
 
-            com.simple.coreapp.Param.ANIM to info.anim,
+            com.simple.coreapp.Param.ANIM to info.anim.orZero(),
 
             com.simple.coreapp.Param.TITLE to info.title,
             com.simple.coreapp.Param.MESSAGE to info.message,
@@ -132,6 +133,9 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
             sendDeeplink(Deeplink.GAME_CONGRATULATION, extras = extras)
         } else {
             sendDeeplink(Deeplink.CONFIRM, extras = extras)
+        }
+
+        awaitClose {
         }
     }.first()
 }

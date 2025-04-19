@@ -1,10 +1,10 @@
 package com.simple.phonetics.ui.home
 
+import android.content.ComponentCallbacks
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
@@ -61,7 +61,6 @@ import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeView
 import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeViewImpl
 import com.simple.phonetics.ui.home.view.review.ReviewHomeView
 import com.simple.phonetics.ui.home.view.review.ReviewHomeViewImpl
-import com.simple.phonetics.utils.DeeplinkHandler
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
@@ -69,8 +68,9 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.listenerEvent
-import com.simple.phonetics.utils.sendDeeplink
 import com.simple.phonetics.utils.showAds
+import com.tuanha.deeplink.DeeplinkHandler
+import com.tuanha.deeplink.sendDeeplink
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -200,7 +200,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
             sendDeeplink(
                 deepLink = Deeplink.IPA_DETAIL,
-                extras = bundleOf(Param.IPA to item.data, Param.ROOT_TRANSITION_NAME to transitionName),
+                extras = mapOf(Param.IPA to item.data, Param.ROOT_TRANSITION_NAME to transitionName),
                 sharedElement = mapOf(transitionName to view)
             )
         }
@@ -219,10 +219,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) sendDeeplink(
                 deepLink = Deeplink.SPEAK,
-                extras = bundleOf(Param.TEXT to (item.data as Sentence).text)
+                extras = mapOf(Param.TEXT to (item.data as Sentence).text)
             ) else if (item.id.startsWith(Id.IPA_LIST)) sendDeeplink(
                 deepLink = Deeplink.IPA_LIST,
-                extras = bundleOf(Param.ROOT_TRANSITION_NAME to transitionName),
+                extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName),
                 sharedElement = mapOf(transitionName to view)
             ) else if (item.id.startsWith(Id.GAME)) {
 
@@ -234,7 +234,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
             if (viewModel.isSupportSpeak.value == true) {
 
-                sendDeeplink(Deeplink.SPEAK, extras = bundleOf(Param.TEXT to item.data.text))
+                sendDeeplink(Deeplink.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
             } else if (viewModel.isSupportListen.value == true) {
 
                 startSpeak(text = item.data.text)
@@ -413,7 +413,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
         if (result == 1) sendDeeplink(
             deepLink = Deeplink.GAME,
-            extras = bundleOf(Param.ROOT_TRANSITION_NAME to transitionName),
+            extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName),
             sharedElement = mapOf(transitionName to view)
         )
     }
@@ -436,14 +436,14 @@ class PhoneticsDeeplink : DeeplinkHandler {
         return Deeplink.PHONETICS
     }
 
-    override suspend fun navigation(activity: ComponentActivity, deepLink: String, extras: Bundle?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        if (activity !is MainActivity) return false
+        if (componentCallbacks !is MainActivity) return false
 
         val fragment = HomeFragment()
-        fragment.arguments = extras
+        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
 
-        val fragmentTransaction = activity.supportFragmentManager
+        val fragmentTransaction = componentCallbacks.supportFragmentManager
             .beginTransaction()
 
         sharedElement?.forEach { (t, u) ->
