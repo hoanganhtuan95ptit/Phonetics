@@ -112,10 +112,19 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
 
         val consecutiveCorrectAnswers = gameViewModel.consecutiveCorrectAnswer.get()
 
-        val extras = if (consecutiveCorrectAnswers.first > 0 && consecutiveCorrectAnswers.second) mapOf(
+        if (consecutiveCorrectAnswers.first > 0 && consecutiveCorrectAnswers.second) {
+            showGameCongratulation(number = consecutiveCorrectAnswers.first)
+        } else {
+            showMessage(info = info)
+        }
 
-            Param.NUMBER to consecutiveCorrectAnswers.first
-        ) else mapOf(
+        awaitClose {
+        }
+    }.first()
+
+    private fun showMessage(info: GameItemViewModel.StateInfo) {
+
+        val extras = mapOf(
 
             com.simple.coreapp.Param.CANCEL to false,
 
@@ -129,13 +138,16 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
             com.simple.coreapp.Param.POSITIVE to info.positive,
         )
 
-        if (consecutiveCorrectAnswers.first > 0 && consecutiveCorrectAnswers.second) {
-            sendDeeplink(Deeplink.GAME_CONGRATULATION, extras = extras)
-        } else {
-            sendDeeplink(Deeplink.CONFIRM, extras = extras)
-        }
+        sendDeeplink(Deeplink.CONFIRM, extras = extras)
+    }
 
-        awaitClose {
-        }
-    }.first()
+    private fun showGameCongratulation(number: Long) {
+
+        val extras = mapOf(
+
+            Param.NUMBER to number
+        )
+
+        sendDeeplink(Deeplink.GAME_CONGRATULATION, extras = extras)
+    }
 }
