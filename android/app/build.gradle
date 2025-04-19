@@ -106,19 +106,15 @@ dependencies {
     implementation hoanganhtuan95Dependencies.translate
     implementation hoanganhtuan95Dependencies.translate_mlkit
 
-    implementation 'com.github.hoanganhtuan95ptit.core:adapter-annotation:1.2.27'
-    kapt 'com.github.hoanganhtuan95ptit.core:adapter-processor:1.2.27'
-
     implementation 'androidx.core:core-splashscreen:1.1.0-rc01'
-
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
 
-    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
-    releaseImplementation("com.google.firebase:firebase-crashlytics")
-    releaseImplementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-perf")
 
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     implementation 'com.google.android.play:review-ktx:2.0.1'
+    releaseImplementation("com.google.firebase:firebase-analytics")
+    releaseImplementation("com.google.firebase:firebase-crashlytics")
 
     kapt('androidx.room:room-compiler:2.5.2')
     implementation roomDependencies.values()
@@ -130,8 +126,8 @@ dependencies {
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
     implementation 'com.google.android.material:material:1.13.0-alpha08'
 
-//    implementation 'com.github.hoanganhtuan95ptit.MultiTypeAdapter:adapter:1.0.5'
-//    kapt 'com.github.hoanganhtuan95ptit.MultiTypeAdapter:adapter-processor:1.0.5'
+    implementation 'com.github.hoanganhtuan95ptit.MultiTypeAdapter:adapter:1.0.6'
+    kapt 'com.github.hoanganhtuan95ptit.MultiTypeAdapter:adapter-processor:1.0.5'
 
     implementation 'com.github.hoanganhtuan95ptit.Deeplink:deeplink:1.0.4'
     kapt 'com.github.hoanganhtuan95ptit.Deeplink:deeplink-processor:1.0.4'
