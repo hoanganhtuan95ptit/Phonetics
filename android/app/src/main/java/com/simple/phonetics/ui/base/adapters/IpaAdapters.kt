@@ -3,8 +3,8 @@ package com.simple.phonetics.ui.base.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.tuanha.adapter.ViewItemAdapter
-import com.tuanha.adapter.entities.ViewItem
+import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.DEFAULT_MARGIN
@@ -15,7 +15,6 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setSize
 import com.simple.phonetics.Payload
-import com.simple.phonetics.databinding.ItemImageStateBinding
 import com.simple.phonetics.databinding.ItemIpaBinding
 import com.simple.phonetics.entities.Ipa
 

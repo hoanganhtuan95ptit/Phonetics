@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.GridLayoutManager
+import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
@@ -21,7 +22,6 @@ import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 import com.tuanha.deeplink.sendDeeplink
 

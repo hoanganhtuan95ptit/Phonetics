@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
@@ -30,7 +31,6 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
-import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 import com.tuanha.deeplink.sendDeeplink
 

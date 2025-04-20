@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.JustifyContent
+import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
@@ -67,7 +68,6 @@ import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.showAds
-import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 import com.tuanha.deeplink.sendDeeplink
 import kotlinx.coroutines.channels.awaitClose

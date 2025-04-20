@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
-import com.tuanha.adapter.entities.ViewItem
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.Param
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewBindingSheetFragment
 import com.simple.coreapp.ui.view.setBackground

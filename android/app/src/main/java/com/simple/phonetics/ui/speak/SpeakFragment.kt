@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
+import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
@@ -41,7 +42,6 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
-import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
@@ -50,7 +50,6 @@ import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
-import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow

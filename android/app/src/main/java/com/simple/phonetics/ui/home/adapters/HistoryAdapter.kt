@@ -3,11 +3,11 @@ package com.simple.phonetics.ui.home.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.annotation.ItemAdapter
+import com.simple.adapter.entities.ViewItem
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemHistoryBinding
-import com.tuanha.adapter.ViewItemAdapter
-import com.tuanha.adapter.annotation.ItemAdapter
-import com.tuanha.adapter.entities.ViewItem
 
 @ItemAdapter
 class HistoryAdapter(onItemClick: (View, HistoryViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<HistoryViewItem, ItemHistoryBinding>(onItemClick) {

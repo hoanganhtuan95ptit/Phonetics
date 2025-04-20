@@ -3,8 +3,8 @@ package com.simple.phonetics.ui.base.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.tuanha.adapter.ViewItemAdapter
-import com.tuanha.adapter.entities.ViewItem
+import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
@@ -16,8 +16,6 @@ import com.simple.coreapp.ui.view.setSize
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.image.setImage
 import com.simple.phonetics.databinding.ItemImageStateBinding
-import com.simple.phonetics.databinding.ItemSentenceBinding
-import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 
 class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<ImageStateViewItem, ItemImageStateBinding>(onItemClick) {
 

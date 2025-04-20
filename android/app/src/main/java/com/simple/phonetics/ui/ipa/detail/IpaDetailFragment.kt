@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
+import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.utils.ext.DP
@@ -31,7 +32,6 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.toSuccess
-import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 import com.tuanha.deeplink.sendDeeplink
 

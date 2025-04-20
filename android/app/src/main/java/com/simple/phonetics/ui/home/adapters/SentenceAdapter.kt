@@ -2,15 +2,13 @@ package com.simple.phonetics.ui.home.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.simple.adapter.SpaceViewItem
-import com.tuanha.adapter.ViewItemAdapter
-import com.tuanha.adapter.entities.ViewItem
+import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.annotation.ItemAdapter
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemSentenceBinding
-import com.simple.phonetics.databinding.ItemSpaceBinding
 import com.simple.phonetics.entities.Sentence
-import com.tuanha.adapter.annotation.ItemAdapter
 
 @ItemAdapter
 class SentenceAdapter : ViewItemAdapter<SentenceViewItem, ItemSentenceBinding>() {

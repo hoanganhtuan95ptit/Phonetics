@@ -52,7 +52,7 @@ project.ext {
     firebase_bom_version = '30.3.1'
     firebase_ads_version = '21.1.0'
 
-    hoanganhtuan95ptit_version = '1.2.36'
+    hoanganhtuan95ptit_version = '1.2.37'
 
     koinDependencies = [
 
@@ -139,7 +139,12 @@ project.ext {
             event               : "com.github.hoanganhtuan95ptit.core:event:$hoanganhtuan95ptit_version",
             state               : "com.github.hoanganhtuan95ptit.core:state:$hoanganhtuan95ptit_version",
             image               : "com.github.hoanganhtuan95ptit.core:image:$hoanganhtuan95ptit_version",
-            adapter             : "com.github.hoanganhtuan95ptit.core:adapter:$hoanganhtuan95ptit_version",
+
+            detect              : "com.github.hoanganhtuan95ptit.core:detect:$hoanganhtuan95ptit_version",
+            detect_mlkit        : "com.github.hoanganhtuan95ptit.core:detect-mlkit:$hoanganhtuan95ptit_version",
+
+            translate           : "com.github.hoanganhtuan95ptit.core:translate:$hoanganhtuan95ptit_version",
+            translate_mlkit     : "com.github.hoanganhtuan95ptit.core:translate-mlkit:$hoanganhtuan95ptit_version",
 
             analytics           : "com.github.hoanganhtuan95ptit.core:analytics:$hoanganhtuan95ptit_version",
             analytics_log       : "com.github.hoanganhtuan95ptit.core:analytics-log:$hoanganhtuan95ptit_version",
@@ -149,10 +154,10 @@ project.ext {
             crashlytics_log     : "com.github.hoanganhtuan95ptit.core:crashlytics-log:$hoanganhtuan95ptit_version",
             crashlytics_firebase: "com.github.hoanganhtuan95ptit.core:crashlytics-firebase:$hoanganhtuan95ptit_version",
 
-            detect              : "com.github.hoanganhtuan95ptit.core:detect:$hoanganhtuan95ptit_version",
-            detect_mlkit        : "com.github.hoanganhtuan95ptit.core:detect-mlkit:$hoanganhtuan95ptit_version",
+            adapter           : "com.github.hoanganhtuan95ptit.core:adapter:$hoanganhtuan95ptit_version",
+            adapter_processor     : "com.github.hoanganhtuan95ptit.core:adapter-processor:$hoanganhtuan95ptit_version",
 
-            translate           : "com.github.hoanganhtuan95ptit.core:translate:$hoanganhtuan95ptit_version",
-            translate_mlkit     : "com.github.hoanganhtuan95ptit.core:translate-mlkit:$hoanganhtuan95ptit_version",
+            deeplink              : "com.github.hoanganhtuan95ptit.core:deeplink:$hoanganhtuan95ptit_version",
+            deeplink_processor        : "com.github.hoanganhtuan95ptit.core:deeplink-processor:$hoanganhtuan95ptit_version",
     ]
 }
