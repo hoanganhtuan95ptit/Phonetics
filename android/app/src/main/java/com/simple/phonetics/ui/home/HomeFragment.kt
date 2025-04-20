@@ -9,15 +9,12 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
-import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
@@ -31,7 +28,6 @@ import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
-import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
@@ -39,10 +35,8 @@ import com.simple.phonetics.databinding.FragmentHomeBinding
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
-import com.simple.phonetics.ui.home.adapters.HistoryAdapter
 import com.simple.phonetics.ui.home.view.LanguageHomeView
 import com.simple.phonetics.ui.home.view.LanguageHomeViewImpl
 import com.simple.phonetics.ui.home.view.PasteHomeView
@@ -68,12 +62,6 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.simple.phonetics.utils.listenerEvent
-import com.simple.phonetics.utils.showAds
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 
@@ -188,40 +176,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
         val binding = binding ?: return
 
-        val ipaAdapter = IpaAdapters { view, item ->
-
-            val transitionName = view.transitionName ?: item.id
-
-            sendDeeplink(
-                deepLink = DeeplinkManager.IPA_DETAIL,
-                extras = mapOf(Param.IPA to item.data, Param.ROOT_TRANSITION_NAME to transitionName),
-                sharedElement = mapOf(transitionName to view)
-            )
-        }
-
-        val historyAdapter = HistoryAdapter { _, item ->
-
-            viewModel.getPhonetics("")
-            binding.etText.setText(item.id)
-
-            showAds()
-        }
-
         val clickTextAdapter = ClickTextAdapter { view, item ->
-
-            val transitionName = view.transitionName ?: item.id
 
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) sendDeeplink(
                 deepLink = DeeplinkManager.SPEAK,
                 extras = mapOf(Param.TEXT to (item.data as Sentence).text)
-            ) else if (item.id.startsWith(Id.IPA_LIST)) sendDeeplink(
-                deepLink = DeeplinkManager.IPA_LIST,
-                extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName),
-                sharedElement = mapOf(transitionName to view)
-            ) else if (item.id.startsWith(Id.GAME)) {
-
-                openGame(view = view, item = item)
-            }
+            )
         }
 
         val phoneticsAdapter = PhoneticsAdapter { _, item ->
@@ -235,7 +195,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             }
         }
 
-        MultiAdapter(ipaAdapter, historyAdapter, clickTextAdapter, phoneticsAdapter).apply {
+        MultiAdapter(clickTextAdapter, phoneticsAdapter).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -383,33 +343,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
             binding.recFilter.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
-    }
-
-    private fun openGame(view: View, item: ClickTextViewItem) = viewLifecycleOwner.lifecycleScope.launch {
-
-        val transitionName = view.transitionName ?: item.id
-
-        sendDeeplink(
-            deepLink = DeeplinkManager.GAME_CONFIG,
-        )
-
-        val result = channelFlow {
-
-            listenerEvent(coroutineScope = this, eventName = EventName.DISMISS) {
-
-                trySend(it.asObject<Bundle>().getInt(Param.RESULT))
-            }
-
-            awaitClose {
-
-            }
-        }.first()
-
-        if (result == 1) sendDeeplink(
-            deepLink = DeeplinkManager.GAME,
-            extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName),
-            sharedElement = mapOf(transitionName to view)
-        )
     }
 
     private fun startSpeak(text: String) {

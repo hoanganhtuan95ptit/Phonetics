@@ -23,7 +23,6 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.phonetics.DeeplinkManager
-import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
@@ -32,11 +31,10 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
-import com.simple.phonetics.utils.sendEvent
 
 class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewModel>() {
 
-    private var result: Int = -1
+    private var result: Int = 0
 
     override val viewModel: GameConfigViewModel by lazy {
         getViewModel(requireActivity(), GameConfigViewModel::class)
@@ -65,7 +63,7 @@ class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewMo
 
     override fun onDestroy() {
         super.onDestroy()
-        sendEvent(EventName.DISMISS, bundleOf(Param.RESULT to result))
+        com.simple.event.sendEvent(arguments?.getString(Param.KEY_REQUEST) ?: Param.KEY_REQUEST, result)
     }
 
     private fun setupRecyclerView() {
