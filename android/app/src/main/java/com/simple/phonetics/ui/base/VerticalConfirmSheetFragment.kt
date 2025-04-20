@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
-import com.simple.adapter.entities.ViewItem
+import com.tuanha.adapter.entities.ViewItem
 import com.simple.coreapp.Param
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewBindingSheetFragment
 import com.simple.coreapp.ui.view.setBackground
@@ -96,7 +96,7 @@ class VerticalConfirmSheetFragment : BaseViewBindingSheetFragment<DialogListBind
 class ConfirmDeeplinkHandler : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return com.simple.phonetics.Deeplink.CONFIRM
+        return com.simple.phonetics.DeeplinkManager.CONFIRM
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {

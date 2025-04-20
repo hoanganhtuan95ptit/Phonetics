@@ -11,7 +11,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.SpaceViewItem
-import com.simple.adapter.entities.ViewItem
+import com.tuanha.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.utils.ext.DP
@@ -22,7 +22,7 @@ import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.Constants
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
@@ -215,13 +215,13 @@ class GameConfigViewModel(
         val listGameAvailable = arrayListOf<String>()
 
         if (translate.containsKey("game_ipa_match_screen_title")) {
-            listGameAvailable.add(Deeplink.GAME_IPA_MATCH)
+            listGameAvailable.add(DeeplinkManager.GAME_IPA_MATCH)
         }
 
-        listGameAvailable.add(Deeplink.GAME_IPA_WORDLE)
+        listGameAvailable.add(DeeplinkManager.GAME_IPA_WORDLE)
 
         if (translate.containsKey("game_ipa_puzzle_screen_title") && ipaCount.asFlow().first().orZero() > 0) {
-            listGameAvailable.add(Deeplink.GAME_IPA_PUZZLE)
+            listGameAvailable.add(DeeplinkManager.GAME_IPA_PUZZLE)
         }
 
         return listGameAvailable.random()

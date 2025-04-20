@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
@@ -38,6 +37,7 @@ import com.simple.state.doSuccess
 import com.simple.state.isFailed
 import com.simple.state.isStart
 import com.simple.state.toSuccess
+import com.tuanha.adapter.entities.ViewItem
 
 class ConfigViewModel(
     private val translateUseCase: TranslateUseCase,

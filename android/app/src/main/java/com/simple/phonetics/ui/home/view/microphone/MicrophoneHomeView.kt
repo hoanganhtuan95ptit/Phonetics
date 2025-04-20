@@ -3,7 +3,7 @@ package com.simple.phonetics.ui.home.view.microphone
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.ConfigViewModel
@@ -34,7 +34,7 @@ class MicrophoneHomeViewImpl : MicrophoneHomeView {
 
         fragment.binding?.ivMicrophone?.setDebouncedClickListener {
 
-            sendDeeplink(Deeplink.RECORDING, extras = mapOf(Param.REVERSE to viewModel.isReverse.value, Param.KEY_REQUEST to EventName.MICROPHONE))
+            sendDeeplink(DeeplinkManager.RECORDING, extras = mapOf(Param.REVERSE to viewModel.isReverse.value, Param.KEY_REQUEST to EventName.MICROPHONE))
         }
 
         listenerEvent(lifecycle = fragment.viewLifecycleOwner.lifecycle, eventName = EventName.MICROPHONE) {

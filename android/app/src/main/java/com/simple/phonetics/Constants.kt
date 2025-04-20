@@ -21,7 +21,7 @@ object Param {
     const val ROOT_TRANSITION_NAME = "ROOT_TRANSITION_NAME"
 }
 
-object Deeplink {
+object DeeplinkManager {
 
     const val TOAST = "app://toast"
     const val SPEAK = "app://speak"
@@ -95,6 +95,7 @@ object Id {
     const val LISTEN = "LISTEN"
     const val CHOOSE = "CHOOSE"
     const val BUTTON = "BUTTON"
+    const val CONFIG = "CONFIRM"
     const val RESOURCE = "RESOURCE"
     const val SENTENCE = "SENTENCE"
     const val IPA_LIST = "IPA_LIST"

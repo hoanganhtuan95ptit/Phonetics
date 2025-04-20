@@ -10,7 +10,7 @@ import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentContainerHeaderHorizontalBinding
@@ -80,7 +80,7 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
 class GameDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.GAME
+        return DeeplinkManager.GAME
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {

@@ -7,7 +7,7 @@ import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import com.simple.adapter.SpaceViewItem
-import com.simple.adapter.entities.ViewItem
+import com.tuanha.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background

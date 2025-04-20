@@ -1,21 +1,32 @@
 package com.simple.phonetics.ui.language.adapters
 
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import com.simple.phonetics.databinding.ItemLanguageLoadingBinding
 import com.simple.phonetics.databinding.ItemLanguageStateBinding
-import com.tuanha.adapter.annotation.AdapterPreview
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.annotation.ItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 
-@AdapterPreview
+@ItemAdapter
 class LanguageStateAdapter : ViewItemAdapter<LanguageStateViewItem, ItemLanguageStateBinding>() {
 
-    override fun bind(binding: ItemLanguageStateBinding, viewType: Int, position: Int, item: LanguageStateViewItem, payloads: MutableList<Any>) {
-        super.bind(binding, viewType, position, item, payloads)
+    override val viewItemClass: Class<LanguageStateViewItem> by lazy {
+        LanguageStateViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemLanguageStateBinding {
+        return ItemLanguageStateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemLanguageStateBinding, viewType: Int, position: Int, item: LanguageStateViewItem, payloads: MutableList<Any>) {
+        super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         if (payloads.contains(Payload.NAME)) bindingName(binding, item)
     }
 
-    override fun bind(binding: ItemLanguageStateBinding, viewType: Int, position: Int, item: LanguageStateViewItem) {
-        super.bind(binding, viewType, position, item)
+    override fun onBindViewHolder(binding: ItemLanguageStateBinding, viewType: Int, position: Int, item: LanguageStateViewItem) {
+        super.onBindViewHolder(binding, viewType, position, item)
 
         bindingName(binding, item)
     }

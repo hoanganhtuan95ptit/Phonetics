@@ -7,7 +7,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
-import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
@@ -21,7 +20,7 @@ import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
@@ -30,9 +29,9 @@ import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
-import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.sendEvent
+import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 
 class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewModel>() {
@@ -89,7 +88,7 @@ class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewMo
             }
         }
 
-        adapter = MultiAdapter(clickTextAdapter, *ListPreviewAdapter()).apply {
+        MultiAdapter(clickTextAdapter).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -131,16 +130,16 @@ class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewMo
 class ConfigDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.GAME_CONFIG
+        return DeeplinkManager.GAME_CONFIG
     }
 
-    override suspend fun navigation(activity: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        if (activity !is MainActivity) return false
+        if (componentCallbacks !is MainActivity) return false
 
         val fragment = GameConfigFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
-        fragment.showOrAwaitDismiss(activity.supportFragmentManager, tag = "")
+        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, tag = "")
 
         return true
     }

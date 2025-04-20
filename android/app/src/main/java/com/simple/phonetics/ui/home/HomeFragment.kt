@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.JustifyContent
-import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
@@ -28,7 +27,7 @@ import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
 import com.simple.coreapp.utils.extentions.isActive
 import com.simple.crashlytics.logCrashlytics
 import com.simple.image.setImage
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
@@ -61,7 +60,6 @@ import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeView
 import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeViewImpl
 import com.simple.phonetics.ui.home.view.review.ReviewHomeView
 import com.simple.phonetics.ui.home.view.review.ReviewHomeViewImpl
-import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
@@ -69,6 +67,7 @@ import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.showAds
+import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 import com.tuanha.deeplink.sendDeeplink
 import kotlinx.coroutines.channels.awaitClose
@@ -95,9 +94,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     }
 
     private var adapter by autoCleared<MultiAdapter>()
-
-    private var adapterConfig by autoCleared<MultiAdapter>()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -199,7 +195,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             val transitionName = view.transitionName ?: item.id
 
             sendDeeplink(
-                deepLink = Deeplink.IPA_DETAIL,
+                deepLink = DeeplinkManager.IPA_DETAIL,
                 extras = mapOf(Param.IPA to item.data, Param.ROOT_TRANSITION_NAME to transitionName),
                 sharedElement = mapOf(transitionName to view)
             )
@@ -218,10 +214,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             val transitionName = view.transitionName ?: item.id
 
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) sendDeeplink(
-                deepLink = Deeplink.SPEAK,
+                deepLink = DeeplinkManager.SPEAK,
                 extras = mapOf(Param.TEXT to (item.data as Sentence).text)
             ) else if (item.id.startsWith(Id.IPA_LIST)) sendDeeplink(
-                deepLink = Deeplink.IPA_LIST,
+                deepLink = DeeplinkManager.IPA_LIST,
                 extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName),
                 sharedElement = mapOf(transitionName to view)
             ) else if (item.id.startsWith(Id.GAME)) {
@@ -234,14 +230,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
             if (viewModel.isSupportSpeak.value == true) {
 
-                sendDeeplink(Deeplink.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
+                sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
             } else if (viewModel.isSupportListen.value == true) {
 
                 startSpeak(text = item.data.text)
             }
         }
 
-        adapter = MultiAdapter(ipaAdapter, historyAdapter, clickTextAdapter, phoneticsAdapter, *ListPreviewAdapter()).apply {
+        MultiAdapter(ipaAdapter, historyAdapter, clickTextAdapter, phoneticsAdapter).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -267,10 +263,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
         val textAdapter = ClickTextAdapter { _, _ ->
 
-            sendDeeplink(Deeplink.CONFIG)
+            sendDeeplink(DeeplinkManager.CONFIG)
         }
 
-        adapterConfig = MultiAdapter(textAdapter, *ListPreviewAdapter()).apply {
+        MultiAdapter(textAdapter).apply {
 
             binding.recFilter.adapter = this
             binding.recFilter.itemAnimator = null
@@ -396,7 +392,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         val transitionName = view.transitionName ?: item.id
 
         sendDeeplink(
-            deepLink = Deeplink.GAME_CONFIG,
+            deepLink = DeeplinkManager.GAME_CONFIG,
         )
 
         val result = channelFlow {
@@ -412,7 +408,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         }.first()
 
         if (result == 1) sendDeeplink(
-            deepLink = Deeplink.GAME,
+            deepLink = DeeplinkManager.GAME,
             extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName),
             sharedElement = mapOf(transitionName to view)
         )
@@ -433,7 +429,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 class PhoneticsDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.PHONETICS
+        return DeeplinkManager.PHONETICS
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {

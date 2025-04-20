@@ -9,7 +9,7 @@ import com.simple.coreapp.ui.dialogs.confirm.VerticalConfirmDialogFragment
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.utils.appTheme
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.firstOrNull
 class ConfirmDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.CONFIRM
+        return DeeplinkManager.CONFIRM
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
