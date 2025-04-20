@@ -1,10 +1,20 @@
 package com.simple.phonetics.ui.home.view.review
 
+import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.view.Gravity
+import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.simple.adapter.SpaceViewItem
+import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.ui.adapters.ImageViewItem
+import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.Size
+import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
@@ -29,37 +39,105 @@ class ReviewHomeViewModel(
     val rate: LiveData<Rate> = MediatorLiveData()
 
     @VisibleForTesting
-    val show: LiveData<Boolean> = MediatorLiveData()
-
     val historyList: LiveData<List<Sentence>> = mediatorLiveData {
 
-        postDifferentValue(getPhoneticsHistoryAsyncUseCase.execute(null).firstOrNull().orEmpty())
+        val list = getPhoneticsHistoryAsyncUseCase.execute(GetPhoneticsHistoryAsyncUseCase.Param(1)).firstOrNull()
+
+        postValue(list)
     }
 
-    @VisibleForTesting
-    val rateInfo: LiveData<RateInfo> = combineSources(theme, translate, rate, show, historyList) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, rate, historyList) {
 
         val theme = theme.value ?: return@combineSources
         val translate = translate.value ?: return@combineSources
 
         val rate = rate.value ?: return@combineSources
-        val show = show.value ?: return@combineSources
         val historyList = historyList.value ?: return@combineSources
 
         val isValidate = rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3
 
         // nếu người dùng đã xác nhận mở rate
-        if (show == false || historyList.isEmpty() || rate.status == Rate.Status.OPEN_RATE.value || !isValidate) {
+        if (rate.status == Rate.Status.OPEN_RATE.value || !isValidate || historyList.isEmpty()) {
+
+            postDifferentValue(emptyList())
+            return@combineSources
+        }
+
+        val list = arrayListOf<ViewItem>()
+
+        ImageViewItem(
+            id = "1",
+            anim = R.raw.anim_rate,
+            size = Size(
+                width = ViewGroup.LayoutParams.MATCH_PARENT,
+                height = DP.DP_100 + DP.DP_70
+            )
+        ).let {
+
+            list.add(it)
+            list.add(SpaceViewItem("SPACE_IMAGE", height = DP.DP_24))
+        }
+
+        NoneTextViewItem(
+            id = "2",
+            text = translate["rate_title"].orEmpty()
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+            size = Size(
+                width = ViewGroup.LayoutParams.MATCH_PARENT,
+                height = ViewGroup.LayoutParams.WRAP_CONTENT
+            ),
+            textSize = Size(
+                width = ViewGroup.LayoutParams.MATCH_PARENT,
+                height = ViewGroup.LayoutParams.WRAP_CONTENT
+            ),
+            textStyle = TextStyle(
+                textSize = 20f,
+                textGravity = Gravity.CENTER
+            )
+        ).let {
+
+            list.add(it)
+            list.add(SpaceViewItem("SPACE_TITLE", height = DP.DP_24))
+        }
+
+        NoneTextViewItem(
+            id = "3",
+            text = translate["rate_message"].orEmpty()
+                .with(ForegroundColorSpan(theme.colorOnSurface)),
+            textStyle = TextStyle(
+                textSize = 16f,
+                textGravity = Gravity.CENTER
+            )
+        ).let {
+
+            list.add(it)
+            list.add(SpaceViewItem("SPACE_TITLE", height = DP.DP_40))
+        }
+
+        postDifferentValue(list)
+    }
+
+    @VisibleForTesting
+    val rateInfo: LiveData<RateInfo> = combineSources(theme, translate, viewItemList) {
+
+        val theme = theme.value ?: return@combineSources
+        val translate = translate.value ?: return@combineSources
+
+        val viewItemList = viewItemList.value ?: return@combineSources
+
+
+        if (viewItemList.isEmpty()) {
 
             postDifferentValue(RateInfo(show = false))
             return@combineSources
         }
 
-        RateInfo(
+
+        val info = RateInfo(
             show = true,
-            anim = R.raw.anim_rate,
-            title = translate["rate_title"].orEmpty(),
-            message = translate["rate_message"].orEmpty(),
+
+            viewItemList = viewItemList,
+
             positive = ButtonInfo(
                 text = translate["rate_action_positive"].orEmpty().with(ForegroundColorSpan(theme.colorOnPrimary)),
                 background = Background(
@@ -76,22 +154,18 @@ class ReviewHomeViewModel(
                     cornerRadius = DP.DP_16
                 )
             ),
-        ).apply {
+        )
 
-            postDifferentValue(this)
-        }
+        postDifferentValue(info)
     }
 
     val rateInfoEvent: LiveData<Event<RateInfo>> = rateInfo.toEvent()
 
 
-    fun show() {
-        show.postDifferentValue(true)
-    }
-
     fun updateRate(rate: Rate?) {
         this.rate.postDifferentValue(rate ?: Rate())
     }
+
 
     data class Rate(
         val date: Int = 0,
@@ -106,12 +180,9 @@ class ReviewHomeViewModel(
     data class RateInfo(
         val show: Boolean,
 
-        val anim: Int = 0,
-
-        val title: CharSequence = "",
-        val message: CharSequence = "",
-
         val positive: ButtonInfo? = null,
-        val negative: ButtonInfo? = null
+        val negative: ButtonInfo? = null,
+
+        val viewItemList: List<ViewItem>? = null,
     )
 }

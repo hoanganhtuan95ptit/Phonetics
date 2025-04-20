@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.core.utils.extentions.asListOrNull
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.Param
@@ -57,9 +58,11 @@ private val verticalConfirmItemList by lazy {
 
 class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBinding, VerticalConfirmViewModel>() {
 
+
     private var resultCode: Int = 0
 
     private var bindingConfirmSpeak by autoCleared<LayoutActionVerticalBinding>()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -89,7 +92,8 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
 
     override fun onDestroy() {
         super.onDestroy()
-        sendEvent(EventName.DISMISS, bundleOf(Param.RESULT_CODE to resultCode))
+        sendEvent(arguments?.getString(Param.KEY_REQUEST).orEmpty(), resultCode)
+        sendEvent(EventName.DISMISS, bundleOf(arguments?.getString(Param.KEY_REQUEST).orEmpty() to resultCode))
     }
 
     private fun setupAction() {
@@ -284,6 +288,6 @@ class ConfirmDeeplinkHandler : DeeplinkHandler {
             add(SpaceViewItem(id = "SPACE_MESSAGE", height = DP.DP_24))
         }
 
-        addAll(extras.orEmpty().values.filterIsInstance<ViewItem>())
+        addAll(extras.orEmpty()[com.simple.phonetics.Param.VIEW_ITEM_LIST].asListOrNull<ViewItem>().orEmpty())
     }
 }

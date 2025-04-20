@@ -71,7 +71,7 @@ val viewModelModule = module {
 
 
     viewModel {
-        EventHomeViewModel(get(), get(), get())
+        EventHomeViewModel(get(), get())
     }
 
     viewModel {

@@ -13,6 +13,7 @@ object Param {
     const val IS_SUPPORT = "IS_SUPPORT"
     const val KEY_REQUEST = "KEY_REQUEST"
     const val LANGUAGE_CODE = "LANGUAGE_CODE"
+    const val VIEW_ITEM_LIST = "VIEW_ITEM_LIST"
     const val POSITIVE_BACKGROUND = "POSITIVE_BACKGROUND"
 
     const val VOICE_ID = "VOICE_ID"

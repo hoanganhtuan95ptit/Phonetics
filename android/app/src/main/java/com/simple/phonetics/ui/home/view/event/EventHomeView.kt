@@ -7,10 +7,11 @@ import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
+import com.simple.phonetics.Param
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.utils.listenerEvent
-import com.simple.deeplink.sendDeeplink
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -34,16 +35,13 @@ class EventHomeViewImpl : EventHomeView {
 
         viewModel.eventInfoEvent.asFlow().launchCollect(fragment.viewLifecycleOwner) { event ->
 
+            show.asFlow().first()
+
             val info = event.getContentIfNotHandled() ?: return@launchCollect
 
             showEventAwait(info = info)
 
             viewModel.updateShowEvent()
-        }
-
-        show.observe(fragment.viewLifecycleOwner) {
-
-            viewModel.show()
         }
     }
 
@@ -73,21 +71,16 @@ class EventHomeViewImpl : EventHomeView {
 
         val extras = mapOf(
             com.simple.coreapp.Param.CANCEL to false,
-            com.simple.coreapp.Param.IMAGE to info.image,
-
-            com.simple.coreapp.Param.TITLE to info.title,
-            com.simple.coreapp.Param.MESSAGE to info.message,
 
             com.simple.coreapp.Param.POSITIVE to info.positive,
             com.simple.coreapp.Param.NEGATIVE to info.negative,
 
-            com.simple.coreapp.Param.ANCHOR to info.anchor,
-            com.simple.coreapp.Param.BACKGROUND to info.background,
+            com.simple.coreapp.Param.KEY_REQUEST to keyRequest,
 
-            com.simple.coreapp.Param.KEY_REQUEST to keyRequest
+            Param.VIEW_ITEM_LIST to info.viewItemList
         )
 
-        sendDeeplink(deepLink = DeeplinkManager.EVENT, extras = extras)
+        sendDeeplink(deepLink = DeeplinkManager.CONFIRM, extras = extras)
 
         logAnalytics("event_show_${info.event.name.lowercase()}")
 
