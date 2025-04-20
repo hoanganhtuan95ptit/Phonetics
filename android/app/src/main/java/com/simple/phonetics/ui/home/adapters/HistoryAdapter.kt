@@ -5,12 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
+import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.adapter.entities.ViewItem
+import com.simple.event.sendEvent
+import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemHistoryBinding
 
 @ItemAdapter
-class HistoryAdapter(onItemClick: (View, HistoryViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<HistoryViewItem, ItemHistoryBinding>(onItemClick) {
+class HistoryAdapter(private val onItemClick: ((View, HistoryViewItem) -> Unit)? = null) : ViewItemAdapter<HistoryViewItem, ItemHistoryBinding>() {
 
     override val viewItemClass: Class<HistoryViewItem> by lazy {
         HistoryViewItem::class.java
@@ -18,6 +21,23 @@ class HistoryAdapter(onItemClick: (View, HistoryViewItem) -> Unit = { _, _ -> })
 
     override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemHistoryBinding {
         return ItemHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun createViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<ItemHistoryBinding> {
+
+        val viewHolder = BaseBindingViewHolder(createViewBinding(parent, viewType), viewType)
+
+        val binding = viewHolder.binding
+
+        binding.root.setOnClickListener { view ->
+
+            val viewItem = getViewItem(viewHolder.bindingAdapterPosition) ?: return@setOnClickListener
+
+            onItemClick?.invoke(view, viewItem)
+            sendEvent(EventName.HISTORY_VIEW_ITEM_CLICKED, view to viewItem)
+        }
+
+        return viewHolder
     }
 
     override fun onBindViewHolder(binding: ItemHistoryBinding, viewType: Int, position: Int, item: HistoryViewItem, payloads: MutableList<Any>) {

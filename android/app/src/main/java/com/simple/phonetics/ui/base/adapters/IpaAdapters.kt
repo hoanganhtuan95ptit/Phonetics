@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.annotation.ItemAdapter
+import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
@@ -14,11 +16,15 @@ import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setSize
+import com.simple.event.sendEvent
+import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
+import com.simple.phonetics.databinding.ItemHistoryBinding
 import com.simple.phonetics.databinding.ItemIpaBinding
 import com.simple.phonetics.entities.Ipa
 
-class IpaAdapters(onItemClick: (View, IpaViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<IpaViewItem, ItemIpaBinding>(onItemClick) {
+@ItemAdapter
+class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null) : ViewItemAdapter<IpaViewItem, ItemIpaBinding>() {
 
     override val viewItemClass: Class<IpaViewItem> by lazy {
         IpaViewItem::class.java
@@ -26,6 +32,23 @@ class IpaAdapters(onItemClick: (View, IpaViewItem) -> Unit = { _, _ -> }) : View
 
     override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemIpaBinding {
         return ItemIpaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun createViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<ItemIpaBinding> {
+
+        val viewHolder = BaseBindingViewHolder(createViewBinding(parent, viewType), viewType)
+
+        val binding = viewHolder.binding
+
+        binding.root.setOnClickListener { view ->
+
+            val viewItem = getViewItem(viewHolder.bindingAdapterPosition) ?: return@setOnClickListener
+
+            onItemClick?.invoke(view, viewItem)
+            sendEvent(EventName.IPA_VIEW_ITEM_CLICKED, view to viewItem)
+        }
+
+        return viewHolder
     }
 
     override fun onBindViewHolder(binding: ItemIpaBinding, viewType: Int, position: Int, item: IpaViewItem, payloads: MutableList<Any>) {
