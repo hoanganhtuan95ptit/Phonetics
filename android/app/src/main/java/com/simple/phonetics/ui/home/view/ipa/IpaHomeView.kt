@@ -33,7 +33,7 @@ class IpaHomeViewImpl : IpaHomeView {
         }
 
 
-        com.simple.event.listenerEvent(eventName = "TEXT_VIEW_ITEM_CLICKED", lifecycle = fragment.viewLifecycleOwner.lifecycle) { // todo use EventName.TEXT_VIEW_ITEM_CLICKED from version 1.3.2
+        com.simple.event.listenerEvent(eventName = com.simple.coreapp.EventName.TEXT_VIEW_ITEM_CLICKED, lifecycle = fragment.viewLifecycleOwner.lifecycle) {
 
             val (view, viewItem) = it.asObjectOrNull<Pair<View, ClickTextViewItem>>() ?: return@listenerEvent
 

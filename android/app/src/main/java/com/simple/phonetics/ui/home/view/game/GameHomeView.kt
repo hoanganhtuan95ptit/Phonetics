@@ -3,6 +3,7 @@ package com.simple.phonetics.ui.home.view.game
 import android.view.View
 import com.simple.core.utils.extentions.asObject
 import com.simple.core.utils.extentions.asObjectOrNull
+import com.simple.coreapp.EventName
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
@@ -34,7 +35,7 @@ class GameHomeViewImpl : GameHomeView {
         }
 
 
-        com.simple.event.listenerEvent(eventName = "TEXT_VIEW_ITEM_CLICKED", lifecycle = fragment.viewLifecycleOwner.lifecycle) { // todo use EventName.TEXT_VIEW_ITEM_CLICKED from version 1.3.2
+        com.simple.event.listenerEvent(eventName = EventName.TEXT_VIEW_ITEM_CLICKED, lifecycle = fragment.viewLifecycleOwner.lifecycle) {
 
             val (view, viewItem) = it.asObjectOrNull<Pair<View, ClickTextViewItem>>() ?: return@listenerEvent
 
