@@ -49,6 +49,48 @@ fun getIPAMatchStateInfo(size: AppSize, theme: AppTheme, translate: Map<String, 
         translate["game_ipa_match_screen_message_answer_failed"]
     }
 
+
+    val list = arrayListOf<ViewItem>()
+
+    NoneTextViewItem(
+        id = "2",
+        text = title.orEmpty()
+            .with(ForegroundColorSpan(textColor)),
+        size = Size(
+            width = ViewGroup.LayoutParams.MATCH_PARENT,
+        ),
+        textSize = Size(
+            width = ViewGroup.LayoutParams.MATCH_PARENT,
+        ),
+        textStyle = TextStyle(
+            textSize = 20f,
+            textGravity = Gravity.CENTER
+        )
+    ).let {
+
+        list.add(it)
+    }
+
+    NoneTextViewItem(
+        id = "3",
+        text = message.orEmpty()
+            .with(ForegroundColorSpan(textColor)),
+        size = Size(
+            width = ViewGroup.LayoutParams.MATCH_PARENT,
+        ),
+        textSize = Size(
+            width = ViewGroup.LayoutParams.MATCH_PARENT,
+        ),
+        textStyle = TextStyle(
+            textSize = 16f,
+            textGravity = Gravity.CENTER
+        )
+    ).let {
+
+        list.add(it)
+    }
+
+
     val buttonText = if (isAnswerCorrect) {
         translate["action_continue"]
     } else {
@@ -70,21 +112,16 @@ fun getIPAMatchStateInfo(size: AppSize, theme: AppTheme, translate: Map<String, 
     )
 
     val info = GameItemViewModel.StateInfo(
-        title = title.orEmpty()
-            .with(ForegroundColorSpan(textColor)),
-        message = message.orEmpty()
-            .with(ForegroundColorSpan(textColor)),
+
+        viewItemList = list,
+
         positive = positive,
 
-        background = Background(
-            cornerRadius_TR = DP.DP_16,
-            cornerRadius_TL = DP.DP_16,
-            backgroundColor = if (isAnswerCorrect) {
-                theme.colorPrimaryVariant
-            } else {
-                theme.colorErrorVariant
-            }
-        )
+        backgroundColor = if (isAnswerCorrect) {
+            theme.colorPrimaryVariant
+        } else {
+            theme.colorErrorVariant
+        }
     )
 
     return info

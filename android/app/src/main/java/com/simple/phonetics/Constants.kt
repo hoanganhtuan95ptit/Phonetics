@@ -14,6 +14,7 @@ object Param {
     const val KEY_REQUEST = "KEY_REQUEST"
     const val LANGUAGE_CODE = "LANGUAGE_CODE"
     const val VIEW_ITEM_LIST = "VIEW_ITEM_LIST"
+    const val BACKGROUND_COLOR = "BACKGROUND_COLOR"
     const val POSITIVE_BACKGROUND = "POSITIVE_BACKGROUND"
 
     const val VOICE_ID = "VOICE_ID"

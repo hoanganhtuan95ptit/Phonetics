@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.base
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.asListOrNull
-import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.Param
-import com.simple.coreapp.ui.adapters.ImageViewItem
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
@@ -49,6 +47,7 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.sendEvent
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import java.io.Serializable
 import kotlin.math.absoluteValue
 
 private val verticalConfirmItemList by lazy {
@@ -172,9 +171,8 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
                 binding?.vAnchor?.delegate?.setBackground(it)
             }
 
-
             val background = Background(
-                backgroundColor = it.colorBackground,
+                backgroundColor = arguments?.getInt(com.simple.phonetics.Param.BACKGROUND_COLOR).takeIf { it != 0 } ?: it.colorBackground,
                 cornerRadius_TL = DP.DP_24,
                 cornerRadius_TR = DP.DP_24
             )
@@ -241,14 +239,14 @@ class ConfirmDeeplinkHandler : DeeplinkHandler {
 
 
         verticalConfirmItemList.resetReplayCache()
-        verticalConfirmItemList.emit(getViewItemList(extras))
+        verticalConfirmItemList.emit(extras.orEmpty()[com.simple.phonetics.Param.VIEW_ITEM_LIST].asListOrNull<ViewItem>().orEmpty().toList())
 
 
         val fragment = VerticalConfirmSheetFragment()
 
         fragment.arguments = extras.orEmpty().filter {
 
-            it !is ViewItem
+            it.value is CharSequence || it.value is Int || it.value is Long || it.value is Float || it.value is Double || it.value is Serializable || it.value is Parcelable
         }.let {
 
             bundleOf(*it.toList().toTypedArray())
@@ -258,36 +256,5 @@ class ConfirmDeeplinkHandler : DeeplinkHandler {
 
 
         return true
-    }
-
-    private fun getViewItemList(extras: Map<String, Any?>?): List<ViewItem> = arrayListOf<ViewItem>().apply {
-
-        extras.orEmpty()[Param.ANIM]?.asObjectOrNull<Int>()?.let {
-
-            ImageViewItem(id = "", anim = it)
-        }?.let {
-
-            add(it)
-        }
-
-        extras.orEmpty()[Param.TITLE]?.asObjectOrNull<CharSequence>()?.let {
-
-            NoneTextViewItem(id = "TITLE", text = it)
-        }?.let {
-
-            add(it)
-            add(SpaceViewItem(id = "SPACE_TITLE_MESSAGE", height = DP.DP_24))
-        }
-
-        extras.orEmpty()[Param.MESSAGE]?.asObjectOrNull<CharSequence>()?.let {
-
-            NoneTextViewItem(id = "MESSAGE", text = it)
-        }?.let {
-
-            add(it)
-            add(SpaceViewItem(id = "SPACE_MESSAGE", height = DP.DP_24))
-        }
-
-        addAll(extras.orEmpty()[com.simple.phonetics.Param.VIEW_ITEM_LIST].asListOrNull<ViewItem>().orEmpty())
     }
 }

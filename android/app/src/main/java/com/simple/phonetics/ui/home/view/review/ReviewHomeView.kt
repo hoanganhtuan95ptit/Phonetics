@@ -113,8 +113,8 @@ class ReviewHomeViewImpl : ReviewHomeView {
 
         fragment.viewLifecycleOwner.lifecycleScope.launch(handler + Dispatchers.IO) {
 
-//            val rate = sharedPreferences.getString(Param.RATE, "").toObjectOrNull<ReviewHomeViewModel.Rate>()
-            viewModel.updateRate(null)
+            val rate = sharedPreferences.getString(Param.RATE, "").toObjectOrNull<ReviewHomeViewModel.Rate>()
+            viewModel.updateRate(rate)
         }
     }
 

@@ -141,7 +141,7 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
         }
 
 
-        buttonInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON") {
+        actionInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON") {
 
             val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
 
