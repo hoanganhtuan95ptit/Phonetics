@@ -22,7 +22,8 @@ import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.databinding.DialogEventBinding
 import com.simple.phonetics.utils.sendEvent
-import com.tuanha.deeplink.DeeplinkHandler
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
 
 class EventDialogFragment : BaseViewBindingSheetFragment<DialogEventBinding>() {
 
@@ -91,7 +92,7 @@ class EventDialogFragment : BaseViewBindingSheetFragment<DialogEventBinding>() {
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class EventDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

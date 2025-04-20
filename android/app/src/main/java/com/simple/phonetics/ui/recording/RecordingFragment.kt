@@ -29,7 +29,8 @@ import com.simple.phonetics.utils.sendEvent
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
-import com.tuanha.deeplink.DeeplinkHandler
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
 
 class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewModel>() {
 
@@ -132,7 +133,7 @@ class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewMode
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class RecordingDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

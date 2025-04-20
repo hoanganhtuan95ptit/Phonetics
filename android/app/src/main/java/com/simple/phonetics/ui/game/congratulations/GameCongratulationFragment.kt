@@ -18,7 +18,8 @@ import com.simple.phonetics.databinding.DialogCongratulationBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.utils.sendEvent
-import com.tuanha.deeplink.DeeplinkHandler
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
 
 class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, GameCongratulationViewModel>() {
 
@@ -76,7 +77,7 @@ class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, Ga
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class GameCongratulationDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

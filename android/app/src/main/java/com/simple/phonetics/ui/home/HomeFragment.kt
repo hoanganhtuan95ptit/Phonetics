@@ -68,8 +68,9 @@ import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.showAds
-import com.tuanha.deeplink.DeeplinkHandler
-import com.tuanha.deeplink.sendDeeplink
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -425,7 +426,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class PhoneticsDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

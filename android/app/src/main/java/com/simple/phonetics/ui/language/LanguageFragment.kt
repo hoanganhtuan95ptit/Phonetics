@@ -31,8 +31,9 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
-import com.tuanha.deeplink.DeeplinkHandler
-import com.tuanha.deeplink.sendDeeplink
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 
 class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, LanguageViewModel>() {
 
@@ -171,7 +172,7 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class LanguageDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

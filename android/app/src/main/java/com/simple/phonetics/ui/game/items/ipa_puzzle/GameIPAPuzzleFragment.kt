@@ -11,7 +11,6 @@ import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.setBackground
-import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.launchCollect
@@ -19,6 +18,9 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.updateMargin
 import com.simple.crashlytics.logCrashlytics
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
@@ -31,13 +33,9 @@ import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isSuccess
-import com.tuanha.deeplink.DeeplinkHandler
-import com.tuanha.deeplink.sendDeeplink
 import java.util.UUID
 
 class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
-
-    private var adapter by autoCleared<MultiAdapter>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -151,7 +149,7 @@ class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class GameIPAPuzzleDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

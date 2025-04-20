@@ -17,8 +17,9 @@ import com.simple.phonetics.databinding.FragmentContainerHeaderHorizontalBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.tuanha.deeplink.DeeplinkHandler
-import com.tuanha.deeplink.sendDeeplink
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 import kotlinx.coroutines.launch
 
 class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>() {
@@ -76,7 +77,7 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class GameDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
