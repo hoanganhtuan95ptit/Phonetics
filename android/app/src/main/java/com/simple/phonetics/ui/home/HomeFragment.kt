@@ -228,7 +228,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
             binding.recFilter.adapter = this
             binding.recFilter.itemAnimator = null
-            binding.recFilter.setItemViewCacheSize(10)
 
             binding.recFilter.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         }
