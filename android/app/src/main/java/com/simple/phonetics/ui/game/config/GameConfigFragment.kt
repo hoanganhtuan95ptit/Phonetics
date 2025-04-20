@@ -13,7 +13,6 @@ import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
-import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getViewModel
@@ -21,6 +20,8 @@ import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
@@ -32,20 +33,14 @@ import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.sendEvent
-import com.simple.deeplink.DeeplinkHandler
-import com.simple.deeplink.annotation.Deeplink
 
 class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewModel>() {
 
+    private var result: Int = -1
 
     override val viewModel: GameConfigViewModel by lazy {
         getViewModel(requireActivity(), GameConfigViewModel::class)
     }
-
-
-    private var result: Int = -1
-
-    private var adapter by autoCleared<MultiAdapter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
