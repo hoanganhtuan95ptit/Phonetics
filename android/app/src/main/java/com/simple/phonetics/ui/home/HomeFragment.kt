@@ -267,6 +267,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             binding.root.setBackgroundColor(it.colorBackground)
             binding.frameContent.delegate.backgroundColor = it.colorBackground
 
+            binding.vTemp.setBackgroundColor(it.colorBackgroundVariant)
             binding.frameRootContent.setBackgroundColor(it.colorBackgroundVariant)
         }
 

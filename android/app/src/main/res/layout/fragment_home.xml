@@ -7,6 +7,13 @@
     android:layout_height="match_parent"
     tools:ignore="HardcodedText">
 
+    <View
+        android:id="@+id/v_temp"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:transitionName="temp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <FrameLayout
         android:id="@+id/frame_header"
         android:layout_width="match_parent"
