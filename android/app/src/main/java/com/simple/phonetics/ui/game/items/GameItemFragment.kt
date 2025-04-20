@@ -23,7 +23,7 @@ import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isSuccess
-import com.tuanha.deeplink.sendDeeplink
+import com.simple.deeplink.sendDeeplink
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first

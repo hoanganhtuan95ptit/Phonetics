@@ -7,9 +7,10 @@ import com.simple.coreapp.ui.dialogs.ToastDialog
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.ui.MainActivity
-import com.tuanha.deeplink.DeeplinkHandler
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class ToastDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

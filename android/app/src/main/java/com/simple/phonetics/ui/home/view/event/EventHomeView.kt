@@ -10,7 +10,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.utils.listenerEvent
-import com.tuanha.deeplink.sendDeeplink
+import com.simple.deeplink.sendDeeplink
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first

@@ -50,7 +50,8 @@ import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
-import com.tuanha.deeplink.DeeplinkHandler
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -319,7 +320,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class SpeakDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

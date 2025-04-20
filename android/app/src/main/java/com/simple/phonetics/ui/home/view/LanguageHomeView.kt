@@ -8,7 +8,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.tuanha.deeplink.sendDeeplink
+import com.simple.deeplink.sendDeeplink
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 interface LanguageHomeView {

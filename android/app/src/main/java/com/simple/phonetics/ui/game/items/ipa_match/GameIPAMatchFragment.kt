@@ -11,7 +11,6 @@ import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.setBackground
-import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.launchCollect
@@ -19,6 +18,9 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.updateMargin
 import com.simple.crashlytics.logCrashlytics
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
@@ -32,14 +34,10 @@ import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isFailed
 import com.simple.state.isSuccess
-import com.tuanha.deeplink.DeeplinkHandler
-import com.tuanha.deeplink.sendDeeplink
 import kotlinx.coroutines.delay
 import java.util.UUID
 
 class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
-
-    private var adapter by autoCleared<MultiAdapter>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -186,7 +184,7 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class GameIPAMatchDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

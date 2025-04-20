@@ -32,7 +32,8 @@ import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.sendEvent
-import com.tuanha.deeplink.DeeplinkHandler
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
 
 class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewModel>() {
 
@@ -126,7 +127,7 @@ class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewMo
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class ConfigDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

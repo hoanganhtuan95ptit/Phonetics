@@ -22,8 +22,9 @@ import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.tuanha.deeplink.DeeplinkHandler
-import com.tuanha.deeplink.sendDeeplink
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 
 class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaListViewModel>() {
 
@@ -109,7 +110,7 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class IpaListDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

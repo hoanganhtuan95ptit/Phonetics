@@ -13,12 +13,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.simple.adapter.MultiRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="100dp" />
+        android:paddingHorizontal="24dp" />
 
 </com.simple.coreapp.ui.view.round.RoundLinearLayout>

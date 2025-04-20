@@ -25,7 +25,8 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
-import com.tuanha.deeplink.DeeplinkHandler
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
 
 class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 
@@ -102,7 +103,7 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
     }
 }
 
-@com.tuanha.deeplink.annotation.Deeplink
+@Deeplink
 class ConfigDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {

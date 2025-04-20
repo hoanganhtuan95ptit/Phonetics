@@ -12,7 +12,7 @@ import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.listenerEvent
 import com.simple.phonetics.utils.showAds
-import com.tuanha.deeplink.sendDeeplink
+import com.simple.deeplink.sendDeeplink
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
