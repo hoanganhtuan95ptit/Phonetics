@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
@@ -14,8 +13,10 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
+import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
@@ -24,14 +25,17 @@ import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
+import com.simple.coreapp.utils.ext.doOnHeightStatusAndHeightNavigationChange
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
+import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
@@ -43,6 +47,7 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.simple.phonetics.utils.exts.listenerOnHeightChange
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
 import com.simple.phonetics.utils.showAds
@@ -50,12 +55,8 @@ import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
-import com.simple.deeplink.DeeplinkHandler
-import com.simple.deeplink.annotation.Deeplink
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 
 class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
@@ -73,51 +74,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
         bindingConfirmSpeak = LayoutConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
 
-        val layoutParam = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT
-        )
-        layoutParam.gravity = Gravity.BOTTOM
-
-        container?.addView(bindingConfirmSpeak?.root, layoutParam)
-
-
-        val binding = binding ?: return
-
-        binding.root.doOnChangeHeightStatusAndHeightNavigation(viewLifecycleOwner) { heightStatusBar: Int, heightNavigationBar: Int ->
-
-            this.binding ?: return@doOnChangeHeightStatusAndHeightNavigation
-            val bindingConfirmSpeak = bindingConfirmSpeak ?: return@doOnChangeHeightStatusAndHeightNavigation
-
-            binding.root.updatePadding(bottom = heightNavigationBar + DP.DP_24)
-            bindingConfirmSpeak.root.updatePadding(bottom = heightNavigationBar + DP.DP_24)
-        }
-
-        channelFlow {
-
-            val frameAction = bindingConfirmSpeak?.root ?: return@channelFlow
-
-            val onGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
-
-                override fun onGlobalLayout() {
-                    bindingConfirmSpeak ?: return
-                    trySend(frameAction.height)
-                }
-            }
-
-            frameAction.viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener)
-
-            awaitClose {
-                frameAction.viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
-            }
-        }.distinctUntilChanged().launchCollect(viewLifecycleOwner) {
-
-            binding.recyclerView.updatePadding(bottom = it)
-        }
-
-
-        setupSpeak()
-        setupListener()
+        setupAction()
         setupRecyclerView()
 
         observeData()
@@ -126,7 +83,49 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
         showAds()
     }
 
-    private fun setupSpeak() {
+    private fun setupAction() {
+
+        val binding = bindingConfirmSpeak ?: return
+
+        val layoutParam = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            gravity = Gravity.BOTTOM
+        }
+
+        container?.addView(binding.root, layoutParam)
+
+        behavior?.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+                val translateY = (1 + slideOffset) * this@SpeakFragment.bottomSheet?.height.orZero() - viewModel.actionHeight.get()
+                if (translateY < 0) binding.root.translationY = translateY.absoluteValue
+            }
+        })
+
+        binding.root.listenerOnHeightChange().launchCollect(viewLifecycleOwner) {
+
+            viewModel.updateActionHeight(it)
+        }
+
+        doOnHeightStatusAndHeightNavigationChange { heightStatusBar: Int, heightNavigationBar: Int ->
+
+            val bindingConfirmSpeak = bindingConfirmSpeak ?: return@doOnHeightStatusAndHeightNavigationChange
+
+            bindingConfirmSpeak.root.updatePadding(bottom = heightNavigationBar + DP.DP_24)
+        }
+
+        setupActionSpeak()
+        setupActionListen()
+    }
+
+    private fun setupActionSpeak() {
 
         val binding = bindingConfirmSpeak ?: return
 
@@ -145,7 +144,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
         }
     }
 
-    private fun setupListener() {
+    private fun setupActionListen() {
 
         val binding = bindingConfirmSpeak ?: return
 
@@ -201,10 +200,16 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
             val binding = binding ?: return@observe
             val bindingConfigSpeak = bindingConfirmSpeak ?: return@observe
 
-            binding.root.delegate.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
-            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
+            val background = Background(
+                backgroundColor = it.colorBackground,
+                cornerRadius_TL = DP.DP_16,
+                cornerRadius_TR = DP.DP_16
+            )
 
-            bindingConfigSpeak.root.setBackgroundColor(it.colorBackground)
+            binding.root.delegate.setBackground(background = background)
+            bindingConfigSpeak.root.delegate.setBackground(background = background)
+
+            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
             bindingConfigSpeak.frameSpeak.root.delegate.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.colorPrimary, cornerRadius = DP.DP_16))
         }
 
