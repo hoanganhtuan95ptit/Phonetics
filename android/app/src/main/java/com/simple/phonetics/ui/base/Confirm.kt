@@ -243,6 +243,9 @@ class ConfirmDeeplinkHandler : DeeplinkHandler {
 
         fragment.arguments = extras.orEmpty().filter {
 
+            it.value !is List<*>
+        }.filter {
+
             it.value is CharSequence || it.value is Int || it.value is Long || it.value is Float || it.value is Double || it.value is Serializable || it.value is Parcelable
         }.let {
 
