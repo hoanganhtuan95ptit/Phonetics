@@ -23,6 +23,7 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.toEvent
+import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
@@ -57,7 +58,7 @@ class ReviewHomeViewModel(
         val isValidate = rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3
 
         // nếu người dùng đã xác nhận mở rate
-        if (rate.status == Rate.Status.OPEN_RATE.value || !isValidate || historyList.isEmpty()) {
+        if (!BuildConfig.DEBUG) if (rate.status == Rate.Status.OPEN_RATE.value || !isValidate || historyList.isEmpty()) {
 
             postDifferentValue(emptyList())
             return@combineSources

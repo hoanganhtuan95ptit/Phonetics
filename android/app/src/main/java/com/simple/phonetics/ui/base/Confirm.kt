@@ -224,8 +224,8 @@ class VerticalConfirmViewModel : BaseViewModel() {
 @Deeplink(queue = "Confirm")
 class ConfirmDeeplinkHandler : DeeplinkHandler {
 
-    override fun getDeeplink(): String {
-        return DeeplinkManager.CONFIRM
+    override suspend fun acceptDeeplink(deepLink: String): Boolean {
+        return deepLink.startsWith(DeeplinkManager.CONFIRM)
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {

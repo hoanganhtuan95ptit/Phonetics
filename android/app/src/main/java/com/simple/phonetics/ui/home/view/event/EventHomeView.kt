@@ -8,6 +8,7 @@ import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.deeplink.sendDeeplink
+import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.home.HomeFragment
@@ -38,7 +39,7 @@ class EventHomeViewImpl : EventHomeView {
 
             val info = event.getContentIfNotHandled() ?: return@launchCollect
 
-            showEventAwait(info = info)
+            showEventAwait(fragment = fragment, info = info)
 
             viewModel.updateShowEvent()
         }
@@ -49,21 +50,41 @@ class EventHomeViewImpl : EventHomeView {
         show.postDifferentValue(true)
     }
 
-    private suspend fun showEventAwait(info: EventHomeViewModel.EventInfo) = channelFlow {
+    private suspend fun showEventAwait(fragment: HomeFragment, info: EventHomeViewModel.EventInfo) = channelFlow {
 
         val keyRequest = "EVENT_KEY_REQUEST"
 
         com.simple.event.listenerEvent(keyRequest) {
 
+            val binding = fragment.binding
+
+            if (binding == null) {
+
+                trySend(Unit)
+                return@listenerEvent
+            }
+
             val result = it.asObjectOrNull<Int>()
 
-            if (result == 1) {
-
-                sendDeeplink(info.event.positiveDeepLink)
-            } else if (result == 0) {
-
-                sendDeeplink(info.event.negativeDeepLink)
+            val deeplink = if (result == 1) {
+                if (BuildConfig.DEBUG) DeeplinkManager.IPA_LIST else info.event.positiveDeepLink
+            } else {
+                info.event.negativeDeepLink
             }
+
+            val transitionName = binding.vTemp.transitionName
+
+            sendDeeplink(
+                deepLink = deeplink,
+                extras = mapOf(
+                    Param.ROOT_TRANSITION_NAME to transitionName
+                ),
+                sharedElement = mapOf(
+                    transitionName to binding.vTemp
+                )
+            )
+
+            logAnalytics(info.event.id + "_" + info.event.positiveDeepLink)
 
             trySend(Unit)
         }
@@ -79,7 +100,7 @@ class EventHomeViewImpl : EventHomeView {
             Param.VIEW_ITEM_LIST to info.viewItemList
         )
 
-        sendDeeplink(deepLink = DeeplinkManager.CONFIRM, extras = extras)
+        sendDeeplink(deepLink = DeeplinkManager.CONFIRM + "?code:${info.event.id}", extras = extras)
 
         logAnalytics("event_show_${info.event.name.lowercase()}")
 

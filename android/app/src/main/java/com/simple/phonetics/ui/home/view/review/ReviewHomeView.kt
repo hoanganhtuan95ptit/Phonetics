@@ -73,7 +73,7 @@ class ReviewHomeViewImpl : ReviewHomeView {
 
             if (info.show) {
 
-                sendDeeplink(DeeplinkManager.CONFIRM, extras = extras)
+                sendDeeplink(DeeplinkManager.CONFIRM + "?code:review", extras = extras)
             } else {
 
                 openReview(fragment)
