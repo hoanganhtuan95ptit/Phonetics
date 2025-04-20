@@ -9,6 +9,7 @@ import androidx.lifecycle.asFlow
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
+import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
@@ -28,7 +29,6 @@ import com.simple.phonetics.utils.sendEvent
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
-import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 
 class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewModel>() {

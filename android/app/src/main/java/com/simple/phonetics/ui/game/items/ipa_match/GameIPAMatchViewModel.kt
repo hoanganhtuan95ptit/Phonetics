@@ -10,7 +10,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.tuanha.adapter.entities.ViewItem
+import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
 import com.simple.core.utils.extentions.toArrayList
 import com.simple.coreapp.ui.view.Background

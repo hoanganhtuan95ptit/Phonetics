@@ -3,6 +3,9 @@ package com.simple.phonetics.ui.ipa.detail.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.annotation.ItemAdapter
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.setVisible
@@ -10,9 +13,6 @@ import com.simple.phonetics.Payload
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.ItemIpaDetailBinding
 import com.simple.phonetics.entities.Ipa
-import com.tuanha.adapter.ViewItemAdapter
-import com.tuanha.adapter.annotation.ItemAdapter
-import com.tuanha.adapter.entities.ViewItem
 
 @ItemAdapter
 class IpaDetailAdapters(onItemClick: (View, IpaDetailViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<IpaDetailViewItem, ItemIpaDetailBinding>(onItemClick) {

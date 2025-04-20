@@ -3,15 +3,14 @@ package com.simple.phonetics.ui.base.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.tuanha.adapter.ViewItemAdapter
-import com.tuanha.adapter.entities.ViewItem
+import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.DEFAULT_PADDING
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
-import com.simple.phonetics.databinding.ItemIpaBinding
 import com.simple.phonetics.databinding.ItemPhoneticsBinding
 import com.simple.phonetics.entities.Phonetic
 

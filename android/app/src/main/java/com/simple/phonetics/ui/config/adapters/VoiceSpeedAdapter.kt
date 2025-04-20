@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.annotation.ItemAdapter
+import com.simple.adapter.entities.ViewItem
 import com.simple.phonetics.databinding.ItemVoiceSpeedBinding
-import com.tuanha.adapter.ViewItemAdapter
-import com.tuanha.adapter.annotation.ItemAdapter
-import com.tuanha.adapter.entities.ViewItem
 
 @ItemAdapter
 class VoiceSpeedAdapter(private val onItemClick: (View, VoiceSpeedViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<VoiceSpeedViewItem, ItemVoiceSpeedBinding>() {

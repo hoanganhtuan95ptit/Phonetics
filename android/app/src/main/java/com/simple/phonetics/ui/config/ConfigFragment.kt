@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
+import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.Background
@@ -24,7 +25,6 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
-import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 
 class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {

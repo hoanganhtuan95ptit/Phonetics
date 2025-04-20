@@ -6,7 +6,7 @@ import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.simple.adapter.SpaceViewItem
-import com.tuanha.adapter.entities.ViewItem
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.TextStyle

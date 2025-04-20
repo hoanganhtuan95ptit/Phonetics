@@ -1,6 +1,5 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
-import android.util.Log
 import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.coreapp.utils.extentions.offerActiveAwait
 import com.simple.phonetics.data.dao.HistoryDao

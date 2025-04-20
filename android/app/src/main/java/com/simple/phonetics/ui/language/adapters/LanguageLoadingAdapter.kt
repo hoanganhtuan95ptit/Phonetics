@@ -2,12 +2,12 @@ package com.simple.phonetics.ui.language.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.annotation.ItemAdapter
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.phonetics.databinding.ItemLanguageLoadingBinding
-import com.tuanha.adapter.ViewItemAdapter
-import com.tuanha.adapter.annotation.ItemAdapter
-import com.tuanha.adapter.entities.ViewItem
 import java.util.UUID
 
 @ItemAdapter

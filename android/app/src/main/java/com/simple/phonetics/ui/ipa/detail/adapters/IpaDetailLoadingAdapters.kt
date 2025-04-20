@@ -3,13 +3,13 @@ package com.simple.phonetics.ui.ipa.detail.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.annotation.ItemAdapter
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemIpaDetailLoadingBinding
-import com.tuanha.adapter.ViewItemAdapter
-import com.tuanha.adapter.annotation.ItemAdapter
-import com.tuanha.adapter.entities.ViewItem
 
 @ItemAdapter
 class IpaDetailLoadingAdapters(onItemClick: (View, IpaDetailLoadingViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<IpaDetailLoadingViewItem, ItemIpaDetailLoadingBinding>(onItemClick) {

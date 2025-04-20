@@ -3,7 +3,7 @@ package com.simple.phonetics.ui.ipa.list
 import android.text.style.ForegroundColorSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import com.tuanha.adapter.entities.ViewItem
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Size

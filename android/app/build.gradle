@@ -83,28 +83,9 @@ dependencies {
     implementation jacksonDependencies.values()
     implementation androidxDependencies.values()
     implementation retrofit2Dependencies.values()
-
-    implementation hoanganhtuan95Dependencies.base
-    implementation hoanganhtuan95Dependencies.android
-
-    implementation hoanganhtuan95Dependencies.task
-    implementation hoanganhtuan95Dependencies.state
-    implementation hoanganhtuan95Dependencies.image
-    implementation hoanganhtuan95Dependencies.event
-
-    implementation hoanganhtuan95Dependencies.analytics
-    debugImplementation hoanganhtuan95Dependencies.analytics_log
-    releaseImplementation hoanganhtuan95Dependencies.analytics_firebase
-
-    implementation hoanganhtuan95Dependencies.crashlytics
-    debugImplementation hoanganhtuan95Dependencies.crashlytics_log
-    releaseImplementation hoanganhtuan95Dependencies.crashlytics_firebase
-
-    implementation hoanganhtuan95Dependencies.detect
-    implementation hoanganhtuan95Dependencies.detect_mlkit
-
-    implementation hoanganhtuan95Dependencies.translate
-    implementation hoanganhtuan95Dependencies.translate_mlkit
+    implementation hoanganhtuan95Dependencies.values()
+    kapt hoanganhtuan95Dependencies.adapter_processor
+    kapt hoanganhtuan95Dependencies.deeplink_processor
 
     implementation 'androidx.core:core-splashscreen:1.1.0-rc01'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
@@ -125,10 +106,4 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
     implementation 'com.google.android.material:material:1.13.0-alpha08'
-
-    implementation 'com.github.hoanganhtuan95ptit.MultiTypeAdapter:adapter:1.0.13'
-    kapt 'com.github.hoanganhtuan95ptit.MultiTypeAdapter:adapter-processor:1.0.13'
-
-    implementation 'com.github.hoanganhtuan95ptit.Deeplink:deeplink:1.0.8'
-    kapt 'com.github.hoanganhtuan95ptit.Deeplink:deeplink-processor:1.0.8'
 }

@@ -4,11 +4,10 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.updateLayoutParams
+import com.simple.adapter.annotation.ItemAdapter
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Size
 import com.simple.phonetics.databinding.ItemSpaceBinding
-import com.tuanha.adapter.ViewItemAdapter
-import com.tuanha.adapter.annotation.ItemAdapter
-import com.tuanha.adapter.entities.ViewItem
 
 @ItemAdapter
 class SpaceAdapter : ViewItemAdapter<SpaceViewItem, ItemSpaceBinding>() {

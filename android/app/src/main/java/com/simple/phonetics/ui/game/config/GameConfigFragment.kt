@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
+import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
@@ -31,7 +32,6 @@ import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.sendEvent
-import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 
 class GameConfigFragment : BaseSheetFragment<DialogListBinding, GameConfigViewModel>() {
