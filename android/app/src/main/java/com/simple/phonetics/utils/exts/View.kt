@@ -4,9 +4,14 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 fun ImageView.setImageDrawable(context: Context, resId: Int, color: Int) {
 
@@ -24,3 +29,16 @@ fun TextView.setTextColor(vararg pair: Pair<IntArray, Int>) {
         )
     )
 }
+
+fun View.listenerOnHeightChange() = channelFlow {
+
+    val onGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+        trySend(height)
+    }
+
+    viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener)
+
+    awaitClose {
+        viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
+    }
+}.distinctUntilChanged()

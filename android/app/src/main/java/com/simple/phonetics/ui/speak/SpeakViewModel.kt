@@ -5,6 +5,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
+import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
@@ -60,6 +61,9 @@ class SpeakViewModel(
     val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
 
 
+    val actionHeight: LiveData<Int> = MediatorLiveData()
+
+
     val speakState: LiveData<ResultState<String>> = MediatorLiveData()
 
     val isSupportSpeak: LiveData<Boolean> = MediatorLiveData(true)
@@ -84,7 +88,7 @@ class SpeakViewModel(
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, phoneticCodeSelected, phoneticsState, isSupportListen) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, actionHeight, phoneticCodeSelected, phoneticsState, isSupportListen) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -119,7 +123,9 @@ class SpeakViewModel(
             )
         }.let {
 
+            viewItemList.add(SpaceViewItem(id = "1", height = DP.DP_16))
             viewItemList.addAll(it)
+            viewItemList.add(SpaceViewItem(id = "2", height = actionHeight.get()))
         }
 
         postDifferentValueIfActive(viewItemList)
@@ -228,6 +234,10 @@ class SpeakViewModel(
         isSupportListen.postDifferentValue(it)
     }
 
+    fun updateActionHeight(height: Int) {
+
+        actionHeight.postDifferentValue(height)
+    }
 
     fun startListen(text: String? = null, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
