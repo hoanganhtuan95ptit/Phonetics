@@ -19,7 +19,7 @@ import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.crashlytics.logCrashlytics
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.ui.home.HomeFragment
@@ -76,7 +76,7 @@ class ReviewHomeViewImpl : ReviewHomeView {
 
             if (info.show) {
 
-                sendDeeplink(Deeplink.CONFIRM, extras = extras)
+                sendDeeplink(DeeplinkManager.CONFIRM, extras = extras)
             } else if (viewModel.historyList.value?.isNotEmpty() == true) {
 
                 openReview(fragment)

@@ -1,8 +1,10 @@
 package com.simple.phonetics.ui.base.adapters
 
+import android.view.LayoutInflater
 import android.view.View
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
+import android.view.ViewGroup
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.DEFAULT_MARGIN
@@ -13,13 +15,22 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setSize
 import com.simple.phonetics.Payload
+import com.simple.phonetics.databinding.ItemImageStateBinding
 import com.simple.phonetics.databinding.ItemIpaBinding
 import com.simple.phonetics.entities.Ipa
 
 class IpaAdapters(onItemClick: (View, IpaViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<IpaViewItem, ItemIpaBinding>(onItemClick) {
 
-    override fun bind(binding: ItemIpaBinding, viewType: Int, position: Int, item: IpaViewItem, payloads: MutableList<Any>) {
-        super.bind(binding, viewType, position, item, payloads)
+    override val viewItemClass: Class<IpaViewItem> by lazy {
+        IpaViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemIpaBinding {
+        return ItemIpaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemIpaBinding, viewType: Int, position: Int, item: IpaViewItem, payloads: MutableList<Any>) {
+        super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         if (payloads.contains(PAYLOAD_IPA)) refreshIpa(binding, item)
         if (payloads.contains(Payload.SIZE)) refreshSize(binding, item)
@@ -28,8 +39,8 @@ class IpaAdapters(onItemClick: (View, IpaViewItem) -> Unit = { _, _ -> }) : View
         if (payloads.contains(Payload.BACKGROUND)) refreshBackground(binding, item)
     }
 
-    override fun bind(binding: ItemIpaBinding, viewType: Int, position: Int, item: IpaViewItem) {
-        super.bind(binding, viewType, position, item)
+    override fun onBindViewHolder(binding: ItemIpaBinding, viewType: Int, position: Int, item: IpaViewItem) {
+        super.onBindViewHolder(binding, viewType, position, item)
 
         binding.root.transitionName = item.id
 

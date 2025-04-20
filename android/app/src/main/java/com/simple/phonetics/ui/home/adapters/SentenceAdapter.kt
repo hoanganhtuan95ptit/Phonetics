@@ -1,25 +1,37 @@
 package com.simple.phonetics.ui.home.adapters
 
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import com.simple.adapter.SpaceViewItem
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemSentenceBinding
+import com.simple.phonetics.databinding.ItemSpaceBinding
 import com.simple.phonetics.entities.Sentence
-import com.tuanha.adapter.annotation.AdapterPreview
+import com.tuanha.adapter.annotation.ItemAdapter
 
-@AdapterPreview
+@ItemAdapter
 class SentenceAdapter : ViewItemAdapter<SentenceViewItem, ItemSentenceBinding>() {
 
-    override fun bind(binding: ItemSentenceBinding, viewType: Int, position: Int, item: SentenceViewItem, payloads: MutableList<Any>) {
-        super.bind(binding, viewType, position, item, payloads)
+    override val viewItemClass: Class<SentenceViewItem> by lazy {
+        SentenceViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemSentenceBinding {
+        return ItemSentenceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemSentenceBinding, viewType: Int, position: Int, item: SentenceViewItem, payloads: MutableList<Any>) {
+        super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         if (payloads.contains(Payload.TEXT)) refreshText(binding, item)
         if (payloads.contains(PAYLOAD_IS_LAST)) refreshIsLast(binding, item)
     }
 
-    override fun bind(binding: ItemSentenceBinding, viewType: Int, position: Int, item: SentenceViewItem) {
-        super.bind(binding, viewType, position, item)
+    override fun onBindViewHolder(binding: ItemSentenceBinding, viewType: Int, position: Int, item: SentenceViewItem) {
+        super.onBindViewHolder(binding, viewType, position, item)
 
         refreshText(binding, item)
         refreshIsLast(binding, item)

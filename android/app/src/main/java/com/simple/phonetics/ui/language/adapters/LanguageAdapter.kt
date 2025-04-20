@@ -1,27 +1,39 @@
 package com.simple.phonetics.ui.language.adapters
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemLanguageBinding
 import com.simple.phonetics.entities.Language
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.annotation.ItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 
-class LanguageAdapter(onItemClick: (View, LanguageViewItem) -> Unit) : ViewItemAdapter<LanguageViewItem, ItemLanguageBinding>(onItemClick) {
+@ItemAdapter
+class LanguageAdapter(onItemClick: (View, LanguageViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<LanguageViewItem, ItemLanguageBinding>(onItemClick) {
 
-    override fun bind(binding: ItemLanguageBinding, viewType: Int, position: Int, item: LanguageViewItem, payloads: MutableList<Any>) {
-        super.bind(binding, viewType, position, item, payloads)
+    override val viewItemClass: Class<LanguageViewItem> by lazy {
+        LanguageViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemLanguageBinding {
+        return ItemLanguageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemLanguageBinding, viewType: Int, position: Int, item: LanguageViewItem, payloads: MutableList<Any>) {
+        super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         if (payloads.contains(Payload.NAME)) refreshName(binding, item)
         if (payloads.contains(Payload.THEME)) refreshTheme(binding, item)
     }
 
-    override fun bind(binding: ItemLanguageBinding, viewType: Int, position: Int, item: LanguageViewItem) {
-        super.bind(binding, viewType, position, item)
+    override fun onBindViewHolder(binding: ItemLanguageBinding, viewType: Int, position: Int, item: LanguageViewItem) {
+        super.onBindViewHolder(binding, viewType, position, item)
 
         binding.ivFlag.setImage(item.image, CircleCrop())
 

@@ -6,27 +6,25 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
-import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
-import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
-import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 
 class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
@@ -34,8 +32,6 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
     override val viewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
     }
-
-    private var adapter by autoCleared<MultiAdapter>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,7 +45,7 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 
         val binding = binding ?: return
 
-        val clickTextAdapter = ClickTextAdapter { view, item ->
+        val clickTextAdapter = ClickTextAdapter { _, item ->
 
             if (item.id.startsWith(Id.TRANSLATE)) {
 
@@ -68,7 +64,7 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
             viewModel.updateVoiceSpeed(item.current)
         }
 
-        adapter = MultiAdapter(clickTextAdapter, voiceSpeedAdapter, *ListPreviewAdapter()).apply {
+        MultiAdapter(clickTextAdapter, voiceSpeedAdapter).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -110,16 +106,16 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 class ConfigDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.CONFIG
+        return DeeplinkManager.CONFIG
     }
 
-    override suspend fun navigation(activity: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        if (activity !is MainActivity) return false
+        if (componentCallbacks !is MainActivity) return false
 
         val fragment = ConfigFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
-        fragment.showOrAwaitDismiss(activity.supportFragmentManager, tag = "")
+        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, tag = "")
 
         return true
     }

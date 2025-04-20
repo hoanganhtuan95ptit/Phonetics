@@ -1,8 +1,8 @@
 package com.simple.phonetics.ui.ipa.detail.adapters
 
+import android.view.LayoutInflater
 import android.view.View
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
+import android.view.ViewGroup
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.setVisible
@@ -10,11 +10,23 @@ import com.simple.phonetics.Payload
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.ItemIpaDetailBinding
 import com.simple.phonetics.entities.Ipa
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.annotation.ItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 
+@ItemAdapter
 class IpaDetailAdapters(onItemClick: (View, IpaDetailViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<IpaDetailViewItem, ItemIpaDetailBinding>(onItemClick) {
 
-    override fun bind(binding: ItemIpaDetailBinding, viewType: Int, position: Int, item: IpaDetailViewItem, payloads: MutableList<Any>) {
-        super.bind(binding, viewType, position, item, payloads)
+    override val viewItemClass: Class<IpaDetailViewItem> by lazy {
+        IpaDetailViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemIpaDetailBinding {
+        return ItemIpaDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemIpaDetailBinding, viewType: Int, position: Int, item: IpaDetailViewItem, payloads: MutableList<Any>) {
+        super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         if (payloads.contains(PAYLOAD_IPA)) refreshIpa(binding, item)
         if (payloads.contains(PAYLOAD_BACKGROUND)) refreshBackground(binding, item)
@@ -23,8 +35,8 @@ class IpaDetailAdapters(onItemClick: (View, IpaDetailViewItem) -> Unit = { _, _ 
         if (payloads.contains(Payload.LOADING_STATUS)) refreshLoadingStatus(binding, item)
     }
 
-    override fun bind(binding: ItemIpaDetailBinding, viewType: Int, position: Int, item: IpaDetailViewItem) {
-        super.bind(binding, viewType, position, item)
+    override fun onBindViewHolder(binding: ItemIpaDetailBinding, viewType: Int, position: Int, item: IpaDetailViewItem) {
+        super.onBindViewHolder(binding, viewType, position, item)
 
         refreshIpa(binding, item)
         refreshImage(binding, item)

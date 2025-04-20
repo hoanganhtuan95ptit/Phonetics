@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.coreapp.utils.ext.getViewModel
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.view.ReadView
@@ -65,10 +65,10 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
             if (it == null) {
 
-                sendDeeplink(Deeplink.LANGUAGE, extras = mapOf(Param.FIRST to true))
+                sendDeeplink(DeeplinkManager.LANGUAGE, extras = mapOf(Param.FIRST to true))
             } else {
 
-                sendDeeplink(Deeplink.PHONETICS)
+                sendDeeplink(DeeplinkManager.PHONETICS)
             }
         }
     }

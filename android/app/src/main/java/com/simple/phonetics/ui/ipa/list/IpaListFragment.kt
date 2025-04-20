@@ -6,13 +6,12 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.GridLayoutManager
-import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
@@ -22,6 +21,7 @@ import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.submitListAwaitV2
+import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 import com.tuanha.deeplink.sendDeeplink
 
@@ -67,7 +67,7 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
             val transitionName = view.transitionName ?: item.id
 
             sendDeeplink(
-                deepLink = Deeplink.IPA_DETAIL,
+                deepLink = DeeplinkManager.IPA_DETAIL,
                 extras = mapOf(Param.IPA to item.data, Param.ROOT_TRANSITION_NAME to transitionName),
                 sharedElement = mapOf(transitionName to view)
             )
@@ -113,7 +113,7 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
 class IpaListDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.IPA_LIST
+        return DeeplinkManager.IPA_LIST
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {

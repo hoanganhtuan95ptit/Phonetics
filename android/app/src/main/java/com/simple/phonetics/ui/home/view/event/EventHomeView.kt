@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.home.view.event
 
-import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
@@ -8,7 +7,7 @@ import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.utils.listenerEvent
 import com.tuanha.deeplink.sendDeeplink
@@ -88,7 +87,7 @@ class EventHomeViewImpl : EventHomeView {
             com.simple.coreapp.Param.KEY_REQUEST to keyRequest
         )
 
-        sendDeeplink(deepLink = Deeplink.EVENT, extras = extras)
+        sendDeeplink(deepLink = DeeplinkManager.EVENT, extras = extras)
 
         logAnalytics("event_show_${info.event.name.lowercase()}")
 

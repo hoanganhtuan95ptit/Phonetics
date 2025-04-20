@@ -1,26 +1,36 @@
 package com.simple.phonetics.ui.base.adapters
 
+import android.view.LayoutInflater
 import android.view.View
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
+import android.view.ViewGroup
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemPhoneticsLoadingBinding
-import com.tuanha.adapter.annotation.AdapterPreview
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.annotation.ItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 
-@AdapterPreview
+@ItemAdapter
 class PhoneticsLoadingAdapter(onItemClick: ((View, PhoneticsLoadingViewItem) -> Unit)? = null) : ViewItemAdapter<PhoneticsLoadingViewItem, ItemPhoneticsLoadingBinding>(onItemClick) {
 
-    override fun bind(binding: ItemPhoneticsLoadingBinding, viewType: Int, position: Int, item: PhoneticsLoadingViewItem, payloads: MutableList<Any>) {
-        super.bind(binding, viewType, position, item, payloads)
+    override val viewItemClass: Class<PhoneticsLoadingViewItem> by lazy {
+        PhoneticsLoadingViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemPhoneticsLoadingBinding {
+        return ItemPhoneticsLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemPhoneticsLoadingBinding, viewType: Int, position: Int, item: PhoneticsLoadingViewItem, payloads: MutableList<Any>) {
+        super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         if (payloads.contains(Payload.BACKGROUND)) refreshPadding(binding, item)
     }
 
-    override fun bind(binding: ItemPhoneticsLoadingBinding, viewType: Int, position: Int, item: PhoneticsLoadingViewItem) {
-        super.bind(binding, viewType, position, item)
+    override fun onBindViewHolder(binding: ItemPhoneticsLoadingBinding, viewType: Int, position: Int, item: PhoneticsLoadingViewItem) {
+        super.onBindViewHolder(binding, viewType, position, item)
 
         refreshPadding(binding, item)
     }

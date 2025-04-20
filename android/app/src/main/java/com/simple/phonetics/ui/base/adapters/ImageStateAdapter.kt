@@ -1,8 +1,10 @@
 package com.simple.phonetics.ui.base.adapters
 
+import android.view.LayoutInflater
 import android.view.View
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
+import android.view.ViewGroup
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
@@ -14,10 +16,20 @@ import com.simple.coreapp.ui.view.setSize
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.image.setImage
 import com.simple.phonetics.databinding.ItemImageStateBinding
+import com.simple.phonetics.databinding.ItemSentenceBinding
+import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 
 class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<ImageStateViewItem, ItemImageStateBinding>(onItemClick) {
 
-    override fun bind(binding: ItemImageStateBinding, viewType: Int, position: Int, item: ImageStateViewItem, payloads: MutableList<Any>) {
+    override val viewItemClass: Class<ImageStateViewItem> by lazy {
+        ImageStateViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemImageStateBinding {
+        return ItemImageStateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemImageStateBinding, viewType: Int, position: Int, item: ImageStateViewItem, payloads: MutableList<Any>) {
 
         if (payloads.contains(PAYLOAD_IMAGE)) refreshImage(binding, item)
         if (payloads.contains(PAYLOAD_LOADING)) refreshLoading(binding, item)
@@ -33,7 +45,7 @@ class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _
         if (payloads.contains(PAYLOAD_IMAGE_BACKGROUND)) refreshImageBackground(binding, item)
     }
 
-    override fun bind(binding: ItemImageStateBinding, viewType: Int, position: Int, item: ImageStateViewItem) {
+    override fun onBindViewHolder(binding: ItemImageStateBinding, viewType: Int, position: Int, item: ImageStateViewItem) {
 
         binding.root.transitionName = item.id
 

@@ -1,25 +1,35 @@
 package com.simple.phonetics.ui.ipa.detail.adapters
 
+import android.view.LayoutInflater
 import android.view.View
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
+import android.view.ViewGroup
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemIpaDetailLoadingBinding
-import com.tuanha.adapter.annotation.AdapterPreview
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.annotation.ItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 
-@AdapterPreview
+@ItemAdapter
 class IpaDetailLoadingAdapters(onItemClick: (View, IpaDetailLoadingViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<IpaDetailLoadingViewItem, ItemIpaDetailLoadingBinding>(onItemClick) {
 
-    override fun bind(binding: ItemIpaDetailLoadingBinding, viewType: Int, position: Int, item: IpaDetailLoadingViewItem, payloads: MutableList<Any>) {
-        super.bind(binding, viewType, position, item, payloads)
+    override val viewItemClass: Class<IpaDetailLoadingViewItem> by lazy {
+        IpaDetailLoadingViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemIpaDetailLoadingBinding {
+        return ItemIpaDetailLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemIpaDetailLoadingBinding, viewType: Int, position: Int, item: IpaDetailLoadingViewItem, payloads: MutableList<Any>) {
+        super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         if (payloads.contains(Payload.BACKGROUND)) refreshBackground(binding, item)
     }
 
-    override fun bind(binding: ItemIpaDetailLoadingBinding, viewType: Int, position: Int, item: IpaDetailLoadingViewItem) {
-        super.bind(binding, viewType, position, item)
+    override fun onBindViewHolder(binding: ItemIpaDetailLoadingBinding, viewType: Int, position: Int, item: IpaDetailLoadingViewItem) {
+        super.onBindViewHolder(binding, viewType, position, item)
 
         refreshBackground(binding, item)
     }

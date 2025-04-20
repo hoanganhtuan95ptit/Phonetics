@@ -3,7 +3,7 @@ package com.simple.phonetics.ui.home.view
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.image.setImage
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
@@ -35,7 +35,7 @@ class LanguageHomeViewImpl() : LanguageHomeView {
 
             val transitionName = binding.ivLanguage.transitionName
 
-            sendDeeplink(Deeplink.LANGUAGE, extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivLanguage))
+            sendDeeplink(DeeplinkManager.LANGUAGE, extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivLanguage))
         }
     }
 

@@ -4,7 +4,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import com.simple.adapter.SpaceViewItem
-import com.simple.adapter.entities.ViewItem
+import com.tuanha.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND

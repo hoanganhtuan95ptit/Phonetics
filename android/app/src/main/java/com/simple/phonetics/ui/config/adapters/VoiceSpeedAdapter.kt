@@ -1,15 +1,27 @@
 package com.simple.phonetics.ui.config.adapters
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.SeekBar
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
 import com.simple.phonetics.databinding.ItemVoiceSpeedBinding
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.annotation.ItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 
+@ItemAdapter
 class VoiceSpeedAdapter(private val onItemClick: (View, VoiceSpeedViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<VoiceSpeedViewItem, ItemVoiceSpeedBinding>() {
 
-    override fun bind(binding: ItemVoiceSpeedBinding, viewType: Int, position: Int, item: VoiceSpeedViewItem, payloads: MutableList<Any>) {
-        super.bind(binding, viewType, position, item, payloads)
+    override val viewItemClass: Class<VoiceSpeedViewItem> by lazy {
+        VoiceSpeedViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemVoiceSpeedBinding {
+        return ItemVoiceSpeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemVoiceSpeedBinding, viewType: Int, position: Int, item: VoiceSpeedViewItem, payloads: MutableList<Any>) {
+        super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         if (payloads.contains(PAYLOAD_CURRENT)) {
 
@@ -17,8 +29,8 @@ class VoiceSpeedAdapter(private val onItemClick: (View, VoiceSpeedViewItem) -> U
         }
     }
 
-    override fun bind(binding: ItemVoiceSpeedBinding, viewType: Int, position: Int, item: VoiceSpeedViewItem) {
-        super.bind(binding, viewType, position, item)
+    override fun onBindViewHolder(binding: ItemVoiceSpeedBinding, viewType: Int, position: Int, item: VoiceSpeedViewItem) {
+        super.onBindViewHolder(binding, viewType, position, item)
 
         binding.progress.max = (item.end * 100).toInt()
 

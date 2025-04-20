@@ -7,7 +7,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import com.google.android.flexbox.JustifyContent
-import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.setBackground
@@ -19,14 +18,13 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.updateMargin
 import com.simple.crashlytics.logCrashlytics
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.game.GameFragment
 import com.simple.phonetics.ui.game.items.GameItemFragment
-import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
@@ -36,6 +34,7 @@ import com.simple.state.doSuccess
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isSuccess
+import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 import com.tuanha.deeplink.sendDeeplink
 import java.util.UUID
@@ -87,7 +86,7 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
             }
         }
 
-        adapter = MultiAdapter(clickTextAdapter, imageStateAdapter, *ListPreviewAdapter()).apply {
+        MultiAdapter(clickTextAdapter, imageStateAdapter).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -190,7 +189,7 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
 class GameIPAWordleDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.GAME_IPA_WORDLE
+        return DeeplinkManager.GAME_IPA_WORDLE
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {

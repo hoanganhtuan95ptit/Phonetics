@@ -19,7 +19,7 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.image.setImage
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.databinding.DialogEventBinding
 import com.simple.phonetics.utils.sendEvent
 import com.tuanha.deeplink.DeeplinkHandler
@@ -95,7 +95,7 @@ class EventDialogFragment : BaseViewBindingSheetFragment<DialogEventBinding>() {
 class EventDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.EVENT
+        return DeeplinkManager.EVENT
     }
 
     override suspend fun navigation(activity: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {

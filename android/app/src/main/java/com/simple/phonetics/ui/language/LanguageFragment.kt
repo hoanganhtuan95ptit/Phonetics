@@ -9,10 +9,8 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
-import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.awaitResumed
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
@@ -21,24 +19,22 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.with
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderVerticalBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
-import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
+import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 import com.tuanha.deeplink.sendDeeplink
 
 class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, LanguageViewModel>() {
-
-    private var adapter by autoCleared<MultiAdapter>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,7 +84,7 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
             viewModel.updateLanguageSelected(item.data)
         }
 
-        adapter = MultiAdapter(languageAdapter, *ListPreviewAdapter()).apply {
+        MultiAdapter(languageAdapter).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -147,7 +143,7 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
             }
 
             if (it is ResultState.Success) if (arguments?.containsKey(Param.ROOT_TRANSITION_NAME) != true) sendDeeplink(
-                deepLink = Deeplink.PHONETICS,
+                deepLink = DeeplinkManager.PHONETICS,
                 extras = mapOf(
                     Param.ROOT_TRANSITION_NAME to "1"
                 ),
@@ -179,7 +175,7 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 class LanguageDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.LANGUAGE
+        return DeeplinkManager.LANGUAGE
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {

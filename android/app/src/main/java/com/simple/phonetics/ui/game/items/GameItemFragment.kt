@@ -5,7 +5,7 @@ import android.view.View
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.extentions.get
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
@@ -138,7 +138,7 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
             com.simple.coreapp.Param.POSITIVE to info.positive,
         )
 
-        sendDeeplink(Deeplink.CONFIRM, extras = extras)
+        sendDeeplink(DeeplinkManager.CONFIRM, extras = extras)
     }
 
     private fun showGameCongratulation(number: Long) {
@@ -148,6 +148,6 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
             Param.NUMBER to number
         )
 
-        sendDeeplink(Deeplink.GAME_CONGRATULATION, extras = extras)
+        sendDeeplink(DeeplinkManager.GAME_CONGRATULATION, extras = extras)
     }
 }

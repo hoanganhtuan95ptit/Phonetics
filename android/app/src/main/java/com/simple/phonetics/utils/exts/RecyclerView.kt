@@ -7,7 +7,7 @@ import androidx.transition.Scene
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
-import com.simple.adapter.entities.ViewItem
+import com.tuanha.adapter.entities.ViewItem
 import com.simple.coreapp.utils.extentions.submitListAwait
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay

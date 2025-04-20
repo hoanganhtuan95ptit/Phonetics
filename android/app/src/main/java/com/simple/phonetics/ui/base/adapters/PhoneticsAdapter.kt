@@ -1,21 +1,32 @@
 package com.simple.phonetics.ui.base.adapters
 
+import android.view.LayoutInflater
 import android.view.View
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
+import android.view.ViewGroup
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.DEFAULT_PADDING
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
+import com.simple.phonetics.databinding.ItemIpaBinding
 import com.simple.phonetics.databinding.ItemPhoneticsBinding
 import com.simple.phonetics.entities.Phonetic
 
 class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null) : ViewItemAdapter<PhoneticsViewItem, ItemPhoneticsBinding>(onItemClick) {
 
-    override fun bind(binding: ItemPhoneticsBinding, viewType: Int, position: Int, item: PhoneticsViewItem, payloads: MutableList<Any>) {
-        super.bind(binding, viewType, position, item, payloads)
+    override val viewItemClass: Class<PhoneticsViewItem> by lazy {
+        PhoneticsViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemPhoneticsBinding {
+        return ItemPhoneticsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemPhoneticsBinding, viewType: Int, position: Int, item: PhoneticsViewItem, payloads: MutableList<Any>) {
+        super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         if (payloads.contains(PAYLOAD_IPA)) refreshIpa(binding, item)
         if (payloads.contains(PAYLOAD_TEXT)) refreshText(binding, item)
@@ -23,8 +34,8 @@ class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null)
         if (payloads.contains(Payload.PADDING)) refreshPadding(binding, item)
     }
 
-    override fun bind(binding: ItemPhoneticsBinding, viewType: Int, position: Int, item: PhoneticsViewItem) {
-        super.bind(binding, viewType, position, item)
+    override fun onBindViewHolder(binding: ItemPhoneticsBinding, viewType: Int, position: Int, item: PhoneticsViewItem) {
+        super.onBindViewHolder(binding, viewType, position, item)
 
         refreshIpa(binding, item)
         refreshText(binding, item)

@@ -7,17 +7,15 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
-import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getParcelableOrNull
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.crashlytics.logCrashlytics
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
@@ -29,11 +27,11 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailAdapters
-import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.toSuccess
+import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 import com.tuanha.deeplink.sendDeeplink
 
@@ -42,9 +40,6 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
     }
-
-    private var adapter by autoCleared<MultiAdapter>()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -77,7 +72,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) {
 
-                sendDeeplink(Deeplink.SPEAK, extras = mapOf(Param.TEXT to (item.data as Sentence).text))
+                sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to (item.data as Sentence).text))
             }
         }
 
@@ -85,7 +80,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             if (viewModel.isSupportSpeak.value == true) {
 
-                sendDeeplink(Deeplink.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
+                sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
             } else if (viewModel.isSupportListen.value == true) viewModel.startListen(
                 text = item.data.text,
 
@@ -99,7 +94,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
             viewModel.startListen(item.data)
         }
 
-        adapter = MultiAdapter(clickTextAdapter, phoneticsAdapter, ipaDetailAdapters, *ListPreviewAdapter()).apply {
+        MultiAdapter(clickTextAdapter, phoneticsAdapter, ipaDetailAdapters).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -164,7 +159,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 class IpaDetailDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.IPA_DETAIL
+        return DeeplinkManager.IPA_DETAIL
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {

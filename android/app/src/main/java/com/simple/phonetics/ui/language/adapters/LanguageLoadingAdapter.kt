@@ -1,18 +1,28 @@
 package com.simple.phonetics.ui.language.adapters
 
-import com.simple.adapter.ViewItemAdapter
-import com.simple.adapter.entities.ViewItem
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.phonetics.databinding.ItemLanguageLoadingBinding
-import com.tuanha.adapter.annotation.AdapterPreview
+import com.tuanha.adapter.ViewItemAdapter
+import com.tuanha.adapter.annotation.ItemAdapter
+import com.tuanha.adapter.entities.ViewItem
 import java.util.UUID
 
-@AdapterPreview
-open class LanguageLoadingAdapter() : ViewItemAdapter<LanguageLoadingViewItem, ItemLanguageLoadingBinding>() {
+@ItemAdapter
+class LanguageLoadingAdapter() : ViewItemAdapter<LanguageLoadingViewItem, ItemLanguageLoadingBinding>() {
 
-    override fun bind(binding: ItemLanguageLoadingBinding, viewType: Int, position: Int, item: LanguageLoadingViewItem) {
-        super.bind(binding, viewType, position, item)
+    override val viewItemClass: Class<LanguageLoadingViewItem> by lazy {
+        LanguageLoadingViewItem::class.java
+    }
+
+    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemLanguageLoadingBinding {
+        return ItemLanguageLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun onBindViewHolder(binding: ItemLanguageLoadingBinding, viewType: Int, position: Int, item: LanguageLoadingViewItem) {
+        super.onBindViewHolder(binding, viewType, position, item)
 
         binding.root.delegate.setBackground(item.background)
 

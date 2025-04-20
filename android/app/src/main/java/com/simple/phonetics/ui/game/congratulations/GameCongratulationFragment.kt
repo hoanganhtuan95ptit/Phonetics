@@ -11,7 +11,7 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogCongratulationBinding
@@ -80,7 +80,7 @@ class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, Ga
 class GameCongratulationDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.GAME_CONGRATULATION
+        return DeeplinkManager.GAME_CONGRATULATION
     }
 
     override suspend fun navigation(activity: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {

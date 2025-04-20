@@ -4,13 +4,11 @@ import android.Manifest
 import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.core.os.bundleOf
 import androidx.lifecycle.asFlow
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
-import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.autoCleared
@@ -19,18 +17,18 @@ import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics
-import com.simple.phonetics.Deeplink
+import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
-import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.sendEvent
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
+import com.tuanha.adapter.MultiAdapter
 import com.tuanha.deeplink.DeeplinkHandler
 
 class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewModel>() {
@@ -60,7 +58,7 @@ class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewMode
                 }
         }
 
-        adapter = MultiAdapter(imageStateAdapter, *ListPreviewAdapter()).apply {
+        MultiAdapter(imageStateAdapter).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -138,7 +136,7 @@ class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewMode
 class RecordingDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return Deeplink.RECORDING
+        return DeeplinkManager.RECORDING
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
