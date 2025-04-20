@@ -169,7 +169,7 @@ class GameIPAMatchViewModel(
         postDifferentValueIfActive(list)
     }
 
-    val buttonInfo: LiveData<ButtonInfo> = listenerSources(theme, translate, choose) {
+    val actionInfo: LiveData<ActionInfo> = listenerSources(theme, translate, choose) {
 
         val choose = choose.value
 
@@ -180,7 +180,7 @@ class GameIPAMatchViewModel(
 
         val textColor = if (isClickable) theme.colorOnPrimary else theme.colorOnSurfaceVariant
 
-        val info = ButtonInfo(
+        val info = ActionInfo(
             text = translate["action_check"].orEmpty()
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(textColor)),
             isClickable = isClickable,

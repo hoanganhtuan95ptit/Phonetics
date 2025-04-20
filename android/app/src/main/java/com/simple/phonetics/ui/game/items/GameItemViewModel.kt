@@ -1,7 +1,9 @@
 package com.simple.phonetics.ui.game.items
 
+import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.utils.extentions.Event
@@ -35,17 +37,14 @@ abstract class GameItemViewModel : BaseViewModel() {
 
 
     data class StateInfo(
-        val anim: Int? = null,
+        val backgroundColor: Int = Color.TRANSPARENT,
 
-        val title: CharSequence,
-        val message: CharSequence,
-
-        val background: Background = DEFAULT_BACKGROUND,
+        val viewItemList: List<ViewItem> = emptyList(),
 
         val positive: com.simple.coreapp.utils.ext.ButtonInfo? = null,
     )
 
-    data class ButtonInfo(
+    data class ActionInfo(
         val text: CharSequence,
         val isClickable: Boolean,
 

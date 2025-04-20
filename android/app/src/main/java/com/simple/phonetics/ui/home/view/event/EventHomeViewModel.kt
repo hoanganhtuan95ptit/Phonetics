@@ -100,6 +100,7 @@ class EventHomeViewModel(
         ).let {
 
             list.add(it)
+            list.add(SpaceViewItem("SPACE_MESSAGE", height = DP.DP_24))
         }
 
         postDifferentValue(list)

@@ -128,7 +128,7 @@ class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
         }
 
 
-        buttonInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON") {
+        actionInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON") {
 
             val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
 
