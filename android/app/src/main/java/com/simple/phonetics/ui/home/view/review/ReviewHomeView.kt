@@ -5,16 +5,15 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.simple.analytics.logAnalytics
+import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObjectOrNull
-import com.simple.coreapp.Param.RESULT_CODE
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
@@ -24,7 +23,6 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.ui.home.HomeFragment
-import com.simple.phonetics.utils.listenerEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
@@ -86,11 +84,9 @@ class ReviewHomeViewImpl : ReviewHomeView {
             PhoneticsApp.share.getSharedPreferences("AppReview", Context.MODE_PRIVATE)
         }
 
-        listenerEvent(fragment.viewLifecycleOwner.lifecycle, keyRequest) {
+        com.simple.event.listenerEvent(fragment.viewLifecycleOwner.lifecycle, keyRequest) {
 
-            if (it !is Bundle) return@listenerEvent
-
-            val resultCode = it.getInt(RESULT_CODE)
+            val resultCode = it.asObjectOrNull<Int>() ?: return@listenerEvent
 
             logAnalytics("rate_confirm_with_result_code_$resultCode")
 
@@ -169,9 +165,9 @@ class ReviewHomeViewImpl : ReviewHomeView {
         }.firstOrNull()
     }
 
-    private fun openStore(fragment: HomeFragment) {
+    private fun openStore(fragment: HomeFragment) = kotlin.runCatching {
 
-        val context = fragment.context ?: return
+        val context = fragment.context ?: return@runCatching
 
         val appPackageName = context.packageName // Package của ứng dụng
 

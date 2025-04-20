@@ -56,7 +56,7 @@ private val verticalConfirmItemList by lazy {
 class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBinding, VerticalConfirmViewModel>() {
 
 
-    private var resultCode: Int = 0
+    private var resultCode: Int = -1
 
     private var bindingConfirmSpeak by autoCleared<LayoutActionVerticalBinding>()
 

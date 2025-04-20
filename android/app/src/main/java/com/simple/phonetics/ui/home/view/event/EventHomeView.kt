@@ -11,7 +11,6 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.home.HomeFragment
-import com.simple.phonetics.utils.listenerEvent
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -54,14 +53,14 @@ class EventHomeViewImpl : EventHomeView {
 
         val keyRequest = "EVENT_KEY_REQUEST"
 
-        listenerEvent(keyRequest) {
+        com.simple.event.listenerEvent(keyRequest) {
 
             val result = it.asObjectOrNull<Int>()
 
             if (result == 1) {
 
                 sendDeeplink(info.event.positiveDeepLink)
-            } else {
+            } else if (result == 0) {
 
                 sendDeeplink(info.event.negativeDeepLink)
             }
