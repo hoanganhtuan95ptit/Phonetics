@@ -8,14 +8,14 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
+import com.simple.event.listenerEvent
+import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.EventName.GET_VOICE_RESPONSE
 import com.simple.phonetics.EventName.START_READING_TEXT_RESPONSE
 import com.simple.phonetics.Param
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.utils.listenerEvent
-import com.simple.phonetics.utils.sendEvent
 import com.simple.state.ResultState
 import kotlinx.coroutines.flow.first
 import java.util.Locale

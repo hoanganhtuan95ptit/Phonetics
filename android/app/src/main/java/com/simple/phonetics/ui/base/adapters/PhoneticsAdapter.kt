@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.DEFAULT_PADDING
 import com.simple.coreapp.ui.view.Padding
@@ -14,6 +15,7 @@ import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemPhoneticsBinding
 import com.simple.phonetics.entities.Phonetic
 
+@ItemAdapter
 class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null) : ViewItemAdapter<PhoneticsViewItem, ItemPhoneticsBinding>(onItemClick) {
 
     override val viewItemClass: Class<PhoneticsViewItem> by lazy {
