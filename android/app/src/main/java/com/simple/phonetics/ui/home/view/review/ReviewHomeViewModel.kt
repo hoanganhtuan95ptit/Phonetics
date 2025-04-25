@@ -64,6 +64,7 @@ class ReviewHomeViewModel(
             return@combineSources
         }
 
+
         val list = arrayListOf<ViewItem>()
 
         ImageViewItem(
@@ -164,9 +165,10 @@ class ReviewHomeViewModel(
 
 
     fun updateRate(rate: Rate?) {
+
+        if (this.rate.value != null) return
         this.rate.postDifferentValue(rate ?: Rate())
     }
-
 
     data class Rate(
         val date: Int = 0,

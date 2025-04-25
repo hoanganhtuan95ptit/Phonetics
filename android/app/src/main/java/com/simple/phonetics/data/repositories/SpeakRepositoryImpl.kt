@@ -1,11 +1,11 @@
 package com.simple.phonetics.data.repositories
 
 import com.simple.core.utils.extentions.asObjectOrNull
+import com.simple.event.listenerEvent
+import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
 import com.simple.phonetics.domain.repositories.SpeakRepository
-import com.simple.phonetics.utils.listenerEvent
-import com.simple.phonetics.utils.sendEvent
 import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -29,12 +29,13 @@ class SpeakRepositoryImpl : SpeakRepository {
             if (taskId == id) trySend(isSupport)
         }
 
-        val extras = mapOf(
-            Param.TASK_ID to taskId,
-            Param.LANGUAGE_CODE to languageCode,
+        sendEvent(
+            eventName = EventName.CHECK_SUPPORT_SPEAK_TEXT_REQUEST,
+            data = mapOf(
+                Param.TASK_ID to taskId,
+                Param.LANGUAGE_CODE to languageCode,
+            )
         )
-
-        sendEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_REQUEST, data = extras)
 
         awaitClose {
 
@@ -70,8 +71,8 @@ class SpeakRepositoryImpl : SpeakRepository {
         }
 
         sendEvent(
-            EventName.START_SPEAK_TEXT_REQUEST,
-            mapOf(
+            eventName = EventName.START_SPEAK_TEXT_REQUEST,
+            data = mapOf(
                 Param.LANGUAGE_CODE to languageCode,
             )
         )

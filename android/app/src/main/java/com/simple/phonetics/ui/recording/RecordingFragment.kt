@@ -12,12 +12,14 @@ import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
-import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.event.sendEvent
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
@@ -25,16 +27,11 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
-import com.simple.phonetics.utils.sendEvent
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
-import com.simple.deeplink.DeeplinkHandler
-import com.simple.deeplink.annotation.Deeplink
 
 class RecordingFragment : BaseSheetFragment<DialogListBinding, RecordingViewModel>() {
-
-    private var adapter by autoCleared<MultiAdapter>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
