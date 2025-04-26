@@ -5,7 +5,8 @@ import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
-import androidx.annotation.VisibleForTesting
+import android.view.Gravity
+import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
@@ -14,11 +15,15 @@ import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.orZero
+import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.Padding
+import com.simple.coreapp.ui.view.Size
+import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.Constants
@@ -27,8 +32,7 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import com.simple.phonetics.entities.Word
-import com.simple.phonetics.ui.base.fragments.BaseViewModel
-import com.simple.phonetics.utils.exts.ButtonViewItem
+import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.utils.exts.OptionViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
 import kotlinx.coroutines.flow.first
@@ -37,7 +41,7 @@ import kotlinx.coroutines.flow.launchIn
 class GameConfigViewModel(
     private val countIpaAsyncUseCase: CountIpaAsyncUseCase,
     private val countWordAsyncUseCase: CountWordAsyncUseCase
-) : BaseViewModel() {
+) : BaseActionViewModel() {
 
     val ipaCount: LiveData<Int> = combineSources(inputLanguage) {
 
@@ -71,8 +75,8 @@ class GameConfigViewModel(
 
     val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
 
-    @VisibleForTesting
-    val resourceViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, resourceSelected, wordHistoryCount, wordPopularCount) {
+
+    val viewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, actionHeight, resourceSelected, wordHistoryCount, wordPopularCount) {
 
         val theme = theme.value ?: return@listenerSources
         val translate = translate.value ?: return@listenerSources
@@ -90,7 +94,7 @@ class GameConfigViewModel(
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
         ).let {
 
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_8))
+            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_12))
             list.add(it)
             list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_8))
         }
@@ -146,48 +150,51 @@ class GameConfigViewModel(
         }.let {
 
             list.addAll(it)
+            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight.get()))
         }
 
         postDifferentValue(list)
     }
 
-    @VisibleForTesting
-    val buttonViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, resourceSelected) {
+    val buttonInfo: LiveData<ClickTextViewItem> = listenerSources(theme, translate, resourceSelected) {
 
         val theme = theme.value ?: return@listenerSources
         val translate = translate.value ?: return@listenerSources
 
         val resourceSelected = resourceSelected.value
 
-        val list = arrayListOf<ViewItem>()
-
         val isAvailable = resourceSelected != null
 
-        ButtonViewItem(
-            id = Id.BUTTON,
-
+        ClickTextViewItem(
+            id = "",
             text = translate["game_config_screen_action_play_game"].orEmpty()
                 .with(ForegroundColorSpan(if (isAvailable) theme.colorOnPrimary else theme.colorOnSurface)),
-
-            strokeColor = if (isAvailable) theme.colorPrimary else theme.colorOnSurface,
-            backgroundColor = if (isAvailable) theme.colorPrimary else Color.TRANSPARENT,
+            textStyle = TextStyle(
+                textSize = 18f,
+                textGravity = Gravity.CENTER
+            ),
+            textSize = Size(
+                width = ViewGroup.LayoutParams.MATCH_PARENT,
+                height = ViewGroup.LayoutParams.MATCH_PARENT
+            ),
+            textPadding = Padding(
+                paddingVertical = DP.DP_12,
+                paddingHorizontal = DP.DP_16,
+            ),
+            textBackground = Background(
+                cornerRadius = DP.DP_100,
+                strokeWidth = DP.DP_1,
+                strokeColor = if (isAvailable) theme.colorPrimary else theme.colorOnSurface,
+                backgroundColor = if (isAvailable) theme.colorPrimary else Color.TRANSPARENT
+            ),
+            size = Size(
+                width = ViewGroup.LayoutParams.MATCH_PARENT,
+                height = ViewGroup.LayoutParams.WRAP_CONTENT
+            )
         ).let {
 
-            list.add(SpaceViewItem(id = "SPACE_BUTTON", height = DP.DP_30))
-            list.add(it)
+            postDifferentValue(it)
         }
-
-        postDifferentValue(list)
-    }
-
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(resourceViewItemList, buttonViewItemList) {
-
-        val list = arrayListOf<ViewItem>()
-
-        list.addAll(resourceViewItemList.getOrEmpty())
-        list.addAll(buttonViewItemList.getOrEmpty())
-
-        postDifferentValue(list)
     }
 
     init {

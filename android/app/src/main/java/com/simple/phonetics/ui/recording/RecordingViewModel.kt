@@ -32,7 +32,7 @@ import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
-import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
@@ -43,12 +43,10 @@ import kotlinx.coroutines.launch
 class RecordingViewModel(
     private val stopSpeakUseCase: StopSpeakUseCase,
     private val startSpeakUseCase: StartSpeakUseCase
-) : BaseViewModel() {
-
+) : BaseActionViewModel() {
 
     @VisibleForTesting
     val isReverse: LiveData<Boolean> = MediatorLiveData(true)
-
 
     val speakState: LiveData<ResultState<String>> = MediatorLiveData()
 
@@ -105,8 +103,18 @@ class RecordingViewModel(
         postDifferentValue(list)
     }
 
-    @VisibleForTesting
-    val buttonViewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, titleViewItemList, speakState) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSources(titleViewItemList, actionHeight) {
+
+        val list = arrayListOf<ViewItem>()
+
+        list.add(SpaceViewItem(id = "SPACE_PHONETICS_0", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
+        list.addAll(titleViewItemList.getOrEmpty())
+        list.add(SpaceViewItem(id = "SPACE_PHONETICS_1", width = ViewGroup.LayoutParams.MATCH_PARENT, height = actionHeight.get()))
+
+        postDifferentValueIfActive(list)
+    }
+
+    val actionInfo: LiveData<ImageStateViewItem> = listenerSources(size, theme, titleViewItemList, speakState) {
 
         val size = size.value ?: return@listenerSources
         val theme = theme.value ?: return@listenerSources
@@ -115,12 +123,7 @@ class RecordingViewModel(
 
         val width = (size.width - 2 * DP.DP_24) / 3
 
-
-        val list = arrayListOf<ViewItem>()
-
-        list.add(SpaceViewItem(id = "ID_SPEAK_1", width = width))
-
-        ImageStateViewItem(
+        val viewItem = ImageStateViewItem(
             id = ID.SPEAK,
 
             anim = if (speakState.isRunning()) {
@@ -158,33 +161,9 @@ class RecordingViewModel(
                 right = DP.DP_16,
                 bottom = DP.DP_16
             )
-        ).let {
+        )
 
-            list.add(it)
-        }
-
-        list.add(SpaceViewItem(id = "ID_SPEAK_2", width = width))
-
-        postDifferentValueIfActive(list)
-    }
-
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(titleViewItemList, buttonViewItemList) {
-
-        val list = arrayListOf<ViewItem>()
-
-        titleViewItemList.getOrEmpty().let {
-
-            list.add(SpaceViewItem(id = "SPACE_PHONETICS_0", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
-            list.addAll(it)
-            list.add(SpaceViewItem(id = "SPACE_PHONETICS_1", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
-        }
-
-        buttonViewItemList.getOrEmpty().let {
-
-            list.addAll(it)
-        }
-
-        postDifferentValueIfActive(list)
+        postDifferentValueIfActive(viewItem)
     }
 
     fun updateReverse(it: Boolean) {
@@ -219,16 +198,6 @@ class RecordingViewModel(
 
         stopSpeakUseCase.execute()
     }
-
-    private fun SpaceViewItem(id: String, width: Int) = NoneTextViewItem(
-        id = id,
-        text = "",
-
-        size = Size(
-            width = width,
-            height = DP.DP_56
-        ),
-    )
 
     object ID {
 
