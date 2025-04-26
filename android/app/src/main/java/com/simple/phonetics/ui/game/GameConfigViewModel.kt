@@ -7,6 +7,7 @@ import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
@@ -43,6 +44,7 @@ class GameConfigViewModel(
     private val countWordAsyncUseCase: CountWordAsyncUseCase
 ) : BaseActionViewModel() {
 
+    @VisibleForTesting
     val ipaCount: LiveData<Int> = combineSources(inputLanguage) {
 
         val inputLanguage = inputLanguage.get()
@@ -53,6 +55,7 @@ class GameConfigViewModel(
         }
     }
 
+    @VisibleForTesting
     val wordHistoryCount: LiveData<Int> = combineSources(inputLanguage) {
 
         val inputLanguage = inputLanguage.get()
@@ -63,6 +66,7 @@ class GameConfigViewModel(
         }
     }
 
+    @VisibleForTesting
     val wordPopularCount: LiveData<Int> = combineSources(inputLanguage) {
 
         val inputLanguage = inputLanguage.get()
@@ -72,6 +76,7 @@ class GameConfigViewModel(
             postDifferentValue(it)
         }
     }
+
 
     val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
 
@@ -94,9 +99,9 @@ class GameConfigViewModel(
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
         ).let {
 
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_12))
+            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_24))
             list.add(it)
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_8))
+            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_12))
         }
 
         Word.Resource.entries.map {
