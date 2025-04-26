@@ -27,11 +27,16 @@ interface EventHomeView {
 
 class EventHomeViewImpl : EventHomeView {
 
+    private val tag = "EVENT_HOME"
+
     private val show: LiveData<Boolean> = MediatorLiveData()
 
     override fun setupEvent(fragment: HomeFragment) {
 
         val viewModel: EventHomeViewModel by fragment.viewModel()
+
+
+        com.simple.phonetics.utils.sendDeeplink(key = tag)
 
         viewModel.eventInfoEvent.asFlow().launchCollect(fragment.viewLifecycleOwner) { event ->
 
@@ -89,6 +94,7 @@ class EventHomeViewImpl : EventHomeView {
             trySend(Unit)
         }
 
+
         val extras = mapOf(
             com.simple.coreapp.Param.CANCEL to false,
 
@@ -100,7 +106,15 @@ class EventHomeViewImpl : EventHomeView {
             Param.VIEW_ITEM_LIST to info.viewItemList
         )
 
-        sendDeeplink(deepLink = DeeplinkManager.CONFIRM + "?code:${info.event.id}", extras = extras)
+        com.simple.phonetics.utils.sendDeeplink(
+            key = tag,
+            index = 1,
+            lifecycleOwner = fragment.viewLifecycleOwner,
+
+            deepLink = DeeplinkManager.CONFIRM + "?code:${info.event.id}",
+            extras = extras
+        )
+
 
         logAnalytics("event_show_${info.event.name.lowercase()}")
 

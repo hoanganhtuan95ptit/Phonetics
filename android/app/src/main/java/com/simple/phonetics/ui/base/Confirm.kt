@@ -11,6 +11,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -185,6 +186,31 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
             binding.recyclerView.submitListAwait(it)
         }
     }
+
+    companion object {
+
+        suspend fun showOrAwaitDismiss(fragmentManager: FragmentManager, extras: Map<String, Any?>?) {
+
+            verticalConfirmItemList.resetReplayCache()
+            verticalConfirmItemList.emit(extras.orEmpty()[com.simple.phonetics.Param.VIEW_ITEM_LIST].asListOrNull<ViewItem>().orEmpty().toList())
+
+
+            val fragment = VerticalConfirmSheetFragment()
+
+            fragment.arguments = extras.orEmpty().filter {
+
+                it.value !is List<*>
+            }.filter {
+
+                it.value is CharSequence || it.value is Int || it.value is Long || it.value is Float || it.value is Double || it.value is Serializable || it.value is Parcelable
+            }.let {
+
+                bundleOf(*it.toList().toTypedArray())
+            }
+
+            fragment.showOrAwaitDismiss(fragmentManager, "")
+        }
+    }
 }
 
 class VerticalConfirmViewModel : BaseViewModel() {
@@ -234,26 +260,7 @@ class ConfirmDeeplinkHandler : DeeplinkHandler {
             return false
         }
 
-
-        verticalConfirmItemList.resetReplayCache()
-        verticalConfirmItemList.emit(extras.orEmpty()[com.simple.phonetics.Param.VIEW_ITEM_LIST].asListOrNull<ViewItem>().orEmpty().toList())
-
-
-        val fragment = VerticalConfirmSheetFragment()
-
-        fragment.arguments = extras.orEmpty().filter {
-
-            it.value !is List<*>
-        }.filter {
-
-            it.value is CharSequence || it.value is Int || it.value is Long || it.value is Float || it.value is Double || it.value is Serializable || it.value is Parcelable
-        }.let {
-
-            bundleOf(*it.toList().toTypedArray())
-        }
-
-        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, "")
-
+        VerticalConfirmSheetFragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, extras)
 
         return true
     }
