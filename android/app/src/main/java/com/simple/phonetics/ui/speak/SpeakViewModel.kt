@@ -27,7 +27,7 @@ import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.state.ResultState
@@ -51,22 +51,19 @@ class SpeakViewModel(
     private val startReadingUseCase: StartReadingUseCase,
 
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
-) : BaseViewModel() {
+) : BaseActionViewModel() {
 
     val text: LiveData<String> = MediatorLiveData()
-
-
-    val listenState: LiveData<ResultState<String>> = MediatorLiveData()
-
-    val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
-
-
-    val actionHeight: LiveData<Int> = MediatorLiveData()
 
 
     val speakState: LiveData<ResultState<String>> = MediatorLiveData()
 
     val isSupportSpeak: LiveData<Boolean> = MediatorLiveData(true)
+
+
+    val listenState: LiveData<ResultState<String>> = MediatorLiveData()
+
+    val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
 
 
     @VisibleForTesting
@@ -232,11 +229,6 @@ class SpeakViewModel(
     fun updateSupportSpeak(it: Boolean) {
 
         isSupportListen.postDifferentValue(it)
-    }
-
-    fun updateActionHeight(height: Int) {
-
-        actionHeight.postDifferentValue(height)
     }
 
     fun startListen(text: String? = null, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {

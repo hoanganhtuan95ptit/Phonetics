@@ -34,7 +34,6 @@ class GameHomeViewImpl : GameHomeView {
             viewModel.updateTypeViewItemList(type = 0, it)
         }
 
-
         com.simple.event.listenerEvent(eventName = EventName.TEXT_VIEW_ITEM_CLICKED, lifecycle = fragment.viewLifecycleOwner.lifecycle) {
 
             val (view, viewItem) = it.asObjectOrNull<Pair<View, ClickTextViewItem>>() ?: return@listenerEvent
@@ -68,7 +67,6 @@ class GameHomeViewImpl : GameHomeView {
 
             trySend(it.asObject<Int>())
         }
-
 
         awaitClose {
 

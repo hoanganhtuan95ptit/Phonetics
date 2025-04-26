@@ -3,34 +3,27 @@ package com.simple.phonetics.ui.speak
 import android.Manifest
 import android.content.ComponentCallbacks
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
-import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
-import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.doOnHeightStatusAndHeightNavigationChange
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
-import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics
@@ -45,9 +38,8 @@ import com.simple.phonetics.databinding.LayoutConfirmSpeakBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
-import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
+import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
-import com.simple.phonetics.utils.exts.listenerOnHeightChange
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
 import com.simple.phonetics.utils.showAds
@@ -56,25 +48,18 @@ import com.simple.state.isFailed
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.launch
-import kotlin.math.absoluteValue
 
-class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
-
+class SpeakFragment : BaseActionFragment<LayoutConfirmSpeakBinding, DialogListBinding, SpeakViewModel>() {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
     }
 
-
-    private var bindingConfirmSpeak by autoCleared<LayoutConfirmSpeakBinding>()
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindingConfirmSpeak = LayoutConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
-
-        setupAction()
+        setupActionSpeak()
+        setupActionListen()
         setupRecyclerView()
 
         observeData()
@@ -83,51 +68,19 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
         showAds()
     }
 
-    private fun setupAction() {
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogListBinding {
 
-        val binding = bindingConfirmSpeak ?: return
+        return DialogListBinding.inflate(inflater, container, false)
+    }
 
-        val layoutParam = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT
-        ).apply {
-            gravity = Gravity.BOTTOM
-        }
+    override fun createBindingAction(): LayoutConfirmSpeakBinding {
 
-        container?.addView(binding.root, layoutParam)
-
-        behavior?.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-                val translateY = (1 + slideOffset) * this@SpeakFragment.bottomSheet?.height.orZero() - viewModel.actionHeight.get()
-                if (translateY < 0) binding.root.translationY = translateY.absoluteValue
-            }
-        })
-
-        binding.root.listenerOnHeightChange().launchCollect(viewLifecycleOwner) {
-
-            viewModel.updateActionHeight(it)
-        }
-
-        doOnHeightStatusAndHeightNavigationChange { heightStatusBar: Int, heightNavigationBar: Int ->
-
-            val bindingConfirmSpeak = bindingConfirmSpeak ?: return@doOnHeightStatusAndHeightNavigationChange
-
-            bindingConfirmSpeak.root.updatePadding(bottom = heightNavigationBar + DP.DP_24)
-        }
-
-        setupActionSpeak()
-        setupActionListen()
+        return LayoutConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
     }
 
     private fun setupActionSpeak() {
 
-        val binding = bindingConfirmSpeak ?: return
+        val binding = bindingAction ?: return
 
         binding.frameSpeak.root.setPadding(
             Padding(padding = DP.DP_16)
@@ -146,7 +99,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
     private fun setupActionListen() {
 
-        val binding = bindingConfirmSpeak ?: return
+        val binding = bindingAction ?: return
 
         binding.frameListen.root.setPadding(
             Padding(padding = DP.DP_12)
@@ -198,7 +151,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
         theme.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
-            val bindingConfigSpeak = bindingConfirmSpeak ?: return@observe
+            val bindingConfigSpeak = bindingAction ?: return@observe
 
             val background = Background(
                 backgroundColor = it.colorBackground,
@@ -215,7 +168,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
         speakInfo.observe(viewLifecycleOwner) {
 
-            val binding = bindingConfirmSpeak?.frameSpeak ?: return@observe
+            val binding = bindingAction?.frameSpeak ?: return@observe
 
             if (it.anim != null) {
                 binding.ivImage.setAnimation(it.anim)
@@ -231,7 +184,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
         listenInfo.observe(viewLifecycleOwner) {
 
-            val binding = bindingConfirmSpeak?.frameListen ?: return@observe
+            val binding = bindingAction?.frameListen ?: return@observe
 
             binding.ivImage.setImage(it.image)
 
@@ -241,7 +194,7 @@ class SpeakFragment : BaseSheetFragment<DialogListBinding, SpeakViewModel>() {
 
         resultInfo.observe(viewLifecycleOwner) {
 
-            val binding = bindingConfirmSpeak ?: return@observe
+            val binding = bindingAction ?: return@observe
 
             binding.tvMessage.text = it.result
             binding.tvMessage.setVisible(it.isShow)

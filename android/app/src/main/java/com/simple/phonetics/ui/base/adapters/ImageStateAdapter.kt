@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
+import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
@@ -17,6 +18,7 @@ import com.simple.coreapp.utils.ext.setVisible
 import com.simple.image.setImage
 import com.simple.phonetics.databinding.ItemImageStateBinding
 
+@ItemAdapter
 class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<ImageStateViewItem, ItemImageStateBinding>(onItemClick) {
 
     override val viewItemClass: Class<ImageStateViewItem> by lazy {

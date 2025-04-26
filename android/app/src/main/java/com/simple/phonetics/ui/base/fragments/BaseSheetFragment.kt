@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.viewbinding.ViewBinding
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 
-abstract class BaseSheetFragment<T : ViewBinding, VM : BaseViewModel>(@LayoutRes override val contentLayoutId: Int = 0) : BaseViewModelSheetFragment<T, VM>(contentLayoutId) {
+abstract class BaseSheetFragment<T : ViewBinding, VM : BaseViewModel>() : BaseViewModelSheetFragment<T, VM>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
