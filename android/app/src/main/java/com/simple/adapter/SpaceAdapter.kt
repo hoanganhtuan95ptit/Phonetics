@@ -20,14 +20,16 @@ class SpaceAdapter : ViewItemAdapter<SpaceViewItem, ItemSpaceBinding>() {
         return ItemSpaceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
 
+    override fun onBindViewHolder(binding: ItemSpaceBinding, viewType: Int, position: Int, item: SpaceViewItem, payloads: MutableList<Any>) {
+        super.onBindViewHolder(binding, viewType, position, item, payloads)
+
+        if (payloads.contains(PAYLOAD_SIZE)) refreshSize(binding, item)
+    }
+
     override fun onBindViewHolder(binding: ItemSpaceBinding, viewType: Int, position: Int, item: SpaceViewItem) {
         super.onBindViewHolder(binding, viewType, position, item)
 
-        binding.space.updateLayoutParams {
-
-            width = item.width
-            height = item.height
-        }
+        refreshSize(binding, item)
 
         if (item.background == null) {
 
@@ -35,6 +37,15 @@ class SpaceAdapter : ViewItemAdapter<SpaceViewItem, ItemSpaceBinding>() {
         } else {
 
             binding.root.setBackgroundResource(item.background)
+        }
+    }
+
+    private fun refreshSize(binding: ItemSpaceBinding, item: SpaceViewItem) {
+
+        binding.space.updateLayoutParams {
+
+            width = item.width
+            height = item.height
         }
     }
 }
@@ -67,4 +78,11 @@ data class SpaceViewItem(
     override fun areItemsTheSame(): List<Any> = listOf(
         id
     )
+
+    override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
+        width to PAYLOAD_SIZE,
+        height to PAYLOAD_SIZE
+    )
 }
+
+private const val PAYLOAD_SIZE = "PAYLOAD_SIZE"

@@ -40,6 +40,7 @@ import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
+import com.simple.event.sendEvent
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionVerticalBinding
@@ -90,7 +91,7 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
 
     override fun onDestroy() {
         super.onDestroy()
-        com.simple.event.sendEvent(arguments?.getString(Param.KEY_REQUEST).orEmpty(), resultCode)
+        sendEvent(arguments?.getString(Param.KEY_REQUEST).orEmpty(), resultCode)
     }
 
     private fun setupAction() {

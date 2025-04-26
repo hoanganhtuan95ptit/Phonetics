@@ -62,6 +62,7 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
+import com.simple.state.toSuccess
 import kotlin.math.absoluteValue
 
 
@@ -76,6 +77,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     PhoneticHomeView by PhoneticHomeViewImpl(),
     LanguageHomeView by LanguageHomeViewImpl(),
     MicrophoneHomeView by MicrophoneHomeViewImpl() {
+
+
+    private val eventViewModel: EventViewModel by lazy {
+        getViewModel(this, EventViewModel::class)
+    }
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
@@ -122,6 +128,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         setupRecyclerViewConfig()
 
         observeData()
+        observeEventData()
         observePhoneticsConfigData()
     }
 
@@ -320,6 +327,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
             showEvent()
             showReview()
+        }
+    }
+
+    private fun observeEventData() = with(eventViewModel) {
+
+        popupEvent.observe(viewLifecycleOwner) { event ->
+
+            val map = event.getContentIfNotHandled() ?: return@observe
+
+            map.values.mapNotNull {
+
+                it.toSuccess()?.data
+            }.forEach {
+
+                sendDeeplink(deepLink = it.deepLink, extras = it.extras)
+            }
         }
     }
 

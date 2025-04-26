@@ -10,6 +10,7 @@ import com.simple.phonetics.ui.game.congratulations.GameCongratulationViewModel
 import com.simple.phonetics.ui.game.items.ipa_match.GameIPAMatchViewModel
 import com.simple.phonetics.ui.game.items.ipa_puzzle.GameIPAPuzzleViewModel
 import com.simple.phonetics.ui.game.items.ipa_wordle.GameIPAWordleViewModel
+import com.simple.phonetics.ui.home.EventViewModel
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.view.detect.DetectHomeViewModel
 import com.simple.phonetics.ui.home.view.event.EventHomeViewModel
@@ -36,10 +37,6 @@ val viewModelModule = module {
 
     viewModel {
         TransitionGlobalViewModel()
-    }
-
-    viewModel {
-        ReviewHomeViewModel(get())
     }
 
     viewModel {
@@ -71,7 +68,15 @@ val viewModelModule = module {
 
 
     viewModel {
+        EventViewModel()
+    }
+
+    viewModel {
         EventHomeViewModel(get(), get())
+    }
+
+    viewModel {
+        ReviewHomeViewModel(get())
     }
 
     viewModel {
