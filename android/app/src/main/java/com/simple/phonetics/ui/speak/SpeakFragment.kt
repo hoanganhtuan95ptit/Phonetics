@@ -63,8 +63,6 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
         observeData()
         observeConfigData()
-
-        showAds()
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogListBinding {
@@ -75,6 +73,12 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
     override fun createBindingAction(): LayoutActionConfirmSpeakBinding {
 
         return LayoutActionConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        
+        showAds()
     }
 
     private fun setupActionSpeak() {
