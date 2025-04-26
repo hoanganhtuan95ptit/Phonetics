@@ -31,7 +31,7 @@ import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
-import com.simple.phonetics.databinding.LayoutConfirmRecordingBinding
+import com.simple.phonetics.databinding.LayoutActionConfirmRecordingBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
@@ -39,7 +39,7 @@ import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
 
-class RecordingFragment : BaseActionFragment<LayoutConfirmRecordingBinding, DialogListBinding, RecordingViewModel>() {
+class RecordingFragment : BaseActionFragment<LayoutActionConfirmRecordingBinding, DialogListBinding, RecordingViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,9 +55,9 @@ class RecordingFragment : BaseActionFragment<LayoutConfirmRecordingBinding, Dial
         return DialogListBinding.inflate(inflater, container, false)
     }
 
-    override fun createBindingAction(): LayoutConfirmRecordingBinding {
+    override fun createBindingAction(): LayoutActionConfirmRecordingBinding {
 
-        return LayoutConfirmRecordingBinding.inflate(LayoutInflater.from(requireContext()))
+        return LayoutActionConfirmRecordingBinding.inflate(LayoutInflater.from(requireContext()))
     }
 
     private fun setupAction() {

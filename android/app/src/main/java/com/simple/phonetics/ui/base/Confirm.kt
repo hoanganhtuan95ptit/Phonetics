@@ -15,11 +15,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.simple.adapter.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.asListOrNull
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.Param
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground

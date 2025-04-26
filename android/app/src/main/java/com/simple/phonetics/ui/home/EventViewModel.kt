@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.home
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.core.utils.extentions.orZero
@@ -13,10 +14,14 @@ import com.simple.state.toSuccess
 
 class EventViewModel : BaseViewModel() {
 
+    @VisibleForTesting
     val job = JobQueue()
 
+    @VisibleForTesting
     val popup: LiveData<MutableMap<String, ResultState<DeeplinkInfo>>> = MediatorLiveData(mutableMapOf())
+
     val popupEvent = popup.toEvent()
+
 
     override fun onCleared() {
         super.onCleared()
@@ -36,6 +41,7 @@ class EventViewModel : BaseViewModel() {
         )
 
         map[key] = state
+
 
         if (map.any { !it.value.isCompleted() }) {
 

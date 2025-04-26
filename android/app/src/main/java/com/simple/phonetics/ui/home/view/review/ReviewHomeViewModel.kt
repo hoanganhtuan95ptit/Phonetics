@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.simple.adapter.SpaceViewItem
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.ImageViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
