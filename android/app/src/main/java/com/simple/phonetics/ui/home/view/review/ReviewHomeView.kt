@@ -18,7 +18,6 @@ import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.crashlytics.logCrashlytics
-import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
@@ -49,6 +48,8 @@ class ReviewHomeViewImpl : ReviewHomeView {
 
         val keyRequest = "RATE_KEY_REQUEST"
 
+        com.simple.phonetics.utils.sendDeeplink(key = DeeplinkManager.REVIEW)
+
         viewModel.rateInfoEvent.asFlow().launchCollect(fragment.viewLifecycleOwner) { event ->
 
             show.asFlow().firstOrNull()
@@ -71,14 +72,19 @@ class ReviewHomeViewImpl : ReviewHomeView {
                 logAnalytics("open_rate_confirm")
             }
 
-            if (info.show) {
+            if (info.show) com.simple.phonetics.utils.sendDeeplink(
+                key = DeeplinkManager.REVIEW,
+                index = 2,
+                lifecycleOwner = fragment.viewLifecycleOwner,
 
-                sendDeeplink(DeeplinkManager.CONFIRM + "?code:review", extras = extras)
-            } else {
+                deepLink = DeeplinkManager.CONFIRM + "?code:review",
+                extras = extras
+            ) else {
 
                 openReview(fragment)
             }
         }
+
 
         val sharedPreferences: SharedPreferences by lazy {
             PhoneticsApp.share.getSharedPreferences("AppReview", Context.MODE_PRIVATE)
