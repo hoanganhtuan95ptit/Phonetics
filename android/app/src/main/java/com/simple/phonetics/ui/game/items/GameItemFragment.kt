@@ -7,7 +7,6 @@ import com.simple.coreapp.utils.extentions.get
 import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
 import com.simple.phonetics.DeeplinkManager
-import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
@@ -103,7 +102,9 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
         }
 
 
-        listenerEvent(coroutineScope = this, EventName.DISMISS) {
+        val keyRequest = "GAME_STATUS"
+
+        listenerEvent(coroutineScope = this, keyRequest) {
 
             trySend(Unit)
         }
@@ -112,16 +113,16 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
         val consecutiveCorrectAnswers = gameViewModel.consecutiveCorrectAnswer.get()
 
         if (consecutiveCorrectAnswers.first > 0 && consecutiveCorrectAnswers.second) {
-            showGameCongratulation(number = consecutiveCorrectAnswers.first)
+            showGameCongratulation(number = consecutiveCorrectAnswers.first, keyRequest = keyRequest)
         } else {
-            showMessage(info = info)
+            showMessage(info = info, keyRequest = keyRequest)
         }
 
         awaitClose {
         }
     }.first()
 
-    private fun showMessage(info: GameItemViewModel.StateInfo) {
+    private fun showMessage(info: GameItemViewModel.StateInfo, keyRequest: String) {
 
         val extras = mapOf(
 
@@ -129,17 +130,20 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
             com.simple.coreapp.Param.POSITIVE to info.positive,
 
             Param.VIEW_ITEM_LIST to info.viewItemList,
-            Param.BACKGROUND_COLOR to info.backgroundColor
+            Param.BACKGROUND_COLOR to info.backgroundColor,
+
+            Param.KEY_REQUEST to keyRequest
         )
 
         sendDeeplink(DeeplinkManager.CONFIRM, extras = extras)
     }
 
-    private fun showGameCongratulation(number: Long) {
+    private fun showGameCongratulation(number: Long, keyRequest: String) {
 
         val extras = mapOf(
 
-            Param.NUMBER to number
+            Param.NUMBER to number,
+            Param.KEY_REQUEST to keyRequest
         )
 
         sendDeeplink(DeeplinkManager.GAME_CONGRATULATION, extras = extras)

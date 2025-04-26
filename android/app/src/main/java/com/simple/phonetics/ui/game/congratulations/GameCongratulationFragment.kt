@@ -15,7 +15,6 @@ import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.event.sendEvent
 import com.simple.phonetics.DeeplinkManager
-import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogCongratulationBinding
 import com.simple.phonetics.ui.MainActivity
@@ -25,7 +24,7 @@ class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, Ga
 
     override fun onDestroy() {
         super.onDestroy()
-        sendEvent(EventName.DISMISS, bundleOf())
+        sendEvent(arguments?.getString(Param.KEY_REQUEST).orEmpty(), bundleOf())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

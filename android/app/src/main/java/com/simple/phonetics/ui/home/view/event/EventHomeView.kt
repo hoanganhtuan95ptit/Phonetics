@@ -1,5 +1,7 @@
 package com.simple.phonetics.ui.home.view.event
 
+import android.content.ComponentCallbacks
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
@@ -7,16 +9,22 @@ import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
+import com.simple.event.listenerEvent
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
+import com.simple.phonetics.ui.home.EventViewModel
 import com.simple.phonetics.ui.home.HomeFragment
+import com.simple.phonetics.utils.exts.awaitResume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val tag = "EVENT_HOME"
 
 interface EventHomeView {
 
@@ -27,16 +35,16 @@ interface EventHomeView {
 
 class EventHomeViewImpl : EventHomeView {
 
-    private val tag = "EVENT_HOME"
-
     private val show: LiveData<Boolean> = MediatorLiveData()
 
     override fun setupEvent(fragment: HomeFragment) {
 
         val viewModel: EventHomeViewModel by fragment.viewModel()
 
+        val eventViewModel: EventViewModel by fragment.viewModel()
 
-        com.simple.phonetics.utils.sendDeeplink(key = tag)
+
+        eventViewModel.addEvent(key = tag)
 
         viewModel.eventInfoEvent.asFlow().launchCollect(fragment.viewLifecycleOwner) { event ->
 
@@ -59,7 +67,9 @@ class EventHomeViewImpl : EventHomeView {
 
         val keyRequest = "EVENT_KEY_REQUEST"
 
-        com.simple.event.listenerEvent(keyRequest) {
+        val eventViewModel: EventViewModel by fragment.viewModel()
+
+        listenerEvent(keyRequest) {
 
             val binding = fragment.binding
 
@@ -106,15 +116,13 @@ class EventHomeViewImpl : EventHomeView {
             Param.VIEW_ITEM_LIST to info.viewItemList
         )
 
-        com.simple.phonetics.utils.sendDeeplink(
+        eventViewModel.addEvent(
             key = tag,
             index = 1,
-            lifecycleOwner = fragment.viewLifecycleOwner,
+            deepLink = DeeplinkManager.EVENT,
 
-            deepLink = DeeplinkManager.CONFIRM + "?code:${info.event.id}",
             extras = extras
         )
-
 
         logAnalytics("event_show_${info.event.name.lowercase()}")
 
@@ -122,4 +130,47 @@ class EventHomeViewImpl : EventHomeView {
 
         }
     }.first()
+}
+
+@Deeplink(queue = "Confirm")
+class EventDeeplinkHandler : DeeplinkHandler {
+
+    override fun getDeeplink(): String {
+        return DeeplinkManager.EVENT
+    }
+
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
+
+        if (componentCallbacks !is HomeFragment) {
+            return false
+        }
+
+        val extrasWrap = extras.orEmpty().toMutableMap()
+
+        val keyRequest = extrasWrap[Param.KEY_REQUEST].asObjectOrNull<String>() ?: tag.apply {
+
+            extrasWrap[Param.KEY_REQUEST] = this
+        }
+
+
+        componentCallbacks.awaitResume()
+
+
+        sendDeeplink(DeeplinkManager.CONFIRM + "code:event", extras = extrasWrap)
+
+
+        channelFlow {
+
+            listenerEvent(eventName = keyRequest) {
+
+                trySend(Unit)
+            }
+
+            awaitClose {
+
+            }
+        }.first()
+
+        return true
+    }
 }

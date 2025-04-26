@@ -1,10 +1,12 @@
 package com.simple.phonetics.ui.home.view.review
 
+import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
@@ -18,18 +20,27 @@ import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.crashlytics.logCrashlytics
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
+import com.simple.event.listenerEvent
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
+import com.simple.phonetics.ui.home.EventViewModel
 import com.simple.phonetics.ui.home.HomeFragment
+import com.simple.phonetics.utils.exts.awaitResume
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
+private const val tag = "REVIEW"
 
 interface ReviewHomeView {
 
@@ -46,9 +57,13 @@ class ReviewHomeViewImpl : ReviewHomeView {
 
         val viewModel: ReviewHomeViewModel by fragment.viewModel()
 
-        val keyRequest = "RATE_KEY_REQUEST"
+        val eventViewModel: EventViewModel by fragment.viewModel()
 
-        com.simple.phonetics.utils.sendDeeplink(key = DeeplinkManager.REVIEW)
+
+        eventViewModel.addEvent(key = tag)
+
+
+        val keyRequest = "RATE_KEY_REQUEST"
 
         viewModel.rateInfoEvent.asFlow().launchCollect(fragment.viewLifecycleOwner) { event ->
 
@@ -72,12 +87,11 @@ class ReviewHomeViewImpl : ReviewHomeView {
                 logAnalytics("open_rate_confirm")
             }
 
-            if (info.show) com.simple.phonetics.utils.sendDeeplink(
-                key = DeeplinkManager.REVIEW,
+            if (info.show) eventViewModel.addEvent(
+                key = tag,
                 index = 2,
-                lifecycleOwner = fragment.viewLifecycleOwner,
+                deepLink = DeeplinkManager.REVIEW,
 
-                deepLink = DeeplinkManager.CONFIRM + "?code:review",
                 extras = extras
             ) else {
 
@@ -90,7 +104,7 @@ class ReviewHomeViewImpl : ReviewHomeView {
             PhoneticsApp.share.getSharedPreferences("AppReview", Context.MODE_PRIVATE)
         }
 
-        com.simple.event.listenerEvent(fragment.viewLifecycleOwner.lifecycle, keyRequest) {
+        listenerEvent(fragment.viewLifecycleOwner.lifecycle, keyRequest) {
 
             val resultCode = it.asObjectOrNull<Int>() ?: return@listenerEvent
 
@@ -207,5 +221,50 @@ class ReviewHomeViewImpl : ReviewHomeView {
 
             return false // Không tìm thấy Google Play Store
         }
+    }
+}
+
+@Deeplink(queue = "Confirm")
+class ReviewDeeplinkHandler : DeeplinkHandler {
+
+    override fun getDeeplink(): String {
+        return DeeplinkManager.REVIEW
+    }
+
+    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
+
+        if (componentCallbacks !is HomeFragment) {
+            return false
+        }
+
+
+        val extrasWrap = extras.orEmpty().toMutableMap()
+
+        val keyRequest = extrasWrap[Param.KEY_REQUEST].asObjectOrNull<String>() ?: tag.apply {
+
+            extrasWrap[Param.KEY_REQUEST] = this
+        }
+
+
+        delay(350)
+        componentCallbacks.awaitResume()
+
+
+        sendDeeplink(DeeplinkManager.CONFIRM + "code:review", extras = extrasWrap)
+
+
+        channelFlow {
+
+            listenerEvent(eventName = keyRequest) {
+
+                trySend(Unit)
+            }
+
+            awaitClose {
+
+            }
+        }.first()
+
+        return true
     }
 }

@@ -77,6 +77,10 @@ class HomeViewModel(
     val text: MediatorLiveData<Pair<String, String>> = MediatorLiveData("" to "")
 
     @VisibleForTesting
+    val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
+
+
+    @VisibleForTesting
     val speakState: LiveData<ResultState<Boolean>> = mediatorLiveData {
 
         checkSupportSpeakAsyncUseCase.execute().collect {
@@ -111,7 +115,14 @@ class HomeViewModel(
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)
 
     @VisibleForTesting
-    val isSupportReverse: LiveData<Boolean> = MediatorLiveData(true)
+    val isSupportReverse: LiveData<Boolean> = combineSources(inputLanguage, outputLanguage, isSupportTranslate) {
+
+        val inputLanguage = inputLanguage.get()
+        val outputLanguage = outputLanguage.get()
+        val isSupportTranslate = isSupportTranslate.get()
+
+        postDifferentValue(inputLanguage.id != outputLanguage.id && isSupportTranslate)
+    }
 
     val reverseInfo: LiveData<ReverseInfo> = combineSources(theme, translate, isReverse, isSupportReverse) {
 
@@ -214,9 +225,6 @@ class HomeViewModel(
         postDifferentValue(info)
     }
 
-
-    @VisibleForTesting
-    val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
 
     @VisibleForTesting
     val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage, phoneticCodeSelected) {
@@ -365,7 +373,6 @@ class HomeViewModel(
 
     fun updateSupportTranslate(b: Boolean) {
 
-        this.isSupportReverse.postDifferentValue(b)
         this.isSupportTranslate.postDifferentValue(b)
     }
 
