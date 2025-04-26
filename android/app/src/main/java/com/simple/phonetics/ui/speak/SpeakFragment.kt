@@ -26,7 +26,6 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
-import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.image.setImage
@@ -34,7 +33,7 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.DialogListBinding
-import com.simple.phonetics.databinding.LayoutConfirmSpeakBinding
+import com.simple.phonetics.databinding.LayoutActionConfirmSpeakBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
@@ -49,7 +48,7 @@ import com.simple.state.isRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.launch
 
-class SpeakFragment : BaseActionFragment<LayoutConfirmSpeakBinding, DialogListBinding, SpeakViewModel>() {
+class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, DialogListBinding, SpeakViewModel>() {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
@@ -73,9 +72,9 @@ class SpeakFragment : BaseActionFragment<LayoutConfirmSpeakBinding, DialogListBi
         return DialogListBinding.inflate(inflater, container, false)
     }
 
-    override fun createBindingAction(): LayoutConfirmSpeakBinding {
+    override fun createBindingAction(): LayoutActionConfirmSpeakBinding {
 
-        return LayoutConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
+        return LayoutActionConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
     }
 
     private fun setupActionSpeak() {
@@ -132,14 +131,7 @@ class SpeakFragment : BaseActionFragment<LayoutConfirmSpeakBinding, DialogListBi
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
 
-            val layoutManager = createFlexboxLayoutManager(context = context) {
-
-                logCrashlytics(
-                    event = "SPEAK",
-                    throwable = it,
-                    "VIEW_ITEM_SIZE" to "${viewModel.viewItemList.value?.size}"
-                )
-            }
+            val layoutManager = createFlexboxLayoutManager(context = context)
             layoutManager.flexDirection = FlexDirection.ROW
             layoutManager.justifyContent = JustifyContent.CENTER
             binding.recyclerView.layoutManager = layoutManager
