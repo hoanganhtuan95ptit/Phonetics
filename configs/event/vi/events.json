@@ -1,2 +1,15 @@
 [
+  {
+    "id": "1-release_test1",
+    "name": "30/4/1975",
+    "timeEnd": "01/05/2025",
+    "timeStart": "05/04/2025",
+    "title": "🇻🇳 Kỷ niệm 50 năm Ngày Giải phóng miền Nam, thống nhất đất nước! 30/04/1975 - 30/04/2025",
+    "message": "Vào lúc 11 giờ 30 phút trưa ngày 30/4/1975, xe tăng của Quân Giải phóng đã húc đổ cổng Dinh Độc Lập, lá cờ đỏ sao vàng tung bay trên nóc dinh – biểu tượng cho sự sụp đổ hoàn toàn của chính quyền Sài Gòn. Khoảnh khắc ấy không chỉ khép lại hơn hai thập kỷ chiến tranh khốc liệt, mà còn mở ra một kỷ nguyên mới: đất nước thống nhất, Bắc – Nam sum họp một nhà, nhân dân hân hoan đón mừng hòa bình, tự do.",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/images/img_event_vn_30_4.png",
+    "positive": "Chiến thắng",
+    "positiveDeepLink": "",
+    "negative": "",
+    "negativeDeepLink": ""
+  }
 ]
