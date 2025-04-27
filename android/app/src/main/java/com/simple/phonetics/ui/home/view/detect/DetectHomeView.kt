@@ -13,11 +13,13 @@ import android.provider.MediaStore
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import com.google.auto.service.AutoService
 import com.permissionx.guolindev.PermissionX
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
+import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.showAds
 import com.simple.state.doSuccess
@@ -25,14 +27,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.IOException
 
-interface DetectHomeView {
+@AutoService(HomeView::class)
+class DetectHomeView : HomeView {
 
-    fun setupDetect(fragment: HomeFragment)
-}
-
-class DetectHomeViewImpl : DetectHomeView {
-
-    override fun setupDetect(fragment: HomeFragment) {
+    override fun setup(fragment: HomeFragment) {
 
         val binding = fragment.binding ?: return
 

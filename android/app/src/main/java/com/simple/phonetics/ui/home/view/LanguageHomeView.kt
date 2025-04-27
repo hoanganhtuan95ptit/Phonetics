@@ -1,24 +1,21 @@
 package com.simple.phonetics.ui.home.view
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.auto.service.AutoService
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.deeplink.sendDeeplink
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.simple.deeplink.sendDeeplink
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-interface LanguageHomeView {
+@AutoService(HomeView::class)
+class LanguageHomeView() : HomeView {
 
-    fun setupLanguage(fragment: HomeFragment)
-}
-
-class LanguageHomeViewImpl() : LanguageHomeView {
-
-    override fun setupLanguage(fragment: HomeFragment) {
+    override fun setup(fragment: HomeFragment) {
 
         val configViewModel by fragment.activityViewModel<ConfigViewModel>()
 

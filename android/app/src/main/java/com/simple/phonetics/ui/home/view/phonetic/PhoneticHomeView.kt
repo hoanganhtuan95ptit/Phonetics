@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.home.view.phonetic
 
 import androidx.lifecycle.asFlow
+import com.google.auto.service.AutoService
 import com.simple.adapter.MultiAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.core.utils.extentions.asObjectOrNull
@@ -9,16 +10,13 @@ import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
+import com.simple.phonetics.ui.home.view.HomeView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-interface PhoneticHomeView {
+@AutoService(HomeView::class)
+class PhoneticHomeView : HomeView {
 
-    fun setupPhonetic(fragment: HomeFragment)
-}
-
-class PhoneticHomeViewImpl : PhoneticHomeView {
-
-    override fun setupPhonetic(fragment: HomeFragment) {
+    override fun setup(fragment: HomeFragment) {
 
         val viewModel: HomeViewModel by fragment.viewModel()
 

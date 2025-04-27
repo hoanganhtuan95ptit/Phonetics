@@ -16,10 +16,10 @@ import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setSize
+import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
-import com.simple.phonetics.databinding.ItemHistoryBinding
 import com.simple.phonetics.databinding.ItemIpaBinding
 import com.simple.phonetics.entities.Ipa
 
@@ -40,9 +40,9 @@ class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null
 
         val binding = viewHolder.binding
 
-        binding.root.setOnClickListener { view ->
+        binding.root.setDebouncedClickListener { view ->
 
-            val viewItem = getViewItem(viewHolder.bindingAdapterPosition) ?: return@setOnClickListener
+            val viewItem = getViewItem(viewHolder.bindingAdapterPosition) ?: return@setDebouncedClickListener
 
             onItemClick?.invoke(view, viewItem)
             sendEvent(EventName.IPA_VIEW_ITEM_CLICKED, view to viewItem)
