@@ -53,7 +53,7 @@ class UpdateViewModel(
 
         val newVersion = config[Constants.NEW_VERSION]?.toIntOrNull() ?: BuildConfig.VERSION_CODE
 
-        /*if (!BuildConfig.DEBUG) */if (newVersion <= BuildConfig.VERSION_CODE || !translate.containsKey("update_title")) {
+        if (!BuildConfig.DEBUG) if (newVersion <= BuildConfig.VERSION_CODE || !translate.containsKey("update_title")) {
 
             postDifferentValue(list)
             return@combineSources
