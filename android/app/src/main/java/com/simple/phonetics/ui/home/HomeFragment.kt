@@ -16,6 +16,7 @@ import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.setBackground
+import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
@@ -26,8 +27,10 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
+import com.simple.event.sendEvent
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
+import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
@@ -43,8 +46,6 @@ import com.simple.phonetics.ui.home.view.PasteHomeView
 import com.simple.phonetics.ui.home.view.PasteHomeViewImpl
 import com.simple.phonetics.ui.home.view.detect.DetectHomeView
 import com.simple.phonetics.ui.home.view.detect.DetectHomeViewImpl
-import com.simple.phonetics.ui.home.view.event.EventHomeView
-import com.simple.phonetics.ui.home.view.event.EventHomeViewImpl
 import com.simple.phonetics.ui.home.view.game.GameHomeView
 import com.simple.phonetics.ui.home.view.game.GameHomeViewImpl
 import com.simple.phonetics.ui.home.view.history.HistoryHomeView
@@ -55,14 +56,15 @@ import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeView
 import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewImpl
 import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeView
 import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeViewImpl
-import com.simple.phonetics.ui.home.view.review.ReviewHomeView
-import com.simple.phonetics.ui.home.view.review.ReviewHomeViewImpl
+import com.simple.phonetics.ui.view.popup.PopupView
+import com.simple.phonetics.ui.view.popup.PopupViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.toSuccess
+import java.util.ServiceLoader
 import kotlin.math.absoluteValue
 
 
@@ -70,8 +72,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     IpaHomeView by IpaHomeViewImpl(),
     GameHomeView by GameHomeViewImpl(),
     PasteHomeView by PasteHomeViewImpl(),
-    EventHomeView by EventHomeViewImpl(),
-    ReviewHomeView by ReviewHomeViewImpl(),
     DetectHomeView by DetectHomeViewImpl(),
     HistoryHomeView by HistoryHomeViewImpl(),
     PhoneticHomeView by PhoneticHomeViewImpl(),
@@ -79,12 +79,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
     MicrophoneHomeView by MicrophoneHomeViewImpl() {
 
 
-    private val eventViewModel: EventViewModel by lazy {
-        getViewModel(this, EventViewModel::class)
+    private val popupViewModel: PopupViewModel by lazy {
+        getViewModel(requireActivity(), PopupViewModel::class)
     }
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
+    }
+
+
+    private var popupView by autoCleared<List<PopupView>>()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        popupView = ServiceLoader.load(PopupView::class.java).sortedBy { it.priority() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,11 +119,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             }
         })
 
+        popupView?.forEach { it.setup(this) }
+
         setupIpa(this)
         setupGame(this)
         setupPaste(this)
-        setupEvent(this)
-        setupReview(this)
         setupDetect(this)
         setupHistory(this)
         setupHistory(this)
@@ -128,7 +138,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         setupRecyclerViewConfig()
 
         observeData()
-        observeEventData()
+        observePopupData()
         observePhoneticsConfigData()
     }
 
@@ -325,12 +335,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
 
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
 
-            showEvent()
-            showReview()
+            sendEvent(EventName.SHOW_POPUP, bundleOf())
         }
     }
 
-    private fun observeEventData() = with(eventViewModel) {
+    private fun observePopupData() = with(popupViewModel) {
 
         popupEvent.observe(viewLifecycleOwner) { event ->
 

@@ -68,6 +68,7 @@ object Constants {
 object EventName {
 
     const val DISMISS = "DISMISS"
+    const val SHOW_POPUP = "SHOW_POPUP"
 
     const val GET_VOICE_REQUEST = "GET_VOICE_REQUEST"
     const val GET_VOICE_RESPONSE = "GET_VOICE_RESPONSE"

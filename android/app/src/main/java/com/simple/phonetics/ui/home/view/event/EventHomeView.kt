@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
+import com.google.auto.service.AutoService
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.launchCollect
@@ -15,59 +16,59 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.DeeplinkManager
+import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
-import com.simple.phonetics.ui.home.EventViewModel
 import com.simple.phonetics.ui.home.HomeFragment
+import com.simple.phonetics.ui.view.popup.PopupView
+import com.simple.phonetics.ui.view.popup.PopupViewModel
 import com.simple.phonetics.utils.exts.awaitResume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val tag = "EVENT_HOME"
 
-interface EventHomeView {
+@AutoService(PopupView::class)
+class EventHomeViewImpl : PopupView {
 
-    fun setupEvent(fragment: HomeFragment)
+    override fun setup(componentCallbacks: ComponentCallbacks) {
 
-    fun showEvent()
-}
+        if (componentCallbacks !is HomeFragment) return
 
-class EventHomeViewImpl : EventHomeView {
+        val viewModel: EventHomeViewModel by componentCallbacks.viewModel()
 
-    private val show: LiveData<Boolean> = MediatorLiveData()
-
-    override fun setupEvent(fragment: HomeFragment) {
-
-        val viewModel: EventHomeViewModel by fragment.viewModel()
-
-        val eventViewModel: EventViewModel by fragment.viewModel()
+        val eventViewModel: PopupViewModel by componentCallbacks.activityViewModel()
 
 
         eventViewModel.addEvent(key = tag)
 
-        viewModel.eventInfoEvent.asFlow().launchCollect(fragment.viewLifecycleOwner) { event ->
+
+        val show: LiveData<Boolean> = MediatorLiveData()
+
+        viewModel.eventInfoEvent.asFlow().launchCollect(componentCallbacks.viewLifecycleOwner) { event ->
 
             show.asFlow().first()
 
             val info = event.getContentIfNotHandled() ?: return@launchCollect
 
-            showEventAwait(fragment = fragment, info = info)
+            showEventAwait(fragment = componentCallbacks, info = info)
 
             viewModel.updateShowEvent()
         }
-    }
 
-    override fun showEvent() {
+        listenerEvent(componentCallbacks.viewLifecycleOwner.lifecycle, EventName.SHOW_POPUP) {
 
-        show.postDifferentValue(true)
+            show.postDifferentValue(true)
+        }
     }
 
     private suspend fun showEventAwait(fragment: HomeFragment, info: EventHomeViewModel.EventInfo) = channelFlow {
 
         val keyRequest = "EVENT_KEY_REQUEST"
 
-        val eventViewModel: EventViewModel by fragment.viewModel()
+        val eventViewModel: PopupViewModel by fragment.activityViewModel()
 
         listenerEvent(keyRequest) {
 
@@ -118,7 +119,7 @@ class EventHomeViewImpl : EventHomeView {
 
         eventViewModel.addEvent(
             key = tag,
-            index = 1,
+            index = priority(),
             deepLink = DeeplinkManager.EVENT,
 
             extras = extras

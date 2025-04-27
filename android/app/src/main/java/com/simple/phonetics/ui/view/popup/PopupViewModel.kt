@@ -1,5 +1,6 @@
-package com.simple.phonetics.ui.home
+package com.simple.phonetics.ui.view.popup
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -12,7 +13,7 @@ import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.toSuccess
 
-class EventViewModel : BaseViewModel() {
+class PopupViewModel : BaseViewModel() {
 
     @VisibleForTesting
     val job = JobQueue()
@@ -22,6 +23,10 @@ class EventViewModel : BaseViewModel() {
 
     val popupEvent = popup.toEvent()
 
+    init {
+
+        Log.d("tuanha", "init: ")
+    }
 
     override fun onCleared() {
         super.onCleared()
@@ -42,12 +47,14 @@ class EventViewModel : BaseViewModel() {
 
         map[key] = state
 
+        Log.d("tuanha", "addEvent: $key")
 
         if (map.any { !it.value.isCompleted() }) {
 
             return@submit
         }
 
+        Log.d("tuanha", "addEvent: 2")
         map.toList().sortedBy {
 
             it.second.toSuccess()?.data?.index.orZero()
