@@ -1,22 +1,20 @@
 package com.simple.phonetics.ui.home.view.history
 
 import android.view.View
+import com.google.auto.service.AutoService
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.phonetics.EventName
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem
+import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.utils.showAds
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-interface HistoryHomeView {
+@AutoService(HomeView::class)
+class HistoryHomeView : HomeView {
 
-    fun setupHistory(fragment: HomeFragment)
-}
-
-class HistoryHomeViewImpl : HistoryHomeView {
-
-    override fun setupHistory(fragment: HomeFragment) {
+    override fun setup(fragment: HomeFragment) {
 
         val viewModel: HomeViewModel by fragment.viewModel()
 

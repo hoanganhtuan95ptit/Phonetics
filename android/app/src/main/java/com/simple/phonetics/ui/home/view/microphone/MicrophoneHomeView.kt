@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.home.view.microphone
 
+import com.google.auto.service.AutoService
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
@@ -10,19 +11,16 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
+import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.showAds
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-interface MicrophoneHomeView {
+@AutoService(HomeView::class)
+class MicrophoneHomeView : HomeView {
 
-    fun setupMicrophone(fragment: HomeFragment)
-}
-
-class MicrophoneHomeViewImpl : MicrophoneHomeView {
-
-    override fun setupMicrophone(fragment: HomeFragment) {
+    override fun setup(fragment: HomeFragment) {
 
         val viewModel: HomeViewModel by fragment.viewModel()
 

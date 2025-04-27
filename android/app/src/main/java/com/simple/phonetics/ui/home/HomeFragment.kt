@@ -16,7 +16,6 @@ import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.setBackground
-import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
@@ -40,22 +39,7 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
-import com.simple.phonetics.ui.home.view.LanguageHomeView
-import com.simple.phonetics.ui.home.view.LanguageHomeViewImpl
-import com.simple.phonetics.ui.home.view.PasteHomeView
-import com.simple.phonetics.ui.home.view.PasteHomeViewImpl
-import com.simple.phonetics.ui.home.view.detect.DetectHomeView
-import com.simple.phonetics.ui.home.view.detect.DetectHomeViewImpl
-import com.simple.phonetics.ui.home.view.game.GameHomeView
-import com.simple.phonetics.ui.home.view.game.GameHomeViewImpl
-import com.simple.phonetics.ui.home.view.history.HistoryHomeView
-import com.simple.phonetics.ui.home.view.history.HistoryHomeViewImpl
-import com.simple.phonetics.ui.home.view.ipa.IpaHomeView
-import com.simple.phonetics.ui.home.view.ipa.IpaHomeViewImpl
-import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeView
-import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewImpl
-import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeView
-import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeViewImpl
+import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.ui.view.popup.PopupView
 import com.simple.phonetics.ui.view.popup.PopupViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
@@ -67,17 +51,7 @@ import com.simple.state.toSuccess
 import java.util.ServiceLoader
 import kotlin.math.absoluteValue
 
-
-class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
-    IpaHomeView by IpaHomeViewImpl(),
-    GameHomeView by GameHomeViewImpl(),
-    PasteHomeView by PasteHomeViewImpl(),
-    DetectHomeView by DetectHomeViewImpl(),
-    HistoryHomeView by HistoryHomeViewImpl(),
-    PhoneticHomeView by PhoneticHomeViewImpl(),
-    LanguageHomeView by LanguageHomeViewImpl(),
-    MicrophoneHomeView by MicrophoneHomeViewImpl() {
-
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private val popupViewModel: PopupViewModel by lazy {
         getViewModel(requireActivity(), PopupViewModel::class)
@@ -87,15 +61,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
         getViewModel(requireActivity(), ConfigViewModel::class)
     }
 
-
-    private var popupView by autoCleared<List<PopupView>>()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        popupView = ServiceLoader.load(PopupView::class.java).sortedBy { it.priority() }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -119,17 +84,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(),
             }
         })
 
-        popupView?.forEach { it.setup(this) }
-
-        setupIpa(this)
-        setupGame(this)
-        setupPaste(this)
-        setupDetect(this)
-        setupHistory(this)
-        setupHistory(this)
-        setupPhonetic(this)
-        setupLanguage(this)
-        setupMicrophone(this)
+        ServiceLoader.load(HomeView::class.java).toList().forEach { it.setup(this) }
+        ServiceLoader.load(PopupView::class.java).sortedBy { it.priority() }.forEach { it.setup(this) }
 
         setupSpeak()
         setupInput()

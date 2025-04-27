@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.google.auto.service.AutoService
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.clear
 import com.simple.coreapp.utils.extentions.haveText
@@ -14,14 +15,10 @@ import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.utils.showAds
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-interface PasteHomeView {
+@AutoService(HomeView::class)
+class PasteHomeView : HomeView {
 
-    fun setupPaste(fragment: HomeFragment)
-}
-
-class PasteHomeViewImpl : PasteHomeView {
-
-    override fun setupPaste(fragment: HomeFragment) {
+    override fun setup(fragment: HomeFragment) {
 
         val viewModel: HomeViewModel by fragment.viewModel()
 

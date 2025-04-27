@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.home.view.game
 
 import android.view.View
+import com.google.auto.service.AutoService
 import com.simple.core.utils.extentions.asObject
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.EventName
@@ -11,19 +12,16 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
+import com.simple.phonetics.ui.home.view.HomeView
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-interface GameHomeView {
+@AutoService(HomeView::class)
+class GameHomeView : HomeView {
 
-    fun setupGame(fragment: HomeFragment)
-}
-
-class GameHomeViewImpl : GameHomeView {
-
-    override fun setupGame(fragment: HomeFragment) {
+    override fun setup(fragment: HomeFragment) {
 
         val viewModel: HomeViewModel by fragment.viewModel()
 

@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.home.view.ipa
 
 import android.view.View
+import com.google.auto.service.AutoService
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.deeplink.sendDeeplink
@@ -11,17 +12,13 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
-import kotlinx.coroutines.flow.first
+import com.simple.phonetics.ui.home.view.HomeView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-interface IpaHomeView {
+@AutoService(HomeView::class)
+class IpaHomeView : HomeView {
 
-    fun setupIpa(fragment: HomeFragment)
-}
-
-class IpaHomeViewImpl : IpaHomeView {
-
-    override fun setupIpa(fragment: HomeFragment) {
+    override fun setup(fragment: HomeFragment) {
 
         val viewModel: HomeViewModel by fragment.viewModel()
 
