@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.home.view.review
+package com.simple.phonetics.ui.review
 
 import android.content.ComponentCallbacks
 import android.content.Context
@@ -12,6 +12,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.auto.service.AutoService
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.core.utils.extentions.toJson
@@ -25,10 +26,12 @@ import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
 import com.simple.phonetics.DeeplinkManager
+import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
-import com.simple.phonetics.ui.home.EventViewModel
 import com.simple.phonetics.ui.home.HomeFragment
+import com.simple.phonetics.ui.view.popup.PopupView
+import com.simple.phonetics.ui.view.popup.PopupViewModel
 import com.simple.phonetics.utils.exts.awaitResume
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -37,35 +40,33 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
 private const val tag = "REVIEW"
 
-interface ReviewHomeView {
+@AutoService(PopupView::class)
+class ReviewView : PopupView {
 
-    fun setupReview(fragment: HomeFragment)
+    override fun setup(componentCallbacks: ComponentCallbacks) {
 
-    fun showReview()
-}
+        if (componentCallbacks !is HomeFragment) return
 
-class ReviewHomeViewImpl : ReviewHomeView {
 
-    private val show: LiveData<Boolean> = MediatorLiveData()
+        val viewModel: ReviewViewModel by componentCallbacks.viewModel()
 
-    override fun setupReview(fragment: HomeFragment) {
-
-        val viewModel: ReviewHomeViewModel by fragment.viewModel()
-
-        val eventViewModel: EventViewModel by fragment.viewModel()
+        val eventViewModel: PopupViewModel by componentCallbacks.activityViewModel()
 
 
         eventViewModel.addEvent(key = tag)
 
 
+        val show: LiveData<Boolean> = MediatorLiveData()
+
         val keyRequest = "RATE_KEY_REQUEST"
 
-        viewModel.rateInfoEvent.asFlow().launchCollect(fragment.viewLifecycleOwner) { event ->
+        viewModel.rateInfoEvent.asFlow().launchCollect(componentCallbacks.viewLifecycleOwner) { event ->
 
             show.asFlow().firstOrNull()
 
@@ -95,16 +96,21 @@ class ReviewHomeViewImpl : ReviewHomeView {
                 extras = extras
             ) else {
 
-                openReview(fragment)
+                openReview(componentCallbacks)
             }
         }
 
+        listenerEvent(componentCallbacks.viewLifecycleOwner.lifecycle, EventName.SHOW_POPUP) {
+
+            show.postDifferentValue(true)
+        }
 
         val sharedPreferences: SharedPreferences by lazy {
+
             PhoneticsApp.share.getSharedPreferences("AppReview", Context.MODE_PRIVATE)
         }
 
-        listenerEvent(fragment.viewLifecycleOwner.lifecycle, keyRequest) {
+        listenerEvent(componentCallbacks.viewLifecycleOwner.lifecycle, keyRequest) {
 
             val resultCode = it.asObjectOrNull<Int>() ?: return@listenerEvent
 
@@ -112,13 +118,13 @@ class ReviewHomeViewImpl : ReviewHomeView {
 
             if (resultCode == 1) {
 
-                openStore(fragment)
+                openStore(componentCallbacks)
             }
 
-            val rate = if (resultCode == 1) ReviewHomeViewModel.Rate(
-                status = ReviewHomeViewModel.Rate.Status.OPEN_RATE.value
-            ) else ReviewHomeViewModel.Rate(
-                status = ReviewHomeViewModel.Rate.Status.DISMISS.value,
+            val rate = if (resultCode == 1) ReviewViewModel.Rate(
+                status = ReviewViewModel.Rate.Status.OPEN_RATE.value
+            ) else ReviewViewModel.Rate(
+                status = ReviewViewModel.Rate.Status.DISMISS.value,
                 date = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
             )
 
@@ -127,15 +133,11 @@ class ReviewHomeViewImpl : ReviewHomeView {
                 .apply()
         }
 
-        fragment.viewLifecycleOwner.lifecycleScope.launch(handler + Dispatchers.IO) {
+        componentCallbacks.viewLifecycleOwner.lifecycleScope.launch(handler + Dispatchers.IO) {
 
-            val rate = sharedPreferences.getString(Param.RATE, "").toObjectOrNull<ReviewHomeViewModel.Rate>()
+            val rate = sharedPreferences.getString(Param.RATE, "").toObjectOrNull<ReviewViewModel.Rate>()
             viewModel.updateRate(rate)
         }
-    }
-
-    override fun showReview() {
-        show.postDifferentValue(true)
     }
 
     private suspend fun openReview(fragment: HomeFragment) {
