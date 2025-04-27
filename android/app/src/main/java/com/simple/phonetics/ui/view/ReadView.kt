@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
+import com.google.auto.service.AutoService
 import com.simple.event.listenerEvent
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
@@ -20,16 +21,12 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.flow.first
 import java.util.Locale
 
-interface ReadView {
-
-    fun setupRead(activity: MainActivity)
-}
-
-class ReadViewImpl : ReadView {
+@AutoService(MainView::class)
+class ReadView : MainView {
 
     private val speakInitStatus = MediatorLiveData<Int>()
 
-    override fun setupRead(activity: MainActivity) {
+    override fun setup(activity: MainActivity) {
 
         val textToSpeech = TextToSpeech(activity) { status ->
 

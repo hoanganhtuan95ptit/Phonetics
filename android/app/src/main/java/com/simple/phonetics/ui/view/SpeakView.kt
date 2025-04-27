@@ -8,6 +8,7 @@ import android.speech.SpeechRecognizer
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.google.auto.service.AutoService
 import com.simple.core.utils.AppException
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.event.listenerEvent
@@ -17,17 +18,14 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.SpeakState
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.state.ResultState
 import java.util.Locale
 
-interface SpeakView {
+@AutoService(MainView::class)
+class SpeakView : MainView {
 
-    fun setupSpeak(activity: MainActivity)
-}
-
-class SpeakViewImpl : SpeakView {
-
-    override fun setupSpeak(activity: MainActivity) {
+    override fun setup(activity: MainActivity) {
 
         val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
 
