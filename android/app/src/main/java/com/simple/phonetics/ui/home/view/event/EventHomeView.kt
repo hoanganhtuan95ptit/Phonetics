@@ -33,6 +33,10 @@ private const val tag = "EVENT_HOME"
 @AutoService(PopupView::class)
 class EventHomeViewImpl : PopupView {
 
+    override fun priority(): Int {
+        return 0
+    }
+
     override fun setup(componentCallbacks: ComponentCallbacks) {
 
         if (componentCallbacks !is HomeFragment) return
@@ -53,9 +57,15 @@ class EventHomeViewImpl : PopupView {
 
             val info = event.getContentIfNotHandled() ?: return@launchCollect
 
-            showEventAwait(fragment = componentCallbacks, info = info)
+            if (info.show) {
 
-            viewModel.updateShowEvent()
+                showEventAwait(fragment = componentCallbacks, info = info)
+
+                viewModel.updateShowEvent()
+            } else {
+
+                eventViewModel.addEvent(key = tag, deepLink = "")
+            }
         }
 
         listenerEvent(componentCallbacks.viewLifecycleOwner.lifecycle, EventName.SHOW_POPUP) {
@@ -67,6 +77,8 @@ class EventHomeViewImpl : PopupView {
     private suspend fun showEventAwait(fragment: HomeFragment, info: EventHomeViewModel.EventInfo) = channelFlow {
 
         val keyRequest = "EVENT_KEY_REQUEST"
+
+        val event = info.event ?: return@channelFlow
 
         val eventViewModel: PopupViewModel by fragment.activityViewModel()
 
@@ -83,9 +95,9 @@ class EventHomeViewImpl : PopupView {
             val result = it.asObjectOrNull<Int>()
 
             val deeplink = if (result == 1) {
-                if (BuildConfig.DEBUG) DeeplinkManager.IPA_LIST else info.event.positiveDeepLink
+                if (BuildConfig.DEBUG) DeeplinkManager.IPA_LIST else event.positiveDeepLink
             } else {
-                info.event.negativeDeepLink
+                event.negativeDeepLink
             }
 
             val transitionName = binding.vTemp.transitionName
@@ -100,7 +112,7 @@ class EventHomeViewImpl : PopupView {
                 )
             )
 
-            logAnalytics(info.event.id + "_" + info.event.positiveDeepLink)
+            logAnalytics(event.id + "_" + event.positiveDeepLink)
 
             trySend(Unit)
         }
@@ -125,7 +137,7 @@ class EventHomeViewImpl : PopupView {
             extras = extras
         )
 
-        logAnalytics("event_show_${info.event.name.lowercase()}")
+        logAnalytics("event_show_${event.name.lowercase()}")
 
         awaitClose {
 

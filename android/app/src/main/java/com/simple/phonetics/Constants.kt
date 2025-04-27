@@ -29,6 +29,7 @@ object DeeplinkManager {
     const val SPEAK = "app://speak"
     const val EVENT = "app://event"
     const val REVIEW = "app://review"
+    const val UPDATE = "app://update"
     const val CONFIG = "app://config"
     const val CONFIRM = "app://confirm"
     const val LANGUAGE = "app://language"
@@ -63,6 +64,8 @@ object Payload {
 object Constants {
 
     const val WORD_COUNT_MIN = 10
+
+    const val NEW_VERSION = "new_version"
 }
 
 object EventName {
