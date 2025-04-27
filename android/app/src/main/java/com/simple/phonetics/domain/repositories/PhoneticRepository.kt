@@ -15,6 +15,8 @@ interface PhoneticRepository {
 
     suspend fun getPhonetics(textList: List<String>, phoneticCode: String): List<Phonetic>
 
+    suspend fun suggestPhonetics(text: String): List<Phonetic>
+
     suspend fun insertOrUpdate(phonetics: List<Phonetic>)
 
     suspend fun getSourcePhonetic(it: Language.IpaSource): String

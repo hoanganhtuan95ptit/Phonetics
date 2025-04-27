@@ -106,10 +106,19 @@ object Id {
     const val CHOOSE = "CHOOSE"
     const val BUTTON = "BUTTON"
     const val CONFIG = "CONFIRM"
+    const val SUGGEST = "SUGGEST"
     const val RESOURCE = "RESOURCE"
     const val SENTENCE = "SENTENCE"
     const val IPA_LIST = "IPA_LIST"
     const val TRANSLATE = "TRANSLATE"
+}
+
+@Suppress("KotlinConstantConditions", "SimplifyBooleanWithConstants")
+object Config {
+
+    val RATE_DEBUG = BuildConfig.DEBUG && false
+    val EVENT_DEBUG = BuildConfig.DEBUG && false
+    val UPDATE_DEBUG = BuildConfig.DEBUG && false
 }
 
 object SpeakState {

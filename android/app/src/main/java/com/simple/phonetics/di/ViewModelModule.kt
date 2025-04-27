@@ -18,6 +18,7 @@ import com.simple.phonetics.ui.home.view.history.HistoryHomeViewModel
 import com.simple.phonetics.ui.home.view.ipa.IpaHomeViewModel
 import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewModel
 import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeViewModel
+import com.simple.phonetics.ui.home.view.suggest.SuggestHomeViewModel
 import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
 import com.simple.phonetics.ui.ipa.list.IpaListViewModel
 import com.simple.phonetics.ui.language.LanguageViewModel
@@ -38,6 +39,10 @@ val viewModelModule = module {
 
     viewModel {
         TransitionGlobalViewModel()
+    }
+
+    viewModel {
+        SuggestHomeViewModel(get())
     }
 
     viewModel {
