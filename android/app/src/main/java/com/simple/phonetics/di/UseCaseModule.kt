@@ -1,5 +1,6 @@
 package com.simple.phonetics.di
 
+import com.simple.phonetics.domain.usecase.GetConfigAsyncUseCase
 import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.SyncDataUseCase
@@ -36,6 +37,10 @@ val useCaseModule = module {
 
     single {
         TranslateUseCase(get())
+    }
+
+    single {
+        GetConfigAsyncUseCase(get())
     }
 
     single {

@@ -1,26 +1,19 @@
-package com.simple.phonetics.ui.review
+package com.simple.phonetics.ui.update
 
 import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
-import androidx.lifecycle.lifecycleScope
-import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.auto.service.AutoService
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
-import com.simple.core.utils.extentions.toJson
-import com.simple.core.utils.extentions.toObjectOrNull
-import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
-import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
@@ -28,29 +21,24 @@ import com.simple.event.listenerEvent
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
-import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.view.popup.PopupView
 import com.simple.phonetics.ui.view.popup.PopupViewModel
 import com.simple.phonetics.utils.exts.awaitResume
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Calendar
 
-private const val tag = "REVIEW"
+private const val tag = "UPDATE"
 
 @AutoService(PopupView::class)
-class ReviewView : PopupView {
+class UpdateView : PopupView {
 
     override fun priority(): Int {
-        return 1
+        return Int.MIN_VALUE
     }
 
     override fun setup(componentCallbacks: ComponentCallbacks) {
@@ -58,12 +46,12 @@ class ReviewView : PopupView {
         if (componentCallbacks !is HomeFragment) return
 
 
-        val viewModel: ReviewViewModel by componentCallbacks.viewModel()
+        val viewModel: UpdateViewModel by componentCallbacks.viewModel()
 
-        val popupViewModel: PopupViewModel by componentCallbacks.activityViewModel()
+        val eventViewModel: PopupViewModel by componentCallbacks.activityViewModel()
 
 
-        popupViewModel.addEvent(key = tag)
+        eventViewModel.addEvent(key = tag)
 
 
         val show: LiveData<Boolean> = MediatorLiveData()
@@ -80,25 +68,30 @@ class ReviewView : PopupView {
                 com.simple.coreapp.Param.POSITIVE to info.positive,
                 com.simple.coreapp.Param.NEGATIVE to info.negative,
 
+                Param.KEY_REQUEST to tag,
                 Param.VIEW_ITEM_LIST to info.viewItemList
             )
 
             if (info.show) {
 
-                logAnalytics("open_rate_confirm")
+                logAnalytics("open_update_confirm")
             }
 
-            popupViewModel.addEvent(
+            eventViewModel.addEvent(
                 key = tag,
-                index = 2,
-                deepLink = if (info.show) DeeplinkManager.REVIEW else "",
+                index = priority(),
+                deepLink = if (info.show) DeeplinkManager.UPDATE else "",
 
                 extras = extras
             )
+        }
 
-            if (!info.show) {
+        listenerEvent(componentCallbacks.viewLifecycleOwner.lifecycle, tag) {
 
-                openReview(componentCallbacks)
+            val result = it.asObjectOrNull<Int>() ?: 0
+
+            if (result == 1) {
+                openStore(componentCallbacks)
             }
         }
 
@@ -106,87 +99,6 @@ class ReviewView : PopupView {
 
             show.postDifferentValue(true)
         }
-
-        val sharedPreferences: SharedPreferences by lazy {
-
-            PhoneticsApp.share.getSharedPreferences("AppReview", Context.MODE_PRIVATE)
-        }
-
-        listenerEvent(componentCallbacks.viewLifecycleOwner.lifecycle, tag) {
-
-            val resultCode = it.asObjectOrNull<Int>() ?: return@listenerEvent
-
-            logAnalytics("rate_confirm_with_result_code_$resultCode")
-
-            if (resultCode == 1) {
-
-                openStore(componentCallbacks)
-            }
-
-            val rate = if (resultCode == 1) ReviewViewModel.Rate(
-                status = ReviewViewModel.Rate.Status.OPEN_RATE.value
-            ) else ReviewViewModel.Rate(
-                status = ReviewViewModel.Rate.Status.DISMISS.value,
-                date = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
-            )
-
-            sharedPreferences.edit()
-                .putString(Param.RATE, rate.toJson())
-                .apply()
-        }
-
-        componentCallbacks.viewLifecycleOwner.lifecycleScope.launch(handler + Dispatchers.IO) {
-
-            val rate = sharedPreferences.getString(Param.RATE, "").toObjectOrNull<ReviewViewModel.Rate>()
-            viewModel.updateRate(rate)
-        }
-    }
-
-    private suspend fun openReview(fragment: HomeFragment) {
-
-        val manager = ReviewManagerFactory.create(fragment.context ?: return)
-
-        val reviewInfo = channelFlow {
-
-            manager.requestReviewFlow().addOnCompleteListener { task ->
-
-                if (task.isSuccessful) {
-
-                    trySend(task.result)
-                    logAnalytics("app_review_request_success")
-                } else {
-
-                    trySend(null)
-                    logCrashlytics("app_review_request_failed", task.exception ?: RuntimeException("not found error"))
-                }
-            }
-
-            awaitClose {
-
-            }
-        }.firstOrNull()
-
-        channelFlow {
-
-            val flow = manager.launchReviewFlow(fragment.activity ?: return@channelFlow, reviewInfo ?: return@channelFlow)
-
-            flow.addOnCompleteListener { it ->
-
-                trySend(Unit)
-
-                if (it.isSuccessful) {
-
-                    logAnalytics("app_review_open_success")
-                } else {
-
-                    logCrashlytics("app_review_open_failed", it.exception ?: RuntimeException("not found error"))
-                }
-            }
-
-            awaitClose {
-
-            }
-        }.firstOrNull()
     }
 
     private fun openStore(fragment: HomeFragment) = kotlin.runCatching {
@@ -229,10 +141,10 @@ class ReviewView : PopupView {
 }
 
 @Deeplink(queue = "Confirm")
-class ReviewDeeplinkHandler : DeeplinkHandler {
+class UpdateDeeplinkHandler : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return DeeplinkManager.REVIEW
+        return DeeplinkManager.UPDATE
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
@@ -249,12 +161,9 @@ class ReviewDeeplinkHandler : DeeplinkHandler {
             extrasWrap[Param.KEY_REQUEST] = this
         }
 
-
-        delay(350)
         componentCallbacks.awaitResume()
 
-
-        sendDeeplink(DeeplinkManager.CONFIRM + "code:review", extras = extrasWrap)
+        sendDeeplink(DeeplinkManager.CONFIRM + "code:update", extras = extrasWrap)
 
 
         channelFlow {

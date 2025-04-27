@@ -18,8 +18,6 @@ class GetCurrentEventAsyncUseCase(
 
     suspend fun execute(): Flow<ResultState<Event>> = channelFlow {
 
-        trySend(ResultState.Start)
-
         val currentTime = System.currentTimeMillis()
 
         appRepository.getEventsAsync().launchCollect(this) {
