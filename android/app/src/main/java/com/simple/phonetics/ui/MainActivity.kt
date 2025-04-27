@@ -14,18 +14,14 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.ActivityMainBinding
-import com.simple.phonetics.ui.view.ReadView
-import com.simple.phonetics.ui.view.ReadViewImpl
-import com.simple.phonetics.ui.view.SpeakView
-import com.simple.phonetics.ui.view.SpeakViewImpl
+import com.simple.phonetics.ui.view.MainView
 import com.simple.phonetics.utils.appPhoneticCodeSelected
 import com.simple.phonetics.utils.setupSize
 import com.simple.phonetics.utils.setupTheme
 import kotlinx.coroutines.launch
+import java.util.ServiceLoader
 
-class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(),
-    ReadView by ReadViewImpl(),
-    SpeakView by SpeakViewImpl() {
+class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>() {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(this, ConfigViewModel::class)
@@ -37,9 +33,9 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         super.onCreate(savedInstanceState)
 
         setupSize(this)
-        setupRead(this)
         setupTheme(this)
-        setupSpeak(this)
+
+        ServiceLoader.load(MainView::class.java).toList().forEach { it.setup(this) }
 
         observeData()
         observeConfigData()
