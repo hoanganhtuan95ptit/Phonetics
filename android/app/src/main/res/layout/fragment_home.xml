@@ -67,7 +67,7 @@
                     app:rv_cornerRadius_BL="16dp"
                     app:rv_cornerRadius_BR="16dp">
 
-                    <EditText
+                    <com.simple.phonetics.ui.view.SelectionEdittext
                         android:id="@+id/et_text"
                         style="?attr/textBody1"
                         android:layout_width="match_parent"
@@ -235,4 +235,14 @@
             android:clipToPadding="false"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.simple.adapter.MultiRecyclerView
+        android:id="@+id/rec_suggest"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

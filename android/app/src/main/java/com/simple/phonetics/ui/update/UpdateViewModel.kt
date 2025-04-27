@@ -24,6 +24,7 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.BuildConfig
+import com.simple.phonetics.Config.UPDATE_DEBUG
 import com.simple.phonetics.Constants
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.GetConfigAsyncUseCase
@@ -53,7 +54,7 @@ class UpdateViewModel(
 
         val newVersion = config[Constants.NEW_VERSION]?.toIntOrNull() ?: BuildConfig.VERSION_CODE
 
-        if (!BuildConfig.DEBUG) if (newVersion <= BuildConfig.VERSION_CODE || !translate.containsKey("update_title")) {
+        if (!UPDATE_DEBUG) if (newVersion <= BuildConfig.VERSION_CODE || !translate.containsKey("update_title")) {
 
             postDifferentValue(list)
             return@combineSources

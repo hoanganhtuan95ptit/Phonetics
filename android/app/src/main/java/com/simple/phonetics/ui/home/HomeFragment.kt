@@ -71,7 +71,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
                 val binding = binding ?: return
 
-                if (binding.etText.text.isNotEmpty()) if (binding.appBarLayout.getCurrentOffset().absoluteValue >= binding.appBarLayout.totalScrollRange.absoluteValue / 2) {
+                if (binding.etText.text.toString().isNotEmpty()) if (binding.appBarLayout.getCurrentOffset().absoluteValue >= binding.appBarLayout.totalScrollRange.absoluteValue / 2) {
 
                     binding.appBarLayout.setExpanded(true, true)
                 } else {

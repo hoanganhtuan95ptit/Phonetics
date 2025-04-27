@@ -52,6 +52,21 @@ interface PhoneticDao {
     fun getRoomListByTextList(textList: List<String>, phoneticCode: String): List<RoomPhonetic>
 
 
+    fun suggestPhonetics(text: String): List<Phonetic> = suggestRoomPhonetics(text = "$text%").groupBy {
+
+        it.text.lowercase()
+    }.mapValues {
+
+        it.value.first()
+    }.values.map {
+
+        it.toEntity()
+    }
+
+    @Query("SELECT * FROM PHONETICS WHERE text LIKE :text LIMIT 10")
+    fun suggestRoomPhonetics(text: String): List<RoomPhonetic>
+
+
     @Query("DELETE FROM $TABLE_NAME")
     fun deleteAll()
 
