@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -18,6 +19,7 @@ import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
@@ -297,9 +299,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun observePopupData() = with(popupViewModel) {
 
-        popupEvent.observe(viewLifecycleOwner) { event ->
+        popupEvent.asFlow().launchCollect(viewLifecycleOwner) { event ->
 
-            val map = event.getContentIfNotHandled() ?: return@observe
+            val map = event.getContentIfNotHandled() ?: return@launchCollect
 
             map.values.mapNotNull {
 
