@@ -16,6 +16,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.view.MainView
 import com.simple.phonetics.utils.appPhoneticCodeSelected
+import com.simple.phonetics.utils.exts.setFullScreen
 import com.simple.phonetics.utils.setupSize
 import com.simple.phonetics.utils.setupTheme
 import kotlinx.coroutines.launch
@@ -30,6 +31,9 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
     private val activityViewModel: TransitionGlobalViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        window.setFullScreen()
+
         super.onCreate(savedInstanceState)
 
         setupSize(this)
@@ -53,6 +57,12 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
                 slideUp.start()
             }
         }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+
+        if (hasFocus) window.setFullScreen()
     }
 
     private fun observeData() = with(viewModel) {
