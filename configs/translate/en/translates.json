@@ -82,6 +82,11 @@
   "rate_message": "We’d love your feedback to make the app even better. Your review means a lot! 🌟",
   "rate_title": "Rate app",
 
+  "update_action_negative": "⏳ Later",
+  "update_action_positive": "⚡ Update now",
+  "update_message": "✨ A new version is ready! 🚀 Update now for a smoother experience and exciting new features! 🎉",
+  "update_title": "🔄 App Update",
+
   "resource_history": "From the search history",
   "resource_popular": "From the popular list",
 
