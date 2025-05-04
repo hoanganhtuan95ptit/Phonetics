@@ -116,6 +116,7 @@ object Id {
 @Suppress("KotlinConstantConditions", "SimplifyBooleanWithConstants")
 object Config {
 
+    val ADS_DEBUG = BuildConfig.DEBUG && true
     val RATE_DEBUG = BuildConfig.DEBUG && false
     val EVENT_DEBUG = BuildConfig.DEBUG && false
     val UPDATE_DEBUG = BuildConfig.DEBUG && false
