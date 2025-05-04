@@ -40,7 +40,12 @@ class SuggestHomeViewModel(
             return@combineSources
         }
 
-        getPhoneticsSuggestUseCase.execute(GetPhoneticsSuggestUseCase.Param(text)).map {
+        val list = getPhoneticsSuggestUseCase.execute(GetPhoneticsSuggestUseCase.Param(text))
+
+        list.sortedBy {
+
+            it.text.length
+        }.map {
 
             ClickTextViewItem(
                 id = Id.SUGGEST + "-" + it.text.lowercase(),
