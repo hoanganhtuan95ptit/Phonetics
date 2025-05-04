@@ -90,6 +90,10 @@ class UpdateLanguageInputUseCase(
 
                 delay(200)
             }
+
+            delay(5 * 1000)
+
+            trySend(ResultState.Success(State.SyncTranslate(100f)))
         }
 
         runCatching {
