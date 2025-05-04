@@ -16,7 +16,6 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.utils.appAds
 import com.simple.phonetics.utils.appInputLanguage
 import com.simple.phonetics.utils.appOutputLanguage
 import com.simple.phonetics.utils.appTranslate
@@ -87,20 +86,6 @@ class MainViewModel(
         viewModelScope.launch(handler + Dispatchers.IO) {
 
             logAnalytics("version_name_${BuildConfig.VERSION_NAME.replace(".", "_")}")
-        }
-
-        viewModelScope.launch(handler + Dispatchers.IO) {
-
-            var count = 0L
-
-            appAds.collect {
-
-                count++
-
-                for (i in 3..20) if (count % i == 0L) {
-                    logAnalytics("ads_show_with_$i")
-                }
-            }
         }
     }
 }

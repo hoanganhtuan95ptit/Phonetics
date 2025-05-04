@@ -26,6 +26,7 @@ import com.simple.phonetics.ui.recording.RecordingViewModel
 import com.simple.phonetics.ui.review.ReviewViewModel
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import com.simple.phonetics.ui.update.UpdateViewModel
+import com.simple.phonetics.ui.view.ads.AdsViewModel
 import com.simple.phonetics.ui.view.popup.PopupViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -47,6 +48,10 @@ val viewModelModule = module {
 
     viewModel {
         PopupViewModel()
+    }
+
+    viewModel {
+        AdsViewModel(get())
     }
 
     viewModel {
