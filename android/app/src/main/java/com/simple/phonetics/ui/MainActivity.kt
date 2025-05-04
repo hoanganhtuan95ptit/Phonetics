@@ -16,7 +16,6 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.view.MainView
 import com.simple.phonetics.utils.appPhoneticCodeSelected
-import com.simple.phonetics.utils.exts.setFullScreen
 import com.simple.phonetics.utils.setupSize
 import com.simple.phonetics.utils.setupTheme
 import kotlinx.coroutines.launch
