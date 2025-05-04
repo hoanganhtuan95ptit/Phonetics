@@ -2,6 +2,7 @@ package com.simple.phonetics.ui
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.ViewModels.BaseViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
@@ -19,6 +20,7 @@ import com.simple.phonetics.utils.appAds
 import com.simple.phonetics.utils.appInputLanguage
 import com.simple.phonetics.utils.appOutputLanguage
 import com.simple.phonetics.utils.appTranslate
+import com.simple.phonetics.utils.exts.awaitResume
 import com.simple.state.ResultState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
@@ -35,6 +37,7 @@ class MainViewModel(
     @VisibleForTesting
     val sync: LiveData<ResultState<Unit>> = mediatorLiveData {
 
+        ProcessLifecycleOwner.get().awaitResume()
         syncDataUseCase.execute().collect {
 
         }
