@@ -30,9 +30,13 @@ class AdsViewModel(
     @VisibleForTesting
     val request: LiveData<Long> = mediatorLiveData {
 
+        var count = 0L
+
         appAds.collect {
 
-            postDifferentValue(it)
+            count++
+
+            postDifferentValue(count)
         }
     }
 
