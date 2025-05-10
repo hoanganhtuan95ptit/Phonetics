@@ -9,8 +9,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
@@ -30,6 +30,7 @@ import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
@@ -57,6 +58,7 @@ class HomeViewModel(
     private val startReadingUseCase: StartReadingUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
     private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
+    private val checkSupportReadingAsyncUseCase: CheckSupportReadingAsyncUseCase
 ) : BaseViewModel() {
 
     val title: LiveData<CharSequence> = combineSources(theme, translate) {
@@ -75,22 +77,18 @@ class HomeViewModel(
     @VisibleForTesting
     val text: MediatorLiveData<Pair<String, String>> = MediatorLiveData("" to "")
 
+
     @VisibleForTesting
     val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
 
 
     @VisibleForTesting
-    val speakState: LiveData<ResultState<Boolean>> = mediatorLiveData {
+    val isSupportSpeak: LiveData<Boolean> = mediatorLiveData {
 
         checkSupportSpeakAsyncUseCase.execute().collect {
 
             postValue(it)
         }
-    }
-
-    val isSupportSpeak: LiveData<Boolean> = combineSources(speakState) {
-
-        postDifferentValue(speakState.value?.toSuccess()?.data == true)
     }
 
 
@@ -158,19 +156,25 @@ class HomeViewModel(
 
 
     @VisibleForTesting
-    val listenState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
+    val readingState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
-    val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
+    val isSupportReading: LiveData<Boolean> = mediatorLiveData {
 
-    val listenInfo: LiveData<ListenInfo> = listenerSources(text, listenState, isSupportListen) {
+        checkSupportReadingAsyncUseCase.execute().collect {
+
+            postDifferentValue(it)
+        }
+    }
+
+    val readingInfo: LiveData<ReadingInfo> = listenerSources(text, readingState, isSupportReading) {
 
         val text = text.value ?: return@listenerSources
-        val listenState = listenState.value
-        val isSupportListen = isSupportListen.value ?: return@listenerSources && text.second.isNotBlank()
+        val listenState = readingState.value
+        val isSupportReading = isSupportReading.value ?: return@listenerSources && text.second.isNotBlank()
 
-        val info = ListenInfo(
-            isShowPlay = !listenState.isRunning() && isSupportListen,
-            isShowPause = listenState.isRunning() && isSupportListen
+        val info = ReadingInfo(
+            isShowPlay = !listenState.isRunning() && isSupportReading,
+            isShowPause = listenState.isRunning() && isSupportReading
         )
 
         postDifferentValue(info)
@@ -247,7 +251,7 @@ class HomeViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(size, theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportListen, isSupportTranslate) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(size, theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportReading, isSupportTranslate) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -279,7 +283,7 @@ class HomeViewModel(
                 translate = translate,
 
                 isSupportSpeak = isSupportSpeak.value == true,
-                isSupportListen = isSupportListen.value == true
+                isSupportListen = isSupportReading.value == true
             )
         }.let {
 
@@ -337,9 +341,9 @@ class HomeViewModel(
         postDifferentValueIfActive(list)
     }
 
-    val isShowLoading: LiveData<Boolean> = listenerSources(listenState, detectState) {
+    val isShowLoading: LiveData<Boolean> = listenerSources(readingState, detectState) {
 
-        postDifferentValue(listenState.value.isStart() || detectState.value.isRunning())
+        postDifferentValue(readingState.value.isStart() || detectState.value.isRunning())
     }
 
 
@@ -365,11 +369,6 @@ class HomeViewModel(
         this.isReverse.postValue(!this.isReverse.get())
     }
 
-    fun updateSupportSpeak(b: Boolean) {
-
-        this.isSupportListen.postDifferentValue(b)
-    }
-
     fun updateSupportTranslate(b: Boolean) {
 
         this.isSupportTranslate.postDifferentValue(b)
@@ -384,9 +383,9 @@ class HomeViewModel(
         typeViewItemList.postValue(map)
     }
 
-    fun startSpeak(text: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startReading(text: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        listenState.postValue(ResultState.Start)
+        readingState.postValue(ResultState.Start)
 
         val param = StartReadingUseCase.Param(
             text = text,
@@ -400,7 +399,7 @@ class HomeViewModel(
 
         job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
-            listenState.postValue(state)
+            readingState.postValue(state)
 
             state.doSuccess {
                 job?.cancel()
@@ -412,7 +411,7 @@ class HomeViewModel(
         }
     }
 
-    fun stopSpeak() = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun stopReading() = viewModelScope.launch(handler + Dispatchers.IO) {
 
         stopReadingUseCase.execute()
     }
@@ -442,7 +441,7 @@ class HomeViewModel(
         }
     }
 
-    data class ListenInfo(
+    data class ReadingInfo(
         val isShowPlay: Boolean = false,
         val isShowPause: Boolean = false,
     )

@@ -13,14 +13,15 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetPhoneticCodeAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
-import com.simple.phonetics.domain.usecase.language.UpdatePhoneticCodeUseCase
+import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsSuggestUseCase
 import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeUseCase
+import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
@@ -106,6 +107,10 @@ val useCaseModule = module {
 
     single {
         GetVoiceAsyncUseCase(get(), get())
+    }
+
+    single {
+        CheckSupportReadingAsyncUseCase(get(), get())
     }
 
 

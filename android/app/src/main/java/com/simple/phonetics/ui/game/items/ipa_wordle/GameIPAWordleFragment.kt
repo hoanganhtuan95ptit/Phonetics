@@ -62,7 +62,6 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
         setupRecyclerView()
 
         observeData()
-        observeConfigData()
     }
 
     private fun setupRecyclerView() {
@@ -161,17 +160,9 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
         }
     }
 
-    private fun observeConfigData() = with(configViewModel) {
-
-        listenerEnable.observe(viewLifecycleOwner) {
-
-            viewModel.updateListenerEnable(it)
-        }
-    }
-
     private fun listen() {
 
-        val voiceState = viewModel.listenState.value
+        val voiceState = viewModel.readingState.value
 
         if (voiceState.isRunning()) {
 

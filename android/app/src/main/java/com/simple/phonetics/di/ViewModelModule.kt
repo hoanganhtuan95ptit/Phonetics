@@ -69,7 +69,7 @@ val viewModelModule = module {
 
 
     viewModel {
-        SpeakViewModel(get(), get(), get(), get(), get())
+        SpeakViewModel(get(), get(), get(), get(), get(), get(), get())
     }
 
     viewModel {
@@ -82,7 +82,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        IpaDetailViewModel(get(), get(), get(), get(), get())
+        IpaDetailViewModel(get(), get(), get())
     }
 
     viewModel {
@@ -118,7 +118,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        HomeViewModel(get(), get(), get(), get(), get())
+        HomeViewModel(get(), get(), get(), get(), get(), get())
     }
 
 

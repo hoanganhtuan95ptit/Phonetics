@@ -10,8 +10,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
@@ -25,8 +25,6 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.R
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
@@ -56,8 +54,6 @@ import kotlinx.coroutines.launch
 class IpaDetailViewModel(
     private val startReadingUseCase: StartReadingUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
-    private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
-    private val getLanguageOutputAsyncUseCase: GetLanguageOutputAsyncUseCase,
     private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase
 ) : BaseViewModel() {
 
@@ -74,21 +70,16 @@ class IpaDetailViewModel(
     }
 
 
-    val listenState: LiveData<ResultState<String>> = MediatorLiveData()
+    val readingState: LiveData<ResultState<String>> = MediatorLiveData()
 
 
     @VisibleForTesting
-    val speakState: LiveData<ResultState<Boolean>> = mediatorLiveData {
+    val isSupportSpeak: LiveData<Boolean> = mediatorLiveData {
 
         checkSupportSpeakAsyncUseCase.execute().collect {
 
             postValue(it)
         }
-    }
-
-    val isSupportSpeak: LiveData<Boolean> = combineSources(speakState) {
-
-        postDifferentValue(speakState.value?.toSuccess()?.data == true)
     }
 
 
@@ -117,14 +108,14 @@ class IpaDetailViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, ipa, phoneticCodeSelected, phoneticsState, isSupportSpeak, isSupportListen, listenState) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, ipa, phoneticCodeSelected, phoneticsState, isSupportSpeak, isSupportListen, readingState) {
 
         val theme = theme.value ?: return@listenerSources
         val translate = translate.value ?: return@listenerSources
 
         val ipa = ipa.value ?: return@listenerSources
         val state = phoneticsState.value ?: return@listenerSources
-        val listenState = listenState.value
+        val listenState = readingState.value
         val phoneticsCode = phoneticCodeSelected.value ?: return@listenerSources
 
         state.doStart {
@@ -230,7 +221,7 @@ class IpaDetailViewModel(
 
     fun startListen(text: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        listenState.postValue(ResultState.Start)
+        readingState.postValue(ResultState.Start)
 
         val param = StartReadingUseCase.Param(
             text = text,
@@ -244,7 +235,7 @@ class IpaDetailViewModel(
 
         job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
-            listenState.postValue(state)
+            readingState.postValue(state)
 
             state.doSuccess {
                 job?.cancel()
@@ -258,7 +249,7 @@ class IpaDetailViewModel(
 
     suspend fun startListenWait(data: Ipa) = channelFlow {
 
-        listenState.postValue(ResultState.Start)
+        readingState.postValue(ResultState.Start)
 
         val mediaPlayer = MediaPlayer().apply {
 
@@ -267,13 +258,13 @@ class IpaDetailViewModel(
             prepareAsync()
 
             setOnPreparedListener {
-                listenState.postValue(ResultState.Running(""))
+                readingState.postValue(ResultState.Running(""))
                 start() // Bắt đầu phát nhạc khi đã chuẩn bị xong
             }
 
             setOnErrorListener { mp, what, extra ->
 
-                listenState.postValue(ResultState.Failed(RuntimeException("")))
+                readingState.postValue(ResultState.Failed(RuntimeException("")))
                 trySend(Unit)
 
                 true // Trả về true nếu đã xử lý lỗi
@@ -281,7 +272,7 @@ class IpaDetailViewModel(
 
             setOnCompletionListener { mp ->
 
-                listenState.postValue(ResultState.Success(""))
+                readingState.postValue(ResultState.Success(""))
                 trySend(Unit)
             }
         }

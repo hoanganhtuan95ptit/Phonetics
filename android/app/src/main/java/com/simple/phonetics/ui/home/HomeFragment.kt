@@ -111,7 +111,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         binding.ivStop.setDebouncedClickListener {
 
-            viewModel.stopSpeak()
+            viewModel.stopReading()
         }
     }
 
@@ -164,7 +164,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             if (viewModel.isSupportSpeak.value == true) {
 
                 sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
-            } else if (viewModel.isSupportListen.value == true) {
+            } else if (viewModel.isSupportReading.value == true) {
 
                 startSpeak(text = item.data.text)
             }
@@ -270,7 +270,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             binding.tvClear.delegate.setBackground(it.background)
         }
 
-        listenInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "LISTEN") {
+        readingInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "LISTEN") {
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
@@ -317,11 +317,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         val fragment = this@HomeFragment
 
-        listenerEnable.observe(viewLifecycleOwner) {
-
-            viewModel.updateSupportSpeak(it)
-        }
-
         translateEnable.observe(viewLifecycleOwner) {
 
             viewModel.updateSupportTranslate(it)
@@ -337,7 +332,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun startSpeak(text: String) {
 
-        viewModel.startSpeak(
+        viewModel.startReading(
             text = text,
 
             voiceId = configViewModel.voiceSelect.value ?: 0,

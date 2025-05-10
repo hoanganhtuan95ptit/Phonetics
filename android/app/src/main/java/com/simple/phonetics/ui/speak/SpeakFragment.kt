@@ -45,7 +45,6 @@ import com.simple.phonetics.utils.showAds
 import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isRunning
-import com.simple.state.toSuccess
 import kotlinx.coroutines.launch
 
 class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, DialogListBinding, SpeakViewModel>() {
@@ -62,7 +61,6 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         setupRecyclerView()
 
         observeData()
-        observeConfigData()
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogListBinding {
@@ -77,7 +75,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
     override fun onDestroy() {
         super.onDestroy()
-        
+
         showAds()
     }
 
@@ -233,14 +231,6 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         }
     }
 
-    private fun observeConfigData() = with(configViewModel) {
-
-        voiceState.observe(viewLifecycleOwner) {
-
-            viewModel.updateSupportSpeak(it.toSuccess()?.data.orEmpty().isNotEmpty())
-        }
-    }
-
     private fun speak() {
 
         val speakState = viewModel.speakState.value
@@ -256,7 +246,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
     private fun listen(text: String? = null) {
 
-        val voiceState = viewModel.listenState.value
+        val voiceState = viewModel.readingState.value
 
         if (voiceState.isRunning()) {
 

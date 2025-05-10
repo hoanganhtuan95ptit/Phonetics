@@ -68,9 +68,9 @@ class GameIPAMatchViewModel(
     }
 
     @VisibleForTesting
-    val quiz: LiveData<GameIPAMatchQuiz> = combineSources(listenEnable, phoneticState) {
+    val quiz: LiveData<GameIPAMatchQuiz> = combineSources(isSupportReading, phoneticState) {
 
-        val listenEnable = listenEnable.value ?: return@combineSources
+        val isSupportReading = isSupportReading.value ?: return@combineSources
         val phoneticState = phoneticState.value ?: return@combineSources
 
         val phoneticList = phoneticState.toSuccess()?.data ?: return@combineSources
@@ -81,7 +81,7 @@ class GameIPAMatchViewModel(
         typeRemoveList.add(GameIPAMatchQuiz.Option.Type.NONE)
 
         // nếu không hỗ trợ phát âm thì bỏ ra khỏi danh sách
-        if (!listenEnable) {
+        if (!isSupportReading) {
             typeRemoveList.add(GameIPAMatchQuiz.Option.Type.VOICE)
         }
 
@@ -126,14 +126,14 @@ class GameIPAMatchViewModel(
     val warning: LiveData<Boolean> = MediatorLiveData(false)
 
     @VisibleForTesting
-    val listenState: LiveData<HashMap<GameIPAMatchPair, ResultState<String>>> = MediatorLiveData(hashMapOf())
+    val readingState: LiveData<HashMap<GameIPAMatchPair, ResultState<String>>> = MediatorLiveData(hashMapOf())
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, warning, listenState, phoneticState, phoneticCodeSelected) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, warning, readingState, phoneticState, phoneticCodeSelected) {
 
         val quiz = quiz.value
         val choose = choose.value
         val warning = warning.value ?: false
-        val listenState = listenState.value.orEmpty()
+        val listenState = readingState.value.orEmpty()
         val phoneticState = phoneticState.value
         val phoneticCodeSelected = phoneticCodeSelected.value ?: return@listenerSources
 
@@ -296,7 +296,7 @@ class GameIPAMatchViewModel(
 
     fun startListen(data: GameIPAMatchPair, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        val map = listenState.value ?: return@launch
+        val map = readingState.value ?: return@launch
 
         val param = StartReadingUseCase.Param(
             text = data.option?.phonetic?.text ?: return@launch,
@@ -308,14 +308,14 @@ class GameIPAMatchViewModel(
 
 
         map[data] = ResultState.Start
-        listenState.postValue(map)
+        readingState.postValue(map)
 
         var job: Job? = null
 
         job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
             map[data] = state
-            listenState.postValue(map)
+            readingState.postValue(map)
 
             state.doSuccess {
                 job?.cancel()

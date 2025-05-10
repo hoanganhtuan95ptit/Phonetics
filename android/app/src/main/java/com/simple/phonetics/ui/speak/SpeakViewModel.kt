@@ -5,8 +5,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
@@ -16,14 +16,17 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
+import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
+import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.entities.Language
@@ -50,7 +53,10 @@ class SpeakViewModel(
     private val stopReadingUseCase: StopReadingUseCase,
     private val startReadingUseCase: StartReadingUseCase,
 
-    private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
+    private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
+
+    private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
+    private val checkSupportReadingAsyncUseCase: CheckSupportReadingAsyncUseCase
 ) : BaseActionViewModel() {
 
     val text: LiveData<String> = MediatorLiveData()
@@ -58,12 +64,24 @@ class SpeakViewModel(
 
     val speakState: LiveData<ResultState<String>> = MediatorLiveData()
 
-    val isSupportSpeak: LiveData<Boolean> = MediatorLiveData(true)
+    val isSupportSpeak: LiveData<Boolean> = mediatorLiveData {
+
+        checkSupportSpeakAsyncUseCase.execute().collect {
+
+            postDifferentValue(it)
+        }
+    }
 
 
-    val listenState: LiveData<ResultState<String>> = MediatorLiveData()
+    val readingState: LiveData<ResultState<String>> = MediatorLiveData()
 
-    val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
+    val isSupportListen: LiveData<Boolean> = mediatorLiveData {
+
+        checkSupportReadingAsyncUseCase.execute().collect {
+
+            postDifferentValue(it)
+        }
+    }
 
 
     @VisibleForTesting
@@ -155,9 +173,9 @@ class SpeakViewModel(
         postDifferentValue(info)
     }
 
-    val listenInfo: LiveData<ListenInfo> = listenerSources(size, theme, translate, isSupportListen, listenState) {
+    val listenInfo: LiveData<ListenInfo> = listenerSources(size, theme, translate, isSupportListen, readingState) {
 
-        val listenState = listenState.value
+        val listenState = readingState.value
 
         val info = ListenInfo(
 
@@ -226,11 +244,6 @@ class SpeakViewModel(
         text.postDifferentValue(it)
     }
 
-    fun updateSupportSpeak(it: Boolean) {
-
-        isSupportListen.postDifferentValue(it)
-    }
-
     fun startListen(text: String? = null, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val param = StartReadingUseCase.Param(
@@ -241,12 +254,12 @@ class SpeakViewModel(
             voiceSpeed = voiceSpeed
         )
 
-        listenState.postValue(ResultState.Start)
+        readingState.postValue(ResultState.Start)
 
         var job: Job? = null
         job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
-            listenState.postValue(state)
+            readingState.postValue(state)
 
             state.doSuccess {
                 job?.cancel()
