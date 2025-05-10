@@ -25,7 +25,7 @@ class UpdateLanguageInputUseCase(
         val listState = linkedMapOf<String, State>()
 
         listState["START"] = State.Start
-        trySend(ResultState.Running(listState))
+        trySend(ResultState.Running(listState.toMap()))
 
         // đồng bộ IPA
         val ipaState = phoneticRepository.syncPhonetic(language = param.language).filter {
@@ -36,7 +36,7 @@ class UpdateLanguageInputUseCase(
                 val percent = it.data.second
 
                 listState[source.code] = State.SyncPhonetics(code = source.code, name = source.name, percent = percent)
-                trySend(ResultState.Running(listState))
+                trySend(ResultState.Running(listState.toMap()))
             }
 
             it.isCompleted()
@@ -56,7 +56,7 @@ class UpdateLanguageInputUseCase(
             if (it is ResultState.Running) {
 
                 listState["SYNC_TRANSLATE"] = it.data
-                trySend(ResultState.Running(listState))
+                trySend(ResultState.Running(listState.toMap()))
             }
 
             it.isCompleted()
@@ -77,7 +77,7 @@ class UpdateLanguageInputUseCase(
 
 
         listState["COMPLETED"] = State.Completed
-        trySend(ResultState.Success(listState))
+        trySend(ResultState.Success(listState.toMap()))
 
 
         awaitClose()
