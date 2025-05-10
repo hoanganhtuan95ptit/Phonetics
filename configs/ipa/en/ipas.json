@@ -13,7 +13,7 @@
       "key",
       "unique"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/i_.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_i_.mp3",
     "type": "vowels_long"
   },
   {
@@ -30,7 +30,7 @@
       "busy",
       "build"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɪ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ɪ.mp3",
     "type": "vowels_short"
   },
   {
@@ -47,7 +47,7 @@
       "said",
       "again"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/e.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_e.mp3",
     "type": "vowels_short"
   },
   {
@@ -64,7 +64,7 @@
       "bank",
       "laugh"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/æ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_æ.mp3",
     "type": "vowels_short"
   },
   {
@@ -81,7 +81,7 @@
       "bra",
       "spa"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɑ_.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ɑ_.mp3",
     "type": "vowels_long"
   },
   {
@@ -98,7 +98,7 @@
       "floor",
       "four"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɔ_.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ɔ_.mp3",
     "type": "vowels_long"
   },
   {
@@ -115,7 +115,7 @@
       "woman",
       "wolf"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ʊ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ʊ.mp3",
     "type": "vowels_short"
   },
   {
@@ -132,7 +132,7 @@
       "two",
       "move"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/u_.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_u_.mp3",
     "type": "vowels_long"
   },
   {
@@ -149,7 +149,7 @@
       "young",
       "tough"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ʌ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ʌ.mp3",
     "type": "vowels_short"
   },
   {
@@ -166,7 +166,7 @@
       "hurt",
       "earth"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɜ_.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ɜ_.mp3",
     "type": "vowels_long"
   },
   {
@@ -183,7 +183,7 @@
       "treasure",
       "pleasure"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ə.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ə.mp3",
     "type": "vowels_short"
   },
   {
@@ -200,7 +200,7 @@
       "break",
       "steak"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/eɪ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_eɪ.mp3",
     "type": "diphthongs"
   },
   {
@@ -217,7 +217,7 @@
       "kind",
       "fight"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/aɪ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_aɪ.mp3",
     "type": "diphthongs"
   },
   {
@@ -234,7 +234,7 @@
       "join",
       "point"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɔɪ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ɔɪ.mp3",
     "type": "diphthongs"
   },
   {
@@ -251,7 +251,7 @@
       "round",
       "found"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/aʊ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_aʊ.mp3",
     "type": "diphthongs"
   },
   {
@@ -268,7 +268,7 @@
       "know",
       "though"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/oʊ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_oʊ.mp3",
     "type": "diphthongs"
   },
   {
@@ -285,7 +285,7 @@
       "tear",
       "year"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ɪə.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ɪə.mp3",
     "type": "diphthongs"
   },
   {
@@ -302,7 +302,7 @@
       "hair",
       "fair"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/eə.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_eə.mp3",
     "type": "diphthongs"
   },
   {
@@ -319,7 +319,7 @@
       "mature",
       "obscure"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ʊə.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ʊə.mp3",
     "type": "diphthongs"
   },
   {
@@ -336,7 +336,7 @@
       "cup",
       "hop"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/p.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_p.mp3",
     "type": "consonants_unvoiced"
   },
   {
@@ -353,7 +353,7 @@
       "job",
       "rob"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/b.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_b.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -370,7 +370,7 @@
       "sit",
       "cut"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/t.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_t.mp3",
     "type": "consonants_unvoiced"
   },
   {
@@ -387,7 +387,7 @@
       "road",
       "food"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/d.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_d.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -404,7 +404,7 @@
       "giraffe",
       "journal"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/dʒ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_dʒ.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -421,7 +421,7 @@
       "cheer",
       "challenge"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/tʃ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_tʃ.mp3",
     "type": "consonants_unvoiced"
   },
   {
@@ -438,7 +438,7 @@
       "book",
       "cook"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/k.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_k.mp3",
     "type": "consonants_unvoiced"
   },
   {
@@ -455,7 +455,7 @@
       "frog",
       "glue"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/g.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_g.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -472,7 +472,7 @@
       "enough",
       "photo"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/f.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_f.mp3",
     "type": "consonants_unvoiced"
   },
   {
@@ -489,7 +489,7 @@
       "van",
       "vase"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/v.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_v.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -506,7 +506,7 @@
       "thank",
       "three"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/θ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_θ.mp3",
     "type": "consonants_unvoiced"
   },
   {
@@ -523,7 +523,7 @@
       "clothe",
       "breathe"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ð.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ð.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -540,7 +540,7 @@
       "yes",
       "kiss"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/s.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_s.mp3",
     "type": "consonants_unvoiced"
   },
   {
@@ -557,7 +557,7 @@
       "has",
       "is"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/z.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_z.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -574,7 +574,7 @@
       "machine",
       "ocean"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ʃ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ʃ.mp3",
     "type": "consonants_unvoiced"
   },
   {
@@ -591,7 +591,7 @@
       "fusion",
       "illusion"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ʒ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ʒ.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -608,7 +608,7 @@
       "high",
       "home"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/h.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_h.mp3",
     "type": "consonants_unvoiced"
   },
   {
@@ -625,7 +625,7 @@
       "room",
       "dream"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/m.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_m.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -642,7 +642,7 @@
       "can",
       "win"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/n.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_n.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -659,7 +659,7 @@
       "spring",
       "morning"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/ŋ.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ŋ.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -676,7 +676,7 @@
       "well",
       "feel"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/l.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_l.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -693,7 +693,7 @@
       "write",
       "cry"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/r.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_r.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -710,7 +710,7 @@
       "yell",
       "yacht"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/j.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_j.mp3",
     "type": "consonants_voiced"
   },
   {
@@ -727,7 +727,7 @@
       "week",
       "wish"
     ],
-    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/w.mp3",
+    "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_w.mp3",
     "type": "consonants_voiced"
   }
 ]
