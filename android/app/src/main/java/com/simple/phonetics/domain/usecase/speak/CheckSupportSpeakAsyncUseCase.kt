@@ -13,13 +13,11 @@ class CheckSupportSpeakAsyncUseCase(
     private val languageRepository: LanguageRepository
 ) {
 
-    suspend fun execute(): Flow<ResultState<Boolean>> = channelFlow {
+    suspend fun execute(): Flow<Boolean> = channelFlow {
 
         languageRepository.getLanguageInputAsync().launchCollect(this) {
 
-            trySend(ResultState.Start)
-
-            trySend(ResultState.Success(speakRepository.checkSpeak(it.id)))
+            trySend(speakRepository.checkSpeak(it.id))
         }
 
         awaitClose {

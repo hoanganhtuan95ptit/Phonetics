@@ -60,7 +60,6 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
         setupRecyclerView()
 
         observeData()
-        observeConfigData()
     }
 
     private fun setupRecyclerView() {
@@ -163,14 +162,6 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
-        }
-    }
-
-    private fun observeConfigData() = with(configViewModel) {
-
-        listenerEnable.observe(viewLifecycleOwner) {
-
-            viewModel.updateListenerEnable(it)
         }
     }
 

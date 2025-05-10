@@ -7,23 +7,27 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.utils.extentions.Event
+import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import org.koin.core.context.GlobalContext
 
 abstract class GameItemViewModel : BaseViewModel() {
 
-    val listenEnable: LiveData<Boolean> = MediatorLiveData()
+    val isSupportReading: LiveData<Boolean> = mediatorLiveData {
+
+        GlobalContext.get().get<CheckSupportReadingAsyncUseCase>().execute().collect {
+
+            postDifferentValue(it)
+        }
+    }
 
     val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
 
     val consecutiveCorrectAnswerEvent: LiveData<Event<Pair<Long, Boolean>>> = MediatorLiveData()
 
-
-    fun updateListenerEnable(it: Boolean) {
-
-        listenEnable.postDifferentValue(it)
-    }
 
     fun updateResourceSelected(it: Word.Resource) {
 

@@ -66,9 +66,9 @@ class GameIPAWordleViewModel(
     }
 
     @VisibleForTesting
-    val quiz: LiveData<GameIPAWordleQuiz> = combineSources(listenEnable, phoneticState) {
+    val quiz: LiveData<GameIPAWordleQuiz> = combineSources(isSupportReading, phoneticState) {
 
-        val listenEnable = listenEnable.get()
+        val isSupportReading = isSupportReading.get()
         val phoneticState = phoneticState.get()
 
         val phonetics = phoneticState.toSuccess()?.data ?: return@combineSources
@@ -76,7 +76,7 @@ class GameIPAWordleViewModel(
         val typeRemoveList = arrayListOf<GameIPAWordleQuiz.Type>()
 
         // nếu không hỗ trợ phát âm thì bỏ ra khỏi danh sách
-        if (!listenEnable) {
+        if (!isSupportReading) {
             typeRemoveList.add(GameIPAWordleQuiz.Type.VOICE)
         }
 
@@ -105,13 +105,13 @@ class GameIPAWordleViewModel(
     @VisibleForTesting
     val choose: LiveData<Phonetic> = MediatorLiveData(null)
 
-    val listenState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
+    val readingState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, listenState, phoneticState) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, readingState, phoneticState) {
 
         val quiz = quiz.value
         val choose = choose.value
-        val listenState = listenState.value
+        val listenState = readingState.value
         val phoneticState = phoneticState.value
         val phoneticCodeSelected = phoneticCodeSelected.value ?: return@listenerSources
 
@@ -237,13 +237,13 @@ class GameIPAWordleViewModel(
             voiceSpeed = voiceSpeed
         )
 
-        listenState.postValue(ResultState.Start)
+        readingState.postValue(ResultState.Start)
 
         var job: Job? = null
 
         job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
-            listenState.postValue(state)
+            readingState.postValue(state)
 
             state.doSuccess {
                 job?.cancel()

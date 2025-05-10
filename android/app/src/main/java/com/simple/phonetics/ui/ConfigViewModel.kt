@@ -31,8 +31,8 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.TranslateUseCase
-import com.simple.phonetics.domain.usecase.language.GetPhoneticCodeAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.UpdatePhoneticCodeUseCase
+import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeUseCase
 import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
@@ -221,14 +221,6 @@ class ConfigViewModel(
             postDifferentValue(emptyList())
         }
     }
-
-    val listenerEnable: LiveData<Boolean> = combineSources(voiceState) {
-
-        val voiceState = voiceState.get()
-
-        postDifferentValue(voiceState.toSuccess()?.data.orEmpty().isNotEmpty())
-    }
-
 
     val voiceSpeed: LiveData<Float> = MediatorLiveData<Float>().apply {
 
