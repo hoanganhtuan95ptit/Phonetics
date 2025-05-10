@@ -44,6 +44,10 @@ class AppRepositoryImpl(
         }
     }
 
+    override suspend fun getCountTranslateOld(): Int {
+        return keyTranslateDao.count()
+    }
+
     override suspend fun getAllTranslateOld(): List<KeyTranslate> {
         return keyTranslateDao.getAll()
     }

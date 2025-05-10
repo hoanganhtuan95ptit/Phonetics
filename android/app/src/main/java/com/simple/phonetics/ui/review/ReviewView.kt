@@ -96,7 +96,7 @@ class ReviewView : PopupView {
                 extras = extras
             )
 
-            if (!info.show) {
+            if (viewModel.historyList.value.orEmpty().isNotEmpty() && !info.show) {
 
                 openReview(componentCallbacks)
             }

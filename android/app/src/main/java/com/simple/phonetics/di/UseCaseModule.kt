@@ -14,13 +14,13 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
-import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsSuggestUseCase
 import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
-import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeUseCase
+import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeSelectedUseCase
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
@@ -89,11 +89,11 @@ val useCaseModule = module {
 
 
     single {
-        GetPhoneticCodeAsyncUseCase(get())
+        GetPhoneticCodeSelectedAsyncUseCase(get())
     }
 
     single {
-        UpdatePhoneticCodeUseCase(get())
+        UpdatePhoneticCodeSelectedUseCase(get())
     }
 
 
