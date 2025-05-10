@@ -13,6 +13,7 @@ object Param {
     const val IS_SUPPORT = "IS_SUPPORT"
     const val KEY_REQUEST = "KEY_REQUEST"
     const val LANGUAGE_CODE = "LANGUAGE_CODE"
+    const val PHONETIC_CODE = "PHONETIC_CODE"
     const val VIEW_ITEM_LIST = "VIEW_ITEM_LIST"
     const val BACKGROUND_COLOR = "BACKGROUND_COLOR"
     const val POSITIVE_BACKGROUND = "POSITIVE_BACKGROUND"

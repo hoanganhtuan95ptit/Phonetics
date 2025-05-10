@@ -72,6 +72,9 @@ class UpdateLanguageInputUseCase(
         // lưu lại ngôn ngữ tìm kiếm phiên âm
         languageRepository.updateLanguageInput(param.language)
 
+        // hủy phonectic code hiện tại
+        languageRepository.updatePhoneticCode("")
+
 
         listState["COMPLETED"] = State.Completed
         trySend(ResultState.Success(listState))

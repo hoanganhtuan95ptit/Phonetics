@@ -28,7 +28,6 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
-import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.state.ResultState
@@ -302,9 +301,8 @@ class GameIPAMatchViewModel(
         val param = StartReadingUseCase.Param(
             text = data.option?.phonetic?.text ?: return@launch,
 
-            languageCode = inputLanguage.value?.id ?: Language.EN,
-
             voiceId = voiceId,
+
             voiceSpeed = voiceSpeed
         )
 

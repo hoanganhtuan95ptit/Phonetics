@@ -13,9 +13,11 @@ class GetVoiceAsyncUseCase(
 
     suspend fun execute(): Flow<ResultState<List<Int>>> {
 
-        return languageRepository.getLanguageInputAsync().map {
+        return languageRepository.getPhoneticCodeAsync().map {
 
-            readingRepository.getSupportedVoices(it.id)
+            readingRepository.getSupportedVoices(it)
         }
     }
+
+    class Param()
 }

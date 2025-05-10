@@ -21,6 +21,7 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.flow.first
 import java.util.Locale
 
+// ứng dụng sẽ đọc chữ
 @AutoService(MainView::class)
 class ReadView : MainView {
 
@@ -79,11 +80,11 @@ class ReadView : MainView {
             return
         }
 
-        val languageCode = params[Param.LANGUAGE_CODE] as String
+        val phoneticCode = params[Param.PHONETIC_CODE] as String
 
-        textToSpeech.setLanguage(languageCode = languageCode)
+        textToSpeech.setLanguage(phoneticCode = phoneticCode)
 
-        val voiceList = textToSpeech.getVoice(languageCode = languageCode)
+        val voiceList = textToSpeech.getVoice(phoneticCode = phoneticCode)
 
 
         if (voiceList.isEmpty()) {
@@ -91,7 +92,7 @@ class ReadView : MainView {
             sendEvent(GET_VOICE_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
         } else {
 
-            sendEvent(GET_VOICE_RESPONSE, ResultState.Success(voiceList.mapIndexed { index, voice -> index }))
+            sendEvent(GET_VOICE_RESPONSE, ResultState.Success(voiceList.mapIndexed { index, _ -> index }))
         }
     }
 
@@ -109,11 +110,13 @@ class ReadView : MainView {
         val text = params[Param.TEXT] as String
         val voiceIndex = params[Param.VOICE_ID] as Int
         val speakSpeed = params[Param.VOICE_SPEED] as Float
-        val languageCode = params[Param.LANGUAGE_CODE] as String
+        val phoneticCode = params[Param.PHONETIC_CODE] as String
 
-        speak.setLanguage(languageCode = languageCode)
+        speak.setLanguage(phoneticCode = phoneticCode)
 
-        val voice = speak.getVoice(languageCode).getOrNull(voiceIndex)
+        val voiceList = speak.getVoice(phoneticCode = phoneticCode)
+
+        val voice = voiceList.getOrNull(voiceIndex) ?: voiceList.firstOrNull()
 
         if (voice == null) {
 
@@ -146,29 +149,42 @@ class ReadView : MainView {
         speak.speak(text, TextToSpeech.QUEUE_FLUSH, null, "1")
     }
 
-    private fun TextToSpeech.getVoice(languageCode: String): List<Voice> {
+    private fun TextToSpeech.getVoice(phoneticCode: String): List<Voice> {
 
         return voices?.filter {
 
-            it.locale == languageCode.toLocale()
-        }?.mapIndexed { index, voice ->
+            it.locale == phoneticCode.toLocale()
+        }?.mapIndexed { _, voice ->
 
             voice
         } ?: emptyList()
     }
 
-    private fun TextToSpeech.setLanguage(languageCode: String) {
+    private fun TextToSpeech.setLanguage(phoneticCode: String) {
 
-        language = languageCode.toLocale()
+        language = phoneticCode.toLocale()
     }
 
     private fun String.toLocale() = when (this) {
+
+        "US" -> Locale.US
+        "UK" -> Locale.UK
         Language.EN -> Locale.US
+
         Language.KO -> Locale.KOREA
+
         Language.JA -> Locale.JAPAN
+
         "de" -> Locale.GERMANY
-        "fr" -> Locale.FRANCE
-        "zh" -> Locale.SIMPLIFIED_CHINESE
+
+        "fr_FR", "fr_QC", "fr" -> Locale.FRANCE
+
+        "zh" -> Locale.CHINESE
+        "zh_Hans" -> Locale.SIMPLIFIED_CHINESE
+
+        "yue" -> Locale.TRADITIONAL_CHINESE
+        "zh_Hant" -> Locale.TRADITIONAL_CHINESE
+
         else -> null
     }
 }

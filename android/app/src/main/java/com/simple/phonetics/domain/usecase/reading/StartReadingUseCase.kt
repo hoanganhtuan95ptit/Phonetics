@@ -1,11 +1,13 @@
 package com.simple.phonetics.domain.usecase.reading
 
+import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.ReadingRepository
 import com.simple.state.ResultState
 import kotlinx.coroutines.flow.Flow
 
 class StartReadingUseCase(
-    private val readingRepository: ReadingRepository
+    private val readingRepository: ReadingRepository,
+    private val languageRepository: LanguageRepository
 ) {
 
     suspend fun execute(param: Param): Flow<ResultState<String>> {
@@ -13,7 +15,7 @@ class StartReadingUseCase(
         return readingRepository.startReading(
             text = param.text,
 
-            languageCode = param.languageCode,
+            phoneticCode = languageRepository.getPhoneticCode(),
 
             voiceId = param.voiceId,
             voiceSpeed = param.voiceSpeed
@@ -23,9 +25,8 @@ class StartReadingUseCase(
     data class Param(
         val text: String,
 
-        val languageCode: String,
-
         val voiceId: Int,
+
         val voiceSpeed: Float
     )
 }

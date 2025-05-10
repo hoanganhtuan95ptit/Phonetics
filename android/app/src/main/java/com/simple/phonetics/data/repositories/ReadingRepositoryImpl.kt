@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.first
 
 class ReadingRepositoryImpl : ReadingRepository {
 
-    override suspend fun getSupportedVoices(languageCode: String): ResultState<List<Int>> = channelFlow {
+    override suspend fun getSupportedVoices(phoneticCode: String): ResultState<List<Int>> = channelFlow {
 
         listenerEvent(EventName.GET_VOICE_RESPONSE) {
 
@@ -40,7 +40,7 @@ class ReadingRepositoryImpl : ReadingRepository {
         sendEvent(
             EventName.GET_VOICE_REQUEST,
             mapOf(
-                Param.LANGUAGE_CODE to languageCode,
+                Param.PHONETIC_CODE to phoneticCode,
             )
         )
 
@@ -49,7 +49,7 @@ class ReadingRepositoryImpl : ReadingRepository {
         }
     }.first()
 
-    override suspend fun startReading(text: String, languageCode: String, voiceId: Int, voiceSpeed: Float): Flow<ResultState<String>> = channelFlow {
+    override suspend fun startReading(text: String, phoneticCode: String, voiceId: Int, voiceSpeed: Float): Flow<ResultState<String>> = channelFlow {
 
         listenerEvent(EventName.START_READING_TEXT_RESPONSE) {
 
@@ -81,7 +81,7 @@ class ReadingRepositoryImpl : ReadingRepository {
             EventName.START_READING_TEXT_REQUEST,
             mapOf(
                 Param.TEXT to text,
-                Param.LANGUAGE_CODE to languageCode,
+                Param.PHONETIC_CODE to phoneticCode,
 
                 Param.VOICE_ID to voiceId,
                 Param.VOICE_SPEED to voiceSpeed
