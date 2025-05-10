@@ -236,9 +236,8 @@ class SpeakViewModel(
         val param = StartReadingUseCase.Param(
             text = text ?: this@SpeakViewModel.text.value.orEmpty(),
 
-            languageCode = inputLanguage.value?.id ?: Language.EN,
-
             voiceId = voiceId,
+
             voiceSpeed = voiceSpeed
         )
 

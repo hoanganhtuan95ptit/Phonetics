@@ -7,6 +7,7 @@ data class Language(
     val id: String = "",
     val name: String = "",
     val image: String = "",
+    val country: String = "",
 
     val listIpa: List<IpaSource> = emptyList(),
 ) {
@@ -19,8 +20,10 @@ data class Language(
     )
 
     companion object {
-        
+
         const val EN = "en"
+        const val EN_US = "US"
+        const val EN_UK = "UK"
         const val VI = "vi"
         const val ZH = "zh"
         const val ES = "es"

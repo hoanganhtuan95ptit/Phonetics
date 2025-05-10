@@ -14,7 +14,10 @@ import com.simple.phonetics.entities.Language
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import java.util.Locale
 
 class LanguageRepositoryImpl(
@@ -33,6 +36,48 @@ class LanguageRepositoryImpl(
             if (data.isBlank()) null else data.toObject<Language>()
         )
     }
+
+    override suspend fun getPhoneticCode(): String {
+
+        var phoneticCode = appCache.getData("phonetic_code", "")
+
+        val languageInput = getLanguageInputAsync().first()
+
+        if (languageInput.listIpa.firstOrNull { it.code == phoneticCode } != null) {
+
+            return phoneticCode
+        }
+
+        val languageOutput = getLanguageOutputAsync().first()
+
+        phoneticCode = languageInput.listIpa.first().code
+
+        if (languageInput.id == Language.EN) if (languageOutput.country == "US") {
+
+            phoneticCode = Language.EN_US
+        } else if (languageOutput.country == "GB") {
+
+            phoneticCode = Language.EN_UK
+        }
+
+        updatePhoneticCode(phoneticCode)
+
+        return phoneticCode
+    }
+
+    override suspend fun getPhoneticCodeAsync(): Flow<String> {
+
+        return appCache.getDataAsync("phonetic_code").map {
+
+            getPhoneticCode()
+        }.distinctUntilChanged()
+    }
+
+    override suspend fun updatePhoneticCode(code: String) {
+
+        appCache.setData("phonetic_code", code)
+    }
+
 
     override fun getLanguageInput(): Language? {
 
@@ -55,10 +100,11 @@ class LanguageRepositoryImpl(
     override fun getLanguageOutput(): Language {
 
         return Language(
-            Locale.getDefault().language,
-            Locale.getDefault().displayName,
-            "",
-            emptyList()
+            id = Locale.getDefault().language,
+            name = Locale.getDefault().displayName,
+            country = Locale.getDefault().country,
+            image = "",
+            listIpa = emptyList()
         )
     }
 

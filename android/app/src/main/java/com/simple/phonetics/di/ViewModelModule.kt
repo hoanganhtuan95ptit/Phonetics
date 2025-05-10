@@ -64,7 +64,7 @@ val viewModelModule = module {
 
 
     viewModel {
-        ConfigViewModel(get(), get())
+        ConfigViewModel(get(), get(), get(), get())
     }
 
 

@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface ReadingRepository {
 
-    suspend fun getSupportedVoices(languageCode: String): ResultState<List<Int>>
+    suspend fun getSupportedVoices(phoneticCode: String): ResultState<List<Int>>
 
-    suspend fun startReading(text: String, languageCode: String, voiceId: Int, voiceSpeed: Float): Flow<ResultState<String>>
+    suspend fun startReading(text: String, phoneticCode: String, voiceId: Int, voiceSpeed: Float): Flow<ResultState<String>>
 
     suspend fun stopReading(): ResultState<String>
 }

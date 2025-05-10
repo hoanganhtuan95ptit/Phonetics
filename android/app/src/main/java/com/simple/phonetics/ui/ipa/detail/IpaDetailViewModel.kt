@@ -31,7 +31,6 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Ipa
-import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailViewItem
@@ -236,9 +235,8 @@ class IpaDetailViewModel(
         val param = StartReadingUseCase.Param(
             text = text,
 
-            languageCode = inputLanguage.value?.id ?: Language.EN,
-
             voiceId = voiceId,
+
             voiceSpeed = voiceSpeed
         )
 

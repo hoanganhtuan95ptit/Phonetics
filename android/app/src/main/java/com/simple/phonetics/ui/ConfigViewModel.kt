@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
@@ -19,6 +20,7 @@ import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
@@ -29,6 +31,8 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.TranslateUseCase
+import com.simple.phonetics.domain.usecase.language.GetPhoneticCodeAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.UpdatePhoneticCodeUseCase
 import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
@@ -38,17 +42,22 @@ import com.simple.state.doSuccess
 import com.simple.state.isFailed
 import com.simple.state.isStart
 import com.simple.state.toSuccess
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ConfigViewModel(
     private val translateUseCase: TranslateUseCase,
-    private val getVoiceAsyncUseCase: GetVoiceAsyncUseCase
+    private val getVoiceAsyncUseCase: GetVoiceAsyncUseCase,
+    private val updatePhoneticCodeUseCase: UpdatePhoneticCodeUseCase,
+    private val getPhoneticCodeAsyncUseCase: GetPhoneticCodeAsyncUseCase
 ) : BaseViewModel() {
 
-    val phoneticSelect: LiveData<String> = combineSources(inputLanguage) {
+    val phoneticSelect: LiveData<String> = mediatorLiveData {
 
-        val language = inputLanguage.get()
+        getPhoneticCodeAsyncUseCase.execute().collect {
 
-        postValue(language.listIpa.first().code)
+            postDifferentValue(it)
+        }
     }
 
     @VisibleForTesting
@@ -425,9 +434,11 @@ class ConfigViewModel(
         this.translateSelect.postDifferentValue(if (translateSelect.value.isNullOrBlank()) id else "")
     }
 
-    fun updatePhoneticSelect(data: String) {
+    fun updatePhoneticSelect(data: String) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        this.phoneticSelect.postDifferentValue(data)
+        this@ConfigViewModel.phoneticSelect.postDifferentValue(data)
+
+        updatePhoneticCodeUseCase.execute(UpdatePhoneticCodeUseCase.Param(data))
     }
 
     private fun createTitleTextView(
