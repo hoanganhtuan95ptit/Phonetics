@@ -16,8 +16,6 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.utils.appInputLanguage
-import com.simple.phonetics.utils.appOutputLanguage
 import com.simple.phonetics.utils.appTranslate
 import com.simple.phonetics.utils.exts.awaitResume
 import com.simple.state.ResultState

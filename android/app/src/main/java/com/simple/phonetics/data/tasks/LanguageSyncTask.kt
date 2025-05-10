@@ -20,7 +20,14 @@ class LanguageSyncTask(
 
         if (languageCodeOld == languageCode) return
 
-        languageRepository.getLanguageSupport(languageCode = languageCode)
+        languageRepository.runCatching {
+
+            getLanguageSupport(languageCode = languageCode)
+        }.getOrElse {
+
+            if (languageRepository.getLanguageInput() == null) throw it
+            return
+        }
 
         languageCodeOld = languageCode
     }

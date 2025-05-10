@@ -28,7 +28,14 @@ class TranslateSyncTask(
         if (languageCodeOld == languageCode) return
 
         // call api để lấy bản dịch
-        val map = appRepository.syncTranslate(languageCode = languageCode)
+        val map = appRepository.runCatching {
+
+            syncTranslate(languageCode = languageCode)
+        }.getOrElse {
+
+            if (languageRepository.getLanguageInput() == null) throw it
+            return
+        }
         appRepository.updateTranslate(languageCode = languageCode, map = map)
 
         languageCodeOld = languageCode
