@@ -55,7 +55,6 @@ class MainViewModel(
 
         getLanguageInputAsyncUseCase.execute().collect {
 
-            appInputLanguage.tryEmit(it)
             logAnalytics("input_language_code_${it.id}")
         }
     }
@@ -64,7 +63,6 @@ class MainViewModel(
 
         getLanguageOutputAsyncUseCase.execute().collect {
 
-            appOutputLanguage.tryEmit(it)
             logAnalytics("output_language_code_${it.id}")
         }
     }

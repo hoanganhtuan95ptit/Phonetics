@@ -31,7 +31,6 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.TranslateUseCase
-import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeUseCase
 import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -48,26 +47,17 @@ import kotlinx.coroutines.launch
 class ConfigViewModel(
     private val translateUseCase: TranslateUseCase,
     private val getVoiceAsyncUseCase: GetVoiceAsyncUseCase,
-    private val updatePhoneticCodeUseCase: UpdatePhoneticCodeUseCase,
-    private val getPhoneticCodeAsyncUseCase: GetPhoneticCodeAsyncUseCase
+    private val updatePhoneticCodeUseCase: UpdatePhoneticCodeUseCase
 ) : BaseViewModel() {
 
-    val phoneticSelect: LiveData<String> = mediatorLiveData {
-
-        getPhoneticCodeAsyncUseCase.execute().collect {
-
-            postDifferentValue(it)
-        }
-    }
-
     @VisibleForTesting
-    val phoneticViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, translate, inputLanguage, phoneticSelect) {
+    val phoneticViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, translate, inputLanguage, phoneticCodeSelected) {
 
         val theme = theme.get()
         val translate = translate.get()
 
         val language = inputLanguage.get()
-        val phoneticSelect = phoneticSelect.get()
+        val phoneticCodeSelected = phoneticCodeSelected.get()
 
         language.listIpa.map {
 
@@ -79,7 +69,7 @@ class ConfigViewModel(
                 it.name
             }
 
-            val isSelect = it.code == phoneticSelect
+            val isSelect = it.code == phoneticCodeSelected
 
             createOptionViewItem(
                 id = Id.IPA + "_" + it.code,
@@ -428,7 +418,7 @@ class ConfigViewModel(
 
     fun updatePhoneticSelect(data: String) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        this@ConfigViewModel.phoneticSelect.postDifferentValue(data)
+        this@ConfigViewModel.phoneticCodeSelected.postDifferentValue(data)
 
         updatePhoneticCodeUseCase.execute(UpdatePhoneticCodeUseCase.Param(data))
     }

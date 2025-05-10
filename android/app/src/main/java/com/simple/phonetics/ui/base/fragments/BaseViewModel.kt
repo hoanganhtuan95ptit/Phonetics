@@ -4,15 +4,16 @@ import androidx.lifecycle.LiveData
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.utils.AppSize
 import com.simple.phonetics.utils.AppTheme
-import com.simple.phonetics.utils.appInputLanguage
-import com.simple.phonetics.utils.appOutputLanguage
-import com.simple.phonetics.utils.appPhoneticCodeSelected
 import com.simple.phonetics.utils.appSize
 import com.simple.phonetics.utils.appTheme
 import com.simple.phonetics.utils.appTranslate
+import org.koin.core.context.GlobalContext
 
 abstract class BaseViewModel : TransitionViewModel() {
 
@@ -42,7 +43,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
     val inputLanguage: LiveData<Language> = mediatorLiveData {
 
-        appInputLanguage.collect {
+        GlobalContext.get().get<GetLanguageInputAsyncUseCase>().execute().collect {
 
             postDifferentValue(it)
         }
@@ -50,7 +51,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
     val outputLanguage: LiveData<Language> = mediatorLiveData {
 
-        appOutputLanguage.collect {
+        GlobalContext.get().get<GetLanguageOutputAsyncUseCase>().execute().collect {
 
             postDifferentValue(it)
         }
@@ -58,7 +59,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
     val phoneticCodeSelected: LiveData<String> = mediatorLiveData {
 
-        appPhoneticCodeSelected.collect {
+        GlobalContext.get().get<GetPhoneticCodeAsyncUseCase>().execute().collect {
 
             postDifferentValue(it)
         }

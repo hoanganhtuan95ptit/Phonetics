@@ -15,7 +15,6 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.view.MainView
-import com.simple.phonetics.utils.appPhoneticCodeSelected
 import com.simple.phonetics.utils.setupSize
 import com.simple.phonetics.utils.setupTheme
 import kotlinx.coroutines.launch
@@ -38,7 +37,6 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         ServiceLoader.load(MainView::class.java).toList().forEach { it.setup(this) }
 
         observeData()
-        observeConfigData()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) splashScreen.setOnExitAnimationListener { splashScreenView ->
 
@@ -66,14 +64,6 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
                 sendDeeplink(DeeplinkManager.PHONETICS)
             }
-        }
-    }
-
-    private fun observeConfigData() = with(configViewModel) {
-
-        phoneticSelect.observe(this@MainActivity) {
-
-            appPhoneticCodeSelected.tryEmit(it)
         }
     }
 }
