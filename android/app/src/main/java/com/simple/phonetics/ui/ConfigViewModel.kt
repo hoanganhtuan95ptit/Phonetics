@@ -31,8 +31,9 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.TranslateUseCase
-import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeUseCase
+import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeSelectedUseCase
 import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.UpdateVoiceSelectedUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.state.ResultState
@@ -47,7 +48,7 @@ import kotlinx.coroutines.launch
 class ConfigViewModel(
     private val translateUseCase: TranslateUseCase,
     private val getVoiceAsyncUseCase: GetVoiceAsyncUseCase,
-    private val updatePhoneticCodeUseCase: UpdatePhoneticCodeUseCase
+    private val updatePhoneticCodeSelectedUseCase: UpdatePhoneticCodeSelectedUseCase
 ) : BaseViewModel() {
 
     @VisibleForTesting
@@ -260,12 +261,18 @@ class ConfigViewModel(
         val translate = translate.get()
 
         val listVoice = listVoice.get()
-        val voiceSelect = voiceSelect.get()
+        var voiceSelect = voiceSelect.get()
 
         if (listVoice.isEmpty()) {
 
             postValue(emptyList())
             return@combineSources
+        }
+
+        // nếu voice không nằm trong danh sách thì lấy cái đầu tiên
+        if (voiceSelect !in listVoice) {
+
+            voiceSelect = listVoice.first()
         }
 
         listVoice.mapIndexed { index, voice ->
@@ -420,7 +427,7 @@ class ConfigViewModel(
 
         this@ConfigViewModel.phoneticCodeSelected.postDifferentValue(data)
 
-        updatePhoneticCodeUseCase.execute(UpdatePhoneticCodeUseCase.Param(data))
+        updatePhoneticCodeSelectedUseCase.execute(UpdatePhoneticCodeSelectedUseCase.Param(data))
     }
 
     private fun createTitleTextView(

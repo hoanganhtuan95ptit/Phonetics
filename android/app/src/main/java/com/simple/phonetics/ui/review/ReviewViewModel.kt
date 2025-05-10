@@ -39,7 +39,6 @@ class ReviewViewModel(
     @VisibleForTesting
     val rate: LiveData<Rate> = MediatorLiveData()
 
-    @VisibleForTesting
     val historyList: LiveData<List<Sentence>> = mediatorLiveData {
 
         val list = getPhoneticsHistoryAsyncUseCase.execute(GetPhoneticsHistoryAsyncUseCase.Param(1)).firstOrNull()

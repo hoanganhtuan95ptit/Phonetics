@@ -2,7 +2,7 @@ package com.simple.phonetics.domain.usecase.phonetics
 
 import com.simple.phonetics.domain.repositories.LanguageRepository
 
-class UpdatePhoneticCodeUseCase(
+class UpdatePhoneticCodeSelectedUseCase(
     private val languageRepository: LanguageRepository,
 ) {
 

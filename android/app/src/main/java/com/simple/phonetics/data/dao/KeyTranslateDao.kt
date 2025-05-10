@@ -28,6 +28,10 @@ interface KeyTranslateDao {
     fun getAllAsync(langCode: String): Flow<List<KeyTranslateRoom>>
 
 
+    @Query("SELECT COUNT(*) FROM $TABLE_NAME")
+    fun count(): Int
+
+
     fun getAll(): List<KeyTranslate> = getRoomAll().map {
         KeyTranslate(
             key = it.key,

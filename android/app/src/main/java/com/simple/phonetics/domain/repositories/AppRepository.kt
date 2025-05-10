@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
 interface AppRepository {
 
     @Deprecated("remove")
+    suspend fun getCountTranslateOld(): Int
+
+    @Deprecated("remove")
     suspend fun getAllTranslateOld(): List<KeyTranslate>
 
     @Deprecated("remove")
