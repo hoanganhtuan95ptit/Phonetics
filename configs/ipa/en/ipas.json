@@ -14,6 +14,10 @@
       "unique"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_i_.mp3",
+    "voices": {
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_i_.mp3",
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_i_.mp3"
+    },
     "type": "vowels_long"
   },
   {
