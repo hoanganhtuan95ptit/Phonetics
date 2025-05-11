@@ -271,6 +271,16 @@ class IpaDetailViewModel(
             voice = voice.replace("heads/main/", "heads/$BRANCH/")
         }
 
+
+        val job = launch {
+
+            kotlinx.coroutines.delay(1 * 60 * 1000)
+
+            readingState.postDifferentValue(ResultState.Failed(RuntimeException("")))
+            trySend(Unit)
+        }
+
+
         val mediaPlayer = MediaPlayer().apply {
 
             setAudioStreamType(AudioManager.STREAM_MUSIC)
@@ -278,6 +288,8 @@ class IpaDetailViewModel(
             prepareAsync()
 
             setOnPreparedListener {
+
+                job.cancel()
 
                 readingState.postDifferentValue(ResultState.Running(""))
                 start() // Bắt đầu phát nhạc khi đã chuẩn bị xong
@@ -296,14 +308,6 @@ class IpaDetailViewModel(
                 readingState.postDifferentValue(ResultState.Success(""))
                 trySend(Unit)
             }
-        }
-
-        launch {
-
-            kotlinx.coroutines.delay(1 * 20 * 1000) // timeout
-
-            readingState.postDifferentValue(ResultState.Failed(RuntimeException("")))
-            trySend(Unit)
         }
 
         awaitClose {
