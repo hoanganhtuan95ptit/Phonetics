@@ -76,6 +76,7 @@
   "message_support_translate": "Terjemahan didukung",
   "message_sync_completed": "Sinkronisasi selesai",
   "message_translate_download": "Mengunduh terjemahan...",
+  "message_error_io_exception": "🔌 Tidak ada koneksi internet",
 
   "rate_action_negative": "Nanti",
   "rate_action_positive": "Beri nilai",

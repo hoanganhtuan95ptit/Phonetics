@@ -76,6 +76,7 @@
   "message_support_translate": "翻訳がサポートされています",
   "message_sync_completed": "同期が完了しました",
   "message_translate_download": "翻訳をダウンロードしています...",
+  "message_error_io_exception": "🔌 インターネット接続がありません",
 
   "rate_action_negative": "後で",
   "rate_action_positive": "評価",

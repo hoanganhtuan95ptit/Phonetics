@@ -76,6 +76,7 @@
   "message_support_translate": "Çeviri destekleniyor",
   "message_sync_completed": "Senkronizasyon tamamlandı",
   "message_translate_download": "Çeviri indiriliyor...",
+  "message_error_io_exception": "🔌 İnternet bağlantısı yok",
 
   "rate_action_negative": "Sonra",
   "rate_action_positive": "Puanla",

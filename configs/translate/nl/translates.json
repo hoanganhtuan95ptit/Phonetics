@@ -76,6 +76,7 @@
   "message_support_translate": "Vertaling ondersteund",
   "message_sync_completed": "Synchronisatie voltooid",
   "message_translate_download": "Vertaling downloaden...",
+  "message_error_io_exception": "🔌 Geen internetverbinding",
 
   "rate_action_negative": "Later",
   "rate_action_positive": "Beoordeel",

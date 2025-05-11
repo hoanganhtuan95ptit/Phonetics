@@ -76,6 +76,7 @@
   "message_support_translate": "Traducción soportada",
   "message_sync_completed": "Sincronización completada",
   "message_translate_download": "Descargando traducción...",
+  "message_error_io_exception": "🔌 Sin conexión a Internet",
 
   "rate_action_negative": "Después",
   "rate_action_positive": "Calificar",

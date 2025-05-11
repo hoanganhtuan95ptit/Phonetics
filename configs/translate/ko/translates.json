@@ -76,6 +76,7 @@
   "message_support_translate": "번역 지원됨",
   "message_sync_completed": "동기화 완료",
   "message_translate_download": "번역 다운로드 중...",
+  "message_error_io_exception": "🔌 인터넷 연결이 없습니다",
 
   "rate_action_negative": "나중에",
   "rate_action_positive": "평가",
