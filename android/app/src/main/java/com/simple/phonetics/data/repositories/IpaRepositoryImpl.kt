@@ -1,14 +1,14 @@
 package com.simple.phonetics.data.repositories
 
 import com.simple.phonetics.data.api.Api
-import com.simple.phonetics.data.dao.ipa.IpaDao
+import com.simple.dao.ipa.IpaDaoNew
 import com.simple.phonetics.domain.repositories.IpaRepository
-import com.simple.phonetics.entities.Ipa
+import com.simple.dao.entities.Ipa
 import kotlinx.coroutines.flow.Flow
 
 class IpaRepositoryImpl(
     private val api: Api,
-    private val ipaDao: IpaDao
+    private val ipaDao: IpaDaoNew
 ) : IpaRepository {
 
     override suspend fun syncIpa(languageCode: String): List<Ipa> {

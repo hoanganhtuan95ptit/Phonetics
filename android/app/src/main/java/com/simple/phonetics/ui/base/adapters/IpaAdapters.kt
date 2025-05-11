@@ -21,7 +21,7 @@ import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemIpaBinding
-import com.simple.phonetics.entities.Ipa
+import com.simple.dao.entities.Ipa
 
 @ItemAdapter
 class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null) : ViewItemAdapter<IpaViewItem, ItemIpaBinding>() {

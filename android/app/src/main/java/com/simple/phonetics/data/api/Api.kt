@@ -1,9 +1,8 @@
 package com.simple.phonetics.data.api
 
 import com.simple.phonetics.BRANCH
-import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.entities.Event
-import com.simple.phonetics.entities.Ipa
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.entities.Language
 import okhttp3.ResponseBody
 

@@ -1,4 +1,4 @@
-package com.simple.phonetics.data.dao.ipa
+package com.simple.dao.ipa
 
 import androidx.annotation.Keep
 import androidx.room.Dao
@@ -12,17 +12,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObject
-import com.simple.phonetics.data.dao.ipa.RoomIpa.Companion.toEntity
-import com.simple.phonetics.data.dao.ipa.RoomIpa.Companion.toRoom
 import com.simple.dao.entities.Ipa
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 
-private const val TABLE_NAME = "ipas"
+private const val TABLE_NAME = "ipa_dao"
 
 @Dao
-interface IpaDao {
+interface IpaDaoNew {
 
     fun getListAsync(languageCode: String): Flow<List<Ipa>> = getRoomListAsync(languageCode = languageCode).map { list ->
 
@@ -33,24 +31,24 @@ interface IpaDao {
     }
 
     @Query("SELECT * FROM $TABLE_NAME WHERE languageCode COLLATE NOCASE IN (:languageCode)")
-    fun getRoomListAsync(languageCode: String): Flow<List<RoomIpa>>
+    fun getRoomListAsync(languageCode: String): Flow<List<RoomIpaNew>>
 
 
     fun insertOrUpdate(languageCode: String, list: List<Ipa>) {
 
         val rooms = list.map {
-            it.toRoom(languageCode = languageCode)
+            it.toRoomNew(languageCode = languageCode)
         }
 
         insertOrUpdate(rooms)
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOrUpdate(rooms: List<RoomIpa>)
+    fun insertOrUpdate(rooms: List<RoomIpaNew>)
 
-    
+
     @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE languageCode = :languageCode")
-    fun getCount( languageCode: String): Int
+    fun getCount(languageCode: String): Int
 
     @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE languageCode = :languageCode")
     fun getCountAsync(languageCode: String): Flow<Int>
@@ -59,43 +57,30 @@ interface IpaDao {
 @Keep
 @Entity(
     tableName = TABLE_NAME,
-    primaryKeys = ["ipa"]
+    primaryKeys = ["ipa", "languageCode"]
 )
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-open class RoomIpa(
+open class RoomIpaNew(
     val ipa: String,
-
-    val examples: String = "",
     val languageCode: String = "",
 
-    val type: String = "",
-    val voice: String = "",
-) {
+    val extra: String = ""
+)
 
-    companion object {
 
-        fun Ipa.toRoom(languageCode: String) = RoomIpa(
-            ipa = ipa,
-            examples = examples.toJson(),
-            languageCode = languageCode,
+private fun Ipa.toRoomNew(languageCode: String) = RoomIpaNew(
+    ipa = ipa,
+    languageCode = languageCode,
 
-            type = type,
-            voice = voice
-        )
+    extra = this.toJson()
+)
 
-        fun RoomIpa.toEntity() = Ipa(
-            ipa = ipa,
-            examples = examples.toObject<List<String>>(),
+private fun RoomIpaNew.toEntity() = extra.toObject<Ipa>()
 
-            type = type,
-            voice = voice
-        )
-    }
-}
 
-@Database(entities = [RoomIpa::class], version = 1, exportSchema = false)
-abstract class IpaRoomDatabase : RoomDatabase() {
+@Database(entities = [RoomIpaNew::class], version = 1, exportSchema = false)
+abstract class IpaRoomDatabaseNew : RoomDatabase() {
 
-    abstract fun providerIpaDao(): IpaDao
+    abstract fun providerIpaDao(): IpaDaoNew
 }
