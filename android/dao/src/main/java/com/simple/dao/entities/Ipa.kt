@@ -1,4 +1,4 @@
-package com.simple.phonetics.entities
+package com.simple.dao.entities
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

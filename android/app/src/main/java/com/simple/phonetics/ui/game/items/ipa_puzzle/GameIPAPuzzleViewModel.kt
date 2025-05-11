@@ -26,7 +26,7 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
-import com.simple.phonetics.entities.Ipa
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.state.ResultState

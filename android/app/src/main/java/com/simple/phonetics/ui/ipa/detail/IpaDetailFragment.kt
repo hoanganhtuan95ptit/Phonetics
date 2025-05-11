@@ -23,7 +23,7 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
-import com.simple.phonetics.entities.Ipa
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter

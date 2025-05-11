@@ -12,7 +12,7 @@ import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.Payload
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.ItemIpaDetailBinding
-import com.simple.phonetics.entities.Ipa
+import com.simple.dao.entities.Ipa
 
 @ItemAdapter
 class IpaDetailAdapters(onItemClick: (View, IpaDetailViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<IpaDetailViewItem, ItemIpaDetailBinding>(onItemClick) {

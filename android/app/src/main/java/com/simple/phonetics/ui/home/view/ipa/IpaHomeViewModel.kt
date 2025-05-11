@@ -23,7 +23,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
-import com.simple.phonetics.entities.Ipa
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor

@@ -15,8 +15,7 @@
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_i_.mp3",
     "voices": {
-      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_i_.mp3",
-      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_i_.mp3"
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_i_.mp3"
     },
     "type": "vowels_long"
   },
@@ -35,6 +34,9 @@
       "build"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ɪ.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_ɪ.mp3"
+    },
     "type": "vowels_short"
   },
   {
@@ -52,6 +54,9 @@
       "again"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_e.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_e.mp3"
+    },
     "type": "vowels_short"
   },
   {
@@ -69,6 +74,9 @@
       "laugh"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_æ.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_æ.mp3"
+    },
     "type": "vowels_short"
   },
   {

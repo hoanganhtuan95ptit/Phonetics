@@ -3,7 +3,7 @@ package com.simple.phonetics.domain.usecase
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.tasks.SyncTask
-import com.simple.phonetics.entities.Ipa
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.entities.Language
 import com.simple.state.ResultState
 import com.simple.state.isSuccess

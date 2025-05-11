@@ -5,6 +5,7 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -31,7 +32,7 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
-import com.simple.phonetics.entities.Ipa
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailViewItem
@@ -252,6 +253,8 @@ class IpaDetailViewModel(
         readingState.postValue(ResultState.Start)
 
         var voice: String? = null
+
+        Log.d("tuanha", "startReadingWait: ${data.voices}")
 
         if (data.voices.isNotEmpty()) {
 
