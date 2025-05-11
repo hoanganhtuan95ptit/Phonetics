@@ -23,7 +23,7 @@ val repositoryModule = module {
 
     single<AppRepository> { AppRepositoryImpl(get(), get(), get(), get(), getAll()) }
 
-    single<IpaRepository> { IpaRepositoryImpl(get(), get()) }
+    single<IpaRepository> { IpaRepositoryImpl(get(), get(), get()) }
 
     single<SpeakRepository> { SpeakRepositoryImpl() }
 

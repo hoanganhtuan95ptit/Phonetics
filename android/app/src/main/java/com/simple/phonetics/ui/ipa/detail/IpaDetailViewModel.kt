@@ -254,7 +254,6 @@ class IpaDetailViewModel(
 
         var voice: String? = null
 
-        Log.d("tuanha", "startReadingWait: ${data.voices}")
 
         if (data.voices.isNotEmpty()) {
 
