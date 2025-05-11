@@ -1,6 +1,5 @@
 package com.simple.phonetics.domain.repositories
 
-import android.widget.RemoteViews.RemoteView
 import com.simple.dao.entities.Ipa
 import kotlinx.coroutines.flow.Flow
 
