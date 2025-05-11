@@ -10,7 +10,6 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
-import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.game.GameViewModel
@@ -31,10 +30,6 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
 
     protected val gameViewModel: GameViewModel by lazy {
         getViewModel(requireParentFragment(), GameViewModel::class)
-    }
-
-    protected val configViewModel: ConfigViewModel by lazy {
-        getViewModel(requireActivity(), ConfigViewModel::class)
     }
 
     protected val gameConfigViewModel: GameConfigViewModel by lazy {

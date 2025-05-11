@@ -383,16 +383,12 @@ class HomeViewModel(
         typeViewItemList.postValue(map)
     }
 
-    fun startReading(text: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startReading(text: String) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         readingState.postValue(ResultState.Start)
 
         val param = StartReadingUseCase.Param(
-            text = text,
-
-            voiceId = voiceId,
-
-            voiceSpeed = voiceSpeed
+            text = text
         )
 
         var job: Job? = null

@@ -45,6 +45,8 @@ class TranslateSyncTask(
 
         if (appRepository.getCountTranslate() > 0) return@runCatching
 
+        if (appRepository.getCountTranslateOld() <= 0) return@runCatching
+
         logAnalytics("copy_translate")
 
         appRepository.getAllTranslateOld().groupBy { it.langCode }.mapValues { entry ->

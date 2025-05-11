@@ -168,9 +168,7 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
     private fun listen(data: GameIPAMatchPair) {
 
         viewModel.startListen(
-            data = data,
-            voiceId = configViewModel.voiceSelect.value ?: 0,
-            voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
+            data = data
         )
     }
 }

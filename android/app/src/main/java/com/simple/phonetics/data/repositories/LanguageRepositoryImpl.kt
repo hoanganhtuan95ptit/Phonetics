@@ -37,9 +37,9 @@ class LanguageRepositoryImpl(
         )
     }
 
-    override suspend fun getPhoneticCode(): String {
+    override suspend fun getPhoneticCodeSelected(): String {
 
-        var phoneticCode = appCache.getData("phonetic_code", "")
+        var phoneticCode = appCache.getData(PHONETIC_CODE, "")
 
         val languageInput = getLanguageInputAsync().first()
 
@@ -60,22 +60,19 @@ class LanguageRepositoryImpl(
             phoneticCode = Language.EN_UK
         }
 
-        updatePhoneticCode(phoneticCode)
+        updatePhoneticCodeSelected(phoneticCode)
 
         return phoneticCode
     }
 
-    override suspend fun getPhoneticCodeAsync(): Flow<String> {
+    override suspend fun getPhoneticCodeSelectedAsync(): Flow<String> = appCache.getDataAsync(PHONETIC_CODE).map {
 
-        return appCache.getDataAsync("phonetic_code").map {
+        getPhoneticCodeSelected()
+    }.distinctUntilChanged()
 
-            getPhoneticCode()
-        }.distinctUntilChanged()
-    }
+    override suspend fun updatePhoneticCodeSelected(code: String) {
 
-    override suspend fun updatePhoneticCode(code: String) {
-
-        appCache.setData("phonetic_code", code)
+        appCache.setData(PHONETIC_CODE, code)
     }
 
 
@@ -127,5 +124,10 @@ class LanguageRepositoryImpl(
     override suspend fun getLanguageSupportedOrDefaultAsync(): Flow<List<Language>> {
 
         return languageList.asFlow()
+    }
+
+    companion object {
+
+        private const val PHONETIC_CODE = "phonetic_code"
     }
 }

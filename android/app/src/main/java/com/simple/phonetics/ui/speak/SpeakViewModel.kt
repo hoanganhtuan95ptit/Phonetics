@@ -244,14 +244,10 @@ class SpeakViewModel(
         text.postDifferentValue(it)
     }
 
-    fun startListen(text: String? = null, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startListen(text: String? = null) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val param = StartReadingUseCase.Param(
-            text = text ?: this@SpeakViewModel.text.value.orEmpty(),
-
-            voiceId = voiceId,
-
-            voiceSpeed = voiceSpeed
+            text = text ?: this@SpeakViewModel.text.value.orEmpty()
         )
 
         readingState.postValue(ResultState.Start)

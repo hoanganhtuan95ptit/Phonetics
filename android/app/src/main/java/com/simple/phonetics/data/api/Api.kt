@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.api
 
+import com.simple.phonetics.BRANCH
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.entities.Event
 import com.simple.phonetics.entities.Ipa
@@ -10,9 +11,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Streaming
 import retrofit2.http.Url
-
-private val BRANCH: String
-    get() = if (BuildConfig.DEBUG) "develop" else "main"
 
 interface Api {
 

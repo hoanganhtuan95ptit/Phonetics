@@ -1,4 +1,4 @@
-package com.simple.phonetics.domain.usecase
+package com.simple.phonetics.domain.usecase.translate
 
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.state.ResultState
