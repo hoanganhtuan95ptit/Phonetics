@@ -20,6 +20,9 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.with
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
@@ -31,9 +34,6 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
-import com.simple.deeplink.DeeplinkHandler
-import com.simple.deeplink.annotation.Deeplink
-import com.simple.deeplink.sendDeeplink
 
 class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, LanguageViewModel>() {
 
@@ -156,12 +156,25 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
                 activity?.supportFragmentManager?.popBackStack()
             }
 
-            val theme = theme.value ?: return@launchCollect
 
-            if (it is ResultState.Failed) sendDeeplink(
-                "",
+            val theme = theme.value ?: return@launchCollect
+            val translate = translate.value ?: return@launchCollect
+
+            if (it !is ResultState.Failed) {
+
+                return@launchCollect
+            }
+
+            val message = if (it.cause is java.io.IOException && translate.containsKey("message_error_io_exception")) {
+                translate["message_error_io_exception"]
+            } else {
+                it.cause.message
+            }
+
+            sendDeeplink(
+                DeeplinkManager.TOAST,
                 extras = mapOf(
-                    com.simple.coreapp.Param.MESSAGE to it.cause.message.orEmpty().with(ForegroundColorSpan(theme.colorOnErrorVariant)),
+                    com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColorSpan(theme.colorOnErrorVariant)),
                     com.simple.coreapp.Param.BACKGROUND to Background(
                         backgroundColor = theme.colorErrorVariant,
                         cornerRadius = DP.DP_16,

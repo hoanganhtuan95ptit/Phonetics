@@ -78,6 +78,7 @@ val DEFAULT_TRANSLATE = mapOf(
     "message_support_translate" to "Translation supported",
     "message_sync_completed" to "Synchronization completed",
     "message_translate_download" to "Downloading translation...",
+    "message_error_io_exception" to "\uD83D\uDD0C No Internet Connection",
 
     "rate_action_negative" to "Late",
     "rate_action_positive" to "Rate",
