@@ -76,7 +76,7 @@
   "message_support_translate": "Hỗ trợ dịch thuật",
   "message_sync_completed": "Đồng bộ hoàn tất",
   "message_translate_download": "Đang tải bản dịch...",
-  "message_error_io_exception": "🔌Không có kết nối Internet",
+  "message_error_io_exception": "🔌 Không có kết nối Internet",
 
   "rate_action_negative": "Để sau",
   "rate_action_positive": "Đánh giá",
