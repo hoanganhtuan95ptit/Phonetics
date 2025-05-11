@@ -133,6 +133,11 @@ object SpeakState {
     const val RECORD_START = "RECORD_START"
 }
 
+object ErrorCode {
+
+    const val NOT_INTERNET = "NOT_INTERNET"
+}
+
 object TransitionName {
 
     const val SELECT_LANGUAGE = "select_language"
