@@ -15,7 +15,8 @@
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_i_.mp3",
     "voices": {
-      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_i_.mp3"
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_i_.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/i__uk.mp3"
     },
     "type": "vowels_long"
   },
