@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.map
 private const val TABLE_NAME = "ipas"
 
 @Dao
+@Deprecated("")
 interface IpaDao {
 
     fun getListAsync(languageCode: String): Flow<List<Ipa>> = getRoomListAsync(languageCode = languageCode).map { list ->
@@ -94,6 +95,7 @@ open class RoomIpa(
     }
 }
 
+@Deprecated("")
 @Database(entities = [RoomIpa::class], version = 1, exportSchema = false)
 abstract class IpaRoomDatabase : RoomDatabase() {
 
