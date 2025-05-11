@@ -35,6 +35,10 @@
       "build"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ɪ.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_ɪ.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/ɪ_uk.mp3"
+    },
     "type": "vowels_short"
   },
   {
@@ -69,6 +73,10 @@
       "laugh"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_æ.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_æ.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/æ_uk.mp3"
+    },
     "type": "vowels_short"
   },
   {
@@ -86,6 +94,10 @@
       "spa"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ɑ_.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_ɑ_.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/ɑ__uk.mp3"
+    },
     "type": "vowels_long"
   },
   {
@@ -103,6 +115,10 @@
       "four"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ɔ_.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_ɔ_.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/ɔ__uk.mp3"
+    },
     "type": "vowels_long"
   },
   {
@@ -120,6 +136,10 @@
       "wolf"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ʊ.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_ʊ.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/ʊ_uk.mp3"
+    },
     "type": "vowels_short"
   },
   {
@@ -137,6 +157,10 @@
       "move"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_u_.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_u_.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/u__uk.mp3"
+    },
     "type": "vowels_long"
   },
   {
@@ -307,6 +331,10 @@
       "fair"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_eə.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_eə.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/eə_uk.mp3"
+    },
     "type": "diphthongs"
   },
   {
@@ -341,6 +369,10 @@
       "hop"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_p.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_p.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/p_uk.mp3"
+    },
     "type": "consonants_unvoiced"
   },
   {
@@ -358,6 +390,10 @@
       "rob"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_b.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_b.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/b_uk.mp3"
+    },
     "type": "consonants_voiced"
   },
   {
@@ -375,6 +411,10 @@
       "cut"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_t.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_t.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/t_uk.mp3"
+    },
     "type": "consonants_unvoiced"
   },
   {
@@ -392,6 +432,10 @@
       "food"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_d.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_d.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/d_uk.mp3"
+    },
     "type": "consonants_voiced"
   },
   {
@@ -460,6 +504,10 @@
       "glue"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_g.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_g.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/g_uk.mp3"
+    },
     "type": "consonants_voiced"
   },
   {
@@ -494,6 +542,10 @@
       "vase"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_v.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_v.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/v_uk.mp3"
+    },
     "type": "consonants_voiced"
   },
   {
@@ -528,6 +580,10 @@
       "breathe"
     ],
     "voice": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/main/voices/us_ð.mp3",
+    "voices": {
+      "US": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/us_ð.mp3",
+      "UK": "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/$branch/voices/ð_uk.mp3"
+    },
     "type": "consonants_voiced"
   },
   {

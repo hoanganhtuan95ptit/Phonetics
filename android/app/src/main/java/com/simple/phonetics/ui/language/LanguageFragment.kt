@@ -135,54 +135,64 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
         changeLanguageState.asFlow().launchCollect(viewLifecycleOwner) {
 
-            val binding = binding ?: return@launchCollect
-
             awaitResumed()
 
+            if (it is ResultState.Success) {
 
-            if (binding.root.transitionName == null) {
-                binding.root.transitionName = "select_language"
+                handleSuccess()
+            } else if (it is ResultState.Failed) {
+
+                handleFailed(it)
             }
-
-            if (it is ResultState.Success) if (arguments?.containsKey(Param.ROOT_TRANSITION_NAME) != true) sendDeeplink(
-                deepLink = DeeplinkManager.PHONETICS,
-                extras = mapOf(
-                    Param.ROOT_TRANSITION_NAME to "1"
-                ),
-                sharedElement = mapOf(
-                    binding.root.transitionName to binding.root
-                )
-            ) else {
-
-                activity?.supportFragmentManager?.popBackStack()
-            }
-
-
-            val theme = theme.value ?: return@launchCollect
-            val translate = translate.value ?: return@launchCollect
-
-            if (it !is ResultState.Failed) {
-
-                return@launchCollect
-            }
-
-            val message = if (it.cause is java.io.IOException && translate.containsKey("message_error_io_exception")) {
-                translate["message_error_io_exception"]
-            } else {
-                it.cause.message
-            }
-
-            sendDeeplink(
-                deepLink = DeeplinkManager.TOAST + "?code:${ErrorCode.NOT_INTERNET}",
-                extras = mapOf(
-                    com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColorSpan(theme.colorOnErrorVariant)),
-                    com.simple.coreapp.Param.BACKGROUND to Background(
-                        backgroundColor = theme.colorErrorVariant,
-                        cornerRadius = DP.DP_16,
-                    )
-                )
-            )
         }
+    }
+
+    private fun handleSuccess() {
+
+        val binding = binding ?: return
+
+        if (binding.root.transitionName == null) {
+
+            binding.root.transitionName = "select_language"
+        }
+
+        if (arguments?.containsKey(Param.ROOT_TRANSITION_NAME) != true) sendDeeplink(
+            deepLink = DeeplinkManager.PHONETICS,
+            extras = mapOf(
+                Param.ROOT_TRANSITION_NAME to "1"
+            ),
+            sharedElement = mapOf(
+                binding.root.transitionName to binding.root
+            )
+        ) else {
+
+            activity?.supportFragmentManager?.popBackStack()
+        }
+    }
+
+    private fun handleFailed(it: ResultState.Failed) {
+
+        val theme = viewModel.theme.value ?: return
+        val translate = viewModel.translate.value ?: return
+
+        val message = if (it.cause is java.io.IOException && translate.containsKey("message_error_io_exception")) {
+            translate["message_error_io_exception"]
+        } else {
+            it.cause.message
+        }
+
+        val extras = mapOf(
+            com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColorSpan(theme.colorOnErrorVariant)),
+            com.simple.coreapp.Param.BACKGROUND to Background(
+                backgroundColor = theme.colorErrorVariant,
+                cornerRadius = DP.DP_16,
+            )
+        )
+
+        sendDeeplink(
+            deepLink = DeeplinkManager.TOAST + "?code:${ErrorCode.NOT_INTERNET}",
+            extras = extras
+        )
     }
 }
 
