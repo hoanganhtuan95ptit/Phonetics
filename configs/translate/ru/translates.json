@@ -76,6 +76,7 @@
   "message_support_translate": "Поддержка перевода",
   "message_sync_completed": "Синхронизация завершена",
   "message_translate_download": "Загрузка перевода...",
+  "message_error_io_exception": "🔌 Нет подключения к Интернету",
 
   "rate_action_negative": "Позже",
   "rate_action_positive": "Оценить",

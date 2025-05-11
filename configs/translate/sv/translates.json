@@ -76,6 +76,7 @@
   "message_support_translate": "Översättning stöds",
   "message_sync_completed": "Synkronisering slutförd",
   "message_translate_download": "Laddar ner översättning...",
+  "message_error_io_exception": "🔌 Ingen internetanslutning",
 
   "rate_action_negative": "Senare",
   "rate_action_positive": "Betygsätt",

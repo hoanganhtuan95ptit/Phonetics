@@ -76,6 +76,7 @@
   "message_support_translate": "支持翻译",
   "message_sync_completed": "同步完成",
   "message_translate_download": "下载翻译...",
+  "message_error_io_exception": "🔌 无网络连接",
 
   "rate_action_negative": "稍后",
   "rate_action_positive": "评分",
