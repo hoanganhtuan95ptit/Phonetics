@@ -2,13 +2,13 @@ package com.simple.phonetics.domain.usecase.phonetics
 
 import com.simple.phonetics.domain.repositories.LanguageRepository
 
-class UpdatePhoneticCodeUseCase(
+class UpdatePhoneticCodeSelectedUseCase(
     private val languageRepository: LanguageRepository,
 ) {
 
     suspend fun execute(param: Param) {
 
-        languageRepository.updatePhoneticCode(param.phoneticCode)
+        languageRepository.updatePhoneticCodeSelected(param.phoneticCode)
     }
 
     data class Param(

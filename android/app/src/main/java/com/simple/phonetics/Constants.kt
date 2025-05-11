@@ -1,5 +1,8 @@
 package com.simple.phonetics
 
+val BRANCH: String
+    get() = if (BuildConfig.DEBUG) "develop" else "main"
+
 object Param {
 
     const val IPA = "IPA"

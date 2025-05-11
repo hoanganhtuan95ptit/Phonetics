@@ -333,10 +333,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun startSpeak(text: String) {
 
         viewModel.startReading(
-            text = text,
-
-            voiceId = configViewModel.voiceSelect.value ?: 0,
-            voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
+            text = text
         )
     }
 }

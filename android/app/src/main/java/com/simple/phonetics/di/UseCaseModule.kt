@@ -4,7 +4,7 @@ import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.GetConfigAsyncUseCase
 import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.SyncDataUseCase
-import com.simple.phonetics.domain.usecase.TranslateUseCase
+import com.simple.phonetics.domain.usecase.translate.TranslateUseCase
 import com.simple.phonetics.domain.usecase.event.GetCurrentEventAsyncUseCase
 import com.simple.phonetics.domain.usecase.event.UpdateEventShowUseCase
 import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
@@ -14,21 +14,27 @@ import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
-import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsSuggestUseCase
 import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
-import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeUseCase
+import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeSelectedUseCase
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
-import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.GetVoiceAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.selected.GetVoiceIdSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.selected.UpdateVoiceIdSelectedUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.speed.GetVoiceSpeedAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.speed.UpdateVoiceSpeedUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
+import com.simple.phonetics.domain.usecase.translate.selected.GetTranslateSelectedAsyncUseCase
+import com.simple.phonetics.domain.usecase.translate.selected.UpdateTranslateSelectedUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import org.koin.dsl.module
 
@@ -89,11 +95,20 @@ val useCaseModule = module {
 
 
     single {
-        GetPhoneticCodeAsyncUseCase(get())
+        GetPhoneticCodeSelectedAsyncUseCase(get())
     }
 
     single {
-        UpdatePhoneticCodeUseCase(get())
+        UpdatePhoneticCodeSelectedUseCase(get())
+    }
+
+
+    single {
+        GetVoiceIdSelectedAsyncUseCase(get())
+    }
+
+    single {
+        UpdateVoiceIdSelectedUseCase(get())
     }
 
 
@@ -159,5 +174,23 @@ val useCaseModule = module {
 
     single {
         GetCurrentEventAsyncUseCase(get())
+    }
+
+
+    single {
+        UpdateTranslateSelectedUseCase(get())
+    }
+
+    single {
+        GetTranslateSelectedAsyncUseCase(get())
+    }
+
+
+    single {
+        UpdateVoiceSpeedUseCase(get())
+    }
+
+    single {
+        GetVoiceSpeedAsyncUseCase(get())
     }
 }

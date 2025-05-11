@@ -6,7 +6,7 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
-import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeSelectedAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.utils.AppSize
 import com.simple.phonetics.utils.AppTheme
@@ -59,7 +59,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
     val phoneticCodeSelected: LiveData<String> = mediatorLiveData {
 
-        GlobalContext.get().get<GetPhoneticCodeAsyncUseCase>().execute().collect {
+        GlobalContext.get().get<GetPhoneticCodeSelectedAsyncUseCase>().execute().collect {
 
             postDifferentValue(it)
         }

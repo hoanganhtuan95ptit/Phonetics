@@ -5,11 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface LanguageRepository {
 
-    suspend fun getPhoneticCode(): String
+    suspend fun getPhoneticCodeSelected(): String
 
-    suspend fun getPhoneticCodeAsync(): Flow<String>
+    suspend fun getPhoneticCodeSelectedAsync(): Flow<String>
 
-    suspend fun updatePhoneticCode(code: String)
+    suspend fun updatePhoneticCodeSelected(code: String)
 
 
     fun getLanguageInput(): Language?
