@@ -1,11 +1,20 @@
 package com.simple.phonetics.domain.repositories
 
+import android.widget.RemoteViews.RemoteView
 import com.simple.dao.entities.Ipa
 import kotlinx.coroutines.flow.Flow
 
 interface IpaRepository {
 
     suspend fun syncIpa(languageCode: String): List<Ipa>
+
+
+    @Deprecated("")
+    suspend fun getAllOldAsync(languageCode: String): Flow<List<Ipa>>
+
+    @Deprecated("")
+    suspend fun countAlOld(languageCode: String): Int
+
 
     suspend fun getIpaAsync(languageCode: String): Flow<List<Ipa>>
 

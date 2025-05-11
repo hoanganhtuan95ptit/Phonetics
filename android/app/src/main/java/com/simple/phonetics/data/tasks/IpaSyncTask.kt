@@ -1,9 +1,12 @@
 package com.simple.phonetics.data.tasks
 
+import com.simple.analytics.logAnalytics
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.IpaRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.tasks.SyncTask
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 
 class IpaSyncTask(
     private val ipaRepository: IpaRepository,
@@ -20,11 +23,29 @@ class IpaSyncTask(
 
         val languageCode = languageRepository.getLanguageInputAsync().first().id
 
+        copy(languageCode = languageCode)
+
         if (languageCodeOld == languageCode) return
 
         val ipaList = ipaRepository.syncIpa(languageCode = languageCode)
         ipaRepository.insertOrUpdate(languageCode = languageCode, list = ipaList)
 
         languageCodeOld = languageCode
+    }
+
+    private suspend fun copy(languageCode: String) = runCatching {
+
+        if (ipaRepository.getCount(languageCode = languageCode) > 0) return@runCatching
+        if (ipaRepository.countAlOld(languageCode = languageCode) <= 0) return@runCatching
+
+        logAnalytics("copy_ipa")
+
+        ipaRepository.getAllOldAsync(languageCode = languageCode).firstOrNull()?.let {
+
+            ipaRepository.insertOrUpdate(languageCode = languageCode, it)
+        }
+    }.getOrElse {
+
+        logCrashlytics("copy_ipa", it)
     }
 }
