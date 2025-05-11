@@ -5,7 +5,6 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -25,6 +24,7 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.BRANCH
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.R
@@ -32,7 +32,6 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
-import com.simple.dao.entities.Ipa
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailViewItem
@@ -280,13 +279,13 @@ class IpaDetailViewModel(
 
             setOnPreparedListener {
 
-                readingState.postValue(ResultState.Running(""))
+                readingState.postDifferentValue(ResultState.Running(""))
                 start() // Bắt đầu phát nhạc khi đã chuẩn bị xong
             }
 
             setOnErrorListener { mp, what, extra ->
 
-                readingState.postValue(ResultState.Failed(RuntimeException("")))
+                readingState.postDifferentValue(ResultState.Failed(RuntimeException("")))
                 trySend(Unit)
 
                 true // Trả về true nếu đã xử lý lỗi
@@ -294,9 +293,17 @@ class IpaDetailViewModel(
 
             setOnCompletionListener { mp ->
 
-                readingState.postValue(ResultState.Success(""))
+                readingState.postDifferentValue(ResultState.Success(""))
                 trySend(Unit)
             }
+        }
+
+        launch {
+
+            kotlinx.coroutines.delay(1 * 20 * 1000) // timeout
+
+            readingState.postDifferentValue(ResultState.Failed(RuntimeException("")))
+            trySend(Unit)
         }
 
         awaitClose {

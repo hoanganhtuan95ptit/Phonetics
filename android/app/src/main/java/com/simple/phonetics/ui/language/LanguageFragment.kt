@@ -24,6 +24,7 @@ import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
+import com.simple.phonetics.ErrorCode
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderVerticalBinding
@@ -172,7 +173,7 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
             }
 
             sendDeeplink(
-                DeeplinkManager.TOAST,
+                deepLink = DeeplinkManager.TOAST + "?code:${ErrorCode.NOT_INTERNET}",
                 extras = mapOf(
                     com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColorSpan(theme.colorOnErrorVariant)),
                     com.simple.coreapp.Param.BACKGROUND to Background(
