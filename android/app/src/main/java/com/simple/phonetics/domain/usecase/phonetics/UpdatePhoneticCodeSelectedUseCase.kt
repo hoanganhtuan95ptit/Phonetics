@@ -8,7 +8,7 @@ class UpdatePhoneticCodeSelectedUseCase(
 
     suspend fun execute(param: Param) {
 
-        languageRepository.updatePhoneticCode(param.phoneticCode)
+        languageRepository.updatePhoneticCodeSelected(param.phoneticCode)
     }
 
     data class Param(

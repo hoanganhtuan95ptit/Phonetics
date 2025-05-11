@@ -62,7 +62,7 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
                 viewModel.updateTranslation(item.data.asObject<Pair<String, Boolean>>().first)
             } else if (item.id.startsWith(Id.IPA)) {
 
-                viewModel.updatePhoneticSelect(item.data.asObject<Pair<String, Boolean>>().first)
+                viewModel.updatePhoneticCodeSelect(item.data.asObject<Pair<String, Boolean>>().first)
             } else if (item.id.startsWith(Id.VOICE)) {
 
                 viewModel.updateVoiceSelect(item.data.asObject<Pair<Int, Boolean>>().first)

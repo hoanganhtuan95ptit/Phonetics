@@ -15,18 +15,14 @@ class StartReadingUseCase(
         return readingRepository.startReading(
             text = param.text,
 
-            phoneticCode = languageRepository.getPhoneticCode(),
+            phoneticCode = languageRepository.getPhoneticCodeSelected(),
 
-            voiceId = param.voiceId,
-            voiceSpeed = param.voiceSpeed
+            voiceId = readingRepository.getVoiceIdSelected(),
+            voiceSpeed = readingRepository.getVoiceSpeed()
         )
     }
 
     data class Param(
-        val text: String,
-
-        val voiceId: Int,
-
-        val voiceSpeed: Float
+        val text: String
     )
 }

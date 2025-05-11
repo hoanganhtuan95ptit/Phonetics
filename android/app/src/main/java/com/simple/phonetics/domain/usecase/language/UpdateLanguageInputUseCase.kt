@@ -73,7 +73,7 @@ class UpdateLanguageInputUseCase(
         languageRepository.updateLanguageInput(param.language)
 
         // hủy phonectic code hiện tại
-        languageRepository.updatePhoneticCode("")
+        languageRepository.updatePhoneticCodeSelected("")
 
 
         listState["COMPLETED"] = State.Completed

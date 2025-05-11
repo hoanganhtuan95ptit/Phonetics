@@ -23,7 +23,7 @@ class AppCacheImpl(
 
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, _key ->
 
-            if (key.equals(_key, true)) trySend(sharedPreferences.getString(key, "").orEmpty())
+            if (key.equals(_key, true)) trySend("")
         }
 
 

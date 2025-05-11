@@ -20,7 +20,6 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
@@ -34,7 +33,6 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionConfirmSpeakBinding
-import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
@@ -48,10 +46,6 @@ import com.simple.state.isRunning
 import kotlinx.coroutines.launch
 
 class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, DialogListBinding, SpeakViewModel>() {
-
-    private val configViewModel: ConfigViewModel by lazy {
-        getViewModel(requireActivity(), ConfigViewModel::class)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -252,9 +246,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
             viewModel.stopListen()
         } else if (voiceState == null || voiceState.isCompleted()) viewModel.startListen(
-            text = text,
-            voiceId = configViewModel.voiceSelect.value ?: 0,
-            voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
+            text = text
         )
     }
 
