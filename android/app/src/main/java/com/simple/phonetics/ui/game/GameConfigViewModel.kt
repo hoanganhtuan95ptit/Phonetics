@@ -155,7 +155,7 @@ class GameConfigViewModel(
         }.let {
 
             list.addAll(it)
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight.get()))
+            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight.get() + DP.DP_24))
         }
 
         postDifferentValue(list)
