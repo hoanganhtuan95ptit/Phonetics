@@ -19,11 +19,12 @@ import com.simple.translate.data.tasks.TranslateTask
 import com.simple.translate.entities.TranslateRequest
 import com.simple.translate.entities.TranslateResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 class AppRepositoryImpl(
     private val api: Api,
-    private val cache: AppCache,
+    private val appCache: AppCache,
     private val translateDao: TranslateDao,
     private val keyTranslateDao: KeyTranslateDao,
     private val listTranslateTask: List<TranslateTask>
@@ -113,11 +114,11 @@ class AppRepositoryImpl(
 
 
     override fun getEventIdShow(): String? {
-        return cache.getData("EVENT_ID_SHOW", "")
+        return appCache.getData("EVENT_ID_SHOW", "")
     }
 
     override fun updateEventIdShow(id: String) {
-        cache.setData("EVENT_ID_SHOW", id)
+        appCache.setData("EVENT_ID_SHOW", id)
     }
 
     override suspend fun syncEvents(languageCode: String): List<Event> {
@@ -130,5 +131,45 @@ class AppRepositoryImpl(
 
     override suspend fun updateEvents(list: List<Event>) {
         events.postValue(list)
+    }
+
+
+    override suspend fun getTranslateSelected(): String {
+
+        return appCache.getData(TRANSLATE_STATUS, "0")
+    }
+
+    override suspend fun getTranslateSelectedAsync(): Flow<String> {
+
+        return appCache.getDataAsync(TRANSLATE_STATUS).map {
+
+            getTranslateSelected()
+        }.distinctUntilChanged()
+    }
+
+    override suspend fun updateTranslateSelected(translateSelected: String) {
+
+        appCache.setData(TRANSLATE_STATUS, translateSelected)
+    }
+
+
+    override fun <T> updateData(key: String, value: T) {
+
+        appCache.setData(key, value)
+    }
+
+    override fun <T> getData(key: String, default: T): T {
+
+        return appCache.getData(key, default)
+    }
+
+    override fun <T> getDataAsync(key: String, default: T): Flow<T> {
+
+        return appCache.getDataAsync(key, default)
+    }
+
+    companion object {
+
+        private const val TRANSLATE_STATUS = "translate_status"
     }
 }

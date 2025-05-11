@@ -227,14 +227,10 @@ class GameIPAWordleViewModel(
         checkState.postValue(state)
     }
 
-    fun startListen(voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startListen() = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val param = StartReadingUseCase.Param(
-            text = quiz.value?.question?.text ?: return@launch,
-
-            voiceId = voiceId,
-
-            voiceSpeed = voiceSpeed
+            text = quiz.value?.question?.text ?: return@launch
         )
 
         readingState.postValue(ResultState.Start)

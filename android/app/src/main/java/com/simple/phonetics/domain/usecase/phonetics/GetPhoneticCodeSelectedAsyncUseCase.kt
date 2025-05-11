@@ -9,6 +9,6 @@ class GetPhoneticCodeSelectedAsyncUseCase(
 
     suspend fun execute(): Flow<String> {
 
-        return languageRepository.getPhoneticCodeAsync()
+        return languageRepository.getPhoneticCodeSelectedAsync()
     }
 }

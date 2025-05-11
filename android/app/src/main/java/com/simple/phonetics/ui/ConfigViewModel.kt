@@ -8,7 +8,6 @@ import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.asObjectOrNull
@@ -30,10 +29,15 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.Id.TRANSLATE
-import com.simple.phonetics.domain.usecase.TranslateUseCase
 import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeSelectedUseCase
-import com.simple.phonetics.domain.usecase.reading.GetVoiceAsyncUseCase
-import com.simple.phonetics.domain.usecase.reading.UpdateVoiceSelectedUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.GetVoiceAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.selected.GetVoiceIdSelectedAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.selected.UpdateVoiceIdSelectedUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.speed.GetVoiceSpeedAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.speed.UpdateVoiceSpeedUseCase
+import com.simple.phonetics.domain.usecase.translate.TranslateUseCase
+import com.simple.phonetics.domain.usecase.translate.selected.GetTranslateSelectedAsyncUseCase
+import com.simple.phonetics.domain.usecase.translate.selected.UpdateTranslateSelectedUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.state.ResultState
@@ -47,7 +51,16 @@ import kotlinx.coroutines.launch
 
 class ConfigViewModel(
     private val translateUseCase: TranslateUseCase,
+    private val updateTranslateSelectedUseCase: UpdateTranslateSelectedUseCase,
+    private val getTranslateSelectedAsyncUseCase: GetTranslateSelectedAsyncUseCase,
+
     private val getVoiceAsyncUseCase: GetVoiceAsyncUseCase,
+    private val updateVoiceIdSelectedUseCase: UpdateVoiceIdSelectedUseCase,
+    private val getVoiceIdSelectedAsyncUseCase: GetVoiceIdSelectedAsyncUseCase,
+
+    private val updateVoiceSpeedUseCase: UpdateVoiceSpeedUseCase,
+    private val getVoiceSpeedAsyncUseCase: GetVoiceSpeedAsyncUseCase,
+
     private val updatePhoneticCodeSelectedUseCase: UpdatePhoneticCodeSelectedUseCase
 ) : BaseViewModel() {
 
@@ -112,9 +125,12 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val translateSelect: LiveData<String> = MediatorLiveData<String>().apply {
+    val translateSelect: LiveData<String> = mediatorLiveData {
 
-        value = "0"
+        getTranslateSelectedAsyncUseCase.execute().collect {
+
+            postDifferentValue(it)
+        }
     }
 
     val translateEnable: LiveData<Boolean> = combineSources(translateState, translateSelect) {
@@ -187,6 +203,7 @@ class ConfigViewModel(
     }
 
 
+    @VisibleForTesting
     val voiceState: LiveData<ResultState<List<Int>>> = mediatorLiveData {
 
         postValue(ResultState.Start)
@@ -213,9 +230,13 @@ class ConfigViewModel(
         }
     }
 
-    val voiceSpeed: LiveData<Float> = MediatorLiveData<Float>().apply {
+    @VisibleForTesting
+    val voiceSpeed: LiveData<Float> = mediatorLiveData {
 
-        value = 1f
+        getVoiceSpeedAsyncUseCase.execute().collect {
+
+            postDifferentValue(it)
+        }
     }
 
     @VisibleForTesting
@@ -250,11 +271,16 @@ class ConfigViewModel(
         postDifferentValue(list)
     }
 
-    val voiceSelect: LiveData<Int> = MediatorLiveData<Int>().apply {
+    @VisibleForTesting
+    val voiceSelect: LiveData<Int> = mediatorLiveData {
 
-        value = 0
+        getVoiceIdSelectedAsyncUseCase.execute().collect {
+
+            postDifferentValue(it)
+        }
     }
 
+    @VisibleForTesting
     val voiceViewItemList: LiveData<List<ViewItem>> = combineSources(theme, listVoice, voiceSelect, translate) {
 
         val theme = theme.get()
@@ -408,26 +434,34 @@ class ConfigViewModel(
     }
 
 
-    fun updateVoiceSpeed(current: Float) {
+    fun updateVoiceSpeed(current: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        this.voiceSpeed.postDifferentValue(current)
+        this@ConfigViewModel.voiceSpeed.postDifferentValue(current)
+
+        updateVoiceSpeedUseCase.execute(UpdateVoiceSpeedUseCase.Param(voiceSpeed = current))
     }
 
-    fun updateVoiceSelect(id: Int) {
+    fun updateVoiceSelect(voiceId: Int) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        this.voiceSelect.postDifferentValue(id)
+        this@ConfigViewModel.voiceSelect.postDifferentValue(voiceId)
+
+        updateVoiceIdSelectedUseCase.execute(UpdateVoiceIdSelectedUseCase.Param(voiceId = voiceId))
     }
 
-    fun updateTranslation(id: String) {
+    fun updateTranslation(id: String) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        this.translateSelect.postDifferentValue(if (translateSelect.value.isNullOrBlank()) id else "")
+        val translate = if (translateSelect.value.isNullOrBlank()) id else ""
+
+        this@ConfigViewModel.translateSelect.postDifferentValue(translate)
+
+        updateTranslateSelectedUseCase.execute(UpdateTranslateSelectedUseCase.Param(translateSelected = translate))
     }
 
-    fun updatePhoneticSelect(data: String) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun updatePhoneticCodeSelect(phoneticCode: String) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        this@ConfigViewModel.phoneticCodeSelected.postDifferentValue(data)
+        this@ConfigViewModel.phoneticCodeSelected.postDifferentValue(phoneticCode)
 
-        updatePhoneticCodeSelectedUseCase.execute(UpdatePhoneticCodeSelectedUseCase.Param(data))
+        updatePhoneticCodeSelectedUseCase.execute(UpdatePhoneticCodeSelectedUseCase.Param(phoneticCode = phoneticCode))
     }
 
     private fun createTitleTextView(

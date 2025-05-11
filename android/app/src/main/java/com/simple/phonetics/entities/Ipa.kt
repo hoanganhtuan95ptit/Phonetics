@@ -9,9 +9,11 @@ data class Ipa(
     val examples: List<String> = arrayListOf(),
 
     val voice: String = "",
+    val voices: Map<String, String> = emptyMap(),
 
     val type: String = Type.VOWELS_LONG.value,
 ) : Parcelable {
+
 
     enum class Type(val value: String) {
 

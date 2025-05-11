@@ -9,7 +9,6 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
-import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
@@ -21,10 +20,6 @@ import kotlinx.coroutines.launch
 import java.util.ServiceLoader
 
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>() {
-
-    private val configViewModel: ConfigViewModel by lazy {
-        getViewModel(this, ConfigViewModel::class)
-    }
 
     private val activityViewModel: TransitionGlobalViewModel by viewModels()
 

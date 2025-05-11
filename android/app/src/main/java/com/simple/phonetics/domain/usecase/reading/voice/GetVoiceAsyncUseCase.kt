@@ -1,4 +1,4 @@
-package com.simple.phonetics.domain.usecase.reading
+package com.simple.phonetics.domain.usecase.reading.voice
 
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.ReadingRepository
@@ -13,7 +13,7 @@ class GetVoiceAsyncUseCase(
 
     suspend fun execute(): Flow<ResultState<List<Int>>> {
 
-        return languageRepository.getPhoneticCodeAsync().map {
+        return languageRepository.getPhoneticCodeSelectedAsync().map {
 
             readingRepository.getSupportedVoices(it)
         }

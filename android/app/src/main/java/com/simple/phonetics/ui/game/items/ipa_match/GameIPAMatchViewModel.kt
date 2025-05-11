@@ -294,16 +294,12 @@ class GameIPAMatchViewModel(
         warning.postDifferentValue(it)
     }
 
-    fun startListen(data: GameIPAMatchPair, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startListen(data: GameIPAMatchPair) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val map = readingState.value ?: return@launch
 
         val param = StartReadingUseCase.Param(
-            text = data.option?.phonetic?.text ?: return@launch,
-
-            voiceId = voiceId,
-
-            voiceSpeed = voiceSpeed
+            text = data.option?.phonetic?.text ?: return@launch
         )
 
 

@@ -5,14 +5,56 @@ import com.simple.event.listenerEvent
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
+import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.domain.repositories.ReadingRepository
 import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
-class ReadingRepositoryImpl : ReadingRepository {
+class ReadingRepositoryImpl(
+    private val appCache: AppCache
+) : ReadingRepository {
+
+
+    override suspend fun getVoiceIdSelected(): Int {
+
+        return appCache.getData(VOICE_ID, 0)
+    }
+
+    override suspend fun getVoiceIdSelectedAsync(): Flow<Int> {
+
+        return appCache.getDataAsync(VOICE_ID).map {
+
+            getVoiceIdSelected()
+        }.distinctUntilChanged()
+    }
+
+    override suspend fun updateVoiceIdSelected(voiceId: Int) {
+
+        appCache.setData(VOICE_ID, voiceId)
+    }
+
+
+    override suspend fun getVoiceSpeed(): Float {
+        return appCache.getData(VOICE_SPEED, 1f)
+    }
+
+    override suspend fun getVoiceSpeedAsync(): Flow<Float> {
+
+        return appCache.getDataAsync(VOICE_SPEED).map {
+
+            getVoiceSpeed()
+        }.distinctUntilChanged()
+    }
+
+    override suspend fun updateVoiceSpeed(voiceSpeed: Float) {
+        appCache.setData(VOICE_SPEED, voiceSpeed)
+    }
+
 
     override suspend fun getSupportedVoices(phoneticCode: String): ResultState<List<Int>> = channelFlow {
 
@@ -99,5 +141,11 @@ class ReadingRepositoryImpl : ReadingRepository {
         sendEvent(EventName.STOP_READING_TEXT_REQUEST, Unit)
 
         return ResultState.Success("")
+    }
+
+    companion object {
+
+        private const val VOICE_ID = "voice_id"
+        private const val VOICE_SPEED = "voice_speed"
     }
 }

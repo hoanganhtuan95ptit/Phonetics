@@ -24,8 +24,11 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.phonetics.BRANCH
+import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Ipa
@@ -54,7 +57,8 @@ import kotlinx.coroutines.launch
 class IpaDetailViewModel(
     private val startReadingUseCase: StartReadingUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
-    private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase
+    private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
+    private val checkSupportReadingAsyncUseCase: CheckSupportReadingAsyncUseCase
 ) : BaseViewModel() {
 
     private var job: Job? = null
@@ -73,17 +77,22 @@ class IpaDetailViewModel(
     val readingState: LiveData<ResultState<String>> = MediatorLiveData()
 
 
-    @VisibleForTesting
     val isSupportSpeak: LiveData<Boolean> = mediatorLiveData {
 
         checkSupportSpeakAsyncUseCase.execute().collect {
 
-            postValue(it)
+            postDifferentValue(it)
         }
     }
 
 
-    val isSupportListen: LiveData<Boolean> = MediatorLiveData(true)
+    val isSupportListen: LiveData<Boolean> = mediatorLiveData {
+
+        checkSupportReadingAsyncUseCase.execute().collect {
+
+            postDifferentValue(it)
+        }
+    }
 
 
     @VisibleForTesting
@@ -204,31 +213,22 @@ class IpaDetailViewModel(
         this.ipa.postDifferentValue(ipa)
     }
 
-    fun updateSupportListen(it: Boolean) {
-
-        isSupportListen.postDifferentValue(it)
-    }
-
-    fun startListen(data: Ipa) {
+    fun startReading(data: Ipa) {
 
         job?.cancel()
 
         job = viewModelScope.launch(handler + Dispatchers.IO) {
 
-            startListenWait(data)
+            startReadingWait(data)
         }
     }
 
-    fun startListen(text: String, voiceId: Int, voiceSpeed: Float) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startReading(text: String) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         readingState.postValue(ResultState.Start)
 
         val param = StartReadingUseCase.Param(
-            text = text,
-
-            voiceId = voiceId,
-
-            voiceSpeed = voiceSpeed
+            text = text
         )
 
         var job: Job? = null
@@ -247,17 +247,37 @@ class IpaDetailViewModel(
         }
     }
 
-    suspend fun startListenWait(data: Ipa) = channelFlow {
+    private suspend fun startReadingWait(data: Ipa) = channelFlow {
 
         readingState.postValue(ResultState.Start)
+
+        var voice: String? = null
+
+        if (data.voices.isNotEmpty()) {
+
+            voice = data.voices[phoneticCodeSelected.value.orEmpty()]
+        }
+
+        if (voice == null) {
+
+            voice = data.voice
+        }
+
+        voice = voice.replace("\$branch", BRANCH)
+
+        if (BuildConfig.DEBUG) {
+
+            voice = voice.replace("heads/main/", "heads/$BRANCH/")
+        }
 
         val mediaPlayer = MediaPlayer().apply {
 
             setAudioStreamType(AudioManager.STREAM_MUSIC)
-            setDataSource(data.voice)
+            setDataSource(voice)
             prepareAsync()
 
             setOnPreparedListener {
+
                 readingState.postValue(ResultState.Running(""))
                 start() // Bắt đầu phát nhạc khi đã chuẩn bị xong
             }

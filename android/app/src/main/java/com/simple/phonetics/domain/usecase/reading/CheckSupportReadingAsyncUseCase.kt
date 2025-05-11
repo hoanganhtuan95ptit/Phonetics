@@ -13,7 +13,7 @@ class CheckSupportReadingAsyncUseCase(
 
     suspend fun execute(): Flow<Boolean> {
 
-        return languageRepository.getPhoneticCodeAsync().map {
+        return languageRepository.getPhoneticCodeSelectedAsync().map {
 
             val state = readingRepository.getSupportedVoices(it)
 

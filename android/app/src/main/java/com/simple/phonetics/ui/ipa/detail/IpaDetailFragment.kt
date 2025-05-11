@@ -13,9 +13,11 @@ import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getParcelableOrNull
-import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.crashlytics.logCrashlytics
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
@@ -23,7 +25,6 @@ import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.entities.Ipa
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
@@ -31,16 +32,8 @@ import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailAdapters
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.simple.state.toSuccess
-import com.simple.deeplink.DeeplinkHandler
-import com.simple.deeplink.annotation.Deeplink
-import com.simple.deeplink.sendDeeplink
 
 class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaDetailViewModel>() {
-
-    private val configViewModel: ConfigViewModel by lazy {
-        getViewModel(requireActivity(), ConfigViewModel::class)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,7 +55,6 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
         setupRecyclerView()
 
         observeData()
-        observePhoneticsConfigData()
     }
 
     private fun setupRecyclerView() {
@@ -82,17 +74,14 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
             if (viewModel.isSupportSpeak.value == true) {
 
                 sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
-            } else if (viewModel.isSupportListen.value == true) viewModel.startListen(
-                text = item.data.text,
-
-                voiceId = configViewModel.voiceSelect.value ?: 0,
-                voiceSpeed = configViewModel.voiceSpeed.value ?: 1f
+            } else if (viewModel.isSupportListen.value == true) viewModel.startReading(
+                text = item.data.text
             )
         }
 
         val ipaDetailAdapters = IpaDetailAdapters { view, item ->
 
-            viewModel.startListen(item.data)
+            viewModel.startReading(item.data)
         }
 
         MultiAdapter(clickTextAdapter, phoneticsAdapter, ipaDetailAdapters).apply {
@@ -144,14 +133,6 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
             this.updateIpa(it)
 
             logAnalytics("ipa_detail_show_" + it.ipa.lowercase())
-        }
-    }
-
-    private fun observePhoneticsConfigData() = with(configViewModel) {
-
-        voiceState.observe(viewLifecycleOwner) {
-
-            viewModel.updateSupportListen(it.toSuccess()?.data.orEmpty().isNotEmpty())
         }
     }
 }
