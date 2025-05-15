@@ -6,9 +6,9 @@ import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
-import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticCodeSelectedAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.output.GetLanguageOutputAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.code.GetPhoneticCodeSelectedAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.utils.AppSize
 import com.simple.phonetics.utils.AppTheme

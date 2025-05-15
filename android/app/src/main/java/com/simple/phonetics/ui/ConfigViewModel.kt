@@ -27,7 +27,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.Id.TRANSLATE
-import com.simple.phonetics.domain.usecase.phonetics.UpdatePhoneticCodeSelectedUseCase
+import com.simple.phonetics.domain.usecase.phonetics.code.UpdatePhoneticCodeSelectedUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.GetVoiceAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.selected.GetVoiceIdSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.selected.UpdateVoiceIdSelectedUseCase

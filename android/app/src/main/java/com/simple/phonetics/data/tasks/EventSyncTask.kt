@@ -30,8 +30,15 @@ class EventSyncTask(
 
         if (languageCodeOld == languageCode) return
 
-        val events: List<Event> = appRepository.syncEvents(languageCode = languageCode)
-        appRepository.updateEvents(events)
+        appRepository.runCatching {
+
+            val events: List<Event> = syncEvents(languageCode = languageCode)
+            appRepository.updateEvents(events)
+        }.getOrElse {
+
+            appRepository.updateEvents(emptyList())
+            throw it
+        }
 
         languageCodeOld = languageCode
     }

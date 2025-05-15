@@ -1,4 +1,4 @@
-package com.simple.phonetics.domain.usecase.phonetics
+package com.simple.phonetics.domain.usecase.phonetics.code
 
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import kotlinx.coroutines.flow.Flow

@@ -18,7 +18,7 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.Id
-import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsSuggestUseCase
+import com.simple.phonetics.domain.usecase.phonetics.suggest.GetPhoneticsSuggestUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 
 class SuggestHomeViewModel(
