@@ -1,4 +1,4 @@
-package com.simple.phonetics.domain.usecase.phonetics
+package com.simple.phonetics.domain.usecase.phonetics.suggest
 
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.entities.Phonetic

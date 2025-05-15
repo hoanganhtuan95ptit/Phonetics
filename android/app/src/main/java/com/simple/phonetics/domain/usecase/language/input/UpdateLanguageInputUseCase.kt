@@ -1,4 +1,4 @@
-package com.simple.phonetics.domain.usecase.language
+package com.simple.phonetics.domain.usecase.language.input
 
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository

@@ -12,9 +12,9 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.SyncDataUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageOutputAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputUseCase
+import com.simple.phonetics.domain.usecase.language.output.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.utils.appTranslate
 import com.simple.phonetics.utils.exts.awaitResume

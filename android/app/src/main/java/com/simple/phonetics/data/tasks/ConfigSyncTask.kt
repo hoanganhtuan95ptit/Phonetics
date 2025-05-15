@@ -17,8 +17,15 @@ class ConfigSyncTask(
 
         if (sync) return
 
-        val events: Map<String, String> = appRepository.syncConfigs()
-        appRepository.updateConfigs(events)
+        kotlin.runCatching {
+
+            val configs: Map<String, String> = appRepository.syncConfigs()
+            appRepository.updateConfigs(configs)
+        }.getOrElse {
+
+            appRepository.updateConfigs(emptyMap())
+            throw it
+        }
 
         sync = true
     }

@@ -18,9 +18,9 @@ import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
-import com.simple.phonetics.domain.usecase.language.GetLanguageInputAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.UpdateLanguageInputUseCase
+import com.simple.phonetics.domain.usecase.language.input.UpdateLanguageInputUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.language.adapters.LanguageLoadingViewItem
