@@ -67,7 +67,6 @@ class GameIPAMatchViewModel(
         postDifferentValue(ResultState.Success(list))
     }
 
-    @VisibleForTesting
     val quiz: LiveData<GameIPAMatchQuiz> = combineSources(isSupportReading, phoneticState) {
 
         val isSupportReading = isSupportReading.value ?: return@combineSources
@@ -294,7 +293,7 @@ class GameIPAMatchViewModel(
         warning.postDifferentValue(it)
     }
 
-    fun startListen(data: GameIPAMatchPair) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startReading(data: GameIPAMatchPair) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val map = readingState.value ?: return@launch
 

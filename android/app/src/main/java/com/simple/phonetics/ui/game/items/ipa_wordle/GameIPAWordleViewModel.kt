@@ -8,9 +8,9 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
@@ -65,7 +65,6 @@ class GameIPAWordleViewModel(
         postDifferentValue(ResultState.Success(list))
     }
 
-    @VisibleForTesting
     val quiz: LiveData<GameIPAWordleQuiz> = combineSources(isSupportReading, phoneticState) {
 
         val isSupportReading = isSupportReading.get()
@@ -107,7 +106,7 @@ class GameIPAWordleViewModel(
 
     val readingState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, readingState, phoneticState) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, readingState, phoneticState, phoneticCodeSelected) {
 
         val quiz = quiz.value
         val choose = choose.value
@@ -227,10 +226,10 @@ class GameIPAWordleViewModel(
         checkState.postValue(state)
     }
 
-    fun startListen() = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startReading(s: String? = null) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val param = StartReadingUseCase.Param(
-            text = quiz.value?.question?.text ?: return@launch
+            text = s ?: quiz.value?.question?.text ?: return@launch
         )
 
         readingState.postValue(ResultState.Start)
