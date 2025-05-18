@@ -71,6 +71,8 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
             val data = item.data.asObjectOrNull<GameIPAMatchPair>() ?: return@ClickTextAdapter
 
             viewModel.updateChoose(data)
+
+            checkAndStartReading(data = data)
         }
 
         val imageStateAdapter = ImageStateAdapter { view, item ->
@@ -79,7 +81,7 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
 
             viewModel.updateChoose(data)
 
-            listen(data = data)
+            reading(data = data)
         }
 
         MultiAdapter(clickTextAdapter, imageStateAdapter).apply {
@@ -165,9 +167,26 @@ class GameIPAMatchFragment : GameItemFragment<GameIPAMatchViewModel>() {
         }
     }
 
-    private fun listen(data: GameIPAMatchPair) {
+    private fun reading(data: GameIPAMatchPair) {
 
-        viewModel.startListen(
+        viewModel.startReading(
+            data = data
+        )
+    }
+
+    private fun checkAndStartReading(data: GameIPAMatchPair) {
+
+        if (data.option?.type != GameIPAMatchQuiz.Option.Type.IPA) {
+            return
+        }
+
+        val pair = viewModel.quiz.value?.match?.first()
+
+        if (pair?.first?.type == GameIPAMatchQuiz.Option.Type.VOICE || pair?.second?.type == GameIPAMatchQuiz.Option.Type.VOICE) {
+            return
+        }
+
+        viewModel.startReading(
             data = data
         )
     }

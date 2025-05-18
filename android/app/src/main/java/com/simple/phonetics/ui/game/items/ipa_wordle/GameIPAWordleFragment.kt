@@ -73,6 +73,12 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
             if (item.id.startsWith(Id.CHOOSE)) {
                 viewModel.updateChoose(item.data.asObjectOrNull<Phonetic>() ?: return@ClickTextAdapter)
             }
+
+            val quiz = viewModel.quiz.value ?: return@ClickTextAdapter
+
+            if (quiz.answerType != GameIPAWordleQuiz.Type.VOICE && quiz.questionType != GameIPAWordleQuiz.Type.VOICE) {
+                viewModel.startReading(item.data.asObjectOrNull<Phonetic>()?.text)
+            }
         }
 
         val imageStateAdapter = ImageStateAdapter { view, item ->
@@ -167,7 +173,7 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
         if (voiceState.isRunning()) {
 
             viewModel.stopListen()
-        } else if (voiceState == null || voiceState.isCompleted()) viewModel.startListen()
+        } else if (voiceState == null || voiceState.isCompleted()) viewModel.startReading()
     }
 }
 
