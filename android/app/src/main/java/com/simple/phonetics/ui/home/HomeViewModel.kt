@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.view.Gravity
+import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -11,7 +13,11 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.Margin
+import com.simple.coreapp.ui.view.Size
+import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
@@ -28,6 +34,7 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
+import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
@@ -49,6 +56,7 @@ import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
@@ -374,11 +382,12 @@ class HomeViewModel(
         this.isSupportTranslate.postDifferentValue(b)
     }
 
-    fun updateTypeViewItemList(type: Int, it: List<ViewItem>) {
+    fun updateTypeViewItemList(type: Int, it: List<ViewItem>) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        val map = typeViewItemList.value ?: return
+        val map = typeViewItemList.value ?: return@launch
 
         map[type] = it
+        map[Int.MAX_VALUE] = map[Int.MAX_VALUE] ?: version()
 
         typeViewItemList.postValue(map)
     }
@@ -434,6 +443,28 @@ class HomeViewModel(
         state.doFailed {
 
             detectState.postValue(ResultState.Failed(it))
+        }
+    }
+
+    private suspend fun version() = arrayListOf<ViewItem>().apply {
+
+        val theme = theme.asFlow().first()
+        val translate = translate.asFlow().first()
+
+        if (translate.containsKey("version_name")) NoneTextViewItem(
+            id = "VERSION",
+            text = translate["version_name"]
+                .orEmpty()
+                .replace("\$version", BuildConfig.VERSION_NAME)
+                .with(BuildConfig.VERSION_NAME, ForegroundColorSpan(theme.colorPrimary)),
+            textSize = Size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT),
+            textStyle = TextStyle(textGravity = Gravity.CENTER),
+
+            size = Size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT),
+            margin = Margin(top = DP.DP_16)
+        ).let {
+
+            add(it)
         }
     }
 

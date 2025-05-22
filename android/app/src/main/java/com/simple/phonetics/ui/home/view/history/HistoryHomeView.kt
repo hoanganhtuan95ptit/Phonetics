@@ -22,7 +22,7 @@ class HistoryHomeView : HomeView {
 
         historyHomeViewModel.historyViewItemList.observe(fragment.viewLifecycleOwner) {
 
-            viewModel.updateTypeViewItemList(type = Int.MAX_VALUE, it)
+            viewModel.updateTypeViewItemList(type = Int.MAX_VALUE - 1, it)
         }
 
 

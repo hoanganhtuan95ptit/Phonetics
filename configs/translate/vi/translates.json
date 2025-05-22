@@ -158,6 +158,7 @@
   "ipa_detail_screen_vowels_short": "Nguyên âm ngắn",
 
   "ipa_list_screen_title": "Danh sách IPA",
+  "recording_screen_title": "Vui lòng nói $language_name",
 
-  "recording_screen_title": "Vui lòng nói $language_name"
+  "version_name": "Phiên bản $version"
 }
