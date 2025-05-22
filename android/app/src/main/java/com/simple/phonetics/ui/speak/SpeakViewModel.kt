@@ -173,11 +173,11 @@ class SpeakViewModel(
         postDifferentValue(info)
     }
 
-    val listenInfo: LiveData<ListenInfo> = listenerSources(size, theme, translate, isSupportListen, readingState) {
+    val readingInfo: LiveData<ReadingInfo> = listenerSources(size, theme, translate, isSupportListen, readingState) {
 
         val listenState = readingState.value
 
-        val info = ListenInfo(
+        val info = ReadingInfo(
 
             image = if (listenState == null || listenState.isStart() || listenState.isCompleted()) {
                 R.drawable.ic_volume_24dp
@@ -308,7 +308,7 @@ class SpeakViewModel(
         val isLoading: Boolean
     )
 
-    data class ListenInfo(
+    data class ReadingInfo(
         val image: Int,
         val isShow: Boolean,
         val isLoading: Boolean

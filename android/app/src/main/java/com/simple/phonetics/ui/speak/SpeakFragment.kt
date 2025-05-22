@@ -22,6 +22,7 @@ import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.coreapp.utils.ext.setInvisible
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
@@ -96,17 +97,17 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
         val binding = bindingAction ?: return
 
-        binding.frameListen.root.setPadding(
+        binding.frameReading.root.setPadding(
             Padding(padding = DP.DP_12)
         )
 
-        binding.frameListen.ivImage.setMargin(
+        binding.frameReading.ivImage.setMargin(
             Margin(margin = DP.DP_8)
         )
 
-        binding.frameListen.root.setDebouncedClickListener {
+        binding.frameReading.root.setDebouncedClickListener {
 
-            listen()
+            reading()
         }
     }
 
@@ -118,7 +119,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
             if (viewModel.isSupportListen.value == true) {
 
-                listen(text = item.data.text)
+                reading(text = item.data.text)
             }
         }
 
@@ -166,17 +167,19 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
                 binding.ivImage.setImage(it.image)
             }
 
-            binding.root.setVisible(it.isShow)
+            binding.root.isClickable = it.isShow
+            binding.root.setInvisible(!it.isShow)
             binding.progressBar.setVisible(it.isLoading)
         }
 
-        listenInfo.observe(viewLifecycleOwner) {
+        readingInfo.observe(viewLifecycleOwner) {
 
-            val binding = bindingAction?.frameListen ?: return@observe
+            val binding = bindingAction?.frameReading ?: return@observe
 
             binding.ivImage.setImage(it.image)
 
-            binding.root.setVisible(it.isShow)
+            binding.root.isClickable = it.isShow
+            binding.root.setInvisible(!it.isShow)
             binding.progressBar.setVisible(it.isLoading)
         }
 
@@ -238,7 +241,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         }
     }
 
-    private fun listen(text: String? = null) {
+    private fun reading(text: String? = null) {
 
         val voiceState = viewModel.readingState.value
 
