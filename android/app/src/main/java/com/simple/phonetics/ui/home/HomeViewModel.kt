@@ -42,6 +42,7 @@ import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
@@ -314,7 +315,19 @@ class HomeViewModel(
         postDifferentValue(emptyList())
     }
 
-    val typeViewItemList: LiveData<HashMap<Int, List<ViewItem>>> = MediatorLiveData(hashMapOf())
+
+    @VisibleForTesting
+    val typeViewItemList: LiveData<HashMap<Int, List<ViewItem>>> = combineSources(theme, translate) {
+
+        val theme = theme.get()
+        val translate = translate.get()
+
+        val map = hashMapOf<Int, List<ViewItem>>()
+
+        map[Int.MAX_VALUE] = versionViewItem(theme = theme, translate = translate)
+
+        postDifferentValue(map)
+    }
 
     val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, typeViewItemList, phoneticsViewItemList) {
 
@@ -325,6 +338,14 @@ class HomeViewModel(
         val list = arrayListOf<ViewItem>()
 
         list.addAll(phoneticsViewItemList)
+
+        /**
+         * nếu không có dữ liệu history thì bỏ qua
+         */
+        if (list.isEmpty() && !typeViewItemList.containsKey(Int.MAX_VALUE - 1)) {
+
+            return@combineSources
+        }
 
         if (list.isEmpty()) typeViewItemList.toList().sortedBy {
 
@@ -384,10 +405,9 @@ class HomeViewModel(
 
     fun updateTypeViewItemList(type: Int, it: List<ViewItem>) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        val map = typeViewItemList.value ?: return@launch
+        val map = typeViewItemList.asFlow().first()
 
         map[type] = it
-        map[Int.MAX_VALUE] = map[Int.MAX_VALUE] ?: version()
 
         typeViewItemList.postValue(map)
     }
@@ -446,17 +466,14 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun version() = arrayListOf<ViewItem>().apply {
-
-        val theme = theme.asFlow().first()
-        val translate = translate.asFlow().first()
+    private fun versionViewItem(theme: AppTheme, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
 
         if (translate.containsKey("version_name")) NoneTextViewItem(
             id = "VERSION",
             text = translate["version_name"]
                 .orEmpty()
                 .replace("\$version", BuildConfig.VERSION_NAME)
-                .with(BuildConfig.VERSION_NAME, ForegroundColorSpan(theme.colorPrimary)),
+                .with(BuildConfig.VERSION_NAME, ForegroundColorSpan(theme.colorPrimary), StyleSpan(Typeface.BOLD)),
             textSize = Size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT),
             textStyle = TextStyle(textGravity = Gravity.CENTER),
 
