@@ -22,9 +22,11 @@ import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
+import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.Constants
@@ -36,8 +38,11 @@ import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.utils.exts.OptionViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import java.util.concurrent.ConcurrentHashMap
 
 class GameConfigViewModel(
     private val countIpaAsyncUseCase: CountIpaAsyncUseCase,
@@ -55,25 +60,31 @@ class GameConfigViewModel(
         }
     }
 
+
     @VisibleForTesting
-    val wordHistoryCount: LiveData<Int> = combineSources(inputLanguage) {
+    val wordCountMap: LiveData<Map<Word.Resource, Int>> = combineSources(inputLanguage) {
 
         val inputLanguage = inputLanguage.get()
 
-        countWordAsyncUseCase.execute(CountWordAsyncUseCase.Param(resource = Word.Resource.History, languageCode = inputLanguage.id)).collect {
+        channelFlow<Map<Word.Resource, Int>> {
 
-            postDifferentValue(it)
-        }
-    }
+            val map = ConcurrentHashMap<Word.Resource, Int>()
 
-    @VisibleForTesting
-    val wordPopularCount: LiveData<Int> = combineSources(inputLanguage) {
+            Word.Resource.entries.forEach { resource ->
 
-        val inputLanguage = inputLanguage.get()
+                countWordAsyncUseCase.execute(CountWordAsyncUseCase.Param(resource = resource, languageCode = inputLanguage.id)).launchCollect(this) {
 
-        countWordAsyncUseCase.execute(CountWordAsyncUseCase.Param(resource = Word.Resource.Popular, languageCode = inputLanguage.id)).collect {
+                    map[resource] = it
+                    trySend(map)
+                }
+            }
 
-            postDifferentValue(it)
+            awaitClose {
+
+            }
+        }.collect { map ->
+
+            postDifferentValue(map.toList().sortedByDescending { it.first.name }.toMap())
         }
     }
 
@@ -81,13 +92,12 @@ class GameConfigViewModel(
     val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
 
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, actionHeight, resourceSelected, wordHistoryCount, wordPopularCount) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, actionHeight, wordCountMap, resourceSelected) {
 
         val theme = theme.value ?: return@listenerSources
         val translate = translate.value ?: return@listenerSources
 
-        val wordPopularCount = wordPopularCount.value ?: return@listenerSources
-        val wordHistoryCount = wordHistoryCount.value ?: return@listenerSources
+        val actionHeight = actionHeight.value ?: return@listenerSources
 
         val resourceSelected = resourceSelected.value
 
@@ -104,34 +114,28 @@ class GameConfigViewModel(
             list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_12))
         }
 
-        Word.Resource.entries.map {
+        wordCountMap.getOrEmpty().mapNotNull {
 
-            val count = when (it) {
-                Word.Resource.Popular -> {
-                    wordPopularCount
-                }
+            val count = it.value
+            val resource = it.key
 
-                Word.Resource.History -> {
-                    wordHistoryCount
-                }
+            val id = Id.RESOURCE + "_" + resource.name
+
+            val name = if (translate.containsKey(id.lowercase())) {
+                translate[id.lowercase()].orEmpty()
+            } else {
+                return@mapNotNull null
             }
-
-            val name = translate[Id.RESOURCE.lowercase() + "_" + it.name.lowercase()].orEmpty()
 
             val caption = if (count <= Constants.WORD_COUNT_MIN) {
 
                 translate["game_config_screen_message_resource_limit"].orEmpty()
-            } else if (it == Word.Resource.Popular) {
-
-                translate["game_config_screen_message_resource_from_popular"].orEmpty()
-            } else if (it == Word.Resource.History) {
-
-                translate["game_config_screen_message_resource_from_history"].orEmpty()
             } else {
-                ""
+
+                translate["game_config_screen_message_resource_from_${resource.name.lowercase()}"].orEmpty()
             }
 
-            val isSelect = it == resourceSelected
+            val isSelect = resource == resourceSelected
 
             val captionColor = if (count <= Constants.WORD_COUNT_MIN) {
                 theme.colorOnErrorVariant
@@ -142,8 +146,8 @@ class GameConfigViewModel(
             }
 
             OptionViewItem(
-                id = Id.RESOURCE + "_" + it.name,
-                data = it,
+                id = id,
+                data = resource,
 
                 text = "$name\n$caption"
                     .with(ForegroundColorSpan(if (isSelect) theme.colorPrimary else theme.colorOnSurface))
@@ -155,7 +159,7 @@ class GameConfigViewModel(
         }.let {
 
             list.addAll(it)
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight.get() + DP.DP_24))
+            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight + DP.DP_24))
         }
 
         postDifferentValue(list)
@@ -209,9 +213,7 @@ class GameConfigViewModel(
 
     fun updateResource(resource: Word.Resource) {
 
-        if (resource == Word.Resource.Popular && wordPopularCount.value.orZero() <= Constants.WORD_COUNT_MIN) {
-            return
-        } else if (resource == Word.Resource.History && wordHistoryCount.value.orZero() <= Constants.WORD_COUNT_MIN) {
+        if (wordCountMap.getOrEmpty()[resource].orZero() <= Constants.WORD_COUNT_MIN) {
             return
         }
 

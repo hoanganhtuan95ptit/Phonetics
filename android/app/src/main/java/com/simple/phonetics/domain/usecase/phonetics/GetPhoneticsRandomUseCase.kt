@@ -21,8 +21,10 @@ class GetPhoneticsRandomUseCase(
         val languageCode = languageRepository.getLanguageInputAsync().first().id
 
         val phoneticList = if (param.text.text.isEmpty()) {
+
             getPhoneticFromResource(param = param, languageCode = languageCode)
         } else {
+
             phoneticRepository.random(param.text, phoneticCode = param.phoneticsCode, limit = param.limit)
         }
 

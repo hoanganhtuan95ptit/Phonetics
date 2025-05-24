@@ -4,6 +4,7 @@ import android.view.View
 import com.google.auto.service.AutoService
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.phonetics.EventName
+import com.simple.phonetics.TYPE_HISTORY
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem
@@ -22,7 +23,7 @@ class HistoryHomeView : HomeView {
 
         historyHomeViewModel.historyViewItemList.observe(fragment.viewLifecycleOwner) {
 
-            viewModel.updateTypeViewItemList(type = Int.MAX_VALUE - 1, it)
+            viewModel.updateTypeViewItemList(type = TYPE_HISTORY, it)
         }
 
 
