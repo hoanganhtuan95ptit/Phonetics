@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "Exempel:",
   "ipa_detail_screen_vowels_long": "Långa vokaler",
   "ipa_detail_screen_vowels_short": "Korta vokaler",
+  "ipa_detail_screen_practice_with_games": "Öva $ipa med spel 🎮🧠",
 
   "ipa_list_screen_title": "Ipa lista",
 
-  "recording_screen_title": "Vänligen tala $language_name"
+  "recording_screen_title": "Vänligen tala $language_name",
+
+  "version_name": "🚀 Version: $version"
 }

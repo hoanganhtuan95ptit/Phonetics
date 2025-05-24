@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "Örnek:",
   "ipa_detail_screen_vowels_long": "Uzun ünlüler",
   "ipa_detail_screen_vowels_short": "Kısa ünlüler",
+  "ipa_detail_screen_practice_with_games": "$ipa oyunlarla pratik yap 🎮🧠",
 
   "ipa_list_screen_title": "Ipa listesi",
 
-  "recording_screen_title": "$language_name dilini söyleyin"
+  "recording_screen_title": "$language_name dilini söyleyin",
+
+  "version_name": "🚀 Sürüm: $version"
 }

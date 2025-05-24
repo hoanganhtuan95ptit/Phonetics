@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "उदाहरण:",
   "ipa_detail_screen_vowels_long": "लंबे स्वर",
   "ipa_detail_screen_vowels_short": "छोटे स्वर",
+  "ipa_detail_screen_practice_with_games": "खेलों के साथ $ipa का अभ्यास करें 🎮🧠",
 
   "ipa_list_screen_title": "ध्वन्यात्मकता सूची",
 
-  "recording_screen_title": "कृपया $language_name बोलें"
+  "recording_screen_title": "कृपया $language_name बोलें",
+
+  "version_name": "🚀 संस्करण: $version"
 }

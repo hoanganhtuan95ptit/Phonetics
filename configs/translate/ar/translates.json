@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "مثال:",
   "ipa_detail_screen_vowels_long": "الحروف المتحركة الطويلة",
   "ipa_detail_screen_vowels_short": "الحروف المتحركة القصيرة",
+  "ipa_detail_screen_practice_with_games": "تدرّب على $ipa باستخدام الألعاب 🎮🧠",
 
   "ipa_list_screen_title": "قائمة Ipa",
 
-  "recording_screen_title": "يرجى التحدث باللغة $language_name"
+  "recording_screen_title": "يرجى التحدث باللغة $language_name",
+
+  "version_name": "🚀 الإصدار: $version"
 }

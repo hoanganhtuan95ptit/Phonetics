@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "ตัวอย่าง:",
   "ipa_detail_screen_vowels_long": "สระยาว",
   "ipa_detail_screen_vowels_short": "สระสั้น",
+  "ipa_detail_screen_practice_with_games": "ฝึก $ipa กับเกม 🎮🧠",
 
   "ipa_list_screen_title": "รายการ Ipa",
 
-  "recording_screen_title": "กรุณาพูด $language_name"
+  "recording_screen_title": "กรุณาพูด $language_name",
+
+  "version_name": "🚀 เวอร์ชัน: $version"
 }

@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "Exemple :",
   "ipa_detail_screen_vowels_long": "Voyelles longues",
   "ipa_detail_screen_vowels_short": "Voyelles courtes",
+  "ipa_detail_screen_practice_with_games": "Entraîne-toi avec $ipa grâce à des jeux 🎮🧠",
 
   "ipa_list_screen_title": "Liste IPA",
 
-  "recording_screen_title": "Veuillez parler $language_name"
+  "recording_screen_title": "Veuillez parler $language_name",
+
+  "version_name": "🚀 Version : $version"
 }

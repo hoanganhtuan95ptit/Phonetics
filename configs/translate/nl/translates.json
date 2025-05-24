@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "Voorbeeld:",
   "ipa_detail_screen_vowels_long": "Klinkers lang",
   "ipa_detail_screen_vowels_short": "Klinkers kort",
+  "ipa_detail_screen_practice_with_games": "Oefen $ipa met spelletjes 🎮🧠",
 
   "ipa_list_screen_title": "Ipa lijst",
 
-  "recording_screen_title": "Spreek $language_name"
+  "recording_screen_title": "Spreek $language_name",
+
+  "version_name": "🚀 Versie: $version"
 }
