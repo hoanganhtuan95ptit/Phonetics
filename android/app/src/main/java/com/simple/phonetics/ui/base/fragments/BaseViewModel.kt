@@ -9,6 +9,8 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.output.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.code.GetPhoneticCodeSelectedAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
+import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.utils.AppSize
 import com.simple.phonetics.utils.AppTheme
@@ -67,6 +69,24 @@ abstract class BaseViewModel : TransitionViewModel() {
             postDifferentValue(it)
         }
     }
+
+
+    open val isSupportSpeak: LiveData<Boolean> = mediatorLiveData {
+
+        GlobalContext.get().get<CheckSupportSpeakAsyncUseCase>().execute().collect {
+
+            postDifferentValue(it)
+        }
+    }
+
+    val isSupportReading: LiveData<Boolean> = mediatorLiveData {
+
+        GlobalContext.get().get<CheckSupportReadingAsyncUseCase>().execute().collect {
+
+            postDifferentValue(it)
+        }
+    }
+
 
     val phoneticCodeSelected: LiveData<String> = mediatorLiveData {
 

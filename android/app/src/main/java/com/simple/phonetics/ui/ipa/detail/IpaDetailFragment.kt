@@ -86,17 +86,17 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
             )
         }
 
-        val phoneticsAdapter = PhoneticsAdapter { view, item ->
+        val phoneticsAdapter = PhoneticsAdapter { _, item ->
 
             if (viewModel.isSupportSpeak.value == true) {
 
                 sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
-            } else if (viewModel.isSupportListen.value == true) viewModel.startReading(
+            } else if (viewModel.isSupportReading.value == true) viewModel.startReading(
                 text = item.data.text
             )
         }
 
-        val ipaDetailAdapters = IpaDetailAdapters { view, item ->
+        val ipaDetailAdapters = IpaDetailAdapters { _, item ->
 
             viewModel.startReading(item.data)
         }

@@ -145,7 +145,7 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
             viewModel.updateActionHeight(binding.root.height)
         }
 
-        doOnHeightStatusAndHeightNavigationChange { heightStatusBar, heightNavigationBar ->
+        doOnHeightStatusAndHeightNavigationChange { _, heightNavigationBar ->
 
             binding.root.updatePadding(top = DP.DP_24, left = DP.DP_24, right = DP.DP_24, bottom = heightNavigationBar + DP.DP_24)
         }

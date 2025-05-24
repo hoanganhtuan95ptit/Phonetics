@@ -16,17 +16,14 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
-import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
-import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.entities.Language
@@ -53,10 +50,7 @@ class SpeakViewModel(
     private val stopReadingUseCase: StopReadingUseCase,
     private val startReadingUseCase: StartReadingUseCase,
 
-    private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
-
-    private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
-    private val checkSupportReadingAsyncUseCase: CheckSupportReadingAsyncUseCase
+    private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
 ) : BaseActionViewModel() {
 
     val text: LiveData<String> = MediatorLiveData()
@@ -64,24 +58,7 @@ class SpeakViewModel(
 
     val speakState: LiveData<ResultState<String>> = MediatorLiveData()
 
-    val isSupportSpeak: LiveData<Boolean> = mediatorLiveData {
-
-        checkSupportSpeakAsyncUseCase.execute().collect {
-
-            postDifferentValue(it)
-        }
-    }
-
-
     val readingState: LiveData<ResultState<String>> = MediatorLiveData()
-
-    val isSupportListen: LiveData<Boolean> = mediatorLiveData {
-
-        checkSupportReadingAsyncUseCase.execute().collect {
-
-            postDifferentValue(it)
-        }
-    }
 
 
     @VisibleForTesting
@@ -103,7 +80,7 @@ class SpeakViewModel(
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, actionHeight, phoneticCodeSelected, phoneticsState, isSupportListen) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, actionHeight, phoneticCodeSelected, phoneticsState, isSupportReading) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -130,7 +107,7 @@ class SpeakViewModel(
                 phoneticsCode = phoneticsCode,
 
                 isSupportSpeak = false,
-                isSupportListen = isSupportListen.value == true,
+                isSupportListen = isSupportReading.value == true,
                 isSupportTranslate = false,
 
                 theme = theme,
@@ -173,7 +150,7 @@ class SpeakViewModel(
         postDifferentValue(info)
     }
 
-    val readingInfo: LiveData<ReadingInfo> = listenerSources(size, theme, translate, isSupportListen, readingState) {
+    val readingInfo: LiveData<ReadingInfo> = listenerSources(size, theme, translate, isSupportReading, readingState) {
 
         val listenState = readingState.value
 
@@ -185,7 +162,7 @@ class SpeakViewModel(
                 R.drawable.ic_pause_24dp
             },
 
-            isShow = isSupportListen.value == true,
+            isShow = isSupportReading.value == true,
             isLoading = listenState.isStart()
         )
 

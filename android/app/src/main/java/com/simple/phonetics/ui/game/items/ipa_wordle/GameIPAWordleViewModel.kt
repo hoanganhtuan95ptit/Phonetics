@@ -180,13 +180,12 @@ class GameIPAWordleViewModel(
     @VisibleForTesting
     val stateInfo: LiveData<StateInfo> = combineSources(size, theme, translate, quiz, choose, phoneticCodeSelected, consecutiveCorrectAnswerEvent) {
 
+        val theme = theme.get()
+        val translate = translate.get()
+
         val quiz = quiz.get()
         val phoneticCodeSelected = phoneticCodeSelected.get()
         val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSources
-
-        val size = size.get()
-        val theme = theme.get()
-        val translate = translate.get()
 
         val isAnswerCorrect = consecutiveCorrectAnswer.first > 0
 
