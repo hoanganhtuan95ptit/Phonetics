@@ -3,6 +3,9 @@ package com.simple.phonetics
 val BRANCH: String
     get() = if (BuildConfig.DEBUG) "develop" else "main"
 
+const val TYPE_HISTORY = Int.MAX_VALUE - 100
+const val TYPE_VERSION = Int.MAX_VALUE
+
 object Param {
 
     const val IPA = "IPA"

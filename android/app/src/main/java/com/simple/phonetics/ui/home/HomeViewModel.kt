@@ -35,6 +35,8 @@ import com.simple.detect.data.usecase.DetectUseCase
 import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.R
+import com.simple.phonetics.TYPE_HISTORY
+import com.simple.phonetics.TYPE_VERSION
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
@@ -301,15 +303,17 @@ class HomeViewModel(
 
         val map = hashMapOf<Int, List<ViewItem>>()
 
-        map[Int.MAX_VALUE] = versionViewItem(theme = theme, translate = translate)
+        map[TYPE_VERSION] = versionViewItem(theme = theme, translate = translate)
 
         postDifferentValue(map)
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, typeViewItemList, phoneticsViewItemList) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, translate, typeViewItemList, phoneticsViewItemList) {
 
+        val size = size.get()
         val translate = translate.get()
-        val typeViewItemList = typeViewItemList.get()
+
+        val typeViewItemList = typeViewItemList.get().toMutableMap()
         val phoneticsViewItemList = phoneticsViewItemList.getOrEmpty()
 
         val list = arrayListOf<ViewItem>()
@@ -317,12 +321,15 @@ class HomeViewModel(
         list.addAll(phoneticsViewItemList)
 
         /**
-         * nếu không có dữ liệu history thì bỏ qua
+         * nếu không có dữ liệu phonetic và không có dữ liệu history thì bỏ qua
          */
-        if (list.isEmpty() && !typeViewItemList.containsKey(Int.MAX_VALUE - 1)) {
+        if (list.isEmpty() && !typeViewItemList.containsKey(TYPE_HISTORY)) {
 
             return@combineSources
         }
+
+
+        val versionViewItemList = typeViewItemList.remove(TYPE_VERSION)
 
         if (list.isEmpty()) typeViewItemList.toList().sortedBy {
 
@@ -332,13 +339,21 @@ class HomeViewModel(
             list.addAll(it.second)
         }
 
-        if (list.isEmpty()) com.simple.coreapp.ui.adapters.EmptyViewItem(
+        if (list.isEmpty() || typeViewItemList[TYPE_HISTORY].isNullOrEmpty()) com.simple.coreapp.ui.adapters.EmptyViewItem(
             id = "EMPTY",
             message = translate["message_result_empty"].orEmpty(),
             imageRes = R.raw.anim_empty
         ).let {
 
             list.add(it)
+        }
+
+        /**
+         * dữ liệu version đặt ở cuối cùng
+         */
+        versionViewItemList?.let {
+
+            list.addAll(it)
         }
 
         list.add(SpaceViewItem(id = "BOTTOM_0", height = DP.DP_350))
@@ -452,7 +467,10 @@ class HomeViewModel(
                 .replace("\$version", BuildConfig.VERSION_NAME)
                 .with(BuildConfig.VERSION_NAME, ForegroundColorSpan(theme.colorPrimary), StyleSpan(Typeface.BOLD)),
             textSize = Size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT),
-            textStyle = TextStyle(textGravity = Gravity.CENTER),
+            textStyle = TextStyle(
+                textSize = 14f,
+                textGravity = Gravity.CENTER
+            ),
 
             size = Size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT),
             margin = Margin(top = DP.DP_16)
