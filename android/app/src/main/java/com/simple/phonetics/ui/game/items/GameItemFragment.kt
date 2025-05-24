@@ -63,6 +63,11 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
 
     private fun observeGameData() = with(gameViewModel) {
 
+        text.observe(viewLifecycleOwner) {
+
+            viewModel.updateText(it)
+        }
+
         consecutiveCorrectAnswerEvent.observe(viewLifecycleOwner) {
 
             viewModel.updateConsecutiveCorrectAnswer(it)

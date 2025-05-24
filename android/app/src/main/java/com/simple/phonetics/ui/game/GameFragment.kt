@@ -8,6 +8,8 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
+import com.simple.coreapp.utils.ext.getParcelableOrNull
+import com.simple.coreapp.utils.ext.getSerializableOrNull
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.phonetics.DeeplinkManager
@@ -20,6 +22,7 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
+import com.simple.phonetics.entities.Text
 import kotlinx.coroutines.launch
 
 class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>() {
@@ -69,6 +72,8 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
 
             binding.root.setBackgroundColor(it.colorBackground)
         }
+
+        viewModel.updateText(arguments?.getParcelableOrNull<Text>(Param.TEXT))
 
         viewLifecycleOwner.lifecycleScope.launch {
 

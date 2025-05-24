@@ -79,6 +79,51 @@ fun OptionViewItem(
     )
 )
 
+fun OptionPrimaryViewItem(
+    id: String,
+
+    data: Any? = null,
+
+    text: CharSequence,
+    textSize: Size? = null,
+
+    size: Size? = null,
+    strokeColor: Int,
+) = ClickTextViewItem(
+    id = id,
+    data = data,
+    text = text,
+    textSize = textSize ?: Size(
+        width = ViewGroup.LayoutParams.MATCH_PARENT,
+        height = ViewGroup.LayoutParams.MATCH_PARENT
+    ),
+    textStyle = TextStyle(
+        textGravity = Gravity.CENTER
+    ),
+    textPadding = Padding(
+        left = DP.DP_16,
+        right = DP.DP_16
+    ),
+    textBackground = DEFAULT_BACKGROUND,
+
+    size = size ?: Size(
+        height = DP.DP_76,
+        width = ViewGroup.LayoutParams.WRAP_CONTENT
+    ),
+    margin = Margin(
+        marginVertical = DP.DP_4,
+        marginHorizontal = DP.DP_4
+    ),
+    background = Background(
+        strokeColor = strokeColor,
+        strokeWidth = DP.DP_2,
+        cornerRadius = DP.DP_16
+    ),
+
+    imageLeft = null,
+    imageRight = null
+)
+
 fun ButtonViewItem(
     id: String,
 

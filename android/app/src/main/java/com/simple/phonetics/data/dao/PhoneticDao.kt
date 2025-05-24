@@ -17,6 +17,21 @@ private const val TABLE_NAME = "phonetics"
 @Dao
 interface PhoneticDao {
 
+    fun getRandomListByIpa(ipa: String, phoneticCode: String, limit: Int) = getRandomRoomListByIpa("%$ipa%", "%\"$phoneticCode\"%", limit).groupBy {
+
+        it.text.lowercase()
+    }.mapValues {
+
+        it.value.first()
+    }.values.map {
+
+        it.toEntity()
+    }
+
+    @Query("SELECT * FROM PHONETICS WHERE UPPER(ipa) LIKE UPPER(:ipa) AND UPPER(ipa) LIKE UPPER(:phoneticCode) ORDER BY RANDOM() LIMIT :limit")
+    fun getRandomRoomListByIpa(ipa: String, phoneticCode: String, limit: Int): List<RoomPhonetic>
+
+
     fun getListByTextList(textList: List<String>): List<Phonetic> = textList.chunked(300).flatMap { list ->
 
         getRoomListByTextList(textList = list).groupBy {
@@ -33,6 +48,7 @@ interface PhoneticDao {
 
     @Query("SELECT * FROM $TABLE_NAME WHERE text COLLATE NOCASE IN (:textList)")
     fun getRoomListByTextList(textList: List<String>): List<RoomPhonetic>
+
 
     fun getListByTextList(textList: List<String>, phoneticCode: String): List<Phonetic> = textList.chunked(300).flatMap { list ->
 

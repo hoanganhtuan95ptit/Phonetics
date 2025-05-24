@@ -6,6 +6,7 @@ import com.simple.phonetics.data.dao.PhoneticDao
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
+import com.simple.phonetics.entities.Text
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import kotlinx.coroutines.channels.awaitClose
@@ -19,6 +20,11 @@ class PhoneticRepositoryImpl(
     private val appCache: AppCache,
     private val phoneticDao: PhoneticDao
 ) : PhoneticRepository {
+
+    override suspend fun getSourcePhonetic(it: Language.IpaSource): String {
+
+        return api.syncPhonetics(it.source).string()
+    }
 
     override suspend fun syncPhonetic(language: Language, limit: Int): Flow<ResultState<Pair<Language.IpaSource, Float>>> = channelFlow {
 
@@ -63,10 +69,20 @@ class PhoneticRepositoryImpl(
         return appCache.getData("LANGUAGE_${language.id.uppercase()}_PHONETIC_UPDATE_DATE", 0L)
     }
 
-    override suspend fun getSourcePhonetic(it: Language.IpaSource): String {
+    override suspend fun insertOrUpdate(phonetics: List<Phonetic>) {
 
-        return api.syncPhonetics(it.source).string()
+        phoneticDao.insertOrUpdateEntities(phonetics)
     }
+
+    override suspend fun random(text: Text, phoneticCode: String, limit: Int): List<Phonetic> {
+
+        if (text.type == Text.Type.IPA) {
+            return phoneticDao.getRandomListByIpa(text.text, phoneticCode, limit)
+        } else {
+            error("not support")
+        }
+    }
+
 
     override suspend fun getPhonetics(phonetics: List<String>): List<Phonetic> {
 
@@ -81,11 +97,6 @@ class PhoneticRepositoryImpl(
     override suspend fun suggestPhonetics(text: String): List<Phonetic> {
 
         return phoneticDao.suggestPhonetics(text)
-    }
-
-    override suspend fun insertOrUpdate(phonetics: List<Phonetic>) {
-
-        phoneticDao.insertOrUpdateEntities(phonetics)
     }
 
 

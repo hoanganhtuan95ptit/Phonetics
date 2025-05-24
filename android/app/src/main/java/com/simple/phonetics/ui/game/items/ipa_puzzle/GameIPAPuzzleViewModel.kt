@@ -8,9 +8,9 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
@@ -24,9 +24,9 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
-import com.simple.dao.entities.Ipa
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.state.ResultState
@@ -50,14 +50,16 @@ class GameIPAPuzzleViewModel(
     }
 
     @VisibleForTesting
-    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(resourceSelected, phoneticCodeSelected) {
+    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(text, resourceSelected, phoneticCodeSelected) {
 
+        val text = text.get()
         val resourceSelected = resourceSelected.get()
         val phoneticCodeSelected = phoneticCodeSelected.get()
 
         postDifferentValue(ResultState.Start)
 
         val param = GetPhoneticsRandomUseCase.Param(
+            text = text,
             resource = resourceSelected,
             phoneticsCode = phoneticCodeSelected,
 
