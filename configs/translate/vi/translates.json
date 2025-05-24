@@ -156,7 +156,7 @@
   "ipa_detail_screen_title_example": "Ví dụ:",
   "ipa_detail_screen_vowels_long": "Nguyên âm dài",
   "ipa_detail_screen_vowels_short": "Nguyên âm ngắn",
-  "ipa_detail_screen_practice_with_games": "Luyện tập với các trò chơi 🎮🧠",
+  "ipa_detail_screen_practice_with_games": "Luyện tập $ipa với các trò chơi 🎮🧠",
 
   "ipa_list_screen_title": "Danh sách IPA",
   "recording_screen_title": "Vui lòng nói $language_name",
