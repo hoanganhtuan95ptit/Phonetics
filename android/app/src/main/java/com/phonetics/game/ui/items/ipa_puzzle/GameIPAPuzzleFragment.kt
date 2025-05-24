@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.items.ipa_wordle
+package com.phonetics.game.ui.items.ipa_puzzle
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
@@ -24,22 +24,18 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
-import com.simple.phonetics.entities.Phonetic
-import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
-import com.simple.phonetics.ui.game.GameFragment
-import com.simple.phonetics.ui.game.items.GameItemFragment
+import com.phonetics.game.ui.GameFragment
+import com.phonetics.game.ui.items.GameItemFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
-import com.simple.state.isCompleted
-import com.simple.state.isRunning
 import com.simple.state.isSuccess
 import java.util.UUID
 
-class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
+class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,25 +67,11 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
         val clickTextAdapter = ClickTextAdapter { view, item ->
 
             if (item.id.startsWith(Id.CHOOSE)) {
-                viewModel.updateChoose(item.data.asObjectOrNull<Phonetic>() ?: return@ClickTextAdapter)
-            }
-
-            val quiz = viewModel.quiz.value ?: return@ClickTextAdapter
-
-            if (quiz.answerType != GameIPAWordleQuiz.Type.VOICE && quiz.questionType != GameIPAWordleQuiz.Type.VOICE) {
-                viewModel.startReading(item.data.asObjectOrNull<Phonetic>()?.text)
+                viewModel.updateChoose(item.data.asObjectOrNull<String>() ?: return@ClickTextAdapter)
             }
         }
 
-        val imageStateAdapter = ImageStateAdapter { view, item ->
-
-            if (item.id == Id.LISTEN) {
-
-                listen()
-            }
-        }
-
-        MultiAdapter(clickTextAdapter, imageStateAdapter).apply {
+        MultiAdapter(clickTextAdapter).apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
@@ -97,7 +79,7 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
             val layoutManager = createFlexboxLayoutManager(context = context) {
 
                 logCrashlytics(
-                    event = "GAME_IPA_WORDLE",
+                    event = "GAME_IPA_PUZZLE",
                     throwable = it,
                     "VIEW_ITEM_SIZE" to "${viewModel.viewItemList.value?.size}"
                 )
@@ -110,7 +92,7 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
 
     private fun observeData() = with(viewModel) {
 
-        val fragment = this@GameIPAWordleFragment
+        val fragment = this@GameIPAPuzzleFragment
 
         checkState.observe(viewLifecycleOwner) {
 
@@ -165,30 +147,20 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
         }
     }
-
-    private fun listen() {
-
-        val voiceState = viewModel.readingState.value
-
-        if (voiceState.isRunning()) {
-
-            viewModel.stopListen()
-        } else if (voiceState == null || voiceState.isCompleted()) viewModel.startReading()
-    }
 }
 
 @Deeplink
-class GameIPAWordleDeeplink : DeeplinkHandler {
+class GameIPAPuzzleDeeplink : DeeplinkHandler {
 
     override fun getDeeplink(): String {
-        return DeeplinkManager.GAME_IPA_WORDLE
+        return DeeplinkManager.GAME_IPA_PUZZLE
     }
 
     override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         if (componentCallbacks !is GameFragment) return false
 
-        val fragment = GameIPAWordleFragment()
+        val fragment = GameIPAPuzzleFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
 
         val fragmentTransaction = componentCallbacks.childFragmentManager

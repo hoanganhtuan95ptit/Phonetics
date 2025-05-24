@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.items.ipa_match
+package com.phonetics.game.ui.items.ipa_match
 
 import android.graphics.Color
 import android.graphics.Typeface
@@ -21,7 +21,7 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.R
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
-import com.simple.phonetics.ui.game.items.GameItemViewModel
+import com.phonetics.game.ui.items.GameItemViewModel
 import com.simple.phonetics.utils.AppSize
 import com.simple.phonetics.utils.AppTheme
 import com.simple.phonetics.utils.exts.TitleViewItem

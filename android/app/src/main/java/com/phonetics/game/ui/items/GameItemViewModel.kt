@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.items
+package com.phonetics.game.ui.items
 
 import android.graphics.Color
 import androidx.lifecycle.LiveData

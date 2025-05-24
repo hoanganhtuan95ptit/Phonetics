@@ -284,6 +284,7 @@ class IpaDetailViewModel(
 
         ipaViewItemList.getOrEmpty().let {
 
+            list.add(SpaceViewItem(id = "SPACE_IPA", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_16))
             list.addAll(it)
             list.add(SpaceViewItem(id = "SPACE_IPA", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_40))
         }

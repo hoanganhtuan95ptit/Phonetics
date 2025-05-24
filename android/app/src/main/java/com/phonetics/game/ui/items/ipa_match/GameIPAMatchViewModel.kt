@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName")
 
-package com.simple.phonetics.ui.game.items.ipa_match
+package com.phonetics.game.ui.items.ipa_match
 
 import android.graphics.Color
 import android.graphics.Typeface
@@ -29,7 +29,7 @@ import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.entities.Phonetic
-import com.simple.phonetics.ui.game.items.GameItemViewModel
+import com.phonetics.game.ui.items.GameItemViewModel
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess

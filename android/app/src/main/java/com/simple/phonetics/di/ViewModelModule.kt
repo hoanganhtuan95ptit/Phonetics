@@ -4,12 +4,12 @@ import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.base.VerticalConfirmViewModel
-import com.simple.phonetics.ui.game.GameConfigViewModel
-import com.simple.phonetics.ui.game.GameViewModel
-import com.simple.phonetics.ui.game.congratulations.GameCongratulationViewModel
-import com.simple.phonetics.ui.game.items.ipa_match.GameIPAMatchViewModel
-import com.simple.phonetics.ui.game.items.ipa_puzzle.GameIPAPuzzleViewModel
-import com.simple.phonetics.ui.game.items.ipa_wordle.GameIPAWordleViewModel
+import com.phonetics.game.ui.GameConfigViewModel
+import com.phonetics.game.ui.GameViewModel
+import com.phonetics.game.ui.congratulations.GameCongratulationViewModel
+import com.phonetics.game.ui.items.ipa_match.GameIPAMatchViewModel
+import com.phonetics.game.ui.items.ipa_puzzle.GameIPAPuzzleViewModel
+import com.phonetics.game.ui.items.ipa_wordle.GameIPAWordleViewModel
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.view.detect.DetectHomeViewModel
 import com.simple.phonetics.ui.home.view.event.EventHomeViewModel
@@ -119,31 +119,6 @@ val viewModelModule = module {
 
     viewModel {
         HomeViewModel(get(), get(), get(), get())
-    }
-
-
-    viewModel {
-        GameViewModel()
-    }
-
-    viewModel {
-        GameConfigViewModel(get(), get())
-    }
-
-    viewModel {
-        GameCongratulationViewModel()
-    }
-
-    viewModel {
-        GameIPAPuzzleViewModel(get(), get())
-    }
-
-    viewModel {
-        GameIPAMatchViewModel(get(), get())
-    }
-
-    viewModel {
-        GameIPAWordleViewModel(get(), get(), get())
     }
 
 

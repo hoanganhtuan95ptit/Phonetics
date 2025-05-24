@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game
+package com.phonetics.game.ui
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
@@ -9,7 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getParcelableOrNull
-import com.simple.coreapp.utils.ext.getSerializableOrNull
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.phonetics.DeeplinkManager

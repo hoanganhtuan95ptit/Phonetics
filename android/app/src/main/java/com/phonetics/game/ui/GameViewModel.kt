@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game
+package com.phonetics.game.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData

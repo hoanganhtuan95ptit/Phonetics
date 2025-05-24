@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.items.ipa_wordle
+package com.phonetics.game.ui.items.ipa_wordle
 
 import com.simple.phonetics.entities.Phonetic
 

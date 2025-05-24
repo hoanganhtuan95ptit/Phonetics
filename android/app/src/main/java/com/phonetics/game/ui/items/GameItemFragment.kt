@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.items
+package com.phonetics.game.ui.items
 
 import android.os.Bundle
 import android.view.View
@@ -11,8 +11,8 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.ui.base.fragments.BaseFragment
-import com.simple.phonetics.ui.game.GameConfigViewModel
-import com.simple.phonetics.ui.game.GameViewModel
+import com.phonetics.game.ui.GameConfigViewModel
+import com.phonetics.game.ui.GameViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate

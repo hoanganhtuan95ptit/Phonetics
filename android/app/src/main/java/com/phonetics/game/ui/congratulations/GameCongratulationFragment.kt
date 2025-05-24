@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.congratulations
+package com.phonetics.game.ui.congratulations
 
 import android.content.ComponentCallbacks
 import android.os.Bundle

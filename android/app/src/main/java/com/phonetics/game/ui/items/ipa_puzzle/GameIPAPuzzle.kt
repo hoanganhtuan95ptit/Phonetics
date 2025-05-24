@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.items.ipa_puzzle
+package com.phonetics.game.ui.items.ipa_puzzle
 
 
 data class GameIPAPuzzleQuiz(

@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.config
+package com.phonetics.game.ui.config
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
@@ -38,7 +38,7 @@ import com.simple.phonetics.databinding.LayoutActionConfirmGameBinding
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
-import com.simple.phonetics.ui.game.GameConfigViewModel
+import com.phonetics.game.ui.GameConfigViewModel
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 
 class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, DialogListBinding, GameConfigViewModel>() {

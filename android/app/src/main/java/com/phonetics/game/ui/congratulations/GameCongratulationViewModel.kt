@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.congratulations
+package com.phonetics.game.ui.congratulations
 
 import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan

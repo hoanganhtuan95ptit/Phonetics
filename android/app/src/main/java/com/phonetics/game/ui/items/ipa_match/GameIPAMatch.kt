@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.game.items.ipa_match
+package com.phonetics.game.ui.items.ipa_match
 
 import com.simple.phonetics.entities.Phonetic
 
