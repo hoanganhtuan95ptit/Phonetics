@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "例:",
   "ipa_detail_screen_vowels_long": "長母音",
   "ipa_detail_screen_vowels_short": "短母音",
+  "ipa_detail_screen_practice_with_games": "ゲームで $ipa を練習しよう 🎮🧠",
 
   "ipa_list_screen_title": "Ipa リスト",
 
-  "recording_screen_title": "$language_name を話してください"
+  "recording_screen_title": "$language_name を話してください",
+
+  "version_name": "🚀 バージョン: $version"
 }

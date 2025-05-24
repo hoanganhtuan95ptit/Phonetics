@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "Пример:",
   "ipa_detail_screen_vowels_long": "Гласные длинные",
   "ipa_detail_screen_vowels_short": "Гласные короткие",
+  "ipa_detail_screen_practice_with_games": "Практикуй $ipa с помощью игр 🎮🧠",
 
   "ipa_list_screen_title": "Список Ipa",
 
-  "recording_screen_title": "Пожалуйста, скажите $language_name"
+  "recording_screen_title": "Пожалуйста, скажите $language_name",
+
+  "version_name": "🚀 Версия: $version"
 }

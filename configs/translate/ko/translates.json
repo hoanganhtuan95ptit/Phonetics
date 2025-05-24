@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "예시:",
   "ipa_detail_screen_vowels_long": "장모음",
   "ipa_detail_screen_vowels_short": "단모음",
+  "ipa_detail_screen_practice_with_games": "게임으로 $ipa 연습하기 🎮🧠",
 
   "ipa_list_screen_title": "Ipa 목록",
 
-  "recording_screen_title": "$language_name 을 말해주세요"
+  "recording_screen_title": "$language_name 을 말해주세요",
+
+  "version_name": "🚀 버전: $version"
 }

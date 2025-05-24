@@ -151,8 +151,11 @@
   "ipa_detail_screen_title_example": "উদাহরণ:",
   "ipa_detail_screen_vowels_long": "দীর্ঘ স্বরবর্ণ",
   "ipa_detail_screen_vowels_short": "সংক্ষিপ্ত স্বরবর্ণ",
+  "ipa_detail_screen_practice_with_games": "$ipa অনুশীলন করুন গেমের মাধ্যমে 🎮🧠",
 
   "ipa_list_screen_title": "Ipa তালিকা",
 
-  "recording_screen_title": "$language_name ভাষায় বলুন"
+  "recording_screen_title": "$language_name ভাষায় বলুন",
+
+  "version_name": "🚀 সংস্করণ: $version"
 }

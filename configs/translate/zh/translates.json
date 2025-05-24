@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "例子：",
   "ipa_detail_screen_vowels_long": "长元音",
   "ipa_detail_screen_vowels_short": "短元音",
+  "ipa_detail_screen_practice_with_games": "通过游戏练习 $ipa 🎮🧠",
 
   "ipa_list_screen_title": "语音符号列表",
 
-  "recording_screen_title": "请说 $language_name"
+  "recording_screen_title": "请说 $language_name",
+
+  "version_name": "🚀 版本: $version"
 }

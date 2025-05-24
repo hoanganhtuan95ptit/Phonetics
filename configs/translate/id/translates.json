@@ -156,8 +156,11 @@
   "ipa_detail_screen_title_example": "Contoh:",
   "ipa_detail_screen_vowels_long": "Vokal panjang",
   "ipa_detail_screen_vowels_short": "Vokal pendek",
+  "ipa_detail_screen_practice_with_games": "Latihan $ipa dengan permainan 🎮🧠",
 
   "ipa_list_screen_title": "Daftar Ipa",
 
-  "recording_screen_title": "Silakan bicara $language_name"
+  "recording_screen_title": "Silakan bicara $language_name",
+
+  "version_name": "🚀 Versi: $version"
 }
