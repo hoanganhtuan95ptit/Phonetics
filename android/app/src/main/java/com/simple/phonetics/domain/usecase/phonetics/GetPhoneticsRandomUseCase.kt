@@ -1,6 +1,5 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
-import android.util.Log
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
@@ -24,7 +23,6 @@ class GetPhoneticsRandomUseCase(
         val phoneticList = if (param.text.text.isEmpty()) {
             getPhoneticFromResource(param = param, languageCode = languageCode)
         } else {
-            Log.d("tuanha", "execute: ")
             phoneticRepository.random(param.text, phoneticCode = param.phoneticsCode, limit = param.limit)
         }
 

@@ -151,7 +151,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         val binding = binding ?: return
 
-        val clickTextAdapter = ClickTextAdapter { view, item ->
+        val clickTextAdapter = ClickTextAdapter { _, item ->
 
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) sendDeeplink(
                 deepLink = DeeplinkManager.SPEAK,

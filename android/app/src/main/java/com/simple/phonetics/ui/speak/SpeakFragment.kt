@@ -117,7 +117,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
         val phoneticsAdapter = PhoneticsAdapter { _, item ->
 
-            if (viewModel.isSupportListen.value == true) {
+            if (viewModel.isSupportReading.value == true) {
 
                 reading(text = item.data.text)
             }

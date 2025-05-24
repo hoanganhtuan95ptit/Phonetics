@@ -1,7 +1,7 @@
 package com.simple.phonetics.ui.ipa.detail
 
 import android.graphics.Typeface
-import android.media.AudioManager
+import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
@@ -28,7 +28,6 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
@@ -39,9 +38,7 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
-import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
-import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Text
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -67,12 +64,11 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+
 class IpaDetailViewModel(
     private val startReadingUseCase: StartReadingUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase,
-    private val getPhoneticsRandomUseCase: GetPhoneticsRandomUseCase,
-    private val checkSupportSpeakAsyncUseCase: CheckSupportSpeakAsyncUseCase,
-    private val checkSupportReadingAsyncUseCase: CheckSupportReadingAsyncUseCase
+    private val getPhoneticsRandomUseCase: GetPhoneticsRandomUseCase
 ) : BaseViewModel() {
 
     private var job: Job? = null
@@ -89,25 +85,6 @@ class IpaDetailViewModel(
 
 
     val readingState: LiveData<ResultState<String>> = MediatorLiveData()
-
-
-    val isSupportSpeak: LiveData<Boolean> = mediatorLiveData {
-
-        checkSupportSpeakAsyncUseCase.execute().collect {
-
-            postDifferentValue(it)
-        }
-    }
-
-
-    val isSupportListen: LiveData<Boolean> = mediatorLiveData {
-
-        checkSupportReadingAsyncUseCase.execute().collect {
-
-            postDifferentValue(it)
-        }
-    }
-
 
     @VisibleForTesting
     val ipaViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, ipa, readingState) {
@@ -168,7 +145,7 @@ class IpaDetailViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportListen) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportReading) {
 
         val theme = theme.value ?: return@listenerSources
         val translate = translate.value ?: return@listenerSources
@@ -207,7 +184,7 @@ class IpaDetailViewModel(
                 isShowSpeak = false,
 
                 isSupportSpeak = isSupportSpeak.value == true,
-                isSupportListen = isSupportListen.value == true,
+                isSupportListen = isSupportReading.value == true,
                 isSupportTranslate = false,
 
                 theme = theme,
@@ -401,7 +378,12 @@ class IpaDetailViewModel(
 
         val mediaPlayer = MediaPlayer().apply {
 
-            setAudioStreamType(AudioManager.STREAM_MUSIC)
+            val audioAttributes = AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .build()
+
+            setAudioAttributes(audioAttributes)
             setDataSource(voice)
             prepareAsync()
 
@@ -413,7 +395,7 @@ class IpaDetailViewModel(
                 start() // Bắt đầu phát nhạc khi đã chuẩn bị xong
             }
 
-            setOnErrorListener { mp, what, extra ->
+            setOnErrorListener { _, _, _ ->
 
                 readingState.postDifferentValue(ResultState.Failed(RuntimeException("")))
                 trySend(Unit)
@@ -421,7 +403,7 @@ class IpaDetailViewModel(
                 true // Trả về true nếu đã xử lý lỗi
             }
 
-            setOnCompletionListener { mp ->
+            setOnCompletionListener { _ ->
 
                 readingState.postDifferentValue(ResultState.Success(""))
                 trySend(Unit)

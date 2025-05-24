@@ -18,7 +18,7 @@ class MicrophoneHomeViewModel(
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)
 
     @VisibleForTesting
-    val isSupportSpeak: LiveData<Boolean> = combineSources(isReverse, inputLanguage, outputLanguage) {
+    override val isSupportSpeak: LiveData<Boolean> = combineSources(isReverse, inputLanguage, outputLanguage) {
 
         val isReverse = isReverse.get()
         val inputLanguage = inputLanguage.get()
