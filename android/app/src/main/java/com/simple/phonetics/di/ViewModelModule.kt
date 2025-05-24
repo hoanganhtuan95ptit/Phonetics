@@ -82,7 +82,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        IpaDetailViewModel(get(), get(), get(), get())
+        IpaDetailViewModel(get(), get(), get(), get(), get())
     }
 
     viewModel {

@@ -45,14 +45,16 @@ class GameIPAWordleViewModel(
 ) : GameItemViewModel() {
 
     @VisibleForTesting
-    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(resourceSelected, phoneticCodeSelected) {
+    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(text, resourceSelected, phoneticCodeSelected) {
 
+        val text = text.get()
         val resourceSelected = resourceSelected.get()
         val phoneticCodeSelected = phoneticCodeSelected.get()
 
         postDifferentValue(ResultState.Start)
 
         val param = GetPhoneticsRandomUseCase.Param(
+            text = text,
             resource = resourceSelected,
             phoneticsCode = phoneticCodeSelected,
 

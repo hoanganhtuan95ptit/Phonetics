@@ -10,6 +10,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
+import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
@@ -29,6 +30,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.entities.Sentence
+import com.simple.phonetics.entities.Text
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
@@ -51,7 +53,6 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             binding.root.updatePadding(top = heightStatusBar)
             binding.recyclerView.updatePadding(left = DP.DP_12, right = DP.DP_12, bottom = heightNavigationBar + DP.DP_24)
-
         }
 
         binding.frameHeader.icBack.setDebouncedClickListener {
@@ -70,10 +71,19 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
         val clickTextAdapter = ClickTextAdapter { view, item ->
 
+            val transitionName = view.transitionName ?: item.id
+
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) {
 
                 sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to (item.data as Sentence).text))
-            }
+            } else if (item.id.startsWith(Id.GAME)) sendDeeplink(
+                deepLink = DeeplinkManager.GAME,
+                extras = mapOf(
+                    Param.TEXT to item.data.asObject<Text>(),
+                    Param.ROOT_TRANSITION_NAME to transitionName
+                ),
+                sharedElement = mapOf(transitionName to view)
+            )
         }
 
         val phoneticsAdapter = PhoneticsAdapter { view, item ->

@@ -1,9 +1,11 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
+import android.util.Log
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
 import com.simple.phonetics.entities.Phonetic
+import com.simple.phonetics.entities.Text
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getWordDelimiters
 import kotlinx.coroutines.flow.first
@@ -18,6 +20,18 @@ class GetPhoneticsRandomUseCase(
     suspend fun execute(param: Param): List<Phonetic> {
 
         val languageCode = languageRepository.getLanguageInputAsync().first().id
+
+        val phoneticList = if (param.text.text.isEmpty()) {
+            getPhoneticFromResource(param = param, languageCode = languageCode)
+        } else {
+            Log.d("tuanha", "execute: ")
+            phoneticRepository.random(param.text, phoneticCode = param.phoneticsCode, limit = param.limit)
+        }
+
+        return phoneticList
+    }
+
+    private suspend fun getPhoneticFromResource(param: Param, languageCode: String): List<Phonetic> {
 
         val textLengthMin = if (getWordDelimiters(languageCode = languageCode).contains("")) {
             0
@@ -35,12 +49,12 @@ class GetPhoneticsRandomUseCase(
             textLimit = param.textLengthMax
         )
 
-        val phoneticList = phoneticRepository.getPhonetics(
+        val list = phoneticRepository.getPhonetics(
             textList = wordList,
             phoneticCode = param.phoneticsCode
         )
 
-        return phoneticList.subList(0, min(phoneticList.size, param.limit))
+        return list.subList(0, min(list.size, param.limit))
     }
 
     data class Param(
@@ -48,6 +62,7 @@ class GetPhoneticsRandomUseCase(
         val textLengthMin: Int = 2,
         val textLengthMax: Int = 10,
 
+        val text: Text,
         val resource: Word.Resource,
         val phoneticsCode: String,
     )

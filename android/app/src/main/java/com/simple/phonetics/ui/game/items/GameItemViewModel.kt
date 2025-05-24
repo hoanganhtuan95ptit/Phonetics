@@ -10,11 +10,17 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
+import com.simple.phonetics.entities.Text
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import org.koin.core.context.GlobalContext
 
 abstract class GameItemViewModel : BaseViewModel() {
+
+    val text: LiveData<Text> = MediatorLiveData(Text("w", Text.Type.IPA))
+
+    val resourceSelected: LiveData<Word.Resource> = MediatorLiveData(Word.Resource.Popular)
+
 
     val isSupportReading: LiveData<Boolean> = mediatorLiveData {
 
@@ -24,10 +30,12 @@ abstract class GameItemViewModel : BaseViewModel() {
         }
     }
 
-    val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
-
     val consecutiveCorrectAnswerEvent: LiveData<Event<Pair<Long, Boolean>>> = MediatorLiveData()
 
+    fun updateText(text: Text) {
+
+        this.text.postDifferentValue(text)
+    }
 
     fun updateResourceSelected(it: Word.Resource) {
 
