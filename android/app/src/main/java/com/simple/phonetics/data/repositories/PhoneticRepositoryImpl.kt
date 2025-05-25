@@ -6,7 +6,6 @@ import com.simple.phonetics.data.dao.PhoneticDao
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Phonetic
-import com.simple.phonetics.entities.Text
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import kotlinx.coroutines.channels.awaitClose
@@ -74,24 +73,20 @@ class PhoneticRepositoryImpl(
         phoneticDao.insertOrUpdateEntities(phonetics)
     }
 
-    override suspend fun random(text: Text, phoneticCode: String, limit: Int): List<Phonetic> {
-
-        if (text.type == Text.Type.IPA) {
-            return phoneticDao.getRandomListByIpa(text.text, phoneticCode, limit)
-        } else {
-            error("not support")
-        }
-    }
-
 
     override suspend fun getPhonetics(phonetics: List<String>): List<Phonetic> {
 
-        return phoneticDao.getListByTextList(phonetics)
+        return phoneticDao.getListBy(phonetics)
     }
 
     override suspend fun getPhonetics(textList: List<String>, phoneticCode: String): List<Phonetic> {
 
-        return phoneticDao.getListByTextList(textList = textList, phoneticCode = phoneticCode)
+        return phoneticDao.getListBy(textList = textList, phoneticCode = phoneticCode)
+    }
+
+    override suspend fun getPhonetics(ipa: String, textList: List<String>, phoneticCode: String): List<Phonetic> {
+
+        return phoneticDao.getListBy(ipa = ipa, textList = textList, phoneticCode = phoneticCode)
     }
 
     override suspend fun suggestPhonetics(text: String): List<Phonetic> {

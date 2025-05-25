@@ -12,6 +12,7 @@ import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
+import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
@@ -71,19 +72,13 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
         val clickTextAdapter = ClickTextAdapter { view, item ->
 
-            val transitionName = view.transitionName ?: item.id
-
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) {
 
                 sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to (item.data as Sentence).text))
-            } else if (item.id.startsWith(Id.GAME)) sendDeeplink(
-                deepLink = DeeplinkManager.GAME,
-                extras = mapOf(
-                    Param.TEXT to item.data.asObject<Text>(),
-                    Param.ROOT_TRANSITION_NAME to transitionName
-                ),
-                sharedElement = mapOf(transitionName to view)
-            )
+            } else if (item.id.startsWith(Id.GAME)) {
+
+                openGame(view, item)
+            }
         }
 
         val phoneticsAdapter = PhoneticsAdapter { _, item ->
@@ -184,6 +179,22 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             logAnalytics("ipa_detail_show_" + it.ipa.lowercase())
         }
+    }
+
+    private fun openGame(view: View, item: ClickTextViewItem) {
+
+        val transitionName = view.transitionName ?: item.id
+
+        sendDeeplink(
+            deepLink = DeeplinkManager.GAME,
+            extras = mapOf(
+                Param.TEXT to item.data.asObject<Text>(),
+                Param.ROOT_TRANSITION_NAME to transitionName
+            ),
+            sharedElement = mapOf(transitionName to view)
+        )
+
+        logAnalytics("open_game_from_ipa")
     }
 }
 

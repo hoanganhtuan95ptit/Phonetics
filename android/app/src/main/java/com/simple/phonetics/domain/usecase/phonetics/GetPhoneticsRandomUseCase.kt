@@ -20,18 +20,8 @@ class GetPhoneticsRandomUseCase(
 
         val languageCode = languageRepository.getLanguageInputAsync().first().id
 
-        val phoneticList = if (param.text.text.isEmpty()) {
+        val isQueryForIpa = param.text.text.isNotEmpty() && param.text.type == Text.Type.IPA
 
-            getPhoneticFromResource(param = param, languageCode = languageCode)
-        } else {
-
-            phoneticRepository.random(param.text, phoneticCode = param.phoneticsCode, limit = param.limit)
-        }
-
-        return phoneticList
-    }
-
-    private suspend fun getPhoneticFromResource(param: Param, languageCode: String): List<Phonetic> {
 
         val textLengthMin = if (getWordDelimiters(languageCode = languageCode).contains("")) {
             0
@@ -39,20 +29,36 @@ class GetPhoneticsRandomUseCase(
             param.textLengthMin
         }
 
+        val resource = if (isQueryForIpa) {
+            Word.Resource.Popular
+        } else {
+            param.resource
+        }
+
+        val limitQuery = if (isQueryForIpa) {
+            5000
+        } else {
+            100
+        }
+
         val wordList = wordRepository.getRandom(
-            resource = param.resource.value,
+            resource = resource.value,
             languageCode = languageCode,
 
-            limit = 100,
+            limit = limitQuery,
 
             textMin = textLengthMin,
             textLimit = param.textLengthMax
         )
 
-        val list = phoneticRepository.getPhonetics(
-            textList = wordList,
-            phoneticCode = param.phoneticsCode
-        )
+
+        val list = if (isQueryForIpa) phoneticRepository.getPhonetics(ipa = param.text.text, textList = wordList, phoneticCode = param.phoneticsCode).filter { phonetic ->
+
+            phonetic.ipa[param.phoneticsCode]?.any { it.contains(param.text.text) } == true
+        }.shuffled() else {
+
+            phoneticRepository.getPhonetics(textList = wordList, phoneticCode = param.phoneticsCode)
+        }
 
         return list.subList(0, min(list.size, param.limit))
     }

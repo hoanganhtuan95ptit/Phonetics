@@ -17,24 +17,9 @@ private const val TABLE_NAME = "phonetics"
 @Dao
 interface PhoneticDao {
 
-    fun getRandomListByIpa(ipa: String, phoneticCode: String, limit: Int) = getRandomRoomListByIpa("%$ipa%", "%\"$phoneticCode\"%", limit).groupBy {
+    fun getListBy(textList: List<String>): List<Phonetic> = textList.chunked(300).flatMap { list ->
 
-        it.text.lowercase()
-    }.mapValues {
-
-        it.value.first()
-    }.values.map {
-
-        it.toEntity()
-    }
-
-    @Query("SELECT * FROM PHONETICS WHERE UPPER(ipa) LIKE UPPER(:ipa) AND UPPER(ipa) LIKE UPPER(:phoneticCode) ORDER BY RANDOM() LIMIT :limit")
-    fun getRandomRoomListByIpa(ipa: String, phoneticCode: String, limit: Int): List<RoomPhonetic>
-
-
-    fun getListByTextList(textList: List<String>): List<Phonetic> = textList.chunked(300).flatMap { list ->
-
-        getRoomListByTextList(textList = list).groupBy {
+        getRoomListBy(textList = list).groupBy {
 
             it.text.lowercase()
         }.mapValues {
@@ -47,12 +32,12 @@ interface PhoneticDao {
     }
 
     @Query("SELECT * FROM $TABLE_NAME WHERE text COLLATE NOCASE IN (:textList)")
-    fun getRoomListByTextList(textList: List<String>): List<RoomPhonetic>
+    fun getRoomListBy(textList: List<String>): List<RoomPhonetic>
 
 
-    fun getListByTextList(textList: List<String>, phoneticCode: String): List<Phonetic> = textList.chunked(300).flatMap { list ->
+    fun getListBy(textList: List<String>, phoneticCode: String): List<Phonetic> = textList.chunked(300).flatMap { list ->
 
-        getRoomListByTextList(textList = list, "%\"$phoneticCode\"%").groupBy {
+        getRoomListBy(textList = list, "%\"$phoneticCode\"%").groupBy {
 
             it.text.lowercase()
         }.mapValues {
@@ -65,7 +50,24 @@ interface PhoneticDao {
     }
 
     @Query("SELECT * FROM PHONETICS WHERE text COLLATE NOCASE IN (:textList) AND UPPER(ipa) LIKE UPPER(:phoneticCode)")
-    fun getRoomListByTextList(textList: List<String>, phoneticCode: String): List<RoomPhonetic>
+    fun getRoomListBy(textList: List<String>, phoneticCode: String): List<RoomPhonetic>
+
+    fun getListBy(ipa: String, textList: List<String>, phoneticCode: String): List<Phonetic> = textList.chunked(300).flatMap { list ->
+
+        getRoomListBy(ipa = "%$ipa%", textList = list, "%\"$phoneticCode\"%").groupBy {
+
+            it.text.lowercase()
+        }.mapValues {
+
+            it.value.first()
+        }.values.map {
+
+            it.toEntity()
+        }
+    }
+
+    @Query("SELECT * FROM PHONETICS WHERE UPPER(ipa) LIKE UPPER(:ipa) AND text COLLATE NOCASE IN (:textList) AND UPPER(ipa) LIKE UPPER(:phoneticCode)")
+    fun getRoomListBy(ipa: String, textList: List<String>, phoneticCode: String): List<RoomPhonetic>
 
 
     fun suggestPhonetics(text: String): List<Phonetic> = suggestRoomPhonetics(text = "$text%").groupBy {
