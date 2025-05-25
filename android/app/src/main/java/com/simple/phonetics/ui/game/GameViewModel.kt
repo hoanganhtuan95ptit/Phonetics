@@ -1,25 +1,38 @@
 package com.simple.phonetics.ui.game
 
+import android.graphics.Typeface
+import android.text.style.StyleSpan
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.entities.Text
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.spans.RoundedBackgroundSpan
 import kotlin.math.max
 
 class GameViewModel : BaseViewModel() {
 
     val text: LiveData<Text> = MediatorLiveData()
 
-    val title: LiveData<CharSequence> = combineSources(translate) {
+    val title: LiveData<CharSequence> = combineSources(theme, translate, text) {
 
+        val theme = theme.get()
         val translate = translate.getOrEmpty()
 
-        val title = translate["game_screen_title"].orEmpty()
+        val text = text.get()
+
+        val title = if (text.text.isNotEmpty()) {
+            (translate["game_screen_title"].orEmpty() + " " + text.text)
+                .with(text.text, StyleSpan(Typeface.BOLD), RoundedBackgroundSpan(backgroundColor = theme.colorErrorVariant, textColor = theme.colorOnErrorVariant))
+        } else {
+            translate["game_screen_title"].orEmpty()
+        }
 
         postDifferentValue(title)
     }

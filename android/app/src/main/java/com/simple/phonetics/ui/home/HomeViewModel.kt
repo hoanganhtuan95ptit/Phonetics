@@ -351,7 +351,7 @@ class HomeViewModel(
         /**
          * dữ liệu version đặt ở cuối cùng
          */
-        versionViewItemList?.let {
+        if (phoneticsViewItemList.isEmpty()) versionViewItemList?.let {
 
             list.addAll(it)
         }
@@ -465,6 +465,7 @@ class HomeViewModel(
             text = translate["version_name"]
                 .orEmpty()
                 .replace("\$version", BuildConfig.VERSION_NAME)
+                .with(ForegroundColorSpan(theme.colorOnSurface))
                 .with(BuildConfig.VERSION_NAME, ForegroundColorSpan(theme.colorPrimary), StyleSpan(Typeface.BOLD)),
             textSize = Size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT),
             textStyle = TextStyle(
