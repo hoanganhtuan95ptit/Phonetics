@@ -23,44 +23,64 @@ class GetPhoneticsRandomUseCase(
         val isQueryForIpa = param.text.text.isNotEmpty() && param.text.type == Text.Type.IPA
 
 
+        val wordList = getWords(param = param, isQueryForIpa = isQueryForIpa, languageCode = languageCode)
+
+        val list = if (isQueryForIpa) phoneticRepository.getPhonetics(ipa = param.text.text, textList = wordList, phoneticCode = param.phoneticsCode).filter { phonetic ->
+
+            phonetic.ipa[param.phoneticsCode]?.any { it.contains(param.text.text, true) } == true
+        } else {
+
+            phoneticRepository.getPhonetics(textList = wordList, phoneticCode = param.phoneticsCode)
+        }
+
+
+        /**
+         * nếu không có word cho ipa trên thì thêm vào bảng
+         */
+        if (isQueryForIpa) {
+
+            wordRepository.insertOrUpdate(resource = param.text.text.lowercase(), languageCode = languageCode, list.map { it.text.lowercase() })
+        }
+
+
+        return list.shuffled().subList(0, min(list.size, param.limit))
+    }
+
+    private suspend fun getWords(param: Param, isQueryForIpa: Boolean, languageCode: String): List<String> {
+
         val textLengthMin = if (getWordDelimiters(languageCode = languageCode).contains("")) {
             0
         } else {
             param.textLengthMin
         }
 
-        val resource = if (isQueryForIpa) {
-            Word.Resource.Popular
-        } else {
-            param.resource
-        }
-
-        val limitQuery = if (isQueryForIpa) {
-            5000
-        } else {
-            100
-        }
-
-        val wordList = wordRepository.getRandom(
-            resource = resource.value,
+        var list = wordRepository.getRandom(
+            resource = if (isQueryForIpa) param.text.text.lowercase() else param.resource.value,
             languageCode = languageCode,
 
-            limit = limitQuery,
+            limit = 100,
 
             textMin = textLengthMin,
             textLimit = param.textLengthMax
         )
 
+        if (!isQueryForIpa || list.isNotEmpty()) {
 
-        val list = if (isQueryForIpa) phoneticRepository.getPhonetics(ipa = param.text.text, textList = wordList, phoneticCode = param.phoneticsCode).filter { phonetic ->
-
-            phonetic.ipa[param.phoneticsCode]?.any { it.contains(param.text.text) } == true
-        }.shuffled() else {
-
-            phoneticRepository.getPhonetics(textList = wordList, phoneticCode = param.phoneticsCode)
+            return list
         }
 
-        return list.subList(0, min(list.size, param.limit))
+
+        list = wordRepository.getRandom(
+            resource = Word.Resource.Popular.value,
+            languageCode = languageCode,
+
+            limit = 5000,
+
+            textMin = textLengthMin,
+            textLimit = param.textLengthMax
+        )
+
+        return list
     }
 
     data class Param(

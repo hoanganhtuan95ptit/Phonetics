@@ -94,6 +94,8 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
         val ipaDetailAdapters = IpaDetailAdapters { _, item ->
 
             viewModel.startReading(item.data)
+
+            logAnalytics("ipa_detail_reading_ipa")
         }
 
         MultiAdapter(clickTextAdapter, phoneticsAdapter, ipaDetailAdapters).apply {
@@ -177,7 +179,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             this.updateIpa(it)
 
-            logAnalytics("ipa_detail_show_" + it.ipa.lowercase())
+            logAnalytics("ipa_detail_show")
         }
     }
 
