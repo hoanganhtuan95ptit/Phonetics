@@ -19,7 +19,7 @@ interface PhoneticDao {
 
     fun getListBy(textList: List<String>): List<Phonetic> = textList.chunked(300).flatMap { list ->
 
-        getRoomListBy(textList = list).groupBy {
+        getRoomListBy(textList = list.map { it.lowercase() }).groupBy {
 
             it.text.lowercase()
         }.mapValues {
@@ -37,7 +37,7 @@ interface PhoneticDao {
 
     fun getListBy(textList: List<String>, phoneticCode: String): List<Phonetic> = textList.chunked(300).flatMap { list ->
 
-        getRoomListBy(textList = list, "%\"$phoneticCode\"%").groupBy {
+        getRoomListBy(textList = list.map { it.lowercase() }, "%\"$phoneticCode\"%").groupBy {
 
             it.text.lowercase()
         }.mapValues {
@@ -54,7 +54,7 @@ interface PhoneticDao {
 
     fun getListBy(ipa: String, textList: List<String>, phoneticCode: String): List<Phonetic> = textList.chunked(300).flatMap { list ->
 
-        getRoomListBy(ipa = "%$ipa%", textList = list, "%\"$phoneticCode\"%").groupBy {
+        getRoomListBy(ipa = "%$ipa%", textList = list.map { it.lowercase() }, "%\"$phoneticCode\"%").groupBy {
 
             it.text.lowercase()
         }.mapValues {
@@ -66,7 +66,7 @@ interface PhoneticDao {
         }
     }
 
-    @Query("SELECT * FROM PHONETICS WHERE UPPER(ipa) LIKE UPPER(:ipa) AND text COLLATE NOCASE IN (:textList) AND UPPER(ipa) LIKE UPPER(:phoneticCode)")
+    @Query("SELECT * FROM PHONETICS WHERE ipa COLLATE NOCASE LIKE :ipa AND text COLLATE NOCASE IN (:textList) AND ipa COLLATE NOCASE LIKE :phoneticCode")
     fun getRoomListBy(ipa: String, textList: List<String>, phoneticCode: String): List<RoomPhonetic>
 
 
