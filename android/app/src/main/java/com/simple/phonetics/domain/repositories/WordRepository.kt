@@ -1,5 +1,6 @@
 package com.simple.phonetics.domain.repositories
 
+import com.simple.phonetics.entities.Word
 import kotlinx.coroutines.flow.Flow
 
 interface WordRepository {
@@ -7,6 +8,17 @@ interface WordRepository {
     suspend fun syncPopular(languageCode: String): List<String>
 
     suspend fun insertOrUpdate(resource: String, languageCode: String, list: List<String>)
+
+
+    @Deprecated("")
+    suspend fun getAllOld(): List<Word>
+
+    @Deprecated("")
+    suspend fun getCountOLd(): Int
+
+
+    suspend fun getCount(): Int
+
 
     suspend fun getCount(resource: String, languageCode: String): Int
 

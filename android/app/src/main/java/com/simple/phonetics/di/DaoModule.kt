@@ -4,7 +4,6 @@ import androidx.room.Room
 import com.simple.phonetics.data.dao.PhoneticRoomDatabase
 import com.simple.phonetics.data.dao.PhoneticRoomDatabaseConstants
 import com.simple.phonetics.data.dao.ipa.IpaRoomDatabase
-import com.simple.dao.ipa.IpaRoomDatabaseNew
 import com.simple.phonetics.data.dao.translate.TranslateRoomDatabase
 import com.simple.phonetics.data.dao.word.WordRoomDatabase
 import org.koin.dsl.module
