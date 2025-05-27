@@ -12,7 +12,7 @@ data class Word(
 
         companion object {
 
-            fun String.toResource() = Resource.entries.first { it.value.equals(this, true) }
+            fun String.toResource() = Resource.entries.find { it.value.equals(this, true) }
         }
     }
 }

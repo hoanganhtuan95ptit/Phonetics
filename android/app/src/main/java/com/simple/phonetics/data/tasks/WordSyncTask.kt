@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.tasks
 
+import com.simple.analytics.logAnalytics
 import com.simple.phonetics.domain.repositories.HistoryRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
@@ -29,10 +30,32 @@ class WordSyncTask(
 
         if (languageCodeOld == languageCode) return
 
+        copy()
+
         syncPopular(languageCode = languageCode)
         syncHistory(languageCode = languageCode)
 
         languageCodeOld = languageCode
+    }
+
+    /**
+     * copy word
+     * todo nếu không còn thấy event word_copy thì bỏ qua
+     */
+    private suspend fun copy() = runCatching {
+
+        if (wordRepository.getCount() > 0) return@runCatching
+        if (wordRepository.getCountOLd() < 0) return@runCatching
+
+        logAnalytics("word_copy")
+
+        wordRepository.getAllOld().groupBy {
+
+            it.resource to it.languageCode
+        }.map {
+
+            wordRepository.insertOrUpdate(resource = it.key.first.value, it.key.second, it.value.map { it.text })
+        }
     }
 
     /**
@@ -43,12 +66,16 @@ class WordSyncTask(
         val resource = Word.Resource.Popular.value
 
         // nếu trong data đã có thì không đồng bộ nữa
-        if (wordRepository.getCount(resource = resource, languageCode = languageCode) > 0) return@runCatching
+        if (wordRepository.getCount(resource = resource, languageCode = languageCode) > 3000) return@runCatching
+
+        logAnalytics("word_sync_popular_start")
 
         // đồng bộ popular
         val list = wordRepository.syncPopular(languageCode = languageCode)
 
         wordRepository.insertOrUpdate(resource = resource, languageCode = languageCode, list = list)
+
+        logAnalytics("word_sync_popular_success")
     }
 
     /**

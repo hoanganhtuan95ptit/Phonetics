@@ -35,5 +35,5 @@ val repositoryModule = module {
 
     single<HistoryRepository> { HistoryRepositoryImpl(get()) }
 
-    single<WordRepository> { WordRepositoryImpl(get(), get()) }
+    single<WordRepository> { WordRepositoryImpl(get(), get(), get()) }
 }

@@ -1,4 +1,4 @@
-package com.simple.phonetics.data.dao.word
+package com.phonetics.word.dao
 
 import androidx.annotation.Keep
 import androidx.room.Dao
@@ -10,10 +10,7 @@ import androidx.room.Query
 import androidx.room.RoomDatabase
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.simple.phonetics.data.dao.word.RoomWord.Companion.toEntity
-import com.simple.phonetics.data.dao.word.RoomWord.Companion.toRoom
-import com.simple.phonetics.entities.Word
-import com.simple.phonetics.entities.Word.Resource.Companion.toResource
+import com.phonetics.word.dao.RoomWord.Companion.toRoom
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -21,8 +18,7 @@ import kotlinx.coroutines.flow.map
 private const val TABLE_NAME = "words"
 
 @Dao
-@Deprecated("")
-interface WordDao {
+interface WordDaoV2 {
 
     fun getListAsync(resource: String, languageCode: String): Flow<List<String>> = getRoomListAsync(resource = resource, languageCode = languageCode).map { list ->
 
@@ -44,17 +40,11 @@ interface WordDao {
     fun getRoomRandom(resource: String, languageCode: String, textMin: Int, textLimit: Int, limit: Int): List<RoomWord>
 
 
-    fun getAll(): List<Word> = getRoomAll().mapNotNull {
-
-        it.toEntity()
-    }
-
-    @Query("SELECT * FROM $TABLE_NAME WHERE 1=1")
-    fun getRoomAll(): List<RoomWord>
-
-
     @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE 1=1")
     fun getCount(): Int
+
+    @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE resource = :resource AND languageCode = :languageCode")
+    fun getCount(resource: String, languageCode: String): Int
 
     @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE resource = :resource AND languageCode = :languageCode")
     fun getCountAsync(resource: String, languageCode: String): Flow<Int>
@@ -76,7 +66,7 @@ interface WordDao {
 @Keep
 @Entity(
     tableName = TABLE_NAME,
-    primaryKeys = ["text"]
+    primaryKeys = ["text", "resource", "languageCode"]
 )
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -94,19 +84,13 @@ open class RoomWord(
             languageCode = languageCode,
         )
 
-        fun RoomWord.toEntity() = resource.toResource()?.let {
-
-            Word(
-                text = text,
-                resource = it,
-                languageCode = languageCode
-            )
-        }
+        fun RoomWord.toEntity() = text
     }
 }
 
 @Database(entities = [RoomWord::class], version = 1, exportSchema = false)
-abstract class WordRoomDatabase : RoomDatabase() {
+@Deprecated("")
+abstract class WordRoomDatabaseV2 : RoomDatabase() {
 
-    abstract fun providerWordDao(): WordDao
+    abstract fun providerWordDao(): WordDaoV2
 }
