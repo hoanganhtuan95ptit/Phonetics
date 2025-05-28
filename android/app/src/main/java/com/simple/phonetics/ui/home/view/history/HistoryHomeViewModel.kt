@@ -5,8 +5,9 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.analytics.logAnalytics
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
@@ -75,6 +76,10 @@ class HistoryHomeViewModel(
         }.let {
 
             viewItemList.addAll(it)
+        }
+
+        if (viewItemList.isNotEmpty()) {
+            logAnalytics("history_home_show")
         }
 
         postDifferentValueIfActive(viewItemList)

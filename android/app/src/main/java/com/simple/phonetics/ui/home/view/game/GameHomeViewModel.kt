@@ -7,8 +7,9 @@ import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.analytics.logAnalytics
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
@@ -60,7 +61,7 @@ class GameHomeViewModel(
         }
 
 
-        val list = arrayListOf<ViewItem>()
+        val viewItemList = arrayListOf<ViewItem>()
 
         TitleViewItem(
             id = "TITLE_GAME",
@@ -68,9 +69,9 @@ class GameHomeViewModel(
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
         ).let {
 
-            list.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_0", height = DP.DP_16))
-            list.add(it)
-            list.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_1", height = DP.DP_8))
+            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_0", height = DP.DP_16))
+            viewItemList.add(it)
+            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_1", height = DP.DP_8))
         }
 
         ClickTextViewItem(
@@ -109,10 +110,14 @@ class GameHomeViewModel(
             imageRight = null
         ).let {
 
-            list.add(it)
-            list.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_2", height = DP.DP_16))
+            viewItemList.add(it)
+            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_2", height = DP.DP_16))
         }
 
-        postDifferentValueIfActive(list)
+        if (viewItemList.isNotEmpty()) {
+            logAnalytics("game_home_show")
+        }
+
+        postDifferentValueIfActive(viewItemList)
     }
 }
