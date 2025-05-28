@@ -7,8 +7,9 @@ import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.analytics.logAnalytics
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
@@ -21,9 +22,9 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
-import com.simple.dao.entities.Ipa
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor
@@ -134,6 +135,10 @@ class IpaHomeViewModel(
 
             viewItemList.add(it)
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_IPA_2", height = DP.DP_16))
+        }
+
+        if (viewItemList.isNotEmpty()) {
+            logAnalytics("ipa_home_show")
         }
 
         postDifferentValueIfActive(viewItemList)

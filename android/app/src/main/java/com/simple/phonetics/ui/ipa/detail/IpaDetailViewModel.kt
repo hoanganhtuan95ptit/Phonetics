@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
@@ -228,6 +229,7 @@ class IpaDetailViewModel(
         if (phoneticList.isEmpty()) {
 
             postDifferentValue(emptyList())
+            return@combineSources
         }
 
 
@@ -272,6 +274,10 @@ class IpaDetailViewModel(
         ).let {
 
             list.add(it)
+        }
+
+        if (list.isNotEmpty()) {
+            logAnalytics("game_ipa_show")
         }
 
         postDifferentValue(list)

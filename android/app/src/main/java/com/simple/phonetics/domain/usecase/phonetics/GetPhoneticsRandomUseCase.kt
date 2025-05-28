@@ -23,7 +23,9 @@ class GetPhoneticsRandomUseCase(
         val isQueryForIpa = param.text.text.isNotEmpty() && param.text.type == Text.Type.IPA
 
 
-        val wordList = getWords(param = param, isQueryForIpa = isQueryForIpa, languageCode = languageCode)
+        val wordList = getWords(param = param, isQueryForIpa = isQueryForIpa, languageCode = languageCode).map {
+            it.lowercase()
+        }
 
         val list = if (isQueryForIpa) phoneticRepository.getPhonetics(ipa = param.text.text, textList = wordList, phoneticCode = param.phoneticsCode).filter { phonetic ->
 
@@ -37,7 +39,7 @@ class GetPhoneticsRandomUseCase(
         /**
          * nếu không có word cho ipa trên thì thêm vào bảng
          */
-        if (isQueryForIpa) {
+        if (isQueryForIpa && list.isNotEmpty()) {
 
             wordRepository.insertOrUpdate(resource = param.text.text.lowercase(), languageCode = languageCode, list.map { it.text.lowercase() })
         }

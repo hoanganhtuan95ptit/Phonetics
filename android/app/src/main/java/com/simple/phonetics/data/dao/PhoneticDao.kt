@@ -37,7 +37,7 @@ interface PhoneticDao {
 
     fun getListBy(textList: List<String>, phoneticCode: String): List<Phonetic> = textList.chunked(300).flatMap { list ->
 
-        getRoomListBy(textList = list.map { it.lowercase() }, "%\"$phoneticCode\"%").groupBy {
+        getRoomListBy(textList = list, "%\"$phoneticCode\"%").groupBy {
 
             it.text.lowercase()
         }.mapValues {
@@ -54,7 +54,7 @@ interface PhoneticDao {
 
     fun getListBy(ipa: String, textList: List<String>, phoneticCode: String): List<Phonetic> = textList.chunked(300).flatMap { list ->
 
-        getRoomListBy(ipa = "%$ipa%", textList = list.map { it.lowercase() }, "%\"$phoneticCode\"%").groupBy {
+        getRoomListBy(ipa = "%$ipa%", textList = list, "%\"$phoneticCode\"%").groupBy {
 
             it.text.lowercase()
         }.mapValues {
