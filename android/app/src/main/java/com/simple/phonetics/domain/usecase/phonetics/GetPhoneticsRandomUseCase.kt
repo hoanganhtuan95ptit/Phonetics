@@ -20,6 +20,9 @@ class GetPhoneticsRandomUseCase(
 
         val languageCode = languageRepository.getLanguageInputAsync().first().id
 
+
+        val ipa = param.text.text.replace("/", "")
+
         val isQueryForIpa = param.text.text.isNotEmpty() && param.text.type == Text.Type.IPA
 
 
@@ -27,9 +30,9 @@ class GetPhoneticsRandomUseCase(
             it.lowercase()
         }
 
-        val list = if (isQueryForIpa) phoneticRepository.getPhonetics(ipa = param.text.text, textList = wordList, phoneticCode = param.phoneticsCode).filter { phonetic ->
+        val list = if (isQueryForIpa) phoneticRepository.getPhonetics(ipa = ipa, textList = wordList, phoneticCode = param.phoneticsCode).filter { phonetic ->
 
-            phonetic.ipa[param.phoneticsCode]?.any { it.contains(param.text.text, true) } == true
+            phonetic.ipa[param.phoneticsCode]?.any { it.contains(ipa, true) } == true
         } else {
 
             phoneticRepository.getPhonetics(textList = wordList, phoneticCode = param.phoneticsCode)

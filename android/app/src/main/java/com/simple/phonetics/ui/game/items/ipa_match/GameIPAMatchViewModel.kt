@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
+import com.simple.analytics.logAnalytics
 import com.simple.core.utils.AppException
 import com.simple.core.utils.extentions.toArrayList
 import com.simple.coreapp.ui.view.Background
@@ -65,6 +66,10 @@ class GameIPAMatchViewModel(
         )
 
         val list = getPhoneticsRandomUseCase.execute(param = param).shuffled()
+
+        if (list.isEmpty()) {
+            logAnalytics("game_ipa_match_empty_${resourceSelected.value.lowercase()}_${text.text.lowercase()}")
+        }
 
         postDifferentValue(ResultState.Success(list))
     }
@@ -171,12 +176,12 @@ class GameIPAMatchViewModel(
 
     val actionInfo: LiveData<ActionInfo> = listenerSources(theme, translate, choose) {
 
-        val choose = choose.value
+        val choose = choose.value.orEmpty().flatMap { listOf<Any?>(it.first, it.second) }
 
         val theme = theme.value ?: return@listenerSources
         val translate = translate.value ?: return@listenerSources
 
-        val isClickable = !choose.orEmpty().flatMap { listOf<Any?>(it.first, it.second) }.any { it == null }
+        val isClickable = choose.isNotEmpty() && !choose.any { it == null }
 
         val textColor = if (isClickable) theme.colorOnPrimary else theme.colorOnSurfaceVariant
 

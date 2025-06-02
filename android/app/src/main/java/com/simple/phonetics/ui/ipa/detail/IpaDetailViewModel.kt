@@ -199,6 +199,13 @@ class IpaDetailViewModel(
         postDifferentValueIfActive(viewItemList)
     }
 
+    val gameResource: LiveData<Text> = combineSources(ipa) {
+
+        val ipa = ipa.get()
+
+        postDifferentValue(Text(ipa.ipa, Text.Type.IPA))
+    }
+
     @VisibleForTesting
     val gameViewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, ipa, phoneticCodeSelected) {
 
@@ -214,8 +221,11 @@ class IpaDetailViewModel(
             return@combineSources
         }
 
+
+        val gameResource = Text(ipa.ipa, Text.Type.IPA)
+
         val param = GetPhoneticsRandomUseCase.Param(
-            text = Text(ipa.ipa.replace("/", ""), Text.Type.IPA),
+            text = gameResource,
             resource = Word.Resource.Popular,
             phoneticsCode = phoneticCodeSelected,
 
@@ -237,12 +247,12 @@ class IpaDetailViewModel(
 
         ClickTextViewItem(
             id = Id.GAME,
-            data = Text(ipa.ipa.replace("/", ""), Text.Type.IPA),
+            data = gameResource,
             text = translate["ipa_detail_screen_practice_with_games"]
                 .orEmpty()
-                .replace("\$ipa", ipa.ipa)
+                .replace("\$ipa", gameResource.text)
                 .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
-                .with(ipa.ipa, StyleSpan(Typeface.BOLD), RoundedBackgroundSpan(backgroundColor = theme.colorErrorVariant, textColor = theme.colorOnErrorVariant)),
+                .with(gameResource.text, StyleSpan(Typeface.BOLD), RoundedBackgroundSpan(backgroundColor = theme.colorErrorVariant, textColor = theme.colorOnErrorVariant)),
             textSize = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.MATCH_PARENT

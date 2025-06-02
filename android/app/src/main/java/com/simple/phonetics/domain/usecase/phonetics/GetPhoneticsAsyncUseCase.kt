@@ -1,5 +1,6 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.coreapp.utils.extentions.offerActiveAwait
 import com.simple.phonetics.data.dao.HistoryDao
@@ -150,6 +151,7 @@ class GetPhoneticsAsyncUseCase(
             wordRepository.insertOrUpdate(resource = Word.Resource.History.value, languageCode = param.inputLanguageCode, wordList)
         }
 
+        logAnalytics("search_phonetics_${param.inputLanguageCode.lowercase()}")
 
         awaitClose {}
     }

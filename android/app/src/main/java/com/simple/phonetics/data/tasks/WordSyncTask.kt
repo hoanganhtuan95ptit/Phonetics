@@ -1,6 +1,7 @@
 package com.simple.phonetics.data.tasks
 
 import com.simple.analytics.logAnalytics
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.HistoryRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
@@ -56,6 +57,9 @@ class WordSyncTask(
 
             wordRepository.insertOrUpdate(resource = it.key.first.value, it.key.second, it.value.map { it.text })
         }
+    }.getOrElse {
+
+        logCrashlytics("word_copy", it)
     }
 
     /**
@@ -76,6 +80,9 @@ class WordSyncTask(
         wordRepository.insertOrUpdate(resource = resource, languageCode = languageCode, list = list)
 
         logAnalytics("word_sync_popular_success")
+    }.getOrElse {
+
+        logCrashlytics("word_sync_popular", it)
     }
 
     /**
@@ -120,5 +127,8 @@ class WordSyncTask(
         }
 
         wordRepository.insertOrUpdate(resource = resource, languageCode = languageCode, list = wordAvailableList)
+    }.getOrElse {
+
+        logCrashlytics("word_sync_history", it)
     }
 }
