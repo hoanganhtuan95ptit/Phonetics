@@ -5,6 +5,7 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.IpaRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.tasks.SyncTask
+import com.simple.phonetics.entities.Language
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -27,8 +28,19 @@ class IpaSyncTask(
 
         if (languageCodeOld == languageCode) return
 
-        val ipaList = ipaRepository.syncIpa(languageCode = languageCode)
+
+        val ipaList = ipaRepository.syncIpa(languageCode = languageCode).map {
+
+            if (languageCode == Language.EN && it.ipa == "/r/") it.copy(ipa = "/ɹ/") else it
+        }
+
+        if (languageCode == Language.EN) {
+
+            ipaRepository.deleteByKey(languageCode = languageCode, ipa = "/r/")
+        }
+
         ipaRepository.insertOrUpdate(languageCode = languageCode, list = ipaList)
+
 
         languageCodeOld = languageCode
     }

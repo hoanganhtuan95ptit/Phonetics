@@ -14,13 +14,13 @@ interface IpaRepository {
     @Deprecated("")
     suspend fun countAlOld(languageCode: String): Int
 
+    suspend fun getCount(languageCode: String): Int
+
+    suspend fun getCountAsync(languageCode: String): Flow<Int>
 
     suspend fun getIpaAsync(languageCode: String): Flow<List<Ipa>>
 
     suspend fun insertOrUpdate(languageCode: String, list: List<Ipa>)
 
-    suspend fun getCount(languageCode: String): Int
-
-    suspend fun getCountAsync(languageCode: String): Flow<Int>
-
+    suspend fun deleteByKey(ipa: String, languageCode: String)
 }

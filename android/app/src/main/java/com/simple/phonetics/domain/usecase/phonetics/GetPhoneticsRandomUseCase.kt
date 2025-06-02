@@ -21,8 +21,6 @@ class GetPhoneticsRandomUseCase(
         val languageCode = languageRepository.getLanguageInputAsync().first().id
 
 
-        val ipa = param.text.text.replace("/", "")
-
         val isQueryForIpa = param.text.text.isNotEmpty() && param.text.type == Text.Type.IPA
 
 
@@ -30,25 +28,22 @@ class GetPhoneticsRandomUseCase(
             it.lowercase()
         }
 
-        val list = if (isQueryForIpa) phoneticRepository.getPhonetics(ipa = ipa, textList = wordList, phoneticCode = param.phoneticsCode).filter { phonetic ->
 
-            phonetic.ipa.flatMap { it.value }.any { it.contains(ipa, true) }
-        } else {
+        val phoneticList = getPhonetics(param = param, isQueryForIpa = isQueryForIpa, wordList = wordList).apply {
 
-            phoneticRepository.getPhonetics(textList = wordList, phoneticCode = param.phoneticsCode)
         }
 
 
         /**
          * nếu không có word cho ipa trên thì thêm vào bảng
          */
-        if (isQueryForIpa && list.isNotEmpty()) {
+        if (isQueryForIpa && phoneticList.isNotEmpty()) {
 
-            wordRepository.insertOrUpdate(resource = param.text.text.lowercase(), languageCode = languageCode, list.map { it.text.lowercase() })
+            wordRepository.insertOrUpdate(resource = param.text.text.lowercase(), languageCode = languageCode, phoneticList.map { it.text.lowercase() })
         }
 
 
-        return list.shuffled().subList(0, min(list.size, param.limit))
+        return phoneticList.shuffled().subList(0, min(phoneticList.size, param.limit))
     }
 
     private suspend fun getWords(param: Param, isQueryForIpa: Boolean, languageCode: String): List<String> {
@@ -86,6 +81,26 @@ class GetPhoneticsRandomUseCase(
         )
 
         return list
+    }
+
+    private suspend fun getPhonetics(param: Param, isQueryForIpa: Boolean, wordList: List<String>): List<Phonetic> {
+
+        if (!isQueryForIpa) {
+
+            return phoneticRepository.getPhonetics(textList = wordList, phoneticCode = param.phoneticsCode)
+        }
+
+
+        val ipa = param.text.text.replace("/", "")
+
+        val list = phoneticRepository.getPhonetics(ipa = ipa, textList = wordList, phoneticCode = param.phoneticsCode)
+
+        val listFilter = list.filter { phonetic ->
+
+            phonetic.ipa.flatMap { it.value }.any { it.contains(ipa, true) }
+        }
+
+        return listFilter
     }
 
     data class Param(
