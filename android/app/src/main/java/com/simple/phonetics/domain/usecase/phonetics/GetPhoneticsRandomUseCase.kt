@@ -32,7 +32,7 @@ class GetPhoneticsRandomUseCase(
 
         val list = if (isQueryForIpa) phoneticRepository.getPhonetics(ipa = ipa, textList = wordList, phoneticCode = param.phoneticsCode).filter { phonetic ->
 
-            phonetic.ipa[param.phoneticsCode]?.any { it.contains(ipa, true) } == true
+            phonetic.ipa.flatMap { it.value }.any { it.contains(ipa, true) }
         } else {
 
             phoneticRepository.getPhonetics(textList = wordList, phoneticCode = param.phoneticsCode)
