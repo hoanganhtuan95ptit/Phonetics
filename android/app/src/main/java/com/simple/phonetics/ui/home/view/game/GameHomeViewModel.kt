@@ -29,7 +29,6 @@ import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
-import com.simple.phonetics.utils.spans.RoundedBackgroundSpan
 
 class GameHomeViewModel(
     private val countWordAsyncUseCase: CountWordAsyncUseCase
@@ -76,9 +75,8 @@ class GameHomeViewModel(
 
         ClickTextViewItem(
             id = Id.GAME,
-            text = "${translate["action_play_game"]}  BETA "
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
-                .with(" BETA ", StyleSpan(Typeface.BOLD), RoundedBackgroundSpan(backgroundColor = theme.colorErrorVariant, textColor = theme.colorOnErrorVariant)),
+            text = "${translate["action_play_game"]}"
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
             textSize = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.MATCH_PARENT
