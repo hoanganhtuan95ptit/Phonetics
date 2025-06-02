@@ -34,6 +34,13 @@ interface IpaDaoNew {
     fun getRoomListAsync(languageCode: String): Flow<List<RoomIpaNew>>
 
 
+    @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE languageCode = :languageCode")
+    fun getCount(languageCode: String): Int
+
+    @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE languageCode = :languageCode")
+    fun getCountAsync(languageCode: String): Flow<Int>
+
+
     fun insertOrUpdate(languageCode: String, list: List<Ipa>) {
 
         val rooms = list.map {
@@ -47,11 +54,8 @@ interface IpaDaoNew {
     fun insertOrUpdate(rooms: List<RoomIpaNew>)
 
 
-    @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE languageCode = :languageCode")
-    fun getCount(languageCode: String): Int
-
-    @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE languageCode = :languageCode")
-    fun getCountAsync(languageCode: String): Flow<Int>
+    @Query("DELETE FROM $TABLE_NAME WHERE ipa = :ipa AND languageCode = :languageCode")
+    fun deleteByKey(ipa: String, languageCode: String)
 }
 
 @Keep

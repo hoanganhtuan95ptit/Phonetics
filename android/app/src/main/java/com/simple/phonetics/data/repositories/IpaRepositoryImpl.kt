@@ -25,6 +25,14 @@ class IpaRepositoryImpl(
         return ipaDaoOld.getCount(languageCode = languageCode)
     }
 
+    override suspend fun getCount(languageCode: String): Int {
+        return ipaDao.getCount(languageCode = languageCode)
+    }
+
+    override suspend fun getCountAsync(languageCode: String): Flow<Int> {
+        return ipaDao.getCountAsync(languageCode = languageCode)
+    }
+
     override suspend fun getIpaAsync(languageCode: String): Flow<List<Ipa>> {
         return ipaDao.getListAsync(languageCode = languageCode)
     }
@@ -33,11 +41,7 @@ class IpaRepositoryImpl(
         ipaDao.insertOrUpdate(languageCode = languageCode, list = list)
     }
 
-    override suspend fun getCount(languageCode: String): Int {
-        return ipaDao.getCount(languageCode = languageCode)
-    }
-
-    override suspend fun getCountAsync(languageCode: String): Flow<Int> {
-        return ipaDao.getCountAsync(languageCode = languageCode)
+    override suspend fun deleteByKey(ipa: String, languageCode: String) {
+        return ipaDao.deleteByKey(ipa = ipa, languageCode = languageCode)
     }
 }
