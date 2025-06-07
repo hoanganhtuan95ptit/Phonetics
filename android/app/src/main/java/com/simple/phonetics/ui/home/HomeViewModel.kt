@@ -41,8 +41,8 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
-import com.unknown.color.AppTheme
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.state.ResultState
@@ -54,6 +54,7 @@ import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
+import com.unknown.color.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
@@ -72,9 +73,9 @@ class HomeViewModel(
         val theme = theme.get()
         val translate = translate.getOrEmpty()
 
-        val title = translate["Ephonetics"].orEmpty()
+        val title = translate.getOrKey("Ephonetics")
+            .with(ForegroundColorSpan(theme.colorOnSurface))
             .with("Ep", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
-            .with("honetics", ForegroundColorSpan(theme.colorOnSurface))
 
         postDifferentValue(title)
     }
