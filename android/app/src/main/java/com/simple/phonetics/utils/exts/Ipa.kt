@@ -1,7 +1,7 @@
 package com.simple.phonetics.utils.exts
 
 import com.simple.dao.entities.Ipa
-import com.simple.phonetics.utils.AppTheme
+import com.unknown.color.AppTheme
 
 fun Ipa.BackgroundColor(theme: AppTheme) = if (ipa.contains("ː") && type == Ipa.Type.VOWELS_LONG.value) {
     theme.vowelsLong

@@ -26,7 +26,7 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.language.adapters.LanguageLoadingViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
-import com.simple.phonetics.utils.AppTheme
+import com.unknown.color.AppTheme
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isSuccess

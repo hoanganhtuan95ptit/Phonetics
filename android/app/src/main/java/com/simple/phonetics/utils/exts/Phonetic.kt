@@ -22,7 +22,7 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingViewItem
 import com.simple.phonetics.ui.base.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
-import com.simple.phonetics.utils.AppTheme
+import com.unknown.color.AppTheme
 import com.simple.state.ResultState
 
 fun Phonetics(text: String, ipa: HashMap<String, List<String>>) = Phonetic(
