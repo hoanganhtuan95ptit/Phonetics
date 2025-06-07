@@ -89,7 +89,6 @@ open class RoomWord(
 }
 
 @Database(entities = [RoomWord::class], version = 1, exportSchema = false)
-@Deprecated("")
 abstract class WordRoomDatabaseV2 : RoomDatabase() {
 
     abstract fun providerWordDao(): WordDaoV2

@@ -44,7 +44,6 @@ class TranslateSyncTask(
     private suspend fun copyTranslate() = runCatching {
 
         if (appRepository.getCountTranslate() > 0) return@runCatching
-
         if (appRepository.getCountTranslateOld() <= 0) return@runCatching
 
         logAnalytics("copy_translate")

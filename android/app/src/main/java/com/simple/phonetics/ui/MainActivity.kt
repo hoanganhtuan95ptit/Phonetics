@@ -14,8 +14,6 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.view.MainView
-import com.simple.phonetics.utils.setupSize
-import com.simple.phonetics.utils.setupTheme
 import kotlinx.coroutines.launch
 import java.util.ServiceLoader
 
@@ -25,9 +23,6 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setupSize(this)
-        setupTheme(this)
 
         ServiceLoader.load(MainView::class.java).toList().forEach { it.setup(this) }
 

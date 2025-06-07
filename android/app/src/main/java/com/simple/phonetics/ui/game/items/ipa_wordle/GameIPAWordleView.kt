@@ -21,8 +21,8 @@ import com.simple.phonetics.R
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
-import com.simple.phonetics.utils.AppSize
-import com.simple.phonetics.utils.AppTheme
+import com.unknown.size.AppSize
+import com.unknown.color.AppTheme
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.state.ResultState
 import com.simple.state.isCompleted

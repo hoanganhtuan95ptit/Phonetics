@@ -12,11 +12,11 @@ import com.simple.phonetics.domain.usecase.phonetics.code.GetPhoneticCodeSelecte
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Language
-import com.simple.phonetics.utils.AppSize
-import com.simple.phonetics.utils.AppTheme
-import com.simple.phonetics.utils.appSize
-import com.simple.phonetics.utils.appTheme
-import com.simple.phonetics.utils.appTranslate
+import com.unknown.size.AppSize
+import com.unknown.color.AppTheme
+import com.unknown.size.appSize
+import com.unknown.color.appTheme
+import com.unknown.string.appTranslate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

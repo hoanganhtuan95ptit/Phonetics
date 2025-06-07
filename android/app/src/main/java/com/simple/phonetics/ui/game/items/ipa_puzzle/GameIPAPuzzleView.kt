@@ -18,8 +18,8 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Id
 import com.simple.phonetics.ui.game.items.GameItemViewModel
-import com.simple.phonetics.utils.AppSize
-import com.simple.phonetics.utils.AppTheme
+import com.unknown.size.AppSize
+import com.unknown.color.AppTheme
 import com.simple.phonetics.utils.exts.TitleViewItem
 
 fun getIPAPuzzleStateInfo(size: AppSize, theme: AppTheme, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz, isAnswerCorrect: Boolean): GameItemViewModel.StateInfo {
