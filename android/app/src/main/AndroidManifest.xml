@@ -61,18 +61,6 @@
             <meta-data
                 android:name="com.phonetics.word.WordInitializer"
                 android:value="androidx.startup" />
-
-            <meta-data
-                android:name="com.unknown.size.SizeInitializer"
-                android:value="androidx.startup" />
-
-            <meta-data
-                android:name="com.unknown.color.ColorInitializer"
-                android:value="androidx.startup" />
-
-            <meta-data
-                android:name="com.unknown.string.StringInitializer"
-                android:value="androidx.startup" />
         </provider>
     </application>
 </manifest>

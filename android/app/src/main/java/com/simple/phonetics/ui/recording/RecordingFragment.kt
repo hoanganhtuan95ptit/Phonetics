@@ -35,6 +35,7 @@ import com.simple.phonetics.databinding.LayoutActionConfirmRecordingBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
@@ -103,10 +104,10 @@ class RecordingFragment : BaseActionFragment<LayoutActionConfirmRecordingBinding
             val binding = binding ?: return@observe
             val bindingAction = bindingAction ?: return@observe
 
-            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
+            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
 
-            binding.root.delegate.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
-            bindingAction.root.delegate.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.root.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            bindingAction.root.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
         }
 
         speakState.observe(viewLifecycleOwner) {

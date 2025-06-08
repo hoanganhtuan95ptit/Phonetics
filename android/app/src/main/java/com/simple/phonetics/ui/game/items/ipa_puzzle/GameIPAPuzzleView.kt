@@ -18,16 +18,16 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Id
 import com.simple.phonetics.ui.game.items.GameItemViewModel
-import com.unknown.size.AppSize
-import com.unknown.color.AppTheme
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getOrTransparent
+import com.unknown.size.uitls.exts.getOrZero
 
-fun getIPAPuzzleStateInfo(size: AppSize, theme: AppTheme, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz, isAnswerCorrect: Boolean): GameItemViewModel.StateInfo {
+fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Int>, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz, isAnswerCorrect: Boolean): GameItemViewModel.StateInfo {
 
     val textColor = if (isAnswerCorrect) {
-        theme.colorOnPrimaryVariant
+        theme.getOrTransparent("colorOnPrimaryVariant")
     } else {
-        theme.colorOnErrorVariant
+        theme.getOrTransparent("colorOnErrorVariant")
     }
 
     val title = if (isAnswerCorrect) {
@@ -42,7 +42,7 @@ fun getIPAPuzzleStateInfo(size: AppSize, theme: AppTheme, translate: Map<String,
     val message = translate["game_ipa_puzzle_screen_message_answer"].orEmpty()
         .replace("\$param1", param1)
         .with(ForegroundColorSpan(textColor))
-        .with(param1, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
+        .with(param1, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary")))
         .trim()
 
 
@@ -94,14 +94,14 @@ fun getIPAPuzzleStateInfo(size: AppSize, theme: AppTheme, translate: Map<String,
 
     val positive = ButtonInfo(
         text = buttonText.orEmpty()
-            .with(ForegroundColorSpan(theme.colorOnPrimary)),
+            .with(ForegroundColorSpan(theme.getOrTransparent("colorOnPrimary"))),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
             backgroundColor = if (isAnswerCorrect) {
-                theme.colorPrimary
+                theme.getOrTransparent("colorPrimary")
             } else {
-                theme.colorError
+                theme.getOrTransparent("colorError")
             }
         )
     )
@@ -113,40 +113,40 @@ fun getIPAPuzzleStateInfo(size: AppSize, theme: AppTheme, translate: Map<String,
         positive = positive,
 
         backgroundColor = if (isAnswerCorrect) {
-            theme.colorPrimaryVariant
+            theme.getOrTransparent("colorPrimaryVariant")
         } else {
-            theme.colorErrorVariant
+            theme.getOrTransparent("colorErrorVariant")
         }
     )
 
     return info
 }
 
-fun getIPAPuzzleTitleViewItem(size: AppSize, theme: AppTheme, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz): ViewItem {
+fun getIPAPuzzleTitleViewItem(size: Map<String, Int>, theme: Map<String, Int>, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz): ViewItem {
 
     return TitleViewItem(
         id = "TITLE",
         text = translate["game_ipa_puzzle_screen_title"].orEmpty()
             .replace("\$param1", quiz.question.text)
             .replace("\$param2", quiz.question.ipaIncomplete)
-            .with(ForegroundColorSpan(theme.colorOnSurface))
-            .with(quiz.question.text, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface))
-            .with(quiz.question.ipaIncomplete, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface))
-            .with("____", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorError)),
+            .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
+            .with(quiz.question.text, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
+            .with(quiz.question.ipaIncomplete, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
+            .with("____", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorError"))),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
     )
 }
 
-fun getIPAPuzzleOptionViewItem(size: AppSize, theme: AppTheme, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz, choose: String?) = quiz.answers.mapIndexed { index, answer ->
+fun getIPAPuzzleOptionViewItem(size: Map<String, Int>, theme: Map<String, Int>, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz, choose: String?) = quiz.answers.mapIndexed { index, answer ->
 
     ClickTextViewItem(
         id = "${Id.CHOOSE}_$index",
         data = answer,
 
         text = answer
-            .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+            .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
         textStyle = TextStyle(
             textSize = 16f,
             textGravity = Gravity.CENTER
@@ -159,15 +159,15 @@ fun getIPAPuzzleOptionViewItem(size: AppSize, theme: AppTheme, translate: Map<St
             cornerRadius = DP.DP_16,
             strokeWidth = DP.DP_2,
             strokeColor = if (answer.equals(choose, true)) {
-                theme.colorPrimary
+                theme.getOrTransparent("colorPrimary")
             } else {
-                theme.colorOnSurfaceVariant
+                theme.getOrTransparent("colorOnSurfaceVariant")
             }
         ),
 
         size = Size(
-            width = (size.width - 2 * DP.DP_8) / 2,
-            height = (size.width - 2 * DP.DP_8) / 2 + DP.DP_16
+            width = (size.getOrZero("width") - 2 * DP.DP_8) / 2,
+            height = (size.getOrZero("width") - 2 * DP.DP_8) / 2 + DP.DP_16
         ),
         padding = Padding(
             paddingVertical = DP.DP_8,
@@ -176,11 +176,11 @@ fun getIPAPuzzleOptionViewItem(size: AppSize, theme: AppTheme, translate: Map<St
     )
 }
 
-fun getIPAPuzzleLoadingViewItem(size: AppSize, theme: AppTheme): List<ViewItem> = arrayListOf<ViewItem>().apply {
+fun getIPAPuzzleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Int>): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
     val background = Background(
         cornerRadius = DP.DP_24,
-        backgroundColor = theme.colorLoading
+        backgroundColor = theme.getOrTransparent("colorLoading")
     )
 
     NoneTextViewItem(
@@ -212,8 +212,8 @@ fun getIPAPuzzleLoadingViewItem(size: AppSize, theme: AppTheme): List<ViewItem> 
         textBackground = background,
 
         size = Size(
-            width = (size.width - 2 * DP.DP_8) / 2,
-            height = (size.width - 2 * DP.DP_8) / 2 + DP.DP_16
+            width = (size.getOrZero("width") - 2 * DP.DP_8) / 2,
+            height = (size.getOrZero("width") - 2 * DP.DP_8) / 2 + DP.DP_16
         ),
     ).let {
 

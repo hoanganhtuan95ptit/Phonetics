@@ -17,7 +17,10 @@ import com.simple.dao.entities.Ipa
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
+import com.unknown.size.*
+import com.unknown.size.uitls.exts.getOrZero
 
 class IpaListViewModel(
     private val getIpaStateAsyncUseCase: GetIpaStateAsyncUseCase
@@ -62,11 +65,11 @@ class IpaListViewModel(
 
                 data = it,
 
-                ipa = it.ipa.with(ForegroundColorSpan(theme.colorOnSurface)),
-                text = it.examples.firstOrNull().orEmpty().with(ForegroundColorSpan(theme.colorOnSurface)),
+                ipa = it.ipa.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                text = it.examples.firstOrNull().orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
 
                 size = Size(
-                    width = (size.width - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
+                    width = (size.getOrZero("width") - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
                     height = DP.DP_90
                 ),
                 margin = Margin(

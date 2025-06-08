@@ -38,6 +38,7 @@ import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.utils.exts.OptionViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getOrTransparent
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -106,7 +107,7 @@ class GameConfigViewModel(
         TitleViewItem(
             id = "TITLE_RESOURCE",
             text = translate["game_config_screen_title_resource"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
         ).let {
 
             list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_24))
@@ -138,11 +139,11 @@ class GameConfigViewModel(
             val isSelect = resource == resourceSelected
 
             val captionColor = if (count <= Constants.WORD_COUNT_MIN) {
-                theme.colorOnErrorVariant
+                theme.getOrTransparent("colorOnErrorVariant")
             } else if (isSelect) {
-                theme.colorOnPrimaryVariant
+                theme.getOrTransparent("colorOnPrimaryVariant")
             } else {
-                theme.colorOnSurfaceVariant
+                theme.getOrTransparent("colorOnSurfaceVariant")
             }
 
             OptionViewItem(
@@ -150,11 +151,11 @@ class GameConfigViewModel(
                 data = resource,
 
                 text = "$name\n$caption"
-                    .with(ForegroundColorSpan(if (isSelect) theme.colorPrimary else theme.colorOnSurface))
+                    .with(ForegroundColorSpan(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface")))
                     .with(caption, RelativeSizeSpan(0.8f), ForegroundColorSpan(captionColor)),
 
-                strokeColor = if (isSelect) theme.colorPrimary else theme.colorOnSurface,
-                backgroundColor = if (isSelect) theme.colorPrimaryVariant else Color.TRANSPARENT,
+                strokeColor = if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"),
+                backgroundColor = if (isSelect) theme.getOrTransparent("colorPrimaryVariant") else Color.TRANSPARENT,
             )
         }.let {
 
@@ -177,7 +178,7 @@ class GameConfigViewModel(
         ClickTextViewItem(
             id = "",
             text = translate["game_config_screen_action_play_game"].orEmpty()
-                .with(ForegroundColorSpan(if (isAvailable) theme.colorOnPrimary else theme.colorOnSurface)),
+                .with(ForegroundColorSpan(if (isAvailable) theme.getOrTransparent("colorOnPrimary") else theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 18f,
                 textGravity = Gravity.CENTER
@@ -193,8 +194,8 @@ class GameConfigViewModel(
             textBackground = Background(
                 cornerRadius = DP.DP_100,
                 strokeWidth = DP.DP_1,
-                strokeColor = if (isAvailable) theme.colorPrimary else theme.colorOnSurface,
-                backgroundColor = if (isAvailable) theme.colorPrimary else Color.TRANSPARENT
+                strokeColor = if (isAvailable) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"),
+                backgroundColor = if (isAvailable) theme.getOrTransparent("colorPrimary") else Color.TRANSPARENT
             ),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,

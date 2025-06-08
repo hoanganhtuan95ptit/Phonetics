@@ -19,6 +19,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 
 class PhoneticHomeViewModel(
@@ -63,13 +64,13 @@ class PhoneticHomeViewModel(
                 translate["message_start_sync_phonetics"].orEmpty()
                     .replace("\$ipa_name", ipaName)
                     .replace("\$percent", "$percentWrap")
-                    .with(ForegroundColorSpan(theme.colorOnSurface))
+                    .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
                     .with(ipaName, StyleSpan(Typeface.BOLD))
-                    .with("${percentWrap}%", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
+                    .with("${percentWrap}%", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary")))
             } else {
                 translate["message_completed_sync_phonetics"].orEmpty()
                     .replace("\$ipa_name", ipaName)
-                    .with(ForegroundColorSpan(theme.colorOnSurface))
+                    .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
                     .with(ipaName, StyleSpan(Typeface.BOLD))
             }
 

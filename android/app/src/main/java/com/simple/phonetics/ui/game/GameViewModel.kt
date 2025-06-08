@@ -13,6 +13,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.entities.Text
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.spans.RoundedBackgroundSpan
 import kotlin.math.max
 
@@ -29,7 +30,7 @@ class GameViewModel : BaseViewModel() {
 
         val title = if (text.text.isNotEmpty()) {
             (translate["game_screen_title"].orEmpty() + " " + text.text)
-                .with(text.text, StyleSpan(Typeface.BOLD), RoundedBackgroundSpan(backgroundColor = theme.colorErrorVariant, textColor = theme.colorOnErrorVariant))
+                .with(text.text, StyleSpan(Typeface.BOLD), RoundedBackgroundSpan(backgroundColor = theme.getOrTransparent("colorErrorVariant"), textColor = theme.getOrTransparent("colorOnErrorVariant")))
         } else {
             translate["game_screen_title"].orEmpty()
         }

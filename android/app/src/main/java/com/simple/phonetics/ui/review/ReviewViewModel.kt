@@ -28,6 +28,7 @@ import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.getOrTransparent
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.Calendar
 import kotlin.math.absoluteValue
@@ -82,7 +83,7 @@ class ReviewViewModel(
         NoneTextViewItem(
             id = "2",
             text = translate["rate_title"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -104,7 +105,7 @@ class ReviewViewModel(
         NoneTextViewItem(
             id = "3",
             text = translate["rate_message"].orEmpty()
-                .with(ForegroundColorSpan(theme.colorOnSurface)),
+                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 16f,
                 textGravity = Gravity.CENTER
@@ -140,17 +141,17 @@ class ReviewViewModel(
             viewItemList = viewItemList,
 
             positive = ButtonInfo(
-                text = translate["rate_action_positive"].orEmpty().with(ForegroundColorSpan(theme.colorOnPrimary)),
+                text = translate["rate_action_positive"].orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnPrimary"))),
                 background = Background(
-                    backgroundColor = theme.colorPrimary,
+                    backgroundColor = theme.getOrTransparent("colorPrimary"),
                     cornerRadius = DP.DP_16
                 )
             ),
             negative = ButtonInfo(
-                text = translate["rate_action_negative"].orEmpty().with(ForegroundColorSpan(theme.colorOnSurfaceVariant)),
+                text = translate["rate_action_negative"].orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurfaceVariant"))),
                 background = Background(
-                    backgroundColor = theme.colorBackground,
-                    strokeColor = theme.colorOnSurfaceVariant,
+                    backgroundColor = theme.getOrTransparent("colorBackground"),
+                    strokeColor = theme.getOrTransparent("colorOnSurfaceVariant"),
                     strokeWidth = DP.DP_1,
                     cornerRadius = DP.DP_16
                 )

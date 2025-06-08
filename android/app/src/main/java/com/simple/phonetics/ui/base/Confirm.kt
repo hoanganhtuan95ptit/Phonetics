@@ -45,6 +45,7 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionVerticalBinding
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.getOrTransparent
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import java.io.Serializable
@@ -163,7 +164,7 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
         theme.observe(viewLifecycleOwner) {
 
             if (arguments?.getBoolean(Param.CANCEL) == true) Background(
-                backgroundColor = it.colorDivider,
+                backgroundColor = it.getOrTransparent("colorDivider"),
                 cornerRadius = DP.DP_100,
             ).let {
 
@@ -171,7 +172,7 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
             }
 
             val background = Background(
-                backgroundColor = arguments?.getInt(com.simple.phonetics.Param.BACKGROUND_COLOR).takeIf { it != 0 } ?: it.colorBackground,
+                backgroundColor = arguments?.getInt(com.simple.phonetics.Param.BACKGROUND_COLOR).takeIf { it != 0 } ?: it.getOrTransparent("colorBackground"),
                 cornerRadius_TL = DP.DP_24,
                 cornerRadius_TR = DP.DP_24
             )

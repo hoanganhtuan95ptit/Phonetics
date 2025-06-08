@@ -19,6 +19,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogCongratulationBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
+import com.simple.phonetics.utils.exts.getOrTransparent
 
 class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, GameCongratulationViewModel>() {
 
@@ -65,8 +66,8 @@ class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, Ga
 
             val binding = binding ?: return@observe
 
-            binding.root.delegate.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
-            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
+            binding.root.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
         }
 
         (arguments?.getLong(Param.NUMBER) ?: 0L).let {

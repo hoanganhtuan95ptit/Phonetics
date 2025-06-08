@@ -3,8 +3,8 @@ package com.simple.phonetics.utils.exts
 import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.ViewGroup
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
@@ -22,7 +22,6 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingViewItem
 import com.simple.phonetics.ui.base.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
-import com.unknown.color.AppTheme
 import com.simple.state.ResultState
 
 fun Phonetics(text: String, ipa: HashMap<String, List<String>>) = Phonetic(
@@ -31,11 +30,11 @@ fun Phonetics(text: String, ipa: HashMap<String, List<String>>) = Phonetic(
     this.ipa = ipa
 }
 
-fun getPhoneticLoadingViewItem(theme: AppTheme, background: Background? = null): List<ViewItem> = arrayListOf<ViewItem>().apply {
+fun getPhoneticLoadingViewItem(theme: Map<String, Int>, background: Background? = null): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
     val backgroundWrap = background ?: Background(
         cornerRadius = DP.DP_100,
-        backgroundColor = theme.colorLoading
+        backgroundColor = theme.getOrTransparent("colorLoading")
     )
 
     add(PhoneticsLoadingViewItem(id = "1", background = backgroundWrap))
@@ -54,7 +53,7 @@ fun Any.toViewItem(
     isSupportListen: Boolean = false,
     isSupportTranslate: Boolean = false,
 
-    theme: AppTheme, translate: Map<String, String>
+    theme: Map<String, Int>, translate: Map<String, String>
 ): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
     val item = this@toViewItem
@@ -107,15 +106,15 @@ fun Any.toViewItem(
         val textPair = when (translateState) {
 
             is ResultState.Start -> {
-                translate["translating"].orEmpty() to theme.colorOnSurface
+                translate["translating"].orEmpty() to theme.getOrTransparent("colorOnSurface")
             }
 
             is ResultState.Success -> {
-                translateState.data to theme.colorOnSurface
+                translateState.data to theme.getOrTransparent("colorOnSurface")
             }
 
             else -> {
-                translate["translate_failed"].orEmpty() to theme.colorError
+                translate["translate_failed"].orEmpty() to theme.getOrTransparent("colorError")
             }
         }
 
@@ -136,7 +135,7 @@ fun Any.toViewItem(
     }
 }
 
-fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String, String>): ViewItem {
+fun Sentence.toSpeakViewItem(index: Int, theme: Map<String, Int>, translate: Map<String, String>): ViewItem {
 
     return ClickTextViewItem(
         id = "${Id.SENTENCE}_${index}",
@@ -154,7 +153,7 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
         ),
         background = DEFAULT_BACKGROUND,
 
-        text = translate["action_try_speak"].orEmpty().with(ForegroundColorSpan(theme.colorPrimary)),
+        text = translate["action_try_speak"].orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorPrimary"))),
         textStyle = TextStyle(
             textGravity = Gravity.CENTER_VERTICAL
         ),
@@ -170,7 +169,7 @@ fun Sentence.toSpeakViewItem(index: Int, theme: AppTheme, translate: Map<String,
         ),
         textBackground = Background(
             cornerRadius = DP.DP_16,
-            strokeColor = theme.colorPrimary,
+            strokeColor = theme.getOrTransparent("colorPrimary"),
 
             strokeWidth = DP.DP_2,
             strokeDashGap = DP.DP_4,
@@ -195,7 +194,7 @@ fun Phonetic.toViewItem(
     isSupportSpeak: Boolean = false,
     isSupportListen: Boolean = false,
 
-    phoneticsCode: String, theme: AppTheme
+    phoneticsCode: String, theme: Map<String, Int>
 ): ViewItem {
 
     val codeAndIpa = this.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
@@ -215,8 +214,8 @@ fun Phonetic.toViewItem(
         id = id,
         data = this,
 
-        ipa = text.with(ForegroundColorSpan(if (ipaList.size > 1) theme.colorPrimary else theme.colorError)),
-        text = this.text.with(ForegroundColorSpan(theme.colorOnSurface)),
+        ipa = text.with(ForegroundColorSpan(if (ipaList.size > 1) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorError"))),
+        text = this.text.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
 
         image = image,
 

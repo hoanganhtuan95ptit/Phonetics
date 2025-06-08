@@ -46,10 +46,11 @@ dependencies {
     implementation jacksonDependencies.values()
     implementation hoanganhtuan95Dependencies.values()
 
-    implementation roomDependencies.values()
-    kapt('androidx.room:room-compiler:2.5.2')
+    implementation roomDependencies.room_ktx
+    implementation roomDependencies.room_runtime
+    kapt roomDependencies.room_compiler
 
-    implementation 'androidx.startup:startup-runtime:1.2.0'
+    implementation androidxDependencies.startup_runtime
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

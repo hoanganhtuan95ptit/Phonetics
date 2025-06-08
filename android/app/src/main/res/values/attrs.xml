@@ -3,6 +3,12 @@
 
     <attr name="colorOnErrorVariant" format="color"/>
 
+    <attr name="colorDiphthongs" format="color" />
+    <attr name="colorVowelsLong" format="color" />
+    <attr name="colorVowelsShort" format="color" />
+    <attr name="colorConsonantsVoiced" format="color" />
+    <attr name="colorConsonantsUnvoiced" format="color" />
+
     <declare-styleable name="dashLine">
         <attr name="dashWidth" format="dimension" />
         <attr name="dashGap" format="dimension" />

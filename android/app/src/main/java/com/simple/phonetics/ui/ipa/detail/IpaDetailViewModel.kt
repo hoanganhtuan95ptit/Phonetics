@@ -45,9 +45,9 @@ import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailViewItem
-import com.unknown.color.AppTheme
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.phonetics.utils.spans.RoundedBackgroundSpan
@@ -102,7 +102,7 @@ class IpaDetailViewModel(
 
             data = ipa,
 
-            ipa = ipa.ipa.with(ForegroundColorSpan(theme.colorOnSurface)),
+            ipa = ipa.ipa.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
 
             image = if (readingState.isRunning()) {
                 R.drawable.ic_pause_black_24dp
@@ -166,7 +166,7 @@ class IpaDetailViewModel(
         TitleViewItem(
             id = "TITLE_EXAMPLE",
             text = translate["ipa_detail_screen_title_example"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
         ).let {
 
             viewItemList.add(it)
@@ -251,8 +251,8 @@ class IpaDetailViewModel(
             text = translate["ipa_detail_screen_practice_with_games"]
                 .orEmpty()
                 .replace("\$ipa", gameResource.text)
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
-                .with(gameResource.text, StyleSpan(Typeface.BOLD), RoundedBackgroundSpan(backgroundColor = theme.colorErrorVariant, textColor = theme.colorOnErrorVariant)),
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary")))
+                .with(gameResource.text, StyleSpan(Typeface.BOLD), RoundedBackgroundSpan(backgroundColor = theme.getOrTransparent("colorErrorVariant"), textColor = theme.getOrTransparent("colorOnErrorVariant"))),
             textSize = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.MATCH_PARENT
@@ -265,7 +265,7 @@ class IpaDetailViewModel(
                 right = DP.DP_16
             ),
             textBackground = Background(
-                strokeColor = theme.colorPrimary,
+                strokeColor = theme.getOrTransparent("colorPrimary"),
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
             ),
@@ -433,11 +433,11 @@ class IpaDetailViewModel(
         }
     }.first()
 
-    private fun getLoadingViewItem(theme: AppTheme): List<ViewItem> = arrayListOf<ViewItem>().apply {
+    private fun getLoadingViewItem(theme: Map<String, Int>): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
         val background = Background(
             cornerRadius = DP.DP_24,
-            backgroundColor = theme.colorLoading
+            backgroundColor = theme.getOrTransparent("colorLoading")
         )
 
         add(IpaDetailLoadingViewItem(id = "1", background = background))

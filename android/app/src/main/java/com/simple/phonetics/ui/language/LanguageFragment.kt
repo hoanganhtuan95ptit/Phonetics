@@ -33,6 +33,7 @@ import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
 
@@ -103,8 +104,8 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.root.setBackgroundColor(it.colorBackground)
-            binding.frameHeader.icBack.setColorFilter(it.colorOnBackground)
+            binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
+            binding.frameHeader.icBack.setColorFilter(it.getOrTransparent("colorOnBackground"))
         }
 
         headerInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "HEADER") {
@@ -182,9 +183,9 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
         }
 
         val extras = mapOf(
-            com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColorSpan(theme.colorOnErrorVariant)),
+            com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnErrorVariant"))),
             com.simple.coreapp.Param.BACKGROUND to Background(
-                backgroundColor = theme.colorErrorVariant,
+                backgroundColor = theme.getOrTransparent("colorErrorVariant"),
                 cornerRadius = DP.DP_16,
             )
         )

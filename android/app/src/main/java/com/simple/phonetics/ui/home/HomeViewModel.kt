@@ -43,6 +43,7 @@ import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.getOrKey
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.state.ResultState
@@ -54,7 +55,6 @@ import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
-import com.unknown.color.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
@@ -74,8 +74,8 @@ class HomeViewModel(
         val translate = translate.getOrEmpty()
 
         val title = translate.getOrKey("Ephonetics")
-            .with(ForegroundColorSpan(theme.colorOnSurface))
-            .with("Ep", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary))
+            .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
+            .with("Ep", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary")))
 
         postDifferentValue(title)
     }
@@ -127,12 +127,12 @@ class HomeViewModel(
         val isSupportReverse = isSupportReverse.get()
 
         val textColor = if (isReverse)
-            theme.colorOnPrimaryVariant
+            theme.getOrTransparent("colorOnPrimaryVariant")
         else
-            theme.colorPrimary
+            theme.getOrTransparent("colorPrimary")
 
         val backgroundColor = if (isReverse)
-            theme.colorPrimaryVariant
+            theme.getOrTransparent("colorPrimaryVariant")
         else
             Color.TRANSPARENT
 
@@ -143,7 +143,7 @@ class HomeViewModel(
             background = Background(
                 strokeWidth = DP.DP_1 + DP.DP_05.toInt(),
                 cornerRadius = DP.DP_8,
-                strokeColor = theme.colorPrimary,
+                strokeColor = theme.getOrTransparent("colorPrimary"),
                 backgroundColor = backgroundColor
             )
         )
@@ -178,12 +178,12 @@ class HomeViewModel(
 
         val info = ClearInfo(
             text = translate["action_clear"].orEmpty()
-                .with(ForegroundColorSpan(theme.colorPrimary)),
+                .with(ForegroundColorSpan(theme.getOrTransparent("colorPrimary"))),
             isShow = text.second.isNotBlank(),
             background = Background(
                 strokeWidth = DP.DP_1 + DP.DP_05.toInt(),
                 cornerRadius = DP.DP_8,
-                strokeColor = theme.colorPrimary,
+                strokeColor = theme.getOrTransparent("colorPrimary"),
                 backgroundColor = Color.TRANSPARENT
             ),
         )
@@ -209,9 +209,9 @@ class HomeViewModel(
 
         val info = EnterInfo(
             hint = hint
-                .with(ForegroundColorSpan(theme.colorOnSurfaceVariant))
-                .with(languageName, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
-            textColor = theme.colorOnSurface,
+                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurfaceVariant")))
+                .with(languageName, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+            textColor = theme.getOrTransparent("colorOnSurface"),
         )
 
         postDifferentValue(info)
@@ -282,7 +282,7 @@ class HomeViewModel(
         if (viewItemList.isNotEmpty()) TitleViewItem(
             id = "TITLE_RESULT",
             text = translate["title_result"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
         ).let {
 
             viewItemList.add(0, it)
@@ -459,15 +459,15 @@ class HomeViewModel(
         }
     }
 
-    private fun versionViewItem(theme: AppTheme, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
+    private fun versionViewItem(theme: Map<String, Int>, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
 
         if (translate.containsKey("version_name")) NoneTextViewItem(
             id = "VERSION",
             text = translate["version_name"]
                 .orEmpty()
                 .replace("\$version", BuildConfig.VERSION_NAME)
-                .with(ForegroundColorSpan(theme.colorOnSurface))
-                .with(BuildConfig.VERSION_NAME, ForegroundColorSpan(theme.colorPrimary), StyleSpan(Typeface.BOLD)),
+                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
+                .with(BuildConfig.VERSION_NAME, ForegroundColorSpan(theme.getOrTransparent("colorPrimary")), StyleSpan(Typeface.BOLD)),
             textSize = Size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT),
             textStyle = TextStyle(
                 textSize = 14f,

@@ -19,6 +19,7 @@ import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.ui.view.SelectionEdittext
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
@@ -42,7 +43,7 @@ class SuggestHomeView : HomeView {
 
         suggestHomeViewModel.theme.observe(fragment.viewLifecycleOwner) {
 
-            binding.recSuggest.setBackgroundColor(it.colorBackground)
+            binding.recSuggest.setBackgroundColor(it.getOrTransparent("colorBackground"))
         }
 
         suggestHomeViewModel.viewItemList.observeLaunch(fragment.viewLifecycleOwner) {

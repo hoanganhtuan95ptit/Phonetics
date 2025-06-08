@@ -29,6 +29,7 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.simple.phonetics.utils.exts.getOrTransparent
 
 class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 
@@ -99,8 +100,8 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 
             val binding = binding ?: return@observe
 
-            binding.root.delegate.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
-            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
+            binding.root.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
         }
 
         viewItemList.observeQueue(viewLifecycleOwner) {
