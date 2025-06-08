@@ -48,6 +48,7 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.toSuccess
 import java.util.ServiceLoader
@@ -231,19 +232,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.ivRead.setColorFilter(it.colorPrimary)
-            binding.ivStop.setColorFilter(it.colorPrimary)
-            binding.ivPaste.setColorFilter(it.colorPrimary)
-            binding.ivCamera.setColorFilter(it.colorPrimary)
-            binding.ivGallery.setColorFilter(it.colorPrimary)
+            binding.ivRead.setColorFilter(it.getOrTransparent("colorPrimary"))
+            binding.ivStop.setColorFilter(it.getOrTransparent("colorPrimary"))
+            binding.ivPaste.setColorFilter(it.getOrTransparent("colorPrimary"))
+            binding.ivCamera.setColorFilter(it.getOrTransparent("colorPrimary"))
+            binding.ivGallery.setColorFilter(it.getOrTransparent("colorPrimary"))
 
-            binding.progress.progressTintList = ColorStateList.valueOf(it.colorPrimary)
+            binding.progress.progressTintList = ColorStateList.valueOf(it.getOrTransparent("colorPrimary"))
 
-            binding.root.setBackgroundColor(it.colorBackground)
-            binding.frameContent.delegate.backgroundColor = it.colorBackground
+            binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
+            binding.frameContent.delegate.backgroundColor = it.getOrTransparent("colorBackground")
 
-            binding.vTemp.setBackgroundColor(it.colorBackgroundVariant)
-            binding.frameRootContent.setBackgroundColor(it.colorBackgroundVariant)
+            binding.vTemp.setBackgroundColor(it.getOrTransparent("colorBackgroundVariant"))
+            binding.frameRootContent.setBackgroundColor(it.getOrTransparent("colorBackgroundVariant"))
         }
 
         title.collectWithLockTransitionUntilData(fragment = fragment, tag = "TITLE") {

@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.base.fragments
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
@@ -12,11 +13,9 @@ import com.simple.phonetics.domain.usecase.phonetics.code.GetPhoneticCodeSelecte
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Language
-import com.unknown.size.AppSize
-import com.unknown.color.AppTheme
+import com.unknown.color.color
 import com.unknown.size.appSize
-import com.unknown.color.appTheme
-import com.unknown.string.appTranslate
+import com.unknown.string.string
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,26 +29,29 @@ abstract class BaseViewModel : TransitionViewModel() {
     private val map = ConcurrentHashMap<String, Job>()
 
 
-    val size: LiveData<AppSize> = mediatorLiveData {
+    val size: LiveData<Map<String, Int>> = mediatorLiveData {
 
         appSize.collect {
 
+            Log.d("tuanha", "size: $it")
             postDifferentValue(it)
         }
     }
 
-    val theme: LiveData<AppTheme> = mediatorLiveData {
+    val theme: LiveData<Map<String, Int>> = mediatorLiveData {
 
-        appTheme.collect {
+        color.collect {
 
+            Log.d("tuanha", "color: $it")
             postDifferentValue(it)
         }
     }
 
     val translate: LiveData<Map<String, String>> = mediatorLiveData {
 
-        appTranslate.collect {
+        string.collect {
 
+            Log.d("tuanha", "translate: $it")
             postDifferentValue(it)
         }
     }

@@ -29,7 +29,10 @@ import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
+import com.unknown.size.*
+import com.unknown.size.uitls.exts.getOrZero
 
 class IpaHomeViewModel(
     private val getIpaStateAsyncUseCase: GetIpaStateAsyncUseCase,
@@ -67,7 +70,7 @@ class IpaHomeViewModel(
         if (ipaList.isNotEmpty()) TitleViewItem(
             id = "TITLE_IPA",
             text = translate["title_ipa"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
             textSize = 20f,
         ).let {
 
@@ -83,11 +86,11 @@ class IpaHomeViewModel(
 
                 data = it,
 
-                ipa = it.ipa.with(ForegroundColorSpan(theme.colorOnSurface)),
-                text = it.examples.firstOrNull().orEmpty().with(ForegroundColorSpan(theme.colorOnSurface)),
+                ipa = it.ipa.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                text = it.examples.firstOrNull().orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
 
                 size = Size(
-                    width = (size.width - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
+                    width = (size.getOrZero("width") - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
                     height = DP.DP_76
                 ),
                 margin = Margin(
@@ -106,7 +109,7 @@ class IpaHomeViewModel(
         if (ipaList.isNotEmpty()) ClickTextViewItem(
             id = Id.IPA_LIST,
             text = translate["action_view_all_ipa"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary"))),
             textSize = Size(
                 height = DP.DP_76,
                 width = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -124,7 +127,7 @@ class IpaHomeViewModel(
                 marginHorizontal = DP.DP_4
             ),
             background = Background(
-                strokeColor = theme.colorPrimary,
+                strokeColor = theme.getOrTransparent("colorPrimary"),
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
             ),

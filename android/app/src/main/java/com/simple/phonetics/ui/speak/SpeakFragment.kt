@@ -38,6 +38,7 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
 import com.simple.phonetics.utils.showAds
@@ -143,7 +144,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             val bindingConfigSpeak = bindingAction ?: return@observe
 
             val background = Background(
-                backgroundColor = it.colorBackground,
+                backgroundColor = it.getOrTransparent("colorBackground"),
                 cornerRadius_TL = DP.DP_16,
                 cornerRadius_TR = DP.DP_16
             )
@@ -151,8 +152,8 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             binding.root.delegate.setBackground(background = background)
             bindingConfigSpeak.root.delegate.setBackground(background = background)
 
-            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
-            bindingConfigSpeak.frameSpeak.root.delegate.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.colorPrimary, cornerRadius = DP.DP_16))
+            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
+            bindingConfigSpeak.frameSpeak.root.delegate.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.getOrTransparent("colorPrimary"), cornerRadius = DP.DP_16))
         }
 
         speakInfo.observe(viewLifecycleOwner) {

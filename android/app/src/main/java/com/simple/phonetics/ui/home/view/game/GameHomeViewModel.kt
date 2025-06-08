@@ -29,6 +29,7 @@ import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getOrTransparent
 
 class GameHomeViewModel(
     private val countWordAsyncUseCase: CountWordAsyncUseCase
@@ -65,7 +66,7 @@ class GameHomeViewModel(
         TitleViewItem(
             id = "TITLE_GAME",
             text = translate["title_game"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
         ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_0", height = DP.DP_16))
@@ -76,7 +77,7 @@ class GameHomeViewModel(
         ClickTextViewItem(
             id = Id.GAME,
             text = "${translate["action_play_game"]}"
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary"))),
             textSize = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.MATCH_PARENT
@@ -99,7 +100,7 @@ class GameHomeViewModel(
                 marginHorizontal = DP.DP_4
             ),
             background = Background(
-                strokeColor = theme.colorPrimary,
+                strokeColor = theme.getOrTransparent("colorPrimary"),
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
             ),

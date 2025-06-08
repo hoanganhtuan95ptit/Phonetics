@@ -33,12 +33,15 @@ import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.unknown.size.*
+import com.unknown.size.uitls.exts.getOrZero
 
 class RecordingViewModel(
     private val stopSpeakUseCase: StopSpeakUseCase,
@@ -86,8 +89,8 @@ class RecordingViewModel(
             id = "TITLE",
             text = translate["recording_screen_title"].orEmpty()
                 .replace("\$language_name", languageName)
-                .with(ForegroundColorSpan(theme.colorOnSurfaceVariant))
-                .with(languageName, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurfaceVariant")))
+                .with(languageName, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 20f,
                 textGravity = Gravity.CENTER
@@ -121,7 +124,7 @@ class RecordingViewModel(
 
         val speakState = speakState.value
 
-        val width = (size.width - 2 * DP.DP_24) / 3
+        val width = (size.getOrZero("width") - 2 * DP.DP_24) / 3
 
         val viewItem = ImageStateViewItem(
             id = ID.SPEAK,
@@ -147,7 +150,7 @@ class RecordingViewModel(
             ),
             background = Background(
                 strokeWidth = DP.DP_2,
-                strokeColor = theme.colorPrimary,
+                strokeColor = theme.getOrTransparent("colorPrimary"),
                 cornerRadius = DP.DP_16
             ),
 

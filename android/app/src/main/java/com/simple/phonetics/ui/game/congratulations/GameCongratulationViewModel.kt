@@ -16,6 +16,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.getOrTransparent
 
 class GameCongratulationViewModel : BaseViewModel() {
 
@@ -65,17 +66,17 @@ class GameCongratulationViewModel : BaseViewModel() {
         val info = Info(
             anim = anim,
             title = title
-                .with(ForegroundColorSpan(theme.colorOnSurface)),
+                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
             message = message
                 .replace("\$number", numberStr)
-                .with(ForegroundColorSpan(theme.colorOnSurface))
-                .with(numberStr, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorPrimary)),
+                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
+                .with(numberStr, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary"))),
 
             button = ButtonInfo(
                 text = translate["game_congratulation_screen_action"].orEmpty()
-                    .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnPrimary)),
+                    .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnPrimary"))),
                 background = Background(
-                    backgroundColor = theme.colorPrimary,
+                    backgroundColor = theme.getOrTransparent("colorPrimary"),
                     cornerRadius = DP.DP_350
                 )
             )

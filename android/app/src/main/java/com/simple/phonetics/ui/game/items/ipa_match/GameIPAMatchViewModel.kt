@@ -31,6 +31,7 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.game.items.GameItemViewModel
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
@@ -183,7 +184,7 @@ class GameIPAMatchViewModel(
 
         val isClickable = choose.isNotEmpty() && !choose.any { it == null }
 
-        val textColor = if (isClickable) theme.colorOnPrimary else theme.colorOnSurfaceVariant
+        val textColor = if (isClickable) theme.getOrTransparent("colorOnPrimary") else theme.getOrTransparent("colorOnSurfaceVariant")
 
         val info = ActionInfo(
             text = translate["action_check"].orEmpty()
@@ -192,9 +193,9 @@ class GameIPAMatchViewModel(
 
             background = Background(
                 cornerRadius = DP.DP_16,
-                backgroundColor = if (isClickable) theme.colorPrimary else Color.TRANSPARENT,
+                backgroundColor = if (isClickable) theme.getOrTransparent("colorPrimary") else Color.TRANSPARENT,
                 strokeWidth = (DP.DP_1 + DP.DP_05).toInt(),
-                strokeColor = if (isClickable) theme.colorPrimary else theme.colorOnSurfaceVariant,
+                strokeColor = if (isClickable) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurfaceVariant"),
             )
         )
 

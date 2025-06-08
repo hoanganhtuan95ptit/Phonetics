@@ -38,6 +38,7 @@ import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailAdapters
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.hasInternetConnection
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
@@ -125,7 +126,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             val binding = binding ?: return@observe
 
-            binding.root.setBackgroundColor(it.colorBackground)
+            binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
         }
 
         title.observe(viewLifecycleOwner) {
@@ -159,9 +160,9 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
             sendDeeplink(
                 deepLink = DeeplinkManager.TOAST + "?code:$NOT_INTERNET",
                 extras = mapOf(
-                    com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColorSpan(theme.colorOnErrorVariant)),
+                    com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnErrorVariant"))),
                     com.simple.coreapp.Param.BACKGROUND to Background(
-                        backgroundColor = theme.colorErrorVariant,
+                        backgroundColor = theme.getOrTransparent("colorErrorVariant"),
                         cornerRadius = DP.DP_16,
                     )
                 )

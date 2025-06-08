@@ -29,6 +29,7 @@ import com.simple.phonetics.Constants
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.GetConfigAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.getOrTransparent
 
 class UpdateViewModel(
     private val getConfigAsyncUseCase: GetConfigAsyncUseCase
@@ -76,7 +77,7 @@ class UpdateViewModel(
         NoneTextViewItem(
             id = "2",
             text = translate["update_title"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.colorOnSurface)),
+                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -98,7 +99,7 @@ class UpdateViewModel(
         NoneTextViewItem(
             id = "3",
             text = translate["update_message"].orEmpty()
-                .with(ForegroundColorSpan(theme.colorOnSurface)),
+                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 16f,
                 textGravity = Gravity.CENTER
@@ -134,17 +135,17 @@ class UpdateViewModel(
             viewItemList = viewItemList,
 
             positive = ButtonInfo(
-                text = translate["update_action_positive"].orEmpty().with(ForegroundColorSpan(theme.colorOnPrimary)),
+                text = translate["update_action_positive"].orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnPrimary"))),
                 background = Background(
-                    backgroundColor = theme.colorPrimary,
+                    backgroundColor = theme.getOrTransparent("colorPrimary"),
                     cornerRadius = DP.DP_16
                 )
             ),
             negative = ButtonInfo(
-                text = translate["update_action_negative"].orEmpty().with(ForegroundColorSpan(theme.colorOnSurfaceVariant)),
+                text = translate["update_action_negative"].orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurfaceVariant"))),
                 background = Background(
-                    backgroundColor = theme.colorBackground,
-                    strokeColor = theme.colorOnSurfaceVariant,
+                    backgroundColor = theme.getOrTransparent("colorBackground"),
+                    strokeColor = theme.getOrTransparent("colorOnSurfaceVariant"),
                     strokeWidth = DP.DP_1,
                     cornerRadius = DP.DP_16
                 )

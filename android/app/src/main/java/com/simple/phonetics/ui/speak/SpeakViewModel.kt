@@ -28,6 +28,7 @@ import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
+import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.state.ResultState
@@ -199,15 +200,15 @@ class SpeakViewModel(
         val isCorrect = isCorrect.value == true
 
         val background = Background(
-            strokeColor = if (isCorrect) theme.colorPrimary else theme.colorError,
+            strokeColor = if (isCorrect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorError"),
             strokeWidth = DP.DP_1,
             cornerRadius = DP.DP_8,
-            backgroundColor = if (isCorrect) theme.colorPrimaryVariant else theme.colorErrorVariant
+            backgroundColor = if (isCorrect) theme.getOrTransparent("colorPrimaryVariant") else theme.getOrTransparent("colorErrorVariant")
         )
 
         val info = ResultInfo(
             result = speakResult
-                .with(ForegroundColorSpan(if (isCorrect) theme.colorOnPrimaryVariant else theme.colorOnErrorVariant)),
+                .with(ForegroundColorSpan(if (isCorrect) theme.getOrTransparent("colorOnPrimaryVariant") else theme.getOrTransparent("colorOnErrorVariant"))),
             isShow = speakState.isSuccess(),
             background = background
         )

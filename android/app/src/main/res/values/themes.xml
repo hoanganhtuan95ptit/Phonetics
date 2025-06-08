@@ -1,28 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!--    <style name="Theme.Phonetics.Dark" parent="Theme.Dark">-->
-
-<!--        <item name="colorPrimary">#1ED760</item>-->
-
-<!--        <item name="colorPrimaryVariant">#23342D</item>-->
-<!--        <item name="colorOnPrimaryVariant">#1ED760</item>-->
-
-<!--        <item name="colorOnSurface">#FFFFFF</item>-->
-<!--        <item name="colorSurfaceVariant">#EEEEEE</item>-->
-<!--        <item name="colorOnSurfaceVariant">#B1B1B1</item>-->
-
-<!--        <item name="android:colorBackground">#000000</item>-->
-<!--        <item name="colorOnBackground">#FFFFFF</item>-->
-
-<!--        <item name="colorBackgroundVariant">#252525</item>-->
-<!--        <item name="colorOnBackgroundVariant">#959696</item>-->
-
-<!--        <item name="colorLoading">#959696</item>-->
-<!--        <item name="colorDivider">#B1B1B1</item>-->
-<!--        <item name="colorAccent">#1ED760</item>-->
-<!--    </style>-->
-
     <style name="Theme.Phonetics" parent="Theme.Night">
 
         <item name="colorPrimary">#1ED760</item>
@@ -41,10 +19,19 @@
         <item name="colorBackgroundVariant">#EDEDF8</item>
         <item name="colorOnBackgroundVariant">#5b5b5b</item>
 
-        <item name="colorLoading">#5b5b5b</item>
-        <item name="colorDivider">#B1B1B1</item>
         <item name="colorAccent">#1ED760</item>
+        <item name="colorLoading">#D1D2D4</item>
+        <item name="colorDivider">#B1B1B1</item>
 
-        <item name="colorOnErrorVariant">#000000</item>
+        <item name="colorError">#E9201F</item>
+        <item name="colorOnError">#FFFFFF</item>
+        <item name="colorErrorVariant">#FFDFE2</item>
+        <item name="colorOnErrorVariant">#E9201F</item>
+
+        <item name="colorDiphthongs">#E4B795</item>
+        <item name="colorVowelsLong">#FCE9DA</item>
+        <item name="colorVowelsShort">#FEF3ED</item>
+        <item name="colorConsonantsVoiced">#92B2D8</item>
+        <item name="colorConsonantsUnvoiced">#FCE9DA</item>
     </style>
 </resources>

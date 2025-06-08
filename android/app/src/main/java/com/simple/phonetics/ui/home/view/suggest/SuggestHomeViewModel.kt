@@ -20,6 +20,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.phonetics.suggest.GetPhoneticsSuggestUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.getOrTransparent
 
 class SuggestHomeViewModel(
     private val getPhoneticsSuggestUseCase: GetPhoneticsSuggestUseCase
@@ -51,7 +52,7 @@ class SuggestHomeViewModel(
                 id = Id.SUGGEST + "-" + it.text.lowercase(),
                 data = it,
                 text = it.text
-                    .with(ForegroundColorSpan(theme.colorOnSurface)),
+                    .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
                 textSize = Size(
                     width = ViewGroup.LayoutParams.WRAP_CONTENT,
                     height = ViewGroup.LayoutParams.MATCH_PARENT
@@ -69,7 +70,7 @@ class SuggestHomeViewModel(
                 background = Background(
                     strokeWidth = DP.DP_1,
                     cornerRadius = DP.DP_100,
-                    strokeColor = theme.colorOnBackgroundVariant
+                    strokeColor = theme.getOrTransparent("colorOnBackgroundVariant")
                 )
             )
         }.let {

@@ -23,6 +23,7 @@ import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.entities.Text
+import com.simple.phonetics.utils.exts.getOrTransparent
 import kotlinx.coroutines.launch
 
 class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>() {
@@ -70,7 +71,7 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.root.setBackgroundColor(it.colorBackground)
+            binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
         }
 
         viewModel.updateText(arguments?.getParcelableOrNull<Text>(Param.TEXT))

@@ -25,6 +25,7 @@ import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
+import com.simple.phonetics.utils.exts.getOrTransparent
 
 class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaListViewModel>() {
 
@@ -91,7 +92,7 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
 
             val binding = binding ?: return@observe
 
-            binding.root.setBackgroundColor(it.colorBackground)
+            binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
         }
 
         title.observe(viewLifecycleOwner) {
