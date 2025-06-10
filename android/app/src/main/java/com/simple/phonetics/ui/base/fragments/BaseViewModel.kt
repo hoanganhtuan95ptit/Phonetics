@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.base.fragments
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
@@ -13,9 +12,9 @@ import com.simple.phonetics.domain.usecase.phonetics.code.GetPhoneticCodeSelecte
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Language
-import com.unknown.color.color
+import com.unknown.color.appColor
 import com.unknown.size.appSize
-import com.unknown.string.string
+import com.unknown.string.appString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -33,25 +32,22 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         appSize.collect {
 
-            Log.d("tuanha", "size: $it")
             postDifferentValue(it)
         }
     }
 
     val theme: LiveData<Map<String, Int>> = mediatorLiveData {
 
-        color.collect {
+        appColor.collect {
 
-            Log.d("tuanha", "color: $it")
             postDifferentValue(it)
         }
     }
 
     val translate: LiveData<Map<String, String>> = mediatorLiveData {
 
-        string.collect {
+        appString.collect {
 
-            Log.d("tuanha", "translate: $it")
             postDifferentValue(it)
         }
     }
