@@ -105,6 +105,7 @@ open class RoomWord(
     }
 }
 
+@Deprecated("")
 @Database(entities = [RoomWord::class], version = 1, exportSchema = false)
 abstract class WordRoomDatabase : RoomDatabase() {
 
