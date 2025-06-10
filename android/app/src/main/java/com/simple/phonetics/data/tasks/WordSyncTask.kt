@@ -87,6 +87,7 @@ class WordSyncTask(
 
     /**
      * dồng bộ lịch sử
+     * todo nếu không còn thấy event sync_history thì bỏ qua
      */
     private suspend fun syncHistory(languageCode: String) = runCatching {
 
@@ -97,6 +98,8 @@ class WordSyncTask(
 
         val historyList = historyRepository.get(limit = 100)
         if (historyList.isEmpty()) return@runCatching
+
+        logAnalytics("sync_history")
 
         // đồng bộ history
         val wordDelimiters = getWordDelimiters(languageCode = languageCode)
