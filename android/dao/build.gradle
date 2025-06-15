@@ -44,7 +44,8 @@ dependencies {
 
     implementation koinDependencies.values()
     implementation jacksonDependencies.values()
-    implementation hoanganhtuan95Dependencies.values()
+
+    implementation hoanganhtuan95Dependencies.base
 
     implementation roomDependencies.room_ktx
     implementation roomDependencies.room_runtime

@@ -1,31 +1,31 @@
 package com.simple.phonetics.di
 
-import com.simple.phonetics.domain.usecase.DetectStateUseCase
 import com.simple.phonetics.domain.usecase.GetConfigAsyncUseCase
 import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
 import com.simple.phonetics.domain.usecase.SyncDataUseCase
-import com.simple.phonetics.domain.usecase.translate.TranslateUseCase
+import com.simple.phonetics.domain.usecase.detect.CheckSupportDetectUseCase
+import com.simple.phonetics.domain.usecase.detect.DetectUseCase
 import com.simple.phonetics.domain.usecase.event.GetCurrentEventAsyncUseCase
 import com.simple.phonetics.domain.usecase.event.UpdateEventShowUseCase
 import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputUseCase
-import com.simple.phonetics.domain.usecase.language.output.GetLanguageOutputAsyncUseCase
-import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.UpdateLanguageInputUseCase
-import com.simple.phonetics.domain.usecase.phonetics.code.GetPhoneticCodeSelectedAsyncUseCase
+import com.simple.phonetics.domain.usecase.language.output.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
-import com.simple.phonetics.domain.usecase.phonetics.suggest.GetPhoneticsSuggestUseCase
 import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
+import com.simple.phonetics.domain.usecase.phonetics.code.GetPhoneticCodeSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.code.UpdatePhoneticCodeSelectedUseCase
+import com.simple.phonetics.domain.usecase.phonetics.suggest.GetPhoneticsSuggestUseCase
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
-import com.simple.phonetics.domain.usecase.reading.voice.GetVoiceAsyncUseCase
-import com.simple.phonetics.domain.usecase.reading.voice.selected.GetVoiceIdSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.GetVoiceAsyncUseCase
+import com.simple.phonetics.domain.usecase.reading.voice.selected.GetVoiceIdSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.selected.UpdateVoiceIdSelectedUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.speed.GetVoiceSpeedAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.speed.UpdateVoiceSpeedUseCase
@@ -33,6 +33,8 @@ import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
+import com.simple.phonetics.domain.usecase.translate.CheckSupportTranslateUseCase
+import com.simple.phonetics.domain.usecase.translate.TranslateUseCase
 import com.simple.phonetics.domain.usecase.translate.selected.GetTranslateSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.translate.selected.UpdateTranslateSelectedUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
@@ -47,6 +49,10 @@ val useCaseModule = module {
 
     single {
         TranslateUseCase(get())
+    }
+
+    single {
+        CheckSupportTranslateUseCase(get())
     }
 
     single {
@@ -147,7 +153,11 @@ val useCaseModule = module {
 
 
     single {
-        DetectStateUseCase(getAll())
+        DetectUseCase(get())
+    }
+
+    single {
+        CheckSupportDetectUseCase(get())
     }
 
 
