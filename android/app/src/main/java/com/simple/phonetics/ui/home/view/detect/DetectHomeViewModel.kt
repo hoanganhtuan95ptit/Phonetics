@@ -7,11 +7,11 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
-import com.simple.phonetics.domain.usecase.DetectStateUseCase
+import com.simple.phonetics.domain.usecase.detect.CheckSupportDetectUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 
 class DetectHomeViewModel(
-    private val detectStateUseCase: DetectStateUseCase
+    private val checkSupportDetectUseCase: CheckSupportDetectUseCase
 ) : BaseViewModel() {
 
     @VisibleForTesting
@@ -30,7 +30,7 @@ class DetectHomeViewModel(
             inputLanguage.id
         }
 
-        postDifferentValueIfActive(detectStateUseCase.execute(DetectStateUseCase.Param(languageCode = languageCode)))
+        postDifferentValueIfActive(checkSupportDetectUseCase.execute(CheckSupportDetectUseCase.Param(languageCode = languageCode)))
     }
 
     val detectInfo: LiveData<DetectInfo> = combineSources(isSupportDetect) {

@@ -13,6 +13,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/config" />
             <option value="$PROJECT_DIR$/dao" />
+            <option value="$PROJECT_DIR$/detect" />
+            <option value="$PROJECT_DIR$/translate" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

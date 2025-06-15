@@ -47,7 +47,6 @@ project.ext {
     lottie_version = '4.2.1'
     core_splashscreen_version = '1.1.0-rc01'
     keyboardvisibilityevent_version = '3.0.0-RC3'
-    review_ktx_version = '2.0.1'
     play_services_ads_version = '21.3.0'
     flexbox_version = '3.0.0'
     permissionx_version = '1.7.1'
@@ -56,6 +55,11 @@ project.ext {
     // ===================== Firebase Versions ======================
     firebase_ads_version = '21.1.0'
     firebase_bom_version = '33.1.0'
+
+    // --- ML Kit Versions ---
+    mlkit_translate_version = '17.0.2'
+    mlkit_language_id_version = '17.0.5'
+    mlkit_text_recognition_version = '16.0.0'
 
     // ===================== Dependency Groups =====================
     koinDependencies = [
@@ -110,18 +114,30 @@ project.ext {
     ]
 
     playDependencies = [
-            review: "com.google.android.play:review-ktx:$review_ktx_version",
+            core  : "com.google.android.play:feature-delivery-ktx:2.1.0",
+            review: "com.google.android.play:review-ktx:2.0.1",
             update: "com.google.android.play:app-update-ktx:2.0.0",
     ]
 
+    // --- ML Kit ---
+    mlkitDependencies = [
+            translate                  : "com.google.mlkit:translate:$mlkit_translate_version",
+            language_id                : "com.google.mlkit:language-id:$mlkit_language_id_version",
+            text_recognition           : "com.google.mlkit:text-recognition:$mlkit_text_recognition_version",
+            text_recognition_chinese   : "com.google.mlkit:text-recognition-chinese:$mlkit_text_recognition_version",
+            text_recognition_devanagari: "com.google.mlkit:text-recognition-devanagari:$mlkit_text_recognition_version",
+            text_recognition_japanese  : "com.google.mlkit:text-recognition-japanese:$mlkit_text_recognition_version",
+            text_recognition_korean    : "com.google.mlkit:text-recognition-korean:$mlkit_text_recognition_version"
+    ]
+
     firebaseDependencies = [
-            bom         : "com.google.firebase:firebase-bom:$firebase_bom_version",
-            config      : 'com.google.firebase:firebase-config',
-            analytics   : 'com.google.firebase:firebase-analytics',
-            crashlytics : 'com.google.firebase:firebase-crashlytics',
-            perf        : 'com.google.firebase:firebase-perf',
-            perf_ktx    : 'com.google.firebase:firebase-perf-ktx',
-            ads         : "com.google.firebase:firebase-ads:$firebase_ads_version",
+            bom        : "com.google.firebase:firebase-bom:$firebase_bom_version",
+            config     : 'com.google.firebase:firebase-config',
+            analytics  : 'com.google.firebase:firebase-analytics',
+            crashlytics: 'com.google.firebase:firebase-crashlytics',
+            perf       : 'com.google.firebase:firebase-perf',
+            perf_ktx   : 'com.google.firebase:firebase-perf-ktx',
+            ads        : "com.google.firebase:firebase-ads:$firebase_ads_version",
     ]
 
     coroutinesDependencies = [

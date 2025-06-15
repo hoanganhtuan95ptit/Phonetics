@@ -33,7 +33,7 @@ import com.simple.phonetics.domain.usecase.reading.voice.selected.GetVoiceIdSele
 import com.simple.phonetics.domain.usecase.reading.voice.selected.UpdateVoiceIdSelectedUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.speed.GetVoiceSpeedAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.speed.UpdateVoiceSpeedUseCase
-import com.simple.phonetics.domain.usecase.translate.TranslateUseCase
+import com.simple.phonetics.domain.usecase.translate.CheckSupportTranslateUseCase
 import com.simple.phonetics.domain.usecase.translate.selected.GetTranslateSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.translate.selected.UpdateTranslateSelectedUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -44,11 +44,10 @@ import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isFailed
 import com.simple.state.isStart
-import com.simple.state.toSuccess
 import kotlinx.coroutines.flow.first
 
 class ConfigViewModel(
-    private val translateUseCase: TranslateUseCase,
+    private val checkSupportTranslateUseCase: CheckSupportTranslateUseCase,
     private val updateTranslateSelectedUseCase: UpdateTranslateSelectedUseCase,
     private val getTranslateSelectedAsyncUseCase: GetTranslateSelectedAsyncUseCase,
 
@@ -108,9 +107,9 @@ class ConfigViewModel(
         val inputLanguageCode = inputLanguage.get().id
         val outputLanguageCode = outputLanguage.get().id
 
-        translateUseCase.execute(TranslateUseCase.Param(listOf("hello"), inputLanguageCode, outputLanguageCode)).let { state ->
+        checkSupportTranslateUseCase.execute(CheckSupportTranslateUseCase.Param(inputLanguageCode = inputLanguageCode, outputLanguageCode = outputLanguageCode)).let { state ->
 
-            state.toSuccess()?.data?.firstOrNull()?.translateState?.doSuccess {
+            state.doSuccess {
 
                 postValue(ResultState.Success(true))
             }

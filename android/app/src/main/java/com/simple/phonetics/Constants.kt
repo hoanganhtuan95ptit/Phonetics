@@ -104,6 +104,13 @@ object EventName {
     const val MICROPHONE = "MICROPHONE"
 }
 
+object Module {
+
+    val MLKIT by lazy {
+        "mlkit" to "com.unknown.mlkit.MlkitInitializer"
+    }
+}
+
 object Id {
 
     const val IPA = "IPA"

@@ -14,12 +14,6 @@ interface AppRepository {
     @Deprecated("remove")
     suspend fun getAllTranslateOld(): List<KeyTranslate>
 
-    @Deprecated("remove")
-    suspend fun getKeyTranslate(langCode: String): List<KeyTranslate>
-
-    @Deprecated("remove")
-    suspend fun getKeyTranslateAsync(langCode: String): Flow<List<KeyTranslate>>
-
 
     suspend fun syncTranslate(languageCode: String): Map<String, String>
 
@@ -29,11 +23,18 @@ interface AppRepository {
 
     suspend fun getCountTranslate(): Int
 
-
     suspend fun getKeyTranslateDefault(): Map<String, String>
 
 
+    suspend fun initModuleSync(pair: Pair<String, String>): ResultState<Unit>
+
+    suspend fun detect(languageCodeInput: String, languageCodeOutput: String, path: String): ResultState<String>
+
+    suspend fun checkDetect(languageCodeInput: String, languageCodeOutput: String): Boolean
+
     suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>>
+
+    suspend fun checkTranslate(languageCodeInput: String, languageCodeOutput: String): ResultState<Boolean>
 
 
     suspend fun syncConfigs(): Map<String, String>

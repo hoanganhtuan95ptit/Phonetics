@@ -2,6 +2,7 @@ package com.simple.phonetics
 
 import android.app.Application
 import android.content.Context
+import com.google.android.play.core.splitcompat.SplitCompat
 import com.simple.phonetics.di.apiModule
 import com.simple.phonetics.di.cacheModule
 import com.simple.phonetics.di.daoModule
@@ -18,6 +19,8 @@ class PhoneticsApp : Application() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
+
+        SplitCompat.install(this)
 
         share = this
 
