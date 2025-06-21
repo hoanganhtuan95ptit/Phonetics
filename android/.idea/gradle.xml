@@ -13,8 +13,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/config" />
             <option value="$PROJECT_DIR$/dao" />
-            <option value="$PROJECT_DIR$/detect" />
-            <option value="$PROJECT_DIR$/translate" />
+            <option value="$PROJECT_DIR$/dynamic_feature" />
+            <option value="$PROJECT_DIR$/dynamic_feature/mlkit" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

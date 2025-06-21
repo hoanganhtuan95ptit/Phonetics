@@ -32,7 +32,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         appSize.collect {
 
-            postDifferentValue(it)
+            postDifferentValue(it.toMutableMap())
         }
     }
 
@@ -40,7 +40,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         appColor.collect {
 
-            postDifferentValue(it)
+            postDifferentValue(it.toMutableMap())
         }
     }
 
@@ -48,7 +48,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         appString.collect {
 
-            postDifferentValue(it)
+            postDifferentValue(it.toMutableMap())
         }
     }
 
