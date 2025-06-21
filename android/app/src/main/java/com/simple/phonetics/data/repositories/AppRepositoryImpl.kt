@@ -1,7 +1,6 @@
 package com.simple.phonetics.data.repositories
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
@@ -149,8 +148,6 @@ class AppRepositoryImpl(
 
         val listener = SplitInstallStateUpdatedListener { state ->
 
-
-            Log.d("tuanha", "downloadModuleSync: $moduleName ${state.status()}")
             when (state.status()) {
 
                 SplitInstallSessionStatus.INSTALLED -> {
@@ -160,7 +157,7 @@ class AppRepositoryImpl(
 
                 SplitInstallSessionStatus.FAILED -> {
 
-                    trySend(ResultState.Failed(RuntimeException("")))
+                    trySend(ResultState.Failed(RuntimeException("$moduleName:${state.errorCode()}")))
                 }
 
                 else -> {
@@ -171,12 +168,8 @@ class AppRepositoryImpl(
 
         splitInstallManager.registerListener(listener)
 
-        splitInstallManager.startInstall(request).addOnCompleteListener {
+        splitInstallManager.startInstall(request).addOnFailureListener {
 
-            Log.d("tuanha", "addOnCompleteListener: $moduleName")
-        }.addOnFailureListener {
-
-            Log.d("tuanha", "addOnFailureListener: $moduleName", it)
             trySend(ResultState.Failed(it))
         }
 
