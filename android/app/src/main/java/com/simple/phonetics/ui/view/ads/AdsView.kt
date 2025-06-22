@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.view.ads
 
 import androidx.lifecycle.asFlow
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -11,12 +12,15 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.auto.service.AutoService
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.toJson
+import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.view.MainView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -27,9 +31,12 @@ class AdsView : MainView {
 
         val adsViewModel by activity.viewModel<AdsViewModel>()
 
-        MobileAds.initialize(activity) { initializationStatus ->
+        activity.lifecycleScope.launch(handler + Dispatchers.IO) {
 
-            logAnalytics("onAdInitialize ${initializationStatus.adapterStatusMap.toList().sortedBy { it.first }.toMap().toJson()}")
+            MobileAds.initialize(activity) { initializationStatus ->
+
+                logAnalytics("onAdInitialize ${initializationStatus.adapterStatusMap.toList().sortedBy { it.first }.toMap().toJson()}")
+            }
         }
 
         adsViewModel.show.asFlow().launchCollect(activity) {

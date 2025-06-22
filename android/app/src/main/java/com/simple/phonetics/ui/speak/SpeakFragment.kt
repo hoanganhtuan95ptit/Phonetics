@@ -249,8 +249,8 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
         if (voiceState.isRunning()) {
 
-            viewModel.stopListen()
-        } else if (voiceState == null || voiceState.isCompleted()) viewModel.startListen(
+            viewModel.stopReading()
+        } else if (voiceState == null || voiceState.isCompleted()) viewModel.startReading(
             text = text
         )
     }

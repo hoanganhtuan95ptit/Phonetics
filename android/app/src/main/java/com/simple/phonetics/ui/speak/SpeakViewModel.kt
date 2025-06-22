@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.speak
 
-import android.text.style.ForegroundColorSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -23,6 +22,7 @@ import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.R
+import com.simple.phonetics.SpeakState
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
@@ -41,6 +41,7 @@ import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.simple.state.isSuccess
+import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -191,15 +192,25 @@ class SpeakViewModel(
     }
     val isCorrectEvent: LiveData<Event<Boolean>> = isCorrect.toEvent()
 
-    val resultInfo: LiveData<ResultInfo> = listenerSources(size, theme, translate, isCorrect, speakState) {
+
+    val resultInfo: LiveData<ResultInfo> = listenerSources(theme, translate, text, speakState) {
 
         val theme = theme.value ?: return@listenerSources
 
+        val text = text.value ?: return@listenerSources
+
         val speakState = speakState.value
 
-        val speakResult = speakState?.toSuccess()?.data.orEmpty()
+        val speakResult = speakState?.toRunning()?.data
+            ?: speakState?.toSuccess()?.data.orEmpty()
 
-        val isCorrect = isCorrect.value == true
+        if (speakResult in SpeakState.stateList) {
+
+            return@listenerSources
+        }
+
+
+        val isCorrect = speakResult.equals(text, true)
 
         val background = Background(
             strokeColor = if (isCorrect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorError"),
@@ -211,7 +222,7 @@ class SpeakViewModel(
         val info = ResultInfo(
             result = speakResult
                 .with(ForegroundColor(if (isCorrect) theme.getOrTransparent("colorOnPrimaryVariant") else theme.getOrTransparent("colorOnErrorVariant"))),
-            isShow = speakState.isSuccess(),
+            isShow = speakResult.isNotBlank(),
             background = background
         )
 
@@ -224,7 +235,7 @@ class SpeakViewModel(
         text.postDifferentValue(it)
     }
 
-    fun startListen(text: String? = null) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startReading(text: String? = null) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val param = StartReadingUseCase.Param(
             text = text ?: this@SpeakViewModel.text.value.orEmpty()
@@ -247,7 +258,7 @@ class SpeakViewModel(
         }
     }
 
-    fun stopListen() = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun stopReading() = viewModelScope.launch(handler + Dispatchers.IO) {
 
         stopReadingUseCase.execute()
     }
