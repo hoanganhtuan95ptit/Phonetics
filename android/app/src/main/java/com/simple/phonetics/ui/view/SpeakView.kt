@@ -18,7 +18,6 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.SpeakState
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.state.ResultState
 import java.util.Locale
 
@@ -70,6 +69,10 @@ class SpeakView : MainView {
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, languageWrap)
+            intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 1500)
+            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1000) // 1 giây im lặng
+            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1000)
             speechRecognizer?.startListening(intent)
         }
 
@@ -104,6 +107,8 @@ class SpeakView : MainView {
 
         speechRecognizer?.setRecognitionListener(object : RecognitionListener {
 
+            var text = ""
+
             override fun onReadyForSpeech(params: Bundle) {
                 // Sẵn sàng nhận dạng giọng nói
 
@@ -114,6 +119,7 @@ class SpeakView : MainView {
             override fun onBeginningOfSpeech() {
                 // Người dùng bắt đầu nói
 
+                text = ""
 //                Log.d("tuanha", "onBeginningOfSpeech: ")
                 sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Running(SpeakState.RECORD_START))
             }
@@ -141,18 +147,18 @@ class SpeakView : MainView {
             }
 
             override fun onResults(results: Bundle) {
+
                 // Kết quả nhận dạng giọng nói
-
-                val matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-
-                if (matches != null) {
-//                    Log.d("tuanha", "onResults: ${matches.toList()}")
-                    sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Success(matches[0]))
-                }
+                sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Success(text))
             }
 
             override fun onPartialResults(partialResults: Bundle) {
+
                 // Kết quả nhận dạng phần nào
+                val result = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.getOrNull(0) ?: return
+
+                text = result
+                sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Running(result))
             }
 
             override fun onEvent(eventType: Int, params: Bundle) {

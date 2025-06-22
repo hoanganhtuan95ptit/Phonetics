@@ -138,9 +138,11 @@ object Config {
 
 object SpeakState {
 
-    const val READY = "READY"
-    const val RECORD_END = "RECORD_END"
-    const val RECORD_START = "RECORD_START"
+    const val READY = "SPEAK_STATE_READY"
+    const val RECORD_END = "SPEAK_STATE_RECORD_END"
+    const val RECORD_START = "SPEAK_STATE_RECORD_START"
+
+    val stateList = listOf(READY, RECORD_END, RECORD_START)
 }
 
 object ErrorCode {
