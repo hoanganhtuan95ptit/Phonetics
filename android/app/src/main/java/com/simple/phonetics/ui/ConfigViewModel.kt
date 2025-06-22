@@ -1,9 +1,7 @@
 package com.simple.phonetics.ui
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -17,7 +15,11 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
+import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
@@ -85,7 +87,7 @@ class ConfigViewModel(
             createOptionViewItem(
                 id = Id.IPA + "_" + it.code,
                 data = it.code to isSelect,
-                text = ipaName.with(ForegroundColorSpan(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"))),
+                text = ipaName.with(ForegroundColor(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"))),
                 strokeColor = if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"),
                 backgroundColor = if (isSelect) theme.getOrTransparent("colorPrimaryVariant") else Color.TRANSPARENT
             )
@@ -182,7 +184,7 @@ class ConfigViewModel(
         createOptionViewItem(
             id = "$TRANSLATE-$id",
             data = id to isSelect,
-            text = text.orEmpty().with(ForegroundColorSpan(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"))),
+            text = text.orEmpty().with(ForegroundColor(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"))),
             strokeColor = if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"),
             backgroundColor = if (isSelect) theme.getOrTransparent("colorPrimaryVariant") else Color.TRANSPARENT
         ).let {
@@ -298,7 +300,7 @@ class ConfigViewModel(
                 data = voice to isSelect,
                 text = translate["voice_index"].orEmpty()
                     .replace("\$index", "$index")
-                    .with(ForegroundColorSpan(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"))),
+                    .with(ForegroundColor(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"))),
                 strokeColor = if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"),
                 backgroundColor = if (isSelect) theme.getOrTransparent("colorPrimaryVariant") else Color.TRANSPARENT
             )
@@ -323,7 +325,7 @@ class ConfigViewModel(
 
             createOptionViewItem(
                 id = "LIST_PHONE_VIEW_ITEM",
-                text = it.text.with(ForegroundColorSpan(textColor)),
+                text = it.text.with(ForegroundColor(textColor)),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -336,7 +338,7 @@ class ConfigViewModel(
 
             createOptionViewItem(
                 id = "LIST_TRANSLATE_VIEW_ITEM",
-                text = it.text.with(ForegroundColorSpan(textColor)),
+                text = it.text.with(ForegroundColor(textColor)),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -349,7 +351,7 @@ class ConfigViewModel(
 
             createOptionViewItem(
                 id = "LIST_VOICE_SPEED_VIEW_ITEM",
-                text = it.text.with(ForegroundColorSpan(textColor)),
+                text = it.text.with(ForegroundColor(textColor)),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -362,7 +364,7 @@ class ConfigViewModel(
 
             createOptionViewItem(
                 id = "LIST_VOICE_VIEW_ITEM",
-                text = it.text.with(ForegroundColorSpan(textColor)),
+                text = it.text.with(ForegroundColor(textColor)),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -386,7 +388,7 @@ class ConfigViewModel(
 
             val text = translate["title_phonetic"].orEmpty()
 
-            list.add(createTitleTextView(id = "TITLE_PHONETIC", text = text.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))))
+            list.add(createTitleTextView(id = "TITLE_PHONETIC", text = text.with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))))
 
             list.addAll(it)
         }
@@ -395,7 +397,7 @@ class ConfigViewModel(
 
             val text = translate["title_translate"].orEmpty()
 
-            list.add(createTitleTextView(id = "TITLE_TRANSLATE", text = text.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))))
+            list.add(createTitleTextView(id = "TITLE_TRANSLATE", text = text.with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))))
 
             list.addAll(it)
         }
@@ -404,7 +406,7 @@ class ConfigViewModel(
 
             val text = translate["title_voice_speed"].orEmpty()
 
-            list.add(createTitleTextView(id = "TITLE_VOICE_SPEED", text = text.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))))
+            list.add(createTitleTextView(id = "TITLE_VOICE_SPEED", text = text.with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))))
 
             list.addAll(it)
         }
@@ -413,7 +415,7 @@ class ConfigViewModel(
 
             val text = translate["title_voice"].orEmpty()
 
-            list.add(createTitleTextView(id = "TITLE_VOICE", text = text.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))))
+            list.add(createTitleTextView(id = "TITLE_VOICE", text = text.with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))))
 
             list.addAll(it)
         }
@@ -454,10 +456,10 @@ class ConfigViewModel(
 
     private fun createTitleTextView(
         id: String,
-        text: CharSequence
+        text: RichText
     ) = NoneTextViewItem(
         id = id,
-        text = text.with(StyleSpan(Typeface.BOLD)),
+        text = text.with(Bold),
         textStyle = TextStyle(
             textSize = 16f
         ),
@@ -474,7 +476,7 @@ class ConfigViewModel(
     private fun createOptionViewItem(
         id: String,
 
-        text: CharSequence,
+        text: RichText,
 
         data: Any? = null,
 

@@ -1,9 +1,8 @@
 package com.simple.phonetics.ui.game
 
-import android.graphics.Typeface
-import android.text.style.StyleSpan
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
@@ -30,7 +29,7 @@ class GameViewModel : BaseViewModel() {
 
         val title = if (text.text.isNotEmpty()) {
             (translate["game_screen_title"].orEmpty() + " " + text.text)
-                .with(text.text, StyleSpan(Typeface.BOLD), RoundedBackgroundSpan(backgroundColor = theme.getOrTransparent("colorErrorVariant"), textColor = theme.getOrTransparent("colorOnErrorVariant")))
+                .with(text.text, Bold, RoundedBackgroundSpan(backgroundColor = theme.getOrTransparent("colorErrorVariant"), textColor = theme.getOrTransparent("colorOnErrorVariant")))
         } else {
             translate["game_screen_title"].orEmpty()
         }

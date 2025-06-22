@@ -1,8 +1,5 @@
 package com.simple.phonetics.ui.review
 
-import android.graphics.Typeface
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -15,23 +12,22 @@ import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.toEvent
-import com.simple.phonetics.Config.RATE_DEBUG
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
 import kotlinx.coroutines.flow.firstOrNull
-import java.util.Calendar
-import kotlin.math.absoluteValue
 
 class ReviewViewModel(
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
@@ -55,14 +51,14 @@ class ReviewViewModel(
         val rate = rate.value ?: return@combineSources
         val historyList = historyList.value ?: return@combineSources
 
-        val isValidate = rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3
-
-        // nếu người dùng đã xác nhận mở rate
-        if (!RATE_DEBUG) if (rate.status == Rate.Status.OPEN_RATE.value || !isValidate || historyList.isEmpty()) {
-
-            postDifferentValue(emptyList())
-            return@combineSources
-        }
+//        val isValidate = rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3
+//
+//        // nếu người dùng đã xác nhận mở rate
+//        if (!RATE_DEBUG) if (rate.status == Rate.Status.OPEN_RATE.value || !isValidate || historyList.isEmpty()) {
+//
+//            postDifferentValue(emptyList())
+//            return@combineSources
+//        }
 
 
         val list = arrayListOf<ViewItem>()
@@ -83,7 +79,7 @@ class ReviewViewModel(
         NoneTextViewItem(
             id = "2",
             text = translate["rate_title"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -105,7 +101,7 @@ class ReviewViewModel(
         NoneTextViewItem(
             id = "3",
             text = translate["rate_message"].orEmpty()
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 16f,
                 textGravity = Gravity.CENTER
@@ -141,14 +137,14 @@ class ReviewViewModel(
             viewItemList = viewItemList,
 
             positive = ButtonInfo(
-                text = translate["rate_action_positive"].orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnPrimary"))),
+                text = translate["rate_action_positive"].orEmpty().with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
                 background = Background(
                     backgroundColor = theme.getOrTransparent("colorPrimary"),
                     cornerRadius = DP.DP_16
                 )
             ),
             negative = ButtonInfo(
-                text = translate["rate_action_negative"].orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurfaceVariant"))),
+                text = translate["rate_action_negative"].orEmpty().with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant"))),
                 background = Background(
                     backgroundColor = theme.getOrTransparent("colorBackground"),
                     strokeColor = theme.getOrTransparent("colorOnSurfaceVariant"),

@@ -8,11 +8,14 @@ import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
+import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.emptyText
+import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.Payload
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.ItemIpaDetailBinding
-import com.simple.dao.entities.Ipa
 
 @ItemAdapter
 class IpaDetailAdapters(onItemClick: (View, IpaDetailViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<IpaDetailViewItem, ItemIpaDetailBinding>(onItemClick) {
@@ -45,7 +48,7 @@ class IpaDetailAdapters(onItemClick: (View, IpaDetailViewItem) -> Unit = { _, _ 
     }
 
     private fun refreshIpa(binding: ItemIpaDetailBinding, item: IpaDetailViewItem) {
-        binding.tvIpa.text = item.ipa
+        binding.tvIpa.setText(item.ipa)
     }
 
     private fun refreshImage(binding: ItemIpaDetailBinding, item: IpaDetailViewItem) {
@@ -66,7 +69,7 @@ data class IpaDetailViewItem(
 
     val data: Ipa,
 
-    val ipa: CharSequence = "",
+    val ipa: RichText = emptyText(),
 
     val image: Int = R.drawable.img_volume,
     val isShowLoading: Boolean = false,

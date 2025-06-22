@@ -14,8 +14,11 @@ import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
@@ -77,7 +80,7 @@ class UpdateViewModel(
         NoneTextViewItem(
             id = "2",
             text = translate["update_title"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -99,7 +102,7 @@ class UpdateViewModel(
         NoneTextViewItem(
             id = "3",
             text = translate["update_message"].orEmpty()
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 16f,
                 textGravity = Gravity.CENTER
@@ -135,14 +138,14 @@ class UpdateViewModel(
             viewItemList = viewItemList,
 
             positive = ButtonInfo(
-                text = translate["update_action_positive"].orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnPrimary"))),
+                text = translate["update_action_positive"].orEmpty().with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
                 background = Background(
                     backgroundColor = theme.getOrTransparent("colorPrimary"),
                     cornerRadius = DP.DP_16
                 )
             ),
             negative = ButtonInfo(
-                text = translate["update_action_negative"].orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurfaceVariant"))),
+                text = translate["update_action_negative"].orEmpty().with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant"))),
                 background = Background(
                     backgroundColor = theme.getOrTransparent("colorBackground"),
                     strokeColor = theme.getOrTransparent("colorOnSurfaceVariant"),

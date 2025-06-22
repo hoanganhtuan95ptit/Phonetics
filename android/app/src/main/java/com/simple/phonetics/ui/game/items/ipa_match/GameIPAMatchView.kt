@@ -15,8 +15,11 @@ import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.R
 import com.simple.phonetics.entities.Phonetic
@@ -55,7 +58,7 @@ fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Int>, transl
     NoneTextViewItem(
         id = "2",
         text = title.orEmpty()
-            .with(ForegroundColorSpan(textColor)),
+            .with(ForegroundColor(textColor)),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
         ),
@@ -74,7 +77,7 @@ fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Int>, transl
     NoneTextViewItem(
         id = "3",
         text = message.orEmpty()
-            .with(ForegroundColorSpan(textColor)),
+            .with(ForegroundColor(textColor)),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
         ),
@@ -99,7 +102,7 @@ fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Int>, transl
 
     val positive = ButtonInfo(
         text = buttonText.orEmpty()
-            .with(ForegroundColorSpan(theme.getOrTransparent("colorOnPrimary"))),
+            .with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
@@ -165,7 +168,7 @@ fun getIPAMatchQuestionViewItem(
     TitleViewItem(
         id = "TITLE",
         text = translate["game_ipa_match_screen_title"].orEmpty()
-            .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+            .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
@@ -210,7 +213,7 @@ fun getIPAMatchOptionViewItem(
     TitleViewItem(
         id = "TITLE_OPTION_CHO0SE",
         text = translate["game_ipa_match_screen_title_choose"].orEmpty()
-            .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+            .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
@@ -312,7 +315,7 @@ private fun OptionTextViewItem(
         data = data,
 
         text = text.orEmpty()
-            .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+            .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
         textStyle = TextStyle(
             textSize = 16f,
             textGravity = Gravity.CENTER

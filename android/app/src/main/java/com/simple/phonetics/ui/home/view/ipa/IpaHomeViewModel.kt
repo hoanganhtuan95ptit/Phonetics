@@ -16,7 +16,10 @@ import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
@@ -31,7 +34,6 @@ import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
-import com.unknown.size.*
 import com.unknown.size.uitls.exts.getOrZero
 
 class IpaHomeViewModel(
@@ -70,7 +72,7 @@ class IpaHomeViewModel(
         if (ipaList.isNotEmpty()) TitleViewItem(
             id = "TITLE_IPA",
             text = translate["title_ipa"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textSize = 20f,
         ).let {
 
@@ -86,8 +88,10 @@ class IpaHomeViewModel(
 
                 data = it,
 
-                ipa = it.ipa.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
-                text = it.examples.firstOrNull().orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                ipa = it.ipa
+                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                text = it.examples.firstOrNull().orEmpty()
+                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
 
                 size = Size(
                     width = (size.getOrZero("width") - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
@@ -109,7 +113,7 @@ class IpaHomeViewModel(
         if (ipaList.isNotEmpty()) ClickTextViewItem(
             id = Id.IPA_LIST,
             text = translate["action_view_all_ipa"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary"))),
+                .with(Bold, ForegroundColor(theme.getOrTransparent("colorPrimary"))),
             textSize = Size(
                 height = DP.DP_76,
                 width = ViewGroup.LayoutParams.WRAP_CONTENT

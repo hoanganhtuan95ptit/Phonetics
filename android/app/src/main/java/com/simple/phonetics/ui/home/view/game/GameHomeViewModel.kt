@@ -17,7 +17,10 @@ import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
@@ -66,7 +69,7 @@ class GameHomeViewModel(
         TitleViewItem(
             id = "TITLE_GAME",
             text = translate["title_game"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
         ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_0", height = DP.DP_16))
@@ -77,7 +80,7 @@ class GameHomeViewModel(
         ClickTextViewItem(
             id = Id.GAME,
             text = "${translate["action_play_game"]}"
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary"))),
+                .with(Bold, ForegroundColor(theme.getOrTransparent("colorPrimary"))),
             textSize = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.MATCH_PARENT

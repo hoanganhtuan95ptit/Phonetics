@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.language
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
-import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
@@ -13,11 +12,13 @@ import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.awaitResumed
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
+import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.with
 import com.simple.deeplink.DeeplinkHandler
@@ -112,15 +113,15 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.frameHeader.tvTitle.text = it.title
-            binding.frameHeader.tvMessage.text = it.message
+            binding.frameHeader.tvTitle.setText(it.title)
+            binding.frameHeader.tvMessage.setText(it.message)
         }
 
         buttonInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON_INFO") {
 
             val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
 
-            binding.btnConfirm.text = it.text
+            binding.btnConfirm.setText(it.text)
             binding.progress.setVisible(it.isShowLoading)
 
             binding.root.isClickable = it.isClickable
@@ -183,7 +184,7 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
         }
 
         val extras = mapOf(
-            com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnErrorVariant"))),
+            com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColor(theme.getOrTransparent("colorOnErrorVariant"))),
             com.simple.coreapp.Param.BACKGROUND to Background(
                 backgroundColor = theme.getOrTransparent("colorErrorVariant"),
                 cornerRadius = DP.DP_16,

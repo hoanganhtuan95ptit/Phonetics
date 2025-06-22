@@ -1,14 +1,14 @@
 package com.simple.phonetics.ui.home.view.history
 
-import android.graphics.Typeface
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
@@ -60,7 +60,7 @@ class HistoryHomeViewModel(
         if (historyList.isNotEmpty()) TitleViewItem(
             id = "TITLE_HISTORY",
             text = translate["title_history"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with("test", Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
         ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY_0", height = DP.DP_16))
@@ -72,7 +72,7 @@ class HistoryHomeViewModel(
 
             HistoryViewItem(
                 id = sentence.text,
-                text = sentence.text.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                text = sentence.text.with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             )
         }.let {
 

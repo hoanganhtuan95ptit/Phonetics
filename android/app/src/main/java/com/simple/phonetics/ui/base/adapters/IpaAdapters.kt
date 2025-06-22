@@ -16,12 +16,14 @@ import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setSize
+import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.coreapp.utils.ext.setText
+import com.simple.dao.entities.Ipa
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemIpaBinding
-import com.simple.dao.entities.Ipa
 
 @ItemAdapter
 class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null) : ViewItemAdapter<IpaViewItem, ItemIpaBinding>() {
@@ -55,8 +57,9 @@ class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null
         super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         if (payloads.contains(PAYLOAD_IPA)) refreshIpa(binding, item)
-        if (payloads.contains(Payload.SIZE)) refreshSize(binding, item)
         if (payloads.contains(PAYLOAD_TEXT)) refreshText(binding, item)
+
+        if (payloads.contains(Payload.SIZE)) refreshSize(binding, item)
         if (payloads.contains(Payload.MARGIN)) refreshMargin(binding, item)
         if (payloads.contains(Payload.BACKGROUND)) refreshBackground(binding, item)
     }
@@ -67,14 +70,15 @@ class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null
         binding.root.transitionName = item.id
 
         refreshIpa(binding, item)
-        refreshSize(binding, item)
         refreshText(binding, item)
+
+        refreshSize(binding, item)
         refreshMargin(binding, item)
         refreshBackground(binding, item)
     }
 
     private fun refreshIpa(binding: ItemIpaBinding, item: IpaViewItem) {
-        binding.tvIpa.text = item.ipa
+        binding.tvIpa.setText(item.ipa)
     }
 
     private fun refreshSize(binding: ItemIpaBinding, item: IpaViewItem) {
@@ -82,7 +86,7 @@ class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null
     }
 
     private fun refreshText(binding: ItemIpaBinding, item: IpaViewItem) {
-        binding.tvWord.text = item.text
+        binding.tvWord.setText(item.text)
     }
 
     private fun refreshMargin(binding: ItemIpaBinding, item: IpaViewItem) {
@@ -99,8 +103,8 @@ data class IpaViewItem(
 
     val data: Ipa,
 
-    val ipa: CharSequence = "",
-    val text: CharSequence = "",
+    val ipa: RichText = RichText(""),
+    val text: RichText = RichText(""),
 
     val size: Size = DEFAULT_SIZE,
     val margin: Margin = DEFAULT_MARGIN,

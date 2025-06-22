@@ -15,7 +15,9 @@ import com.simple.analytics.logAnalytics
 import com.simple.core.utils.AppException
 import com.simple.core.utils.extentions.toArrayList
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
@@ -188,7 +190,7 @@ class GameIPAMatchViewModel(
 
         val info = ActionInfo(
             text = translate["action_check"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(textColor)),
+                .with(Bold, ForegroundColor(textColor)),
             isClickable = isClickable,
 
             background = Background(

@@ -15,6 +15,7 @@ import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getParcelableOrNull
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
@@ -160,7 +161,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
             sendDeeplink(
                 deepLink = DeeplinkManager.TOAST + "?code:$NOT_INTERNET",
                 extras = mapOf(
-                    com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnErrorVariant"))),
+                    com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColor(theme.getOrTransparent("colorOnErrorVariant"))),
                     com.simple.coreapp.Param.BACKGROUND to Background(
                         backgroundColor = theme.getOrTransparent("colorErrorVariant"),
                         cornerRadius = DP.DP_16,

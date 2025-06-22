@@ -1,14 +1,16 @@
 package com.simple.phonetics.ui.game.congratulations
 
-import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
+import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
@@ -66,15 +68,15 @@ class GameCongratulationViewModel : BaseViewModel() {
         val info = Info(
             anim = anim,
             title = title
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             message = message
                 .replace("\$number", numberStr)
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
-                .with(numberStr, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary"))),
+                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+                .with(numberStr, Bold, ForegroundColor(theme.getOrTransparent("colorPrimary"))),
 
             button = ButtonInfo(
                 text = translate["game_congratulation_screen_action"].orEmpty()
-                    .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnPrimary"))),
+                    .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
                 background = Background(
                     backgroundColor = theme.getOrTransparent("colorPrimary"),
                     cornerRadius = DP.DP_350
@@ -93,8 +95,8 @@ class GameCongratulationViewModel : BaseViewModel() {
     data class Info(
         val anim: Int,
 
-        val title: CharSequence,
-        val message: CharSequence,
+        val title: RichText,
+        val message: RichText,
 
         val button: ButtonInfo
     )

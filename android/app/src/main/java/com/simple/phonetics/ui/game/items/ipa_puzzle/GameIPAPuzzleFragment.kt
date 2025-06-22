@@ -15,6 +15,7 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.updateMargin
 import com.simple.crashlytics.logCrashlytics
@@ -132,7 +133,7 @@ class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
 
             val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
 
-            binding.btnConfirm.text = it.text
+            binding.btnConfirm.setText(it.text)
 
             binding.root.isClickable = it.isClickable
             binding.root.delegate.setBackground(it.background)

@@ -110,6 +110,8 @@ dependencies {
     implementation hoanganhtuan95Dependencies.deeplink
     kapt hoanganhtuan95Dependencies.deeplink_processor
 
+    kapt googleDependencies.auto_service
+
     // Firebase BOM
     implementation platform(firebaseDependencies.bom)
     implementation firebaseDependencies.ads

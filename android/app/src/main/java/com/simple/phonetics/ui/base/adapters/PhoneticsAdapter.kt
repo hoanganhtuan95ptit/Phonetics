@@ -9,6 +9,9 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.DEFAULT_PADDING
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.setPadding
+import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.emptyText
+import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
@@ -45,11 +48,11 @@ class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null)
     }
 
     private fun refreshIpa(binding: ItemPhoneticsBinding, item: PhoneticsViewItem) {
-        binding.tvIpa.text = item.ipa
+        binding.tvIpa.setText(item.ipa)
     }
 
     private fun refreshText(binding: ItemPhoneticsBinding, item: PhoneticsViewItem) {
-        binding.tvText.text = item.text
+        binding.tvText.setText(item.text)
     }
 
     private fun refreshImage(binding: ItemPhoneticsBinding, item: PhoneticsViewItem) {
@@ -66,8 +69,8 @@ data class PhoneticsViewItem(
     val id: String,
     val data: Phonetic,
 
-    var ipa: CharSequence = "",
-    var text: CharSequence = "",
+    var ipa: RichText = emptyText(),
+    var text: RichText = emptyText(),
 
     var image: Int = 0,
 
