@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.ipa.detail
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
-import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding

@@ -3,7 +3,6 @@ package com.simple.phonetics.domain.usecase.speak
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.SpeakRepository
-import com.simple.state.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow

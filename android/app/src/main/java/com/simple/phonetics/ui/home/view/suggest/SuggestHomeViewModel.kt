@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.home.view.suggest
 
-import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
@@ -14,7 +13,6 @@ import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get

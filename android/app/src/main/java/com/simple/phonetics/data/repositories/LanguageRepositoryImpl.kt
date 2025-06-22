@@ -7,7 +7,7 @@ import com.simple.core.utils.extentions.toObject
 import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.DEFAULT_LANGUAGE
-import com.simple.phonetics.data.api.Api
+import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.entities.Language
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.map
 import java.util.Locale
 
 class LanguageRepositoryImpl(
-    private val api: Api,
+    private val apiProvider: ApiProvider,
     private val appCache: AppCache
 ) : LanguageRepository {
 
@@ -114,7 +114,7 @@ class LanguageRepositoryImpl(
 
     override suspend fun getLanguageSupport(languageCode: String): List<Language> {
 
-        val list = api.getLanguageSupport(languageCode = languageCode)
+        val list = apiProvider.api.getLanguageSupport(languageCode = languageCode)
 
         languageList.postValue(list)
 

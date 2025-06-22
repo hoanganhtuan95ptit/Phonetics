@@ -2,7 +2,6 @@ package com.simple.phonetics.domain.usecase.event
 
 import com.simple.core.utils.AppException
 import com.simple.coreapp.utils.ext.launchCollect
-import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.Config.EVENT_DEBUG
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.entities.Event

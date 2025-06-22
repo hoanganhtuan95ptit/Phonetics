@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.home.view.event
 
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -153,7 +152,7 @@ class EventHomeViewModel(
             viewItemList = viewItemList.getOrEmpty()
         ).apply {
 
-            Log.d("tuanha", "${if (postDifferentValue(this)) 1 else 0} -> $this")
+            postDifferentValue(this)
         }
     }
     val eventInfoEvent: LiveData<Event<EventInfo>> = eventInfo.toEvent()

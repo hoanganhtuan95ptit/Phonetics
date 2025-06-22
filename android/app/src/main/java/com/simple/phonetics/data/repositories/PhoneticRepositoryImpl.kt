@@ -1,6 +1,6 @@
 package com.simple.phonetics.data.repositories
 
-import com.simple.phonetics.data.api.Api
+import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.data.dao.PhoneticDao
 import com.simple.phonetics.domain.repositories.PhoneticRepository
@@ -15,14 +15,14 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 
 class PhoneticRepositoryImpl(
-    private val api: Api,
+    private val apiProvider: ApiProvider,
     private val appCache: AppCache,
     private val phoneticDao: PhoneticDao
 ) : PhoneticRepository {
 
     override suspend fun getSourcePhonetic(it: Language.IpaSource): String {
 
-        return api.syncPhonetics(it.source).string()
+        return apiProvider.api.syncPhonetics(it.source).string()
     }
 
     override suspend fun syncPhonetic(language: Language, limit: Int): Flow<ResultState<Pair<Language.IpaSource, Float>>> = channelFlow {

@@ -1,6 +1,6 @@
 package com.simple.phonetics.di
 
-import com.simple.phonetics.data.api.Api
+import com.simple.phonetics.data.api.ApiProvider
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -70,6 +70,10 @@ val apiModule = module {
     }
 
     single {
-        get<Retrofit>().create(Api::class.java)
+        ApiProvider()
+    }
+
+    single {
+        get<ApiProvider>().api
     }
 }

@@ -1,11 +1,12 @@
 package com.simple.phonetics.data.api
 
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.BRANCH
 import com.simple.phonetics.entities.Event
-import com.simple.dao.entities.Ipa
 import com.simple.phonetics.entities.Language
 import okhttp3.ResponseBody
-
+import org.koin.core.context.GlobalContext
+import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Streaming
@@ -34,4 +35,11 @@ interface Api {
     @Streaming
     @GET
     suspend fun syncPhonetics(@Url url: String): ResponseBody
+}
+
+class ApiProvider{
+
+    val api by lazy {
+        GlobalContext.get().get<Retrofit>().create(Api::class.java)
+    }
 }

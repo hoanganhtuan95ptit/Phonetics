@@ -1,10 +1,7 @@
 package com.simple.phonetics.ui.ipa.detail
 
-import android.graphics.Typeface
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -24,7 +21,6 @@ import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
@@ -54,7 +50,6 @@ import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.phonetics.utils.spans.RoundedBackground
-import com.simple.phonetics.utils.spans.RoundedBackgroundSpan
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart

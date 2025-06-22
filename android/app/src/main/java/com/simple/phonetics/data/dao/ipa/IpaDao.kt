@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObject
+import com.simple.dao.entities.Ipa
 import com.simple.phonetics.data.dao.ipa.RoomIpa.Companion.toEntity
 import com.simple.phonetics.data.dao.ipa.RoomIpa.Companion.toRoom
-import com.simple.dao.entities.Ipa
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

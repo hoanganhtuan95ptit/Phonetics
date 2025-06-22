@@ -20,7 +20,7 @@ import com.simple.detect.entities.DetectProvider
 import com.simple.detect.entities.DetectState
 import com.simple.phonetics.DEFAULT_TRANSLATE
 import com.simple.phonetics.Module
-import com.simple.phonetics.data.api.Api
+import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.data.dao.KeyTranslateDao
 import com.simple.phonetics.data.dao.translate.TranslateDao
@@ -49,7 +49,7 @@ import org.koin.core.context.GlobalContext
 class AppRepositoryImpl(
     private val context: Context,
 
-    private val api: Api,
+    private val apiProvider: ApiProvider,
     private val appCache: AppCache,
     private val translateDao: TranslateDao,
     private val keyTranslateDao: KeyTranslateDao
@@ -79,7 +79,7 @@ class AppRepositoryImpl(
 
 
     override suspend fun syncTranslate(languageCode: String): Map<String, String> {
-        return api.syncTranslate(languageCode = languageCode)
+        return apiProvider.api.syncTranslate(languageCode = languageCode)
     }
 
     override suspend fun updateTranslate(languageCode: String, map: Map<String, String>) {
@@ -260,7 +260,7 @@ class AppRepositoryImpl(
 
 
     override suspend fun syncConfigs(): Map<String, String> {
-        return api.syncConfig()
+        return apiProvider.api.syncConfig()
     }
 
     override suspend fun getConfigsAsync(): Flow<Map<String, String>> {
@@ -281,7 +281,7 @@ class AppRepositoryImpl(
     }
 
     override suspend fun syncEvents(languageCode: String): List<Event> {
-        return api.syncEvent(languageCode = languageCode)
+        return apiProvider.api.syncEvent(languageCode = languageCode)
     }
 
     override suspend fun getEventsAsync(): Flow<List<Event>> {

@@ -1,9 +1,6 @@
 package com.simple.phonetics.ui.game.items.ipa_match
 
 import android.graphics.Color
-import android.graphics.Typeface
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import com.simple.adapter.entities.ViewItem
@@ -19,7 +16,6 @@ import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.R
 import com.simple.phonetics.entities.Phonetic
