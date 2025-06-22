@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui
 
 import android.graphics.Color
-import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -18,7 +17,6 @@ import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources

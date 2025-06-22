@@ -9,20 +9,19 @@ import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.getParcelableOrNull
-import com.simple.coreapp.utils.ext.getSerializableOrNull
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentContainerHeaderHorizontalBinding
+import com.simple.phonetics.entities.Text
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.simple.deeplink.DeeplinkHandler
-import com.simple.deeplink.annotation.Deeplink
-import com.simple.deeplink.sendDeeplink
-import com.simple.phonetics.entities.Text
 import com.simple.phonetics.utils.exts.getOrTransparent
 import kotlinx.coroutines.launch
 

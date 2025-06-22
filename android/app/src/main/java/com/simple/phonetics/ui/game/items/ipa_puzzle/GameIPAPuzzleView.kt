@@ -14,7 +14,6 @@ import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Id
 import com.simple.phonetics.ui.game.items.GameItemViewModel

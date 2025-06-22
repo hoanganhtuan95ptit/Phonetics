@@ -1,6 +1,5 @@
 package com.simple.phonetics.utils.exts
 
-import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import com.simple.adapter.entities.ViewItem
@@ -15,7 +14,6 @@ import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Id
 import com.simple.phonetics.R

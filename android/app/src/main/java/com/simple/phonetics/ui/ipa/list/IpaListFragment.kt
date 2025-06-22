@@ -12,6 +12,9 @@ import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.deeplink.DeeplinkHandler
+import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
@@ -21,11 +24,8 @@ import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
-import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.simple.deeplink.DeeplinkHandler
-import com.simple.deeplink.annotation.Deeplink
-import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.simple.phonetics.utils.exts.submitListAwaitV2
 
 class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaListViewModel>() {
 
