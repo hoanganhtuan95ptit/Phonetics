@@ -14,10 +14,11 @@ import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.RichText
 
 fun TitleViewItem(
     id: String,
-    text: CharSequence,
+    text: RichText,
 
     textSize: Float = 20f,
     textMargin: Margin = DEFAULT_MARGIN,
@@ -48,7 +49,7 @@ fun OptionViewItem(
 
     data: Any? = null,
 
-    text: CharSequence,
+    text: RichText,
 
     strokeColor: Int,
     backgroundColor: Int,
@@ -84,7 +85,7 @@ fun OptionPrimaryViewItem(
 
     data: Any? = null,
 
-    text: CharSequence,
+    text: RichText,
     textSize: Size? = null,
 
     size: Size? = null,
@@ -129,7 +130,7 @@ fun ButtonViewItem(
 
     data: Any? = null,
 
-    text: CharSequence,
+    text: RichText,
 
     strokeColor: Int,
     backgroundColor: Int,

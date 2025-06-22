@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.view.popup
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -47,6 +48,7 @@ class PopupViewModel : BaseViewModel() {
             return@submit
         }
 
+        Log.d("tuanha", "addEvent: $key $deepLink")
         map.toList().sortedBy {
 
             it.second.toSuccess()?.data?.index.orZero()

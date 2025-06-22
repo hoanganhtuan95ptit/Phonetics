@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.ipa.list
 
-import android.text.style.ForegroundColorSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.simple.adapter.entities.ViewItem
@@ -8,18 +7,19 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
-import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.dao.entities.Ipa
+import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
-import com.unknown.size.*
 import com.unknown.size.uitls.exts.getOrZero
 
 class IpaListViewModel(
@@ -56,17 +56,17 @@ class IpaListViewModel(
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        val ipaList = state.data
-
-        ipaList.map {
+        state.data.map {
 
             IpaViewItem(
                 id = it.ipa,
 
                 data = it,
 
-                ipa = it.ipa.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
-                text = it.examples.firstOrNull().orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                ipa = it.ipa
+                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                text = it.examples.firstOrNull().orEmpty()
+                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
 
                 size = Size(
                     width = (size.getOrZero("width") - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,

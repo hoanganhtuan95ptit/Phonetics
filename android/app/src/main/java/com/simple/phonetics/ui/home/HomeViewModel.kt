@@ -18,9 +18,15 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
+import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.coreapp.utils.ext.toRich
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
@@ -68,14 +74,14 @@ class HomeViewModel(
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
 ) : BaseViewModel() {
 
-    val title: LiveData<CharSequence> = combineSources(theme, translate) {
+    val title: LiveData<RichText> = combineSources(theme, translate) {
 
         val theme = theme.get()
         val translate = translate.getOrEmpty()
 
         val title = translate.getOrKey("Ephonetics")
-            .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
-            .with("Ep", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary")))
+            .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+            .with("Ep", Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
 
         postDifferentValue(title)
     }
@@ -138,7 +144,7 @@ class HomeViewModel(
 
         val info = ReverseInfo(
             text = translate["action_reverse"].orEmpty()
-                .with(ForegroundColorSpan(textColor)),
+                .with(ForegroundColor(textColor)),
             isShow = isSupportReverse,
             background = Background(
                 strokeWidth = DP.DP_1 + DP.DP_05.toInt(),
@@ -178,7 +184,7 @@ class HomeViewModel(
 
         val info = ClearInfo(
             text = translate["action_clear"].orEmpty()
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorPrimary"))),
+                .with(ForegroundColor(theme.getOrTransparent("colorPrimary"))),
             isShow = text.second.isNotBlank(),
             background = Background(
                 strokeWidth = DP.DP_1 + DP.DP_05.toInt(),
@@ -209,8 +215,8 @@ class HomeViewModel(
 
         val info = EnterInfo(
             hint = hint
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurfaceVariant")))
-                .with(languageName, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant")))
+                .with(languageName, Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textColor = theme.getOrTransparent("colorOnSurface"),
         )
 
@@ -282,7 +288,7 @@ class HomeViewModel(
         if (viewItemList.isNotEmpty()) TitleViewItem(
             id = "TITLE_RESULT",
             text = translate["title_result"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
         ).let {
 
             viewItemList.add(0, it)
@@ -342,7 +348,7 @@ class HomeViewModel(
 
         if (list.isEmpty() || typeViewItemList[TYPE_HISTORY].isNullOrEmpty()) com.simple.coreapp.ui.adapters.EmptyViewItem(
             id = "EMPTY",
-            message = translate["message_result_empty"].orEmpty(),
+            message = translate["message_result_empty"].orEmpty().toRich(),
             imageRes = R.raw.anim_empty
         ).let {
 
@@ -466,8 +472,8 @@ class HomeViewModel(
             text = translate["version_name"]
                 .orEmpty()
                 .replace("\$version", BuildConfig.VERSION_NAME)
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
-                .with(BuildConfig.VERSION_NAME, ForegroundColorSpan(theme.getOrTransparent("colorPrimary")), StyleSpan(Typeface.BOLD)),
+                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+                .with(BuildConfig.VERSION_NAME, ForegroundColor(theme.getOrTransparent("colorPrimary")), Bold),
             textSize = Size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT),
             textStyle = TextStyle(
                 textSize = 14f,
@@ -493,19 +499,19 @@ class HomeViewModel(
     )
 
     data class EnterInfo(
-        val hint: CharSequence = "",
+        val hint: RichText = emptyText(),
         val textColor: Int,
     )
 
     data class ClearInfo(
-        val text: CharSequence = "",
+        val text: RichText = emptyText(),
         val isShow: Boolean = false,
 
         val background: Background
     )
 
     data class ReverseInfo(
-        val text: CharSequence = "",
+        val text: RichText = emptyText(),
         val isShow: Boolean = false,
 
         val background: Background

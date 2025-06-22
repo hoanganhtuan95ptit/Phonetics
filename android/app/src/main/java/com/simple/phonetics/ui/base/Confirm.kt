@@ -2,21 +2,24 @@ package com.simple.phonetics.ui.base
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.asListOrNull
+import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.Param
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -27,8 +30,8 @@ import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnHeightStatusAndHeightNavigationChange
-import com.simple.coreapp.utils.ext.getParcelableOrNull
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
@@ -48,7 +51,8 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import java.io.Serializable
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.absoluteValue
 
 private val verticalConfirmItemList by lazy {
@@ -57,6 +61,11 @@ private val verticalConfirmItemList by lazy {
 }
 
 class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBinding, VerticalConfirmViewModel>() {
+
+
+    override val viewModel by lazy {
+        viewModels<VerticalConfirmViewModel>().value
+    }
 
 
     private var resultCode: Int = -1
@@ -75,19 +84,11 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
         bindingConfirmSpeak = LayoutActionVerticalBinding.inflate(LayoutInflater.from(requireContext()))
 
 
-        val binding = binding ?: return
-
-        val anchor = arguments?.getParcelableOrNull<Background>(Param.ANCHOR)
-        binding.vAnchor.delegate.setBackground(anchor)
-
-        val background = arguments?.getParcelableOrNull<Background>(Param.BACKGROUND)
-        binding.root.delegate.setBackground(background)
-
-
         setupAction()
         setupRecyclerView()
 
         observeData()
+        observeConfirmData()
     }
 
     override fun onDestroy() {
@@ -108,25 +109,17 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
 
         container?.addView(binding.root, layoutParam)
 
-        val negative = arguments?.getParcelableOrNull<ButtonInfo>(Param.NEGATIVE)
-        binding.tvNegative.setVisible(negative != null)
-        binding.tvNegative.text = negative?.text
-        binding.tvNegative.delegate.setBackground(negative?.background)
         binding.tvNegative.setDebouncedClickListener {
+
             resultCode = 0
             dismiss()
         }
 
-        val positive = arguments?.getParcelableOrNull<ButtonInfo>(Param.POSITIVE)
-        binding.tvPositive.setVisible(positive != null)
-        binding.tvPositive.text = positive?.text
-        binding.tvPositive.delegate.setBackground(positive?.background)
         binding.tvPositive.setDebouncedClickListener {
+
             resultCode = 1
             dismiss()
         }
-
-        binding.root.setVisible(negative != null || positive != null)
 
         behavior?.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
 
@@ -189,28 +182,38 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
         }
     }
 
-    companion object {
+    private fun observeConfirmData() = with(activityViewModels<ConfirmViewModel>().value) {
 
-        suspend fun showOrAwaitDismiss(fragmentManager: FragmentManager, extras: Map<String, Any?>?) {
+        val id = arguments?.getString(Param.ID).orEmpty()
+        val keyRequest = arguments?.getString(Param.KEY_REQUEST).orEmpty()
 
-            verticalConfirmItemList.resetReplayCache()
-            verticalConfirmItemList.emit(extras.orEmpty()[com.simple.phonetics.Param.VIEW_ITEM_LIST].asListOrNull<ViewItem>().orEmpty().toList())
+        infoMap[ConfirmViewModel.Id(id, keyRequest)]?.let {
 
 
-            val fragment = VerticalConfirmSheetFragment()
+            viewModel.updateViewItem(it.viewItem)
 
-            fragment.arguments = extras.orEmpty().filter {
 
-                it.value !is List<*>
-            }.filter {
+            val binding = binding ?: return@let
 
-                it.value is CharSequence || it.value is Int || it.value is Long || it.value is Float || it.value is Double || it.value is Serializable || it.value is Parcelable
-            }.let {
+            val anchor = it.anchor
+            binding.vAnchor.delegate.setBackground(anchor)
 
-                bundleOf(*it.toList().toTypedArray())
-            }
+            val background = it.background
+            binding.root.delegate.setBackground(background)
 
-            fragment.showOrAwaitDismiss(fragmentManager, "")
+            val bindingConfirmSpeak = bindingConfirmSpeak ?: return@let
+
+            val negative = it.negative
+            bindingConfirmSpeak.tvNegative.setVisible(negative != null)
+            bindingConfirmSpeak.tvNegative.setText(negative?.text)
+            bindingConfirmSpeak.tvNegative.delegate.setBackground(negative?.background)
+
+            val positive = it.positive
+            bindingConfirmSpeak.tvPositive.setVisible(positive != null)
+            bindingConfirmSpeak.tvPositive.setText(positive?.text)
+            bindingConfirmSpeak.tvPositive.delegate.setBackground(positive?.background)
+
+            binding.root.setVisible(negative != null || positive != null)
         }
     }
 }
@@ -227,9 +230,7 @@ class VerticalConfirmViewModel : BaseViewModel() {
     }
 
     @VisibleForTesting
-    val actionHeight: LiveData<Int> = mediatorLiveData {
-
-    }
+    val actionHeight: LiveData<Int> = MediatorLiveData()
 
     val viewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, itemList, actionHeight) {
 
@@ -242,12 +243,63 @@ class VerticalConfirmViewModel : BaseViewModel() {
         postDifferentValue(list)
     }
 
+    fun updateViewItem(list: List<ViewItem>) {
+
+        itemList.postDifferentValue(list)
+    }
+
     fun updateActionHeight(height: Int) {
 
         actionHeight.postDifferentValue(height)
     }
 }
 
+class ConfirmViewModel : BaseViewModel() {
+
+    @VisibleForTesting
+    val infoMap = ConcurrentHashMap<Id, ConfirmInfo>()
+
+    fun updateInfo(
+        id: String,
+        keyRequest: String,
+
+        viewItem: List<ViewItem> = emptyList(),
+
+        anchor: Background? = null,
+        background: Background? = null,
+
+        negative: ButtonInfo? = null,
+        positive: ButtonInfo? = null
+    ) {
+
+        infoMap[Id(id, keyRequest)] = ConfirmInfo(
+
+            viewItem = viewItem,
+
+            anchor = anchor,
+            background = background,
+
+            negative = negative,
+            positive = positive
+        )
+    }
+
+    data class Id(
+        val id: String,
+        val keyRequest: String
+    )
+
+    data class ConfirmInfo(
+
+        val viewItem: List<ViewItem> = emptyList(),
+
+        val anchor: Background? = null,
+        val background: Background? = null,
+
+        val negative: ButtonInfo? = null,
+        val positive: ButtonInfo? = null
+    )
+}
 
 @Deeplink(queue = "Confirm")
 class ConfirmDeeplinkHandler : DeeplinkHandler {
@@ -262,7 +314,31 @@ class ConfirmDeeplinkHandler : DeeplinkHandler {
             return false
         }
 
-        VerticalConfirmSheetFragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, extras)
+        val viewModel by componentCallbacks.viewModels<ConfirmViewModel>()
+
+        val id = UUID.randomUUID().toString()
+        val keyRequest = extras.orEmpty().get(Param.KEY_REQUEST).asObjectOrNull<String>().orEmpty()
+
+        viewModel.updateInfo(
+            id = id,
+            keyRequest = keyRequest,
+
+            viewItem = extras.orEmpty()[com.simple.phonetics.Param.VIEW_ITEM_LIST].asListOrNull<ViewItem>().orEmpty().toList(),
+
+            anchor = extras.orEmpty().get(Param.ANCHOR).asObjectOrNull<Background>(),
+            background = extras.orEmpty().get(Param.ANCHOR).asObjectOrNull<Background>(),
+
+            negative = extras.orEmpty().get(Param.NEGATIVE).asObjectOrNull<ButtonInfo>(),
+            positive = extras.orEmpty().get(Param.POSITIVE).asObjectOrNull<ButtonInfo>(),
+        )
+
+
+        val fragment = VerticalConfirmSheetFragment()
+        fragment.arguments = bundleOf(
+            Param.ID to id,
+            Param.KEY_REQUEST to keyRequest
+        )
+        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, "")
 
         return true
     }

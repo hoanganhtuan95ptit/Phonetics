@@ -14,6 +14,8 @@ import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
@@ -123,7 +125,7 @@ fun Any.toViewItem(
 
             data = item,
 
-            text = textPair.first.with(ForegroundColorSpan(textPair.second)),
+            text = textPair.first.with(ForegroundColor(textPair.second)),
             isLast = index == total
         )
     }.let {
@@ -153,7 +155,7 @@ fun Sentence.toSpeakViewItem(index: Int, theme: Map<String, Int>, translate: Map
         ),
         background = DEFAULT_BACKGROUND,
 
-        text = translate["action_try_speak"].orEmpty().with(ForegroundColorSpan(theme.getOrTransparent("colorPrimary"))),
+        text = translate["action_try_speak"].orEmpty().with(ForegroundColor(theme.getOrTransparent("colorPrimary"))),
         textStyle = TextStyle(
             textGravity = Gravity.CENTER_VERTICAL
         ),
@@ -214,8 +216,8 @@ fun Phonetic.toViewItem(
         id = id,
         data = this,
 
-        ipa = text.with(ForegroundColorSpan(if (ipaList.size > 1) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorError"))),
-        text = this.text.with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+        ipa = text.with(ForegroundColor(if (ipaList.size > 1) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorError"))),
+        text = this.text.with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
 
         image = image,
 

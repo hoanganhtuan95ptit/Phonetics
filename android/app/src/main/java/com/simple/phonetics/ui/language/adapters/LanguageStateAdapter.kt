@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.setText
 import com.simple.phonetics.databinding.ItemLanguageStateBinding
 
 @ItemAdapter
@@ -31,14 +33,14 @@ class LanguageStateAdapter : ViewItemAdapter<LanguageStateViewItem, ItemLanguage
     }
 
     private fun bindingName(binding: ItemLanguageStateBinding, item: LanguageStateViewItem) {
-        binding.tvValue.text = item.name
+        binding.tvValue.setText(item.name)
     }
 }
 
 data class LanguageStateViewItem(
     val data: String,
 
-    val name: CharSequence,
+    val name: RichText,
 ) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(

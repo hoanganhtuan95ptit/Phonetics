@@ -9,6 +9,8 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
@@ -208,7 +210,7 @@ class SpeakViewModel(
 
         val info = ResultInfo(
             result = speakResult
-                .with(ForegroundColorSpan(if (isCorrect) theme.getOrTransparent("colorOnPrimaryVariant") else theme.getOrTransparent("colorOnErrorVariant"))),
+                .with(ForegroundColor(if (isCorrect) theme.getOrTransparent("colorOnPrimaryVariant") else theme.getOrTransparent("colorOnErrorVariant"))),
             isShow = speakState.isSuccess(),
             background = background
         )
@@ -272,7 +274,7 @@ class SpeakViewModel(
 
 
     data class ResultInfo(
-        val result: CharSequence,
+        val result: RichText,
 
         val isShow: Boolean,
 

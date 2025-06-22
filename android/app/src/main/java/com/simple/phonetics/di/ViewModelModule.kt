@@ -3,7 +3,6 @@ package com.simple.phonetics.di
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainViewModel
-import com.simple.phonetics.ui.base.VerticalConfirmViewModel
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.game.GameViewModel
 import com.simple.phonetics.ui.game.congratulations.GameCongratulationViewModel
@@ -144,10 +143,5 @@ val viewModelModule = module {
 
     viewModel {
         GameIPAWordleViewModel(get(), get(), get())
-    }
-
-
-    viewModel {
-        VerticalConfirmViewModel()
     }
 }

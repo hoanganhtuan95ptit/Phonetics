@@ -1,8 +1,5 @@
 package com.simple.phonetics.ui.game.items.ipa_puzzle
 
-import android.graphics.Typeface
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import com.simple.adapter.entities.ViewItem
@@ -13,8 +10,11 @@ import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Id
 import com.simple.phonetics.ui.game.items.GameItemViewModel
@@ -40,10 +40,10 @@ fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Int>, trans
     val param1 = "/${quiz.question.ipaMissing}/"
 
     val message = translate["game_ipa_puzzle_screen_message_answer"].orEmpty()
-        .replace("\$param1", param1)
-        .with(ForegroundColorSpan(textColor))
-        .with(param1, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary")))
         .trim()
+        .replace("\$param1", param1)
+        .with(ForegroundColor(textColor))
+        .with(param1, Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
 
 
     val list = arrayListOf<ViewItem>()
@@ -51,7 +51,7 @@ fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Int>, trans
     NoneTextViewItem(
         id = "2",
         text = title.orEmpty()
-            .with(ForegroundColorSpan(textColor)),
+            .with(ForegroundColor(textColor)),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
         ),
@@ -94,7 +94,7 @@ fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Int>, trans
 
     val positive = ButtonInfo(
         text = buttonText.orEmpty()
-            .with(ForegroundColorSpan(theme.getOrTransparent("colorOnPrimary"))),
+            .with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
@@ -129,10 +129,10 @@ fun getIPAPuzzleTitleViewItem(size: Map<String, Int>, theme: Map<String, Int>, t
         text = translate["game_ipa_puzzle_screen_title"].orEmpty()
             .replace("\$param1", quiz.question.text)
             .replace("\$param2", quiz.question.ipaIncomplete)
-            .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
-            .with(quiz.question.text, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
-            .with(quiz.question.ipaIncomplete, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
-            .with("____", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorError"))),
+            .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+            .with(quiz.question.text, Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+            .with(quiz.question.ipaIncomplete, Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+            .with("____", Bold, ForegroundColor(theme.getOrTransparent("colorError"))),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
@@ -146,7 +146,7 @@ fun getIPAPuzzleOptionViewItem(size: Map<String, Int>, theme: Map<String, Int>, 
         data = answer,
 
         text = answer
-            .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+            .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
         textStyle = TextStyle(
             textSize = 16f,
             textGravity = Gravity.CENTER

@@ -23,6 +23,7 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
+import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
@@ -188,7 +189,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
             val binding = bindingAction ?: return@observe
 
-            binding.tvMessage.text = it.result
+            binding.tvMessage.setText(it.result)
             binding.tvMessage.setVisible(it.isShow)
             binding.tvMessage.delegate.setBackground(it.background)
         }

@@ -1,16 +1,18 @@
 package com.simple.phonetics.ui.home.view.phonetic
 
-import android.graphics.Typeface
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
+import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.getOrEmpty
@@ -35,7 +37,7 @@ class PhoneticHomeViewModel(
 //        }
     }
 
-    val pairViewList: LiveData<List<Pair<String, CharSequence>>> = combineSources(theme, translate, phoneticState) {
+    val pairViewList: LiveData<List<Pair<String, RichText>>> = combineSources(theme, translate, phoneticState) {
 
         val theme = theme.value ?: return@combineSources
         val translate = translate.value ?: return@combineSources
@@ -64,14 +66,14 @@ class PhoneticHomeViewModel(
                 translate["message_start_sync_phonetics"].orEmpty()
                     .replace("\$ipa_name", ipaName)
                     .replace("\$percent", "$percentWrap")
-                    .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
-                    .with(ipaName, StyleSpan(Typeface.BOLD))
-                    .with("${percentWrap}%", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary")))
+                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+                    .with(ipaName, Bold)
+                    .with("${percentWrap}%", Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
             } else {
                 translate["message_completed_sync_phonetics"].orEmpty()
                     .replace("\$ipa_name", ipaName)
-                    .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface")))
-                    .with(ipaName, StyleSpan(Typeface.BOLD))
+                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+                    .with(ipaName, Bold)
             }
 
             key to text
@@ -89,7 +91,7 @@ class PhoneticHomeViewModel(
 
             NoneTextViewItem(
                 id = "phonetic_" + it.first,
-                text = "",
+                text = emptyText(),
                 textStyle = TextStyle(
                     textSize = 14f
                 ),

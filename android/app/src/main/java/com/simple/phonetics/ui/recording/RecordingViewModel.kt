@@ -16,7 +16,10 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
@@ -89,8 +92,8 @@ class RecordingViewModel(
             id = "TITLE",
             text = translate["recording_screen_title"].orEmpty()
                 .replace("\$language_name", languageName)
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurfaceVariant")))
-                .with(languageName, StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant")))
+                .with(languageName, Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 20f,
                 textGravity = Gravity.CENTER

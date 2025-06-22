@@ -21,6 +21,7 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
 import com.simple.coreapp.utils.extentions.isActive
@@ -251,14 +252,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.tvTitle.text = it
+            binding.tvTitle.setText(it)
         }
 
         enterInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "ENTER") {
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.etText.hint = it.hint
+            binding.etText.hint = it.hint.textChar
             binding.etText.setTextColor(it.textColor)
         }
 
@@ -266,7 +267,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.tvClear.text = it.text
+            binding.tvClear.setText(it.text)
             binding.frameClear.setVisible(it.isShow)
             binding.tvClear.delegate.setBackground(it.background)
         }
@@ -283,7 +284,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.tvReverse.text = it.text
+            binding.tvReverse.setText(it.text)
             binding.frameReverse.setVisible(it.isShow)
             binding.tvReverse.delegate.setBackground(it.background)
         }

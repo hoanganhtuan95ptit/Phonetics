@@ -10,6 +10,7 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
@@ -55,10 +56,10 @@ class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, Ga
             binding.lottieAnimationView.setAnimation(it.anim)
             binding.lottieAnimationView.playAnimation()
 
-            binding.tvTitle.text = it.title
-            binding.tvMessage.text = it.message
+            binding.tvTitle.setText(it.title)
+            binding.tvMessage.setText(it.message)
 
-            binding.tvAction.text = it.button.text
+            binding.tvAction.setText(it.button.text)
             binding.tvAction.delegate.setBackground(it.button.background)
         }
 

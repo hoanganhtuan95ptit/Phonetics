@@ -5,6 +5,9 @@ import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.emptyText
+import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemSentenceBinding
@@ -36,7 +39,7 @@ class SentenceAdapter : ViewItemAdapter<SentenceViewItem, ItemSentenceBinding>()
     }
 
     private fun refreshText(binding: ItemSentenceBinding, item: SentenceViewItem) {
-        binding.tvText.text = item.text
+        binding.tvText.setText(item.text)
     }
 
     private fun refreshIsLast(binding: ItemSentenceBinding, item: SentenceViewItem) {
@@ -48,7 +51,7 @@ data class SentenceViewItem(
     val id: String,
     val data: Sentence,
 
-    var text: CharSequence = "",
+    var text: RichText = emptyText(),
 
     var isLast: Boolean = false
 ) : ViewItem {

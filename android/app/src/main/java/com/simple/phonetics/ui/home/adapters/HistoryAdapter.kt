@@ -7,6 +7,9 @@ import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.adapter.entities.ViewItem
+import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.emptyText
+import com.simple.coreapp.utils.ext.setText
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
@@ -53,14 +56,14 @@ class HistoryAdapter(private val onItemClick: ((View, HistoryViewItem) -> Unit)?
     }
 
     private fun refreshText(binding: ItemHistoryBinding, item: HistoryViewItem) {
-        binding.tvText.text = item.text
+        binding.tvText.setText(item.text)
     }
 }
 
 data class HistoryViewItem(
     val id: String,
 
-    val text: CharSequence = "",
+    val text: RichText = emptyText(),
 ) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(

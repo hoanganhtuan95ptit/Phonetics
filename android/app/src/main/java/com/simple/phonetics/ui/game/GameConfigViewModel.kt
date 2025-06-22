@@ -1,10 +1,6 @@
 package com.simple.phonetics.ui.game
 
 import android.graphics.Color
-import android.graphics.Typeface
-import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -21,7 +17,10 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RelativeSize
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
@@ -107,7 +106,7 @@ class GameConfigViewModel(
         TitleViewItem(
             id = "TITLE_RESOURCE",
             text = translate["game_config_screen_title_resource"].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
         ).let {
 
             list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_24))
@@ -151,8 +150,8 @@ class GameConfigViewModel(
                 data = resource,
 
                 text = "$name\n$caption"
-                    .with(ForegroundColorSpan(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface")))
-                    .with(caption, RelativeSizeSpan(0.8f), ForegroundColorSpan(captionColor)),
+                    .with(ForegroundColor(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface")))
+                    .with(caption, RelativeSize(0.8f), ForegroundColor(captionColor)),
 
                 strokeColor = if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"),
                 backgroundColor = if (isSelect) theme.getOrTransparent("colorPrimaryVariant") else Color.TRANSPARENT,
@@ -178,7 +177,7 @@ class GameConfigViewModel(
         ClickTextViewItem(
             id = "",
             text = translate["game_config_screen_action_play_game"].orEmpty()
-                .with(ForegroundColorSpan(if (isAvailable) theme.getOrTransparent("colorOnPrimary") else theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(if (isAvailable) theme.getOrTransparent("colorOnPrimary") else theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 18f,
                 textGravity = Gravity.CENTER

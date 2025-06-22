@@ -1,17 +1,18 @@
 package com.simple.phonetics.ui.language
 
 import android.graphics.Color
-import android.graphics.Typeface
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.handler
+import com.simple.coreapp.utils.ext.toRich
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.listenerSources
@@ -48,9 +49,9 @@ class LanguageViewModel(
 
         val info = HeaderInfo(
             title = translate["title_language"].orEmpty()
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnBackground"))),
+                .with(ForegroundColor(theme.getOrTransparent("colorOnBackground"))),
             message = translate["message_select_language"].orEmpty()
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnBackgroundVariant"))),
+                .with(ForegroundColor(theme.getOrTransparent("colorOnBackgroundVariant"))),
         )
 
         postDifferentValue(info)
@@ -123,7 +124,7 @@ class LanguageViewModel(
             LanguageViewItem(
                 data = it,
                 name = name
-                    .with(ForegroundColorSpan(if (isSelected) theme.getOrTransparent("colorOnPrimaryVariant") else theme.getOrTransparent("colorOnSurface"))),
+                    .with(ForegroundColor(if (isSelected) theme.getOrTransparent("colorOnPrimaryVariant") else theme.getOrTransparent("colorOnSurface"))),
 
                 image = it.image,
 
@@ -174,7 +175,7 @@ class LanguageViewModel(
         val info = ButtonInfo(
             text = translate["action_confirm_change_language"]
                 .orEmpty()
-                .with(ForegroundColorSpan(if (isSelected) theme.getOrTransparent("colorOnPrimary") else theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(if (isSelected) theme.getOrTransparent("colorOnPrimary") else theme.getOrTransparent("colorOnSurface"))),
             isClickable = isClickable,
             isShowLoading = changeLanguageState != null && !changeLanguageState.isCompleted(),
             background = Background(
@@ -263,7 +264,7 @@ class LanguageViewModel(
 
         if (this@toViewItem is UpdateLanguageInputUseCase.State.Start) LanguageStateViewItem(
             data = UpdateLanguageInputUseCase.State.Start.javaClass.simpleName,
-            name = translate["message_start_sync"].orEmpty()
+            name = translate["message_start_sync"].orEmpty().toRich()
         ).let {
 
             add(it)
@@ -281,7 +282,7 @@ class LanguageViewModel(
 
         if (this@toViewItem is UpdateLanguageInputUseCase.State.Completed) LanguageStateViewItem(
             data = UpdateLanguageInputUseCase.State.Completed.javaClass.simpleName,
-            name = translate["message_sync_completed"].orEmpty()
+            name = translate["message_sync_completed"].orEmpty().toRich()
         ).let {
 
             add(it)
@@ -305,13 +306,13 @@ class LanguageViewModel(
             name = translate["message_start_sync_phonetics"].orEmpty()
                 .replace("\$ipa_name", ipaName)
                 .replace("\$percent", "$percentWrap")
-                .with(ipaName, StyleSpan(Typeface.BOLD))
-                .with("${percentWrap}%", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary")))
+                .with(ipaName, Bold)
+                .with("${percentWrap}%", Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
         ) else LanguageStateViewItem(
             data = ipaName,
             name = translate["message_completed_sync_phonetics"].orEmpty()
                 .replace("\$ipa_name", ipaName)
-                .with(ipaName, StyleSpan(Typeface.BOLD))
+                .with(ipaName, Bold)
         )
 
         add(viewItem)
@@ -325,22 +326,22 @@ class LanguageViewModel(
             data = "SYNC_TRANSLATE",
             name = translate["message_start_sync_translate"].orEmpty()
                 .replace("\$percent", percentWrap.toString())
-                .with("${percentWrap}%", StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorPrimary")))
+                .with("${percentWrap}%", Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
         ) else LanguageStateViewItem(
             data = "SYNC_TRANSLATE",
-            name = translate["message_completed_sync_translate"].orEmpty()
+            name = translate["message_completed_sync_translate"].orEmpty().toRich()
         )
 
         add(viewItem)
     }
 
     data class HeaderInfo(
-        val title: CharSequence,
-        val message: CharSequence,
+        val title: RichText,
+        val message: RichText,
     )
 
     data class ButtonInfo(
-        val text: CharSequence,
+        val text: RichText,
 
         val isClickable: Boolean,
         val isShowLoading: Boolean,

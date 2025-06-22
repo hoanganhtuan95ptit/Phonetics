@@ -8,6 +8,7 @@ import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.databinding.ItemTextBinding
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.coreapp.utils.ext.setText
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.view.HomeView
@@ -45,7 +46,7 @@ class PhoneticHomeView : HomeView {
                     ?.asObjectOrNull<BaseBindingViewHolder<*>>()
                     ?.binding
                     .asObjectOrNull<ItemTextBinding>()
-                    ?.tvTitle?.text = pair.second
+                    ?.tvTitle?.setText(pair.second)
             }
         }
     }

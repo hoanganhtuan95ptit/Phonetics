@@ -9,6 +9,8 @@ import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
+import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.setText
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemLanguageBinding
@@ -55,7 +57,7 @@ class LanguageAdapter(onItemClick: (View, LanguageViewItem) -> Unit = { _, _ -> 
 data class LanguageViewItem(
     val data: Language,
 
-    val name: CharSequence,
+    val name: RichText,
     val image: String,
     val isSelected: Boolean,
 

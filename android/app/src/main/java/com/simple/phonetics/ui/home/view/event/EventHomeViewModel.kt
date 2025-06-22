@@ -15,8 +15,11 @@ import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
@@ -81,7 +84,7 @@ class EventHomeViewModel(
         NoneTextViewItem(
             id = "2",
             text = translate[event.title].orEmpty()
-                .with(StyleSpan(Typeface.BOLD), ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 20f,
                 textGravity = Gravity.CENTER
@@ -95,7 +98,7 @@ class EventHomeViewModel(
         NoneTextViewItem(
             id = "3",
             text = translate[event.message].orEmpty()
-                .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 16f,
                 textGravity = Gravity.CENTER
@@ -131,7 +134,7 @@ class EventHomeViewModel(
 
             positive = ButtonInfo(
                 text = translate[event.positive].orEmpty()
-                    .with(ForegroundColorSpan(theme.getOrTransparent("colorOnPrimary"))),
+                    .with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
                 background = Background(
                     backgroundColor = theme.getOrTransparent("colorPrimary"),
                     cornerRadius = DP.DP_16
@@ -139,7 +142,7 @@ class EventHomeViewModel(
             ),
             negative = if (event.negative.isNotBlank()) ButtonInfo(
                 text = translate[event.negative].orEmpty()
-                    .with(ForegroundColorSpan(theme.getOrTransparent("colorOnSurfaceVariant"))),
+                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant"))),
                 background = Background(
                     backgroundColor = theme.getOrTransparent("colorBackground"),
                     strokeColor = theme.getOrTransparent("colorOnSurfaceVariant"),
