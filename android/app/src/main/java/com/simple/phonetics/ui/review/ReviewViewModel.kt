@@ -22,12 +22,15 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.toEvent
+import com.simple.phonetics.Config.RATE_DEBUG
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
 import kotlinx.coroutines.flow.firstOrNull
+import java.util.Calendar
+import kotlin.math.absoluteValue
 
 class ReviewViewModel(
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
@@ -51,14 +54,15 @@ class ReviewViewModel(
         val rate = rate.value ?: return@combineSources
         val historyList = historyList.value ?: return@combineSources
 
-//        val isValidate = rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3
-//
-//        // nếu người dùng đã xác nhận mở rate
-//        if (!RATE_DEBUG) if (rate.status == Rate.Status.OPEN_RATE.value || !isValidate || historyList.isEmpty()) {
-//
-//            postDifferentValue(emptyList())
-//            return@combineSources
-//        }
+
+        val isValidate = rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3
+
+        // nếu người dùng đã xác nhận mở rate
+        if (!RATE_DEBUG) if (rate.status == Rate.Status.OPEN_RATE.value || !isValidate || historyList.isEmpty()) {
+
+            postDifferentValue(emptyList())
+            return@combineSources
+        }
 
 
         val list = arrayListOf<ViewItem>()

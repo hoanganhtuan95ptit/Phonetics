@@ -23,8 +23,8 @@ android {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
 
-        versionCode 84
-        versionName "1.2.84"
+        versionCode 85
+        versionName "1.2.85.beta"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -109,8 +109,6 @@ dependencies {
     kapt hoanganhtuan95Dependencies.adapter_processor
     implementation hoanganhtuan95Dependencies.deeplink
     kapt hoanganhtuan95Dependencies.deeplink_processor
-
-    kapt googleDependencies.auto_service
 
     // Firebase BOM
     implementation platform(firebaseDependencies.bom)

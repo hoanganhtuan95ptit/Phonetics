@@ -1,8 +1,6 @@
 package com.simple.phonetics.ui.home.view.event
 
-import android.graphics.Typeface
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -19,7 +17,6 @@ import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
@@ -122,7 +119,7 @@ class EventHomeViewModel(
 
         if (eventState !is ResultState.Success) {
 
-            postValue(EventInfo(show = false))
+            postDifferentValue(EventInfo(show = false))
             return@combineSources
         }
 
@@ -156,7 +153,7 @@ class EventHomeViewModel(
             viewItemList = viewItemList.getOrEmpty()
         ).apply {
 
-            postDifferentValue(this)
+            Log.d("tuanha", "${if (postDifferentValue(this)) 1 else 0} -> $this")
         }
     }
     val eventInfoEvent: LiveData<Event<EventInfo>> = eventInfo.toEvent()
