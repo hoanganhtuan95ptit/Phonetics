@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.view.popup
 
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -11,6 +10,7 @@ import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
+import com.simple.state.isSuccess
 import com.simple.state.toSuccess
 
 class PopupViewModel : BaseViewModel() {
@@ -33,6 +33,14 @@ class PopupViewModel : BaseViewModel() {
 
         val map = popup.value ?: return@submit
 
+        /*
+         * nếu tất cả các item đều là success thì return
+         */
+        if (map.containsKey(key) && map.all { it.value.isSuccess() }) {
+
+            return@submit
+        }
+
         val state = if (deepLink == null) {
 
             ResultState.Start
@@ -48,7 +56,6 @@ class PopupViewModel : BaseViewModel() {
             return@submit
         }
 
-        Log.d("tuanha", "addEvent: $key $deepLink")
         map.toList().sortedBy {
 
             it.second.toSuccess()?.data?.index.orZero()

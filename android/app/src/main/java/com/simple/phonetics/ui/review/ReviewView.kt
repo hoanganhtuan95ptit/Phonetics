@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -89,7 +88,6 @@ class ReviewView : PopupView {
                 logAnalytics("open_rate_confirm")
             }
 
-            Log.d("tuanha", "setup: ")
             popupViewModel.addEvent(
                 key = tag,
                 index = 2,

@@ -11,6 +11,10 @@ import kotlinx.coroutines.flow.channelFlow
 @AutoService(ColorProvider::class)
 class DefaultColorProvider : ColorProvider {
 
+    override fun priority(): Int {
+        return 0
+    }
+
     override suspend fun provide(activity: FragmentActivity): Flow<Map<String, Int>> = channelFlow {
 
         val map = hashMapOf<String, Int>()
@@ -18,6 +22,7 @@ class DefaultColorProvider : ColorProvider {
         listOf(
             com.simple.coreapp.R.attr::class.java,
             com.simple.phonetics.R.attr::class.java,
+            com.google.android.material.R.attr::class.java
         ).flatMap {
 
             it.fields.toList()
