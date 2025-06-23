@@ -22,8 +22,8 @@ import com.simple.phonetics.DEFAULT_TRANSLATE
 import com.simple.phonetics.Module
 import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.cache.AppCache
-import com.simple.phonetics.data.dao.KeyTranslateDao
-import com.simple.phonetics.data.dao.translate.TranslateDao
+import com.simple.phonetics.data.dao.PhoneticRoomDatabaseProvider
+import com.simple.phonetics.data.dao.translate.TranslateProvider
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.entities.Event
 import com.simple.phonetics.entities.KeyTranslate
@@ -48,25 +48,37 @@ import org.koin.core.context.GlobalContext
 
 class AppRepositoryImpl(
     private val context: Context,
-
-    private val apiProvider: ApiProvider,
     private val appCache: AppCache,
-    private val translateDao: TranslateDao,
-    private val keyTranslateDao: KeyTranslateDao
+    private val apiProvider: ApiProvider,
+    private val translateProvider: TranslateProvider,
+    private val phoneticRoomDatabaseProvider: PhoneticRoomDatabaseProvider
 ) : AppRepository {
 
-    private val events: LiveData<List<Event>> = MutableLiveData()
-
-    private val configs: LiveData<Map<String, String>> = MutableLiveData()
-
+    private val api by lazy {
+        apiProvider.api
+    }
 
     private val job by lazy {
         JobQueue()
     }
 
+    private val translateDao by lazy {
+        translateProvider.translateDao
+    }
+
+    private val keyTranslateDao by lazy {
+        phoneticRoomDatabaseProvider.keyTranslateDao
+    }
+
+
     private val splitInstallManager by lazy {
         SplitInstallManagerFactory.create(context)
     }
+
+
+    private val events: LiveData<List<Event>> = MutableLiveData()
+
+    private val configs: LiveData<Map<String, String>> = MutableLiveData()
 
 
     override suspend fun getCountTranslateOld(): Int {
@@ -79,7 +91,7 @@ class AppRepositoryImpl(
 
 
     override suspend fun syncTranslate(languageCode: String): Map<String, String> {
-        return apiProvider.api.syncTranslate(languageCode = languageCode)
+        return api.syncTranslate(languageCode = languageCode)
     }
 
     override suspend fun updateTranslate(languageCode: String, map: Map<String, String>) {
@@ -260,7 +272,7 @@ class AppRepositoryImpl(
 
 
     override suspend fun syncConfigs(): Map<String, String> {
-        return apiProvider.api.syncConfig()
+        return api.syncConfig()
     }
 
     override suspend fun getConfigsAsync(): Flow<Map<String, String>> {
@@ -281,7 +293,7 @@ class AppRepositoryImpl(
     }
 
     override suspend fun syncEvents(languageCode: String): List<Event> {
-        return apiProvider.api.syncEvent(languageCode = languageCode)
+        return api.syncEvent(languageCode = languageCode)
     }
 
     override suspend fun getEventsAsync(): Flow<List<Event>> {

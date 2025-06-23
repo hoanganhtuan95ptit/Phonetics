@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.dao.ipa
 
+import android.content.Context
 import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Database
@@ -7,6 +8,7 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -15,6 +17,7 @@ import com.simple.core.utils.extentions.toObject
 import com.simple.dao.entities.Ipa
 import com.simple.phonetics.data.dao.ipa.RoomIpa.Companion.toEntity
 import com.simple.phonetics.data.dao.ipa.RoomIpa.Companion.toRoom
+import com.simple.phonetics.data.dao.word.WordRoomDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -100,4 +103,14 @@ open class RoomIpa(
 abstract class IpaRoomDatabase : RoomDatabase() {
 
     abstract fun providerIpaDao(): IpaDao
+}
+
+
+@Deprecated("")
+class IpaOldProvider(context: Context) {
+
+    val ipaDao by lazy {
+        Room.databaseBuilder(context, IpaRoomDatabase::class.java, "ipa_database")
+            .build().providerIpaDao()
+    }
 }

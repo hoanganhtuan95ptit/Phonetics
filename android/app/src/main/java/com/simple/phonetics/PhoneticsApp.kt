@@ -44,6 +44,7 @@ class PhoneticsApp : Application() {
 
     companion object {
 
+        val start = System.currentTimeMillis()
         lateinit var share: Application
     }
 }

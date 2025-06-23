@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.dao.translate
 
+import android.content.Context
 import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Database
@@ -7,6 +8,7 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -62,4 +64,12 @@ data class RoomTranslate(
 abstract class TranslateRoomDatabase : RoomDatabase() {
 
     abstract fun providerTranslateDao(): TranslateDao
+}
+
+class TranslateProvider(context: Context) {
+
+    val translateDao by lazy {
+        Room.databaseBuilder(context, TranslateRoomDatabase::class.java, "translate_database")
+            .build().providerTranslateDao()
+    }
 }

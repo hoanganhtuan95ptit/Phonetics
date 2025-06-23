@@ -1,5 +1,6 @@
 package com.simple.dao.ipa
 
+import android.content.Context
 import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Database
@@ -7,6 +8,7 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -87,4 +89,13 @@ private fun RoomIpaNew.toEntity() = extra.toObject<Ipa>()
 abstract class IpaRoomDatabaseNew : RoomDatabase() {
 
     abstract fun providerIpaDao(): IpaDaoNew
+}
+
+
+class IpaProvider(context: Context) {
+
+    val ipaDao by lazy {
+        Room.databaseBuilder(context, IpaRoomDatabaseNew::class.java, "ipa_database_new")
+            .build().providerIpaDao()
+    }
 }
