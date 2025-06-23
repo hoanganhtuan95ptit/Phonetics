@@ -1,49 +1,51 @@
 package com.simple.phonetics.di
 
-import androidx.room.Room
-import com.simple.phonetics.data.dao.PhoneticRoomDatabase
-import com.simple.phonetics.data.dao.PhoneticRoomDatabaseConstants
-import com.simple.phonetics.data.dao.ipa.IpaRoomDatabase
-import com.simple.phonetics.data.dao.translate.TranslateRoomDatabase
-import com.simple.phonetics.data.dao.word.WordRoomDatabase
+import com.simple.phonetics.data.dao.PhoneticRoomDatabaseProvider
+import com.simple.phonetics.data.dao.ipa.IpaOldProvider
+import com.simple.phonetics.data.dao.translate.TranslateProvider
+import com.simple.phonetics.data.dao.word.WordOldProvider
 import org.koin.dsl.module
 
 @JvmField
 val daoModule = module {
 
     single {
-        PhoneticRoomDatabaseConstants.instant(context = get())
+        PhoneticRoomDatabaseProvider(context = get())
     }
 
     single {
-        get<PhoneticRoomDatabase>().providerHistoryDao()
+        get<PhoneticRoomDatabaseProvider>().historyDao
     }
 
     single {
-        get<PhoneticRoomDatabase>().providerPhoneticDao()
+        get<PhoneticRoomDatabaseProvider>().phoneticDao
     }
 
     single {
-        get<PhoneticRoomDatabase>().providerKeyTranslateDao()
+        get<PhoneticRoomDatabaseProvider>().keyTranslateDao
     }
 
     single {
-        Room.databaseBuilder(get(), IpaRoomDatabase::class.java, "ipa_database")
-            .build().providerIpaDao()
-    }
-
-//    single {
-//        Room.databaseBuilder(get(), IpaRoomDatabaseNew::class.java, "ipa_database_new")
-//            .build().providerIpaDao()
-//    }
-
-    single {
-        Room.databaseBuilder(get(), WordRoomDatabase::class.java, "word_database")
-            .build().providerWordDao()
+        IpaOldProvider(get())
     }
 
     single {
-        Room.databaseBuilder(get(), TranslateRoomDatabase::class.java, "translate_database")
-            .build().providerTranslateDao()
+        get<IpaOldProvider>().ipaDao
+    }
+
+    single {
+        WordOldProvider(get())
+    }
+
+    single {
+        get<WordOldProvider>().wordDao
+    }
+
+    single {
+        TranslateProvider(get())
+    }
+
+    single {
+        get<TranslateProvider>().translateDao
     }
 }

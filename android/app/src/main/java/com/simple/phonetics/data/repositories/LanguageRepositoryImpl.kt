@@ -21,8 +21,8 @@ import kotlinx.coroutines.flow.map
 import java.util.Locale
 
 class LanguageRepositoryImpl(
-    private val apiProvider: ApiProvider,
-    private val appCache: AppCache
+    private val appCache: AppCache,
+    private val apiProvider: ApiProvider
 ) : LanguageRepository {
 
     private val languageList = MediatorLiveData(DEFAULT_LANGUAGE)

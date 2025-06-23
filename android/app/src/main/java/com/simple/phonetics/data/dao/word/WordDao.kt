@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.dao.word
 
+import android.content.Context
 import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Database
@@ -7,6 +8,7 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -110,4 +112,13 @@ open class RoomWord(
 abstract class WordRoomDatabase : RoomDatabase() {
 
     abstract fun providerWordDao(): WordDao
+}
+
+@Deprecated("")
+class WordOldProvider(context: Context) {
+
+    val wordDao by lazy {
+        Room.databaseBuilder(context, WordRoomDatabase::class.java, "word_database")
+            .build().providerWordDao()
+    }
 }

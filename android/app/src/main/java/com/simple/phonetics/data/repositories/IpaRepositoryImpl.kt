@@ -1,20 +1,32 @@
 package com.simple.phonetics.data.repositories
 
 import com.simple.dao.entities.Ipa
-import com.simple.dao.ipa.IpaDaoNew
+import com.simple.dao.ipa.IpaProvider
 import com.simple.phonetics.data.api.ApiProvider
-import com.simple.phonetics.data.dao.ipa.IpaDao
+import com.simple.phonetics.data.dao.ipa.IpaOldProvider
 import com.simple.phonetics.domain.repositories.IpaRepository
 import kotlinx.coroutines.flow.Flow
 
 class IpaRepositoryImpl(
     private val apiProvider: ApiProvider,
-    private val ipaDaoOld: IpaDao,
-    private val ipaDao: IpaDaoNew
+    private val ipaProvider: IpaProvider,
+    private val ipaOldProvider: IpaOldProvider
 ) : IpaRepository {
 
+    private val api by lazy {
+        apiProvider.api
+    }
+
+    private val ipaDaoNew by lazy {
+        ipaProvider.ipaDao
+    }
+
+    private val ipaDaoOld by lazy {
+        ipaOldProvider.ipaDao
+    }
+
     override suspend fun syncIpa(languageCode: String): List<Ipa> {
-        return apiProvider.api.syncIPA(languageCode = languageCode)
+        return api.syncIPA(languageCode = languageCode)
     }
 
     override suspend fun getAllOldAsync(languageCode: String): Flow<List<Ipa>> {
@@ -26,22 +38,22 @@ class IpaRepositoryImpl(
     }
 
     override suspend fun getCount(languageCode: String): Int {
-        return ipaDao.getCount(languageCode = languageCode)
+        return ipaDaoNew.getCount(languageCode = languageCode)
     }
 
     override suspend fun getCountAsync(languageCode: String): Flow<Int> {
-        return ipaDao.getCountAsync(languageCode = languageCode)
+        return ipaDaoNew.getCountAsync(languageCode = languageCode)
     }
 
     override suspend fun getIpaAsync(languageCode: String): Flow<List<Ipa>> {
-        return ipaDao.getListAsync(languageCode = languageCode)
+        return ipaDaoNew.getListAsync(languageCode = languageCode)
     }
 
     override suspend fun insertOrUpdate(languageCode: String, list: List<Ipa>) {
-        ipaDao.insertOrUpdate(languageCode = languageCode, list = list)
+        ipaDaoNew.insertOrUpdate(languageCode = languageCode, list = list)
     }
 
     override suspend fun deleteByKey(ipa: String, languageCode: String) {
-        return ipaDao.deleteByKey(ipa = ipa, languageCode = languageCode)
+        return ipaDaoNew.deleteByKey(ipa = ipa, languageCode = languageCode)
     }
 }
