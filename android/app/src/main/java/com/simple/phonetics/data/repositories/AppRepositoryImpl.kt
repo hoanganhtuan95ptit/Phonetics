@@ -11,8 +11,10 @@ import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.simple.coreapp.utils.JobQueue
+import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.crashlytics.logCrashlytics
 import com.simple.detect.data.tasks.DetectStateTask
 import com.simple.detect.data.tasks.DetectTask
 import com.simple.detect.entities.DetectOption
@@ -118,6 +120,7 @@ class AppRepositoryImpl(
 
         if (state is ResultState.Failed) {
 
+            logCrashlytics("init_module_sync", state.cause)
             return state
         }
 
@@ -134,9 +137,14 @@ class AppRepositoryImpl(
 
     private suspend fun downloadModuleQueue(moduleName: String) = channelFlow {
 
-        job.submit(this.coroutineContext) {
+        job.submit(handler + this.coroutineContext) {
 
-            val state = downloadModuleSync(moduleName)
+            val state = kotlin.runCatching {
+                downloadModuleSync(moduleName)
+            }.getOrElse {
+                ResultState.Failed(it)
+            }
+
             trySend(state)
         }
 
@@ -248,9 +256,7 @@ class AppRepositoryImpl(
             )
         }
 
-        val translateState = GlobalContext.get().getAll<TranslateTask>().executeSyncByPriority(TranslateTask.Param(input = input, outputCode = languageCodeOutput))
-
-        return translateState
+        return GlobalContext.get().getAll<TranslateTask>().executeSyncByPriority(TranslateTask.Param(input = input, outputCode = languageCodeOutput))
     }
 
     override suspend fun checkTranslate(languageCodeInput: String, languageCodeOutput: String): ResultState<Boolean> {

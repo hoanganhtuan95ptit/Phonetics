@@ -222,7 +222,7 @@ class GameIPAMatchViewModel(
             isAnswerCorrect = isAnswerCorrect
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
     val stateInfoEvent: LiveData<Event<StateInfo>> = stateInfo.toEvent()
 

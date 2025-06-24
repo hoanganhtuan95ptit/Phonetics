@@ -2,6 +2,8 @@ package com.simple.phonetics.ui.game.items
 
 import android.os.Bundle
 import android.view.View
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.extentions.get
 import com.simple.deeplink.sendDeeplink
@@ -116,15 +118,20 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
 
     private fun showMessage(info: GameItemViewModel.StateInfo, keyRequest: String) {
 
+        val background = Background(
+            cornerRadius_TL = DP.DP_24,
+            cornerRadius_TR = DP.DP_24,
+            backgroundColor = info.backgroundColor
+        )
+
         val extras = mapOf(
 
             com.simple.coreapp.Param.CANCEL to false,
             com.simple.coreapp.Param.POSITIVE to info.positive,
+            com.simple.coreapp.Param.BACKGROUND to background,
 
-            Param.VIEW_ITEM_LIST to info.viewItemList,
-            Param.BACKGROUND_COLOR to info.backgroundColor,
-
-            Param.KEY_REQUEST to keyRequest
+            Param.KEY_REQUEST to keyRequest,
+            Param.VIEW_ITEM_LIST to info.viewItemList
         )
 
         sendDeeplink(DeeplinkManager.CONFIRM, extras = extras)
