@@ -7,11 +7,13 @@ import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
+import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.view.MainView
 import kotlinx.coroutines.launch
@@ -39,6 +41,9 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
                 slideUp.duration = 350L
 
                 slideUp.start()
+
+                val timeInit = (System.currentTimeMillis() - PhoneticsApp.start) / 1000
+                if (timeInit >= 1) logAnalytics("init_slow_$timeInit")
             }
         }
     }

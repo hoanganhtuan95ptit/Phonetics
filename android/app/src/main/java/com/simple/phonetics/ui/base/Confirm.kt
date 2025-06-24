@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.simple.adapter.entities.ViewItem
@@ -51,6 +52,7 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.first
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.absoluteValue
@@ -70,7 +72,7 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
 
     private var resultCode: Int = -1
 
-    private var bindingConfirmSpeak by autoCleared<LayoutActionVerticalBinding>()
+    private var bindingConfirmAction by autoCleared<LayoutActionVerticalBinding>()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,7 +83,7 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
         dialog?.setCanceledOnTouchOutside(isCancelable)
 
 
-        bindingConfirmSpeak = LayoutActionVerticalBinding.inflate(LayoutInflater.from(requireContext()))
+        bindingConfirmAction = LayoutActionVerticalBinding.inflate(LayoutInflater.from(requireContext()))
 
 
         setupAction()
@@ -98,7 +100,7 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
 
     private fun setupAction() {
 
-        val binding = bindingConfirmSpeak ?: return
+        val binding = bindingConfirmAction ?: return
 
         val layoutParam = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
@@ -154,26 +156,6 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
 
     private fun observeData() = with(viewModel) {
 
-        theme.observe(viewLifecycleOwner) {
-
-            if (arguments?.getBoolean(Param.CANCEL) == true) Background(
-                backgroundColor = it.getOrTransparent("colorDivider"),
-                cornerRadius = DP.DP_100,
-            ).let {
-
-                binding?.vAnchor?.delegate?.setBackground(it)
-            }
-
-            val background = Background(
-                backgroundColor = arguments?.getInt(com.simple.phonetics.Param.BACKGROUND_COLOR).takeIf { it != 0 } ?: it.getOrTransparent("colorBackground"),
-                cornerRadius_TL = DP.DP_24,
-                cornerRadius_TR = DP.DP_24
-            )
-
-            binding?.root?.delegate?.setBackground(background)
-            bindingConfirmSpeak?.root?.delegate?.setBackground(background)
-        }
-
         viewItemList.observeLaunch(viewLifecycleOwner) {
 
             val binding = binding ?: return@observeLaunch
@@ -187,7 +169,7 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
         val id = arguments?.getString(Param.ID).orEmpty()
         val keyRequest = arguments?.getString(Param.KEY_REQUEST).orEmpty()
 
-        infoMap[ConfirmViewModel.Id(id, keyRequest)]?.let {
+        infoMap.remove(ConfirmViewModel.Id(id, keyRequest))?.let {
 
 
             viewModel.updateViewItem(it.viewItem)
@@ -200,8 +182,9 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
 
             val background = it.background
             binding.root.delegate.setBackground(background)
+            bindingConfirmAction?.root?.delegate?.setBackground(background)
 
-            val bindingConfirmSpeak = bindingConfirmSpeak ?: return@let
+            val bindingConfirmSpeak = bindingConfirmAction ?: return@let
 
             val negative = it.negative
             bindingConfirmSpeak.tvNegative.setVisible(negative != null)
@@ -316,6 +299,23 @@ class ConfirmDeeplinkHandler : DeeplinkHandler {
 
         val viewModel by componentCallbacks.viewModels<ConfirmViewModel>()
 
+
+        val theme = viewModel.theme.asFlow().first()
+
+        val cancel = extras?.get(Param.CANCEL).asObjectOrNull<Boolean>() ?: true
+
+        val anchor = extras.orEmpty()[Param.ANCHOR].asObjectOrNull<Background>() ?: Background(
+            cornerRadius = DP.DP_100,
+            backgroundColor = theme.getOrTransparent("colorDivider"),
+        )
+
+        val background = extras.orEmpty()[Param.BACKGROUND].asObjectOrNull<Background>() ?: Background(
+            cornerRadius_TL = DP.DP_24,
+            cornerRadius_TR = DP.DP_24,
+            backgroundColor = theme.getOrTransparent("colorBackground")
+        )
+
+
         val id = UUID.randomUUID().toString()
         val keyRequest = extras.orEmpty().get(Param.KEY_REQUEST).asObjectOrNull<String>().orEmpty()
 
@@ -325,8 +325,8 @@ class ConfirmDeeplinkHandler : DeeplinkHandler {
 
             viewItem = extras.orEmpty()[com.simple.phonetics.Param.VIEW_ITEM_LIST].asListOrNull<ViewItem>().orEmpty().toList(),
 
-            anchor = extras.orEmpty().get(Param.ANCHOR).asObjectOrNull<Background>(),
-            background = extras.orEmpty().get(Param.ANCHOR).asObjectOrNull<Background>(),
+            anchor = if (cancel) anchor else null,
+            background = background,
 
             negative = extras.orEmpty().get(Param.NEGATIVE).asObjectOrNull<ButtonInfo>(),
             positive = extras.orEmpty().get(Param.POSITIVE).asObjectOrNull<ButtonInfo>(),
@@ -336,7 +336,8 @@ class ConfirmDeeplinkHandler : DeeplinkHandler {
         val fragment = VerticalConfirmSheetFragment()
         fragment.arguments = bundleOf(
             Param.ID to id,
-            Param.KEY_REQUEST to keyRequest
+            Param.CANCEL to cancel,
+            Param.KEY_REQUEST to keyRequest,
         )
         fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, "")
 
