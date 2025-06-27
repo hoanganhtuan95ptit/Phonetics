@@ -59,7 +59,7 @@ class HistoryHomeViewModel(
         if (historyList.isNotEmpty()) TitleViewItem(
             id = "TITLE_HISTORY",
             text = translate["title_history"].orEmpty()
-                .with("test", Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
         ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY_0", height = DP.DP_16))

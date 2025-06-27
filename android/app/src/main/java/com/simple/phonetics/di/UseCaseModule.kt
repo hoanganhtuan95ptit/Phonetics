@@ -48,6 +48,10 @@ val useCaseModule = module {
     }
 
     single {
+        DetectUseCase(get())
+    }
+
+    single {
         TranslateUseCase(get())
     }
 

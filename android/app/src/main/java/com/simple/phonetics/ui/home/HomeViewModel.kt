@@ -33,15 +33,15 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
-import com.simple.detect.data.usecase.DetectUseCase
-import com.simple.detect.entities.DetectOption
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.R
 import com.simple.phonetics.TYPE_HISTORY
 import com.simple.phonetics.TYPE_VERSION
+import com.simple.phonetics.domain.usecase.detect.DetectUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
+import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.getOrKey
@@ -442,23 +442,13 @@ class HomeViewModel(
 
         val param = DetectUseCase.Param(
             path = path,
-            inputCode = inputLanguage.value?.id ?: "en",
-            outputCode = inputLanguage.value?.id ?: "en",
-            detectOption = DetectOption.TEXT,
-            sizeMax = 500
+            inputLanguageCode = inputLanguage.value?.id ?: Language.EN,
+            outputLanguageCode = inputLanguage.value?.id ?: Language.EN,
         )
 
         val state = detectUseCase.execute(param)
 
-        state.doSuccess { list ->
-
-            detectState.postValue(ResultState.Success(list.joinToString("\n") { it.text }))
-        }
-
-        state.doFailed {
-
-            detectState.postValue(ResultState.Failed(it))
-        }
+        detectState.postDifferentValue(state)
     }
 
     private fun versionViewItem(theme: Map<String, Int>, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {

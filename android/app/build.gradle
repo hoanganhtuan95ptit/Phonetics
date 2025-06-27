@@ -105,6 +105,9 @@ dependencies {
     implementation hoanganhtuan95Dependencies.crashlytics_log
     implementation hoanganhtuan95Dependencies.crashlytics_firebase
 
+    implementation hoanganhtuan95Dependencies.detect_mlkit
+    implementation hoanganhtuan95Dependencies.translate_mlkit
+
     implementation hoanganhtuan95Dependencies.adapter
     kapt hoanganhtuan95Dependencies.adapter_processor
     implementation hoanganhtuan95Dependencies.deeplink
