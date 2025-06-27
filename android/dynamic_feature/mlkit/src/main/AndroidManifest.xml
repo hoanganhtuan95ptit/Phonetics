@@ -14,10 +14,10 @@
 
     <application>
 
-        <provider
-            android:name="com.google.mlkit.common.internal.MlKitInitProvider"
-            android:authorities="${applicationId}.mlkit-init"
-            tools:node="remove" />
+        <!--        <provider-->
+        <!--            android:name="com.google.mlkit.common.internal.MlKitInitProvider"-->
+        <!--            android:authorities="${applicationId}.mlkit-init"-->
+        <!--            tools:node="remove" />-->
 
         <provider
             android:name="androidx.startup.InitializationProvider"

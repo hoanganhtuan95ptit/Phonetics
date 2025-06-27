@@ -200,12 +200,7 @@ class AppRepositoryImpl(
 
     override suspend fun detect(languageCodeInput: String, languageCodeOutput: String, path: String): ResultState<String> {
 
-        val state = initModuleSync(Module.MLKIT)
-
-        if (state is ResultState.Failed) {
-
-            return state
-        }
+        initModuleSync(Module.MLKIT)
 
         val detectState = GlobalContext.get().getAll<DetectTask>().executeAsyncByPriority(DetectTask.Param(path, languageCodeInput, languageCodeOutput, DetectOption.TEXT, 500))
 
@@ -222,12 +217,7 @@ class AppRepositoryImpl(
 
     override suspend fun checkDetect(languageCodeInput: String, languageCodeOutput: String): Boolean {
 
-        val state = initModuleSync(Module.MLKIT)
-
-        if (state is ResultState.Failed) {
-
-            return false
-        }
+        initModuleSync(Module.MLKIT)
 
         val detectState = GlobalContext.get().getAll<DetectStateTask>().executeAsyncAll(DetectStateTask.Param(languageCode = languageCodeInput)).firstOrNull()
 
@@ -241,12 +231,7 @@ class AppRepositoryImpl(
 
     override suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>> {
 
-        val state = initModuleSync(Module.MLKIT)
-
-        if (state is ResultState.Failed) {
-
-            return state
-        }
+        initModuleSync(Module.MLKIT)
 
         val input = text.map {
 
