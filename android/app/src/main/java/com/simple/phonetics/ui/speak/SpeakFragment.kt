@@ -29,6 +29,7 @@ import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
+import com.simple.deeplink.sendDeeplink
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
@@ -53,6 +54,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupActionCopy()
         setupActionSpeak()
         setupActionListen()
         setupRecyclerView()
@@ -74,6 +76,24 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         super.onDestroy()
 
         showAds()
+    }
+
+    private fun setupActionCopy() {
+
+        val binding = bindingAction?.frameCopy ?: return
+
+        binding.root.setPadding(
+            Padding(padding = DP.DP_12)
+        )
+
+        binding.ivImage.setMargin(
+            Margin(margin = DP.DP_8)
+        )
+
+        binding.root.setDebouncedClickListener {
+
+            sendDeeplink(DeeplinkManager.COPY, extras = mapOf(Param.TEXT to viewModel.text.value.orEmpty()))
+        }
     }
 
     private fun setupActionSpeak() {
@@ -99,6 +119,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
         val binding = bindingAction ?: return
 
+        binding.root.setInvisible(true)
         binding.frameReading.root.setPadding(
             Padding(padding = DP.DP_12)
         )
@@ -155,6 +176,18 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
             binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
             bindingConfigSpeak.frameSpeak.root.delegate.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.getOrTransparent("colorPrimary"), cornerRadius = DP.DP_16))
+        }
+
+        copyInfo.observe(viewLifecycleOwner) {
+
+            val binding = bindingAction?.frameCopy ?: return@observe
+
+            binding.ivImage.setImage(it.image)
+            binding.ivImage.setColorFilter(it.imageFilter)
+
+            binding.root.isClickable = it.isShow
+            binding.root.setInvisible(!it.isShow)
+            binding.progressBar.setVisible(false)
         }
 
         speakInfo.observe(viewLifecycleOwner) {
@@ -217,8 +250,11 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         viewItemList.asFlow().launchCollect(viewLifecycleOwner) {
 
             val binding = binding ?: return@launchCollect
+            val bindingAction = bindingAction ?: return@launchCollect
 
             binding.recyclerView.submitListAwait(it)
+
+            bindingAction.root.setVisible(true)
         }
 
         arguments?.getString(Param.TEXT)?.takeIf {

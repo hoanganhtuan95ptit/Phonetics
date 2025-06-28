@@ -33,7 +33,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <View
+        <include
+            android:id="@+id/frame_copy"
+            layout="@layout/item_image_state"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />

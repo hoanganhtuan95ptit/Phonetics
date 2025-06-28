@@ -4,11 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
+import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
+import com.simple.event.sendEvent
+import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemSentenceBinding
 import com.simple.phonetics.entities.Sentence
@@ -22,6 +25,22 @@ class SentenceAdapter : ViewItemAdapter<SentenceViewItem, ItemSentenceBinding>()
 
     override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemSentenceBinding {
         return ItemSentenceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun createViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<ItemSentenceBinding>? {
+
+        val viewHolder = BaseBindingViewHolder(createViewBinding(parent, viewType), viewType)
+
+        val binding = viewHolder.binding
+
+        binding.root.setOnClickListener { view ->
+
+            val viewItem = getViewItem(viewHolder.bindingAdapterPosition) ?: return@setOnClickListener
+
+            sendEvent(EventName.SENTENCE_VIEW_ITEM_CLICKED, view to viewItem)
+        }
+
+        return viewHolder
     }
 
     override fun onBindViewHolder(binding: ItemSentenceBinding, viewType: Int, position: Int, item: SentenceViewItem, payloads: MutableList<Any>) {
