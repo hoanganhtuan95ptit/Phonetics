@@ -1,6 +1,6 @@
 [
   {
-    "isDarkMode": false,
+    "isDarkMode": 0,
     "colorBackground": -1,
     "colorBackgroundVariant": -1052689,
     "colorDivider": -5131855,
@@ -17,7 +17,7 @@
     "colorSurface": -1
   },
   {
-    "isDarkMode": true,
+    "isDarkMode": 1,
     "colorBackground": -16777216,
     "colorBackgroundVariant": -14342875,
     "colorDivider": -5131855,
