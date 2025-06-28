@@ -3,6 +3,7 @@ package com.simple.phonetics.ui
 import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
@@ -63,6 +64,11 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
             jobQueue.submit(handler + Dispatchers.IO) { ModuleSdk.downloadSync(it) }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("tuanha", "onResume: ${System.currentTimeMillis() - PhoneticsApp.start}")
     }
 
     override fun onDestroy() {

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.simple.coreapp.ui.view.round.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    app:rv_backgroundColor="#5b5"
+    app:rv_cornerRadius="16dp">
+
+    <ImageView
+        android:id="@+id/iv_campaign"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextBody1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Reducing the number of considered missed Gc histogram windows from 480 to 100" />
+
+        <TextView
+            android:id="@+id/tv_message"
+            style="@style/TextBody2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="Reducing the number of considered missed Gc histogram windows from 480 to 100" />
+    </LinearLayout>
+</com.simple.coreapp.ui.view.round.RoundLinearLayout>
