@@ -29,7 +29,6 @@ import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
-import com.simple.deeplink.sendDeeplink
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
@@ -43,6 +42,7 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
+import com.simple.phonetics.utils.sendDeeplinkWithThank
 import com.simple.phonetics.utils.showAds
 import com.simple.state.isCompleted
 import com.simple.state.isFailed
@@ -92,7 +92,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
         binding.root.setDebouncedClickListener {
 
-            sendDeeplink(DeeplinkManager.COPY, extras = mapOf(Param.TEXT to viewModel.text.value.orEmpty()))
+            sendDeeplinkWithThank(DeeplinkManager.COPY, extras = mapOf(Param.TEXT to viewModel.text.value.orEmpty()))
         }
     }
 
