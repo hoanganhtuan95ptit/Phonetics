@@ -1,7 +1,7 @@
-package com.unknown.community.data.api
+package com.phonetics.community.data.api
 
 import com.simple.phonetics.BRANCH
-import com.unknown.community.entities.CommunityInvite
+import com.phonetics.community.entities.CommunityInvite
 import org.koin.core.context.GlobalContext
 import retrofit2.Retrofit
 import retrofit2.http.GET

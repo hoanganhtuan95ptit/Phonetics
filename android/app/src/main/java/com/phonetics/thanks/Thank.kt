@@ -1,11 +1,17 @@
-package com.unknown.thank
+package com.phonetics.thanks
 
 data class Thank(
-    val deeplink: String? = null,
+
+    val id: String? = null,
     val image: String? = null,
+
     val title: String? = null,
     val message: String? = null,
+
     val author: String? = null,
+
     val negative: String? = null,
-    val positive: String? = null
+    val negativeDeeplink: String? = null,
+    val positive: String? = null,
+    val positiveDeeplink: String? = null
 )

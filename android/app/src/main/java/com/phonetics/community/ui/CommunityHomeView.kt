@@ -1,4 +1,4 @@
-package com.unknown.community.ui
+package com.phonetics.community.ui
 
 import androidx.fragment.app.viewModels
 import com.google.auto.service.AutoService

@@ -1,4 +1,4 @@
-package com.unknown.community.entities
+package com.phonetics.community.entities
 
 data class CommunityInvite(
     val deeplink: String? = null,

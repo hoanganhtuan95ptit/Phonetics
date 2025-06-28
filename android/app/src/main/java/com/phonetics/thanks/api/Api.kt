@@ -1,7 +1,7 @@
-package com.unknown.thank.api
+package com.phonetics.thanks.api
 
 import com.simple.phonetics.BRANCH
-import com.unknown.thank.Thank
+import com.phonetics.thanks.Thank
 import org.koin.core.context.GlobalContext
 import retrofit2.Retrofit
 import retrofit2.http.GET
@@ -9,7 +9,7 @@ import retrofit2.http.Path
 
 interface Api {
 
-    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/community/community.json")
+    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/thanks/thanks.json")
     suspend fun syncCommunity(@Path("branch") branch: String = BRANCH): List<Thank>
 
     companion object {
