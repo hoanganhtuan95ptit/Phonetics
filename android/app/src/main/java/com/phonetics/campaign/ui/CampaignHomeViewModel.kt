@@ -8,7 +8,8 @@ import com.phonetics.campaign.ui.adapters.CampaignViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.toRich
+import com.simple.coreapp.utils.ext.ForegroundColor
+import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
@@ -33,22 +34,32 @@ class CampaignHomeViewModel : BaseViewModel() {
 
         val theme = theme.get()
         val translate = translate.get()
-        val community = campaign.get()
+
+        val campaign = campaign.get()
 
         val viewItemList = arrayListOf<ViewItem>()
 
+        val backgroundColor = if (campaign.backgroundColor != 0) {
+            campaign.backgroundColor
+        } else {
+            theme.getOrTransparent("colorPrimary")
+        }
+
         CampaignViewItem(
             id = "CAMPAIGN",
-            data = community,
+            data = campaign,
 
-            image = "",
+            image = campaign.image.orEmpty(),
 
-            text = translate.getOrKey(community.title.orEmpty()).toRich(),
-            message = translate.getOrKey(community.message.orEmpty()).toRich(),
+            text = translate.getOrKey(campaign.title.orEmpty())
+                .with(ForegroundColor(campaign.titleColor)),
+
+            message = translate.getOrKey(campaign.message.orEmpty())
+                .with(ForegroundColor(campaign.titleColor)),
 
             background = Background(
-                backgroundColor = theme.getOrTransparent("colorPrimary"),
-                cornerRadius = DP.DP_16
+                cornerRadius = DP.DP_16,
+                backgroundColor = backgroundColor
             )
         ).let {
 

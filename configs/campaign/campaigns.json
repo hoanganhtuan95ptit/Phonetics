@@ -2,6 +2,10 @@
     {
         "deeplink": "https://www.facebook.com/groups/iphonetics",
         "title": "🗣️ Cùng nhau học phát âm – Tham gia cộng đồng!",
-        "message": "📢 Góp ý, chia sẻ kinh nghiệm và đồng hành phát triển ứng dụng tốt hơn mỗi ngày cùng mọi người! 🤝🎯"
+        "titleColor": 0,
+        "message": "📢 Góp ý, chia sẻ kinh nghiệm và đồng hành phát triển ứng dụng tốt hơn mỗi ngày cùng mọi người! 🤝🎯",
+        "messageColor": 0,
+        "image": "",
+        "backgroundColor": 0
     }
-]
+]l
