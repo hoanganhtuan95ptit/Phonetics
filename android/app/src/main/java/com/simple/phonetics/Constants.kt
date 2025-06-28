@@ -32,6 +32,7 @@ object Param {
 
 object DeeplinkManager {
 
+    const val COPY = "app://copy"
     const val TOAST = "app://toast"
     const val SPEAK = "app://speak"
     const val EVENT = "app://event"
@@ -100,6 +101,7 @@ object EventName {
 
     const val IPA_VIEW_ITEM_CLICKED = "IPA_VIEW_ITEM_CLICKED"
     const val HISTORY_VIEW_ITEM_CLICKED = "HISTORY_VIEW_ITEM_CLICKED"
+    const val SENTENCE_VIEW_ITEM_CLICKED = "SENTENCE_VIEW_ITEM_CLICKED"
 
     const val MICROPHONE = "MICROPHONE"
 }

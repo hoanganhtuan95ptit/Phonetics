@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
+import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
@@ -29,6 +30,7 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
+import com.simple.event.listenerEvent
 import com.simple.event.sendEvent
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
@@ -42,6 +44,7 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
+import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.ui.view.popup.PopupView
 import com.simple.phonetics.ui.view.popup.PopupViewModel
@@ -170,6 +173,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
                 startSpeak(text = item.data.text)
             }
+        }
+
+        listenerEvent(viewLifecycleOwner.lifecycle, EventName.SENTENCE_VIEW_ITEM_CLICKED) {
+
+            val (_, item) = it.asObject<Pair<View, SentenceViewItem>>()
+
+            sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
         }
 
         MultiAdapter(clickTextAdapter, phoneticsAdapter).apply {

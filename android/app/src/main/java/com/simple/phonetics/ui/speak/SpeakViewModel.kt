@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.speak
 
+import android.graphics.Color
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -10,6 +11,7 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
@@ -173,6 +175,22 @@ class SpeakViewModel(
         postDifferentValue(info)
     }
 
+    val copyInfo: LiveData<CopyInfo> = listenerSources(size, theme, translate) {
+
+        val theme = theme.value ?: return@listenerSources
+
+        val info = CopyInfo(
+
+            image = R.drawable.ic_copy_24dp,
+            imageFilter = theme.getOrTransparent("colorPrimary"),
+
+            isShow = true,
+            messageThankUser = emptyText()
+        )
+
+        postDifferentValue(info)
+    }
+
     @VisibleForTesting
     val isCorrect: LiveData<Boolean> = combineSources(text, speakState) {
 
@@ -290,6 +308,14 @@ class SpeakViewModel(
         val isShow: Boolean,
 
         val background: Background
+    )
+
+    data class CopyInfo(
+        val image: Int,
+        val imageFilter: Int = Color.TRANSPARENT,
+
+        val isShow: Boolean,
+        val messageThankUser: RichText,
     )
 
     data class SpeakInfo(
