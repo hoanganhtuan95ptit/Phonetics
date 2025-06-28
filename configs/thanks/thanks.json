@@ -4,6 +4,8 @@
         "image": "",
         "title": "",
         "message": "",
-        "author": ""
+        "author": "",
+        "negative": "",
+        "positive": ""
     }
 ]

@@ -4,15 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <dist:module
-        dist:instant="false"
-        dist:title="@string/title_mlkit">
+        dist:instant="true"
+        dist:title="@string/title_community">
         <dist:delivery>
             <dist:on-demand />
         </dist:delivery>
-        <dist:fusing dist:include="true" />
+        <dist:fusing dist:include="false" />
     </dist:module>
-
-    <application>
-
-    </application>
 </manifest>

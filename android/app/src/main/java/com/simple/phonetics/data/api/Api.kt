@@ -29,9 +29,6 @@ interface Api {
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/translate/{language_code}/translates.json")
     suspend fun syncTranslate(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): Map<String, String>
 
-    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/translate/{language_code}/translates.json")
-    suspend fun syncCommunity(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): Map<String, String>
-
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/language/{language_code}/languages.json")
     suspend fun getLanguageSupport(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<Language>
 
