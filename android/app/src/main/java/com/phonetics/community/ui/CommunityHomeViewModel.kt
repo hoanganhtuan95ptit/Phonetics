@@ -1,4 +1,4 @@
-package com.unknown.community.ui
+package com.phonetics.community.ui
 
 import android.graphics.Color
 import androidx.annotation.VisibleForTesting
@@ -13,8 +13,8 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
-import com.unknown.community.data.repositories.CommunityRepository
-import com.unknown.community.entities.CommunityInvite
+import com.phonetics.community.data.repositories.CommunityRepository
+import com.phonetics.community.entities.CommunityInvite
 import kotlinx.coroutines.flow.firstOrNull
 
 class CommunityHomeViewModel() : BaseViewModel() {

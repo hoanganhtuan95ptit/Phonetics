@@ -37,7 +37,6 @@ import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
-import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.observeLaunch
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.submitListAwait
@@ -50,17 +49,11 @@ import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionVerticalBinding
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.absoluteValue
 
-private val verticalConfirmItemList by lazy {
-
-    MutableSharedFlow<List<ViewItem>>(replay = 1, extraBufferCapacity = Int.MAX_VALUE, onBufferOverflow = BufferOverflow.SUSPEND)
-}
 
 class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBinding, VerticalConfirmViewModel>() {
 
@@ -204,13 +197,7 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
 class VerticalConfirmViewModel : BaseViewModel() {
 
     @VisibleForTesting
-    val itemList: LiveData<List<ViewItem>> = mediatorLiveData {
-
-        verticalConfirmItemList.collect {
-
-            postValue(it)
-        }
-    }
+    val itemList: LiveData<List<ViewItem>> = MediatorLiveData()
 
     @VisibleForTesting
     val actionHeight: LiveData<Int> = MediatorLiveData()

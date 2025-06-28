@@ -1,4 +1,4 @@
-package com.unknown.thank.repositories
+package com.phonetics.community.data.repositories
 
 import android.util.Log
 import androidx.lifecycle.MediatorLiveData
@@ -6,17 +6,17 @@ import androidx.lifecycle.asFlow
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.BRANCH
-import com.unknown.thank.Thank
-import com.unknown.thank.api.Api
+import com.phonetics.community.data.api.Api
+import com.phonetics.community.entities.CommunityInvite
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 
 class CommunityRepository {
 
-    private val list: MediatorLiveData<List<Thank>> = MediatorLiveData()
+    private val list: MediatorLiveData<List<CommunityInvite>> = MediatorLiveData()
 
-    suspend fun getCommunitiesAsync(): Flow<List<Thank>> = channelFlow {
+    suspend fun getCommunitiesAsync(): Flow<List<CommunityInvite>> = channelFlow {
 
         if (list.value == null) kotlin.runCatching {
 
@@ -35,7 +35,7 @@ class CommunityRepository {
         }
     }
 
-    companion object {
+    companion object{
 
         val instance by lazy {
             CommunityRepository()
