@@ -33,17 +33,6 @@ android {
 dependencies {
     implementation project(":app")
 
-    implementation koinDependencies.values()
-
-    implementation androidxDependencies.startup_runtime
-//    implementation hoanganhtuan95Dependencies.detect
-//    implementation hoanganhtuan95Dependencies.translate
-//
-//    implementation 'com.google.mlkit:common:18.9.0'
-//    implementation 'com.google.mlkit:language-id:17.0.5'
-//    implementation 'com.google.mlkit:translate:17.0.1'
-//    implementation 'com.google.mlkit:text-recognition:16.0.0'
-
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
