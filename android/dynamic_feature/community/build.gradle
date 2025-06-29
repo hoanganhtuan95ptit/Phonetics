@@ -1,12 +1,13 @@
 plugins {
     id 'com.android.dynamic-feature'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 apply from: "$rootDir/constant.gradle"
 
 android {
-    namespace 'com.unknown.mlkit'
+    namespace 'com.unknown.community'
     compileSdk project.ext.compileSdkVersion
 
     defaultConfig {
