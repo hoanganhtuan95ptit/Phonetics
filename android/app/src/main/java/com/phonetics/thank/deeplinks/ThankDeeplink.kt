@@ -62,6 +62,9 @@ class ThankDeeplink : DeeplinkHandler {
         val thank = viewModel.thank.asFlow().firstOrNull().orEmpty()[deepLink] ?: return true
 
 
+        val title = translate.getOrKey(thank.title.orEmpty())
+        if (title.startsWith("title_", true)) return true
+
         val viewItemList = arrayListOf<ViewItem>()
 
         ImageViewItem(
@@ -79,7 +82,7 @@ class ThankDeeplink : DeeplinkHandler {
 
         NoneTextViewItem(
             id = "2",
-            text = translate.getOrKey(thank.title.orEmpty())
+            text = title
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
@@ -101,8 +104,9 @@ class ThankDeeplink : DeeplinkHandler {
 
         NoneTextViewItem(
             id = "3",
-            text = translate.getOrKey(thank.message.orEmpty())
-                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+            text = translate.getOrKey(thank.message.orEmpty()).replace("\$author", thank.author.orEmpty())
+                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+                .with(thank.author.orEmpty(), Bold, ForegroundColor(theme.getOrTransparent("colorPrimary"))),
             textStyle = TextStyle(
                 textSize = 16f,
                 textGravity = Gravity.CENTER
@@ -137,7 +141,7 @@ class ThankDeeplink : DeeplinkHandler {
         )
 
         val negative = ButtonInfo(
-            text = translate.getOrKey(thank.positive.orEmpty())
+            text = translate.getOrKey(thank.negative.orEmpty())
                 .with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant"))),
             background = Background(
                 backgroundColor = theme.getOrTransparent("colorBackground"),

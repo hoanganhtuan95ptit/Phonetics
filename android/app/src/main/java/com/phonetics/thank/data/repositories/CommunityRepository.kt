@@ -1,11 +1,12 @@
 package com.phonetics.thank.data.repositories
 
 import android.util.Log
-import com.phonetics.thank.entities.Thank
 import com.phonetics.thank.data.api.Api
 import com.phonetics.thank.data.dao.ThankProvider
+import com.phonetics.thank.entities.Thank
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.BRANCH
+import com.simple.phonetics.BuildConfig
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -28,7 +29,11 @@ class CommunityRepository {
             ThankProvider.pendingThankDao.getListAsync()
         ) { ids, thanks ->
 
-            thanks.filter { it.id !in ids }
+            if (BuildConfig.DEBUG) {
+                thanks
+            } else {
+                thanks.filter { it.id !in ids }
+            }
         }.launchCollect(this) {
 
             trySend(it)
