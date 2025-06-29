@@ -3,6 +3,10 @@ package com.simple.phonetics.ui.view.ads
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
+import com.simple.analytics.logAnalytics
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
@@ -63,6 +67,14 @@ class AdsViewModel(
         }
 
         postDifferentValue(true.toEvent())
+    }
+
+    init {
+
+        request.asFlow().launchCollect(viewModelScope) { count ->
+
+            (3..30).forEach { if (count % it == 0L) logAnalytics("ads_show_count_$count") }
+        }
     }
 
     fun countShow() {
