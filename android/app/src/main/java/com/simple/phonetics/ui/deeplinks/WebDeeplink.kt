@@ -7,6 +7,7 @@ import android.util.Log
 import android.util.Patterns
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.phonetics.utils.exts.awaitResume
@@ -27,8 +28,14 @@ class WebDeeplink : DeeplinkHandler {
 
         componentCallbacks.awaitResume()
 
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
-        componentCallbacks.startActivity(intent)
+        kotlin.runCatching {
+
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
+            componentCallbacks.startActivity(intent)
+        }.getOrElse {
+
+            logCrashlytics("WebDeeplink", it)
+        }
 
         return true
     }
