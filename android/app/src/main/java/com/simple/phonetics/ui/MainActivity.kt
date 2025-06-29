@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui
 
 import android.animation.ObjectAnimator
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -54,26 +55,15 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
                 if (timeInit >= 1) logAnalytics("init_slow_$timeInit")
             }
         }
-
-
-        listOf(
-            "mlkit",
-            "thank",
-            "community"
-        ).map {
-
-            jobQueue.submit(handler + Dispatchers.IO) { ModuleSdk.downloadSync(it) }
-        }
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("tuanha", "onResume: ${System.currentTimeMillis() - PhoneticsApp.start}")
+        Log.d("tuanha", "onResume: ${System.currentTimeMillis() - PhoneticsApp.start}  ${Color.parseColor("#1877F2")}  ${Color.parseColor("#B1B1B1")}")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        jobQueue.cancel()
     }
 
     private fun observeData() = with(viewModel) {

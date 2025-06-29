@@ -4,24 +4,16 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
-import androidx.startup.AppInitializer
-import androidx.startup.Initializer
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
-import com.google.android.play.core.splitinstall.SplitInstallRequest
-import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
-import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.simple.coreapp.utils.JobQueue
-import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
-import com.simple.crashlytics.logCrashlytics
 import com.simple.detect.data.tasks.DetectStateTask
 import com.simple.detect.data.tasks.DetectTask
 import com.simple.detect.entities.DetectOption
 import com.simple.detect.entities.DetectProvider
 import com.simple.detect.entities.DetectState
 import com.simple.phonetics.DEFAULT_TRANSLATE
-import com.simple.phonetics.Module
 import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.data.dao.PhoneticRoomDatabaseProvider
@@ -39,11 +31,8 @@ import com.simple.task.executeSyncByPriority
 import com.simple.translate.data.tasks.TranslateTask
 import com.simple.translate.entities.TranslateRequest
 import com.simple.translate.entities.TranslateResponse
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import org.koin.core.context.GlobalContext
@@ -113,94 +102,7 @@ class AppRepositoryImpl(
     }
 
 
-    @Suppress("UNCHECKED_CAST")
-    override suspend fun initModuleSync(pair: Pair<String, String>): ResultState<Unit> {
-
-        val state = downloadModuleQueue(pair.first)
-
-        if (state is ResultState.Failed) {
-
-            logCrashlytics("init_module_sync", state.cause)
-            return state
-        }
-
-        return try {
-
-            AppInitializer.getInstance(context).initializeComponent(Class.forName(pair.second) as Class<Initializer<Any>>)
-
-            ResultState.Success(Unit)
-        } catch (e: Exception) {
-
-            ResultState.Failed(e)
-        }
-    }
-
-    private suspend fun downloadModuleQueue(moduleName: String) = channelFlow {
-
-        job.submit(handler + this.coroutineContext) {
-
-            val state = kotlin.runCatching {
-                downloadModuleSync(moduleName)
-            }.getOrElse {
-                ResultState.Failed(it)
-            }
-
-            trySend(state)
-        }
-
-        awaitClose {
-
-        }
-    }.first()
-
-    private suspend fun downloadModuleSync(moduleName: String) = channelFlow {
-
-        if (splitInstallManager.installedModules.contains(moduleName)) {
-
-            trySend(ResultState.Success(Unit))
-            awaitClose()
-            return@channelFlow
-        }
-
-        val request = SplitInstallRequest.newBuilder()
-            .addModule(moduleName)
-            .build()
-
-        val listener = SplitInstallStateUpdatedListener { state ->
-
-            when (state.status()) {
-
-                SplitInstallSessionStatus.INSTALLED -> {
-
-                    trySend(ResultState.Success(Unit))
-                }
-
-                SplitInstallSessionStatus.FAILED -> {
-
-                    trySend(ResultState.Failed(RuntimeException("$moduleName:${state.errorCode()}")))
-                }
-
-                else -> {
-
-                }
-            }
-        }
-
-        splitInstallManager.registerListener(listener)
-
-        splitInstallManager.startInstall(request).addOnFailureListener {
-
-            trySend(ResultState.Failed(it))
-        }
-
-        awaitClose {
-            splitInstallManager.unregisterListener(listener)
-        }
-    }.first()
-
     override suspend fun detect(languageCodeInput: String, languageCodeOutput: String, path: String): ResultState<String> {
-
-        initModuleSync(Module.MLKIT)
 
         val detectState = GlobalContext.get().getAll<DetectTask>().executeAsyncByPriority(DetectTask.Param(path, languageCodeInput, languageCodeOutput, DetectOption.TEXT, 500))
 
@@ -217,8 +119,6 @@ class AppRepositoryImpl(
 
     override suspend fun checkDetect(languageCodeInput: String, languageCodeOutput: String): Boolean {
 
-        initModuleSync(Module.MLKIT)
-
         val detectState = GlobalContext.get().getAll<DetectStateTask>().executeAsyncAll(DetectStateTask.Param(languageCode = languageCodeInput)).firstOrNull()
 
         val detectStateList = detectState?.toSuccess()?.data?.filterIsInstance<ResultState.Success<Pair<DetectProvider, DetectState>>>()?.map {
@@ -230,8 +130,6 @@ class AppRepositoryImpl(
     }
 
     override suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>> {
-
-        initModuleSync(Module.MLKIT)
 
         val input = text.map {
 
