@@ -159,8 +159,15 @@
   "ipa_detail_screen_practice_with_games": "Practice $ipa with games 🎮🧠",
 
   "ipa_list_screen_title": "Ipa list",
-
   "recording_screen_title": "Please speak $language_name",
+
+  "thank_screen_title_for_action_copy": "💡 A Special Thanks",
+  "thank_screen_message_for_action_copy": "🎉 The feature you just used was contributed by 💬 $author.\nJoin the community to help build a better product together every day! 🤝",
+  "thank_screen_action_negative": "🙏 Thanks",
+  "thank_screen_action_positive": "Join Community",
+
+  "campaign_screen_title_for_join_group": "🤝 Join the Community and Grow Together!",
+  "campaign_screen_message_for_join_group": "📢 Share ideas, suggest features, and collaborate with others to make the app better every day! 🚀💡",
 
   "version_name": "🚀 Version: $version"
 }
