@@ -5,9 +5,9 @@
         "title": "thank_screen_title_for_action_copy",
         "message": "thank_screen_message_for_action_copy",
         "author": "NguyenLam",
-        "negative": "🙏 Cảm ơn",
+        "negative": "thank_screen_action_negative",
         "negativeDeeplink": "",
-        "positive": "Mở cộng đồng",
+        "positive": "thank_screen_action_positive",
         "positiveDeeplink": "https://www.facebook.com/share/p/1KtTjnFK8A"
     }
 ]

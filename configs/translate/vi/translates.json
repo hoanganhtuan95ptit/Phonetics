@@ -163,6 +163,8 @@
 
   "thank_screen_title_for_action_copy":"💡 Lời cảm ơn đặc biệt",
   "thank_screen_message_for_action_copy":"🎉 Tính năng bạn vừa sử dụng được đóng góp bởi 💬 $author.\nHãy tham gia cộng đồng để cùng nhau xây dựng một sản phẩm tốt hơn mỗi ngày! 🤝",
+  "thank_screen_action_negative": "🙏 Cảm ơn",
+  "thank_screen_action_positive": "Mở cộng đồng",
 
   "campaign_screen_title_for_join_group":"🤝 Tham gia cộng đồng, cùng nhau phát triển!",
   "campaign_screen_message_for_join_group":"📢 Chia sẻ ý tưởng, góp ý tính năng và đồng hành cùng mọi người để ứng dụng ngày càng hoàn thiện hơn! 🚀💡",
