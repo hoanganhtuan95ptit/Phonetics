@@ -19,6 +19,7 @@ import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
@@ -46,13 +47,13 @@ class ReviewViewModel(
         postValue(list)
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, rate, historyList) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, rate, historyList) {
 
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
-        val rate = rate.value ?: return@combineSources
-        val historyList = historyList.value ?: return@combineSources
+        val rate = rate.value ?: return@combineSourcesWithDiff
+        val historyList = historyList.value ?: return@combineSourcesWithDiff
 
 
         val isValidate = rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3
@@ -61,7 +62,7 @@ class ReviewViewModel(
         if (!RATE_DEBUG) if (rate.status == Rate.Status.OPEN_RATE.value || !isValidate || historyList.isEmpty()) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
 
@@ -120,18 +121,18 @@ class ReviewViewModel(
     }
 
     @VisibleForTesting
-    val rateInfo: LiveData<RateInfo> = combineSources(theme, translate, viewItemList) {
+    val rateInfo: LiveData<RateInfo> = combineSourcesWithDiff(theme, translate, viewItemList) {
 
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
-        val viewItemList = viewItemList.value ?: return@combineSources
+        val viewItemList = viewItemList.value ?: return@combineSourcesWithDiff
 
 
         if (viewItemList.isEmpty()) {
 
             postValue(RateInfo(show = false))
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
 

@@ -14,9 +14,10 @@ import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
@@ -35,17 +36,17 @@ class PhoneticHomeViewModel(
 //        }
     }
 
-    val pairViewList: LiveData<List<Pair<String, RichText>>> = combineSources(theme, translate, phoneticState) {
+    val pairViewList: LiveData<List<Pair<String, RichText>>> = combineSourcesWithDiff(theme, translate, phoneticState) {
 
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
-        val state = phoneticState.value ?: return@combineSources
+        val state = phoneticState.value ?: return@combineSourcesWithDiff
 
         if (state !is ResultState.Running) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         state.data.values.filterIsInstance<SyncPhoneticAsyncUseCase.State.SyncPhonetics>().map {
@@ -77,11 +78,11 @@ class PhoneticHomeViewModel(
             key to text
         }.let {
 
-            postDifferentValueIfActive(it)
+            postValueIfActive(it)
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(pairViewList) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(pairViewList) {
 
         val viewItemList = arrayListOf<ViewItem>()
 
@@ -104,6 +105,6 @@ class PhoneticHomeViewModel(
             viewItemList.addAll(it)
         }
 
-        postDifferentValueIfActive(viewItemList)
+        postValueIfActive(viewItemList)
     }
 }

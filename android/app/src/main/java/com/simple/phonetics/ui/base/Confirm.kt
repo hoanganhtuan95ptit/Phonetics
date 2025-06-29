@@ -35,6 +35,7 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.observeLaunch
@@ -202,7 +203,7 @@ class VerticalConfirmViewModel : BaseViewModel() {
     @VisibleForTesting
     val actionHeight: LiveData<Int> = MediatorLiveData()
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, itemList, actionHeight) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, itemList, actionHeight) {
 
         val list = arrayListOf<ViewItem>()
 

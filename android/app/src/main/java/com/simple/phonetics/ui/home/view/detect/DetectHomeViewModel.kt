@@ -4,9 +4,10 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.domain.usecase.detect.CheckSupportDetectUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 
@@ -18,7 +19,7 @@ class DetectHomeViewModel(
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)
 
     @VisibleForTesting
-    val isSupportDetect: LiveData<Boolean> = combineSources(isReverse, inputLanguage, outputLanguage) {
+    val isSupportDetect: LiveData<Boolean> = combineSourcesWithDiff(isReverse, inputLanguage, outputLanguage) {
 
         val isReverse = isReverse.get()
         val inputLanguage = inputLanguage.get()
@@ -30,10 +31,10 @@ class DetectHomeViewModel(
             inputLanguage.id
         }
 
-        postDifferentValueIfActive(checkSupportDetectUseCase.execute(CheckSupportDetectUseCase.Param(languageCode = languageCode)))
+        postValueIfActive(checkSupportDetectUseCase.execute(CheckSupportDetectUseCase.Param(languageCode = languageCode)))
     }
 
-    val detectInfo: LiveData<DetectInfo> = combineSources(isSupportDetect) {
+    val detectInfo: LiveData<DetectInfo> = combineSourcesWithDiff(isSupportDetect) {
 
         val isSupportDetect = isSupportDetect.get()
 
@@ -41,7 +42,7 @@ class DetectHomeViewModel(
             isShow = isSupportDetect
         )
 
-        postDifferentValueIfActive(info)
+        postValueIfActive(info)
     }
 
     fun updateReverse(it: Boolean) {

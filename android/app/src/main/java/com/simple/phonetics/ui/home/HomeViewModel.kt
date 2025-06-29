@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -26,11 +27,13 @@ import com.simple.coreapp.utils.ext.toRich
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.R
@@ -69,7 +72,7 @@ class HomeViewModel(
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
 ) : BaseViewModel() {
 
-    val title: LiveData<RichText> = combineSources(theme, translate) {
+    val title: LiveData<RichText> = combineSourcesWithDiff(theme, translate) {
 
         val theme = theme.get()
         val translate = translate.getOrEmpty()
@@ -94,7 +97,7 @@ class HomeViewModel(
     val detectState: LiveData<ResultState<String>> = MediatorLiveData()
     val detectStateEvent: LiveData<Event<ResultState<String>>> = detectState.toEvent()
 
-    val imageInfo: LiveData<ImageInfo> = listenerSources(detectState) {
+    val imageInfo: LiveData<ImageInfo> = listenerSourcesWithDiff(detectState) {
 
         val detectState = detectState.value
 
@@ -110,7 +113,7 @@ class HomeViewModel(
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)
 
     @VisibleForTesting
-    val isSupportReverse: LiveData<Boolean> = combineSources(inputLanguage, outputLanguage, isSupportTranslate) {
+    val isSupportReverse: LiveData<Boolean> = combineSourcesWithDiff(inputLanguage, outputLanguage, isSupportTranslate) {
 
         val inputLanguage = inputLanguage.get()
         val outputLanguage = outputLanguage.get()
@@ -119,7 +122,7 @@ class HomeViewModel(
         postValue(inputLanguage.id != outputLanguage.id && isSupportTranslate)
     }
 
-    val reverseInfo: LiveData<ReverseInfo> = combineSources(theme, translate, isReverse, isSupportReverse) {
+    val reverseInfo: LiveData<ReverseInfo> = combineSourcesWithDiff(theme, translate, isReverse, isSupportReverse) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -156,11 +159,11 @@ class HomeViewModel(
     @VisibleForTesting
     val readingState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
-    val readingInfo: LiveData<ReadingInfo> = listenerSources(text, readingState, isSupportReading) {
+    val readingInfo: LiveData<ReadingInfo> = listenerSourcesWithDiff(text, readingState, isSupportReading) {
 
-        val text = text.value ?: return@listenerSources
+        val text = text.value ?: return@listenerSourcesWithDiff
         val listenState = readingState.value
-        val isSupportReading = isSupportReading.value ?: return@listenerSources && text.second.isNotBlank()
+        val isSupportReading = isSupportReading.value ?: return@listenerSourcesWithDiff && text.second.isNotBlank()
 
         val info = ReadingInfo(
             isShowPlay = !listenState.isRunning() && isSupportReading,
@@ -171,7 +174,7 @@ class HomeViewModel(
     }
 
 
-    val clearInfo: LiveData<ClearInfo> = combineSources(theme, translate, text) {
+    val clearInfo: LiveData<ClearInfo> = combineSourcesWithDiff(theme, translate, text) {
 
         val text = text.get()
         val theme = theme.get()
@@ -192,7 +195,7 @@ class HomeViewModel(
         postValue(info)
     }
 
-    val enterInfo: LiveData<EnterInfo> = combineSources(theme, translate, isReverse, outputLanguage, inputLanguage) {
+    val enterInfo: LiveData<EnterInfo> = combineSourcesWithDiff(theme, translate, isReverse, outputLanguage, inputLanguage) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -241,7 +244,7 @@ class HomeViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(size, theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportReading, isSupportTranslate) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff<List<ViewItem>>(size, theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportReading, isSupportTranslate) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -253,7 +256,7 @@ class HomeViewModel(
         state.doStart {
 
             postValue(getPhoneticLoadingViewItem(theme))
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         val viewItemList = arrayListOf<ViewItem>()
@@ -290,7 +293,8 @@ class HomeViewModel(
             viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_8))
         }
 
-        postDifferentValueIfActive(viewItemList)
+        Log.d("tuanha", "viewItemList:${viewItemList.size} ")
+        postValueIfActive(viewItemList)
     }.apply {
 
         postValue(emptyList())
@@ -298,7 +302,7 @@ class HomeViewModel(
 
 
     @VisibleForTesting
-    val typeViewItemList: LiveData<HashMap<Int, List<ViewItem>>> = combineSources(theme, translate) {
+    val typeViewItemList: LiveData<HashMap<Int, List<ViewItem>>> = combineSourcesWithDiff(theme, translate) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -310,7 +314,7 @@ class HomeViewModel(
         postValue(map)
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, translate, typeViewItemList, phoneticsViewItemList) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, translate, typeViewItemList, phoneticsViewItemList) {
 
         val size = size.get()
         val translate = translate.get()
@@ -327,7 +331,7 @@ class HomeViewModel(
          */
         if (list.isEmpty() && !typeViewItemList.containsKey(TYPE_HISTORY)) {
 
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
 
@@ -361,10 +365,10 @@ class HomeViewModel(
         list.add(SpaceViewItem(id = "BOTTOM_0", height = DP.DP_350))
         list.add(SpaceViewItem(id = "BOTTOM_1", height = DP.DP_100))
 
-        postDifferentValueIfActive(list)
+        postValueIfActive(list)
     }
 
-    val isShowLoading: LiveData<Boolean> = listenerSources(readingState, detectState) {
+    val isShowLoading: LiveData<Boolean> = listenerSourcesWithDiff(readingState, detectState) {
 
         postValue(readingState.value.isStart() || detectState.value.isRunning())
     }

@@ -20,10 +20,12 @@ import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
@@ -46,7 +48,7 @@ class GameIPAMatchViewModel(
 ) : GameItemViewModel() {
 
     @VisibleForTesting
-    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(text, resourceSelected, phoneticCodeSelected) {
+    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSourcesWithDiff(text, resourceSelected, phoneticCodeSelected) {
 
         val text = text.get()
         val resourceSelected = resourceSelected.get()
@@ -73,12 +75,12 @@ class GameIPAMatchViewModel(
         postValue(ResultState.Success(list))
     }
 
-    val quiz: LiveData<GameIPAMatchQuiz> = combineSources(isSupportReading, phoneticState) {
+    val quiz: LiveData<GameIPAMatchQuiz> = combineSourcesWithDiff(isSupportReading, phoneticState) {
 
-        val isSupportReading = isSupportReading.value ?: return@combineSources
-        val phoneticState = phoneticState.value ?: return@combineSources
+        val isSupportReading = isSupportReading.value ?: return@combineSourcesWithDiff
+        val phoneticState = phoneticState.value ?: return@combineSourcesWithDiff
 
-        val phoneticList = phoneticState.toSuccess()?.data ?: return@combineSources
+        val phoneticList = phoneticState.toSuccess()?.data ?: return@combineSourcesWithDiff
 
 
         val typeRemoveList = arrayListOf<GameIPAMatchQuiz.Option.Type>()
@@ -118,11 +120,11 @@ class GameIPAMatchViewModel(
     }
 
     @VisibleForTesting
-    val choose: LiveData<List<Pair<GameIPAMatchQuiz.Option?, GameIPAMatchQuiz.Option?>>> = combineSources(phoneticState) {
+    val choose: LiveData<List<Pair<GameIPAMatchQuiz.Option?, GameIPAMatchQuiz.Option?>>> = combineSourcesWithDiff(phoneticState) {
 
         val phoneticState = phoneticState.get()
 
-        val phoneticList = phoneticState.toSuccess()?.data ?: return@combineSources
+        val phoneticList = phoneticState.toSuccess()?.data ?: return@combineSourcesWithDiff
 
         postValue(phoneticList.map { null to null })
     }
@@ -133,23 +135,23 @@ class GameIPAMatchViewModel(
     @VisibleForTesting
     val readingState: LiveData<HashMap<GameIPAMatchPair, ResultState<String>>> = MediatorLiveData(hashMapOf())
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, warning, readingState, phoneticState, phoneticCodeSelected) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(size, theme, translate, quiz, choose, warning, readingState, phoneticState, phoneticCodeSelected) {
 
         val quiz = quiz.value
         val choose = choose.value
         val warning = warning.value ?: false
         val listenState = readingState.value.orEmpty()
         val phoneticState = phoneticState.value
-        val phoneticCodeSelected = phoneticCodeSelected.value ?: return@listenerSources
+        val phoneticCodeSelected = phoneticCodeSelected.value ?: return@listenerSourcesWithDiff
 
-        val size = size.value ?: return@listenerSources
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val size = size.value ?: return@listenerSourcesWithDiff
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
         if (quiz == null || phoneticState.isStart()) {
 
             postValue(getIPAMatchLoadingViewItem(size = size, theme = theme))
-            return@listenerSources
+            return@listenerSourcesWithDiff
         }
 
 
@@ -170,15 +172,15 @@ class GameIPAMatchViewModel(
             list.addAll(it)
         }
 
-        postDifferentValueIfActive(list)
+        postValueIfActive(list)
     }
 
-    val actionInfo: LiveData<ActionInfo> = listenerSources(theme, translate, choose) {
+    val actionInfo: LiveData<ActionInfo> = listenerSourcesWithDiff(theme, translate, choose) {
 
         val choose = choose.value.orEmpty().flatMap { listOf<Any?>(it.first, it.second) }
 
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
         val isClickable = choose.isNotEmpty() && !choose.any { it == null }
 
@@ -202,10 +204,10 @@ class GameIPAMatchViewModel(
 
 
     @VisibleForTesting
-    val stateInfo: LiveData<StateInfo> = combineSources(size, theme, translate, quiz, consecutiveCorrectAnswerEvent) {
+    val stateInfo: LiveData<StateInfo> = combineSourcesWithDiff(size, theme, translate, quiz, consecutiveCorrectAnswerEvent) {
 
         val quiz = quiz.get()
-        val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSources
+        val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSourcesWithDiff
 
         val size = size.get()
         val theme = theme.get()

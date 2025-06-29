@@ -18,8 +18,9 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.dao.entities.Ipa
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
@@ -46,18 +47,18 @@ class IpaHomeViewModel(
         }
     }
 
-    val ipaViewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, ipaState) {
+    val ipaViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, ipaState) {
 
-        val size = size.value ?: return@combineSources
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val size = size.value ?: return@combineSourcesWithDiff
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
-        val state = ipaState.value ?: return@combineSources
+        val state = ipaState.value ?: return@combineSourcesWithDiff
 
         if (!translate.containsKey("title_ipa") || state !is ResultState.Success) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         val viewItemList = arrayListOf<ViewItem>()
@@ -143,6 +144,6 @@ class IpaHomeViewModel(
             logAnalytics("ipa_home_show")
         }
 
-        postDifferentValueIfActive(viewItemList)
+        postValueIfActive(viewItemList)
     }
 }

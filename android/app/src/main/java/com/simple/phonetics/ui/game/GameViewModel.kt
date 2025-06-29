@@ -6,6 +6,7 @@ import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.postValue
@@ -20,7 +21,7 @@ class GameViewModel : BaseViewModel() {
 
     val text: LiveData<Text> = MediatorLiveData()
 
-    val title: LiveData<CharSequence> = combineSources(theme, translate, text) {
+    val title: LiveData<CharSequence> = combineSourcesWithDiff(theme, translate, text) {
 
         val theme = theme.get()
         val translate = translate.getOrEmpty()

@@ -25,11 +25,13 @@ import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.dao.entities.Ipa
 import com.simple.phonetics.BRANCH
 import com.simple.phonetics.BuildConfig
@@ -74,23 +76,23 @@ class IpaDetailViewModel(
 
     val ipa: LiveData<Ipa> = MediatorLiveData()
 
-    val title: LiveData<String> = combineSources(ipa, translate) {
+    val title: LiveData<String> = combineSourcesWithDiff(ipa, translate) {
 
-        val ipa = ipa.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val ipa = ipa.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
-        postDifferentValueIfActive(translate["ipa_detail_screen_" + ipa.type.lowercase()])
+        postValueIfActive(translate["ipa_detail_screen_" + ipa.type.lowercase()])
     }
 
 
     val readingState: LiveData<ResultState<String>> = MediatorLiveData()
 
     @VisibleForTesting
-    val ipaViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, ipa, readingState) {
+    val ipaViewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(theme, ipa, readingState) {
 
-        val theme = theme.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
 
-        val ipa = ipa.value ?: return@listenerSources
+        val ipa = ipa.value ?: return@listenerSourcesWithDiff
         val readingState = readingState.value
 
         val viewItemList = arrayListOf<ViewItem>()
@@ -123,7 +125,7 @@ class IpaDetailViewModel(
 
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(ipa, inputLanguage, outputLanguage, phoneticCodeSelected) {
+    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSourcesWithDiff(ipa, inputLanguage, outputLanguage, phoneticCodeSelected) {
 
         postValue(ResultState.Start)
 
@@ -144,18 +146,18 @@ class IpaDetailViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportReading) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportReading) {
 
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
-        val state = phoneticsState.value ?: return@listenerSources
-        val phoneticsCode = phoneticCodeSelected.value ?: return@listenerSources
+        val state = phoneticsState.value ?: return@listenerSourcesWithDiff
+        val phoneticsCode = phoneticCodeSelected.value ?: return@listenerSourcesWithDiff
 
         state.doStart {
 
             postValue(getLoadingViewItem(theme))
-            return@listenerSources
+            return@listenerSourcesWithDiff
         }
 
         val viewItemList = arrayListOf<ViewItem>()
@@ -194,10 +196,10 @@ class IpaDetailViewModel(
             viewItemList.addAll(it)
         }
 
-        postDifferentValueIfActive(viewItemList)
+        postValueIfActive(viewItemList)
     }
 
-    val gameResource: LiveData<Text> = combineSources(ipa) {
+    val gameResource: LiveData<Text> = combineSourcesWithDiff(ipa) {
 
         val ipa = ipa.get()
 
@@ -205,10 +207,10 @@ class IpaDetailViewModel(
     }
 
     @VisibleForTesting
-    val gameViewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, ipa, phoneticCodeSelected) {
+    val gameViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, ipa, phoneticCodeSelected) {
 
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
         val ipa = ipa.get()
         val phoneticCodeSelected = phoneticCodeSelected.get()
@@ -216,7 +218,7 @@ class IpaDetailViewModel(
         if (!translate.containsKey("ipa_detail_screen_practice_with_games")) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
 
@@ -237,7 +239,7 @@ class IpaDetailViewModel(
         if (phoneticList.isEmpty()) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
 
@@ -292,7 +294,7 @@ class IpaDetailViewModel(
     }
 
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(ipaViewItemList, gameViewItemList, phoneticsViewItemList) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(ipaViewItemList, gameViewItemList, phoneticsViewItemList) {
 
         val list = arrayListOf<ViewItem>()
 
@@ -314,7 +316,7 @@ class IpaDetailViewModel(
             list.add(SpaceViewItem(id = "SPACE_GAME", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
         }
 
-        postDifferentValueIfActive(list)
+        postValueIfActive(list)
     }
 
     fun updateIpa(ipa: Ipa) {

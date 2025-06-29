@@ -10,8 +10,9 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.dao.entities.Ipa
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
@@ -25,11 +26,11 @@ class IpaListViewModel(
     private val getIpaStateAsyncUseCase: GetIpaStateAsyncUseCase
 ) : BaseViewModel() {
 
-    val title: LiveData<String> = combineSources(translate) {
+    val title: LiveData<String> = combineSourcesWithDiff(translate) {
 
-        val translate = translate.value ?: return@combineSources
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
-        postDifferentValueIfActive(translate["ipa_list_screen_title"])
+        postValueIfActive(translate["ipa_list_screen_title"])
     }
 
     @VisibleForTesting
@@ -41,16 +42,16 @@ class IpaListViewModel(
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, ipaState) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, ipaState) {
 
-        val size = size.value ?: return@combineSources
-        val theme = theme.value ?: return@combineSources
+        val size = size.value ?: return@combineSourcesWithDiff
+        val theme = theme.value ?: return@combineSourcesWithDiff
 
-        val state = ipaState.value ?: return@combineSources
+        val state = ipaState.value ?: return@combineSourcesWithDiff
 
         if (state !is ResultState.Success) {
 
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         val viewItemList = arrayListOf<ViewItem>()
@@ -84,6 +85,6 @@ class IpaListViewModel(
             viewItemList.addAll(it)
         }
 
-        postDifferentValueIfActive(viewItemList)
+        postValueIfActive(viewItemList)
     }
 }

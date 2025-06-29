@@ -10,9 +10,10 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -37,7 +38,7 @@ class HistoryHomeViewModel(
         }
     }
 
-    val historyViewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, historyState) {
+    val historyViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, historyState) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -47,7 +48,7 @@ class HistoryHomeViewModel(
         if (historyState !is ResultState.Success) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
 
@@ -81,6 +82,6 @@ class HistoryHomeViewModel(
             logAnalytics("history_home_show")
         }
 
-        postDifferentValueIfActive(viewItemList)
+        postValueIfActive(viewItemList)
     }
 }

@@ -18,10 +18,12 @@ import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
@@ -45,7 +47,7 @@ class GameIPAWordleViewModel(
 ) : GameItemViewModel() {
 
     @VisibleForTesting
-    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(text, resourceSelected, phoneticCodeSelected) {
+    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSourcesWithDiff(text, resourceSelected, phoneticCodeSelected) {
 
         val text = text.get()
         val resourceSelected = resourceSelected.get()
@@ -71,12 +73,12 @@ class GameIPAWordleViewModel(
         postValue(ResultState.Success(list))
     }
 
-    val quiz: LiveData<GameIPAWordleQuiz> = combineSources(isSupportReading, phoneticState) {
+    val quiz: LiveData<GameIPAWordleQuiz> = combineSourcesWithDiff(isSupportReading, phoneticState) {
 
         val isSupportReading = isSupportReading.get()
         val phoneticState = phoneticState.get()
 
-        val phonetics = phoneticState.toSuccess()?.data ?: return@combineSources
+        val phonetics = phoneticState.toSuccess()?.data ?: return@combineSourcesWithDiff
 
         val typeRemoveList = arrayListOf<GameIPAWordleQuiz.Type>()
 
@@ -112,23 +114,23 @@ class GameIPAWordleViewModel(
 
     val readingState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, readingState, phoneticState, phoneticCodeSelected) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(size, theme, translate, quiz, choose, readingState, phoneticState, phoneticCodeSelected) {
 
         val quiz = quiz.value
         val choose = choose.value
         val listenState = readingState.value
         val phoneticState = phoneticState.value
-        val phoneticCodeSelected = phoneticCodeSelected.value ?: return@listenerSources
+        val phoneticCodeSelected = phoneticCodeSelected.value ?: return@listenerSourcesWithDiff
 
-        val size = size.value ?: return@listenerSources
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val size = size.value ?: return@listenerSourcesWithDiff
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
 
         if (quiz == null || phoneticState.isStart()) {
 
             postValue(getIPAWordleLoadingViewItem(size = size, theme = theme))
-            return@listenerSources
+            return@listenerSourcesWithDiff
         }
 
 
@@ -151,15 +153,15 @@ class GameIPAWordleViewModel(
             list.addAll(it)
         }
 
-        postDifferentValueIfActive(list)
+        postValueIfActive(list)
     }
 
-    val actionInfo: LiveData<ActionInfo> = listenerSources(theme, translate, choose) {
+    val actionInfo: LiveData<ActionInfo> = listenerSourcesWithDiff(theme, translate, choose) {
 
         val choose = choose.value
 
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
         val isClickable = choose != null
 
@@ -182,14 +184,14 @@ class GameIPAWordleViewModel(
     }
 
     @VisibleForTesting
-    val stateInfo: LiveData<StateInfo> = combineSources(size, theme, translate, quiz, choose, phoneticCodeSelected, consecutiveCorrectAnswerEvent) {
+    val stateInfo: LiveData<StateInfo> = combineSourcesWithDiff(size, theme, translate, quiz, choose, phoneticCodeSelected, consecutiveCorrectAnswerEvent) {
 
         val theme = theme.get()
         val translate = translate.get()
 
         val quiz = quiz.get()
         val phoneticCodeSelected = phoneticCodeSelected.get()
-        val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSources
+        val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSourcesWithDiff
 
         val isAnswerCorrect = consecutiveCorrectAnswer.first > 0
 

@@ -20,6 +20,7 @@ import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.toEvent
@@ -46,19 +47,19 @@ class EventHomeViewModel(
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, eventState) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, eventState) {
 
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
-        val eventState = eventState.value ?: return@combineSources
+        val eventState = eventState.value ?: return@combineSourcesWithDiff
 
         val list = arrayListOf<ViewItem>()
 
         if (eventState !is ResultState.Success) {
 
             postValue(list)
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         val event = eventState.data
@@ -108,17 +109,17 @@ class EventHomeViewModel(
     }
 
     @VisibleForTesting
-    val eventInfo: LiveData<EventInfo> = combineSources(theme, translate, eventState, viewItemList) {
+    val eventInfo: LiveData<EventInfo> = combineSourcesWithDiff(theme, translate, eventState, viewItemList) {
 
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
-        val eventState = eventState.value ?: return@combineSources
+        val eventState = eventState.value ?: return@combineSourcesWithDiff
 
         if (eventState !is ResultState.Success) {
 
             postValue(EventInfo(show = false))
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         val event = eventState.data
