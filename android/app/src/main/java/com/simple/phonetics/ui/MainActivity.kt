@@ -27,7 +27,6 @@ import java.util.ServiceLoader
 
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>() {
 
-    private val jobQueue by lazy { JobQueue() }
 
     private val activityViewModel: TransitionGlobalViewModel by viewModels()
 
@@ -60,10 +59,6 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
     override fun onResume() {
         super.onResume()
         Log.d("tuanha", "onResume: ${System.currentTimeMillis() - PhoneticsApp.start}  ${Color.parseColor("#1877F2")}  ${Color.parseColor("#EEEEEE")}")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     private fun observeData() = with(viewModel) {
