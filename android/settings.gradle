@@ -30,5 +30,5 @@ include ':config:phonetics'// can remove
 project(':config:phonetics').projectDir = file('../../1CorePrivate/config/phonetics')// can remove
 
 include ':dynamic_feature:mlkit'
-project(':dynamic_feature:mlkit').projectDir = file('dynamic_feature/mlkit')
-
+include ':dynamic_feature:community'
+include ':dynamic_feature:thank'

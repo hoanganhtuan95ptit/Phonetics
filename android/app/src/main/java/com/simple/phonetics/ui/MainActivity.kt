@@ -3,6 +3,7 @@ package com.simple.phonetics.ui
 import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
@@ -10,18 +11,25 @@ import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
+import com.simple.coreapp.utils.JobQueue
+import com.simple.coreapp.utils.ext.handler
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.view.MainView
+import com.simple.phonetics.utils.exts.ModuleSdk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.ServiceLoader
 
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>() {
 
+    private val jobQueue by lazy { JobQueue() }
+
     private val activityViewModel: TransitionGlobalViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +54,26 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
                 if (timeInit >= 1) logAnalytics("init_slow_$timeInit")
             }
         }
+
+
+        listOf(
+            "mlkit",
+            "thank",
+            "community"
+        ).map {
+
+            jobQueue.submit(handler + Dispatchers.IO) { ModuleSdk.downloadSync(it) }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("tuanha", "onResume: ${System.currentTimeMillis() - PhoneticsApp.start}")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        jobQueue.cancel()
     }
 
     private fun observeData() = with(viewModel) {

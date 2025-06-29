@@ -1,0 +1,13 @@
+[
+    {
+        "id": "thank://copy",
+        "image": "",
+        "title": "Cảm ơn bạn đã sao chép!",
+        "message": "Chúng tôi hy vọng nội dung này sẽ giúp ích cho bạn. Đừng ngần ngại chia sẻ nếu bạn thấy hữu ích!",
+        "author": "Đội ngũ phát triển",
+        "negative": "Cảm ơn",
+        "negativeDeeplink": "",
+        "positive": "Mở cộng đồng",
+        "positiveDeeplink": "https://www.facebook.com/groups/iphonetics"
+    }
+]

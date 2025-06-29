@@ -23,8 +23,8 @@ android {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
 
-        versionCode 89
-        versionName "1.2.89"
+        versionCode 90
+        versionName "1.2.90"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -74,7 +74,7 @@ android {
         }
     }
 
-    dynamicFeatures = [':dynamic_feature:mlkit']
+    dynamicFeatures = [':dynamic_feature:mlkit', ':dynamic_feature:community', ':dynamic_feature:thank']
 }
 
 dependencies {
@@ -82,35 +82,35 @@ dependencies {
     implementation project(':dao')
     implementation project(':config:phonetics') // can remove
 
-    implementation koinDependencies.values()
-    implementation jacksonDependencies.values()
-    implementation androidxDependencies.values()
-    implementation retrofit2Dependencies.values()
+    api koinDependencies.values()
+    api jacksonDependencies.values()
+    api androidxDependencies.values()
+    api retrofit2Dependencies.values()
 
-    implementation hoanganhtuan95Dependencies.base
-    implementation hoanganhtuan95Dependencies.android
-    implementation hoanganhtuan95Dependencies.size
-    implementation hoanganhtuan95Dependencies.task
-    implementation hoanganhtuan95Dependencies.event
-    implementation hoanganhtuan95Dependencies.state
-    implementation hoanganhtuan95Dependencies.image
-    implementation hoanganhtuan95Dependencies.color
-    implementation hoanganhtuan95Dependencies.string
-    implementation hoanganhtuan95Dependencies.detect
-    implementation hoanganhtuan95Dependencies.translate
-    implementation hoanganhtuan95Dependencies.analytics
-    implementation hoanganhtuan95Dependencies.analytics_log
-    implementation hoanganhtuan95Dependencies.analytics_firebase
-    implementation hoanganhtuan95Dependencies.crashlytics
-    implementation hoanganhtuan95Dependencies.crashlytics_log
-    implementation hoanganhtuan95Dependencies.crashlytics_firebase
+    api hoanganhtuan95Dependencies.base
+    api hoanganhtuan95Dependencies.android
+    api hoanganhtuan95Dependencies.size
+    api hoanganhtuan95Dependencies.task
+    api hoanganhtuan95Dependencies.event
+    api hoanganhtuan95Dependencies.state
+    api hoanganhtuan95Dependencies.image
+    api hoanganhtuan95Dependencies.color
+    api hoanganhtuan95Dependencies.string
+    api hoanganhtuan95Dependencies.detect
+    api hoanganhtuan95Dependencies.translate
+    api hoanganhtuan95Dependencies.analytics
+    api hoanganhtuan95Dependencies.analytics_log
+    api hoanganhtuan95Dependencies.analytics_firebase
+    api hoanganhtuan95Dependencies.crashlytics
+    api hoanganhtuan95Dependencies.crashlytics_log
+    api hoanganhtuan95Dependencies.crashlytics_firebase
 
     implementation hoanganhtuan95Dependencies.detect_mlkit
     implementation hoanganhtuan95Dependencies.translate_mlkit
 
-    implementation hoanganhtuan95Dependencies.adapter
+    api hoanganhtuan95Dependencies.adapter
     kapt hoanganhtuan95Dependencies.adapter_processor
-    implementation hoanganhtuan95Dependencies.deeplink
+    api hoanganhtuan95Dependencies.deeplink
     kapt hoanganhtuan95Dependencies.deeplink_processor
 
     // Firebase BOM
