@@ -1,6 +1,5 @@
 package com.phonetics.thank.data.repositories
 
-import android.util.Log
 import com.phonetics.thank.data.api.Api
 import com.phonetics.thank.data.dao.ThankProvider
 import com.phonetics.thank.entities.Thank
@@ -19,9 +18,6 @@ class CommunityRepository {
         kotlin.runCatching {
 
             ThankProvider.pendingThankDao.insertOrUpdate(Api.api.syncCommunity(BRANCH))
-        }.getOrElse {
-
-            Log.d("tuanha", "getCommunitiesAsync: ", it)
         }
 
         combine(

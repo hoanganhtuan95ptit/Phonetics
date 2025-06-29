@@ -1,6 +1,6 @@
 package com.phonetics.campaign.ui
 
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.google.auto.service.AutoService
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
@@ -16,7 +16,7 @@ class CampaignHomeView : HomeView {
 
     override fun setup(fragment: HomeFragment) {
 
-        viewModel = fragment.viewModels<CampaignHomeViewModel>().value
+        viewModel = fragment.activityViewModels<CampaignHomeViewModel>().value
 
         homeViewModel = fragment.viewModel<HomeViewModel>().value
 
