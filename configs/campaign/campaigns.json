@@ -1,9 +1,9 @@
 [
     {
         "deeplink": "https://www.facebook.com/groups/iphonetics",
-        "title": "🤝 Tham gia cộng đồng, cùng nhau phát triển!",
+        "title": "campaign_screen_title_for_join_group",
         "titleColor": -1,
-        "message": "📢 Chia sẻ ý tưởng, góp ý tính năng và đồng hành cùng mọi người để ứng dụng ngày càng hoàn thiện hơn! 🚀💡",
+        "message": "campaign_screen_message_for_join_group",
         "messageColor": -1118482,
         "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/images/Group.png",
         "backgroundColor": -15173646

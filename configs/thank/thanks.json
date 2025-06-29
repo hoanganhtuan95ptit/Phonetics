@@ -2,8 +2,8 @@
     {
         "id": "thank://copy",
         "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/images/thanks/Screenshot%202025-06-29%20at%2008.57.46.png",
-        "title": "💡 Lời cảm ơn đặc biệt",
-        "message": "🎉 Tính năng bạn vừa sử dụng được đóng góp bởi 💬 $author.\nHãy tham gia cộng đồng để cùng nhau xây dựng một sản phẩm tốt hơn mỗi ngày! 🤝",
+        "title": "thank_screen_title_for_action_copy",
+        "message": "thank_screen_message_for_action_copy",
         "author": "NguyenLam",
         "negative": "🙏 Cảm ơn",
         "negativeDeeplink": "",

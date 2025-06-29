@@ -63,7 +63,7 @@ class ThankDeeplink : DeeplinkHandler {
 
 
         val title = translate.getOrKey(thank.title.orEmpty())
-        if (title.startsWith("title_", true)) return true
+        if (title.contains("title_", true)) return true
 
         val viewItemList = arrayListOf<ViewItem>()
 
