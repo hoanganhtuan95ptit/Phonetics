@@ -12,6 +12,7 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.entities.Text
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import java.util.UUID
 
 abstract class GameItemViewModel : BaseViewModel() {
 
@@ -38,11 +39,13 @@ abstract class GameItemViewModel : BaseViewModel() {
 
 
     data class StateInfo(
-        val backgroundColor: Int = Color.TRANSPARENT,
+        val id: String = UUID.randomUUID().toString(),
+
+        val positive: com.simple.coreapp.utils.ext.ButtonInfo? = null,
 
         val viewItemList: List<ViewItem> = emptyList(),
 
-        val positive: com.simple.coreapp.utils.ext.ButtonInfo? = null,
+        val backgroundColor: Int = Color.TRANSPARENT,
     )
 
     data class ActionInfo(

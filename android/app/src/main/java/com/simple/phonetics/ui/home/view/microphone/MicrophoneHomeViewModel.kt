@@ -4,9 +4,10 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 
@@ -18,7 +19,7 @@ class MicrophoneHomeViewModel(
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)
 
     @VisibleForTesting
-    override val isSupportSpeak: LiveData<Boolean> = combineSources(isReverse, inputLanguage, outputLanguage) {
+    override val isSupportSpeak: LiveData<Boolean> = combineSourcesWithDiff(isReverse, inputLanguage, outputLanguage) {
 
         val isReverse = isReverse.get()
         val inputLanguage = inputLanguage.get()
@@ -33,7 +34,7 @@ class MicrophoneHomeViewModel(
         postValue(checkSupportSpeakUseCase.execute(CheckSupportSpeakUseCase.Param(languageCode = languageCode)))
     }
 
-    val microphoneInfo: LiveData<MicrophoneInfo> = combineSources(isSupportSpeak) {
+    val microphoneInfo: LiveData<MicrophoneInfo> = combineSourcesWithDiff(isSupportSpeak) {
 
         val isSupportSpeak = isSupportSpeak.get()
 
@@ -41,7 +42,7 @@ class MicrophoneHomeViewModel(
             isShow = isSupportSpeak
         )
 
-        postDifferentValueIfActive(info)
+        postValueIfActive(info)
     }
 
     fun updateReverse(it: Boolean) {

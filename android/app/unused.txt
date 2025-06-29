@@ -23849,10 +23849,10 @@ com.simple.coreapp.utils.extentions.BaseViewModelKt$listenerSources$2
 com.simple.coreapp.utils.extentions.BaseViewModelKt$listenerSources$change$1$1
 com.simple.coreapp.utils.extentions.BaseViewModelKt$listenerSources$change$1
 com.simple.coreapp.utils.extentions.BaseViewModelKt:
-    public static final androidx.lifecycle.LiveData combineSources(com.simple.coreapp.ui.base.viewmodels.BaseViewModel,kotlin.jvm.functions.Function0,kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function3)
+    public static final androidx.lifecycle.LiveData combineSourcesWithDiff(com.simple.coreapp.ui.base.viewmodels.BaseViewModel,kotlin.jvm.functions.Function0,kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function3)
     public static synthetic androidx.lifecycle.LiveData combineSources$default(com.simple.coreapp.ui.base.viewmodels.BaseViewModel,kotlin.jvm.functions.Function0,kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function3,int,java.lang.Object)
-    public static final androidx.lifecycle.LiveData listenerSources(com.simple.coreapp.ui.base.viewmodels.BaseViewModel,kotlin.jvm.functions.Function0,kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function3)
-    public static final androidx.lifecycle.LiveData listenerSources(com.simple.coreapp.ui.base.viewmodels.BaseViewModel,androidx.lifecycle.LiveData[],kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function3)
+    public static final androidx.lifecycle.LiveData listenerSourcesWithDiff(com.simple.coreapp.ui.base.viewmodels.BaseViewModel,kotlin.jvm.functions.Function0,kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function3)
+    public static final androidx.lifecycle.LiveData listenerSourcesWithDiff(com.simple.coreapp.ui.base.viewmodels.BaseViewModel,androidx.lifecycle.LiveData[],kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function3)
     public static synthetic androidx.lifecycle.LiveData listenerSources$default(com.simple.coreapp.ui.base.viewmodels.BaseViewModel,kotlin.jvm.functions.Function0,kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function3,int,java.lang.Object)
     public static synthetic androidx.lifecycle.LiveData listenerSources$default(com.simple.coreapp.ui.base.viewmodels.BaseViewModel,androidx.lifecycle.LiveData[],kotlin.coroutines.CoroutineContext,kotlinx.coroutines.CoroutineStart,kotlin.jvm.functions.Function3,int,java.lang.Object)
 com.simple.coreapp.utils.extentions.BitmapKt
@@ -23944,9 +23944,9 @@ com.simple.coreapp.utils.extentions.LiveDataKt:
     public static synthetic void observeQueue$default(androidx.lifecycle.LiveData,androidx.lifecycle.LifecycleOwner,java.lang.String,kotlin.jvm.functions.Function2,int,java.lang.Object)
     public static final void postValue(androidx.lifecycle.LiveData,java.lang.Object)
     public static final boolean postValue(androidx.lifecycle.LiveData,com.simple.core.entities.Comparable)
-    public static final java.lang.Object postDifferentValueIfActive(androidx.lifecycle.LiveData,com.simple.core.entities.Comparable,kotlin.coroutines.Continuation)
-    public static final java.lang.Object postDifferentValueIfActive(androidx.lifecycle.LiveData,java.lang.Object,kotlin.jvm.functions.Function2,kotlin.coroutines.Continuation)
-    public static final java.lang.Object postDifferentValueIfActive(androidx.lifecycle.LiveData,java.util.List,kotlin.coroutines.Continuation)
+    public static final java.lang.Object postValueIfActive(androidx.lifecycle.LiveData,com.simple.core.entities.Comparable,kotlin.coroutines.Continuation)
+    public static final java.lang.Object postValueIfActive(androidx.lifecycle.LiveData,java.lang.Object,kotlin.jvm.functions.Function2,kotlin.coroutines.Continuation)
+    public static final java.lang.Object postValueIfActive(androidx.lifecycle.LiveData,java.util.List,kotlin.coroutines.Continuation)
     public static synthetic java.lang.Object postDifferentValueIfActive$default(androidx.lifecycle.LiveData,java.lang.Object,kotlin.jvm.functions.Function2,kotlin.coroutines.Continuation,int,java.lang.Object)
     public static final com.simple.coreapp.utils.extentions.Event toEvent(java.lang.Object)
 com.simple.coreapp.utils.extentions.NavigationExtKt

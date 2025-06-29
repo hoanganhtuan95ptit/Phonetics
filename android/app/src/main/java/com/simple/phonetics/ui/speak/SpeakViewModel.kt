@@ -17,10 +17,12 @@ import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.R
 import com.simple.phonetics.SpeakState
@@ -85,7 +87,7 @@ class SpeakViewModel(
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, actionHeight, phoneticCodeSelected, phoneticsState, isSupportReading) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, actionHeight, phoneticCodeSelected, phoneticsState, isSupportReading) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -96,7 +98,7 @@ class SpeakViewModel(
         state.doStart {
 
             postValue(getPhoneticLoadingViewItem(theme = theme))
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         val viewItemList = arrayListOf<ViewItem>()
@@ -125,10 +127,10 @@ class SpeakViewModel(
             viewItemList.add(SpaceViewItem(id = "2", height = actionHeight.get()))
         }
 
-        postDifferentValueIfActive(viewItemList)
+        postValueIfActive(viewItemList)
     }
 
-    val speakInfo: LiveData<SpeakInfo> = listenerSources(size, theme, translate, isSupportSpeak, speakState) {
+    val speakInfo: LiveData<SpeakInfo> = listenerSourcesWithDiff(size, theme, translate, isSupportSpeak, speakState) {
 
         val speakState = speakState.value
 
@@ -155,7 +157,7 @@ class SpeakViewModel(
         postValue(info)
     }
 
-    val readingInfo: LiveData<ReadingInfo> = listenerSources(size, theme, translate, isSupportReading, readingState) {
+    val readingInfo: LiveData<ReadingInfo> = listenerSourcesWithDiff(size, theme, translate, isSupportReading, readingState) {
 
         val listenState = readingState.value
 
@@ -174,9 +176,9 @@ class SpeakViewModel(
         postValue(info)
     }
 
-    val copyInfo: LiveData<CopyInfo> = listenerSources(size, theme, translate) {
+    val copyInfo: LiveData<CopyInfo> = listenerSourcesWithDiff(size, theme, translate) {
 
-        val theme = theme.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
 
         val info = CopyInfo(
 
@@ -191,14 +193,14 @@ class SpeakViewModel(
     }
 
     @VisibleForTesting
-    val isCorrect: LiveData<Boolean> = combineSources(text, speakState) {
+    val isCorrect: LiveData<Boolean> = combineSourcesWithDiff(text, speakState) {
 
-        val text = text.value ?: return@combineSources
+        val text = text.value ?: return@combineSourcesWithDiff
         val speakState = speakState.value
 
         if (!speakState.isSuccess()) {
 
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         val speakResult = speakState?.toSuccess()?.data.orEmpty()
@@ -210,11 +212,11 @@ class SpeakViewModel(
     val isCorrectEvent: LiveData<Event<Boolean>> = isCorrect.toEvent()
 
 
-    val resultInfo: LiveData<ResultInfo> = listenerSources(theme, translate, text, speakState) {
+    val resultInfo: LiveData<ResultInfo> = listenerSourcesWithDiff(theme, translate, text, speakState) {
 
-        val theme = theme.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
 
-        val text = text.value ?: return@listenerSources
+        val text = text.value ?: return@listenerSourcesWithDiff
 
         val speakState = speakState.value
 
@@ -223,7 +225,7 @@ class SpeakViewModel(
 
         if (speakResult in SpeakState.stateList) {
 
-            return@listenerSources
+            return@listenerSourcesWithDiff
         }
 
 

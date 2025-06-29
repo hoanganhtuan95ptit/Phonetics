@@ -15,7 +15,9 @@ import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.toRich
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.listenerSources
+import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
@@ -41,10 +43,10 @@ class LanguageViewModel(
     private val getLanguageSupportAsyncUseCase: GetLanguageSupportAsyncUseCase
 ) : BaseViewModel() {
 
-    val headerInfo: LiveData<HeaderInfo> = combineSources(theme, translate) {
+    val headerInfo: LiveData<HeaderInfo> = combineSourcesWithDiff(theme, translate) {
 
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
         val info = HeaderInfo(
             title = translate["title_language"].orEmpty()
@@ -66,7 +68,7 @@ class LanguageViewModel(
     }
 
     @VisibleForTesting
-    val languageSelected: LiveData<Language> = combineSources(languageOld) {
+    val languageSelected: LiveData<Language> = combineSourcesWithDiff(languageOld) {
 
         languageOld.value?.let {
 
@@ -87,22 +89,22 @@ class LanguageViewModel(
 
     val changeLanguageState: LiveData<ResultState<Map<String, UpdateLanguageInputUseCase.State>>> = MediatorLiveData()
 
-    val languageViewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, languageSelected, languageListState, changeLanguageState) {
+    val languageViewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(theme, translate, languageSelected, languageListState, changeLanguageState) {
 
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
-        val state = languageListState.value ?: return@listenerSources
+        val state = languageListState.value ?: return@listenerSourcesWithDiff
 
         if (state is ResultState.Start) {
 
             postValue(theme.toListLoadingViewItem())
-            return@listenerSources
+            return@listenerSourcesWithDiff
         }
 
         if (state !is ResultState.Success) {
 
-            return@listenerSources
+            return@listenerSourcesWithDiff
         }
 
         val languageSelected = languageSelected.value
@@ -157,10 +159,10 @@ class LanguageViewModel(
         postValue(viewItemList)
     }
 
-    val buttonInfo: LiveData<ButtonInfo> = listenerSources(theme, languageOld, languageSelected, changeLanguageState, translate) {
+    val buttonInfo: LiveData<ButtonInfo> = listenerSourcesWithDiff(theme, languageOld, languageSelected, changeLanguageState, translate) {
 
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
         val languageOld = languageOld.value
         val languageSelected = languageSelected.value

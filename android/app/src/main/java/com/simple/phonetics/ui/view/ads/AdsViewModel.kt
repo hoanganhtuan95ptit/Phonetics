@@ -9,6 +9,7 @@ import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValue
@@ -47,7 +48,7 @@ class AdsViewModel(
     @VisibleForTesting
     val timeShow: LiveData<Long> = MediatorLiveData(0)
 
-    val show: LiveData<Event<Boolean>> = combineSources(config, request, timeShow) {
+    val show: LiveData<Event<Boolean>> = combineSourcesWithDiff(config, request, timeShow) {
 
         val config = config.get()
         val request = request.get()
@@ -58,12 +59,12 @@ class AdsViewModel(
 
         if (System.currentTimeMillis() - timeShow <= spaceTime) {
 
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         if (request % spaceRequest != 0L) {
 
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         postValue(true.toEvent())

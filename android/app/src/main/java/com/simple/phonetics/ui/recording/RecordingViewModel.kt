@@ -20,11 +20,13 @@ import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toPx
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
@@ -52,7 +54,7 @@ class RecordingViewModel(
 
 
     @VisibleForTesting
-    val titleViewItemList: LiveData<List<ViewItem>> = combineSources(size, theme, translate, inputLanguage, outputLanguage, isReverse) {
+    val titleViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, inputLanguage, outputLanguage, isReverse) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -103,7 +105,7 @@ class RecordingViewModel(
         postValue(list)
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(titleViewItemList, actionHeight) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(titleViewItemList, actionHeight) {
 
         val list = arrayListOf<ViewItem>()
 
@@ -111,13 +113,13 @@ class RecordingViewModel(
         list.addAll(titleViewItemList.getOrEmpty())
         list.add(SpaceViewItem(id = "SPACE_PHONETICS_1", width = ViewGroup.LayoutParams.MATCH_PARENT, height = actionHeight.get()))
 
-        postDifferentValueIfActive(list)
+        postValueIfActive(list)
     }
 
-    val actionInfo: LiveData<ImageStateViewItem> = listenerSources(size, theme, titleViewItemList, speakState) {
+    val actionInfo: LiveData<ImageStateViewItem> = listenerSourcesWithDiff(size, theme, titleViewItemList, speakState) {
 
-        val size = size.value ?: return@listenerSources
-        val theme = theme.value ?: return@listenerSources
+        val size = size.value ?: return@listenerSourcesWithDiff
+        val theme = theme.value ?: return@listenerSourcesWithDiff
 
         val speakState = speakState.value
 
@@ -163,7 +165,7 @@ class RecordingViewModel(
             )
         )
 
-        postDifferentValueIfActive(viewItem)
+        postValueIfActive(viewItem)
     }
 
     fun updateReverse(it: Boolean) {

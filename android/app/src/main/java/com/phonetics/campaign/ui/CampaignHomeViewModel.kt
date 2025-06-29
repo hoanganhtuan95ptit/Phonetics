@@ -12,9 +12,10 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getOrTransparent
@@ -30,7 +31,7 @@ class CampaignHomeViewModel : BaseViewModel() {
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, campaign) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, campaign) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -68,6 +69,6 @@ class CampaignHomeViewModel : BaseViewModel() {
             viewItemList.add(it)
         }
 
-        postDifferentValueIfActive(viewItemList)
+        postValueIfActive(viewItemList)
     }
 }

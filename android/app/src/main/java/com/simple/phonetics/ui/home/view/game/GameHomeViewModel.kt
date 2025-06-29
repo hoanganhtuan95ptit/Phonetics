@@ -19,8 +19,9 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.Constants
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
@@ -34,7 +35,7 @@ class GameHomeViewModel(
 ) : BaseViewModel() {
 
     @VisibleForTesting
-    val wordPopularCount: LiveData<Int> = combineSources(inputLanguage) {
+    val wordPopularCount: LiveData<Int> = combineSourcesWithDiff(inputLanguage) {
 
         val inputLanguage = inputLanguage.get()
 
@@ -44,10 +45,10 @@ class GameHomeViewModel(
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, wordPopularCount) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, wordPopularCount) {
 
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
         val wordPopularCount = wordPopularCount.get()
 
@@ -55,7 +56,7 @@ class GameHomeViewModel(
         if (!translate.containsKey("title_game") || wordPopularCount <= Constants.WORD_COUNT_MIN) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
 
@@ -115,6 +116,6 @@ class GameHomeViewModel(
             logAnalytics("game_home_show")
         }
 
-        postDifferentValueIfActive(viewItemList)
+        postValueIfActive(viewItemList)
     }
 }

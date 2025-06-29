@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.home.view.suggest
 
 import android.view.Gravity
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.adapter.entities.ViewItem
@@ -15,6 +16,7 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
@@ -26,11 +28,13 @@ class SuggestHomeViewModel(
     private val getPhoneticsSuggestUseCase: GetPhoneticsSuggestUseCase
 ) : BaseViewModel() {
 
+    @VisibleForTesting
     val text: LiveData<String> = MediatorLiveData()
 
+    @VisibleForTesting
     val keyboardShow: LiveData<Boolean> = MediatorLiveData()
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, text, inputLanguage, keyboardShow) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, text, inputLanguage, keyboardShow) {
 
         val text = text.get()
         val theme = theme.get()
@@ -38,7 +42,7 @@ class SuggestHomeViewModel(
         if (text.isEmpty() || !keyboardShow.get()) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         val list = getPhoneticsSuggestUseCase.execute(GetPhoneticsSuggestUseCase.Param(text))

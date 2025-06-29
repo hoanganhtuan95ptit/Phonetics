@@ -11,9 +11,10 @@ import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
@@ -23,7 +24,7 @@ class GameCongratulationViewModel : BaseViewModel() {
     @VisibleForTesting
     val number: LiveData<Long> = MediatorLiveData(0L)
 
-    val info: LiveData<Info> = combineSources(size, theme, translate, number) {
+    val info: LiveData<Info> = combineSourcesWithDiff(size, theme, translate, number) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -82,7 +83,7 @@ class GameCongratulationViewModel : BaseViewModel() {
             )
         )
 
-        postDifferentValueIfActive(info)
+        postValueIfActive(info)
     }
 
     fun updateNumber(it: Long) {

@@ -17,11 +17,13 @@ import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
+import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.dao.entities.Ipa
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
@@ -50,7 +52,7 @@ class GameIPAPuzzleViewModel(
     }
 
     @VisibleForTesting
-    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSources(text, resourceSelected, phoneticCodeSelected) {
+    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSourcesWithDiff(text, resourceSelected, phoneticCodeSelected) {
 
         val text = text.get()
         val resourceSelected = resourceSelected.get()
@@ -77,14 +79,14 @@ class GameIPAPuzzleViewModel(
         postValue(ResultState.Success(list))
     }
 
-    private val quiz: LiveData<GameIPAPuzzleQuiz> = combineSources(ipaState, phoneticState, phoneticCodeSelected) {
+    private val quiz: LiveData<GameIPAPuzzleQuiz> = combineSourcesWithDiff(ipaState, phoneticState, phoneticCodeSelected) {
 
-        val ipaState = ipaState.value ?: return@combineSources
-        val phoneticState = phoneticState.value ?: return@combineSources
-        val phoneticCodeSelected = phoneticCodeSelected.value ?: return@combineSources
+        val ipaState = ipaState.value ?: return@combineSourcesWithDiff
+        val phoneticState = phoneticState.value ?: return@combineSourcesWithDiff
+        val phoneticCodeSelected = phoneticCodeSelected.value ?: return@combineSourcesWithDiff
 
-        val ipaList = ipaState.toSuccess()?.data ?: return@combineSources
-        val phonetic = phoneticState.toSuccess()?.data?.firstOrNull() ?: return@combineSources
+        val ipaList = ipaState.toSuccess()?.data ?: return@combineSourcesWithDiff
+        val phonetic = phoneticState.toSuccess()?.data?.firstOrNull() ?: return@combineSourcesWithDiff
 
         val ipaListWrap = ipaList
             .map { it.ipa.replace("/", "") }
@@ -126,22 +128,22 @@ class GameIPAPuzzleViewModel(
     @VisibleForTesting
     val choose: LiveData<String> = MediatorLiveData(null)
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(size, theme, translate, quiz, choose, ipaState, phoneticState) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(size, theme, translate, quiz, choose, ipaState, phoneticState) {
 
         val quiz = quiz.value
         val choose = choose.value
         val ipaState = ipaState.value
         val phoneticState = phoneticState.value
 
-        val size = size.value ?: return@listenerSources
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val size = size.value ?: return@listenerSourcesWithDiff
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
 
         if (quiz == null || ipaState.isStart() || phoneticState.isStart()) {
 
             postValue(getIPAPuzzleLoadingViewItem(size = size, theme = theme))
-            return@listenerSources
+            return@listenerSourcesWithDiff
         }
 
 
@@ -159,15 +161,15 @@ class GameIPAPuzzleViewModel(
             list.addAll(it)
         }
 
-        postDifferentValueIfActive(list)
+        postValueIfActive(list)
     }
 
-    val actionInfo: LiveData<ActionInfo> = listenerSources(theme, translate, choose) {
+    val actionInfo: LiveData<ActionInfo> = listenerSourcesWithDiff(theme, translate, choose) {
 
         val choose = choose.value
 
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
         val isClickable = choose != null
 
@@ -191,10 +193,10 @@ class GameIPAPuzzleViewModel(
 
 
     @VisibleForTesting
-    val stateInfo: LiveData<StateInfo> = combineSources(size, theme, translate, quiz, choose, consecutiveCorrectAnswerEvent) {
+    val stateInfo: LiveData<StateInfo> = combineSourcesWithDiff(size, theme, translate, quiz, choose, consecutiveCorrectAnswerEvent) {
 
         val quiz = quiz.get()
-        val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSources
+        val consecutiveCorrectAnswer = consecutiveCorrectAnswerEvent.value?.getContentIfNotHandled() ?: return@combineSourcesWithDiff
 
 
         val size = size.get()

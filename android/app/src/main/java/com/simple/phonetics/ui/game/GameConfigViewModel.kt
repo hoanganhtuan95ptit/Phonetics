@@ -24,9 +24,11 @@ import com.simple.coreapp.utils.ext.RelativeSize
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
+import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Constants
 import com.simple.phonetics.DeeplinkManager
@@ -50,7 +52,7 @@ class GameConfigViewModel(
 ) : BaseActionViewModel() {
 
     @VisibleForTesting
-    val ipaCount: LiveData<Int> = combineSources(inputLanguage) {
+    val ipaCount: LiveData<Int> = combineSourcesWithDiff(inputLanguage) {
 
         val inputLanguage = inputLanguage.get()
 
@@ -62,7 +64,7 @@ class GameConfigViewModel(
 
 
     @VisibleForTesting
-    val wordCountMap: LiveData<Map<Word.Resource, Int>> = combineSources(inputLanguage) {
+    val wordCountMap: LiveData<Map<Word.Resource, Int>> = combineSourcesWithDiff(inputLanguage) {
 
         val inputLanguage = inputLanguage.get()
 
@@ -92,12 +94,12 @@ class GameConfigViewModel(
     val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
 
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSources(theme, translate, actionHeight, wordCountMap, resourceSelected) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(theme, translate, actionHeight, wordCountMap, resourceSelected) {
 
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
-        val actionHeight = actionHeight.value ?: return@listenerSources
+        val actionHeight = actionHeight.value ?: return@listenerSourcesWithDiff
 
         val resourceSelected = resourceSelected.value
 
@@ -165,10 +167,10 @@ class GameConfigViewModel(
         postValue(list)
     }
 
-    val buttonInfo: LiveData<ClickTextViewItem> = listenerSources(theme, translate, resourceSelected) {
+    val buttonInfo: LiveData<ClickTextViewItem> = listenerSourcesWithDiff(theme, translate, resourceSelected) {
 
-        val theme = theme.value ?: return@listenerSources
-        val translate = translate.value ?: return@listenerSources
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
         val resourceSelected = resourceSelected.value
 

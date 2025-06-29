@@ -20,6 +20,7 @@ import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
@@ -61,7 +62,7 @@ class ConfigViewModel(
 ) : BaseViewModel() {
 
     @VisibleForTesting
-    val phoneticViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, translate, inputLanguage, phoneticCodeSelected) {
+    val phoneticViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff<List<ViewItem>>(theme, translate, inputLanguage, phoneticCodeSelected) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -99,7 +100,7 @@ class ConfigViewModel(
 
 
     @VisibleForTesting
-    val translateState: LiveData<ResultState<Boolean>> = combineSources(inputLanguage, outputLanguage) {
+    val translateState: LiveData<ResultState<Boolean>> = combineSourcesWithDiff(inputLanguage, outputLanguage) {
 
         postValue(ResultState.Start)
 
@@ -126,7 +127,7 @@ class ConfigViewModel(
         postValue(getTranslateSelectedAsyncUseCase.execute().first())
     }
 
-    val translateEnable: LiveData<Boolean> = combineSources(translateState, translateSelect) {
+    val translateEnable: LiveData<Boolean> = combineSourcesWithDiff(translateState, translateSelect) {
 
         val translateState = translateState.get()
         val translateSelect = translateSelect.get()
@@ -134,19 +135,19 @@ class ConfigViewModel(
         if (translateState.isFailed()) {
 
             postValue(false)
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         if (translateState !is ResultState.Success) {
 
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         postValue(translateSelect.isNotBlank())
     }
 
     @VisibleForTesting
-    val translateViewItemList: LiveData<List<ViewItem>> = combineSources<List<ViewItem>>(theme, translate, translateState, translateSelect) {
+    val translateViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff<List<ViewItem>>(theme, translate, translateState, translateSelect) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -157,7 +158,7 @@ class ConfigViewModel(
         if (translateState.isFailed()) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
 
@@ -208,7 +209,7 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val listVoice: LiveData<List<Int>> = combineSources(voiceState) {
+    val listVoice: LiveData<List<Int>> = combineSourcesWithDiff(voiceState) {
 
         val state = voiceState.get()
 
@@ -230,7 +231,7 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val voiceSpeedViewItemList: LiveData<List<VoiceSpeedViewItem>> = combineSources(theme, translate, listVoice, voiceSpeed) {
+    val voiceSpeedViewItemList: LiveData<List<VoiceSpeedViewItem>> = combineSourcesWithDiff(theme, translate, listVoice, voiceSpeed) {
 
         val translate = translate.get()
 
@@ -240,7 +241,7 @@ class ConfigViewModel(
         if (listVoice.isEmpty()) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
 
@@ -268,7 +269,7 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val voiceViewItemList: LiveData<List<ViewItem>> = combineSources(theme, listVoice, voiceSelect, translate) {
+    val voiceViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, listVoice, voiceSelect, translate) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -279,7 +280,7 @@ class ConfigViewModel(
         if (listVoice.isEmpty()) {
 
             postValue(emptyList())
-            return@combineSources
+            return@combineSourcesWithDiff
         }
 
         // nếu voice không nằm trong danh sách thì lấy cái đầu tiên
@@ -308,9 +309,9 @@ class ConfigViewModel(
     }
 
 
-    val listConfig: LiveData<List<ViewItem>> = combineSources(theme, phoneticViewItemList, voiceViewItemList, voiceSpeedViewItemList, translateViewItemList) {
+    val listConfig: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, phoneticViewItemList, voiceViewItemList, voiceSpeedViewItemList, translateViewItemList) {
 
-        val theme = theme.value ?: return@combineSources
+        val theme = theme.value ?: return@combineSourcesWithDiff
 
         val list = arrayListOf<ViewItem>()
 
@@ -373,10 +374,10 @@ class ConfigViewModel(
         postValue(list)
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, phoneticViewItemList, voiceViewItemList, translateViewItemList, voiceSpeedViewItemList) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, phoneticViewItemList, voiceViewItemList, translateViewItemList, voiceSpeedViewItemList) {
 
-        val theme = theme.value ?: return@combineSources
-        val translate = translate.value ?: return@combineSources
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
         val list = arrayListOf<ViewItem>()
 
