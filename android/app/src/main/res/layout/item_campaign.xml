@@ -4,19 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:paddingVertical="16dp"
     app:rv_backgroundColor="#5b5"
     app:rv_cornerRadius="16dp">
 
     <ImageView
         android:id="@+id/iv_campaign"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_weight="1"
         android:orientation="vertical">
 

@@ -7,6 +7,7 @@ import com.phonetics.campaign.entities.Campaign
 import com.phonetics.campaign.ui.adapters.CampaignViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
@@ -45,17 +46,19 @@ class CampaignHomeViewModel : BaseViewModel() {
             theme.getOrTransparent("colorPrimary")
         }
 
-        CampaignViewItem(
+        val title = translate.getOrKey(campaign.title.orEmpty())
+
+        if (!title.startsWith("title_", true)) CampaignViewItem(
             id = "CAMPAIGN",
             data = campaign,
 
             image = campaign.image.orEmpty(),
 
-            text = translate.getOrKey(campaign.title.orEmpty())
-                .with(ForegroundColor(campaign.titleColor)),
+            text = title
+                .with(Bold, ForegroundColor(campaign.titleColor)),
 
             message = translate.getOrKey(campaign.message.orEmpty())
-                .with(ForegroundColor(campaign.titleColor)),
+                .with(ForegroundColor(campaign.messageColor)),
 
             background = Background(
                 cornerRadius = DP.DP_16,

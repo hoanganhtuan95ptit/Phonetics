@@ -10,19 +10,25 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 @AutoService(HomeView::class)
 class CampaignHomeView : HomeView {
 
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: CampaignHomeViewModel
 
-    private lateinit var campaignHomeViewModel: CampaignHomeViewModel
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun setup(fragment: HomeFragment) {
 
-        viewModel = fragment.viewModel<HomeViewModel>().value
+        viewModel = fragment.viewModels<CampaignHomeViewModel>().value
 
-        campaignHomeViewModel = fragment.viewModels<CampaignHomeViewModel>().value
+        homeViewModel = fragment.viewModel<HomeViewModel>().value
 
-        campaignHomeViewModel.viewItemList.observe(fragment.viewLifecycleOwner) {
 
-            viewModel.updateTypeViewItemList(type = -1, it)
+        observeData(fragment)
+    }
+
+    private fun observeData(fragment: HomeFragment) = with(viewModel) {
+
+        viewItemList.observe(fragment.viewLifecycleOwner) {
+
+            homeViewModel.updateTypeViewItemList(type = -1, it)
         }
     }
 }

@@ -23,8 +23,8 @@ android {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
 
-        versionCode 89
-        versionName "1.2.89"
+        versionCode 90
+        versionName "1.2.90"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -142,8 +142,4 @@ dependencies {
     implementation otherDependencies.play_services_ads
     implementation otherDependencies.core_splashscreen
     implementation otherDependencies.keyboardvisibilityevent
-}
-
-kapt {
-    correctErrorTypes = true
 }
