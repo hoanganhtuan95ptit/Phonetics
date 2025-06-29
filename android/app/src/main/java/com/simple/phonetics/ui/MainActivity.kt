@@ -59,7 +59,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
     override fun onResume() {
         super.onResume()
-        Log.d("tuanha", "onResume: ${System.currentTimeMillis() - PhoneticsApp.start}  ${Color.parseColor("#1877F2")}  ${Color.parseColor("#B1B1B1")}")
+        Log.d("tuanha", "onResume: ${System.currentTimeMillis() - PhoneticsApp.start}  ${Color.parseColor("#1877F2")}  ${Color.parseColor("#EEEEEE")}")
     }
 
     override fun onDestroy() {
