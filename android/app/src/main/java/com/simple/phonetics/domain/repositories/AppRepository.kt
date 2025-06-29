@@ -26,8 +26,6 @@ interface AppRepository {
     suspend fun getKeyTranslateDefault(): Map<String, String>
 
 
-    suspend fun initModuleSync(pair: Pair<String, String>): ResultState<Unit>
-
     suspend fun detect(languageCodeInput: String, languageCodeOutput: String, path: String): ResultState<String>
 
     suspend fun checkDetect(languageCodeInput: String, languageCodeOutput: String): Boolean
