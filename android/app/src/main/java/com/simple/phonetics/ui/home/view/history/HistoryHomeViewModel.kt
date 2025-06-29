@@ -12,7 +12,6 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
@@ -30,11 +29,11 @@ class HistoryHomeViewModel(
     @VisibleForTesting
     val historyState: LiveData<ResultState<List<Sentence>>> = mediatorLiveData {
 
-        postDifferentValue(ResultState.Start)
+        postValue(ResultState.Start)
 
         getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
 
-            postDifferentValue(ResultState.Success(list))
+            postValue(ResultState.Success(list))
         }
     }
 
@@ -47,7 +46,7 @@ class HistoryHomeViewModel(
 
         if (historyState !is ResultState.Success) {
 
-            postDifferentValue(emptyList())
+            postValue(emptyList())
             return@combineSources
         }
 

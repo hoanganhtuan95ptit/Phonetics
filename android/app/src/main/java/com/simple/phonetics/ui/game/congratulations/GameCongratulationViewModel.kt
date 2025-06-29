@@ -12,8 +12,8 @@ import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
@@ -87,7 +87,7 @@ class GameCongratulationViewModel : BaseViewModel() {
 
     fun updateNumber(it: Long) {
 
-        number.postDifferentValue(it)
+        number.postValue(it)
     }
 
     data class Info(

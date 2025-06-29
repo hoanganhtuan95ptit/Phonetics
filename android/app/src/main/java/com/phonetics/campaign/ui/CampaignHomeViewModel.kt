@@ -14,7 +14,6 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrKey
@@ -27,7 +26,7 @@ class CampaignHomeViewModel : BaseViewModel() {
     val campaign: LiveData<Campaign> = mediatorLiveData {
 
         CampaignRepository.instance.getCampaignListAsync().firstOrNull()?.firstOrNull()?.let {
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 

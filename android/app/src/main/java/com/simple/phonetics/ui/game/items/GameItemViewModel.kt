@@ -8,7 +8,7 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.extentions.Event
-import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.entities.Text
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -23,17 +23,17 @@ abstract class GameItemViewModel : BaseViewModel() {
 
     fun updateText(text: Text) {
 
-        this.text.postDifferentValue(text)
+        this.text.postValue(text)
     }
 
     fun updateResourceSelected(it: Word.Resource) {
 
-        resourceSelected.postDifferentValue(it)
+        resourceSelected.postValue(it)
     }
 
     fun updateConsecutiveCorrectAnswer(event: Event<Pair<Long, Boolean>>) {
 
-        consecutiveCorrectAnswerEvent.postDifferentValue(event)
+        consecutiveCorrectAnswerEvent.postValue(event)
     }
 
 

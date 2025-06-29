@@ -2,7 +2,7 @@ package com.simple.phonetics.ui.base.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postValue
 
 open class BaseActionViewModel : BaseViewModel() {
 
@@ -10,6 +10,6 @@ open class BaseActionViewModel : BaseViewModel() {
 
     fun updateActionHeight(height: Int) {
 
-        actionHeight.postDifferentValue(height)
+        actionHeight.postValue(height)
     }
 }

@@ -19,7 +19,7 @@ import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObjectOrNull
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
-import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
@@ -104,7 +104,7 @@ class ReviewView : PopupView {
 
         listenerEvent(componentCallbacks.viewLifecycleOwner.lifecycle, EventName.SHOW_POPUP) {
 
-            show.postDifferentValue(true)
+            show.postValue(true)
         }
 
         val sharedPreferences: SharedPreferences by lazy {

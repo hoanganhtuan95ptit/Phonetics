@@ -6,7 +6,6 @@ import com.phonetics.thank.data.repositories.CommunityRepository
 import com.phonetics.thank.entities.Thank
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +16,7 @@ class ThankViewModel : BaseViewModel() {
 
         CommunityRepository.instance.getCommunitiesAsync().collect { list ->
 
-            postDifferentValue(list.associateBy { it.id.orEmpty() })
+            postValue(list.associateBy { it.id.orEmpty() })
         }
     }
 

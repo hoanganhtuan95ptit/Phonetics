@@ -19,7 +19,6 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
@@ -96,7 +95,7 @@ class SpeakViewModel(
 
         state.doStart {
 
-            postDifferentValue(getPhoneticLoadingViewItem(theme = theme))
+            postValue(getPhoneticLoadingViewItem(theme = theme))
             return@combineSources
         }
 
@@ -153,7 +152,7 @@ class SpeakViewModel(
             isShow = isSupportSpeak.value == true,
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
     val readingInfo: LiveData<ReadingInfo> = listenerSources(size, theme, translate, isSupportReading, readingState) {
@@ -172,7 +171,7 @@ class SpeakViewModel(
             isLoading = listenState.isStart()
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
     val copyInfo: LiveData<CopyInfo> = listenerSources(size, theme, translate) {
@@ -188,7 +187,7 @@ class SpeakViewModel(
             messageThankUser = emptyText()
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
     @VisibleForTesting
@@ -244,13 +243,13 @@ class SpeakViewModel(
             background = background
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
 
     fun updateText(it: String) {
 
-        text.postDifferentValue(it)
+        text.postValue(it)
     }
 
     fun startReading(text: String? = null) = viewModelScope.launch(handler + Dispatchers.IO) {

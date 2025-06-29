@@ -20,7 +20,6 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.Config.UPDATE_DEBUG
@@ -39,7 +38,7 @@ class UpdateViewModel(
 
         getConfigAsyncUseCase.execute().collect {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -56,7 +55,7 @@ class UpdateViewModel(
 
         if (!UPDATE_DEBUG) if (newVersion <= BuildConfig.VERSION_CODE || !translate.containsKey("update_title")) {
 
-            postDifferentValue(list)
+            postValue(list)
             return@combineSources
         }
 
@@ -109,7 +108,7 @@ class UpdateViewModel(
             list.add(SpaceViewItem("SPACE_TITLE", height = DP.DP_40))
         }
 
-        postDifferentValue(list)
+        postValue(list)
     }
 
     @VisibleForTesting
@@ -123,7 +122,7 @@ class UpdateViewModel(
 
         if (viewItemList.isEmpty()) {
 
-            postDifferentValue(RateInfo(show = false))
+            postValue(RateInfo(show = false))
             return@combineSources
         }
 
@@ -151,7 +150,7 @@ class UpdateViewModel(
             ),
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
     val rateInfoEvent: LiveData<Event<RateInfo>> = rateInfo.toEvent()

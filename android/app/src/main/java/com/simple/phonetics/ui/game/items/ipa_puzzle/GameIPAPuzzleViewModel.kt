@@ -20,7 +20,6 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
@@ -57,7 +56,7 @@ class GameIPAPuzzleViewModel(
         val resourceSelected = resourceSelected.get()
         val phoneticCodeSelected = phoneticCodeSelected.get()
 
-        postDifferentValue(ResultState.Start)
+        postValue(ResultState.Start)
 
         val param = GetPhoneticsRandomUseCase.Param(
             text = text,
@@ -75,7 +74,7 @@ class GameIPAPuzzleViewModel(
             logAnalytics("game_ipa_puzzle_empty_${resourceSelected.value.lowercase()}_${text.text.lowercase()}")
         }
 
-        postDifferentValue(ResultState.Success(list))
+        postValue(ResultState.Success(list))
     }
 
     private val quiz: LiveData<GameIPAPuzzleQuiz> = combineSources(ipaState, phoneticState, phoneticCodeSelected) {
@@ -121,7 +120,7 @@ class GameIPAPuzzleViewModel(
             question = question,
         )
 
-        postDifferentValue(quiz)
+        postValue(quiz)
     }
 
     @VisibleForTesting
@@ -141,7 +140,7 @@ class GameIPAPuzzleViewModel(
 
         if (quiz == null || ipaState.isStart() || phoneticState.isStart()) {
 
-            postDifferentValue(getIPAPuzzleLoadingViewItem(size = size, theme = theme))
+            postValue(getIPAPuzzleLoadingViewItem(size = size, theme = theme))
             return@listenerSources
         }
 
@@ -187,7 +186,7 @@ class GameIPAPuzzleViewModel(
             )
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
 

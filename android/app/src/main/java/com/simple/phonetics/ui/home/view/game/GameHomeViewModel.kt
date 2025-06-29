@@ -20,7 +20,6 @@ import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.Constants
 import com.simple.phonetics.Id
@@ -41,7 +40,7 @@ class GameHomeViewModel(
 
         countWordAsyncUseCase.execute(CountWordAsyncUseCase.Param(resource = Word.Resource.Popular, languageCode = inputLanguage.id)).collect {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -55,7 +54,7 @@ class GameHomeViewModel(
 
         if (!translate.containsKey("title_game") || wordPopularCount <= Constants.WORD_COUNT_MIN) {
 
-            postDifferentValue(emptyList())
+            postValue(emptyList())
             return@combineSources
         }
 

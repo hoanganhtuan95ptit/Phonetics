@@ -23,7 +23,6 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.Id.TRANSLATE
@@ -91,7 +90,7 @@ class ConfigViewModel(
             )
         }.let {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }.apply {
 
@@ -124,7 +123,7 @@ class ConfigViewModel(
     @VisibleForTesting
     val translateSelect: LiveData<String> = mediatorLiveData {
 
-        postDifferentValue(getTranslateSelectedAsyncUseCase.execute().first())
+        postValue(getTranslateSelectedAsyncUseCase.execute().first())
     }
 
     val translateEnable: LiveData<Boolean> = combineSources(translateState, translateSelect) {
@@ -134,7 +133,7 @@ class ConfigViewModel(
 
         if (translateState.isFailed()) {
 
-            postDifferentValue(false)
+            postValue(false)
             return@combineSources
         }
 
@@ -143,7 +142,7 @@ class ConfigViewModel(
             return@combineSources
         }
 
-        postDifferentValue(translateSelect.isNotBlank())
+        postValue(translateSelect.isNotBlank())
     }
 
     @VisibleForTesting
@@ -157,7 +156,7 @@ class ConfigViewModel(
 
         if (translateState.isFailed()) {
 
-            postDifferentValue(emptyList())
+            postValue(emptyList())
             return@combineSources
         }
 
@@ -190,7 +189,7 @@ class ConfigViewModel(
             list.add(it)
         }
 
-        postDifferentValue(list)
+        postValue(list)
     }.apply {
 
         postValue(emptyList())
@@ -215,19 +214,19 @@ class ConfigViewModel(
 
         state.doSuccess {
 
-            postDifferentValue(it)
+            postValue(it)
         }
 
         state.doFailed {
 
-            postDifferentValue(emptyList())
+            postValue(emptyList())
         }
     }
 
     @VisibleForTesting
     val voiceSpeed: LiveData<Float> = mediatorLiveData {
 
-        postDifferentValue(getVoiceSpeedAsyncUseCase.execute().first())
+        postValue(getVoiceSpeedAsyncUseCase.execute().first())
     }
 
     @VisibleForTesting
@@ -259,13 +258,13 @@ class ConfigViewModel(
             list.add(it)
         }
 
-        postDifferentValue(list)
+        postValue(list)
     }
 
     @VisibleForTesting
     val voiceSelect: LiveData<Int> = mediatorLiveData {
 
-        postDifferentValue(getVoiceIdSelectedAsyncUseCase.execute().first())
+        postValue(getVoiceIdSelectedAsyncUseCase.execute().first())
     }
 
     @VisibleForTesting
@@ -304,7 +303,7 @@ class ConfigViewModel(
             )
         }.let {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -371,7 +370,7 @@ class ConfigViewModel(
             list.add(it)
         }
 
-        postDifferentValue(list)
+        postValue(list)
     }
 
     val viewItemList: LiveData<List<ViewItem>> = combineSources(theme, translate, phoneticViewItemList, voiceViewItemList, translateViewItemList, voiceSpeedViewItemList) {
@@ -418,20 +417,20 @@ class ConfigViewModel(
             list.addAll(it)
         }
 
-        postDifferentValue(list)
+        postValue(list)
     }
 
 
     fun updateVoiceSpeed(current: Float) = launchWithTag("VOICE_SPEED") {
 
-        this@ConfigViewModel.voiceSpeed.postDifferentValue(current)
+        this@ConfigViewModel.voiceSpeed.postValue(current)
 
         updateVoiceSpeedUseCase.execute(UpdateVoiceSpeedUseCase.Param(voiceSpeed = current))
     }
 
     fun updateVoiceSelect(voiceId: Int) = launchWithTag("VOICE_SELECT") {
 
-        this@ConfigViewModel.voiceSelect.postDifferentValue(voiceId)
+        this@ConfigViewModel.voiceSelect.postValue(voiceId)
 
         updateVoiceIdSelectedUseCase.execute(UpdateVoiceIdSelectedUseCase.Param(voiceId = voiceId))
     }
@@ -440,14 +439,14 @@ class ConfigViewModel(
 
         val translate = if (translateSelect.value.isNullOrBlank()) id else ""
 
-        this@ConfigViewModel.translateSelect.postDifferentValue(translate)
+        this@ConfigViewModel.translateSelect.postValue(translate)
 
         updateTranslateSelectedUseCase.execute(UpdateTranslateSelectedUseCase.Param(translateSelected = translate))
     }
 
     fun updatePhoneticCodeSelect(phoneticCode: String) = launchWithTag("PHONETIC_CODE_SELECT") {
 
-        this@ConfigViewModel.phoneticCodeSelected.postDifferentValue(phoneticCode)
+        this@ConfigViewModel.phoneticCodeSelected.postValue(phoneticCode)
 
         updatePhoneticCodeSelectedUseCase.execute(UpdatePhoneticCodeSelectedUseCase.Param(phoneticCode = phoneticCode))
     }

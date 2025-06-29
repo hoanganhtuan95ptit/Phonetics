@@ -27,7 +27,7 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Constants
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
@@ -56,7 +56,7 @@ class GameConfigViewModel(
 
         countIpaAsyncUseCase.execute(CountIpaAsyncUseCase.Param(languageCode = inputLanguage.id)).collect {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -84,7 +84,7 @@ class GameConfigViewModel(
             }
         }.collect { map ->
 
-            postDifferentValue(map.toList().sortedByDescending { it.first.name }.toMap())
+            postValue(map.toList().sortedByDescending { it.first.name }.toMap())
         }
     }
 
@@ -162,7 +162,7 @@ class GameConfigViewModel(
             list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight + DP.DP_24))
         }
 
-        postDifferentValue(list)
+        postValue(list)
     }
 
     val buttonInfo: LiveData<ClickTextViewItem> = listenerSources(theme, translate, resourceSelected) {
@@ -202,7 +202,7 @@ class GameConfigViewModel(
             )
         ).let {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -217,7 +217,7 @@ class GameConfigViewModel(
             return
         }
 
-        this.resourceSelected.postDifferentValue(resource)
+        this.resourceSelected.postValue(resource)
 
         logAnalytics("game_config_resource_" + resource.value.lowercase())
     }

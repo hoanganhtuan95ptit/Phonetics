@@ -13,7 +13,7 @@ import com.google.auto.service.AutoService
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.launchCollect
-import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
@@ -97,7 +97,7 @@ class UpdateView : PopupView {
 
         listenerEvent(componentCallbacks.viewLifecycleOwner.lifecycle, EventName.SHOW_POPUP) {
 
-            show.postDifferentValue(true)
+            show.postValue(true)
         }
     }
 

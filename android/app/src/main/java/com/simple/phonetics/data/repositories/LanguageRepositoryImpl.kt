@@ -5,7 +5,6 @@ import androidx.lifecycle.asFlow
 import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObject
 import com.simple.coreapp.utils.extentions.offerActive
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.DEFAULT_LANGUAGE
 import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.cache.AppCache
@@ -90,7 +89,7 @@ class LanguageRepositoryImpl(
 
         appCache.setData("language_input", language.toJson())
 
-        languageInput.postDifferentValue(language)
+        languageInput.postValue(language)
     }
 
 

@@ -23,7 +23,6 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toPx
@@ -101,7 +100,7 @@ class RecordingViewModel(
             list.add(it)
         }
 
-        postDifferentValue(list)
+        postValue(list)
     }
 
     val viewItemList: LiveData<List<ViewItem>> = combineSources(titleViewItemList, actionHeight) {
@@ -169,7 +168,7 @@ class RecordingViewModel(
 
     fun updateReverse(it: Boolean) {
 
-        isReverse.postDifferentValue(it)
+        isReverse.postValue(it)
     }
 
     fun startSpeak() = viewModelScope.launch(handler + Dispatchers.IO) {

@@ -1,7 +1,7 @@
 package com.phonetics.thank.data.api
 
-import com.simple.phonetics.BRANCH
 import com.phonetics.thank.entities.Thank
+import com.simple.phonetics.BRANCH
 import org.koin.core.context.GlobalContext
 import retrofit2.Retrofit
 import retrofit2.http.GET

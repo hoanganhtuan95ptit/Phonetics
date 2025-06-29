@@ -3,7 +3,6 @@ package com.simple.phonetics.ui.deeplinks
 import android.content.ComponentCallbacks
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import androidx.fragment.app.FragmentActivity

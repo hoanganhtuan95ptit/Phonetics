@@ -11,7 +11,7 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.Config.ADS_DEBUG
 import com.simple.phonetics.domain.usecase.GetConfigAsyncUseCase
@@ -27,7 +27,7 @@ class AdsViewModel(
 
         getConfigAsyncUseCase.execute().collect {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -40,7 +40,7 @@ class AdsViewModel(
 
             count++
 
-            postDifferentValue(count)
+            postValue(count)
         }
     }
 
@@ -66,7 +66,7 @@ class AdsViewModel(
             return@combineSources
         }
 
-        postDifferentValue(true.toEvent())
+        postValue(true.toEvent())
     }
 
     init {
@@ -79,6 +79,6 @@ class AdsViewModel(
 
     fun countShow() {
 
-        timeShow.postDifferentValue(System.currentTimeMillis())
+        timeShow.postValue(System.currentTimeMillis())
     }
 }

@@ -17,7 +17,6 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
@@ -54,7 +53,7 @@ class LanguageViewModel(
                 .with(ForegroundColor(theme.getOrTransparent("colorOnBackgroundVariant"))),
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
     @VisibleForTesting
@@ -71,7 +70,7 @@ class LanguageViewModel(
 
         languageOld.value?.let {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -155,7 +154,7 @@ class LanguageViewModel(
 
         viewItemList.addAll(listLanguageState)
 
-        postDifferentValue(viewItemList)
+        postValue(viewItemList)
     }
 
     val buttonInfo: LiveData<ButtonInfo> = listenerSources(theme, languageOld, languageSelected, changeLanguageState, translate) {
@@ -185,7 +184,7 @@ class LanguageViewModel(
             )
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
     fun updateLanguageSelected(data: Language) {
@@ -197,7 +196,7 @@ class LanguageViewModel(
             return
         }
 
-        languageSelected.postDifferentValue(data)
+        languageSelected.postValue(data)
     }
 
     fun changeLanguageInput() = viewModelScope.launch(handler + Dispatchers.IO) {

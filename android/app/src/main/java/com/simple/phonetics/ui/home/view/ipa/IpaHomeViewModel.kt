@@ -19,7 +19,6 @@ import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.dao.entities.Ipa
 import com.simple.phonetics.Id
@@ -57,7 +56,7 @@ class IpaHomeViewModel(
 
         if (!translate.containsKey("title_ipa") || state !is ResultState.Success) {
 
-            postDifferentValue(emptyList())
+            postValue(emptyList())
             return@combineSources
         }
 

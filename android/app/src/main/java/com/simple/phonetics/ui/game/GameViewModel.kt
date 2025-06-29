@@ -8,7 +8,7 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
-import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.entities.Text
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -34,7 +34,7 @@ class GameViewModel : BaseViewModel() {
             translate["game_screen_title"].orEmpty()
         }
 
-        postDifferentValue(title)
+        postValue(title)
     }
 
     val consecutiveCorrectAnswer: LiveData<Pair<Long, Boolean>> = MediatorLiveData()
@@ -43,7 +43,7 @@ class GameViewModel : BaseViewModel() {
 
     fun updateText(it: Text?) {
 
-        text.postDifferentValue(it ?: Text("", Text.Type.IPA))
+        text.postValue(it ?: Text("", Text.Type.IPA))
     }
 
     fun updateAnswerCorrect(isCorrect: Boolean) {
@@ -56,6 +56,6 @@ class GameViewModel : BaseViewModel() {
             -System.currentTimeMillis()
         }
 
-        consecutiveCorrectAnswer.postDifferentValue(count to (count % 5 == 0L))
+        consecutiveCorrectAnswer.postValue(count to (count % 5 == 0L))
     }
 }

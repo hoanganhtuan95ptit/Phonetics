@@ -16,7 +16,6 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -45,7 +44,7 @@ class PhoneticHomeViewModel(
 
         if (state !is ResultState.Running) {
 
-            postDifferentValue(emptyList())
+            postValue(emptyList())
             return@combineSources
         }
 
