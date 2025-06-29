@@ -13,10 +13,6 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/config" />
             <option value="$PROJECT_DIR$/dao" />
-            <option value="$PROJECT_DIR$/dynamic_feature" />
-            <option value="$PROJECT_DIR$/dynamic_feature/community" />
-            <option value="$PROJECT_DIR$/dynamic_feature/mlkit" />
-            <option value="$PROJECT_DIR$/dynamic_feature/thank" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
