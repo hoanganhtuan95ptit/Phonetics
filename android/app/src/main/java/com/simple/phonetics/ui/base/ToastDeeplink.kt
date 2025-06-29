@@ -2,8 +2,10 @@ package com.simple.phonetics.ui.base
 
 import android.content.ComponentCallbacks
 import android.view.View
-import androidx.core.os.bundleOf
+import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.dialogs.toast.ToastDialog
+import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
@@ -23,11 +25,11 @@ class ToastDeeplink : DeeplinkHandler {
             return false
         }
 
-        val fragment = ToastDialog.newInstance(componentCallbacks)
-        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray()).apply {
+        val message = extras.orEmpty()[com.simple.coreapp.Param.MESSAGE].asObjectOrNull<RichText>()
 
-            putAll(fragment.arguments ?: bundleOf())
-        }
+        val background = extras.orEmpty()[com.simple.coreapp.Param.BACKGROUND].asObjectOrNull<Background>()
+
+        val fragment = ToastDialog.newInstance(componentCallbacks, message = message, background = background)
         fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, "")
 
         return true
