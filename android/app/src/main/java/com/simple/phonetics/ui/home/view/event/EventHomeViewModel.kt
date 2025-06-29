@@ -22,7 +22,6 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.domain.usecase.event.GetCurrentEventAsyncUseCase
 import com.simple.phonetics.domain.usecase.event.UpdateEventShowUseCase
@@ -105,7 +104,7 @@ class EventHomeViewModel(
             list.add(SpaceViewItem("SPACE_MESSAGE", height = DP.DP_24))
         }
 
-        postDifferentValue(list)
+        postValue(list)
     }
 
     @VisibleForTesting
@@ -118,7 +117,7 @@ class EventHomeViewModel(
 
         if (eventState !is ResultState.Success) {
 
-            postDifferentValue(EventInfo(show = false))
+            postValue(EventInfo(show = false))
             return@combineSources
         }
 
@@ -152,7 +151,7 @@ class EventHomeViewModel(
             viewItemList = viewItemList.getOrEmpty()
         ).apply {
 
-            postDifferentValue(this)
+            postValue(this)
         }
     }
     val eventInfoEvent: LiveData<Event<EventInfo>> = eventInfo.toEvent()

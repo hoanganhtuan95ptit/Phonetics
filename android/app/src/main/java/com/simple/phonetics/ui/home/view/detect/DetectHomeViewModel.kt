@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.domain.usecase.detect.CheckSupportDetectUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 
@@ -46,7 +46,7 @@ class DetectHomeViewModel(
 
     fun updateReverse(it: Boolean) {
 
-        isReverse.postDifferentValue(it)
+        isReverse.postValue(it)
     }
 
     data class DetectInfo(

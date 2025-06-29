@@ -12,16 +12,12 @@ import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
-import com.simple.coreapp.utils.JobQueue
-import com.simple.coreapp.utils.ext.handler
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.view.MainView
-import com.simple.phonetics.utils.exts.ModuleSdk
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.ServiceLoader
 

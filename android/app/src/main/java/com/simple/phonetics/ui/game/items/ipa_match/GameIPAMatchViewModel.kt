@@ -22,7 +22,6 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
@@ -53,7 +52,7 @@ class GameIPAMatchViewModel(
         val resourceSelected = resourceSelected.get()
         val phoneticCodeSelected = phoneticCodeSelected.get()
 
-        postDifferentValue(ResultState.Start)
+        postValue(ResultState.Start)
 
         val param = GetPhoneticsRandomUseCase.Param(
             text = text,
@@ -71,7 +70,7 @@ class GameIPAMatchViewModel(
             logAnalytics("game_ipa_match_empty_${resourceSelected.value.lowercase()}_${text.text.lowercase()}")
         }
 
-        postDifferentValue(ResultState.Success(list))
+        postValue(ResultState.Success(list))
     }
 
     val quiz: LiveData<GameIPAMatchQuiz> = combineSources(isSupportReading, phoneticState) {
@@ -115,7 +114,7 @@ class GameIPAMatchViewModel(
         )
 
 
-        postDifferentValue(quiz)
+        postValue(quiz)
     }
 
     @VisibleForTesting
@@ -125,7 +124,7 @@ class GameIPAMatchViewModel(
 
         val phoneticList = phoneticState.toSuccess()?.data ?: return@combineSources
 
-        postDifferentValue(phoneticList.map { null to null })
+        postValue(phoneticList.map { null to null })
     }
 
     @VisibleForTesting
@@ -149,7 +148,7 @@ class GameIPAMatchViewModel(
 
         if (quiz == null || phoneticState.isStart()) {
 
-            postDifferentValue(getIPAMatchLoadingViewItem(size = size, theme = theme))
+            postValue(getIPAMatchLoadingViewItem(size = size, theme = theme))
             return@listenerSources
         }
 
@@ -198,7 +197,7 @@ class GameIPAMatchViewModel(
             )
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
 
@@ -297,7 +296,7 @@ class GameIPAMatchViewModel(
 
     fun updateWaring(it: Boolean) {
 
-        warning.postDifferentValue(it)
+        warning.postValue(it)
     }
 
     fun startReading(data: GameIPAMatchPair) = viewModelScope.launch(handler + Dispatchers.IO) {

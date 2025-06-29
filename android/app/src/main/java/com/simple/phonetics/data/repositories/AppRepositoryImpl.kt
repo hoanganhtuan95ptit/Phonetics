@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.simple.coreapp.utils.JobQueue
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.detect.data.tasks.DetectStateTask
 import com.simple.detect.data.tasks.DetectTask
@@ -169,7 +168,7 @@ class AppRepositoryImpl(
     }
 
     override suspend fun updateConfigs(map: Map<String, String>) {
-        configs.postDifferentValue(map)
+        configs.postValue(map)
     }
 
 

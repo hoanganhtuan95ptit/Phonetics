@@ -38,7 +38,7 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.observeLaunch
-import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
@@ -210,17 +210,17 @@ class VerticalConfirmViewModel : BaseViewModel() {
 
         list.add(SpaceViewItem(id = "1", height = actionHeight.get()))
 
-        postDifferentValue(list)
+        postValue(list)
     }
 
     fun updateViewItem(list: List<ViewItem>) {
 
-        itemList.postDifferentValue(list)
+        itemList.postValue(list)
     }
 
     fun updateActionHeight(height: Int) {
 
-        actionHeight.postDifferentValue(height)
+        actionHeight.postValue(height)
     }
 }
 

@@ -20,7 +20,7 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.Config.RATE_DEBUG
 import com.simple.phonetics.R
@@ -60,7 +60,7 @@ class ReviewViewModel(
         // nếu người dùng đã xác nhận mở rate
         if (!RATE_DEBUG) if (rate.status == Rate.Status.OPEN_RATE.value || !isValidate || historyList.isEmpty()) {
 
-            postDifferentValue(emptyList())
+            postValue(emptyList())
             return@combineSources
         }
 
@@ -116,7 +116,7 @@ class ReviewViewModel(
             list.add(SpaceViewItem("SPACE_TITLE", height = DP.DP_40))
         }
 
-        postDifferentValue(list)
+        postValue(list)
     }
 
     @VisibleForTesting
@@ -130,7 +130,7 @@ class ReviewViewModel(
 
         if (viewItemList.isEmpty()) {
 
-            postDifferentValue(RateInfo(show = false))
+            postValue(RateInfo(show = false))
             return@combineSources
         }
 
@@ -158,7 +158,7 @@ class ReviewViewModel(
             ),
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
     val rateInfoEvent: LiveData<Event<RateInfo>> = rateInfo.toEvent()
@@ -167,7 +167,7 @@ class ReviewViewModel(
     fun updateRate(rate: Rate?) {
 
         if (this.rate.value != null) return
-        this.rate.postDifferentValue(rate ?: Rate())
+        this.rate.postValue(rate ?: Rate())
     }
 
     data class Rate(

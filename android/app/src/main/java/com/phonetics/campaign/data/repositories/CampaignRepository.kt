@@ -5,7 +5,6 @@ import androidx.lifecycle.asFlow
 import com.phonetics.campaign.data.api.Api
 import com.phonetics.campaign.entities.Campaign
 import com.simple.coreapp.utils.ext.launchCollect
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.BRANCH
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +18,7 @@ class CampaignRepository {
 
         if (list.value == null) kotlin.runCatching {
 
-            list.postDifferentValue(Api.api.syncCampaign(BRANCH))
+            list.postValue(Api.api.syncCampaign(BRANCH))
         }
 
         list.asFlow().launchCollect(this) {

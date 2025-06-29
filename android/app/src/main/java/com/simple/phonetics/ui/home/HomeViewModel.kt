@@ -29,7 +29,6 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
@@ -79,7 +78,7 @@ class HomeViewModel(
             .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
             .with("Ep", Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
 
-        postDifferentValue(title)
+        postValue(title)
     }
 
 
@@ -104,7 +103,7 @@ class HomeViewModel(
             isShow = !detectState.isCompleted(),
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
 
@@ -117,7 +116,7 @@ class HomeViewModel(
         val outputLanguage = outputLanguage.get()
         val isSupportTranslate = isSupportTranslate.get()
 
-        postDifferentValue(inputLanguage.id != outputLanguage.id && isSupportTranslate)
+        postValue(inputLanguage.id != outputLanguage.id && isSupportTranslate)
     }
 
     val reverseInfo: LiveData<ReverseInfo> = combineSources(theme, translate, isReverse, isSupportReverse) {
@@ -150,7 +149,7 @@ class HomeViewModel(
             )
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
 
@@ -168,7 +167,7 @@ class HomeViewModel(
             isShowPause = listenState.isRunning() && isSupportReading
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
 
@@ -190,7 +189,7 @@ class HomeViewModel(
             ),
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
     val enterInfo: LiveData<EnterInfo> = combineSources(theme, translate, isReverse, outputLanguage, inputLanguage) {
@@ -216,7 +215,7 @@ class HomeViewModel(
             textColor = theme.getOrTransparent("colorOnSurface"),
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
 
@@ -253,7 +252,7 @@ class HomeViewModel(
 
         state.doStart {
 
-            postDifferentValue(getPhoneticLoadingViewItem(theme))
+            postValue(getPhoneticLoadingViewItem(theme))
             return@combineSources
         }
 
@@ -294,7 +293,7 @@ class HomeViewModel(
         postDifferentValueIfActive(viewItemList)
     }.apply {
 
-        postDifferentValue(emptyList())
+        postValue(emptyList())
     }
 
 
@@ -308,7 +307,7 @@ class HomeViewModel(
 
         map[TYPE_VERSION] = versionViewItem(theme = theme, translate = translate)
 
-        postDifferentValue(map)
+        postValue(map)
     }
 
     val viewItemList: LiveData<List<ViewItem>> = combineSources(size, translate, typeViewItemList, phoneticsViewItemList) {
@@ -367,7 +366,7 @@ class HomeViewModel(
 
     val isShowLoading: LiveData<Boolean> = listenerSources(readingState, detectState) {
 
-        postDifferentValue(readingState.value.isStart() || detectState.value.isRunning())
+        postValue(readingState.value.isStart() || detectState.value.isRunning())
     }
 
 
@@ -384,7 +383,7 @@ class HomeViewModel(
             this.text.value = "" to text
         } else {
 
-            this.text.postDifferentValue(this.text.value?.second.orEmpty() to text)
+            this.text.postValue(this.text.value?.second.orEmpty() to text)
         }
     }
 
@@ -395,7 +394,7 @@ class HomeViewModel(
 
     fun updateSupportTranslate(b: Boolean) {
 
-        this.isSupportTranslate.postDifferentValue(b)
+        this.isSupportTranslate.postValue(b)
     }
 
     fun updateTypeViewItemList(type: Int, it: List<ViewItem>) = viewModelScope.launch(handler + Dispatchers.IO) {
@@ -448,7 +447,7 @@ class HomeViewModel(
 
         val state = detectUseCase.execute(param)
 
-        detectState.postDifferentValue(state)
+        detectState.postValue(state)
     }
 
     private fun versionViewItem(theme: Map<String, Int>, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {

@@ -2,7 +2,6 @@ package com.simple.phonetics.data.repositories
 
 import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.cache.AppCache
-import com.simple.phonetics.data.dao.PhoneticDao
 import com.simple.phonetics.data.dao.PhoneticRoomDatabaseProvider
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.entities.Language

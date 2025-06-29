@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.output.GetLanguageOutputAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.code.GetPhoneticCodeSelectedAsyncUseCase
@@ -32,7 +31,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         appSize.collect {
 
-            postDifferentValue(it.toMutableMap())
+            postValue(it.toMutableMap())
         }
     }
 
@@ -40,7 +39,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         appColor.collect {
 
-            postDifferentValue(it.toMutableMap())
+            postValue(it.toMutableMap())
         }
     }
 
@@ -48,7 +47,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         appString.collect {
 
-            postDifferentValue(it.toMutableMap())
+            postValue(it.toMutableMap())
         }
     }
 
@@ -56,7 +55,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         GlobalContext.get().get<GetLanguageInputAsyncUseCase>().execute().collect {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -64,7 +63,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         GlobalContext.get().get<GetLanguageOutputAsyncUseCase>().execute().collect {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -73,7 +72,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         GlobalContext.get().get<CheckSupportSpeakAsyncUseCase>().execute().collect {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -81,7 +80,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         GlobalContext.get().get<CheckSupportReadingAsyncUseCase>().execute().collect {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
@@ -90,7 +89,7 @@ abstract class BaseViewModel : TransitionViewModel() {
 
         GlobalContext.get().get<GetPhoneticCodeSelectedAsyncUseCase>().execute().collect {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 

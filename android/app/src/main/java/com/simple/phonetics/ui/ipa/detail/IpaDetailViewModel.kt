@@ -28,7 +28,6 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.dao.entities.Ipa
@@ -119,7 +118,7 @@ class IpaDetailViewModel(
             viewItemList.add(it)
         }
 
-        postDifferentValue(viewItemList)
+        postValue(viewItemList)
     }
 
 
@@ -155,7 +154,7 @@ class IpaDetailViewModel(
 
         state.doStart {
 
-            postDifferentValue(getLoadingViewItem(theme))
+            postValue(getLoadingViewItem(theme))
             return@listenerSources
         }
 
@@ -202,7 +201,7 @@ class IpaDetailViewModel(
 
         val ipa = ipa.get()
 
-        postDifferentValue(Text(ipa.ipa, Text.Type.IPA))
+        postValue(Text(ipa.ipa, Text.Type.IPA))
     }
 
     @VisibleForTesting
@@ -237,7 +236,7 @@ class IpaDetailViewModel(
 
         if (phoneticList.isEmpty()) {
 
-            postDifferentValue(emptyList())
+            postValue(emptyList())
             return@combineSources
         }
 
@@ -289,7 +288,7 @@ class IpaDetailViewModel(
             logAnalytics("game_ipa_show")
         }
 
-        postDifferentValue(list)
+        postValue(list)
     }
 
 
@@ -320,7 +319,7 @@ class IpaDetailViewModel(
 
     fun updateIpa(ipa: Ipa) {
 
-        this.ipa.postDifferentValue(ipa)
+        this.ipa.postValue(ipa)
     }
 
     fun startReading(data: Ipa) {
@@ -386,7 +385,7 @@ class IpaDetailViewModel(
 
             kotlinx.coroutines.delay(1 * 60 * 1000)
 
-            readingState.postDifferentValue(ResultState.Failed(RuntimeException("")))
+            readingState.postValue(ResultState.Failed(RuntimeException("")))
             trySend(Unit)
         }
 
@@ -406,13 +405,13 @@ class IpaDetailViewModel(
 
                 job.cancel()
 
-                readingState.postDifferentValue(ResultState.Running(""))
+                readingState.postValue(ResultState.Running(""))
                 start() // Bắt đầu phát nhạc khi đã chuẩn bị xong
             }
 
             setOnErrorListener { _, _, _ ->
 
-                readingState.postDifferentValue(ResultState.Failed(RuntimeException("")))
+                readingState.postValue(ResultState.Failed(RuntimeException("")))
                 trySend(Unit)
 
                 true // Trả về true nếu đã xử lý lỗi
@@ -420,7 +419,7 @@ class IpaDetailViewModel(
 
             setOnCompletionListener { _ ->
 
-                readingState.postDifferentValue(ResultState.Success(""))
+                readingState.postValue(ResultState.Success(""))
                 trySend(Unit)
             }
         }

@@ -16,7 +16,7 @@ import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.postDifferentValue
+import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.phonetics.suggest.GetPhoneticsSuggestUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -37,7 +37,7 @@ class SuggestHomeViewModel(
 
         if (text.isEmpty() || !keyboardShow.get()) {
 
-            postDifferentValue(emptyList())
+            postValue(emptyList())
             return@combineSources
         }
 
@@ -75,17 +75,17 @@ class SuggestHomeViewModel(
             )
         }.let {
 
-            postDifferentValue(it)
+            postValue(it)
         }
     }
 
     fun setText(selectedWord: String) {
 
-        text.postDifferentValue(selectedWord)
+        text.postValue(selectedWord)
     }
 
     fun setKeyboardShow(open: Boolean) {
 
-        keyboardShow.postDifferentValue(open)
+        keyboardShow.postValue(open)
     }
 }

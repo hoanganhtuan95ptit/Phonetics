@@ -20,7 +20,6 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSources
-import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postDifferentValueIfActive
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
@@ -52,7 +51,7 @@ class GameIPAWordleViewModel(
         val resourceSelected = resourceSelected.get()
         val phoneticCodeSelected = phoneticCodeSelected.get()
 
-        postDifferentValue(ResultState.Start)
+        postValue(ResultState.Start)
 
         val param = GetPhoneticsRandomUseCase.Param(
             text = text,
@@ -69,7 +68,7 @@ class GameIPAWordleViewModel(
             logAnalytics("game_ipa_wordle_empty_${resourceSelected.value.lowercase()}_${text.text.replace("/", "").lowercase()}")
         }
 
-        postDifferentValue(ResultState.Success(list))
+        postValue(ResultState.Success(list))
     }
 
     val quiz: LiveData<GameIPAWordleQuiz> = combineSources(isSupportReading, phoneticState) {
@@ -105,7 +104,7 @@ class GameIPAWordleViewModel(
             questionType = questionType
         )
 
-        postDifferentValue(quiz)
+        postValue(quiz)
     }
 
     @VisibleForTesting
@@ -128,7 +127,7 @@ class GameIPAWordleViewModel(
 
         if (quiz == null || phoneticState.isStart()) {
 
-            postDifferentValue(getIPAWordleLoadingViewItem(size = size, theme = theme))
+            postValue(getIPAWordleLoadingViewItem(size = size, theme = theme))
             return@listenerSources
         }
 
@@ -179,7 +178,7 @@ class GameIPAWordleViewModel(
             )
         )
 
-        postDifferentValue(info)
+        postValue(info)
     }
 
     @VisibleForTesting
