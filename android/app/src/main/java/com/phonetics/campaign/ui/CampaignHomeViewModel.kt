@@ -48,7 +48,7 @@ class CampaignHomeViewModel : BaseViewModel() {
 
         val title = translate.getOrKey(campaign.title.orEmpty())
 
-        if (!title.startsWith("title_", true)) CampaignViewItem(
+        if (!title.contains("title_", true)) CampaignViewItem(
             id = "CAMPAIGN",
             data = campaign,
 
