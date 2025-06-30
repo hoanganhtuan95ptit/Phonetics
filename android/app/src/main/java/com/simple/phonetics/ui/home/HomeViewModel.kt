@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -30,7 +29,6 @@ import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
-import com.simple.coreapp.utils.extentions.listenerSources
 import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
@@ -293,7 +291,6 @@ class HomeViewModel(
             viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_8))
         }
 
-        Log.d("tuanha", "viewItemList:${viewItemList.size} ")
         postValueIfActive(viewItemList)
     }.apply {
 
@@ -316,7 +313,6 @@ class HomeViewModel(
 
     val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, translate, typeViewItemList, phoneticsViewItemList) {
 
-        val size = size.get()
         val translate = translate.get()
 
         val typeViewItemList = typeViewItemList.get().toMutableMap()
