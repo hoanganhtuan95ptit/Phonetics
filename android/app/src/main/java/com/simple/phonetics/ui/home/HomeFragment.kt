@@ -3,7 +3,6 @@ package com.simple.phonetics.ui.home
 import android.content.ComponentCallbacks
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -278,12 +277,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            Log.d("tuanha", "observeData: $it")
             binding.tvClear.setText(it.text)
             binding.frameClear.setVisible(it.isShow)
             binding.tvClear.delegate.setBackground(it.background)
-
-            Log.d("tuanha", "observeData:end $it")
         }
 
         readingInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "LISTEN") {

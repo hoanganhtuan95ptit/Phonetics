@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.Event
-import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
