@@ -60,6 +60,10 @@
             <meta-data
                 android:name="com.phonetics.word.WordInitializer"
                 android:value="androidx.startup" />
+
+            <meta-data
+                android:name="com.phonetics.size.StyleInitializer"
+                android:value="androidx.startup" />
         </provider>
     </application>
 

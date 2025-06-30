@@ -1,10 +1,16 @@
 package com.phonetics.campaign.ui
 
+import android.graphics.Paint
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.phonetics.campaign.data.repositories.CampaignRepository
 import com.phonetics.campaign.entities.Campaign
 import com.phonetics.campaign.ui.adapters.CampaignViewItem
+import com.phonetics.size.TextViewMetrics
+import com.phonetics.size.appStyle
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.Bold
@@ -22,6 +28,14 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class CampaignHomeViewModel : BaseViewModel() {
 
+    val style: LiveData<Map<String, TextViewMetrics>> = mediatorLiveData {
+
+        appStyle.collect {
+
+            postValue(it)
+        }
+    }
+
     @VisibleForTesting
     val campaign: LiveData<Campaign> = mediatorLiveData {
 
@@ -30,8 +44,10 @@ class CampaignHomeViewModel : BaseViewModel() {
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, campaign) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, campaign, style) {
 
+        val size = size.get()
+        val style = style.get()
         val theme = theme.get()
         val translate = translate.get()
 
@@ -45,7 +61,14 @@ class CampaignHomeViewModel : BaseViewModel() {
             theme.getOrTransparent("colorPrimary")
         }
 
+
         val title = translate.getOrKey(campaign.title.orEmpty())
+        val titleSpan = title
+            .with(Bold, ForegroundColor(campaign.titleColor))
+
+        val messageSpan = translate.getOrKey(campaign.message.orEmpty())
+            .with(ForegroundColor(campaign.messageColor))
+
 
         if (!title.contains("title_", true)) CampaignViewItem(
             id = "CAMPAIGN",
@@ -53,17 +76,15 @@ class CampaignHomeViewModel : BaseViewModel() {
 
             image = campaign.image.orEmpty(),
 
-            text = title
-                .with(Bold, ForegroundColor(campaign.titleColor)),
+            text = titleSpan,
 
-            message = translate.getOrKey(campaign.message.orEmpty())
-                .with(ForegroundColor(campaign.messageColor)),
+            message = messageSpan,
 
             background = Background(
                 cornerRadius = DP.DP_16,
                 backgroundColor = backgroundColor
-            )
-        ).let {
+            ),
+        ).measure(size = size, style = style).let {
 
             viewItemList.add(it)
         }
