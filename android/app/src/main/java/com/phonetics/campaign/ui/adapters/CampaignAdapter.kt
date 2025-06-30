@@ -1,14 +1,24 @@
 package com.phonetics.campaign.ui.adapters
 
+import android.graphics.Paint
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.phonetics.campaign.entities.Campaign
+import com.phonetics.size.TextViewMetrics
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.adapter.entities.ViewItem
+import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.setBackground
+import com.simple.coreapp.ui.view.setSize
+import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.setText
@@ -16,6 +26,7 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemCampaignBinding
+import kotlin.math.max
 
 @ItemAdapter
 class CampaignAdapter : ViewItemAdapter<CampaignViewItem, ItemCampaignBinding>() {
@@ -52,7 +63,18 @@ class CampaignAdapter : ViewItemAdapter<CampaignViewItem, ItemCampaignBinding>()
         binding.tvTitle.setText(item.text)
         binding.tvMessage.setText(item.message)
 
+        binding.tvTitle.post {
+
+            Log.d("tuanha", "tvTitle: ${binding.tvTitle.height} width: ${binding.tvTitle.width}")
+        }
+
+        binding.tvMessage.post {
+
+            Log.d("tuanha", "tvMessage: ${binding.tvMessage.height} width: ${binding.tvMessage.width}")
+        }
+
         binding.root.delegate.setBackground(item.background)
+        binding.root.setSize(item.size)
     }
 }
 
@@ -66,7 +88,33 @@ data class CampaignViewItem(
     val message: RichText = emptyText(),
 
     val background: Background,
-) : ViewItem {
+
+    override val size: Size = Size()
+) : ViewItem, SizeViewItem {
+
+    fun measure(size: Map<String, Int>, style: Map<String, TextViewMetrics>):CampaignViewItem = copy(
+        size = measureSize(size, style)
+    )
+
+    override fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
+
+        val titleHeight = measureTextViewHeight(
+            text = text.textChar,
+            availableWidth =  size["width"].orZero() - DP.DP_16 - DP.DP_16 - DP.DP_60 - DP.DP_16 - DP.DP_16 - DP.DP_16,
+            metrics = style["TextBody1"]?: return Size()
+        )
+
+        val messageHeight = measureTextViewHeight(
+            text = message.textChar,
+            availableWidth = size["width"].orZero() - DP.DP_16 - DP.DP_16 - DP.DP_60 - DP.DP_16 - DP.DP_16 - DP.DP_16,
+            metrics = style["TextBody2"] ?: return Size()
+        )
+
+        return Size(
+            width = ViewGroup.LayoutParams.MATCH_PARENT,
+            height = max(DP.DP_60, titleHeight + DP.DP_4 + messageHeight) + DP.DP_16 + DP.DP_16
+        )
+    }
 
     override fun areItemsTheSame(): List<Any> = listOf(
         id
@@ -75,4 +123,31 @@ data class CampaignViewItem(
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
         text to Payload.TEXT,
     )
+}
+
+interface SizeViewItem {
+
+    val size: Size
+
+    fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size
+
+    fun measureTextViewHeight(
+        text: CharSequence,
+        availableWidth: Int,
+        metrics: TextViewMetrics
+    ): Int {
+
+        val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+            textSize = metrics.textSizePx
+            typeface = metrics.typeface
+        }
+
+        val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, availableWidth)
+            .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+            .setLineSpacing(metrics.lineSpacingExtra, metrics.lineSpacingMultiplier)
+            .setIncludePad(metrics.includeFontPadding)
+            .build()
+
+        return staticLayout.height + metrics.lineSpacingExtra.toInt()
+    }
 }
