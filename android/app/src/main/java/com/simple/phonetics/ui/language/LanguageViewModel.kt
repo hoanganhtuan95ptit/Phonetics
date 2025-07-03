@@ -130,6 +130,7 @@ class LanguageViewModel(
                 isSelected = isSelected,
 
                 background = Background(
+                    cornerRadius = DP.DP_16,
                     strokeWidth = DP.DP_1,
                     strokeColor = if (isSelected) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorDivider"),
                     strokeDashGap = DP.DP_4,
@@ -178,6 +179,7 @@ class LanguageViewModel(
             isClickable = isClickable,
             isShowLoading = changeLanguageState != null && !changeLanguageState.isCompleted(),
             background = Background(
+                cornerRadius = DP.DP_16,
                 strokeWidth = DP.DP_1,
                 strokeColor = if (isSelected) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorDivider"),
                 backgroundColor = if (isSelected) theme.getOrTransparent("colorPrimary") else Color.TRANSPARENT
