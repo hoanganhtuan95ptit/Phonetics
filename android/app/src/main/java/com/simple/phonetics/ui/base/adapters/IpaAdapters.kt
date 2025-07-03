@@ -94,7 +94,7 @@ class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null
     }
 
     private fun refreshBackground(binding: ItemIpaBinding, item: IpaViewItem) {
-        binding.root.delegate.setBackground(item.background)
+        binding.root.setBackground(item.background)
     }
 }
 

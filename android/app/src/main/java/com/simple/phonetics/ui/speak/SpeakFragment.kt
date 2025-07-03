@@ -171,11 +171,11 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
                 cornerRadius_TR = DP.DP_16
             )
 
-            binding.root.delegate.setBackground(background = background)
-            bindingConfigSpeak.root.delegate.setBackground(background = background)
+            binding.root.setBackground(background = background)
+            bindingConfigSpeak.root.setBackground(background = background)
 
-            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
-            bindingConfigSpeak.frameSpeak.root.delegate.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.getOrTransparent("colorPrimary"), cornerRadius = DP.DP_16))
+            binding.vAnchor.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
+            bindingConfigSpeak.frameSpeak.root.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.getOrTransparent("colorPrimary"), cornerRadius = DP.DP_16))
         }
 
         copyInfo.observe(viewLifecycleOwner) {
@@ -224,7 +224,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
             binding.tvMessage.setText(it.result)
             binding.tvMessage.setVisible(it.isShow)
-            binding.tvMessage.delegate.setBackground(it.background)
+            binding.tvMessage.setBackground(it.background)
         }
 
         speakState.asFlow().launchCollect(viewLifecycleOwner) {

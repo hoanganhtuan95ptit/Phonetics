@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.simple.coreapp.ui.view.round.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="90dp"
@@ -17,4 +17,4 @@
         style="?attr/textBody1"
         android:layout_marginTop="4dp"
         tools:text="@string/app_name" />
-</com.simple.coreapp.ui.view.round.RoundLinearLayout>
+</LinearLayout>

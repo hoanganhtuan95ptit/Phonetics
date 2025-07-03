@@ -23754,23 +23754,23 @@ com.simple.coreapp.ui.base.fragments.BaseTransitionViewModel:
     public final void setJobTransitionEnd(kotlinx.coroutines.Job)
     public final void setJobViewReady(kotlinx.coroutines.Job)
     public final void setTransitionEnd(androidx.lifecycle.LiveData)
-com.simple.coreapp.ui.view.round.RoundConstraintLayout:
+ConstraintLayout:
     public void <init>(android.content.Context)
-com.simple.coreapp.ui.view.round.RoundFrameLayout:
+FrameLayout:
     public void <init>(android.content.Context)
-com.simple.coreapp.ui.view.round.RoundHorizontalScrollView:
+HorizontalScrollView:
     public void <init>(android.content.Context)
-com.simple.coreapp.ui.view.round.RoundLottieAnimationView:
+LottieAnimationView:
     public void <init>(android.content.Context)
-com.simple.coreapp.ui.view.round.RoundLinearLayout:
+LinearLayout:
     public void <init>(android.content.Context)
-com.simple.coreapp.ui.view.round.RoundRelativeLayout:
+RelativeLayout:
     public void <init>(android.content.Context)
-com.simple.coreapp.ui.view.round.RoundTextView:
+TextView:
     public void <init>(android.content.Context)
-com.simple.coreapp.ui.view.round.RoundView:
+View:
     public void <init>(android.content.Context)
-com.simple.coreapp.ui.view.round.RoundViewDelegate:
+ViewDelegate:
     public int getBackgroundColor()
     public int getBackgroundPressColor()
     public int getCornerRadius()

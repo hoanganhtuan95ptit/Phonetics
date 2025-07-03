@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.simple.coreapp.ui.view.round.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.simple.coreapp.ui.view.round.RoundTextView
+    <TextView
         android:id="@+id/tv_positive"
         style="?attr/textHeadline6"
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:gravity="center"
         tools:text="OK" />
 
-    <com.simple.coreapp.ui.view.round.RoundTextView
+    <TextView
         android:id="@+id/tv_negative"
         style="?attr/textHeadline6"
         android:layout_width="match_parent"
@@ -22,4 +22,4 @@
         android:gravity="center"
         tools:text="Cancel" />
 
-</com.simple.coreapp.ui.view.round.RoundLinearLayout>
+</LinearLayout>

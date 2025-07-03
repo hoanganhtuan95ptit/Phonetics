@@ -125,7 +125,7 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
             binding.progress.setVisible(it.isShowLoading)
 
             binding.root.isClickable = it.isClickable
-            binding.root.delegate.setBackground(it.background)
+            binding.root.setBackground(it.background)
         }
 
         languageViewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFirst ->

@@ -36,8 +36,8 @@ class PhoneticsLoadingAdapter(onItemClick: ((View, PhoneticsLoadingViewItem) -> 
     }
 
     private fun refreshPadding(binding: ItemPhoneticsLoadingBinding, item: PhoneticsLoadingViewItem) {
-        binding.tvIpa.delegate.setBackground(item.background)
-        binding.tvText.delegate.setBackground(item.background)
+        binding.tvIpa.setBackground(item.background)
+        binding.tvText.setBackground(item.background)
     }
 }
 

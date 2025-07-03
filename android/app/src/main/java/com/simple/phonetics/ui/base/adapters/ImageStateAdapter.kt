@@ -96,7 +96,7 @@ class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _
 
     private fun refreshBackground(binding: ItemImageStateBinding, item: ImageStateViewItem) {
 
-        binding.root.delegate.setBackground(item.background)
+        binding.root.setBackground(item.background)
     }
 
     private fun refreshImageSize(binding: ItemImageStateBinding, item: ImageStateViewItem) {
@@ -116,7 +116,7 @@ class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _
 
     private fun refreshImageBackground(binding: ItemImageStateBinding, item: ImageStateViewItem) {
 
-        binding.ivImage.delegate.setBackground(item.imageBackground)
+        binding.ivImage.setBackground(item.imageBackground)
     }
 }
 

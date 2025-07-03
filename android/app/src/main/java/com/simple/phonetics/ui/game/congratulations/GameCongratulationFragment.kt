@@ -60,15 +60,15 @@ class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, Ga
             binding.tvMessage.setText(it.message)
 
             binding.tvAction.setText(it.button.text)
-            binding.tvAction.delegate.setBackground(it.button.background)
+            binding.tvAction.setBackground(it.button.background)
         }
 
         theme.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
 
-            binding.root.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
-            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
+            binding.root.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.vAnchor.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
         }
 
         (arguments?.getLong(Param.NUMBER) ?: 0L).let {
