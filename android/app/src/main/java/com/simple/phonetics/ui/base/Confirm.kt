@@ -171,23 +171,23 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
             val binding = binding ?: return@let
 
             val anchor = it.anchor
-            binding.vAnchor.delegate.setBackground(anchor)
+            binding.vAnchor.setBackground(anchor)
 
             val background = it.background
-            binding.root.delegate.setBackground(background)
-            bindingConfirmAction?.root?.delegate?.setBackground(background)
+            binding.root.setBackground(background)
+            bindingConfirmAction?.root?.setBackground(background)
 
             val bindingConfirmSpeak = bindingConfirmAction ?: return@let
 
             val negative = it.negative
             bindingConfirmSpeak.tvNegative.setVisible(negative != null)
             bindingConfirmSpeak.tvNegative.setText(negative?.text)
-            bindingConfirmSpeak.tvNegative.delegate.setBackground(negative?.background)
+            bindingConfirmSpeak.tvNegative.setBackground(negative?.background)
 
             val positive = it.positive
             bindingConfirmSpeak.tvPositive.setVisible(positive != null)
             bindingConfirmSpeak.tvPositive.setText(positive?.text)
-            bindingConfirmSpeak.tvPositive.delegate.setBackground(positive?.background)
+            bindingConfirmSpeak.tvPositive.setBackground(positive?.background)
 
             binding.root.setVisible(negative != null || positive != null)
         }

@@ -154,7 +154,7 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
             binding.btnConfirm.setText(it.text)
 
             binding.root.isClickable = it.isClickable
-            binding.root.delegate.setBackground(it.background)
+            binding.root.setBackground(it.background)
 
             binding.root.setVisible(true)
         }

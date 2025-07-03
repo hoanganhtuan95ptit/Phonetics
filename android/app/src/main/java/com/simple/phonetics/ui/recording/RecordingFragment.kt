@@ -104,10 +104,10 @@ class RecordingFragment : BaseActionFragment<LayoutActionConfirmRecordingBinding
             val binding = binding ?: return@observe
             val bindingAction = bindingAction ?: return@observe
 
-            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
+            binding.vAnchor.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
 
-            binding.root.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
-            bindingAction.root.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.root.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            bindingAction.root.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
         }
 
         speakState.observe(viewLifecycleOwner) {
@@ -140,12 +140,12 @@ class RecordingFragment : BaseActionFragment<LayoutActionConfirmRecordingBinding
             binding.root.setSize(item.size)
             binding.root.setMargin(item.margin)
             binding.root.setPadding(item.padding)
-            binding.root.delegate.setBackground(item.background)
+            binding.root.setBackground(item.background)
 
             binding.ivImage.setSize(item.imageSize)
             binding.ivImage.setMargin(item.imageMargin)
             binding.ivImage.setPadding(item.imagePadding)
-            binding.ivImage.delegate.setBackground(item.imageBackground)
+            binding.ivImage.setBackground(item.imageBackground)
         }
 
         viewItemList.asFlow().launchCollect(viewLifecycleOwner) {

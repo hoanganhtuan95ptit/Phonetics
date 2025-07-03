@@ -17,6 +17,7 @@ import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
+import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
@@ -252,7 +253,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             binding.progress.progressTintList = ColorStateList.valueOf(it.getOrTransparent("colorPrimary"))
 
             binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
-            binding.frameContent.delegate.backgroundColor = it.getOrTransparent("colorBackground")
+            binding.frameContent.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_BL = DP.DP_16, cornerRadius_BR = DP.DP_16))
 
             binding.vTemp.setBackgroundColor(it.getOrTransparent("colorBackgroundVariant"))
             binding.frameRootContent.setBackgroundColor(it.getOrTransparent("colorBackgroundVariant"))
@@ -279,7 +280,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
             binding.tvClear.setText(it.text)
             binding.frameClear.setVisible(it.isShow)
-            binding.tvClear.delegate.setBackground(it.background)
+            binding.tvClear.setBackground(it.background)
         }
 
         readingInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "LISTEN") {
@@ -296,7 +297,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
             binding.tvReverse.setText(it.text)
             binding.frameReverse.setVisible(it.isShow)
-            binding.tvReverse.delegate.setBackground(it.background)
+            binding.tvReverse.setBackground(it.background)
         }
 
         viewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFirst ->

@@ -26,7 +26,7 @@ com.google.android.material.appbar.CollapsingToolbarLayout$LayoutParams
 com.google.android.gms.common.server.converter.zaa
 androidx.core.content.FileProvider
 com.google.mlkit.vision.text.internal.zzp
-com.simple.coreapp.ui.view.round.RoundConstraintLayout
+ConstraintLayout
 androidx.fragment.app.Fragment$6
 com.google.android.gms.common.stats.WakeLockEvent
 kotlinx.coroutines.internal.StackTraceRecoveryKt
@@ -68,7 +68,7 @@ androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver
 com.google.mlkit.vision.text.bundled.latin.R
 androidx.drawerlayout.widget.DrawerLayout$LayoutParams
 com.google.mlkit.nl.translate.internal.TranslateJni
-com.simple.coreapp.ui.view.round.RoundLinearLayout
+LinearLayout
 com.google.android.gms.common.api.internal.zzd
 androidx.constraintlayout.utils.widget.MotionLabel
 com.google.android.material.switchmaterial.SwitchMaterial
@@ -103,7 +103,7 @@ com.google.mlkit.nl.translate.TranslateLanguage$Language
 com.simple.phonetics.domain.entities.Phonetics
 com.google.mlkit.nl.translate.internal.zzan
 com.google.mlkit.nl.translate.zzd
-com.simple.coreapp.ui.view.round.RoundFrameLayout
+FrameLayout
 com.simple.adapter.ViewItemCloneable
 com.google.mlkit.vision.text.pipeline.zbj
 com.google.mlkit.nl.translate.internal.zzaq
@@ -246,7 +246,7 @@ com.google.mlkit.vision.text.internal.zzr
 androidx.work.ArrayCreatingInputMerger
 androidx.transition.ArcMotion
 org.koin.androidx.scope.LifecycleViewModelScopeDelegate$2
-com.simple.coreapp.ui.view.round.RoundView
+View
 androidx.constraintlayout.utils.widget.MockView
 com.google.mlkit.common.sdkinternal.model.zze
 androidx.activity.result.ActivityResultRegistry$1
@@ -613,7 +613,7 @@ com.simple.phonetics.data.dao.ListStringConverter
 androidx.emoji2.text.EmojiCompatInitializer
 com.google.mlkit.vision.common.Triangle
 com.google.android.material.bottomsheet.BottomSheetDialogFragment
-com.simple.coreapp.ui.view.round.RoundTextView
+TextView
 androidx.core.graphics.drawable.IconCompat
 com.google.android.material.circularreveal.CircularRevealLinearLayout
 com.google.mlkit.common.sdkinternal.zzs
@@ -794,7 +794,7 @@ androidx.preference.Preference$BaseSavedState
 com.google.android.gms.common.zzq
 androidx.work.WorkManagerInitializer
 com.google.mlkit.vision.text.TextRecognizerOptionsInterface
-com.simple.coreapp.ui.view.round.RoundRelativeLayout
+RelativeLayout
 com.google.mlkit.common.model.RemoteModelSource
 com.google.mlkit.common.sdkinternal.CloseGuard$Factory
 com.simple.phonetics.ui.base.views.flexbox.FlexItem
@@ -872,12 +872,12 @@ androidx.appcompat.widget.ViewStubCompat
 com.simple.phonetics.data.dao.PhoneticsHistoryDao_Impl$3
 com.simple.phonetics.data.dao.PhoneticsRoomDatabaseKt
 androidx.appcompat.widget.AppCompatPopupWindow
-com.simple.coreapp.ui.view.round.RoundHorizontalScrollView
+HorizontalScrollView
 com.google.android.gms.common.server.response.SafeParcelResponse
 com.google.android.material.appbar.AppBarLayout$LayoutParams
 com.google.android.gms.common.server.response.zan
 com.google.android.gms.common.data.DataHolder
-com.simple.coreapp.ui.view.round.RoundLottieAnimationView
+LottieAnimationView
 com.google.mlkit.common.sdkinternal.model.CustomModelLoader$CustomModelLoaderHelper
 com.google.mlkit.nl.translate.zzb
 com.google.mlkit.vision.text.internal.zzi
@@ -6524,7 +6524,7 @@ androidx.preference.R$styleable: int Toolbar_contentInsetLeft
 com.google.android.material.R$id: int item_touch_helper_previous_elevation
 androidx.coordinatorlayout.R$styleable: int FontFamily_fontProviderFetchStrategy
 com.google.android.material.R$dimen: int tooltip_corner_radius
-com.simple.coreapp.databinding.DialogConfirmBinding: com.simple.coreapp.ui.view.round.RoundView vAnchor
+com.simple.coreapp.databinding.DialogConfirmBinding: View vAnchor
 androidx.constraintlayout.widget.R$styleable: int ActionBar_hideOnContentScroll
 com.google.android.material.R$styleable: int Toolbar_contentInsetLeft
 com.google.android.material.R$styleable: int MaterialRadioButton_buttonTint
@@ -9046,7 +9046,7 @@ com.google.android.libraries.vision.visionkit.pipeline.zbea: com.google.android.
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbfv: com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbut zbd
 androidx.constraintlayout.widget.R$styleable: int MenuItem_android_orderInCategory
 com.simple.coreapp.R$styleable: int RoundHorizontalScrollView_rv_cornerRadius_TR
-com.simple.coreapp.databinding.DialogConfirmBinding: com.simple.coreapp.ui.view.round.RoundTextView tvPositive
+com.simple.coreapp.databinding.DialogConfirmBinding: TextView tvPositive
 com.google.android.material.R$styleable: int GradientColor_android_type
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbrh: byte zbq
 com.google.android.material.R$styleable: int MotionLayout_motionProgress
@@ -12716,7 +12716,7 @@ com.google.android.material.R$dimen: int material_clock_period_toggle_height
 androidx.room.RoomDatabase: java.util.concurrent.Executor internalQueryExecutor
 androidx.appcompat.R$style: int Base_Widget_AppCompat_RatingBar_Small
 com.google.android.material.R$attr: int cornerSize
-com.simple.coreapp.databinding.DialogConfirmBinding: com.simple.coreapp.ui.view.round.RoundTextView tvNegative
+com.simple.coreapp.databinding.DialogConfirmBinding: TextView tvNegative
 com.simple.coreapp.R$attr: int rv_cornerRadius_BL
 androidx.appcompat.R$drawable: int abc_textfield_activated_mtrl_alpha
 androidx.constraintlayout.widget.R$id: int sharedValueSet
@@ -17843,7 +17843,7 @@ androidx.core.view.WindowInsetsCompat$Impl: void setRootWindowInsets(androidx.co
 androidx.constraintlayout.motion.widget.MotionLayout: long getTransitionTimeMs()
 com.google.android.material.tabs.TabLayout: void setTabsFromPagerAdapter(androidx.viewpager.widget.PagerAdapter)
 com.airbnb.lottie.LottieAnimationView: void setImageAssetDelegate(com.airbnb.lottie.ImageAssetDelegate)
-com.simple.coreapp.ui.view.round.RoundTextView: RoundTextView(android.content.Context,android.util.AttributeSet)
+TextView: RoundTextView(android.content.Context,android.util.AttributeSet)
 com.simple.adapter.databinding.ItemLoadMoreBinding: android.view.View getRoot()
 com.google.mlkit.vision.text.internal.zzk: com.google.android.gms.internal.mlkit_vision_text_common.zzqs zza()
 com.google.mlkit.common.sdkinternal.model.RemoteModelManagerInterface: com.google.android.gms.tasks.Task getDownloadedModels()
@@ -17943,7 +17943,7 @@ com.google.android.material.appbar.CollapsingToolbarLayout: int getExpandedTitle
 androidx.appcompat.widget.AppCompatCheckedTextView: void setSupportCheckMarkTintList(android.content.res.ColorStateList)
 com.simple.phonetics.databinding.ItemPhoneticsLoadingBinding: com.simple.phonetics.databinding.ItemPhoneticsLoadingBinding bind(android.view.View)
 com.google.android.material.slider.Slider: void setTickInactiveTintList(android.content.res.ColorStateList)
-com.simple.coreapp.ui.view.round.RoundConstraintLayout: com.simple.coreapp.ui.view.round.RoundViewDelegate getDelegate()
+ConstraintLayout: ViewDelegate getDelegate()
 com.airbnb.lottie.model.content.ShapeStroke$LineCapType: com.airbnb.lottie.model.content.ShapeStroke$LineCapType valueOf(java.lang.String)
 com.google.mlkit.common.internal.model.ModelUtils$ModelLoggingInfo: ModelUtils$ModelLoggingInfo()
 com.fasterxml.jackson.databind.util.LRUMap: java.lang.Object readResolve()
@@ -18023,7 +18023,7 @@ androidx.viewpager.widget.PagerTitleStrip: void setNonPrimaryAlpha(float)
 androidx.appcompat.widget.SwitchCompat: void setThumbPosition(float)
 androidx.appcompat.view.menu.ListMenuItemView: void setTitle(java.lang.CharSequence)
 com.simple.phonetics.databinding.ItemVoiceSpeedBinding: com.simple.phonetics.databinding.ItemVoiceSpeedBinding inflate(android.view.LayoutInflater)
-com.simple.coreapp.ui.view.round.RoundHorizontalScrollView: RoundHorizontalScrollView(android.content.Context,android.util.AttributeSet)
+HorizontalScrollView: RoundHorizontalScrollView(android.content.Context,android.util.AttributeSet)
 com.google.mlkit.nl.translate.internal.TranslatorImpl: com.google.android.gms.tasks.Task zza(com.google.mlkit.common.model.DownloadConditions,com.google.android.gms.tasks.Task)
 androidx.constraintlayout.widget.ReactiveGuide: void setAnimateChange(boolean)
 com.google.android.material.transformation.ExpandableBehavior: ExpandableBehavior()
@@ -18098,7 +18098,7 @@ androidx.constraintlayout.widget.ConstraintLayout: void setMaxWidth(int)
 kotlinx.coroutines.CoroutineStart: kotlinx.coroutines.CoroutineStart[] values()
 com.google.mlkit.common.sdkinternal.SharedPrefManager: void zzc(java.lang.String,long,java.lang.String)
 com.google.android.material.button.MaterialButton: int getCornerRadius()
-com.simple.coreapp.ui.view.round.RoundLinearLayout: com.simple.coreapp.ui.view.round.RoundViewDelegate getDelegate()
+LinearLayout: ViewDelegate getDelegate()
 androidx.appcompat.widget.AppCompatCheckedTextView: void setBackgroundDrawable(android.graphics.drawable.Drawable)
 com.simple.phonetics.utils.view.shape.ShapeFrameLayout: void setBottomLeftRadius(float)
 androidx.appcompat.widget.SwitchCompat: boolean getTargetCheckedState()
@@ -18292,7 +18292,7 @@ com.fasterxml.jackson.databind.JsonDeserializer: JsonDeserializer()
 com.google.mlkit.common.sdkinternal.TaskQueue: void checkIsRunningOnCurrentThread()
 com.google.android.gms.internal.mlkit_vision_text_bundled_common.zbb: boolean onTransact(int,android.os.Parcel,android.os.Parcel,int)
 androidx.core.graphics.drawable.DrawableCompat$Api19Impl: int getAlpha(android.graphics.drawable.Drawable)
-com.simple.coreapp.ui.view.round.RoundTextView: com.simple.coreapp.ui.view.round.RoundViewDelegate getDelegate()
+TextView: ViewDelegate getDelegate()
 com.simple.phonetics.ui.phonetics.config.PhoneticsConfigFragment: PhoneticsConfigFragment()
 com.google.android.material.internal.ScrimInsetsFrameLayout: void setDrawBottomInsetForeground(boolean)
 com.google.mlkit.vision.text.internal.TextRecognizerTaskWithResource: com.google.android.gms.internal.mlkit_vision_text_common.zzqs zzd(com.google.android.gms.internal.mlkit_vision_text_common.zzep,int,com.google.android.gms.internal.mlkit_vision_text_common.zzmb)
@@ -18319,10 +18319,10 @@ com.simple.phonetics.utils.view.shape.ShapeFrameLayout: void setBottomRightRadiu
 androidx.appcompat.widget.ActionBarContainer: android.view.View getTabContainer()
 com.google.android.material.slider.RangeSlider: android.content.res.ColorStateList getThumbTintList()
 androidx.constraintlayout.utils.widget.MotionLabel: void setTextSize(float)
-com.simple.coreapp.databinding.DialogConfirmBinding: DialogConfirmBinding(androidx.constraintlayout.widget.ConstraintLayout,androidx.constraintlayout.widget.Barrier,com.airbnb.lottie.LottieAnimationView,android.widget.TextView,com.simple.coreapp.ui.view.round.RoundTextView,com.simple.coreapp.ui.view.round.RoundTextView,android.widget.TextView,com.simple.coreapp.ui.view.round.RoundView)
+com.simple.coreapp.databinding.DialogConfirmBinding: DialogConfirmBinding(androidx.constraintlayout.widget.ConstraintLayout,androidx.constraintlayout.widget.Barrier,com.airbnb.lottie.LottieAnimationView,android.widget.TextView,TextView,TextView,android.widget.TextView,View)
 okhttp3.TlsVersion: okhttp3.TlsVersion[] values()
 androidx.fragment.app.strictmode.FragmentStrictMode$Flag: androidx.fragment.app.strictmode.FragmentStrictMode$Flag valueOf(java.lang.String)
-com.simple.coreapp.ui.view.round.RoundTextView: RoundTextView(android.content.Context,android.util.AttributeSet,int)
+TextView: RoundTextView(android.content.Context,android.util.AttributeSet,int)
 androidx.appcompat.widget.SwitchCompat$Api18Impl: void setAutoCancel(android.animation.ObjectAnimator,boolean)
 com.google.mlkit.common.sdkinternal.model.LocalModelLoader: LocalModelLoader(android.content.Context,com.google.mlkit.common.model.LocalModel)
 com.google.mlkit.common.model.DownloadConditions: boolean equals(java.lang.Object)
@@ -18330,7 +18330,7 @@ com.simple.detect.entities.TextBlock$Creator: java.lang.Object createFromParcel(
 com.google.android.material.button.MaterialButton: void setStrokeColor(android.content.res.ColorStateList)
 com.google.android.material.textfield.TextInputLayout: void setEndIconOnLongClickListener(android.view.View$OnLongClickListener)
 androidx.core.widget.TextViewCompat$Api17Impl: java.util.Locale getTextLocale(android.widget.TextView)
-com.simple.coreapp.ui.view.round.RoundRelativeLayout: com.simple.coreapp.ui.view.round.RoundViewDelegate getDelegate()
+RelativeLayout: ViewDelegate getDelegate()
 com.google.mlkit.common.model.RemoteModel: boolean baseModelHashMatches(java.lang.String)
 com.google.android.material.datepicker.MaterialTextInputPicker: MaterialTextInputPicker()
 com.google.mlkit.nl.translate.internal.zzf: zzf(com.google.mlkit.nl.translate.internal.zzi)
@@ -19237,7 +19237,7 @@ com.airbnb.lottie.LottieAnimationView: void setMinFrame(java.lang.String)
 androidx.appcompat.widget.AppCompatButton: void setBackgroundDrawable(android.graphics.drawable.Drawable)
 androidx.appcompat.widget.TooltipCompat$Api26Impl: void setTooltipText(android.view.View,java.lang.CharSequence)
 androidx.work.WorkManagerInitializer: WorkManagerInitializer()
-com.simple.coreapp.ui.view.round.RoundLinearLayout: RoundLinearLayout(android.content.Context,android.util.AttributeSet)
+LinearLayout: RoundLinearLayout(android.content.Context,android.util.AttributeSet)
 com.simple.phonetics.data.dao.PhoneticsHistoryDao_Impl: void insertOrUpdate(java.util.List)
 androidx.appcompat.widget.AppCompatAutoCompleteTextView: void setBackgroundDrawable(android.graphics.drawable.Drawable)
 kotlin.reflect.jvm.internal.impl.builtins.jvm.JvmBuiltInsCustomizer$JDKMemberStatus: kotlin.reflect.jvm.internal.impl.builtins.jvm.JvmBuiltInsCustomizer$JDKMemberStatus valueOf(java.lang.String)
@@ -19303,7 +19303,7 @@ com.google.mlkit.nl.translate.internal.zzv: zzv(com.google.android.gms.tasks.Tas
 com.google.mlkit.nl.translate.internal.zzao: java.lang.Object then(com.google.android.gms.tasks.Task)
 com.google.android.gms.internal.mlkit_translate.zzaz: com.google.android.gms.internal.mlkit_translate.zzaz[] values()
 com.google.android.material.internal.NavigationMenuView: NavigationMenuView(android.content.Context,android.util.AttributeSet)
-com.simple.coreapp.ui.view.round.RoundView: com.simple.coreapp.ui.view.round.RoundViewDelegate getDelegate()
+View: ViewDelegate getDelegate()
 com.google.android.material.chip.Chip: void setOnCloseIconClickListener(android.view.View$OnClickListener)
 androidx.appcompat.widget.DropDownListView$Api33Impl: boolean isSelectedChildViewEnabled(android.widget.AbsListView)
 com.simple.phonetics.databinding.ItemPhoneticsHistoryBinding: com.simple.phonetics.databinding.ItemPhoneticsHistoryBinding inflate(android.view.LayoutInflater)
@@ -19384,7 +19384,7 @@ com.google.android.material.appbar.CollapsingToolbarLayout: void setExpandedTitl
 com.google.android.material.navigation.NavigationBarMenuView: int getItemBackgroundRes()
 androidx.constraintlayout.widget.ConstraintLayout: void setId(int)
 androidx.legacy.widget.Space: Space(android.content.Context,android.util.AttributeSet,int)
-com.simple.coreapp.ui.view.round.RoundView: RoundView(android.content.Context,android.util.AttributeSet)
+View: RoundView(android.content.Context,android.util.AttributeSet)
 com.simple.detect.entities.TextRestKt: boolean contains(com.simple.detect.entities.TextRest,com.simple.detect.entities.TextRest)
 androidx.appcompat.widget.Toolbar: void setCollapsible(boolean)
 androidx.appcompat.widget.SwitchCompat: void setSwitchMinWidth(int)
@@ -19402,7 +19402,7 @@ com.simple.translate.mlkit.MlkitTranslateInitializer: java.lang.Object create(an
 androidx.appcompat.widget.AppCompatRadioButton: void setSupportBackgroundTintList(android.content.res.ColorStateList)
 com.google.android.material.tabs.TabLayout: android.content.res.ColorStateList getTabTextColors()
 com.google.android.material.textfield.TextInputLayout: void setErrorTextAppearance(int)
-com.simple.coreapp.ui.view.round.RoundRelativeLayout: RoundRelativeLayout(android.content.Context,android.util.AttributeSet)
+RelativeLayout: RoundRelativeLayout(android.content.Context,android.util.AttributeSet)
 androidx.appcompat.view.menu.ActionMenuItemView: void setIcon(android.graphics.drawable.Drawable)
 com.google.mlkit.common.sdkinternal.MlKitContext: android.content.Context getApplicationContext()
 com.google.mlkit.common.sdkinternal.zzp: zzp()
@@ -20016,7 +20016,7 @@ com.google.mlkit.common.sdkinternal.MlKitThreadPool: <clinit>()
 androidx.constraintlayout.motion.widget.MotionLayout: void setInteractionEnabled(boolean)
 com.google.mlkit.vision.text.pipeline.zbk: java.lang.Object zba(java.lang.Object)
 androidx.appcompat.widget.AppCompatButton: int getAutoSizeMaxTextSize()
-com.simple.coreapp.ui.view.round.RoundLottieAnimationView: RoundImageView(android.content.Context,android.util.AttributeSet)
+LottieAnimationView: RoundImageView(android.content.Context,android.util.AttributeSet)
 com.google.mlkit.nl.translate.internal.zzi: <clinit>()
 androidx.appcompat.widget.AppCompatButton: void setEmojiCompatEnabled(boolean)
 com.google.android.material.appbar.CollapsingToolbarLayout: void setContentScrimColor(int)
@@ -20142,7 +20142,7 @@ com.google.mlkit.vision.common.PointF3D: float getY()
 androidx.core.app.CoreComponentFactory: CoreComponentFactory()
 androidx.appcompat.widget.SwitchCompat: void setEnforceSwitchWidth(boolean)
 com.google.mlkit.common.sdkinternal.Cleaner$Cleanable: void clean()
-com.simple.coreapp.ui.view.round.RoundFrameLayout: com.simple.coreapp.ui.view.round.RoundViewDelegate getDelegate()
+FrameLayout: ViewDelegate getDelegate()
 androidx.work.BackoffPolicy: androidx.work.BackoffPolicy[] values()
 com.fasterxml.jackson.databind.deser.ValueInstantiator: ValueInstantiator()
 com.fasterxml.jackson.core.JsonFactory: com.fasterxml.jackson.core.JsonParser _createParser(java.io.Reader,com.fasterxml.jackson.core.io.IOContext)
@@ -20692,7 +20692,7 @@ com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton: c
 androidx.core.view.WindowInsetsCompat$Impl29: androidx.core.view.WindowInsetsCompat inset(int,int,int,int)
 com.google.mlkit.vision.text.Text$Line: Text$Line(com.google.android.gms.internal.mlkit_vision_text_common.zzse,android.graphics.Matrix,float,float)
 com.google.mlkit.common.sdkinternal.zzd: zzd(java.lang.Object,java.lang.ref.ReferenceQueue,java.util.Set,java.lang.Runnable,com.google.mlkit.common.sdkinternal.zzc)
-com.simple.coreapp.ui.view.round.RoundFrameLayout: RoundFrameLayout(android.content.Context,android.util.AttributeSet)
+FrameLayout: RoundFrameLayout(android.content.Context,android.util.AttributeSet)
 androidx.appcompat.widget.ActionBarContextView: void setTitle(java.lang.CharSequence)
 com.google.android.material.tabs.TabLayout: void setTabIndicatorAnimationMode(int)
 com.google.android.material.navigation.NavigationView: void setItemBackgroundResource(int)
@@ -21030,7 +21030,7 @@ com.google.android.material.internal.ScrimInsetsFrameLayout: ScrimInsetsFrameLay
 androidx.media.AudioAttributesImplBaseParcelizer: void write(androidx.media.AudioAttributesImplBase,androidx.versionedparcelable.VersionedParcel)
 com.google.mlkit.common.sdkinternal.model.RemoteModelFileManager: java.io.File zza(java.io.File)
 androidx.appcompat.widget.AppCompatButton: void setBackgroundResource(int)
-com.simple.coreapp.ui.view.round.RoundLottieAnimationView: com.simple.coreapp.ui.view.round.RoundViewDelegate getDelegate()
+LottieAnimationView: ViewDelegate getDelegate()
 androidx.constraintlayout.widget.ConstraintHelper: void setReferencedIds(int[])
 com.simple.detect.entities.Sentence$Creator: com.simple.detect.entities.Sentence[] newArray(int)
 androidx.core.widget.TextViewCompat$Api28Impl: java.lang.String[] getDigitStrings(android.icu.text.DecimalFormatSymbols)
@@ -21130,7 +21130,7 @@ androidx.core.view.GravityCompat$Api17Impl: void applyDisplay(int,android.graphi
 com.google.android.material.chip.Chip: java.lang.CharSequence getChipText()
 com.google.android.material.appbar.CollapsingToolbarLayout: int getExpandedTitleMarginEnd()
 androidx.room.RoomOpenHelper$Delegate: void validateMigration(androidx.sqlite.db.SupportSQLiteDatabase)
-com.simple.coreapp.ui.view.round.RoundHorizontalScrollView: com.simple.coreapp.ui.view.round.RoundViewDelegate getDelegate()
+HorizontalScrollView: ViewDelegate getDelegate()
 androidx.core.view.ViewCompat$Api26Impl: void setFocusedByDefault(android.view.View,boolean)
 com.google.android.material.internal.VisibilityAwareImageButton: void setVisibility(int)
 com.google.mlkit.common.internal.zzh: zzh()
@@ -22159,7 +22159,7 @@ com.google.mlkit.vision.common.internal.CommonConvertUtils: CommonConvertUtils()
 androidx.core.widget.TextViewCompat$Api17Impl: int getTextDirection(android.view.View)
 androidx.appcompat.resources.Compatibility$Api15Impl: void getValueForDensity(android.content.res.Resources,int,int,android.util.TypedValue,boolean)
 com.simple.detect.entities.TextBlock: int describeContents()
-com.simple.coreapp.ui.view.round.RoundConstraintLayout: RoundConstraintLayout(android.content.Context,android.util.AttributeSet)
+ConstraintLayout: RoundConstraintLayout(android.content.Context,android.util.AttributeSet)
 com.google.mlkit.nl.translate.TranslatorOptions$Builder: com.google.mlkit.nl.translate.TranslatorOptions$Builder setTargetLanguage(java.lang.String)
 com.google.mlkit.common.model.LocalModel$Builder: com.google.mlkit.common.model.LocalModel build()
 com.google.android.material.textfield.TextInputLayout: void setBoxStrokeWidthResource(int)

@@ -24,16 +24,16 @@ class LanguageLoadingAdapter() : ViewItemAdapter<LanguageLoadingViewItem, ItemLa
     override fun onBindViewHolder(binding: ItemLanguageLoadingBinding, viewType: Int, position: Int, item: LanguageLoadingViewItem) {
         super.onBindViewHolder(binding, viewType, position, item)
 
-        binding.root.delegate.setBackground(item.background)
+        binding.root.setBackground(item.background)
 
-        binding.ivFlag.delegate.backgroundColor = item.loadingColor
-        binding.tvName.delegate.backgroundColor = item.loadingColor
+        binding.ivFlag.setBackground(item.loadingBackground)
+        binding.tvName.setBackground(item.loadingBackground)
     }
 }
 
 class LanguageLoadingViewItem(
-    var loadingColor: Int,
     var background: Background,
+    var loadingBackground: Background,
 ) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(

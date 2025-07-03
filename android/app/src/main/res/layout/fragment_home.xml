@@ -60,12 +60,10 @@
                 android:layout_height="350dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <com.simple.coreapp.ui.view.round.RoundFrameLayout
+                <FrameLayout
                     android:id="@+id/frame_content"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:rv_cornerRadius_BL="16dp"
-                    app:rv_cornerRadius_BR="16dp">
+                    android:layout_height="match_parent">
 
                     <com.simple.phonetics.ui.view.SelectionEdittext
                         android:id="@+id/et_text"
@@ -94,7 +92,7 @@
                             android:layout_height="56dp"
                             android:paddingHorizontal="8dp">
 
-                            <com.simple.coreapp.ui.view.round.RoundTextView
+                            <TextView
                                 android:id="@+id/tv_reverse"
                                 style="?attr/textCaption"
                                 android:layout_width="wrap_content"
@@ -115,7 +113,7 @@
                             android:layout_height="56dp"
                             android:paddingHorizontal="8dp">
 
-                            <com.simple.coreapp.ui.view.round.RoundTextView
+                            <TextView
                                 android:id="@+id/tv_clear"
                                 style="?attr/textCaption"
                                 android:layout_width="wrap_content"
@@ -214,7 +212,7 @@
                             android:visibility="gone"
                             tools:visibility="visible" />
                     </FrameLayout>
-                </com.simple.coreapp.ui.view.round.RoundFrameLayout>
+                </FrameLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
             <com.simple.adapter.MultiRecyclerView

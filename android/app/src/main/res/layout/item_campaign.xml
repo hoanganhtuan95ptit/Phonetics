@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.simple.coreapp.ui.view.round.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -37,4 +37,4 @@
             android:layout_marginTop="4dp"
             tools:text="Reducing the number of considered missed Gc histogram windows from 480 to 100" />
     </LinearLayout>
-</com.simple.coreapp.ui.view.round.RoundLinearLayout>
+</LinearLayout>

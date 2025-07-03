@@ -4,7 +4,6 @@ import android.graphics.Paint
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.phonetics.campaign.entities.Campaign
@@ -63,18 +62,8 @@ class CampaignAdapter : ViewItemAdapter<CampaignViewItem, ItemCampaignBinding>()
         binding.tvTitle.setText(item.text)
         binding.tvMessage.setText(item.message)
 
-        binding.tvTitle.post {
-
-            Log.d("tuanha", "tvTitle: ${binding.tvTitle.height} width: ${binding.tvTitle.width}")
-        }
-
-        binding.tvMessage.post {
-
-            Log.d("tuanha", "tvMessage: ${binding.tvMessage.height} width: ${binding.tvMessage.width}")
-        }
-
-        binding.root.delegate.setBackground(item.background)
         binding.root.setSize(item.size)
+        binding.root.setBackground(item.background)
     }
 }
 

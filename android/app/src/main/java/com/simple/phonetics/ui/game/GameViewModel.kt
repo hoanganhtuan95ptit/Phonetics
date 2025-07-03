@@ -8,6 +8,7 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
+import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.entities.Text
@@ -43,7 +44,7 @@ class GameViewModel : BaseViewModel() {
 
     fun updateText(it: Text?) {
 
-        text.postValue(it ?: Text("", Text.Type.IPA))
+        text.postDifferentValue(it ?: Text("", Text.Type.IPA))
     }
 
     fun updateAnswerCorrect(isCorrect: Boolean) {

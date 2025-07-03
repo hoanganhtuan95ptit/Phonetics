@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.simple.coreapp.ui.view.round.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,7 +15,7 @@
     app:rv_strokeWidth="1dp"
     tools:rv_strokeColor="?attr/colorDivider">
 
-    <com.simple.coreapp.ui.view.round.RoundView
+    <View
         android:id="@+id/iv_flag"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -23,7 +23,7 @@
         android:scaleType="centerCrop"
         app:rv_cornerRadius="16dp" />
 
-    <com.simple.coreapp.ui.view.round.RoundView
+    <View
         android:id="@+id/tv_name"
         style="?attr/textHeadline6"
         android:layout_width="wrap_content"
@@ -32,4 +32,4 @@
         android:alpha="0.2"
         app:rv_cornerRadius="16dp" />
 
-</com.simple.coreapp.ui.view.round.RoundLinearLayout>
+</LinearLayout>

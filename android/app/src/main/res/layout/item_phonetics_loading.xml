@@ -8,13 +8,13 @@
     android:paddingTop="16dp"
     android:paddingEnd="16dp">
 
-    <com.simple.coreapp.ui.view.round.RoundView
+    <View
         android:id="@+id/tv_text"
         android:layout_width="80dp"
         android:layout_height="24dp"
         tools:text="@string/app_name" />
 
-    <com.simple.coreapp.ui.view.round.RoundView
+    <View
         android:id="@+id/tv_ipa"
         android:layout_width="60dp"
         android:layout_height="12dp"

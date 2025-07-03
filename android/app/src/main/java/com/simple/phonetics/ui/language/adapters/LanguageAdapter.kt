@@ -50,7 +50,7 @@ class LanguageAdapter(onItemClick: (View, LanguageViewItem) -> Unit = { _, _ -> 
 
     private fun refreshTheme(binding: ItemLanguageBinding, item: LanguageViewItem) {
 
-        binding.root.delegate.setBackground(item.background)
+        binding.root.setBackground(item.background)
     }
 }
 

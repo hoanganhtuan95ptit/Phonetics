@@ -29,6 +29,7 @@ import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
+import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.dao.entities.Ipa
@@ -198,13 +199,6 @@ class IpaDetailViewModel(
         postValueIfActive(viewItemList)
     }
 
-    val gameResource: LiveData<Text> = combineSourcesWithDiff(ipa) {
-
-        val ipa = ipa.get()
-
-        postValue(Text(ipa.ipa, Text.Type.IPA))
-    }
-
     @VisibleForTesting
     val gameViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, ipa, phoneticCodeSelected) {
 
@@ -320,7 +314,7 @@ class IpaDetailViewModel(
 
     fun updateIpa(ipa: Ipa) {
 
-        this.ipa.postValue(ipa)
+        this.ipa.postDifferentValue(ipa)
     }
 
     fun startReading(data: Ipa) {

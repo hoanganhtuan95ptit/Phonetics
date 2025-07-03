@@ -126,10 +126,10 @@ class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, Di
             val binding = binding ?: return@observe
             val bindingAction = bindingAction ?: return@observe
 
-            binding.vAnchor.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
+            binding.vAnchor.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
 
-            binding.root.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
-            bindingAction.root.delegate.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.root.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            bindingAction.root.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
         }
 
         buttonInfo.observe(viewLifecycleOwner) { item ->
@@ -139,28 +139,28 @@ class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, Di
             binding.root.setSize(item.size)
             binding.root.setMargin(item.margin)
             binding.root.setPadding(item.padding)
-            binding.root.delegate.setBackground(item.background)
+            binding.root.setBackground(item.background)
 
             binding.tvTitle.setText(item.text)
             binding.tvTitle.setTextStyle(item.textStyle)
             binding.tvTitle.setSize(item.textSize)
             binding.tvTitle.setMargin(item.textMargin)
             binding.tvTitle.setPadding(item.textPadding)
-            binding.tvTitle.delegate.setBackground(item.textBackground)
+            binding.tvTitle.setBackground(item.textBackground)
 
             binding.ivLeft.setVisible(item.imageLeft != null)
             binding.ivLeft.setImage(item.imageLeft ?: return@observe)
             binding.ivLeft.setSize(item.imageLeftSize)
             binding.ivLeft.setMargin(item.imageLeftMargin)
             binding.ivLeft.setPadding(item.imageLeftPadding)
-            binding.ivLeft.delegate.setBackground(item.imageLeftBackground)
+            binding.ivLeft.setBackground(item.imageLeftBackground)
 
             binding.ivRight.setVisible(item.imageRight != null)
             binding.ivRight.setImage(item.imageRight ?: return@observe)
             binding.ivRight.setSize(item.imageRightSize)
             binding.ivRight.setMargin(item.imageRightMargin)
             binding.ivRight.setPadding(item.imageRightPadding)
-            binding.ivRight.delegate.setBackground(item.imageRightBackground)
+            binding.ivRight.setBackground(item.imageRightBackground)
         }
 
         viewItemList.observeQueue(viewLifecycleOwner) {

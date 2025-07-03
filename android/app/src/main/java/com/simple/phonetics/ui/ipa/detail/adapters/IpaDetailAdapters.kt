@@ -56,7 +56,7 @@ class IpaDetailAdapters(onItemClick: (View, IpaDetailViewItem) -> Unit = { _, _ 
     }
 
     private fun refreshBackground(binding: ItemIpaDetailBinding, item: IpaDetailViewItem) {
-        binding.frameContent.delegate.setBackground(item.background)
+        binding.frameContent.setBackground(item.background)
     }
 
     private fun refreshLoadingStatus(binding: ItemIpaDetailBinding, item: IpaDetailViewItem) {

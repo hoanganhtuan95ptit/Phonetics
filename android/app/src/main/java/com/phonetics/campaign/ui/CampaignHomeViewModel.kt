@@ -1,9 +1,5 @@
 package com.phonetics.campaign.ui
 
-import android.graphics.Paint
-import android.text.Layout
-import android.text.StaticLayout
-import android.text.TextPaint
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.phonetics.campaign.data.repositories.CampaignRepository
