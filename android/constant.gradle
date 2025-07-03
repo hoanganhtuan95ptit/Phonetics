@@ -2,18 +2,16 @@ project.ext {
 
     // ===================== Android SDK & Java =====================
     minSdkVersion = 23
-    targetSdkVersion = 34
-    compileSdkVersion = 34
-    javaVersion = JavaVersion.VERSION_1_8
+    targetSdkVersion = 35
+    compileSdkVersion = 35
+    javaVersion = JavaVersion.VERSION_17
 
     // ===================== Version Variables ======================
-    kotlin_version = '1.7.10'
-    kotlin_plugin_version = '1.7.10'
+    kotlin_plugin_version = '1.9.21'
     nav_version = '2.7.7'
     ktx_version = '1.9.22'
     koin_version = '3.4.1'
-    room_version = "2.5.2"
-    room_compiler_version = "2.5.2"
+    room_version = "2.6.1"
     work_version = "2.7.1"
     glide_version = '4.15.1'
     glide_transformations_version = '4.3.0'
@@ -71,7 +69,7 @@ project.ext {
     roomDependencies = [
             room_ktx     : "androidx.room:room-ktx:$room_version",
             room_runtime : "androidx.room:room-runtime:$room_version",
-            room_compiler: "androidx.room:room-compiler:$room_compiler_version",
+            room_compiler: "androidx.room:room-compiler:$room_version",
     ]
 
     retrofit2Dependencies = [
@@ -103,11 +101,11 @@ project.ext {
             vectordrawable       : "androidx.vectordrawable:vectordrawable-animated:$vectordrawable_version",
             swiperefreshlayout   : "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version",
             recyclerview         : "androidx.recyclerview:recyclerview:$recycler_version",
-            localbroadcastmanager: "androidx.localbroadcastmanager:localbroadcastmanager:$localbroadcastmanager_version",
-            work                 : "androidx.work:work-runtime-ktx:$work_version",
-            navigation_ui        : "androidx.navigation:navigation-ui-ktx:$nav_version",
-            navigation_runtime   : "androidx.navigation:navigation-runtime-ktx:$nav_version",
-            navigation_fragment  : "androidx.navigation:navigation-fragment-ktx:$nav_version",
+//            localbroadcastmanager: "androidx.localbroadcastmanager:localbroadcastmanager:$localbroadcastmanager_version",
+//            work                 : "androidx.work:work-runtime-ktx:$work_version",
+//            navigation_ui        : "androidx.navigation:navigation-ui-ktx:$nav_version",
+//            navigation_runtime   : "androidx.navigation:navigation-runtime-ktx:$nav_version",
+//            navigation_fragment  : "androidx.navigation:navigation-fragment-ktx:$nav_version",
             lifecycle_process    : "androidx.lifecycle:lifecycle-process:$lifecycle_version",
             lifecycle_livedata   : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version",
             lifecycle_common     : "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version",

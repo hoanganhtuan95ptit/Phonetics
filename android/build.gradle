@@ -3,7 +3,7 @@ buildscript {
     apply from: "$rootDir/constant.gradle"
 
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.3"
+        classpath "com.android.tools.build:gradle:8.4.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_plugin_version"
 
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
