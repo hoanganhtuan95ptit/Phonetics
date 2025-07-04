@@ -25,7 +25,9 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemCampaignBinding
+import com.simple.phonetics.utils.width
 import kotlin.math.max
+import kotlin.math.min
 
 @ItemAdapter
 class CampaignAdapter : ViewItemAdapter<CampaignViewItem, ItemCampaignBinding>() {
@@ -57,12 +59,13 @@ class CampaignAdapter : ViewItemAdapter<CampaignViewItem, ItemCampaignBinding>()
     override fun onBindViewHolder(binding: ItemCampaignBinding, viewType: Int, position: Int, item: CampaignViewItem) {
         super.onBindViewHolder(binding, viewType, position, item)
 
+        binding.root.setSize(item.size)
+
         binding.ivCampaign.setImage(item.image)
 
         binding.tvTitle.setText(item.text)
         binding.tvMessage.setText(item.message)
 
-        binding.root.setSize(item.size)
         binding.root.setBackground(item.background)
     }
 }
@@ -89,18 +92,18 @@ data class CampaignViewItem(
 
         val titleHeight = measureTextViewHeight(
             text = text.textChar,
-            availableWidth =  size["width"].orZero() - DP.DP_16 - DP.DP_16 - DP.DP_60 - DP.DP_16 - DP.DP_16 - DP.DP_16,
+            maxWidth = size["width"].orZero() - DP.DP_16 - DP.DP_16 - DP.DP_60 - DP.DP_16 - DP.DP_16 - DP.DP_16,
             metrics = style["TextBody1"]?: return Size()
         )
 
         val messageHeight = measureTextViewHeight(
             text = message.textChar,
-            availableWidth = size["width"].orZero() - DP.DP_16 - DP.DP_16 - DP.DP_60 - DP.DP_16 - DP.DP_16 - DP.DP_16,
+            maxWidth = size["width"].orZero() - DP.DP_16 - DP.DP_16 - DP.DP_60 - DP.DP_16 - DP.DP_16 - DP.DP_16,
             metrics = style["TextBody2"] ?: return Size()
         )
 
         return Size(
-            width = ViewGroup.LayoutParams.MATCH_PARENT,
+            width = size.width,
             height = max(DP.DP_60, titleHeight + DP.DP_4 + messageHeight) + DP.DP_16 + DP.DP_16
         )
     }
@@ -120,9 +123,23 @@ interface SizeViewItem {
 
     fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size
 
+    fun measureTextViewWidth(
+        text: CharSequence,
+        maxWidth: Int,
+        metrics: TextViewMetrics
+    ): Int {
+
+        val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+            this.textSize = metrics.textSizePx
+            this.typeface = metrics.typeface
+        }
+
+        return min(paint.measureText(text, 0, text.length).toInt(), maxWidth)
+    }
+
     fun measureTextViewHeight(
         text: CharSequence,
-        availableWidth: Int,
+        maxWidth: Int,
         metrics: TextViewMetrics
     ): Int {
 
@@ -131,7 +148,7 @@ interface SizeViewItem {
             typeface = metrics.typeface
         }
 
-        val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, availableWidth)
+        val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, maxWidth)
             .setAlignment(Layout.Alignment.ALIGN_NORMAL)
             .setLineSpacing(metrics.lineSpacingExtra, metrics.lineSpacingMultiplier)
             .setIncludePad(metrics.includeFontPadding)
