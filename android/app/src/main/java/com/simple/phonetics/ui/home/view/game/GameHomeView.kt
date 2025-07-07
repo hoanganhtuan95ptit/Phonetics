@@ -8,8 +8,10 @@ import com.simple.coreapp.EventName
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
+import com.simple.phonetics.EventName.TEXT_SIMPLE_VIEW_ITEM_CLICKED
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
+import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.view.HomeView
@@ -45,7 +47,24 @@ class GameHomeView : HomeView {
 
             if (result == 1) {
 
-                openGame(view = view, item = viewItem)
+                openGame(view = view, id = viewItem.id)
+            }
+        }
+
+        com.simple.event.listenerEvent(eventName = TEXT_SIMPLE_VIEW_ITEM_CLICKED, lifecycle = fragment.viewLifecycleOwner.lifecycle) {
+
+            val (view, viewItem) = it.asObjectOrNull<Pair<View, TextSimpleViewItem>>() ?: return@listenerEvent
+
+            if (!viewItem.id.startsWith(Id.GAME)) {
+
+                return@listenerEvent
+            }
+
+            val result = openGameConfirmAwait().first()
+
+            if (result == 1) {
+
+                openGame(view = view, id = viewItem.id)
             }
         }
     }
@@ -71,9 +90,9 @@ class GameHomeView : HomeView {
         }
     }
 
-    private fun openGame(view: View, item: ClickTextViewItem) {
+    private fun openGame(view: View, id: String) {
 
-        val transitionName = view.transitionName ?: item.id
+        val transitionName = view.transitionName ?: id
 
         sendDeeplink(
             deepLink = DeeplinkManager.GAME,

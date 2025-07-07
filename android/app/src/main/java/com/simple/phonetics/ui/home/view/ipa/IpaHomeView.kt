@@ -1,15 +1,17 @@
 package com.simple.phonetics.ui.home.view.ipa
 
 import android.view.View
+import androidx.lifecycle.asFlow
 import com.google.auto.service.AutoService
 import com.simple.core.utils.extentions.asObjectOrNull
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
+import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.view.HomeView
@@ -24,15 +26,15 @@ class IpaHomeView : HomeView {
 
         val ipaHomeViewModel: IpaHomeViewModel by fragment.viewModel()
 
-        ipaHomeViewModel.ipaViewItemList.observe(fragment.viewLifecycleOwner) {
+        ipaHomeViewModel.ipaViewItemList.asFlow().launchCollect(fragment.viewLifecycleOwner) {
 
             viewModel.updateTypeViewItemList(type = 2, it)
         }
 
 
-        com.simple.event.listenerEvent(eventName = com.simple.coreapp.EventName.TEXT_VIEW_ITEM_CLICKED, lifecycle = fragment.viewLifecycleOwner.lifecycle) {
+        com.simple.event.listenerEvent(eventName = EventName.TEXT_SIMPLE_VIEW_ITEM_CLICKED, lifecycle = fragment.viewLifecycleOwner.lifecycle) {
 
-            val (view, viewItem) = it.asObjectOrNull<Pair<View, ClickTextViewItem>>() ?: return@listenerEvent
+            val (view, viewItem) = it.asObjectOrNull<Pair<View, TextSimpleViewItem>>() ?: return@listenerEvent
 
             if (!viewItem.id.startsWith(Id.IPA_LIST)) {
 

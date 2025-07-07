@@ -1,19 +1,12 @@
 package com.simple.phonetics.ui.home.view.game
 
-import android.view.Gravity
-import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
-import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
-import com.simple.coreapp.ui.view.Size
-import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
@@ -23,11 +16,14 @@ import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.Constants
 import com.simple.phonetics.Id
+import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import com.simple.phonetics.entities.Word
+import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
-import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.simple.phonetics.utils.width
 
 class GameHomeViewModel(
     private val countWordAsyncUseCase: CountWordAsyncUseCase
@@ -44,8 +40,10 @@ class GameHomeViewModel(
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, wordPopularCount) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, wordPopularCount) {
 
+        val size = size.value ?: return@combineSourcesWithDiff
+        val style = style.value ?: return@combineSourcesWithDiff
         val theme = theme.value ?: return@combineSourcesWithDiff
         val translate = translate.value ?: return@combineSourcesWithDiff
 
@@ -61,54 +59,37 @@ class GameHomeViewModel(
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        TitleViewItem(
+        TextSimpleViewItem(
             id = "TITLE_GAME",
-            text = translate["title_game"].orEmpty()
+            text = translate.getOrEmpty("title_game")
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
-        ).let {
+            textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
+        ).measure(size, style).let {
 
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_0", height = DP.DP_16))
+            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_0", width = size.width, height = DP.DP_16))
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_1", height = DP.DP_8))
+            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_1", width = size.width, height = DP.DP_8))
         }
 
-        ClickTextViewItem(
+        TextSimpleViewItem(
             id = Id.GAME,
-            text = "${translate["action_play_game"]}"
+            text = translate.getOrEmpty("action_play_game")
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorPrimary"))),
-            textSize = Size(
-                width = ViewGroup.LayoutParams.MATCH_PARENT,
-                height = ViewGroup.LayoutParams.MATCH_PARENT
-            ),
-            textStyle = TextStyle(
-                textGravity = Gravity.CENTER
-            ),
-            textPadding = Padding(
-                left = DP.DP_16,
-                right = DP.DP_16
-            ),
-            textBackground = DEFAULT_BACKGROUND,
+            textStyle = R.style.TextAppearance_MaterialComponents_Body1,
 
-            size = Size(
-                height = DP.DP_76,
-                width = ViewGroup.LayoutParams.WRAP_CONTENT
-            ),
-            margin = Margin(
-                marginVertical = DP.DP_4,
-                marginHorizontal = DP.DP_4
+            padding = Padding(
+                paddingVertical = DP.DP_20,
+                paddingHorizontal = DP.DP_16
             ),
             background = Background(
                 strokeColor = theme.getOrTransparent("colorPrimary"),
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
             ),
-
-            imageLeft = null,
-            imageRight = null
-        ).let {
+        ).measure(size, style).let {
 
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_2", height = DP.DP_16))
+            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_2", width = size.width, height = DP.DP_16))
         }
 
         if (viewItemList.isNotEmpty()) {

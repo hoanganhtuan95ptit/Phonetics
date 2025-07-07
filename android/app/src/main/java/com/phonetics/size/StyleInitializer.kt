@@ -6,13 +6,16 @@ import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.startup.Initializer
-import com.simple.phonetics.R
+import com.simple.coreapp.utils.ext.handler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
 val map = hashMapOf<String, TextViewMetrics>()
 
@@ -32,33 +35,63 @@ class StyleInitializer : Initializer<Unit> {
 
             override fun onActivityStarted(activity: Activity) {
 
-                listOf(
-                    com.simple.phonetics.R.style::class.java,
-                ).flatMap {
+                if(activity is FragmentActivity)activity.lifecycleScope.launch(handler+Dispatchers.IO){
+                    listOf(
+                        com.simple.phonetics.R.style::class.java,
+                    ).flatMap {
 
-                    it.fields.toList()
-                }.forEach {
+                        it.fields.toList()
+                    }.filter {
 
-                    if (it.name.startsWith("Text", true)) kotlin.runCatching {
+                        it.name.startsWith("Text", true)
+                    }.forEach {
 
-                        val textView = TextView(ContextThemeWrapper(activity, it.getInt(null)))
+                        kotlin.runCatching {
 
-                        val style = TextViewMetrics(
-                            typeface = textView.typeface,
-                            textSizePx = textView.textSize,
+                            val textView = TextView(ContextThemeWrapper(activity, it.getInt(null)), null, 0, it.getInt(null))
 
-                            includeFontPadding = textView.includeFontPadding,
+                            val style = TextViewMetrics(
+                                typeface = textView.typeface,
+                                textSizePx = textView.textSize,
 
-                            lineSpacingExtra = textView.lineSpacingExtra,
-                            lineSpacingMultiplier = textView.lineSpacingMultiplier,
-                        )
+                                includeFontPadding = textView.includeFontPadding,
 
-                        map[it.name] = style
+                                textScaleX = textView.textScaleX,
+                                letterSpacing = textView.letterSpacing,
+
+                                lineSpacingExtra = textView.lineSpacingExtra,
+                                lineSpacingMultiplier = textView.lineSpacingMultiplier,
+                            )
+
+                            map[it.name] = style
+                        }
+
+                        kotlin.runCatching {
+
+                            val textView = TextView(activity)
+                            textView.setTextAppearance(it.getInt(null))
+
+                            val style = TextViewMetrics(
+                                typeface = textView.typeface,
+                                textSizePx = textView.textSize,
+
+                                includeFontPadding = textView.includeFontPadding,
+
+                                textScaleX = textView.textScaleX,
+                                letterSpacing = textView.letterSpacing,
+
+                                lineSpacingExtra = textView.lineSpacingExtra,
+                                lineSpacingMultiplier = textView.lineSpacingMultiplier,
+                            )
+
+                            map[it.name] = style
+                        }
                     }
+
+
+                    appStyle.tryEmit(map)
                 }
 
-
-                appStyle.tryEmit(map)
             }
 
             override fun onActivityResumed(activity: Activity) {
@@ -85,6 +118,8 @@ class StyleInitializer : Initializer<Unit> {
 data class TextViewMetrics(
     val textSizePx: Float,
     val typeface: Typeface?,
+    val textScaleX: Float,
+    val letterSpacing: Float,
     val lineSpacingExtra: Float,
     val lineSpacingMultiplier: Float,
     val includeFontPadding: Boolean   // Thêm trường này

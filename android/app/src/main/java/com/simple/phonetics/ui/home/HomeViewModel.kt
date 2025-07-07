@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -15,6 +16,7 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
+import com.simple.coreapp.utils.JobQueue
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
@@ -69,6 +71,8 @@ class HomeViewModel(
     private val startReadingUseCase: StartReadingUseCase,
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
 ) : BaseViewModel() {
+
+    val jobQueue = JobQueue()
 
     val title: LiveData<RichText> = combineSourcesWithDiff(theme, translate) {
 
@@ -375,6 +379,11 @@ class HomeViewModel(
         isSupportSpeak.asFlow().launchIn(viewModelScope)
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        jobQueue.cancel()
+    }
+
 
     fun getPhonetics(text: String) {
 
@@ -397,7 +406,7 @@ class HomeViewModel(
         this.isSupportTranslate.postValue(b)
     }
 
-    fun updateTypeViewItemList(type: Int, it: List<ViewItem>) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun updateTypeViewItemList(type: Int, it: List<ViewItem>) = jobQueue.submit(handler + Dispatchers.IO) {
 
         val map = typeViewItemList.asFlow().first()
 
