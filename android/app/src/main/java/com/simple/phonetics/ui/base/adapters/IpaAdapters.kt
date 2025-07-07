@@ -3,6 +3,9 @@ package com.simple.phonetics.ui.base.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.phonetics.campaign.ui.adapters.SizeViewItem
+import com.phonetics.campaign.ui.adapters.measureTextViewHeight
+import com.phonetics.size.TextViewMetrics
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
@@ -12,11 +15,15 @@ import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.DEFAULT_MARGIN
 import com.simple.coreapp.ui.view.DEFAULT_SIZE
 import com.simple.coreapp.ui.view.Margin
+import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
+import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.ui.view.setSize
+import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setText
 import com.simple.dao.entities.Ipa
@@ -24,6 +31,7 @@ import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemIpaBinding
+import com.simple.phonetics.utils.width
 
 @ItemAdapter
 class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null) : ViewItemAdapter<IpaViewItem, ItemIpaBinding>() {
@@ -56,12 +64,14 @@ class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null
     override fun onBindViewHolder(binding: ItemIpaBinding, viewType: Int, position: Int, item: IpaViewItem, payloads: MutableList<Any>) {
         super.onBindViewHolder(binding, viewType, position, item, payloads)
 
-        if (payloads.contains(PAYLOAD_IPA)) refreshIpa(binding, item)
-        if (payloads.contains(PAYLOAD_TEXT)) refreshText(binding, item)
+        binding.root.transitionName = item.id
 
         if (payloads.contains(Payload.SIZE)) refreshSize(binding, item)
         if (payloads.contains(Payload.MARGIN)) refreshMargin(binding, item)
         if (payloads.contains(Payload.BACKGROUND)) refreshBackground(binding, item)
+
+        if (payloads.contains(PAYLOAD_IPA)) refreshIpa(binding, item)
+        if (payloads.contains(PAYLOAD_TEXT)) refreshText(binding, item)
     }
 
     override fun onBindViewHolder(binding: ItemIpaBinding, viewType: Int, position: Int, item: IpaViewItem) {
@@ -69,20 +79,22 @@ class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null
 
         binding.root.transitionName = item.id
 
-        refreshIpa(binding, item)
-        refreshText(binding, item)
-
         refreshSize(binding, item)
         refreshMargin(binding, item)
+        refreshPadding(binding, item)
         refreshBackground(binding, item)
-    }
 
-    private fun refreshIpa(binding: ItemIpaBinding, item: IpaViewItem) {
-        binding.tvIpa.setText(item.ipa)
+        refreshIpa(binding, item)
+
+        refreshText(binding, item)
     }
 
     private fun refreshSize(binding: ItemIpaBinding, item: IpaViewItem) {
         binding.root.setSize(item.size)
+    }
+
+    private fun refreshIpa(binding: ItemIpaBinding, item: IpaViewItem) {
+        binding.tvIpa.setText(item.ipa)
     }
 
     private fun refreshText(binding: ItemIpaBinding, item: IpaViewItem) {
@@ -93,6 +105,10 @@ class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null
         binding.root.setMargin(item.margin)
     }
 
+    private fun refreshPadding(binding: ItemIpaBinding, item: IpaViewItem) {
+        binding.root.setPadding(item.padding)
+    }
+
     private fun refreshBackground(binding: ItemIpaBinding, item: IpaViewItem) {
         binding.root.setBackground(item.background)
     }
@@ -100,16 +116,51 @@ class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null
 
 data class IpaViewItem(
     val id: String,
-
     val data: Ipa,
 
-    val ipa: RichText = RichText(""),
-    val text: RichText = RichText(""),
+    val ipa: RichText = emptyText(),
+    val text: RichText = emptyText(),
 
-    val size: Size = DEFAULT_SIZE,
+    override val size: Size = DEFAULT_SIZE,
     val margin: Margin = DEFAULT_MARGIN,
+    val padding: Padding = Padding(paddingVertical = DP.DP_16),
     val background: Background = DEFAULT_BACKGROUND
-) : ViewItem {
+) : ViewItem, SizeViewItem {
+
+    fun measure(size: Map<String, Int>, style: Map<String, TextViewMetrics>) = copy(
+        size = measureSize(size, style)
+    )
+
+    override fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
+
+
+        val ipaMetrics = style["TextAppearance_MaterialComponents_Headline6"] ?: return this.size
+        val textMetrics = style["TextAppearance_MaterialComponents_Body1"] ?: return this.size
+
+
+        val maxWidth = if (this.size.width < 10) {
+            size.width - padding.left - padding.right - margin.left - margin.right
+        } else {
+            this.size.width - padding.left - padding.right
+        }
+
+        val ipaHeight = measureTextViewHeight(
+            text = ipa.textChar,
+            maxWidth = maxWidth,
+            metrics = ipaMetrics
+        )
+
+        val textHeight = measureTextViewHeight(
+            text = text.textChar,
+            maxWidth = maxWidth,
+            metrics = textMetrics
+        )
+
+        return Size(
+            width = maxWidth,
+            height = ipaHeight + DP.DP_4 + textHeight + padding.top + padding.bottom
+        )
+    }
 
     override fun areItemsTheSame(): List<Any> = listOf(
         id

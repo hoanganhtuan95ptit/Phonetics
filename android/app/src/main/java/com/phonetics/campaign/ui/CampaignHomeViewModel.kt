@@ -24,14 +24,6 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class CampaignHomeViewModel : BaseViewModel() {
 
-    val style: LiveData<Map<String, TextViewMetrics>> = mediatorLiveData {
-
-        appStyle.collect {
-
-            postValue(it)
-        }
-    }
-
     @VisibleForTesting
     val campaign: LiveData<Campaign> = mediatorLiveData {
 
@@ -40,7 +32,7 @@ class CampaignHomeViewModel : BaseViewModel() {
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, campaign, style) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, campaign) {
 
         val size = size.get()
         val style = style.get()

@@ -20,8 +20,13 @@ fun TitleViewItem(
     id: String,
     text: RichText,
 
-    textSize: Float = 20f,
+    textSize: Float? = 20f,
     textMargin: Margin = DEFAULT_MARGIN,
+
+    size: Size = Size(
+        width = ViewGroup.LayoutParams.MATCH_PARENT,
+        height = ViewGroup.LayoutParams.WRAP_CONTENT
+    )
 ) = NoneTextViewItem(
     id = id,
     text = text,
@@ -33,10 +38,7 @@ fun TitleViewItem(
     textPadding = DEFAULT_PADDING,
     textBackground = DEFAULT_BACKGROUND,
 
-    size = Size(
-        width = ViewGroup.LayoutParams.MATCH_PARENT,
-        height = ViewGroup.LayoutParams.WRAP_CONTENT
-    ),
+    size = size,
     margin = Margin(
         marginHorizontal = DP.DP_4
     ),

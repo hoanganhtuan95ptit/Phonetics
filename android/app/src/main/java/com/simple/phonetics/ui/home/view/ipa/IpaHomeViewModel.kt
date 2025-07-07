@@ -1,18 +1,18 @@
 package com.simple.phonetics.ui.home.view.ipa
 
-import android.view.Gravity
+import android.util.Log
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import com.phonetics.campaign.ui.adapters.measureTextViewHeight
+import com.phonetics.campaign.ui.adapters.measureTextViewWidth
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
-import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
@@ -22,13 +22,17 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.dao.entities.Ipa
 import com.simple.phonetics.Id
+import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
+import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor
-import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.simple.phonetics.utils.width
 import com.simple.state.ResultState
+import com.simple.state.toFailed
+import com.simple.state.toSuccess
 import com.unknown.size.uitls.exts.getOrZero
 
 class IpaHomeViewModel(
@@ -42,13 +46,15 @@ class IpaHomeViewModel(
 
         getIpaStateAsyncUseCase.execute().collect {
 
+            Log.d("tuanha", "${it.javaClass.simpleName}: ${it.toSuccess()?.data?.size}", it.toFailed()?.cause)
             postValue(it)
         }
     }
 
-    val ipaViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, ipaState) {
+    val ipaViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, ipaState) {
 
         val size = size.value ?: return@combineSourcesWithDiff
+        val style = style.value ?: return@combineSourcesWithDiff
         val theme = theme.value ?: return@combineSourcesWithDiff
         val translate = translate.value ?: return@combineSourcesWithDiff
 
@@ -60,21 +66,24 @@ class IpaHomeViewModel(
             return@combineSourcesWithDiff
         }
 
+
         val viewItemList = arrayListOf<ViewItem>()
+
 
         val ipaList = state.data.runCatching { subList(0, 4) }.getOrNull().orEmpty()
 
-        if (ipaList.isNotEmpty()) TitleViewItem(
+        if (ipaList.isNotEmpty()) TextSimpleViewItem(
             id = "TITLE_IPA",
             text = translate["title_ipa"].orEmpty()
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
-            textSize = 20f,
+            textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
         ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_IPA_0", height = DP.DP_16))
             viewItemList.add(it)
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_IPA_1", height = DP.DP_8))
         }
+
 
         ipaList.map {
 
@@ -90,7 +99,6 @@ class IpaHomeViewModel(
 
                 size = Size(
                     width = (size.getOrZero("width") - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
-                    height = DP.DP_76
                 ),
                 margin = Margin(
                     margin = DP.DP_4
@@ -99,40 +107,47 @@ class IpaHomeViewModel(
                     cornerRadius = DP.DP_16,
                     backgroundColor = it.BackgroundColor(theme = theme)
                 )
-            )
+            ).measure(size, style)
         }.let {
 
             viewItemList.addAll(it)
         }
 
-        if (ipaList.isNotEmpty()) ClickTextViewItem(
+
+        val actionText = translate["action_view_all_ipa"].orEmpty()
+            .with(Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
+
+        val ipaHeight = viewItemList.filterIsInstance<IpaViewItem>().firstOrNull()?.size?.height ?: DP.DP_72
+
+        val textWidth = measureTextViewWidth(actionText.textChar, size.width, style["TextAppearance_MaterialComponents_Body1"] ?: return@combineSourcesWithDiff)
+        val textHeight = measureTextViewHeight(actionText.textChar, size.width, style["TextAppearance_MaterialComponents_Body1"] ?: return@combineSourcesWithDiff)
+
+        if (ipaList.isNotEmpty()) TextSimpleViewItem(
             id = Id.IPA_LIST,
-            text = translate["action_view_all_ipa"].orEmpty()
-                .with(Bold, ForegroundColor(theme.getOrTransparent("colorPrimary"))),
+            text = actionText,
+            textStyle = R.style.TextAppearance_MaterialComponents_Body1,
             textSize = Size(
                 height = DP.DP_76,
                 width = ViewGroup.LayoutParams.WRAP_CONTENT
             ),
-            textStyle = TextStyle(
-                textGravity = Gravity.CENTER
-            ),
-            textPadding = Padding(
-                left = DP.DP_16,
-                right = DP.DP_16
-            ),
 
+            size = Size(
+                width = textWidth + 2 * DP.DP_16,
+                height = ipaHeight
+            ),
             margin = Margin(
                 marginVertical = DP.DP_4,
                 marginHorizontal = DP.DP_4
+            ),
+            padding = Padding(
+                paddingVertical = (ipaHeight - textHeight) / 2,
+                paddingHorizontal = DP.DP_16
             ),
             background = Background(
                 strokeColor = theme.getOrTransparent("colorPrimary"),
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
             ),
-
-            imageLeft = null,
-            imageRight = null
         ).let {
 
             viewItemList.add(it)

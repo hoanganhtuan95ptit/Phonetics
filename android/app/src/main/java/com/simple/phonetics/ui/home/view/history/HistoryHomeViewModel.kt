@@ -10,15 +10,16 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
-import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValueIfActive
+import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
+import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem
-import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.simple.phonetics.utils.width
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
 
@@ -37,12 +38,14 @@ class HistoryHomeViewModel(
         }
     }
 
-    val historyViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, historyState) {
+    val historyViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, historyState) {
 
-        val theme = theme.get()
-        val translate = translate.get()
+        val size = size.value ?: return@combineSourcesWithDiff
+        val style = style.value ?: return@combineSourcesWithDiff
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
 
-        val historyState = historyState.get()
+        val historyState = historyState.value ?: return@combineSourcesWithDiff
 
         if (historyState !is ResultState.Success) {
 
@@ -55,15 +58,16 @@ class HistoryHomeViewModel(
 
         val historyList = historyState.toSuccess()?.data.orEmpty()
 
-        if (historyList.isNotEmpty()) TitleViewItem(
+        if (historyList.isNotEmpty()) TextSimpleViewItem(
             id = "TITLE_HISTORY",
             text = translate["title_history"].orEmpty()
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
-        ).let {
+            textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
+        ).measure(size, style).let {
 
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY_0", height = DP.DP_16))
+            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY_0", width = size.width, height = DP.DP_16))
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY_1", height = DP.DP_8))
+            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY_1", width = size.width, height = DP.DP_8))
         }
 
         historyList.mapIndexed { _, sentence ->
@@ -71,7 +75,7 @@ class HistoryHomeViewModel(
             HistoryViewItem(
                 id = sentence.text,
                 text = sentence.text.with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
-            )
+            ).measure(size, style)
         }.let {
 
             viewItemList.addAll(it)

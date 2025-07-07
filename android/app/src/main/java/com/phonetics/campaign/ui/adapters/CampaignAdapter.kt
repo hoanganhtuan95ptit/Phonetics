@@ -26,6 +26,7 @@ import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemCampaignBinding
 import com.simple.phonetics.utils.width
+import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
 
@@ -122,38 +123,62 @@ interface SizeViewItem {
     val size: Size
 
     fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size
+}
 
-    fun measureTextViewWidth(
-        text: CharSequence,
-        maxWidth: Int,
-        metrics: TextViewMetrics
-    ): Int {
+fun measureTextViewWidth(
+    text: CharSequence,
+    maxWidth: Int,
+    metrics: TextViewMetrics
+): Int {
 
-        val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-            this.textSize = metrics.textSizePx
-            this.typeface = metrics.typeface
-        }
-
-        return min(paint.measureText(text, 0, text.length).toInt(), maxWidth)
+    val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+        textSize = metrics.textSizePx
+        typeface = metrics.typeface
+        textScaleX = metrics.textScaleX
+        letterSpacing = metrics.letterSpacing
     }
 
-    fun measureTextViewHeight(
-        text: CharSequence,
-        maxWidth: Int,
-        metrics: TextViewMetrics
-    ): Int {
+    val layout = StaticLayout.Builder.obtain(text, 0, text.length, paint, maxWidth)
+        .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+        .setLineSpacing(metrics.lineSpacingExtra, metrics.lineSpacingMultiplier)
+        .setIncludePad(metrics.includeFontPadding)
+        .build()
 
-        val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = metrics.textSizePx
-            typeface = metrics.typeface
-        }
-
-        val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, maxWidth)
-            .setAlignment(Layout.Alignment.ALIGN_NORMAL)
-            .setLineSpacing(metrics.lineSpacingExtra, metrics.lineSpacingMultiplier)
-            .setIncludePad(metrics.includeFontPadding)
-            .build()
-
-        return staticLayout.height + metrics.lineSpacingExtra.toInt()
+    var maxLineWidth = 0f
+    for (i in 0 until layout.lineCount) {
+        maxLineWidth = max(maxLineWidth, layout.getLineWidth(i))
     }
+
+    return ceil(maxLineWidth).toInt()
+}
+
+fun measureTextViewHeight(
+    text: CharSequence,
+    maxWidth: Int,
+    metrics: TextViewMetrics,
+    maxLines: Int? = null
+): Int {
+
+    val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+        textSize = metrics.textSizePx
+        typeface = metrics.typeface
+        textScaleX = metrics.textScaleX
+        letterSpacing = metrics.letterSpacing
+    }
+
+    val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, maxWidth)
+        .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+        .setLineSpacing(metrics.lineSpacingExtra, metrics.lineSpacingMultiplier)
+        .setIncludePad(metrics.includeFontPadding)
+        .build()
+
+    val maxLines = maxLines ?: Int.MAX_VALUE
+    val lineCount = min(staticLayout.lineCount, maxLines)
+
+    // Nếu lineCount = 0 → không có gì để đo
+    if (lineCount == 0) return 0
+
+    val height = staticLayout.getLineBottom(lineCount - 1)
+
+    return height
 }
