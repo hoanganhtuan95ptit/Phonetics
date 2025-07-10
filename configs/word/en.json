@@ -1,24 +1,68 @@
 {
   "animals": [
-    "Dog", "Puppy", "Cat", "Kitten", "Hamster", "Guinea pig", "Rabbit", "Parrot", "Goldfish", "Turtle",
-    "Canary", "Ferret", "Mouse", "Rat", "Gerbil", "Hedgehog", "Chinchilla", "Budgie", "Cockatoo", "Lizard",
-    "Cow", "Bull", "Calf", "Pig", "Piglet", "Horse", "Foal", "Sheep", "Lamb", "Goat",
-    "Rooster", "Hen", "Chick", "Duck", "Duckling", "Goose", "Turkey", "Donkey", "Mule", "Ox",
-    "Lion", "Tiger", "Leopard", "Cheetah", "Elephant", "Giraffe", "Zebra", "Rhino", "Hippopotamus", "Crocodile",
-    "Alligator", "Bear", "Panda", "Koala", "Kangaroo", "Sloth", "Hyena", "Antelope", "Bison", "Gorilla",
-    "Monkey", "Chimpanzee", "Orangutan", "Baboon", "Toucan", "Jaguar", "Macaw", "Tree frog", "Iguana", "Tapir",
-    "Owl", "Eagle", "Falcon", "Hawk", "Dove", "Pigeon", "Crow", "Raven", "Peacock", "Flamingo",
-    "Swan", "Seagull", "Woodpecker", "Hummingbird", "Penguin", "Stork", "Crane", "Parakeet", "Vulture", "Magpie",
-    "Ant", "Bee", "Wasp", "Mosquito", "Butterfly", "Moth", "Spider", "Fly", "Dragonfly", "Ladybug",
-    "Grasshopper", "Cricket", "Beetle", "Caterpillar", "Worm", "Snail", "Slug", "Tick", "Flea", "Termite",
-    "Snake", "Cobra", "Python", "Viper", "Lizard", "Gecko", "Salamander", "Toad", "Frog", "Chameleon",
-    "Fish", "Shark", "Whale", "Dolphin", "Octopus", "Squid", "Jellyfish", "Starfish", "Crab", "Lobster",
-    "Seahorse", "Seal", "Walrus", "Clam", "Oyster", "Eel", "Stingray", "Tuna", "Swordfish", "Coral",
-    "Fur", "Feather", "Tail", "Paw", "Claw", "Horn", "Tusk", "Hoof", "Beak", "Whiskers",
-    "Fang", "Muzzle", "Scale", "Shell", "Antlers", "Mane", "Fin", "Tentacle", "Wings", "Nest",
-    "Meerkat", "Armadillo", "Porcupine", "Platypus", "Wombat", "Moose", "Elk", "Lynx", "Raccoon", "Skunk",
-    "Otter", "Badger", "Weasel", "Mole", "Opossum", "Bat", "Aardvark", "Pangolin", "Gopher", "Beaver",
-    "Cormorant", "Pelican", "Heron", "Albatross", "Puffin", "Grebe", "Tern", "Spoonbill", "Egret", "Loon",
-    "Pack", "Herd", "Flock", "Swarm", "School", "Pride", "Pod", "Gaggle", "Troop", "Colony"
+    "Dog", "Cat", "Lion", "Tiger", "Elephant", "Zebra", "Giraffe", "Monkey", "Bear", "Kangaroo",
+    "Panda", "Fox", "Wolf", "Deer", "Rabbit", "Squirrel", "Horse", "Cow", "Pig", "Goat",
+    "Sheep", "Duck", "Goose", "Chicken", "Rooster", "Frog", "Snake", "Turtle", "Crocodile", "Alligator",
+    "Shark", "Whale", "Dolphin", "Octopus", "Crab", "Lobster", "Fish", "Seal", "Penguin", "Eagle",
+    "Owl", "Parrot", "Peacock", "Swan", "Flamingo", "Bee", "Butterfly", "Ant", "Spider", "Bat"
+  ],
+  "fruits": [
+    "Apple", "Banana", "Orange", "Mango", "Pineapple", "Grapes", "Watermelon", "Pear", "Peach", "Plum",
+    "Cherry", "Strawberry", "Blueberry", "Raspberry", "Blackberry", "Coconut", "Papaya", "Lychee", "Kiwi", "Lemon",
+    "Lime", "Guava", "Passionfruit", "Dragonfruit", "Jackfruit", "Durian", "Melon", "Cantaloupe", "Fig", "Date",
+    "Pomegranate", "Tangerine", "Apricot", "Cranberry", "Nectarine", "Mulberry", "Gooseberry", "Starfruit", "Longan", "Rambutan",
+    "Avocado", "Tomato", "Custard apple", "Soursop", "Persimmon", "Sapodilla", "Breadfruit", "Olive", "Bitter melon", "Jujube"
+  ],
+  "clothes": [
+    "Shirt", "T-shirt", "Blouse", "Jacket", "Coat", "Sweater", "Hoodie", "Vest", "Suit", "Dress",
+    "Skirt", "Jeans", "Pants", "Shorts", "Leggings", "Trousers", "Overalls", "Scarf", "Tie", "Belt",
+    "Hat", "Cap", "Gloves", "Mittens", "Socks", "Shoes", "Sneakers", "Boots", "Sandals", "Slippers",
+    "Raincoat", "Swimsuit", "Bikini", "Nightgown", "Pajamas", "Underwear", "Boxers", "Bra", "Panties", "Lingerie",
+    "Cardigan", "Blazer", "Camisole", "Waistcoat", "Trunks", "Cover-up", "Windbreaker", "Heels", "Flip-flops", "Stockings"
+  ],
+  "introducing_yourself": [
+    "Name", "Age", "Birthday", "Nationality", "Language", "Student", "Teacher", "Job", "Live", "Like",
+    "Hobby", "Favorite", "Music", "Movie", "Book", "Sport", "Color", "Food", "Drink", "Pet",
+    "Brother", "Sister", "School", "Class", "Friend", "Family", "From", "City", "Country", "Nice to meet you",
+    "Hello", "Hi", "Goodbye", "Please", "Thank you", "Sorry", "Yes", "No", "Okay", "See you later"
+  ],
+  "family": [
+    "Father", "Mother", "Dad", "Mom", "Brother", "Sister", "Grandfather", "Grandmother", "Uncle", "Aunt",
+    "Cousin", "Nephew", "Niece", "Son", "Daughter", "Husband", "Wife", "Parent", "Child", "Sibling",
+    "Family", "Stepfather", "Stepmother", "Stepsister", "Stepbrother", "In-law", "Relative", "Baby", "Twin", "Godparent",
+    "Home", "Love", "Care", "Together", "Support", "Respect", "Tradition", "Generation", "Family tree", "Kin"
+  ],
+  "friends": [
+    "Friend", "Best friend", "Buddy", "Pal", "Mate", "Companion", "Classmate", "Roommate", "Teammate", "Colleague",
+    "Hang out", "Talk", "Chat", "Call", "Help", "Share", "Trust", "Fun", "Laugh", "Smile",
+    "Play", "Games", "Movie night", "Sleepover", "Party", "Gift", "Support", "Secret", "Memory", "Together"
+  ],
+  "jobs_and_occupations": [
+    "Doctor", "Nurse", "Teacher", "Engineer", "Driver", "Pilot", "Chef", "Cook", "Waiter", "Waitress",
+    "Police officer", "Firefighter", "Dentist", "Farmer", "Mechanic", "Artist", "Musician", "Actor", "Actress", "Scientist",
+    "Lawyer", "Judge", "Builder", "Carpenter", "Plumber", "Electrician", "Cashier", "Salesperson", "Manager", "Boss",
+    "Secretary", "Cleaner", "Librarian", "Photographer", "Designer", "Tailor", "Receptionist", "Architect", "Veterinarian", "Translator"
+  ],
+  "time_and_dates": [
+    "Morning", "Afternoon", "Evening", "Night", "Day", "Week", "Month", "Year", "Today", "Tomorrow",
+    "Yesterday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Date", "Calendar",
+    "Clock", "Hour", "Minute", "Second", "Time", "Soon", "Late", "Early", "On time", "Schedule"
+  ],
+  "weather": [
+    "Sunny", "Rainy", "Cloudy", "Stormy", "Windy", "Snowy", "Foggy", "Hot", "Cold", "Cool",
+    "Warm", "Thunder", "Lightning", "Hail", "Drizzle", "Rainbow", "Clear", "Temperature", "Forecast", "Humid",
+    "Dry", "Wet", "Breeze", "Chilly", "Freezing", "Heatwave", "Sunshine", "Overcast", "Storm", "Weather report"
+  ],
+  "colors": [
+    "Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Pink", "Brown", "Black", "White",
+    "Gray", "Violet", "Indigo", "Cyan", "Turquoise", "Beige", "Gold", "Silver", "Magenta", "Lime",
+    "Maroon", "Navy", "Teal", "Coral", "Peach", "Mint", "Lavender", "Olive", "Tan", "Ivory",
+    "Bright", "Dark", "Light", "Pale", "Neon", "Pastel", "Shade", "Tone", "Hue", "Colorful"
+  ],
+  "numbers": [
+    "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+    "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen",
+    "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety", "Hundred", "Thousand",
+    "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth", "Tenth"
   ]
 }
