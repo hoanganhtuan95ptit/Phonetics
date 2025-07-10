@@ -64,5 +64,59 @@
     "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen",
     "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety", "Hundred", "Thousand",
     "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth", "Tenth"
+  ],
+  "shopping": [
+    "Buy", "Sell", "Price", "Discount", "Sale", "Store", "Shop", "Cash", "Credit card", "Receipt",
+    "Bag", "Cart", "Try on", "Size", "Color", "Brand", "Customer", "Cashier", "Change", "Exchange",
+    "Refund", "Checkout", "Total", "Cost", "Market", "Mall", "Boutique", "Online shopping", "Product", "Item",
+    "Clothing", "Shoes", "Accessories", "Jewelry", "Grocery", "Shelf", "Aisle", "Barcode", "Label", "Offer"
+  ],
+  "restaurants_and_food": [
+    "Menu", "Dish", "Meal", "Breakfast", "Lunch", "Dinner", "Snack", "Drink", "Water", "Juice",
+    "Soda", "Coffee", "Tea", "Beer", "Wine", "Waiter", "Waitress", "Order", "Bill", "Tip",
+    "Reservation", "Table", "Chair", "Plate", "Fork", "Spoon", "Knife", "Napkin", "Cup", "Glass",
+    "Soup", "Salad", "Appetizer", "Main course", "Dessert", "Spicy", "Sweet", "Salty", "Hot", "Cold"
+  ],
+  "travel": [
+    "Travel", "Trip", "Journey", "Vacation", "Ticket", "Passport", "Visa", "Luggage", "Backpack", "Suitcase",
+    "Map", "Guide", "Tour", "Tourist", "Airport", "Flight", "Train", "Bus", "Taxi", "Subway",
+    "Hotel", "Hostel", "Room", "Reservation", "Check-in", "Check-out", "Tour guide", "Sightseeing", "Attraction", "Museum",
+    "Beach", "Mountain", "City", "Country", "Adventure", "Cruise", "Flight attendant", "Boarding pass", "Customs", "Souvenir"
+  ],
+  "asking_for_directions": [
+    "Where", "How", "Direction", "Turn", "Left", "Right", "Straight", "Intersection", "Traffic light", "Stop sign",
+    "Block", "Corner", "Street", "Avenue", "Road", "Highway", "Map", "Near", "Far", "Next to",
+    "Across", "Behind", "In front of", "Between", "Go past", "Continue", "Cross", "Follow", "North", "South",
+    "East", "West", "Exit", "Entrance", "Sign", "Landmark", "Roundabout", "Bridge", "Tunnel", "Destination"
+  ],
+  "health_and_medicine": [
+    "Doctor", "Nurse", "Patient", "Hospital", "Clinic", "Medicine", "Pill", "Tablet", "Injection", "Vaccine",
+    "Pain", "Fever", "Cold", "Cough", "Headache", "Stomachache", "Injury", "Wound", "Cut", "Burn",
+    "Check-up", "Test", "X-ray", "Operation", "Emergency", "Ambulance", "Pharmacy", "Prescription", "Thermometer", "Blood pressure",
+    "Treatment", "Recover", "Health", "Sick", "Ill", "Disease", "Symptom", "Allergy", "Rest", "Doctor’s note"
+  ],
+  "transportation": [
+    "Car", "Bus", "Train", "Plane", "Bicycle", "Motorbike", "Scooter", "Taxi", "Subway", "Boat",
+    "Ship", "Tram", "Truck", "Van", "Drive", "Ride", "Travel", "Commute", "Station", "Stop",
+    "Airport", "Harbor", "License", "Ticket", "Seat", "Window", "Aisle", "Passenger", "Driver", "Pilot",
+    "Helicopter", "Cable car", "Pedestrian", "Traffic", "Road", "Highway", "Intersection", "Parking", "Bridge", "Tunnel"
+  ],
+  "appointments_and_schedules": [
+    "Appointment", "Meeting", "Schedule", "Plan", "Event", "Calendar", "Time", "Date", "Today", "Tomorrow",
+    "Morning", "Afternoon", "Evening", "Night", "Reminder", "Clock", "Alarm", "Deadline", "Cancel", "Postpone",
+    "Reschedule", "Confirm", "Attend", "Invite", "Guest", "Host", "Venue", "Location", "Agenda", "Routine",
+    "Busy", "Free", "Available", "Unavailable", "Daily", "Weekly", "Monthly", "Timetable", "Set", "Organize"
+  ],
+  "phone_calls": [
+    "Call", "Phone", "Mobile", "Landline", "Number", "Dial", "Answer", "Ring", "Busy", "Missed call",
+    "Voicemail", "Message", "Text", "Chat", "Speaker", "Mute", "Hold", "Hang up", "Reception", "Signal",
+    "Connection", "Contact", "Save", "Delete", "Search", "Redial", "Conference", "Transfer", "Talk", "Conversation",
+    "Call back", "Emergency", "Directory", "Operator", "Voice", "Sound", "Volume", "Battery", "Charger", "Phone book"
+  ],
+  "socializing": [
+    "Hello", "Hi", "How are you?", "Nice to meet you", "What’s your name?", "Where are you from?", "Goodbye", "See you", "Take care", "Thank you",
+    "Please", "Sorry", "Excuse me", "No problem", "You’re welcome", "Yes", "No", "Maybe", "Sure", "Of course",
+    "Invite", "Party", "Dinner", "Event", "Fun", "Chat", "Talk", "Smile", "Laugh", "Introduce",
+    "Handshake", "Hug", "Celebrate", "Toast", "Congratulate", "Welcome", "Enjoy", "Join", "Meet", "Visit"
   ]
 }
