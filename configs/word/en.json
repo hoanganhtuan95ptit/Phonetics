@@ -1,0 +1,24 @@
+{
+  "animals": [
+    "Dog", "Puppy", "Cat", "Kitten", "Hamster", "Guinea pig", "Rabbit", "Parrot", "Goldfish", "Turtle",
+    "Canary", "Ferret", "Mouse", "Rat", "Gerbil", "Hedgehog", "Chinchilla", "Budgie", "Cockatoo", "Lizard",
+    "Cow", "Bull", "Calf", "Pig", "Piglet", "Horse", "Foal", "Sheep", "Lamb", "Goat",
+    "Rooster", "Hen", "Chick", "Duck", "Duckling", "Goose", "Turkey", "Donkey", "Mule", "Ox",
+    "Lion", "Tiger", "Leopard", "Cheetah", "Elephant", "Giraffe", "Zebra", "Rhino", "Hippopotamus", "Crocodile",
+    "Alligator", "Bear", "Panda", "Koala", "Kangaroo", "Sloth", "Hyena", "Antelope", "Bison", "Gorilla",
+    "Monkey", "Chimpanzee", "Orangutan", "Baboon", "Toucan", "Jaguar", "Macaw", "Tree frog", "Iguana", "Tapir",
+    "Owl", "Eagle", "Falcon", "Hawk", "Dove", "Pigeon", "Crow", "Raven", "Peacock", "Flamingo",
+    "Swan", "Seagull", "Woodpecker", "Hummingbird", "Penguin", "Stork", "Crane", "Parakeet", "Vulture", "Magpie",
+    "Ant", "Bee", "Wasp", "Mosquito", "Butterfly", "Moth", "Spider", "Fly", "Dragonfly", "Ladybug",
+    "Grasshopper", "Cricket", "Beetle", "Caterpillar", "Worm", "Snail", "Slug", "Tick", "Flea", "Termite",
+    "Snake", "Cobra", "Python", "Viper", "Lizard", "Gecko", "Salamander", "Toad", "Frog", "Chameleon",
+    "Fish", "Shark", "Whale", "Dolphin", "Octopus", "Squid", "Jellyfish", "Starfish", "Crab", "Lobster",
+    "Seahorse", "Seal", "Walrus", "Clam", "Oyster", "Eel", "Stingray", "Tuna", "Swordfish", "Coral",
+    "Fur", "Feather", "Tail", "Paw", "Claw", "Horn", "Tusk", "Hoof", "Beak", "Whiskers",
+    "Fang", "Muzzle", "Scale", "Shell", "Antlers", "Mane", "Fin", "Tentacle", "Wings", "Nest",
+    "Meerkat", "Armadillo", "Porcupine", "Platypus", "Wombat", "Moose", "Elk", "Lynx", "Raccoon", "Skunk",
+    "Otter", "Badger", "Weasel", "Mole", "Opossum", "Bat", "Aardvark", "Pangolin", "Gopher", "Beaver",
+    "Cormorant", "Pelican", "Heron", "Albatross", "Puffin", "Grebe", "Tern", "Spoonbill", "Egret", "Loon",
+    "Pack", "Herd", "Flock", "Swarm", "School", "Pride", "Pod", "Gaggle", "Troop", "Colony"
+  ]
+}
