@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.home.view.game
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import com.phonetics.campaign.ui.adapters.SizeViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -64,7 +65,7 @@ class GameHomeViewModel(
             text = translate.getOrEmpty("title_game")
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
-        ).measure(size, style).let {
+        ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_0", width = size.width, height = DP.DP_16))
             viewItemList.add(it)
@@ -86,7 +87,7 @@ class GameHomeViewModel(
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
             ),
-        ).measure(size, style).let {
+        ).let {
 
             viewItemList.add(it)
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_2", width = size.width, height = DP.DP_16))
@@ -94,6 +95,11 @@ class GameHomeViewModel(
 
         if (viewItemList.isNotEmpty()) {
             logAnalytics("game_home_show")
+        }
+
+        viewItemList.forEach {
+
+            if (it is SizeViewItem) it.measure(size, style)
         }
 
         postValueIfActive(viewItemList)

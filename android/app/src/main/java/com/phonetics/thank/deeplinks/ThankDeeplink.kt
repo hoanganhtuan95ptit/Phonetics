@@ -1,7 +1,6 @@
 package com.phonetics.thank.deeplinks
 
 import android.content.ComponentCallbacks
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.asFlow
 import com.phonetics.thank.ThankViewModel
 import com.simple.adapter.entities.ViewItem
+import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.Param
 import com.simple.coreapp.ui.adapters.ImageViewItem
@@ -175,13 +175,15 @@ class ThankDeeplink : DeeplinkHandler {
 
             val result = it.asObjectOrNull<Int>() ?: return@listenerEvent
 
-            Log.d("tuanha", "navigation: $result")
+            logAnalytics("thank_dismiss_" + deepLink.replace("thank://", "").lowercase() + "_$result")
 
             if (result == 0) sendDeeplink(thank.negativeDeeplink.orEmpty())
             if (result == 1) sendDeeplink(thank.positiveDeeplink.orEmpty())
 
             viewModel.sendThank(deepLink)
         }
+
+        logAnalytics("thank_show_" + deepLink.replace("thank://", "").lowercase())
 
         val fragment = VerticalConfirmSheetFragment()
         fragment.arguments = bundleOf(

@@ -12,7 +12,7 @@ import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.adapter.entities.ViewItem
-import com.simple.core.utils.extentions.orZero
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.setBackground
@@ -52,6 +52,7 @@ class CampaignAdapter : ViewItemAdapter<CampaignViewItem, ItemCampaignBinding>()
             val viewItem = getViewItem(viewHolder.bindingAdapterPosition) ?: return@setOnClickListener
 
             sendDeeplink(viewItem.data.deeplink.orEmpty())
+            logAnalytics("campaign_use_click")
         }
 
         return viewHolder
@@ -82,24 +83,20 @@ data class CampaignViewItem(
 
     val background: Background,
 
-    override val size: Size = Size()
+    override var size: Size = Size()
 ) : ViewItem, SizeViewItem {
 
-    fun measure(size: Map<String, Int>, style: Map<String, TextViewMetrics>):CampaignViewItem = copy(
-        size = measureSize(size, style)
-    )
-
-    override fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
+    override fun measureSize(appSize: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
 
         val titleHeight = measureTextViewHeight(
             text = text.textChar,
-            maxWidth = size["width"].orZero() - DP.DP_16 - DP.DP_16 - DP.DP_60 - DP.DP_16 - DP.DP_16 - DP.DP_16,
+            maxWidth = appSize.width - DP.DP_16 - DP.DP_16 - DP.DP_60 - DP.DP_16 - DP.DP_16 - DP.DP_16,
             metrics = style["TextBody1"]?: return Size()
         )
 
         val messageHeight = measureTextViewHeight(
             text = message.textChar,
-            maxWidth = size["width"].orZero() - DP.DP_16 - DP.DP_16 - DP.DP_60 - DP.DP_16 - DP.DP_16 - DP.DP_16,
+            maxWidth = appSize.width - DP.DP_16 - DP.DP_16 - DP.DP_60 - DP.DP_16 - DP.DP_16 - DP.DP_16,
             metrics = style["TextBody2"] ?: return Size()
         )
 
@@ -120,9 +117,19 @@ data class CampaignViewItem(
 
 interface SizeViewItem {
 
-    val size: Size
+    var size: Size
 
-    fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size
+    fun measure(appSize: Map<String, Int>, style: Map<String, TextViewMetrics>) {
+
+        if (size.height != ViewGroup.LayoutParams.WRAP_CONTENT && size.width != ViewGroup.LayoutParams.WRAP_CONTENT) {
+
+            return
+        }
+
+        size = measureSize(appSize, style)
+    }
+
+    fun measureSize(appSize: Map<String, Int>, style: Map<String, TextViewMetrics>): Size
 }
 
 fun measureTextViewWidth(
