@@ -152,15 +152,11 @@ data class TextSimpleViewItem(
     val textPadding: Padding = DEFAULT_PADDING,
     val textBackground: Background = DEFAULT_BACKGROUND,
 
-    override val size: Size = DEFAULT_SIZE,
+    override var size: Size = DEFAULT_SIZE,
     val margin: Margin = DEFAULT_MARGIN,
     val padding: Padding = DEFAULT_PADDING,
     val background: Background = DEFAULT_BACKGROUND
 ) : ViewItem, SizeViewItem {
-
-    fun measure(size: Map<String, Int>, style: Map<String, TextViewMetrics>) = copy(
-        size = measureSize(size, style)
-    )
 
     override fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
 

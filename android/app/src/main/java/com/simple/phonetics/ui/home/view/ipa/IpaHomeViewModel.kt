@@ -1,9 +1,9 @@
 package com.simple.phonetics.ui.home.view.ipa
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import com.phonetics.campaign.ui.adapters.SizeViewItem
 import com.phonetics.campaign.ui.adapters.measureTextViewHeight
 import com.phonetics.campaign.ui.adapters.measureTextViewWidth
 import com.simple.adapter.entities.ViewItem
@@ -31,9 +31,6 @@ import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.width
 import com.simple.state.ResultState
-import com.simple.state.toFailed
-import com.simple.state.toSuccess
-import com.unknown.size.uitls.exts.getOrZero
 
 class IpaHomeViewModel(
     private val getIpaStateAsyncUseCase: GetIpaStateAsyncUseCase,
@@ -46,7 +43,6 @@ class IpaHomeViewModel(
 
         getIpaStateAsyncUseCase.execute().collect {
 
-            Log.d("tuanha", "${it.javaClass.simpleName}: ${it.toSuccess()?.data?.size}", it.toFailed()?.cause)
             postValue(it)
         }
     }
@@ -98,7 +94,7 @@ class IpaHomeViewModel(
                     .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
 
                 size = Size(
-                    width = (size.getOrZero("width") - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
+                    width = (size.width - 6 * DP.DP_4 - 2 * DP.DP_12) / 3,
                 ),
                 margin = Margin(
                     margin = DP.DP_4
@@ -107,7 +103,11 @@ class IpaHomeViewModel(
                     cornerRadius = DP.DP_16,
                     backgroundColor = it.BackgroundColor(theme = theme)
                 )
-            ).measure(size, style)
+            )
+        }.map {
+
+            it.measure(appSize = size, style = style)
+            it
         }.let {
 
             viewItemList.addAll(it)
@@ -156,6 +156,11 @@ class IpaHomeViewModel(
 
         if (viewItemList.isNotEmpty()) {
             logAnalytics("ipa_home_show")
+        }
+
+        viewItemList.forEach {
+
+            if (it is SizeViewItem) it.measure(size, style)
         }
 
         postValueIfActive(viewItemList)

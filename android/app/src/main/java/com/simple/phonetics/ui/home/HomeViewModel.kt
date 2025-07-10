@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -72,6 +71,7 @@ class HomeViewModel(
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
 ) : BaseViewModel() {
 
+    @VisibleForTesting
     val jobQueue = JobQueue()
 
     val title: LiveData<RichText> = combineSourcesWithDiff(theme, translate) {
@@ -308,7 +308,7 @@ class HomeViewModel(
         val theme = theme.get()
         val translate = translate.get()
 
-        val map = hashMapOf<Int, List<ViewItem>>()
+        val map = value ?: hashMapOf()
 
         map[TYPE_VERSION] = versionViewItem(theme = theme, translate = translate)
 

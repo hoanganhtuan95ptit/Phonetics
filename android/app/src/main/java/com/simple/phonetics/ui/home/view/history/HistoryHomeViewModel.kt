@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.home.view.history
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import com.phonetics.campaign.ui.adapters.SizeViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -63,7 +64,7 @@ class HistoryHomeViewModel(
             text = translate["title_history"].orEmpty()
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
-        ).measure(size, style).let {
+        ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY_0", width = size.width, height = DP.DP_16))
             viewItemList.add(it)
@@ -75,10 +76,16 @@ class HistoryHomeViewModel(
             HistoryViewItem(
                 id = sentence.text,
                 text = sentence.text.with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
-            ).measure(size, style)
+            )
         }.let {
 
             viewItemList.addAll(it)
+        }
+
+
+        viewItemList.forEach {
+
+            if (it is SizeViewItem) it.measure(appSize = size, style = style)
         }
 
         if (viewItemList.isNotEmpty()) {

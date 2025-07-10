@@ -79,12 +79,8 @@ data class HistoryViewItem(
 
     val text: RichText = emptyText(),
 
-    override val size: Size = DEFAULT_SIZE,
+    override var size: Size = DEFAULT_SIZE,
 ) : ViewItem, SizeViewItem {
-
-    fun measure(size: Map<String, Int>, style: Map<String, TextViewMetrics>) = copy(
-        size = measureSize(size, style)
-    )
 
     override fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
 

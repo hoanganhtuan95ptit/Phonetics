@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import com.phonetics.campaign.data.repositories.CampaignRepository
 import com.phonetics.campaign.entities.Campaign
 import com.phonetics.campaign.ui.adapters.CampaignViewItem
-import com.phonetics.size.TextViewMetrics
-import com.phonetics.size.appStyle
+import com.phonetics.campaign.ui.adapters.SizeViewItem
 import com.simple.adapter.entities.ViewItem
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
@@ -72,9 +72,19 @@ class CampaignHomeViewModel : BaseViewModel() {
                 cornerRadius = DP.DP_16,
                 backgroundColor = backgroundColor
             ),
-        ).measure(size = size, style = style).let {
+        ).let {
 
             viewItemList.add(it)
+        }
+
+        if (viewItemList.isNotEmpty()) {
+
+            logAnalytics("campaign_show")
+        }
+
+        viewItemList.forEach {
+
+            if (it is SizeViewItem) it.measure(appSize = size, style = style)
         }
 
         postValueIfActive(viewItemList)

@@ -9,7 +9,6 @@ import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.postDifferentValue
-import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.entities.Text
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
