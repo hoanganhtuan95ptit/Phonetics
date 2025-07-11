@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import com.google.auto.service.AutoService
+import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.handler
 import com.simple.event.listenerEvent
 import com.simple.event.sendEvent
@@ -83,6 +84,8 @@ class ReadView : MainView {
             return
         }
 
+
+        val taskId = params[Param.TASK_ID].asObjectOrNull<String>()
         val phoneticCode = params[Param.PHONETIC_CODE] as String
 
 
@@ -94,12 +97,18 @@ class ReadView : MainView {
         }
 
 
+        val extras = mapOf(
+            Param.TASK_ID to taskId,
+            Param.VOICE_LIST to voiceList
+        )
+
+
         if (voiceList.isEmpty()) {
 
             sendEvent(GET_VOICE_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
         } else {
 
-            sendEvent(GET_VOICE_RESPONSE, ResultState.Success(voiceList))
+            sendEvent(GET_VOICE_RESPONSE, ResultState.Success(extras))
         }
     }
 
