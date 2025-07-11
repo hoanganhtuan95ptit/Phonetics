@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.config
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
@@ -18,7 +17,6 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnHeightStatusAndHeightNavigationChange
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.launchCollect
-import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics
@@ -111,7 +109,6 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 
             val binding = binding ?: return@launchCollect
 
-            Log.d("tuanha", "observeData: ")
             binding.recyclerView.submitListAwait(it)
         }
     }

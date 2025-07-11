@@ -8,12 +8,16 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.domain.repositories.ReadingRepository
 import com.simple.state.ResultState
+import com.simple.state.doFailed
+import com.simple.state.doStart
+import com.simple.state.doSuccess
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.util.UUID
 
 class ReadingRepositoryImpl(
     private val appCache: AppCache
@@ -58,30 +62,35 @@ class ReadingRepositoryImpl(
 
     override suspend fun getSupportedVoices(phoneticCode: String): ResultState<List<Int>> = channelFlow {
 
+        val taskId = "SUPPORTED_VOICES_" + UUID.randomUUID().toString()
+
         listenerEvent(EventName.GET_VOICE_RESPONSE) {
 
-            when (it) {
+            val state = it.asObjectOrNull<ResultState<Map<String, Any>>>() ?: return@listenerEvent
 
-                is ResultState.Start -> {
+            state.doStart {
 
-                    trySend(it)
-                }
+                trySend(ResultState.Start)
+            }
 
-                is ResultState.Failed -> {
+            state.doFailed {
 
-                    trySend(it)
-                }
+                trySend(ResultState.Failed(it))
+            }
 
-                is ResultState.Success<*> -> {
+            state.doSuccess { extras ->
 
-                    trySend(ResultState.Success(it.data.asObjectOrNull<List<Int>>().orEmpty()))
-                }
+                val id = extras[Param.TASK_ID].asObjectOrNull<String>()
+                val voiceList = extras[Param.VOICE_LIST].asObjectOrNull<List<Int>>().orEmpty()
+
+                if (taskId.equals(id, true)) trySend(ResultState.Success(voiceList))
             }
         }
 
         sendEvent(
             EventName.GET_VOICE_REQUEST,
             mapOf(
+                Param.TASK_ID to taskId,
                 Param.PHONETIC_CODE to phoneticCode,
             )
         )
