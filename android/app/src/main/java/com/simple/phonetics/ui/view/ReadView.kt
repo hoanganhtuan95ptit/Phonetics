@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import com.google.auto.service.AutoService
+import com.simple.coreapp.utils.ext.handler
 import com.simple.event.listenerEvent
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
@@ -18,7 +19,9 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
 import com.simple.state.ResultState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 // ứng dụng sẽ đọc chữ
@@ -82,9 +85,13 @@ class ReadView : MainView {
 
         val phoneticCode = params[Param.PHONETIC_CODE] as String
 
-        textToSpeech.setLanguage(phoneticCode = phoneticCode)
 
-        val voiceList = textToSpeech.getVoice(phoneticCode = phoneticCode)
+        val voiceList = withContext(handler + Dispatchers.IO) {
+
+            textToSpeech.setLanguage(phoneticCode = phoneticCode)
+
+            List(textToSpeech.getVoice(phoneticCode = phoneticCode).size) { index -> index }
+        }
 
 
         if (voiceList.isEmpty()) {
@@ -92,7 +99,7 @@ class ReadView : MainView {
             sendEvent(GET_VOICE_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
         } else {
 
-            sendEvent(GET_VOICE_RESPONSE, ResultState.Success(voiceList.mapIndexed { index, _ -> index }))
+            sendEvent(GET_VOICE_RESPONSE, ResultState.Success(voiceList))
         }
     }
 

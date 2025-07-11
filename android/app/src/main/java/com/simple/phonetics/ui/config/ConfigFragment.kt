@@ -2,9 +2,11 @@ package com.simple.phonetics.ui.config
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
+import androidx.lifecycle.asFlow
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
@@ -15,6 +17,7 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnHeightStatusAndHeightNavigationChange
 import com.simple.coreapp.utils.ext.getViewModel
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
@@ -104,10 +107,11 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
             binding.vAnchor.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
         }
 
-        viewItemList.observeQueue(viewLifecycleOwner) {
+        viewItemList.asFlow().launchCollect(viewLifecycleOwner) {
 
-            val binding = binding ?: return@observeQueue
+            val binding = binding ?: return@launchCollect
 
+            Log.d("tuanha", "observeData: ")
             binding.recyclerView.submitListAwait(it)
         }
     }

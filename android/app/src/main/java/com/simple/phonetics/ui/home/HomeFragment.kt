@@ -200,20 +200,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 )
             }
 
-            // Chiều sắp xếp chính: theo hàng hoặc cột
-            layoutManager.flexDirection = FlexDirection.ROW // hoặc COLUMN
-
-            // Căn chỉnh nội dung chính theo trục chính (justify-content)
-            layoutManager.justifyContent = JustifyContent.FLEX_START // hoặc CENTER, FLEX_END, SPACE_AROUND, SPACE_BETWEEN
-
-            // Căn chỉnh item theo trục phụ (align-items)
-            layoutManager.alignItems = AlignItems.FLEX_START // hoặc CENTER, STRETCH...
-
-            // Nếu bạn có nhiều dòng (wrap) thì căn chỉnh theo dòng
-//            layoutManager.alignContent = AlignContent.FLEX_START // hoặc CENTER, STRETCH...
-
-            // Cho phép item wrap sang dòng mới hay không
-            layoutManager.flexWrap = FlexWrap.WRAP // hoặc NOWRAP
+            layoutManager.alignItems = AlignItems.FLEX_START
 
             binding.recyclerView.layoutManager = layoutManager
             binding.recyclerView.updatePadding(left = DP.DP_12, right = DP.DP_12)

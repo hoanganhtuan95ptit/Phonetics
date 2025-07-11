@@ -31,6 +31,7 @@ import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
+import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toEvent
@@ -392,7 +393,7 @@ class HomeViewModel(
             this.text.value = "" to text
         } else {
 
-            this.text.postValue(this.text.value?.second.orEmpty() to text)
+            this.text.postDifferentValue(this.text.value?.second.orEmpty() to text)
         }
     }
 

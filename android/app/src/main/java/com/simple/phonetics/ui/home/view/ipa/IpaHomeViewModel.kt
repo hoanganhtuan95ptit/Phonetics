@@ -73,6 +73,9 @@ class IpaHomeViewModel(
             text = translate["title_ipa"].orEmpty()
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
+            margin = Margin(
+                marginHorizontal = DP.DP_4
+            )
         ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_IPA_0", height = DP.DP_16))

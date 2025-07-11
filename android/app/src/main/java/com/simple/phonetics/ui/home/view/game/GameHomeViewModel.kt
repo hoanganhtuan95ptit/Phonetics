@@ -7,6 +7,7 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
@@ -65,6 +66,9 @@ class GameHomeViewModel(
             text = translate.getOrEmpty("title_game")
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
+            margin = Margin(
+                marginHorizontal = DP.DP_4
+            )
         ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_0", width = size.width, height = DP.DP_16))
@@ -78,6 +82,9 @@ class GameHomeViewModel(
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorPrimary"))),
             textStyle = R.style.TextAppearance_MaterialComponents_Body1,
 
+            margin = Margin(
+                marginHorizontal = DP.DP_4
+            ),
             padding = Padding(
                 paddingVertical = DP.DP_20,
                 paddingHorizontal = DP.DP_16
