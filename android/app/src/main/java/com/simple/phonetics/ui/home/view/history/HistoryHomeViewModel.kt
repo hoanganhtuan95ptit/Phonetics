@@ -6,6 +6,7 @@ import com.phonetics.campaign.ui.adapters.SizeViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
@@ -64,6 +65,9 @@ class HistoryHomeViewModel(
             text = translate["title_history"].orEmpty()
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
+            margin = Margin(
+                marginHorizontal = DP.DP_4
+            )
         ).let {
 
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY_0", width = size.width, height = DP.DP_16))

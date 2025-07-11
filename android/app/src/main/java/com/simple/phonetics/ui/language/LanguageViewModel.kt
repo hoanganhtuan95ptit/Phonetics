@@ -240,12 +240,15 @@ class LanguageViewModel(
 
     private fun Map<String, Int>.toLoadingViewItem() = LanguageLoadingViewItem(
         background = Background(
+            cornerRadius = DP.DP_16,
             strokeColor = getOrTransparent("colorDivider"),
+            strokeWidth = DP.DP_1,
             strokeDashGap = DP.DP_4,
             strokeDashWidth = DP.DP_4,
             backgroundColor = Color.TRANSPARENT
         ),
         loadingBackground = Background(
+            cornerRadius = DP.DP_16,
             backgroundColor = getOrTransparent("colorLoading")
         )
     )

@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="16dp"
-    app:rv_cornerRadius="16dp"
-    app:rv_strokeDashGap="10dp"
-    app:rv_strokeDashWidth="10dp"
-    app:rv_strokeWidth="1dp"
-    tools:rv_strokeColor="?attr/colorDivider">
+    android:padding="16dp">
 
     <View
         android:id="@+id/iv_flag"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:alpha="0.2"
-        android:scaleType="centerCrop"
-        app:rv_cornerRadius="16dp" />
+        android:scaleType="centerCrop" />
 
     <View
         android:id="@+id/tv_name"
@@ -29,7 +21,6 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
-        android:alpha="0.2"
-        app:rv_cornerRadius="16dp" />
+        android:alpha="0.2" />
 
 </LinearLayout>
