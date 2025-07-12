@@ -22,6 +22,7 @@ import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
@@ -54,7 +55,7 @@ fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Int>, transl
     NoneTextViewItem(
         id = "2",
         text = title.orEmpty()
-            .with(ForegroundColor(textColor)),
+            .with(Bold, ForegroundColor(textColor)),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
         ),

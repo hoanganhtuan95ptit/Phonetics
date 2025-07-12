@@ -101,7 +101,7 @@ fun getIPAWordleStateInfo(
     NoneTextViewItem(
         id = "2",
         text = title.orEmpty()
-            .with(ForegroundColor(textColor)),
+            .with(Bold, ForegroundColor(textColor)),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
         ),
