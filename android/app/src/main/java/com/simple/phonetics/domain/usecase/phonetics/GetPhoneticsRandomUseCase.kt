@@ -4,7 +4,6 @@ import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
 import com.simple.phonetics.entities.Phonetic
-import com.simple.phonetics.entities.Text
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getWordDelimiters
 import kotlinx.coroutines.flow.first
@@ -21,7 +20,7 @@ class GetPhoneticsRandomUseCase(
         val languageCode = languageRepository.getLanguageInputAsync().first().id
 
 
-        val isQueryForIpa = param.text.text.isNotEmpty() && param.text.type == Text.Type.IPA
+        val isQueryForIpa = param.resource.startsWith("/")
 
 
         val wordList = getWords(param = param, isQueryForIpa = isQueryForIpa, languageCode = languageCode).map {
@@ -39,7 +38,7 @@ class GetPhoneticsRandomUseCase(
          */
         if (isQueryForIpa && phoneticList.isNotEmpty()) {
 
-            wordRepository.insertOrUpdate(resource = param.text.text.lowercase(), languageCode = languageCode, phoneticList.map { it.text.lowercase() })
+            wordRepository.insertOrUpdate(resource = param.resource, languageCode = languageCode, phoneticList.map { it.text.lowercase() })
         }
 
 
@@ -55,7 +54,7 @@ class GetPhoneticsRandomUseCase(
         }
 
         var list = wordRepository.getRandom(
-            resource = if (isQueryForIpa) param.text.text.lowercase() else param.resource.value,
+            resource = param.resource,
             languageCode = languageCode,
 
             limit = 100,
@@ -91,7 +90,7 @@ class GetPhoneticsRandomUseCase(
         }
 
 
-        val ipa = param.text.text.replace("/", "")
+        val ipa = param.resource.replace("/", "")
 
         val list = phoneticRepository.getPhonetics(ipa = ipa, textList = wordList, phoneticCode = param.phoneticsCode)
 
@@ -108,8 +107,7 @@ class GetPhoneticsRandomUseCase(
         val textLengthMin: Int = 2,
         val textLengthMax: Int = 10,
 
-        val text: Text,
-        val resource: Word.Resource,
+        val resource: String,
         val phoneticsCode: String,
     )
 }

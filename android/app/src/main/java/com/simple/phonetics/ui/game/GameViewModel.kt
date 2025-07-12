@@ -11,26 +11,32 @@ import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
-import com.simple.phonetics.entities.Text
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.spans.RoundedBackgroundSpan
 import kotlin.math.max
 
 class GameViewModel : BaseViewModel() {
 
-    val text: LiveData<Text> = MediatorLiveData()
+    val resourceSelected: LiveData<String> = MediatorLiveData()
 
-    val title: LiveData<CharSequence> = combineSourcesWithDiff(theme, translate, text) {
+    val title: LiveData<CharSequence> = combineSourcesWithDiff(theme, translate, resourceSelected) {
 
         val theme = theme.get()
         val translate = translate.getOrEmpty()
 
-        val text = text.get()
+        val resourceSelected = resourceSelected.get()
 
-        val title = if (text.text.isNotEmpty()) {
-            (translate["game_screen_title"].orEmpty() + " " + text.text)
-                .with(text.text, Bold, RoundedBackgroundSpan(backgroundColor = theme.getOrTransparent("colorErrorVariant"), textColor = theme.getOrTransparent("colorOnErrorVariant")))
+        val caption = if (resourceSelected.startsWith("/")) {
+            resourceSelected
+        } else {
+            translate.getOrEmpty(resourceSelected)
+        }
+
+        val title = if (caption.isNotBlank()) {
+            (translate["game_screen_title"].orEmpty() + " " + caption)
+                .with(caption, Bold, RoundedBackgroundSpan(backgroundColor = theme.getOrTransparent("colorErrorVariant"), textColor = theme.getOrTransparent("colorOnErrorVariant")))
         } else {
             translate["game_screen_title"].orEmpty()
         }
@@ -41,11 +47,6 @@ class GameViewModel : BaseViewModel() {
     val consecutiveCorrectAnswer: LiveData<Pair<Long, Boolean>> = MediatorLiveData()
     val consecutiveCorrectAnswerEvent: LiveData<Event<Pair<Long, Boolean>>> = consecutiveCorrectAnswer.toEvent()
 
-
-    fun updateText(it: Text?) {
-
-        text.postDifferentValue(it ?: Text("", Text.Type.IPA))
-    }
 
     fun updateAnswerCorrect(isCorrect: Boolean) {
 
@@ -58,5 +59,10 @@ class GameViewModel : BaseViewModel() {
         }
 
         consecutiveCorrectAnswer.postValue(count to (count % 5 == 0L))
+    }
+
+    fun updateResourceSelected(resource: String) {
+
+        resourceSelected.postDifferentValue(resource)
     }
 }
