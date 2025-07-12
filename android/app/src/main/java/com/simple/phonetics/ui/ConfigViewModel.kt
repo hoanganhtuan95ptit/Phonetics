@@ -37,6 +37,7 @@ import com.simple.phonetics.domain.usecase.translate.selected.GetTranslateSelect
 import com.simple.phonetics.domain.usecase.translate.selected.UpdateTranslateSelectedUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
+import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.simple.state.doFailed
@@ -401,9 +402,11 @@ class ConfigViewModel(
 
         voiceSpeedViewItemList.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
 
-            val text = translate["title_voice_speed"].orEmpty()
+            val text = (translate.getOrEmpty("title_voice_speed") + " ${voiceSpeed.value}")
+                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+                .with("${voiceSpeed.value}", ForegroundColor(theme.getOrTransparent("colorPrimary")))
 
-            list.add(createTitleTextView(id = "TITLE_VOICE_SPEED", text = text.with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))))
+            list.add(createTitleTextView(id = "TITLE_VOICE_SPEED", text = text))
 
             list.addAll(it)
         }
