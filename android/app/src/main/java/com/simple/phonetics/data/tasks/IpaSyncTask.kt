@@ -45,6 +45,10 @@ class IpaSyncTask(
         languageCodeOld = languageCode
     }
 
+    /**
+     * todo nếu không còn thấy event copy_ipa thì bỏ qua
+     */
+    @Deprecated("")
     private suspend fun copy(languageCode: String) = runCatching {
 
         if (ipaRepository.getCount(languageCode = languageCode) > 0) return@runCatching

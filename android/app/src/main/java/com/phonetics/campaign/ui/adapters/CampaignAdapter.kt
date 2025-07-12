@@ -129,7 +129,10 @@ interface SizeViewItem {
         size = measureSize(appSize, style)
     }
 
-    fun measureSize(appSize: Map<String, Int>, style: Map<String, TextViewMetrics>): Size
+    fun measureSize(appSize: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
+
+        return size
+    }
 }
 
 fun measureTextViewWidth(

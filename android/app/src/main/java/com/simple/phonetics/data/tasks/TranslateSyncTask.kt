@@ -41,6 +41,10 @@ class TranslateSyncTask(
         languageCodeOld = languageCode
     }
 
+    /**
+     * todo nếu không còn thấy event copy_translate thì bỏ qua
+     */
+    @Deprecated("")
     private suspend fun copyTranslate() = runCatching {
 
         if (appRepository.getCountTranslate() > 0) return@runCatching

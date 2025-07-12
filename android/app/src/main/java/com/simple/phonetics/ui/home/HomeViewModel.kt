@@ -50,6 +50,7 @@ import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
+import com.simple.phonetics.utils.height
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
@@ -316,8 +317,10 @@ class HomeViewModel(
         postValue(map)
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, translate, typeViewItemList, phoneticsViewItemList) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, translate, typeViewItemList, phoneticsViewItemList) {
 
+        val size = size.get()
+        val style = style.get()
         val translate = translate.get()
 
         val typeViewItemList = typeViewItemList.get().toMutableMap()
@@ -363,8 +366,7 @@ class HomeViewModel(
             list.addAll(it)
         }
 
-        list.add(SpaceViewItem(id = "BOTTOM_0", height = DP.DP_350))
-        list.add(SpaceViewItem(id = "BOTTOM_1", height = DP.DP_100))
+        list.add(SpaceViewItem(id = "BOTTOM_0", height = size.height - DP.DP_350))
 
         postValueIfActive(list)
     }
