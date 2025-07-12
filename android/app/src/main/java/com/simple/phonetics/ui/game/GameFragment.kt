@@ -80,7 +80,7 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
             viewModel.updateResourceSelected(resource)
         } else gameConfigViewModel.resourceSelected.observe(viewLifecycleOwner) {
 
-            viewModel.updateResourceSelected(resource)
+            viewModel.updateResourceSelected(it)
         }
 
 

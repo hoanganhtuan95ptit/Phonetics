@@ -2,9 +2,12 @@ package com.simple.phonetics.domain.repositories
 
 import com.phonetics.word.entities.WordResourceCount
 import com.simple.phonetics.entities.Word
+import com.simple.phonetics.entities.WordTopic
 import kotlinx.coroutines.flow.Flow
 
 interface WordRepository {
+
+    suspend fun syncWord(languageCode: String): List<WordTopic>
 
     suspend fun syncPopular(languageCode: String): List<String>
 

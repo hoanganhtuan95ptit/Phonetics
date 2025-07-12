@@ -33,6 +33,7 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.GetListWordResourceCountAsyncUseCase
+import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.utils.exts.OptionViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
@@ -80,71 +81,61 @@ class GameConfigViewModel(
         val translate = translate.value ?: return@listenerSourcesWithDiff
 
         val actionHeight = actionHeight.value ?: return@listenerSourcesWithDiff
-
-        val resourceSelected = resourceSelected.value
+        val wordCountMap = wordCountMap.value ?: return@listenerSourcesWithDiff
 
         val list = arrayListOf<ViewItem>()
 
-        TitleViewItem(
-            id = "TITLE_RESOURCE",
-            text = translate["game_config_screen_title_resource"].orEmpty()
-                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
-        ).let {
+        wordCountMap.sortedBy {
 
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_24))
-            list.add(it)
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_12))
+            if (it.resource.equals(Word.Resource.Popular.value, true)) {
+                0
+            } else {
+                1
+            }
+        }.groupBy { resourceCount ->
+
+            if (resourceCount.resource.lowercase() in Word.Resource.entries.map { it.value.lowercase() }) {
+                "default" to 1
+            } else if (resourceCount.resource.startsWith("category_")) {
+                "category" to 2
+            } else if (resourceCount.resource.startsWith("/")) {
+                "ipa" to 3
+            } else if (resourceCount.resource.contains("_")) {
+                resourceCount.resource.substring(0, resourceCount.resource.indexOf("_")) to 4
+            } else {
+                "unknown" to 5
+            }
+        }.toList().sortedBy {
+
+            it.first.second
+        }.forEach {
+
+            val text = if (translate.containsKey("game_config_screen_title_resource_${it.first}")) {
+                translate.getOrEmpty("game_config_screen_title_resource")
+            } else if (it.first.first == "default") {
+                translate.getOrEmpty("game_config_screen_title_resource")
+            } else {
+                return@forEach
+            }
+
+            TitleViewItem(
+                id = "TITLE_RESOURCE",
+                text = text
+                    .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+            ).let {
+
+                list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_24))
+                list.add(it)
+                list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_12))
+            }
+
+            it.second.toViewItem(theme, translate).let {
+
+                list.addAll(it)
+            }
         }
 
-
-
-        wordCountMap.getOrEmpty().mapNotNull {
-
-            val count = it.count
-            val resource = it.resource
-
-            val id = (Id.RESOURCE + "_" + resource.removeSpecialCharacters()).lowercase()
-
-            val name = if (translate.containsKey(id)) {
-                translate[id].orEmpty()
-            } else {
-                return@mapNotNull null
-            }
-
-            val caption = if (count <= Constants.WORD_COUNT_MIN) {
-
-                translate.getOrEmpty("game_config_screen_message_resource_limit")
-            } else {
-
-                translate.getOrEmpty("game_config_screen_message_resource_from_${resource.lowercase()}")
-            }
-
-            val isSelect = resource == resourceSelected
-
-            val captionColor = if (count <= Constants.WORD_COUNT_MIN) {
-                theme.getOrTransparent("colorOnErrorVariant")
-            } else if (isSelect) {
-                theme.getOrTransparent("colorOnPrimaryVariant")
-            } else {
-                theme.getOrTransparent("colorOnSurfaceVariant")
-            }
-
-            OptionViewItem(
-                id = id,
-                data = resource,
-
-                text = "$name\n$caption"
-                    .with(ForegroundColor(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface")))
-                    .with(caption, RelativeSize(0.8f), ForegroundColor(captionColor)),
-
-                strokeColor = if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"),
-                backgroundColor = if (isSelect) theme.getOrTransparent("colorPrimaryVariant") else Color.TRANSPARENT,
-            )
-        }.let {
-
-            list.addAll(it)
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight + DP.DP_24))
-        }
+        list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight + DP.DP_24))
 
         postValue(list)
     }
@@ -223,6 +214,57 @@ class GameConfigViewModel(
         }
 
         return listGameAvailable.random()
+    }
+
+    private fun List<WordResourceCount>.toViewItem(theme: Map<String, Int>, translate: Map<String, String>) = mapNotNull {
+
+        val count = it.count
+        val resource = it.resource
+
+        val id = (Id.RESOURCE + "_" + resource.removeSpecialCharacters()).lowercase()
+
+        val name = if (translate.containsKey(id)) {
+            translate[id].orEmpty()
+        } else {
+            return@mapNotNull null
+        }
+
+        val caption = if (count <= Constants.WORD_COUNT_MIN) {
+
+            translate.getOrEmpty("game_config_screen_message_resource_limit")
+        } else {
+
+            translate.getOrEmpty("game_config_screen_message_resource_from_${resource.lowercase()}")
+        }
+
+        val isSelect = resource == resourceSelected.value
+
+        val captionColor = if (count <= Constants.WORD_COUNT_MIN) {
+            theme.getOrTransparent("colorOnErrorVariant")
+        } else if (isSelect) {
+            theme.getOrTransparent("colorOnPrimaryVariant")
+        } else {
+            theme.getOrTransparent("colorOnSurfaceVariant")
+        }
+
+        val text = if (caption.isNotBlank()) {
+            "$name\n$caption"
+                .with(ForegroundColor(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface")))
+                .with(caption, RelativeSize(0.8f), ForegroundColor(captionColor))
+        } else {
+            name
+                .with(ForegroundColor(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface")))
+        }
+
+        OptionViewItem(
+            id = id,
+            data = resource,
+
+            text = text,
+
+            strokeColor = if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"),
+            backgroundColor = if (isSelect) theme.getOrTransparent("colorPrimaryVariant") else Color.TRANSPARENT,
+        )
     }
 }
 

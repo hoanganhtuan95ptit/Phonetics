@@ -6,6 +6,7 @@ import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.dao.word.WordOldProvider
 import com.simple.phonetics.domain.repositories.WordRepository
 import com.simple.phonetics.entities.Word
+import com.simple.phonetics.entities.WordTopic
 import kotlinx.coroutines.flow.Flow
 
 class WordRepositoryImpl(
@@ -24,6 +25,10 @@ class WordRepositoryImpl(
 
     private val wordDaoOld by lazy {
         wordOldProvider.wordDao
+    }
+
+    override suspend fun syncWord(languageCode: String): List<WordTopic> {
+        return api.syncWord(languageCode = languageCode)
     }
 
     override suspend fun syncPopular(languageCode: String): List<String> {
