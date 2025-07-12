@@ -1,6 +1,5 @@
 package com.simple.phonetics.data.tasks
 
-import android.util.Log
 import com.simple.analytics.logAnalytics
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.HistoryRepository
@@ -44,10 +43,11 @@ class WordSyncTask(
      * copy word
      * todo nếu không còn thấy event word_copy thì bỏ qua
      */
+    @Deprecated("")
     private suspend fun copy() = runCatching {
 
         if (wordRepository.getCount() > 0) return@runCatching
-        if (wordRepository.getCountOLd() < 0) return@runCatching
+        if (wordRepository.getCountOLd() <= 0) return@runCatching
 
         logAnalytics("word_copy")
 
@@ -72,7 +72,6 @@ class WordSyncTask(
 
         // đồng bộ popular
         wordRepository.syncWord(languageCode = languageCode).forEach {
-            Log.d("tuanha", "syncPopular: ${it.name} -- ${it.words.size}")
             wordRepository.insertOrUpdate(resource = it.name, languageCode = languageCode, list = it.words)
         }
 
@@ -86,6 +85,7 @@ class WordSyncTask(
      * dồng bộ lịch sử
      * todo nếu không còn thấy event sync_history thì bỏ qua
      */
+    @Deprecated("")
     private suspend fun syncHistory(languageCode: String) = runCatching {
 
         val resource = Word.Resource.History.value
