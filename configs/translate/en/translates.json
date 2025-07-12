@@ -90,6 +90,7 @@
 
   "resource_history": "From the search history",
   "resource_popular": "From the popular list",
+  "resource_category_introducing_yourself": "Introducing yourself",
 
   "speed_lever": "Speed $lever",
 
@@ -120,7 +121,6 @@
   "game_config_screen_message_resource_limit": "Cannot select due to insufficient words",
   "game_config_screen_title_resource": "Select game by source",
   "game_config_screen_title_resource_category": "Select game by Category",
-  "game_config_screen_title_resource_category_introducing_yourself": "Introducing yourself",
 
   "game_congratulation_screen_action": "Let's continue!",
   "game_congratulation_screen_message": "Awesome! You've answered correctly $number times in a row! Keep going and don’t lose your streak! 😆👏",
