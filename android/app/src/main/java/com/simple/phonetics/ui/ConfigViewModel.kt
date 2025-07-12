@@ -27,6 +27,7 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.phonetics.code.UpdatePhoneticCodeSelectedUseCase
+import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.GetVoiceAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.selected.GetVoiceIdSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.voice.selected.UpdateVoiceIdSelectedUseCase
@@ -35,6 +36,7 @@ import com.simple.phonetics.domain.usecase.reading.voice.speed.UpdateVoiceSpeedU
 import com.simple.phonetics.domain.usecase.translate.CheckSupportTranslateUseCase
 import com.simple.phonetics.domain.usecase.translate.selected.GetTranslateSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.translate.selected.UpdateTranslateSelectedUseCase
+import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.phonetics.utils.exts.getOrTransparent
@@ -56,6 +58,8 @@ class ConfigViewModel(
 
     private val updateVoiceSpeedUseCase: UpdateVoiceSpeedUseCase,
     private val getVoiceSpeedAsyncUseCase: GetVoiceSpeedAsyncUseCase,
+
+    private val startReadingUseCase: StartReadingUseCase,
 
     private val updatePhoneticCodeSelectedUseCase: UpdatePhoneticCodeSelectedUseCase
 ) : BaseViewModel() {
@@ -433,6 +437,19 @@ class ConfigViewModel(
         this@ConfigViewModel.voiceSelect.postValue(voiceId)
 
         updateVoiceIdSelectedUseCase.execute(UpdateVoiceIdSelectedUseCase.Param(voiceId = voiceId))
+
+
+        val languageCode = inputLanguage.value?.id ?: return@launchWithTag
+
+        val textTest = if (languageCode == Language.EN) {
+            "hello"
+        } else {
+            return@launchWithTag
+        }
+
+        startReadingUseCase.execute(StartReadingUseCase.Param(textTest)).collect {
+
+        }
     }
 
     fun updateTranslation(id: String) = launchWithTag("TRANSLATION") {
