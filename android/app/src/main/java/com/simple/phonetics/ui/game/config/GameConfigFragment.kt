@@ -36,7 +36,6 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionConfirmGameBinding
-import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
@@ -101,9 +100,9 @@ class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, Di
 
         val clickTextAdapter = ClickTextAdapter { _, item ->
 
-            if (item.id.startsWith(Id.RESOURCE)) {
+            if (item.id.startsWith(Id.RESOURCE, true)) {
 
-                viewModel.updateResource(item.data.asObject<Word.Resource>())
+                viewModel.updateResource(item.data.asObject<String>())
             }
         }
 

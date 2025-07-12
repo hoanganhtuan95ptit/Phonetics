@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.phonetics.word.entities.WordResourceCount
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.orZero
@@ -21,7 +22,6 @@ import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RelativeSize
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
@@ -32,21 +32,19 @@ import com.simple.phonetics.Constants
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
-import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
-import com.simple.phonetics.entities.Word
+import com.simple.phonetics.domain.usecase.word.GetListWordResourceCountAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.utils.exts.OptionViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.exts.getOrTransparent
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.channelFlow
+import com.simple.phonetics.utils.exts.removeSpecialCharacters
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import java.util.concurrent.ConcurrentHashMap
 
 class GameConfigViewModel(
     private val countIpaAsyncUseCase: CountIpaAsyncUseCase,
-    private val countWordAsyncUseCase: CountWordAsyncUseCase
+    private val getListWordResourceCountAsyncUseCase: GetListWordResourceCountAsyncUseCase
 ) : BaseActionViewModel() {
 
     @VisibleForTesting
@@ -62,34 +60,18 @@ class GameConfigViewModel(
 
 
     @VisibleForTesting
-    val wordCountMap: LiveData<Map<Word.Resource, Int>> = combineSourcesWithDiff(inputLanguage) {
+    val wordCountMap: LiveData<List<WordResourceCount>> = combineSourcesWithDiff(inputLanguage) {
 
         val inputLanguage = inputLanguage.get()
 
-        channelFlow<Map<Word.Resource, Int>> {
+        getListWordResourceCountAsyncUseCase.execute(GetListWordResourceCountAsyncUseCase.Param(languageCode = inputLanguage.id)).collect {
 
-            val map = ConcurrentHashMap<Word.Resource, Int>()
-
-            Word.Resource.entries.forEach { resource ->
-
-                countWordAsyncUseCase.execute(CountWordAsyncUseCase.Param(resource = resource, languageCode = inputLanguage.id)).launchCollect(this) {
-
-                    map[resource] = it
-                    trySend(map)
-                }
-            }
-
-            awaitClose {
-
-            }
-        }.collect { map ->
-
-            postValue(map.toList().sortedByDescending { it.first.name }.toMap())
+            postValue(it)
         }
     }
 
 
-    val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
+    val resourceSelected: LiveData<String> = MediatorLiveData()
 
 
     val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(theme, translate, actionHeight, wordCountMap, resourceSelected) {
@@ -114,25 +96,27 @@ class GameConfigViewModel(
             list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_12))
         }
 
+
+
         wordCountMap.getOrEmpty().mapNotNull {
 
-            val count = it.value
-            val resource = it.key
+            val count = it.count
+            val resource = it.resource
 
-            val id = Id.RESOURCE + "_" + resource.name
+            val id = (Id.RESOURCE + "_" + resource.removeSpecialCharacters()).lowercase()
 
-            val name = if (translate.containsKey(id.lowercase())) {
-                translate[id.lowercase()].orEmpty()
+            val name = if (translate.containsKey(id)) {
+                translate[id].orEmpty()
             } else {
                 return@mapNotNull null
             }
 
             val caption = if (count <= Constants.WORD_COUNT_MIN) {
 
-                translate["game_config_screen_message_resource_limit"].orEmpty()
+                translate.getOrEmpty("game_config_screen_message_resource_limit")
             } else {
 
-                translate["game_config_screen_message_resource_from_${resource.name.lowercase()}"].orEmpty()
+                translate.getOrEmpty("game_config_screen_message_resource_from_${resource.lowercase()}")
             }
 
             val isSelect = resource == resourceSelected
@@ -211,15 +195,15 @@ class GameConfigViewModel(
         ipaCount.asFlow().launchIn(viewModelScope)
     }
 
-    fun updateResource(resource: Word.Resource) {
+    fun updateResource(resource: String) {
 
-        if (wordCountMap.getOrEmpty()[resource].orZero() <= Constants.WORD_COUNT_MIN) {
+        if (wordCountMap.getOrEmpty().find { it.resource == resource }?.count.orZero() <= Constants.WORD_COUNT_MIN) {
             return
         }
 
         this.resourceSelected.postValue(resource)
 
-        logAnalytics("game_config_resource_" + resource.value.lowercase())
+        logAnalytics("game_config_resource_" + resource.removeSpecialCharacters().lowercase())
     }
 
     suspend fun getNextGame(): String {
