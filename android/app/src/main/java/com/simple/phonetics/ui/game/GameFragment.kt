@@ -8,7 +8,7 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
-import com.simple.coreapp.utils.ext.getParcelableOrNull
+import com.simple.coreapp.utils.ext.getStringOrEmpty
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.deeplink.DeeplinkHandler
@@ -18,7 +18,6 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentContainerHeaderHorizontalBinding
-import com.simple.phonetics.entities.Text
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
@@ -42,7 +41,7 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
 
         val binding = binding ?: return
 
-        binding.root.doOnChangeHeightStatusAndHeightNavigation(viewLifecycleOwner) { heightStatusBar: Int, heightNavigationBar: Int ->
+        binding.root.doOnChangeHeightStatusAndHeightNavigation(viewLifecycleOwner) { heightStatusBar: Int, _: Int ->
 
             binding.root.updatePadding(top = heightStatusBar)
         }
@@ -73,7 +72,17 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
             binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
         }
 
-        viewModel.updateText(arguments?.getParcelableOrNull<Text>(Param.TEXT))
+
+        val resource = arguments.getStringOrEmpty(Param.RESOURCE)
+
+        if (resource.isNotEmpty()) {
+
+            viewModel.updateResourceSelected(resource)
+        } else gameConfigViewModel.resourceSelected.observe(viewLifecycleOwner) {
+
+            viewModel.updateResourceSelected(it)
+        }
+
 
         viewLifecycleOwner.lifecycleScope.launch {
 

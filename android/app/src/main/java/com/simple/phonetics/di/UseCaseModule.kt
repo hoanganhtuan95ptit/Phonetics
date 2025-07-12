@@ -38,6 +38,7 @@ import com.simple.phonetics.domain.usecase.translate.TranslateUseCase
 import com.simple.phonetics.domain.usecase.translate.selected.GetTranslateSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.translate.selected.UpdateTranslateSelectedUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
+import com.simple.phonetics.domain.usecase.word.GetListWordResourceCountAsyncUseCase
 import org.koin.dsl.module
 
 @JvmField
@@ -176,6 +177,10 @@ val useCaseModule = module {
 
     single {
         CountWordAsyncUseCase(get())
+    }
+
+    single {
+        GetListWordResourceCountAsyncUseCase(get())
     }
 
     single {

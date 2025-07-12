@@ -40,8 +40,6 @@ import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
-import com.simple.phonetics.entities.Text
-import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailViewItem
@@ -215,11 +213,8 @@ class IpaDetailViewModel(
         }
 
 
-        val gameResource = Text(ipa.ipa, Text.Type.IPA)
-
         val param = GetPhoneticsRandomUseCase.Param(
-            text = gameResource,
-            resource = Word.Resource.Popular,
+            resource = ipa.ipa,
             phoneticsCode = phoneticCodeSelected,
 
             limit = 4,
@@ -240,12 +235,12 @@ class IpaDetailViewModel(
 
         ClickTextViewItem(
             id = Id.GAME,
-            data = gameResource,
+            data = ipa.ipa,
             text = translate["ipa_detail_screen_practice_with_games"]
                 .orEmpty()
-                .replace("\$ipa", gameResource.text)
+                .replace("\$ipa", ipa.ipa)
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
-                .with(gameResource.text, Bold, RoundedBackground(backgroundColor = theme.getOrTransparent("colorErrorVariant"), textColor = theme.getOrTransparent("colorOnErrorVariant"))),
+                .with(ipa.ipa, Bold, RoundedBackground(backgroundColor = theme.getOrTransparent("colorErrorVariant"), textColor = theme.getOrTransparent("colorOnErrorVariant"))),
             textSize = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.MATCH_PARENT

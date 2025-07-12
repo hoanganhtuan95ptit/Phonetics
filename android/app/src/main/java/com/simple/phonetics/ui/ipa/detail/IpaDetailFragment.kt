@@ -31,7 +31,6 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.entities.Text
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
@@ -191,7 +190,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
         sendDeeplink(
             deepLink = DeeplinkManager.GAME,
             extras = mapOf(
-                Param.TEXT to item.data.asObject<Text>(),
+                Param.RESOURCE to item.data.asObject<String>(),
                 Param.ROOT_TRANSITION_NAME to transitionName
             ),
             sharedElement = mapOf(transitionName to view)

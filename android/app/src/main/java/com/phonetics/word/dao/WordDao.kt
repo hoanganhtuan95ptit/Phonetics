@@ -13,6 +13,7 @@ import androidx.room.RoomDatabase
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.phonetics.word.dao.RoomWord.Companion.toRoom
+import com.phonetics.word.entities.WordResourceCount
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -50,6 +51,10 @@ interface WordDaoV2 {
 
     @Query("SELECT COUNT(*) FROM $TABLE_NAME WHERE resource = :resource AND languageCode = :languageCode")
     fun getCountAsync(resource: String, languageCode: String): Flow<Int>
+
+
+    @Query("SELECT resource, COUNT(*) AS count FROM words WHERE languageCode = :languageCode GROUP BY resource")
+    fun getListWordResourceCountAsync(languageCode: String): Flow<List<WordResourceCount>>
 
 
     fun insertOrUpdate(resource: String, languageCode: String, list: List<String>) {

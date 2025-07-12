@@ -1,9 +1,13 @@
 package com.simple.phonetics.domain.repositories
 
+import com.phonetics.word.entities.WordResourceCount
 import com.simple.phonetics.entities.Word
+import com.simple.phonetics.entities.WordTopic
 import kotlinx.coroutines.flow.Flow
 
 interface WordRepository {
+
+    suspend fun syncWord(languageCode: String): List<WordTopic>
 
     suspend fun syncPopular(languageCode: String): List<String>
 
@@ -23,6 +27,10 @@ interface WordRepository {
     suspend fun getCount(resource: String, languageCode: String): Int
 
     suspend fun getCountAsync(resource: String, languageCode: String): Flow<Int>
+
+
+    suspend fun getListWordResourceCountAsync(languageCode: String): Flow<List<WordResourceCount>>
+
 
     suspend fun getRandom(resource: String, languageCode: String, textMin: Int, textLimit: Int, limit: Int): List<String>
 }
