@@ -91,6 +91,12 @@
   "resource_history": "From the search history",
   "resource_popular": "From the popular list",
   "resource_category_introducing_yourself": "Introducing yourself",
+  "resource_category_family": "Family",
+  "resource_category_friends": "Friends",
+  "resource_category_jobs_and_occupations": "Jobs and occupations",
+  "resource_category_time_and_dates": "Time and dates",
+  "resource_category_weather": "Weather",
+  "resource_category_color": "Color",
 
   "speed_lever": "Speed $lever",
 
