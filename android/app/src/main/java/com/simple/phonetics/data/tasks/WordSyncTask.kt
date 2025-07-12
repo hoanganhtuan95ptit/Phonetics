@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.tasks
 
+import android.util.Log
 import com.simple.analytics.logAnalytics
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.HistoryRepository
@@ -71,6 +72,7 @@ class WordSyncTask(
 
         // đồng bộ popular
         wordRepository.syncWord(languageCode = languageCode).forEach {
+            Log.d("tuanha", "syncPopular: ${it.name} -- ${it.words.size}")
             wordRepository.insertOrUpdate(resource = it.name, languageCode = languageCode, list = it.words)
         }
 
