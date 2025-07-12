@@ -110,16 +110,18 @@ class GameConfigViewModel(
             it.first.second
         }.forEach {
 
-            val text = if (translate.containsKey("game_config_screen_title_resource_${it.first}")) {
-                translate.getOrEmpty("game_config_screen_title_resource")
+            val text = if (translate.containsKey("game_config_screen_title_resource_${it.first.first}")) {
+                translate.getOrEmpty("game_config_screen_title_resource_${it.first.first}")
             } else if (it.first.first == "default") {
                 translate.getOrEmpty("game_config_screen_title_resource")
             } else {
                 return@forEach
             }
 
-            TitleViewItem(
-                id = "TITLE_RESOURCE",
+            val viewItemList = it.second.toViewItem(theme, translate)
+
+            if (viewItemList.isNotEmpty()) TitleViewItem(
+                id = it.first.first,
                 text = text
                     .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             ).let {
@@ -129,10 +131,7 @@ class GameConfigViewModel(
                 list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_12))
             }
 
-            it.second.toViewItem(theme, translate).let {
-
-                list.addAll(it)
-            }
+            list.addAll(viewItemList)
         }
 
         list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight + DP.DP_24))
@@ -221,7 +220,7 @@ class GameConfigViewModel(
         val count = it.count
         val resource = it.resource
 
-        val id = (Id.RESOURCE + "_" + resource.removeSpecialCharacters()).lowercase()
+        val id = (Id.RESOURCE + "_" + resource).lowercase()
 
         val name = if (translate.containsKey(id)) {
             translate[id].orEmpty()
