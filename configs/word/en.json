@@ -1,6 +1,6 @@
 [
   {
-    "name": "introducing_yourself",
+    "name": "cateory_introducing_yourself",
     "priority": 1,
     "words": [
       "Name",
@@ -46,7 +46,7 @@
     ]
   },
   {
-    "name": "family",
+    "name": "cateory_family",
     "priority": 2,
     "words": [
       "Father",
@@ -92,7 +92,7 @@
     ]
   },
   {
-    "name": "friends",
+    "name": "cateory_friends",
     "priority": 3,
     "words": [
       "Friend",
@@ -128,7 +128,7 @@
     ]
   },
   {
-    "name": "jobs_and_occupations",
+    "name": "cateory_jobs_and_occupations",
     "priority": 4,
     "words": [
       "Doctor",
@@ -174,7 +174,7 @@
     ]
   },
   {
-    "name": "time_and_dates",
+    "name": "cateory_time_and_dates",
     "priority": 5,
     "words": [
       "Morning",
@@ -210,7 +210,7 @@
     ]
   },
   {
-    "name": "weather",
+    "name": "cateory_weather",
     "priority": 6,
     "words": [
       "Sunny",
@@ -246,7 +246,7 @@
     ]
   },
   {
-    "name": "colors",
+    "name": "cateory_colors",
     "priority": 7,
     "words": [
       "Red",
@@ -282,7 +282,7 @@
     ]
   },
   {
-    "name": "numbers",
+    "name": "cateory_numbers",
     "priority": 8,
     "words": [
       "Zero",
@@ -318,7 +318,7 @@
     ]
   },
   {
-    "name": "animals",
+    "name": "cateory_animals",
     "priority": 9,
     "words": [
       "Dog",
@@ -374,7 +374,7 @@
     ]
   },
   {
-    "name": "fruits",
+    "name": "cateory_fruits",
     "priority": 10,
     "words": [
       "Apple",
@@ -430,7 +430,7 @@
     ]
   },
   {
-    "name": "clothes",
+    "name": "cateory_clothes",
     "priority": 11,
     "words": [
       "Shirt",
@@ -486,7 +486,7 @@
     ]
   },
   {
-    "name": "shopping",
+    "name": "cateory_shopping",
     "priority": 12,
     "words": [
       "Buy",
@@ -532,7 +532,7 @@
     ]
   },
   {
-    "name": "restaurants_and_food",
+    "name": "cateory_restaurants_and_food",
     "priority": 13,
     "words": [
       "Menu",
@@ -578,7 +578,7 @@
     ]
   },
   {
-    "name": "travel",
+    "name": "cateory_travel",
     "priority": 14,
     "words": [
       "Travel",
@@ -624,7 +624,7 @@
     ]
   },
   {
-    "name": "asking_for_directions",
+    "name": "cateory_asking_for_directions",
     "priority": 15,
     "words": [
       "Where",
@@ -670,7 +670,7 @@
     ]
   },
   {
-    "name": "health_and_medicine",
+    "name": "cateory_health_and_medicine",
     "priority": 16,
     "words": [
       "Doctor",
@@ -716,7 +716,7 @@
     ]
   },
   {
-    "name": "transportation",
+    "name": "cateory_transportation",
     "priority": 17,
     "words": [
       "Car",
@@ -762,7 +762,7 @@
     ]
   },
   {
-    "name": "appointments_and_schedules",
+    "name": "cateory_appointments_and_schedules",
     "priority": 18,
     "words": [
       "Appointment",
@@ -808,7 +808,7 @@
     ]
   },
   {
-    "name": "phone_calls",
+    "name": "cateory_phone_calls",
     "priority": 19,
     "words": [
       "Call",
@@ -854,7 +854,7 @@
     ]
   },
   {
-    "name": "socializing",
+    "name": "cateory_socializing",
     "priority": 20,
     "words": [
       "Hello",
@@ -890,7 +890,7 @@
     ]
   },
   {
-    "name": "populars",
+    "name": "Popular",
     "priority": -1,
     "words": [
       "a",
