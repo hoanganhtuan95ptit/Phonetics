@@ -50,7 +50,7 @@ fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Int>, trans
     NoneTextViewItem(
         id = "2",
         text = title.orEmpty()
-            .with(ForegroundColor(textColor)),
+            .with(Bold, ForegroundColor(textColor)),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
         ),
