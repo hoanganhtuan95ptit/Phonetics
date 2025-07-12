@@ -90,6 +90,19 @@
 
   "resource_history": "Từ lịch sử tìm kiếm",
   "resource_popular": "Từ danh sách phổ biến",
+  "resource_category_introducing_yourself": "Giới thiệu bản thân",
+  "resource_category_family": "Gia đình",
+  "resource_category_friends": "Bạn bè",
+  "resource_category_jobs_and_occupations": "Công việc và nghề nghiệp",
+  "resource_category_time_and_dates": "Thời gian và ngày tháng",
+  "resource_category_weather": "Thời tiết",
+  "resource_category_color": "Màu sắc",
+  "resource_category_numbers": "Số đếm",
+  "resource_category_animals": "Động vật",
+  "resource_category_fruits": "Trái cây",
+  "resource_category_clothes": "Quần áo",
+  "resource_category_shopping": "Mua sắm",
+
 
   "speed_lever": "Tốc độ $lever",
 
@@ -119,6 +132,9 @@
   "game_config_screen_message_resource_from_popular": "Dựa trên các từ thường dùng",
   "game_config_screen_message_resource_limit": "Không thể chọn do số lượng từ quá ít",
   "game_config_screen_title_resource": "Chọn nguồn chơi",
+  "game_config_screen_title_resource_ipa": "Chọn trò chơi theo IPA",
+  "game_config_screen_title_resource_category": "Chọn trò chơi theo Chủ đề",
+
 
   "game_congratulation_screen_action": "Tiếp tục nào!",
   "game_congratulation_screen_message": "Tuyệt vời! Bạn đã trả lời đúng $number lần liên tiếp! Hãy tiếp tục đừng để phong độ tụt dốc nha! 😆👏",
