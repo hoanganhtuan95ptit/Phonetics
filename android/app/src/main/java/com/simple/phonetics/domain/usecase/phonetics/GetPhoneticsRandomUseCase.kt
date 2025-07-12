@@ -1,6 +1,5 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
-import android.util.Log
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
@@ -20,7 +19,6 @@ class GetPhoneticsRandomUseCase(
 
         val languageCode = languageRepository.getLanguageInputAsync().first().id
 
-        Log.d("tuanha", "execute: ${param.resource}")
 
         val isQueryForIpa = param.resource.startsWith("/")
 
@@ -31,8 +29,6 @@ class GetPhoneticsRandomUseCase(
 
 
         val phoneticList = getPhonetics(param = param, isQueryForIpa = isQueryForIpa, wordList = wordList)
-
-        Log.d("tuanha", "wordList:${wordList.size}  phoneticList:${phoneticList.size}")
 
         /**
          * nếu không có word cho ipa trên thì thêm vào bảng

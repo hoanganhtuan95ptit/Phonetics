@@ -97,6 +97,11 @@
   "resource_category_time_and_dates": "Time and dates",
   "resource_category_weather": "Weather",
   "resource_category_color": "Color",
+  "resource_category_numbers": "Numbers",
+  "resource_category_animals": "Animals",
+  "resource_category_fruits": "Fruits",
+  "resource_category_clothes": "Clothes",
+  "resource_category_shopping": "Shopping",
 
   "speed_lever": "Speed $lever",
 
@@ -125,7 +130,8 @@
   "game_config_screen_message_resource_from_history": "Based on previously searched words",
   "game_config_screen_message_resource_from_popular": "Based on commonly used words",
   "game_config_screen_message_resource_limit": "Cannot select due to insufficient words",
-  "game_config_screen_title_resource": "Select game by source",
+  "game_config_screen_title_resource": "Select game by Source",
+  "game_config_screen_title_resource_ipa": "Select game by IPA",
   "game_config_screen_title_resource_category": "Select game by Category",
 
   "game_congratulation_screen_action": "Let's continue!",
