@@ -30,6 +30,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField("String", "BRANCH", "\"${getGitBranchName()}\"")
     }
 
     signingConfigs {
@@ -140,4 +142,13 @@ dependencies {
     implementation otherDependencies.play_services_ads
     implementation otherDependencies.core_splashscreen
     implementation otherDependencies.keyboardvisibilityevent
+}
+
+def getGitBranchName() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--abbrev-ref', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
 }
