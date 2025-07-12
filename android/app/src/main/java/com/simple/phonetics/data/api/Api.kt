@@ -4,6 +4,7 @@ import com.simple.dao.entities.Ipa
 import com.simple.phonetics.BRANCH
 import com.simple.phonetics.entities.Event
 import com.simple.phonetics.entities.Language
+import com.simple.phonetics.entities.WordTopic
 import okhttp3.ResponseBody
 import org.koin.core.context.GlobalContext
 import retrofit2.Retrofit
@@ -13,6 +14,9 @@ import retrofit2.http.Streaming
 import retrofit2.http.Url
 
 interface Api {
+
+    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/word/{language_code}/words.json")
+    suspend fun syncWord(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<WordTopic>
 
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/ipa/{language_code}/ipas-new.json")
     suspend fun syncIPA(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<Ipa>

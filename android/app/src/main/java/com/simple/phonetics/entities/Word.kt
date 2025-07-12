@@ -1,5 +1,13 @@
 package com.simple.phonetics.entities
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class WordTopic(
+    val name: String = "",
+    val words: List<String> = emptyList()
+)
+
 data class Word(
     val text: String,
     val resource: Resource,

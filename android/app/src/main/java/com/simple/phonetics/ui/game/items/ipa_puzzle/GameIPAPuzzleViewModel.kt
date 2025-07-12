@@ -29,6 +29,7 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.simple.phonetics.utils.exts.removeSpecialCharacters
 import com.simple.state.ResultState
 import com.simple.state.isStart
 import com.simple.state.toSuccess
@@ -50,16 +51,14 @@ class GameIPAPuzzleViewModel(
     }
 
     @VisibleForTesting
-    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSourcesWithDiff(text, resourceSelected, phoneticCodeSelected) {
+    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSourcesWithDiff(resourceSelected, phoneticCodeSelected) {
 
-        val text = text.get()
         val resourceSelected = resourceSelected.get()
         val phoneticCodeSelected = phoneticCodeSelected.get()
 
         postValue(ResultState.Start)
 
         val param = GetPhoneticsRandomUseCase.Param(
-            text = text,
             resource = resourceSelected,
             phoneticsCode = phoneticCodeSelected,
 
@@ -71,7 +70,7 @@ class GameIPAPuzzleViewModel(
         val list = getPhoneticsRandomUseCase.execute(param = param).shuffled()
 
         if (list.isEmpty()) {
-            logAnalytics("game_ipa_puzzle_empty_${resourceSelected.value.lowercase()}_${text.text.lowercase()}")
+            logAnalytics("game_ipa_puzzle_empty_${resourceSelected.removeSpecialCharacters().lowercase()}")
         }
 
         postValue(ResultState.Success(list))

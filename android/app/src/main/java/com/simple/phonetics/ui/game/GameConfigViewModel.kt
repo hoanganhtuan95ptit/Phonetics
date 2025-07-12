@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.phonetics.word.entities.WordResourceCount
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.orZero
@@ -21,7 +22,6 @@ import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RelativeSize
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
@@ -32,21 +32,20 @@ import com.simple.phonetics.Constants
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
-import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
+import com.simple.phonetics.domain.usecase.word.GetListWordResourceCountAsyncUseCase
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.utils.exts.OptionViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.exts.getOrTransparent
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.channelFlow
+import com.simple.phonetics.utils.exts.removeSpecialCharacters
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import java.util.concurrent.ConcurrentHashMap
 
 class GameConfigViewModel(
     private val countIpaAsyncUseCase: CountIpaAsyncUseCase,
-    private val countWordAsyncUseCase: CountWordAsyncUseCase
+    private val getListWordResourceCountAsyncUseCase: GetListWordResourceCountAsyncUseCase
 ) : BaseActionViewModel() {
 
     @VisibleForTesting
@@ -62,34 +61,18 @@ class GameConfigViewModel(
 
 
     @VisibleForTesting
-    val wordCountMap: LiveData<Map<Word.Resource, Int>> = combineSourcesWithDiff(inputLanguage) {
+    val wordCountMap: LiveData<List<WordResourceCount>> = combineSourcesWithDiff(inputLanguage) {
 
         val inputLanguage = inputLanguage.get()
 
-        channelFlow<Map<Word.Resource, Int>> {
+        getListWordResourceCountAsyncUseCase.execute(GetListWordResourceCountAsyncUseCase.Param(languageCode = inputLanguage.id)).collect {
 
-            val map = ConcurrentHashMap<Word.Resource, Int>()
-
-            Word.Resource.entries.forEach { resource ->
-
-                countWordAsyncUseCase.execute(CountWordAsyncUseCase.Param(resource = resource, languageCode = inputLanguage.id)).launchCollect(this) {
-
-                    map[resource] = it
-                    trySend(map)
-                }
-            }
-
-            awaitClose {
-
-            }
-        }.collect { map ->
-
-            postValue(map.toList().sortedByDescending { it.first.name }.toMap())
+            postValue(it)
         }
     }
 
 
-    val resourceSelected: LiveData<Word.Resource> = MediatorLiveData()
+    val resourceSelected: LiveData<String> = MediatorLiveData()
 
 
     val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(theme, translate, actionHeight, wordCountMap, resourceSelected) {
@@ -98,69 +81,60 @@ class GameConfigViewModel(
         val translate = translate.value ?: return@listenerSourcesWithDiff
 
         val actionHeight = actionHeight.value ?: return@listenerSourcesWithDiff
-
-        val resourceSelected = resourceSelected.value
+        val wordCountMap = wordCountMap.value ?: return@listenerSourcesWithDiff
 
         val list = arrayListOf<ViewItem>()
 
-        TitleViewItem(
-            id = "TITLE_RESOURCE",
-            text = translate["game_config_screen_title_resource"].orEmpty()
-                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
-        ).let {
+        wordCountMap.sortedBy {
 
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_24))
-            list.add(it)
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_12))
+            if (it.resource.equals(Word.Resource.Popular.value, true)) {
+                0
+            } else {
+                1
+            }
+        }.groupBy { resourceCount ->
+
+            if (resourceCount.resource.lowercase() in Word.Resource.entries.map { it.value.lowercase() }) {
+                "default" to 1
+            } else if (resourceCount.resource.startsWith("category_")) {
+                "category" to 2
+            } else if (resourceCount.resource.startsWith("/")) {
+                "ipa" to 3
+            } else if (resourceCount.resource.contains("_")) {
+                resourceCount.resource.substring(0, resourceCount.resource.indexOf("_")) to 4
+            } else {
+                "unknown" to 5
+            }
+        }.toList().sortedBy {
+
+            it.first.second
+        }.forEach {
+
+            val text = if (translate.containsKey("game_config_screen_title_resource_${it.first.first}")) {
+                translate.getOrEmpty("game_config_screen_title_resource_${it.first.first}")
+            } else if (it.first.first == "default") {
+                translate.getOrEmpty("game_config_screen_title_resource")
+            } else {
+                return@forEach
+            }
+
+            val viewItemList = it.second.toViewItem(theme, translate)
+
+            if (viewItemList.isNotEmpty()) TitleViewItem(
+                id = it.first.first,
+                text = text
+                    .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+            ).let {
+
+                list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_24))
+                list.add(it)
+                list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_12))
+            }
+
+            list.addAll(viewItemList)
         }
 
-        wordCountMap.getOrEmpty().mapNotNull {
-
-            val count = it.value
-            val resource = it.key
-
-            val id = Id.RESOURCE + "_" + resource.name
-
-            val name = if (translate.containsKey(id.lowercase())) {
-                translate[id.lowercase()].orEmpty()
-            } else {
-                return@mapNotNull null
-            }
-
-            val caption = if (count <= Constants.WORD_COUNT_MIN) {
-
-                translate["game_config_screen_message_resource_limit"].orEmpty()
-            } else {
-
-                translate["game_config_screen_message_resource_from_${resource.name.lowercase()}"].orEmpty()
-            }
-
-            val isSelect = resource == resourceSelected
-
-            val captionColor = if (count <= Constants.WORD_COUNT_MIN) {
-                theme.getOrTransparent("colorOnErrorVariant")
-            } else if (isSelect) {
-                theme.getOrTransparent("colorOnPrimaryVariant")
-            } else {
-                theme.getOrTransparent("colorOnSurfaceVariant")
-            }
-
-            OptionViewItem(
-                id = id,
-                data = resource,
-
-                text = "$name\n$caption"
-                    .with(ForegroundColor(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface")))
-                    .with(caption, RelativeSize(0.8f), ForegroundColor(captionColor)),
-
-                strokeColor = if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"),
-                backgroundColor = if (isSelect) theme.getOrTransparent("colorPrimaryVariant") else Color.TRANSPARENT,
-            )
-        }.let {
-
-            list.addAll(it)
-            list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight + DP.DP_24))
-        }
+        list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight + DP.DP_24))
 
         postValue(list)
     }
@@ -211,15 +185,15 @@ class GameConfigViewModel(
         ipaCount.asFlow().launchIn(viewModelScope)
     }
 
-    fun updateResource(resource: Word.Resource) {
+    fun updateResource(resource: String) {
 
-        if (wordCountMap.getOrEmpty()[resource].orZero() <= Constants.WORD_COUNT_MIN) {
+        if (wordCountMap.getOrEmpty().find { it.resource == resource }?.count.orZero() <= Constants.WORD_COUNT_MIN) {
             return
         }
 
         this.resourceSelected.postValue(resource)
 
-        logAnalytics("game_config_resource_" + resource.value.lowercase())
+        logAnalytics("game_config_resource_" + resource.removeSpecialCharacters().lowercase())
     }
 
     suspend fun getNextGame(): String {
@@ -239,6 +213,57 @@ class GameConfigViewModel(
         }
 
         return listGameAvailable.random()
+    }
+
+    private fun List<WordResourceCount>.toViewItem(theme: Map<String, Int>, translate: Map<String, String>) = mapNotNull {
+
+        val count = it.count
+        val resource = it.resource
+
+        val id = (Id.RESOURCE + "_" + resource).lowercase()
+
+        val name = if (translate.containsKey(id)) {
+            translate[id].orEmpty()
+        } else {
+            return@mapNotNull null
+        }
+
+        val caption = if (count <= Constants.WORD_COUNT_MIN) {
+
+            translate.getOrEmpty("game_config_screen_message_resource_limit")
+        } else {
+
+            translate.getOrEmpty("game_config_screen_message_resource_from_${resource.lowercase()}")
+        }
+
+        val isSelect = resource == resourceSelected.value
+
+        val captionColor = if (count <= Constants.WORD_COUNT_MIN) {
+            theme.getOrTransparent("colorOnErrorVariant")
+        } else if (isSelect) {
+            theme.getOrTransparent("colorOnPrimaryVariant")
+        } else {
+            theme.getOrTransparent("colorOnSurfaceVariant")
+        }
+
+        val text = if (caption.isNotBlank()) {
+            "$name\n$caption"
+                .with(ForegroundColor(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface")))
+                .with(caption, RelativeSize(0.8f), ForegroundColor(captionColor))
+        } else {
+            name
+                .with(ForegroundColor(if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface")))
+        }
+
+        OptionViewItem(
+            id = id,
+            data = resource,
+
+            text = text,
+
+            strokeColor = if (isSelect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurface"),
+            backgroundColor = if (isSelect) theme.getOrTransparent("colorPrimaryVariant") else Color.TRANSPARENT,
+        )
     }
 }
 

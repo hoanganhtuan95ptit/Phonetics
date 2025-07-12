@@ -45,7 +45,6 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
         observeData()
 
         observeGameData()
-        observeGameConfigData()
 
         if (arguments?.getString(Param.ROOT_TRANSITION_NAME, "").orEmpty().isNotEmpty()) {
             showAds()
@@ -66,22 +65,14 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
 
     private fun observeGameData() = with(gameViewModel) {
 
-        text.observe(viewLifecycleOwner) {
+        resourceSelected.observe(viewLifecycleOwner) {
 
-            viewModel.updateText(it)
+            viewModel.updateResourceSelected(it)
         }
 
         consecutiveCorrectAnswerEvent.observe(viewLifecycleOwner) {
 
             viewModel.updateConsecutiveCorrectAnswer(it)
-        }
-    }
-
-    private fun observeGameConfigData() = with(gameConfigViewModel) {
-
-        resourceSelected.observe(viewLifecycleOwner) {
-
-            viewModel.updateResourceSelected(it)
         }
     }
 

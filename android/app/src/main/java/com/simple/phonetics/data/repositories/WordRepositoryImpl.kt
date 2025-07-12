@@ -1,10 +1,12 @@
 package com.simple.phonetics.data.repositories
 
 import com.phonetics.word.dao.WordProvider
+import com.phonetics.word.entities.WordResourceCount
 import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.dao.word.WordOldProvider
 import com.simple.phonetics.domain.repositories.WordRepository
 import com.simple.phonetics.entities.Word
+import com.simple.phonetics.entities.WordTopic
 import kotlinx.coroutines.flow.Flow
 
 class WordRepositoryImpl(
@@ -23,6 +25,10 @@ class WordRepositoryImpl(
 
     private val wordDaoOld by lazy {
         wordOldProvider.wordDao
+    }
+
+    override suspend fun syncWord(languageCode: String): List<WordTopic> {
+        return api.syncWord(languageCode = languageCode)
     }
 
     override suspend fun syncPopular(languageCode: String): List<String> {
@@ -51,6 +57,10 @@ class WordRepositoryImpl(
 
     override suspend fun getCountAsync(resource: String, languageCode: String): Flow<Int> {
         return wordDaoNew.getCountAsync(resource = resource, languageCode = languageCode)
+    }
+
+    override suspend fun getListWordResourceCountAsync(languageCode: String): Flow<List<WordResourceCount>> {
+        return wordDaoNew.getListWordResourceCountAsync(languageCode = languageCode)
     }
 
     override suspend fun getRandom(resource: String, languageCode: String, textMin: Int, textLimit: Int, limit: Int): List<String> {

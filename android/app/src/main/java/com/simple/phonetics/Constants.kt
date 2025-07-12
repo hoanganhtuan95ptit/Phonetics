@@ -17,6 +17,8 @@ object Param {
     const val NUMBER = "NUMBER"
     const val TASK_ID = "TASK_ID"
     const val REVERSE = "REVERSE"
+    const val RESOURCE = "RESOURCE"
+    const val VOICE_LIST = "VOICE_LIST"
     const val IS_SUPPORT = "IS_SUPPORT"
     const val KEY_REQUEST = "KEY_REQUEST"
     const val LANGUAGE_CODE = "LANGUAGE_CODE"
