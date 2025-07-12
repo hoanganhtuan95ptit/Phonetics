@@ -1,5 +1,10 @@
 package com.simple.phonetics.entities
 
+data class WordTopic(
+    val name: String,
+    val words: List<String>
+)
+
 data class Word(
     val text: String,
     val resource: Resource,

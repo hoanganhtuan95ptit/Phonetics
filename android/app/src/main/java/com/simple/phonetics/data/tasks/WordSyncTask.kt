@@ -67,17 +67,12 @@ class WordSyncTask(
      */
     private suspend fun syncPopular(languageCode: String) = runCatching {
 
-        val resource = Word.Resource.Popular.value
-
-        // nếu trong data đã có thì không đồng bộ nữa
-        if (wordRepository.getCount(resource = resource, languageCode = languageCode) > 3000) return@runCatching
-
         logAnalytics("word_sync_popular_start")
 
         // đồng bộ popular
-        val list = wordRepository.syncPopular(languageCode = languageCode)
-
-        wordRepository.insertOrUpdate(resource = resource, languageCode = languageCode, list = list)
+        wordRepository.syncWord(languageCode = languageCode).forEach {
+            wordRepository.insertOrUpdate(resource = it.name, languageCode = languageCode, list = it.words)
+        }
 
         logAnalytics("word_sync_popular_success")
     }.getOrElse {
