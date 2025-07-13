@@ -73,7 +73,7 @@ class AdsViewModel(
 
         request.asFlow().launchCollect(viewModelScope) { count ->
 
-            (3..30).forEach { if (count % it == 0L) logAnalytics("ads_show_count_$count") }
+            (3..30).forEach { if (count % it == 0L) logAnalytics("ads_show_count_$it") }
         }
     }
 

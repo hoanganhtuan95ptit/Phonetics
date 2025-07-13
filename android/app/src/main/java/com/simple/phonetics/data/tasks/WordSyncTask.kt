@@ -46,7 +46,7 @@ class WordSyncTask(
     private suspend fun copy() = runCatching {
 
         if (wordRepository.getCount() > 0) return@runCatching
-        if (wordRepository.getCountOLd() < 0) return@runCatching
+        if (wordRepository.getCountOLd() <= 0) return@runCatching
 
         logAnalytics("word_copy")
 
