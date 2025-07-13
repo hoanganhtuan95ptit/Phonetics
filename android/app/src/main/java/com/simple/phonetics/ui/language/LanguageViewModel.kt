@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
@@ -18,6 +19,7 @@ import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.UpdateLanguageInputUseCase
@@ -28,6 +30,8 @@ import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
+import com.simple.state.doFailed
+import com.simple.state.doSuccess
 import com.simple.state.isCompleted
 import com.simple.state.isSuccess
 import com.simple.state.toRunning
@@ -226,6 +230,17 @@ class LanguageViewModel(
         updateLanguageInputUseCase.execute(param).collect {
 
             this@LanguageViewModel.changeLanguageState.postValue(it)
+
+            it.doFailed {
+
+                logAnalytics("update_language_input_failed")
+                logCrashlytics("update_language_input_failed", it)
+            }
+
+            it.doSuccess {
+
+                logAnalytics("update_language_input_success")
+            }
         }
     }
 
