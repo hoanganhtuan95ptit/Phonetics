@@ -1,8 +1,7 @@
 package com.simple.phonetics
 
-@Deprecated("use BuildConfig.BRANCH")
 val BRANCH: String
-    get() = BuildConfig.BRANCH
+    get() = if (BuildConfig.DEBUG) BuildConfig.BRANCH else "main"
 
 const val TYPE_HISTORY = Int.MAX_VALUE - 100
 const val TYPE_VERSION = Int.MAX_VALUE
