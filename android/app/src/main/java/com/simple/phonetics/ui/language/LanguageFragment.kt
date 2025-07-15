@@ -32,6 +32,7 @@ import com.simple.phonetics.databinding.FragmentListHeaderVerticalBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
+import com.simple.phonetics.utils.exts.awaitResume
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.getOrTransparent
@@ -137,7 +138,9 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
         changeLanguageState.asFlow().launchCollect(viewLifecycleOwner) {
 
-            awaitResumed()
+            binding ?: return@launchCollect
+
+            viewLifecycleOwner.awaitResume()
 
             if (it is ResultState.Success) {
 
