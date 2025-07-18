@@ -29,7 +29,14 @@ class IpaSyncTask(
         if (languageCodeOld == languageCode) return
 
 
-        val ipaList = ipaRepository.syncIpa(languageCode = languageCode).map {
+        val ipaList = runCatching {
+
+            ipaRepository.syncIpa(languageCode = languageCode)
+        }.getOrElse {
+
+            logCrashlytics("ipa_sync_$languageCode", it)
+            return
+        }.map {
 
             if (languageCode == Language.EN && it.ipa == "/r/") it.copy(ipa = "/ɹ/") else it
         }

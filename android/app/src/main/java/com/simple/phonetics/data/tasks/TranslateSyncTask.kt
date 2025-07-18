@@ -33,7 +33,7 @@ class TranslateSyncTask(
             syncTranslate(languageCode = languageCode)
         }.getOrElse {
 
-            if (languageRepository.getLanguageInput() == null) throw it
+            logCrashlytics("translate_sync_$languageCode", it)
             return
         }
         appRepository.updateTranslate(languageCode = languageCode, map = map)

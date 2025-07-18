@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.tasks
 
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.HistoryRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
@@ -37,6 +38,8 @@ class EventSyncTask(
         }.getOrElse {
 
             appRepository.updateEvents(emptyList())
+            logCrashlytics("event_sync_$languageCode", it)
+            return
         }
 
         languageCodeOld = languageCode

@@ -18,6 +18,7 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.updateMargin
+import com.simple.coreapp.utils.extentions.isActive
 import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
@@ -215,9 +216,9 @@ class GameIPAMatchDeeplink : DeeplinkHandler {
             fragmentTransaction.addSharedElement(u, t)
         }
 
-        fragmentTransaction
+        if (isActive()) fragmentTransaction
             .replace(R.id.fragment_container, fragment, "")
-            .commit()
+            .commitAllowingStateLoss()
 
         return true
     }

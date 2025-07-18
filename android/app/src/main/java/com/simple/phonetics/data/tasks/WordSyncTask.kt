@@ -78,7 +78,7 @@ class WordSyncTask(
         logAnalytics("word_sync_popular_success")
     }.getOrElse {
 
-        logCrashlytics("word_sync_popular", it)
+        logCrashlytics("word_sync_popular_$languageCode", it)
     }
 
     /**
