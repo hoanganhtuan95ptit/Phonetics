@@ -327,7 +327,7 @@ class ConfigViewModel(
 
             createOptionViewItem(
                 id = "LIST_PHONE_VIEW_ITEM",
-                text = it.text.with(ForegroundColor(textColor)),
+                text = it.text.text.with(ForegroundColor(textColor)),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -340,7 +340,7 @@ class ConfigViewModel(
 
             createOptionViewItem(
                 id = "LIST_TRANSLATE_VIEW_ITEM",
-                text = it.text.with(ForegroundColor(textColor)),
+                text = it.text.text.with(ForegroundColor(textColor)),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -366,7 +366,7 @@ class ConfigViewModel(
 
             createOptionViewItem(
                 id = "LIST_VOICE_VIEW_ITEM",
-                text = it.text.with(ForegroundColor(textColor)),
+                text = it.text.text.with(ForegroundColor(textColor)),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -526,4 +526,3 @@ class ConfigViewModel(
         )
     )
 }
-

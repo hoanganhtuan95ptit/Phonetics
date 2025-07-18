@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.tasks
 
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.tasks.SyncTask
 
@@ -24,7 +25,8 @@ class ConfigSyncTask(
         }.getOrElse {
 
             appRepository.updateConfigs(emptyMap())
-            throw it
+            logCrashlytics("config_sync", it)
+            return
         }
 
         sync = true

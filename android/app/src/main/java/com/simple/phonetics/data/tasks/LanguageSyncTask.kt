@@ -1,5 +1,6 @@
 package com.simple.phonetics.data.tasks
 
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.tasks.SyncTask
 import kotlinx.coroutines.flow.first
@@ -25,7 +26,7 @@ class LanguageSyncTask(
             getLanguageSupport(languageCode = languageCode)
         }.getOrElse {
 
-            if (languageRepository.getLanguageInput() == null) throw it
+            logCrashlytics("language_sync_$languageCode", it)
             return
         }
 
