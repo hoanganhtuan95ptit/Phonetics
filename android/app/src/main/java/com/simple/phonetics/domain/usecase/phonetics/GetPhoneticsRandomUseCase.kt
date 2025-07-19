@@ -1,5 +1,7 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
+import com.simple.core.utils.extentions.toJson
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
@@ -38,6 +40,10 @@ class GetPhoneticsRandomUseCase(
             wordRepository.insertOrUpdate(resource = param.resource, languageCode = languageCode, phoneticList.map { it.text.lowercase() })
         }
 
+        if (phoneticList.isEmpty() || phoneticList.size < param.limit) {
+
+            logCrashlytics("phonetic_empty", RuntimeException(param.toJson()))
+        }
 
         return phoneticList.shuffled().subList(0, min(phoneticList.size, param.limit))
     }

@@ -76,17 +76,5 @@ class MainViewModel(
 
             logAnalytics("version_name_${BuildConfig.VERSION_NAME.replace(".", "_")}")
         }
-
-        if (BuildConfig.DEBUG) viewModelScope.launch(handler + Dispatchers.IO) {
-
-            val phoneticDao = GlobalContext.get().get<PhoneticRoomDatabaseProvider>().phoneticDao
-
-            GlobalContext.get().get<WordProvider>().wordDao.getRoomAll().forEach {
-
-                val list = phoneticDao.getListBy(listOf(it.text.lowercase()))
-
-                if (list.isEmpty() || list.first().ipa.size <= 1) Log.d("check empty", "resource:${it.resource} :::: ${it.text} ==> ${list.map { it.ipa }.toJson()}")
-            }
-        }
     }
 }

@@ -69,10 +69,6 @@ class GameIPAPuzzleViewModel(
 
         val list = getPhoneticsRandomUseCase.execute(param = param).shuffled()
 
-        if (list.isEmpty()) {
-            logAnalytics("game_ipa_puzzle_empty_${resourceSelected.removeSpecialCharacters().lowercase()}")
-        }
-
         postValue(ResultState.Success(list))
     }
 
