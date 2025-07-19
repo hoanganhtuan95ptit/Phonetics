@@ -87,7 +87,6 @@
       "Respect",
       "Tradition",
       "Generation",
-      "Family tree",
       "Kin"
     ]
   },
@@ -141,7 +140,6 @@
       "Cook",
       "Waiter",
       "Waitress",
-      "Police officer",
       "Firefighter",
       "Dentist",
       "Farmer",
@@ -205,7 +203,6 @@
       "Soon",
       "Late",
       "Early",
-      "On time",
       "Schedule"
     ]
   },
@@ -399,8 +396,6 @@
       "Lemon",
       "Lime",
       "Guava",
-      "Passionfruit",
-      "Dragonfruit",
       "Jackfruit",
       "Durian",
       "Melon",
@@ -414,18 +409,14 @@
       "Nectarine",
       "Mulberry",
       "Gooseberry",
-      "Starfruit",
       "Longan",
       "Rambutan",
       "Avocado",
       "Tomato",
-      "Custard apple",
-      "Soursop",
       "Persimmon",
       "Sapodilla",
       "Breadfruit",
       "Olive",
-      "Bitter melon",
       "Jujube"
     ]
   },
@@ -439,7 +430,6 @@
       "Jacket",
       "Coat",
       "Sweater",
-      "Hoodie",
       "Vest",
       "Suit",
       "Dress",
@@ -481,7 +471,6 @@
       "Cover-up",
       "Windbreaker",
       "Heels",
-      "Flip-flops",
       "Stockings"
     ]
   },
@@ -526,7 +515,6 @@
       "Grocery",
       "Shelf",
       "Aisle",
-      "Barcode",
       "Label",
       "Offer"
     ]
@@ -605,8 +593,6 @@
       "Hostel",
       "Room",
       "Reservation",
-      "Check-in",
-      "Check-out",
       "Attraction",
       "Sightseeing",
       "Beach",
@@ -2244,7 +2230,6 @@
       "identification",
       "identify",
       "identity",
-      "ie",
       "if",
       "ignore",
       "ill",

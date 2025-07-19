@@ -57,6 +57,14 @@ interface WordDaoV2 {
     fun getListWordResourceCountAsync(languageCode: String): Flow<List<WordResourceCount>>
 
 
+    fun getAll() = getRoomAll().map {
+        it.text
+    }
+
+    @Query("SELECT * FROM $TABLE_NAME WHERE 1=1")
+    fun getRoomAll(): List<RoomWord>
+
+
     fun insertOrUpdate(resource: String, languageCode: String, list: List<String>) {
 
         val rooms = list.map {
