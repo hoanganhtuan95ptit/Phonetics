@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
-import com.simple.analytics.logAnalytics
 import com.simple.core.utils.AppException
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
@@ -29,7 +28,6 @@ import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
-import com.simple.phonetics.utils.exts.removeSpecialCharacters
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
@@ -62,10 +60,6 @@ class GameIPAWordleViewModel(
         )
 
         val list = getPhoneticsRandomUseCase.execute(param = param).shuffled()
-
-        if (list.isEmpty()) {
-            logAnalytics("game_ipa_wordle_empty_${resourceSelected.removeSpecialCharacters().lowercase()}")
-        }
 
         postValue(ResultState.Success(list))
     }

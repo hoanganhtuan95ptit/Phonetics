@@ -65,10 +65,6 @@ class GameIPAMatchViewModel(
 
         val list = getPhoneticsRandomUseCase.execute(param = param).shuffled()
 
-        if (list.isEmpty()) {
-            logAnalytics("game_ipa_match_empty_${resourceSelected.removeSpecialCharacters().lowercase()}")
-        }
-
         postValue(ResultState.Success(list))
     }
 
