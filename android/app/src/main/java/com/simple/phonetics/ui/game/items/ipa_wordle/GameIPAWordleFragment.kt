@@ -202,7 +202,7 @@ class GameIPAWordleDeeplink : DeeplinkHandler {
 
         fragmentTransaction
             .replace(R.id.fragment_container, fragment, "")
-            .commit()
+            .commitAllowingStateLoss()
 
         return true
     }

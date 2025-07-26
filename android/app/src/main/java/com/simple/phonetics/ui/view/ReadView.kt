@@ -11,6 +11,7 @@ import androidx.lifecycle.asFlow
 import com.google.auto.service.AutoService
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.handler
+import com.simple.crashlytics.logCrashlytics
 import com.simple.event.listenerEvent
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
@@ -109,6 +110,12 @@ class ReadView : MainView {
         } else {
 
             sendEvent(GET_VOICE_RESPONSE, ResultState.Success(extras))
+        }
+
+        if (voiceList.isEmpty()) withContext(handler + Dispatchers.IO) {
+
+            val message = textToSpeech.voices.groupBy { it.locale.toString() }.mapValues { it.value.size }.toList().sortedBy { it.first }.joinToString { "${it.first}-${it.second}" }
+            logCrashlytics("phoneticCode:${phoneticCode} -- language:${phoneticCode.toLocale()?.toString()} -- voice_empty:${message}", RuntimeException())
         }
     }
 
