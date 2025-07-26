@@ -7,6 +7,7 @@ import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.tasks.SyncTask
 import com.simple.phonetics.entities.Event
 import kotlinx.coroutines.flow.first
+import retrofit2.HttpException
 
 class EventSyncTask(
     private val appRepository: AppRepository,
@@ -38,7 +39,7 @@ class EventSyncTask(
         }.getOrElse {
 
             appRepository.updateEvents(emptyList())
-            logCrashlytics("event_sync_$languageCode", it)
+            if (it !is HttpException || it.code() != 404) logCrashlytics("event_sync_$languageCode", it)
             return
         }
 
