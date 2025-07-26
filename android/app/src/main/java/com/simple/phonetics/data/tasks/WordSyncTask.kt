@@ -11,6 +11,7 @@ import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getWordDelimiters
 import com.simple.phonetics.utils.exts.getWords
 import kotlinx.coroutines.flow.first
+import retrofit2.HttpException
 
 class WordSyncTask(
     private val wordRepository: WordRepository,
@@ -78,7 +79,7 @@ class WordSyncTask(
         logAnalytics("word_sync_popular_success")
     }.getOrElse {
 
-        logCrashlytics("word_sync_popular_$languageCode", it)
+        if (it !is HttpException || it.code() != 404) logCrashlytics("word_sync_popular_$languageCode", it)
     }
 
     /**

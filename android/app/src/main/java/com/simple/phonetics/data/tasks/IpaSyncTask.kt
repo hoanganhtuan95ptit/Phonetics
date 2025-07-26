@@ -8,6 +8,7 @@ import com.simple.phonetics.domain.tasks.SyncTask
 import com.simple.phonetics.entities.Language
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import retrofit2.HttpException
 
 class IpaSyncTask(
     private val ipaRepository: IpaRepository,
@@ -34,7 +35,7 @@ class IpaSyncTask(
             ipaRepository.syncIpa(languageCode = languageCode)
         }.getOrElse {
 
-            logCrashlytics("ipa_sync_$languageCode", it)
+            if (it !is HttpException || it.code() != 404) logCrashlytics("ipa_sync_$languageCode", it)
             return
         }.map {
 

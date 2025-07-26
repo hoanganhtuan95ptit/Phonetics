@@ -4,6 +4,7 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.tasks.SyncTask
 import kotlinx.coroutines.flow.first
+import retrofit2.HttpException
 
 class LanguageSyncTask(
     private val languageRepository: LanguageRepository
@@ -26,7 +27,7 @@ class LanguageSyncTask(
             getLanguageSupport(languageCode = languageCode)
         }.getOrElse {
 
-            logCrashlytics("language_sync_$languageCode", it)
+            if (it !is HttpException || it.code() != 404) logCrashlytics("language_sync_$languageCode", it)
             return
         }
 
