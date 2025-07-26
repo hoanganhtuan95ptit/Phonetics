@@ -136,7 +136,7 @@ class IpaListDeeplink : DeeplinkHandler {
         fragmentTransaction
             .replace(R.id.fragment_container, fragment, "")
             .addToBackStack("")
-            .commit()
+            .commitAllowingStateLoss()
 
         return true
     }
