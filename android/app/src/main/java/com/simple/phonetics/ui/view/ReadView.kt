@@ -18,7 +18,6 @@ import com.simple.phonetics.EventName
 import com.simple.phonetics.EventName.GET_VOICE_RESPONSE
 import com.simple.phonetics.EventName.START_READING_TEXT_RESPONSE
 import com.simple.phonetics.Param
-import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
 import com.simple.state.ResultState
 import kotlinx.coroutines.Dispatchers
@@ -89,12 +88,16 @@ class ReadView : MainView {
         val taskId = params[Param.TASK_ID].asObjectOrNull<String>()
         val phoneticCode = params[Param.PHONETIC_CODE] as String
 
+        val locale = withContext(handler + Dispatchers.IO) {
+
+            phoneticCode.toLocaleOrNull()
+        }
 
         val voiceList = withContext(handler + Dispatchers.IO) {
 
-            textToSpeech.setLanguage(phoneticCode = phoneticCode)
+            textToSpeech.language = locale
 
-            List(textToSpeech.getVoice(phoneticCode = phoneticCode).size) { index -> index }
+            List(textToSpeech.getVoice(locale = locale).size) { index -> index }
         }
 
 
@@ -115,7 +118,7 @@ class ReadView : MainView {
         if (voiceList.isEmpty()) withContext(handler + Dispatchers.IO) {
 
             val message = textToSpeech.voices.groupBy { it.locale.toString() }.mapValues { it.value.size }.toList().sortedBy { it.first }.joinToString { "${it.first}-${it.second}" }
-            logCrashlytics("phoneticCode:${phoneticCode} -- language:${phoneticCode.toLocale()?.toString()} -- voice_empty:${message}", RuntimeException())
+            logCrashlytics("phoneticCode:${phoneticCode} -- language:${locale.toString()} -- voice_empty:${message}", RuntimeException())
         }
     }
 
@@ -135,9 +138,17 @@ class ReadView : MainView {
         val speakSpeed = params[Param.VOICE_SPEED] as Float
         val phoneticCode = params[Param.PHONETIC_CODE] as String
 
-        speak.setLanguage(phoneticCode = phoneticCode)
+        val locale = withContext(handler + Dispatchers.IO) {
 
-        val voiceList = speak.getVoice(phoneticCode = phoneticCode)
+            phoneticCode.toLocaleOrNull()
+        }
+
+        val voiceList = withContext(handler + Dispatchers.IO) {
+
+            textToSpeech.language = locale
+
+            textToSpeech.getVoice(locale = locale)
+        }
 
         val voice = voiceList.getOrNull(voiceIndex) ?: voiceList.firstOrNull()
 
@@ -172,42 +183,77 @@ class ReadView : MainView {
         speak.speak(text, TextToSpeech.QUEUE_FLUSH, null, "1")
     }
 
-    private fun TextToSpeech.getVoice(phoneticCode: String): List<Voice> {
+    private fun TextToSpeech.getVoice(locale: Locale?): List<Voice> {
 
         return voices?.filter {
 
-            it.locale == phoneticCode.toLocale()
+            it.locale == locale
         }?.mapIndexed { _, voice ->
 
             voice
         } ?: emptyList()
     }
 
-    private fun TextToSpeech.setLanguage(phoneticCode: String) {
 
-        language = phoneticCode.toLocale()
-    }
+    private fun String.toLocaleOrNull(): Locale? = runCatching { toLocale() }.getOrNull()
 
-    private fun String.toLocale() = when (this) {
-
+    /**
+     * Converts a language code string to its corresponding Locale object.
+     *
+     * Note: Some codes might be custom or non-standard;
+     * they are mapped based on common assumptions or provided information.
+     */
+    private fun String.toLocale(): Locale? = when (this) {
+        // Common languages
         "US" -> Locale.US
-        "UK" -> Locale.UK
-        Language.EN -> Locale.US
-
-        Language.KO -> Locale.KOREA
-
-        Language.JA -> Locale.JAPAN
-
+        "UK" -> Locale.forLanguageTag("en-GB") // English (United Kingdom)
+        "en" -> Locale.US // Using Locale.US for general "en" code (depending on your context)
+        "ko" -> Locale.KOREA
+        "ja" -> Locale.JAPAN
         "de" -> Locale.GERMANY
+        "ar" -> Locale("ar") // Arabic
+        "fi" -> Locale("fi") // Finnish
+        "is" -> Locale("is") // Icelandic
+        "km" -> Locale("km") // Khmer
+        "nb" -> Locale.forLanguageTag("nb") // Norwegian (Bokmål)
+        "nl" -> Locale.forLanguageTag("nl") // Dutch
+        "or" -> Locale("or") // Oriya
+        "ro" -> Locale("ro") // Romanian
+        "sv" -> Locale("sv") // Swedish
+        "sw" -> Locale("sw") // Swahili
 
-        "fr_FR", "fr_QC", "fr" -> Locale.FRANCE
+        // French (Variants)
+        "fr_FR", "fr_QC", "fr" -> Locale.FRANCE // fr_QC maps to fr_CA, but here it defaults to FRANCE
 
-        "zh" -> Locale.CHINESE
-        "zh_Hans" -> Locale.SIMPLIFIED_CHINESE
+        // Chinese (Variants)
+        "zh" -> Locale.CHINESE // General Chinese
+        "zh_Hans" -> Locale.SIMPLIFIED_CHINESE // Simplified Chinese
+        "zh_Hant" -> Locale.TRADITIONAL_CHINESE // Traditional Chinese
+        "yue" -> Locale.forLanguageTag("zh-yue") // Cantonese
 
-        "yue" -> Locale.TRADITIONAL_CHINESE
-        "zh_Hant" -> Locale.TRADITIONAL_CHINESE
+        // Spanish (Variants)
+        "es_ES" -> Locale("es", "ES") // Spanish (Spain)
+        "es_MX" -> Locale("es", "MX") // Spanish (Mexico)
 
-        else -> null
+        // Other language codes from your IPA list
+        "fa" -> Locale("fa") // Persian (Farsi)
+        "eo" -> Locale("eo") // Esperanto
+        "ma" -> Locale("mr") // Marathi (guessed from 'ma')
+
+        // Non-standard or hard-to-determine codes, returning null unless specified
+        "vi", "N", "C", "S" -> Locale("vi", "VN") // Mapped to Vietnamese (Vietnam) based on user's clarification
+        "tts" -> Locale.forLanguageTag("th-isan") // Isan language (often a dialect of Thai)
+        "jam" -> Locale.forLanguageTag("jam") // Jamaican Creole language
+
+        // Default case if no explicit match is found
+        else -> {
+            // Attempt to create Locale from standard formats (e.g., "vi", "vi_VN")
+            val parts = this.split("_", "-") // Accepts both "_" and "-" as separators
+            when (parts.size) {
+                1 -> Locale(parts[0]) // Only language code (e.g., "vi")
+                2 -> Locale(parts[0], parts[1]) // Language and country code (e.g., "vi_VN")
+                else -> null // Cannot handle other formats
+            }
+        }
     }
 }
