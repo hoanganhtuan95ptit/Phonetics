@@ -42,7 +42,7 @@ class GetPhoneticsRandomUseCase(
 
         if (phoneticList.isEmpty() || phoneticList.size < param.limit) {
 
-            logCrashlytics("phonetic_empty", RuntimeException(param.toJson()))
+            logCrashlytics("phonetic_empty_${wordList.size}", RuntimeException(param.toJson()))
         }
 
         return phoneticList.shuffled().subList(0, min(phoneticList.size, param.limit))
