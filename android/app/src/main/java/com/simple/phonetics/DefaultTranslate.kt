@@ -78,11 +78,11 @@ val DEFAULT_TRANSLATE = mapOf(
     "message_support_translate" to "Translation supported",
     "message_sync_completed" to "Synchronization completed",
     "message_translate_download" to "Downloading translation...",
-    "message_error_io_exception" to "\uD83D\uDD0C No Internet Connection",
+    "message_error_io_exception" to "🔌 No Internet Connection",
 
     "rate_action_negative" to "Late",
     "rate_action_positive" to "Rate",
-    "rate_message" to "We'd love your feedback to make the app even better. Your review means a lot! 🌟",
+    "rate_message" to "We’d love your feedback to make the app even better. Your review means a lot! 🌟",
     "rate_title" to "Rate app",
 
     "update_action_negative" to "⏳ Later",
@@ -92,6 +92,18 @@ val DEFAULT_TRANSLATE = mapOf(
 
     "resource_history" to "From the search history",
     "resource_popular" to "From the popular list",
+    "resource_category_introducing_yourself" to "Introducing yourself",
+    "resource_category_family" to "Family",
+    "resource_category_friends" to "Friends",
+    "resource_category_jobs_and_occupations" to "Jobs and occupations",
+    "resource_category_time_and_dates" to "Time and dates",
+    "resource_category_weather" to "Weather",
+    "resource_category_color" to "Color",
+    "resource_category_numbers" to "Numbers",
+    "resource_category_animals" to "Animals",
+    "resource_category_fruits" to "Fruits",
+    "resource_category_clothes" to "Clothes",
+    "resource_category_shopping" to "Shopping",
 
     "speed_lever" to "Speed \$lever",
 
@@ -120,14 +132,16 @@ val DEFAULT_TRANSLATE = mapOf(
     "game_config_screen_message_resource_from_history" to "Based on previously searched words",
     "game_config_screen_message_resource_from_popular" to "Based on commonly used words",
     "game_config_screen_message_resource_limit" to "Cannot select due to insufficient words",
-    "game_config_screen_title_resource" to "Select game source",
+    "game_config_screen_title_resource" to "Select game by Source",
+    "game_config_screen_title_resource_ipa" to "Select game by IPA",
+    "game_config_screen_title_resource_category" to "Select game by Category",
 
     "game_congratulation_screen_action" to "Let's continue!",
-    "game_congratulation_screen_message" to "Awesome! You've answered correctly \$number times in a row! Keep going and don't lose your streak! 😆👏",
-    "game_congratulation_screen_message_1" to "Incredible! You've got \$number correct answers in a row! It'd be a shame to miss now! 🤭🔥",
+    "game_congratulation_screen_message" to "Awesome! You've answered correctly \$number times in a row! Keep going and don’t lose your streak! 😆👏",
+    "game_congratulation_screen_message_1" to "Incredible! You’ve got \$number correct answers in a row! It’d be a shame to miss now! 🤭🔥",
     "game_congratulation_screen_message_2" to "You've answered correctly \$number times in a row! Are you hacking? How are you this good? 🤔😂",
-    "game_congratulation_screen_message_3" to "You've got \$number correct answers in a row! At this rate, you'll be a master soon! Don't stop now! 🔥🎯",
-    "game_congratulation_screen_message_4" to "You've stepped onto the legendary path with \$number correct answers in a row! Now all you need is some fans! 🤩👏",
+    "game_congratulation_screen_message_3" to "You've got \$number correct answers in a row! At this rate, you’ll be a master soon! Don’t stop now! 🔥🎯",
+    "game_congratulation_screen_message_4" to "You’ve stepped onto the legendary path with \$number correct answers in a row! Now all you need is some fans! 🤩👏",
     "game_congratulation_screen_title" to "Congratulations! 🎉",
     "game_congratulation_screen_title_1" to "Impressive! 😁",
     "game_congratulation_screen_title_2" to "Unbelievable! 😎",
@@ -148,7 +162,7 @@ val DEFAULT_TRANSLATE = mapOf(
     "game_ipa_match_screen_title" to "Match the suitable pairs together",
     "game_ipa_match_screen_title_choose" to "The pairs",
     "game_ipa_match_screen_message_answer_correct" to "The pairs have been matched",
-    "game_ipa_match_screen_message_answer_failed" to "Some pairs don't quite match",
+    "game_ipa_match_screen_message_answer_failed" to "Some pairs don’t quite match",
 
     "game_screen_title" to "Game",
 
@@ -158,8 +172,18 @@ val DEFAULT_TRANSLATE = mapOf(
     "ipa_detail_screen_title_example" to "Example:",
     "ipa_detail_screen_vowels_long" to "Vowels long",
     "ipa_detail_screen_vowels_short" to "Vowels short",
+    "ipa_detail_screen_practice_with_games" to "Practice \$ipa with games 🎮🧠",
 
     "ipa_list_screen_title" to "Ipa list",
+    "recording_screen_title" to "Please speak \$language_name",
 
-    "recording_screen_title" to "Please speak \$language_name"
+    "thank_screen_title_for_action_copy" to "💡 A Special Thanks",
+    "thank_screen_message_for_action_copy" to "🎉 The feature you just used was contributed by 💬 \$author.\nJoin the community to help build a better product together every day! 🤝",
+    "thank_screen_action_negative" to "🙏 Thanks",
+    "thank_screen_action_positive" to "Join Community",
+
+    "campaign_screen_title_for_join_group" to "🤝 Join the Community and Grow Together!",
+    "campaign_screen_message_for_join_group" to "📢 Share ideas, suggest features, and collaborate with others to make the app better every day! 🚀💡",
+
+    "version_name" to "🚀 Version: \$version"
 )
