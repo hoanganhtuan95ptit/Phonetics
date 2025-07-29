@@ -88,16 +88,14 @@ class ReadView : MainView {
         val taskId = params[Param.TASK_ID].asObjectOrNull<String>()
         val phoneticCode = params[Param.PHONETIC_CODE] as String
 
-        val locale = withContext(handler + Dispatchers.IO) {
+        val localeTagList = withContext(handler + Dispatchers.IO) {
 
-            phoneticCode.toLocaleOrNull()
+            phoneticCode.toLocaleTagListOrEmpty()
         }
 
         val voiceList = withContext(handler + Dispatchers.IO) {
 
-            textToSpeech.language = locale
-
-            List(textToSpeech.getVoice(locale = locale).size) { index -> index }
+            List(textToSpeech.getVoice(localeTagList = localeTagList).size) { index -> index }
         }
 
 
@@ -118,7 +116,7 @@ class ReadView : MainView {
         if (voiceList.isEmpty()) withContext(handler + Dispatchers.IO) {
 
             val message = textToSpeech.voices?.toList().orEmpty().groupBy { it.locale.toString() }.mapValues { it.value.size }.toList().sortedBy { it.first }.joinToString { "${it.first}-${it.second}" }
-            logCrashlytics("phoneticCode:${phoneticCode} -- language:${locale.toString()} -- voice_empty:${message}", RuntimeException())
+            logCrashlytics("phoneticCode:${phoneticCode} -- language:$localeTagList -- voice_empty:${message}", RuntimeException())
         }
     }
 
@@ -138,16 +136,15 @@ class ReadView : MainView {
         val speakSpeed = params[Param.VOICE_SPEED] as Float
         val phoneticCode = params[Param.PHONETIC_CODE] as String
 
-        val locale = withContext(handler + Dispatchers.IO) {
+        val localeTagList = withContext(handler + Dispatchers.IO) {
 
-            phoneticCode.toLocaleOrNull()
+            phoneticCode.toLocaleTagListOrEmpty()
         }
 
         val voiceList = withContext(handler + Dispatchers.IO) {
 
-            textToSpeech.language = locale
 
-            textToSpeech.getVoice(locale = locale)
+            textToSpeech.getVoice(localeTagList = localeTagList)
         }
 
         val voice = voiceList.getOrNull(voiceIndex) ?: voiceList.firstOrNull()
@@ -158,7 +155,7 @@ class ReadView : MainView {
             return
         }
 
-        speak.setVoice(voice)
+        speak.voice = voice
         speak.setSpeechRate(speakSpeed)
 
         speak.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
@@ -183,77 +180,81 @@ class ReadView : MainView {
         speak.speak(text, TextToSpeech.QUEUE_FLUSH, null, "1")
     }
 
-    private fun TextToSpeech.getVoice(locale: Locale?): List<Voice> {
+    private fun TextToSpeech.getVoice(localeTagList: List<String>): List<Voice> {
 
         return voices?.filter {
 
-            it.locale == locale
+            val voiceLocaleTag = it.locale.toString()
+
+            localeTagList.isNotEmpty() && localeTagList.any { tag ->
+                voiceLocaleTag.equals(tag, true) || voiceLocaleTag.startsWith(tag, true)
+            }
         }?.mapIndexed { _, voice ->
 
             voice
         } ?: emptyList()
     }
 
+    private fun String.toLocaleTagListOrEmpty() = runCatching {
 
-    private fun String.toLocaleOrNull(): Locale? = runCatching { toLocale() }.getOrNull()
+        toLocaleTagList()
+    }.getOrElse {
 
-    /**
-     * Converts a language code string to its corresponding Locale object.
-     *
-     * Note: Some codes might be custom or non-standard;
-     * they are mapped based on common assumptions or provided information.
-     */
-    private fun String.toLocale(): Locale? = when (this) {
-        // Common languages
-        "US" -> Locale.US
-        "UK" -> Locale.forLanguageTag("en-GB") // English (United Kingdom)
-        "en" -> Locale.US // Using Locale.US for general "en" code (depending on your context)
-        "ko" -> Locale.KOREA
-        "ja" -> Locale.JAPAN
-        "de" -> Locale.GERMANY
-        "ar" -> Locale("ar") // Arabic
-        "fi" -> Locale("fi") // Finnish
-        "is" -> Locale("is") // Icelandic
-        "km" -> Locale("km") // Khmer
-        "nb" -> Locale.forLanguageTag("nb") // Norwegian (Bokmål)
-        "nl" -> Locale.forLanguageTag("nl") // Dutch
-        "or" -> Locale("or") // Oriya
-        "ro" -> Locale("ro") // Romanian
-        "sv" -> Locale("sv") // Swedish
-        "sw" -> Locale("sw") // Swahili
+        emptyList()
+    }
+
+    private fun String.toLocaleTagList(): List<String> = when (this) {
+        // Common languages and specific variants from your list
+        "US", "en" -> listOf(Locale.US.toString(), "eng_USA", "eng_USA-1", "eng_USA_default-1", "eng_USA_f00-1", "eng_USA_f02-1", "eng_USA_l03-1")
+        "UK" -> listOf(Locale.forLanguageTag("en-GB").toString(), "eng_GBR", "eng_GBR-1", "eng_GBR_default-1", "eng_GBR_f00-1")
+        "ko" -> listOf(Locale.KOREA.toString())
+        "ja" -> listOf(Locale.JAPAN.toString(), "jpn_JPN", "jpn_JPN-1")
+        "de" -> listOf(Locale.GERMANY.toString(), "deu_DEU", "deu_DEU-1", "deu_DEU_default-1", "deu_DEU_f00-1")
+        "ar" -> listOf(Locale("ar").toString()) // Arabic
+        "fi" -> listOf(Locale("fi").toString()) // Finnish
+        "is" -> listOf(Locale("is").toString()) // Icelandic
+        "km" -> listOf(Locale("km").toString()) // Khmer
+        "nb" -> listOf(Locale.forLanguageTag("nb").toString()) // Norwegian (Bokmål)
+        "nl" -> listOf(Locale.forLanguageTag("nl").toString()) // Dutch
+        "or" -> listOf(Locale("or").toString()) // Oriya
+        "ro" -> listOf(Locale("ro").toString()) // Romanian
+        "sv" -> listOf(Locale("sv").toString()) // Swedish
+        "sw" -> listOf(Locale("sw").toString()) // Swahili
+        "th" -> listOf(Locale("th", "THA").toString(), "tha_THA", "tha_THA_default-1", "tha_THA_f00-1") // Thai
 
         // French (Variants)
-        "fr_FR", "fr_QC", "fr" -> Locale.FRANCE // fr_QC maps to fr_CA, but here it defaults to FRANCE
+        "fr_FR", "fr_QC", "fr" -> listOf(Locale.FRANCE.toString(), "fra_FRA-1", "fra_FRA_default-1", "fra_FRA_f00-1") // fr_QC maps to fr_CA, but here it defaults to FRANCE
 
         // Chinese (Variants)
-        "zh" -> Locale.CHINESE // General Chinese
-        "zh_Hans" -> Locale.SIMPLIFIED_CHINESE // Simplified Chinese
-        "zh_Hant" -> Locale.TRADITIONAL_CHINESE // Traditional Chinese
-        "yue" -> Locale.forLanguageTag("zh-yue") // Cantonese
+        "zh" -> listOf(Locale.CHINESE.toString(), "zho_CHN", "zho_CHN-1", "zho_CHN_default-1", "zho_CHN_f00-1") // General Chinese (defaults to Simplified)
+        "zh_Hans" -> listOf(Locale.SIMPLIFIED_CHINESE.toString(), "zho_CHN", "zho_CHN-1", "zho_CHN_default-1", "zho_CHN_f00-1") // Simplified Chinese
+        "zh_Hant" -> listOf(Locale.TRADITIONAL_CHINESE.toString(), "zho_TWN", "zho_TWN_default-1", "zho_TWN_f00-1", "zho_HKG_default-1", "zho_HKG_f00-1") // Traditional Chinese
+        "yue" -> listOf(Locale.forLanguageTag("zh-yue").toString(), "zho_HKG", "zho_HKG_default-1", "zho_HKG_f00-1") // Cantonese (often associated with HK)
 
         // Spanish (Variants)
-        "es_ES" -> Locale("es", "ES") // Spanish (Spain)
-        "es_MX" -> Locale("es", "MX") // Spanish (Mexico)
+        "es_ES" -> listOf(Locale("es", "ES").toString(), "spa_ESP", "spa_ESP-1", "spa_ESP_default-1", "spa_ESP_f00-1") // Spanish (Spain)
+        "es_MX" -> listOf(Locale("es", "MX").toString(), "spa_MEX", "spa_MEX-1", "spa_MEX_default-1", "spa_MEX_f00-1") // Spanish (Mexico)
+        "es_US" -> listOf(Locale("es", "US").toString(), "spa_USA", "spa_USA_default-1", "spa_USA_f00-1") // Spanish (USA)
 
-        // Other language codes from your IPA list
-        "fa" -> Locale("fa") // Persian (Farsi)
-        "eo" -> Locale("eo") // Esperanto
-        "ma" -> Locale("mr") // Marathi (guessed from 'ma')
+        // Other language codes from your IPA list and common ones
+        "fa" -> listOf(Locale("fa").toString()) // Persian (Farsi)
+        "eo" -> listOf(Locale("eo").toString()) // Esperanto
+        "mr" -> listOf(Locale("mr").toString()) // Marathi (confirmed from 'ma' guess)
+        "hi" -> listOf(Locale("hi", "IN").toString(), "hin_IND", "hin_IND_default-1", "hin_IND_f00-1") // Hindi (India)
+        "it" -> listOf(Locale.ITALY.toString(), "ita_ITA", "ita_ITA-1", "ita_ITA_default-1", "ita_ITA_f00-1") // Italian
+        "pl" -> listOf(Locale("pl", "PL").toString(), "pol_POL", "pol_POL_default-1", "pol_POL_f00-1") // Polish
+        "pt" -> listOf(Locale("pt").toString(), "por_BRA", "por_BRA-1", "por_BRA_default-1", "por_BRA_f00-1") // Portuguese (general, defaults to Brazil)
+        "pt_BR" -> listOf(Locale("pt", "BR").toString(), "por_BRA", "por_BRA-1", "por_BRA_default-1", "por_BRA_f00-1") // Portuguese (Brazil)
+        "ru" -> listOf(Locale("ru", "RU").toString(), "rus_RUS", "rus_RUS-1", "rus_RUS_default-1", "rus_RUS_f00-1") // Russian
 
         // Non-standard or hard-to-determine codes, returning null unless specified
-        "vi", "N", "C", "S" -> Locale("vi", "VN") // Mapped to Vietnamese (Vietnam) based on user's clarification
-        "tts" -> Locale.forLanguageTag("th-isan") // Isan language (often a dialect of Thai)
-        "jam" -> Locale.forLanguageTag("jam") // Jamaican Creole language
+        "vi", "N", "C", "S" -> listOf(Locale("vi", "VN").toString(), "vie_VNM", "vie_VNM_default-1", "vie_VNM_f00-1") // Mapped to Vietnamese (Vietnam) based on user's clarification
+        "tts" -> listOf(Locale.forLanguageTag("th-isan").toString(), Locale("th", "THA").toString(), "tha_THA", "tha_THA_default-1", "tha_THA_f00-1") // Isan language (often a dialect of Thai)
+        "jam" -> listOf(Locale.forLanguageTag("jam").toString()) // Jamaican Creole language
 
         // Default case if no explicit match is found
         else -> {
-            // Attempt to create Locale from standard formats (e.g., "vi", "vi_VN")
-            val parts = this.split("_", "-") // Accepts both "_" and "-" as separators
-            when (parts.size) {
-                1 -> Locale(parts[0]) // Only language code (e.g., "vi")
-                2 -> Locale(parts[0], parts[1]) // Language and country code (e.g., "vi_VN")
-                else -> null // Cannot handle other formats
-            }
+            emptyList()
         }
     }
 }
