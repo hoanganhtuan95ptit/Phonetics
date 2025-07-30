@@ -26,11 +26,15 @@ class SpeakView : MainView {
 
     override fun setup(activity: MainActivity) {
 
-        val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
+        val speechRecognizer = if (SpeechRecognizer.isRecognitionAvailable(activity)) {
+            SpeechRecognizer.createSpeechRecognizer(activity)
+        } else {
+            null
+        }
 
         listenerEvent(activity.lifecycle, EventName.CHECK_SUPPORT_SPEAK_TEXT_REQUEST) {
 
-            if (it !is Map<*, *>) {
+            if (it !is Map<*, *> || speechRecognizer == null) {
 
                 return@listenerEvent
             }
@@ -53,7 +57,7 @@ class SpeakView : MainView {
 
         listenerEvent(activity.lifecycle, EventName.START_SPEAK_TEXT_REQUEST) {
 
-            if (it !is Map<*, *>) {
+            if (it !is Map<*, *> || speechRecognizer == null) {
 
                 return@listenerEvent
             }
@@ -73,10 +77,12 @@ class SpeakView : MainView {
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 1500)
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1000) // 1 giây im lặng
             intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1000)
-            speechRecognizer?.startListening(intent)
+            speechRecognizer.startListening(intent)
         }
 
         listenerEvent(activity.lifecycle, EventName.STOP_SPEAK_TEXT_REQUEST) {
+
+            val speechRecognizer = speechRecognizer ?: return@listenerEvent
 
             speechRecognizer.stopListen()
         }
@@ -85,16 +91,17 @@ class SpeakView : MainView {
 
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
 
+                val speechRecognizer = speechRecognizer ?: return
+
                 when (event) {
+
                     Lifecycle.Event.ON_PAUSE -> {
 
-//                        Log.d("tuanha", "onStateChanged: ON_PAUSE")
                         speechRecognizer.stopListen()
                     }
 
                     Lifecycle.Event.ON_DESTROY -> {
 
-//                        Log.d("tuanha", "onStateChanged: ON_DESTROY")
                         speechRecognizer.stopListen()
                         speechRecognizer.cancel()
                         speechRecognizer.destroy()
