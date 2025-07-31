@@ -1,5 +1,8 @@
 package com.simple.phonetics.data.repositories
 
+import android.content.Context
+import com.simple.crashlytics.logCrashlytics
+import com.simple.phonetics.R
 import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.data.dao.PhoneticRoomDatabaseProvider
@@ -15,6 +18,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 
 class PhoneticRepositoryImpl(
+    private val context: Context,
+
     private val appCache: AppCache,
     private val apiProvider: ApiProvider,
     private val phoneticRoomDatabaseProvider: PhoneticRoomDatabaseProvider
@@ -30,7 +35,25 @@ class PhoneticRepositoryImpl(
 
     override suspend fun getSourcePhonetic(it: Language.IpaSource): String {
 
-        return api.syncPhonetics(it.source).string()
+        val result = runCatching {
+
+            return api.syncPhonetics(it.source).string()
+        }
+
+        if (result.isFailure) if (it.code == Language.EN_UK) runCatching {
+
+            return context.resources.openRawResource(R.raw.en_uk).bufferedReader().use { it.readText() }
+        } else if (it.code == Language.EN_US) runCatching {
+
+            return context.resources.openRawResource(R.raw.en_us).bufferedReader().use { it.readText() }
+        }
+
+        result.getOrElse { cause ->
+
+            logCrashlytics("getSourcePhoneticError_${it.code}", cause)
+        }
+
+        throw result.exceptionOrNull() ?: RuntimeException("")
     }
 
     override suspend fun syncPhonetic(language: Language, limit: Int): Flow<ResultState<Pair<Language.IpaSource, Float>>> = channelFlow {
