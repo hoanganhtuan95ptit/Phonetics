@@ -29,7 +29,7 @@ val repositoryModule = module {
 
     single<ReadingRepository> { ReadingRepositoryImpl(get()) }
 
-    single<PhoneticRepository> { PhoneticRepositoryImpl(get(), get(), get()) }
+    single<PhoneticRepository> { PhoneticRepositoryImpl(get(), get(), get(), get()) }
 
     single<LanguageRepository> { LanguageRepositoryImpl(get(), get()) }
 

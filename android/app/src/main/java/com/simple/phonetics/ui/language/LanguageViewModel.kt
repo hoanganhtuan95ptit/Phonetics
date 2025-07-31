@@ -233,8 +233,8 @@ class LanguageViewModel(
 
             it.doFailed {
 
-                logAnalytics("update_language_input_failed")
-                logCrashlytics("update_language_input_failed", it)
+                logAnalytics("update_language_input_failed_${languageSelected.id}")
+                logCrashlytics("update_language_input_failed_${languageSelected.id}", it)
             }
 
             it.doSuccess {
