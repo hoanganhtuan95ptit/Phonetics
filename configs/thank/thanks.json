@@ -12,6 +12,7 @@
     },
     {
         "id": "thank://ads",
+        "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/images/thanks/thank_you.png",
         "title": "thank_screen_title_for_action_ads",
         "message": "thank_screen_message_for_action_ads",
         "author": "You",
