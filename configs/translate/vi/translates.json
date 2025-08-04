@@ -182,6 +182,11 @@
   "thank_screen_action_negative": "🙏 Cảm ơn",
   "thank_screen_action_positive": "Mở cộng đồng",
 
+  "thank_screen_title_for_action_ads":"💡 Cảm ơn bạn",
+  "thank_screen_message_for_action_ads":"Cảm ơn bạn đã xem quảng cáo! 🙏 Quảng cáo giúp chúng tôi duy trì dự án 💡 và tiếp tục cải thiện ứng dụng mỗi ngày 🌱📱.",
+  "thank_screen_action_negative_ads": "",
+  "thank_screen_action_positive_ads": "Đóng",
+
   "campaign_screen_title_for_join_group":"🤝 Tham gia cộng đồng, cùng nhau phát triển!",
   "campaign_screen_message_for_join_group":"📢 Chia sẻ ý tưởng, góp ý tính năng và đồng hành cùng mọi người để ứng dụng ngày càng hoàn thiện hơn! 🚀💡",
 

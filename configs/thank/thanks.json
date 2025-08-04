@@ -9,5 +9,16 @@
         "negativeDeeplink": "",
         "positive": "thank_screen_action_positive",
         "positiveDeeplink": "https://www.facebook.com/share/p/1KtTjnFK8A"
+    },
+    {
+        "id": "thank://ads",
+        "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/images/thanks/Screenshot%202025-06-29%20at%2008.57.46.png",
+        "title": "thank_screen_title_for_action_ads",
+        "message": "thank_screen_message_for_action_ads",
+        "author": "You",
+        "negative": "thank_screen_action_negative_ads",
+        "negativeDeeplink": "",
+        "positive": "thank_screen_action_positive_ads",
+        "positiveDeeplink": ""
     }
 ]
