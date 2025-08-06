@@ -33,8 +33,6 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.dao.entities.Ipa
-import com.simple.phonetics.BRANCH
-import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
@@ -48,6 +46,7 @@ import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
+import com.simple.phonetics.utils.exts.wrapLink
 import com.simple.phonetics.utils.spans.RoundedBackground
 import com.simple.state.ResultState
 import com.simple.state.doFailed
@@ -363,12 +362,7 @@ class IpaDetailViewModel(
             voice = data.voice
         }
 
-        voice = voice.replace("\$branch", BRANCH)
-
-        if (BuildConfig.DEBUG) {
-
-            voice = voice.replace("heads/main/", "heads/$BRANCH/")
-        }
+        voice = voice.wrapLink()
 
 
         val job = launch {

@@ -1,5 +1,7 @@
 package com.simple.phonetics.utils.exts
 
+import com.simple.phonetics.BRANCH
+import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.entities.Language
 import java.text.Normalizer
 
@@ -39,4 +41,16 @@ fun String.removeSpecialCharacters(): String = runCatching {
 }.getOrElse {
 
     this
+}
+
+fun String.wrapLink(): String {
+
+    var wrap = this.replace("\$branch", BRANCH)
+
+    if (BuildConfig.DEBUG) {
+
+        wrap = wrap.replace("heads/main/", "heads/$BRANCH/")
+    }
+
+    return wrap
 }

@@ -14,8 +14,10 @@ import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.toJson
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.phonetics.DeeplinkManager.ADS
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.view.MainView
+import com.simple.phonetics.utils.sendDeeplinkWithThank
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
@@ -103,6 +105,7 @@ class AdsView : MainView {
                 logAnalytics("onAdDismissedFullScreenContent")
 
                 trySend(Unit)
+                sendDeeplinkWithThank(ADS)
             }
 
             override fun onAdFailedToShowFullScreenContent(adError: AdError) {
