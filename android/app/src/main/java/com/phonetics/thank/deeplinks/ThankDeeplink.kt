@@ -33,6 +33,7 @@ import com.simple.phonetics.ui.base.ConfirmViewModel
 import com.simple.phonetics.ui.base.VerticalConfirmSheetFragment
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.simple.phonetics.utils.exts.wrapLink
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.UUID
@@ -67,9 +68,9 @@ class ThankDeeplink : DeeplinkHandler {
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        ImageViewItem(
+        if (!thank.image.isNullOrBlank()) ImageViewItem(
             id = "1",
-            image = thank.image,
+            image = thank.image.wrapLink(),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = DP.DP_100 + DP.DP_100
@@ -77,8 +78,9 @@ class ThankDeeplink : DeeplinkHandler {
         ).let {
 
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem("SPACE_IMAGE", height = DP.DP_24))
         }
+
+        viewItemList.add(SpaceViewItem("SPACE_IMAGE", height = DP.DP_24))
 
         NoneTextViewItem(
             id = "2",

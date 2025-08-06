@@ -180,12 +180,12 @@ class VerticalConfirmSheetFragment : BaseViewModelSheetFragment<DialogListBindin
             val bindingConfirmSpeak = bindingConfirmAction ?: return@let
 
             val negative = it.negative
-            bindingConfirmSpeak.tvNegative.setVisible(negative != null)
+            bindingConfirmSpeak.tvNegative.setVisible(negative != null && negative.text.text.isNotBlank())
             bindingConfirmSpeak.tvNegative.setText(negative?.text)
             bindingConfirmSpeak.tvNegative.setBackground(negative?.background)
 
             val positive = it.positive
-            bindingConfirmSpeak.tvPositive.setVisible(positive != null)
+            bindingConfirmSpeak.tvPositive.setVisible(positive != null && positive.text.text.isNotBlank())
             bindingConfirmSpeak.tvPositive.setText(positive?.text)
             bindingConfirmSpeak.tvPositive.setBackground(positive?.background)
 

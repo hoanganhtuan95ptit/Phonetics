@@ -26,15 +26,9 @@ class SpeakView : MainView {
 
     override fun setup(activity: MainActivity) {
 
-        val speechRecognizer = if (SpeechRecognizer.isRecognitionAvailable(activity)) {
-            SpeechRecognizer.createSpeechRecognizer(activity)
-        } else {
-            null
-        }
-
         listenerEvent(activity.lifecycle, EventName.CHECK_SUPPORT_SPEAK_TEXT_REQUEST) {
 
-            if (it !is Map<*, *> || speechRecognizer == null) {
+            if (it !is Map<*, *>) {
 
                 return@listenerEvent
             }
@@ -55,16 +49,23 @@ class SpeakView : MainView {
             sendEvent(EventName.CHECK_SUPPORT_SPEAK_TEXT_RESPONSE, data)
         }
 
+
+        val speechRecognizer = runCatching {
+            SpeechRecognizer.createSpeechRecognizer(activity)
+        }.getOrElse {
+            null
+        }
+
         listenerEvent(activity.lifecycle, EventName.START_SPEAK_TEXT_REQUEST) {
 
-            if (it !is Map<*, *> || speechRecognizer == null) {
+            if (it !is Map<*, *>) {
 
                 return@listenerEvent
             }
 
             val languageWrap = it[Param.LANGUAGE_CODE].asObjectOrNull<String>()?.languageWrap()
 
-            if (languageWrap == null) {
+            if (languageWrap == null || speechRecognizer == null) {
 
                 sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Failed(AppException("")))
                 return@listenerEvent
@@ -74,10 +75,15 @@ class SpeakView : MainView {
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, languageWrap)
             intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 1500)
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1000) // 1 giây im lặng
-            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1000)
-            speechRecognizer.startListening(intent)
+            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 2 * 1000)
+            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 3 * 1000) // 1 giây im lặng
+            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 3 * 1000)
+
+            runCatching {
+                speechRecognizer.startListening(intent)
+            }.getOrElse { error ->
+                sendEvent(EventName.START_SPEAK_TEXT_RESPONSE, ResultState.Failed(error))
+            }
         }
 
         listenerEvent(activity.lifecycle, EventName.STOP_SPEAK_TEXT_REQUEST) {

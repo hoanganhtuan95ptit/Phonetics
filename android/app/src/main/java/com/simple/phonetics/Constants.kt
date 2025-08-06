@@ -54,6 +54,8 @@ object DeeplinkManager {
     const val GAME_IPA_WORDLE = "app://game_ipa_wordle"
     const val GAME_IPA_PUZZLE = "app://game_ipa_puzzle"
     const val GAME_CONGRATULATION = "app://game_congratulation"
+
+    const val ADS = "app://ads"
 }
 
 object Payload {
@@ -135,7 +137,7 @@ object Id {
 @Suppress("KotlinConstantConditions", "SimplifyBooleanWithConstants")
 object Config {
 
-    val ADS_DEBUG = BuildConfig.DEBUG && false
+    val ADS_DEBUG = BuildConfig.DEBUG && true
     val RATE_DEBUG = BuildConfig.DEBUG && false
     val EVENT_DEBUG = BuildConfig.DEBUG && false
     val UPDATE_DEBUG = BuildConfig.DEBUG && false
