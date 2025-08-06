@@ -115,7 +115,10 @@ class ReadView : MainView {
 
         if (voiceList.isEmpty()) withContext(handler + Dispatchers.IO) {
 
-            val message = textToSpeech.voices?.toList().orEmpty().groupBy { it.locale.toString() }.mapValues { it.value.size }.toList().sortedBy { it.first }.joinToString { "${it.first}-${it.second}" }
+            val voices = textToSpeech.voices?.toList().orEmpty()
+            if (voices.isEmpty()) return@withContext
+
+            val message = voices.groupBy { it.locale.toString() }.mapValues { it.value.size }.toList().sortedBy { it.first }.joinToString { "${it.first}-${it.second}" }
             logCrashlytics("phoneticCode:${phoneticCode} -- language:$localeTagList -- voice_empty:${message}", RuntimeException())
         }
     }
