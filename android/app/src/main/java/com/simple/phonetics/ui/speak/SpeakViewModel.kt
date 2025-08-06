@@ -192,14 +192,14 @@ class SpeakViewModel(
     }
 
     @VisibleForTesting
-    val isCorrect: LiveData<Boolean> = combineSourcesWithDiff(text, speakState) {
+    val isCorrect: LiveData<Boolean> = combineSources(text, speakState) {
 
-        val text = text.value ?: return@combineSourcesWithDiff
+        val text = text.value ?: return@combineSources
         val speakState = speakState.value
 
         if (!speakState.isSuccess()) {
 
-            return@combineSourcesWithDiff
+            return@combineSources
         }
 
         val speakResult = speakState?.toSuccess()?.data.orEmpty()
