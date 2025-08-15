@@ -54,7 +54,7 @@ class AdsViewModel(
         val timeShow = timeShow.get()
 
         val spaceTime = config["ads_space_time"]?.toLongOrNull() ?: if (ADS_DEBUG) 1000L else 30 * 60 * 1000L
-        val spaceRequest = config["ads_space_request"]?.toLongOrNull() ?: if (ADS_DEBUG) 3 else 20L
+        val spaceRequest = config["ads_space_request"]?.toLongOrNull() ?: if (ADS_DEBUG) 3 else 10L
 
         if (System.currentTimeMillis() - timeShow <= spaceTime) {
 
