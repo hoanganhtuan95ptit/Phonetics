@@ -141,7 +141,13 @@ class CacheInterceptor(context: Context) : Interceptor {
 
         val response = chain.proceedOrDefault(request)
 
-        if (response.code != 200) return if (timeCacheList.contains(Header.Value.USE_CACHE_WHEN_ERROR) && cached != null) {
+
+        if (DEBUG) if (response.code != 200) if (cached != null && timeCacheList.contains(Header.CachePolicy.USE_CACHE_WHEN_ERROR)) {
+
+            Log.d(TAG, "get data from cache when call api error ==> lock:${System.identityHashCode(lock)} key:$key error:${response.code} url:${request.url} request_body:${getRequestBody(request)}")
+        }
+
+        if (response.code != 200) return if (cached != null && timeCacheList.contains(Header.CachePolicy.USE_CACHE_WHEN_ERROR)) {
 
             buildCachedResponse(request, cached)
         } else {
@@ -203,11 +209,11 @@ class CacheInterceptor(context: Context) : Interceptor {
 
             when (val time = it.toLongOrNull()) {
 
-                Header.Value.TIME_CACHE_BY_SESSION -> {
+                Header.CachePolicy.TIME_CACHE_BY_SESSION -> {
                     currentTime - timeSession
                 }
 
-                Header.Value.TIME_CACHE_BY_FOREVER -> {
+                Header.CachePolicy.TIME_CACHE_BY_FOREVER -> {
                     currentTime
                 }
 
@@ -239,7 +245,7 @@ class CacheInterceptor(context: Context) : Interceptor {
         Response.Builder()
             .request(request)
             .code(500)
-            .message(e.message.orEmpty())
+            .message(e.message ?: e.javaClass.name)
             .protocol(Protocol.HTTP_1_1)
             .body("{}".toResponseBody("application/json".toMediaType()))
             .build()
@@ -247,6 +253,7 @@ class CacheInterceptor(context: Context) : Interceptor {
 
     companion object {
 
+        @Suppress("SimplifyBooleanWithConstants")
         private val DEBUG = BuildConfig.DEBUG && true
         private const val TAG = "tuanha->cache-interceptor"
     }
