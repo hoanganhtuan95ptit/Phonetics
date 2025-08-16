@@ -37,7 +37,7 @@ class AdsView : MainView {
 
             MobileAds.initialize(activity) { initializationStatus ->
 
-                logAnalytics("onAdInitialize ${initializationStatus.adapterStatusMap.toList().sortedBy { it.first }.toMap().toJson()}")
+                logAnalytics("ads_onAdInitialize ${initializationStatus.adapterStatusMap.toList().sortedBy { it.first }.toMap().toJson()}")
             }
         }
 
@@ -55,7 +55,7 @@ class AdsView : MainView {
 
     private fun showInterstitialAd(activity: MainActivity) = channelFlow {
 
-        logAnalytics("onAdStart")
+        logAnalytics("ads_onAdStart")
 
         val interstitialAd = channelFlow {
 
@@ -63,14 +63,14 @@ class AdsView : MainView {
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
 
-                    logAnalytics("onAdLoaded")
+                    logAnalytics("ads_onAdLoaded")
 
                     trySend(interstitialAd)
                 }
 
                 override fun onAdFailedToLoad(loadAdError: LoadAdError) {
 
-                    logAnalytics("onAdFailedToLoad ${loadAdError.code}")
+                    logAnalytics("ads_onAdFailedToLoad ${loadAdError.code}")
 
                     trySend(null)
                 }
@@ -82,7 +82,7 @@ class AdsView : MainView {
 
         if (interstitialAd == null) {
 
-            logAnalytics("onAdNull")
+            logAnalytics("ads_onAdNull")
             trySend(Unit)
             awaitClose()
             return@channelFlow
@@ -92,17 +92,17 @@ class AdsView : MainView {
 
             override fun onAdClicked() {
 
-                logAnalytics("onAdClicked")
+                logAnalytics("ads_onAdClicked")
             }
 
             override fun onAdImpression() {
 
-                logAnalytics("onAdImpression")
+                logAnalytics("ads_onAdImpression")
             }
 
             override fun onAdDismissedFullScreenContent() {
 
-                logAnalytics("onAdDismissedFullScreenContent")
+                logAnalytics("ads_onAdDismissedFullScreenContent")
 
                 trySend(Unit)
                 sendDeeplinkWithThank(ADS)
@@ -110,18 +110,18 @@ class AdsView : MainView {
 
             override fun onAdFailedToShowFullScreenContent(adError: AdError) {
 
-                logAnalytics("onAdFailedToShowFullScreenContent ${adError.code}")
+                logAnalytics("ads_onAdFailedToShowFullScreenContent ${adError.code}")
 
                 trySend(Unit)
             }
 
             override fun onAdShowedFullScreenContent() {
 
-                logAnalytics("onAdShowedFullScreenContent")
+                logAnalytics("ads_onAdShowedFullScreenContent")
             }
         }
 
-        logAnalytics("onAdShow")
+        logAnalytics("ads_onAdShow")
         interstitialAd.show(activity)
 
         awaitClose {
