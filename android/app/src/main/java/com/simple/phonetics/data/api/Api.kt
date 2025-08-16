@@ -26,7 +26,7 @@ interface Api {
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/event/{language_code}/events.json")
     suspend fun syncEvent(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<Event>
 
-    @Headers("${Header.Name.HEADER_TIME_CACHE}: ${Header.Value.USE_CACHE_WHEN_ERROR}")
+    @Headers("${Header.Name.HEADER_TIME_CACHE}: ${Header.CachePolicy.USE_CACHE_WHEN_ERROR}")
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/configs.json")
     suspend fun syncConfig(@Path("branch") branch: String = BRANCH): Map<String, String>
 

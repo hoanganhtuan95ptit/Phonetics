@@ -24,7 +24,7 @@ interface NetworkDao {
 
     fun getOrNullEntity(id: String): NetworkEntity? = getOrNull(id)?.toEntity()
 
-    @Query("SELECT * FROM $TABLE_NAME WHERE id COLLATE NOCASE IN (:id)")
+    @Query("SELECT * FROM $TABLE_NAME WHERE id COLLATE NOCASE = :id")
     fun getOrNull(id: String): RoomNetwork?
 
 
