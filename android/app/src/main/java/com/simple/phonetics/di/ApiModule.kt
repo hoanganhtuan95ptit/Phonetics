@@ -1,5 +1,6 @@
 package com.simple.phonetics.di
 
+import com.simple.okhttp.cache.CacheInterceptor
 import com.simple.phonetics.data.api.ApiProvider
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
@@ -57,6 +58,7 @@ val apiModule = module {
             .writeTimeout(20, TimeUnit.SECONDS)
             .connectTimeout(20, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
+            .addInterceptor(CacheInterceptor(get()))
             .hostnameVerifier { _, _ -> true }
             .build()
     }
