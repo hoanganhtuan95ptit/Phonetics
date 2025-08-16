@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.game.items
 
 import android.os.Bundle
 import android.view.View
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
@@ -43,12 +44,13 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
         super.onViewCreated(view, savedInstanceState)
 
         observeData()
-
         observeGameData()
 
         if (arguments?.getString(Param.ROOT_TRANSITION_NAME, "").orEmpty().isNotEmpty()) {
             showAds()
         }
+
+        logAnalytics("ads_game_item")
     }
 
     private fun observeData() = with(viewModel) {

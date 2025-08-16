@@ -13,6 +13,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
 import com.permissionx.guolindev.PermissionX
 import com.simple.adapter.MultiAdapter
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
@@ -60,6 +61,8 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         setupRecyclerView()
 
         observeData()
+
+        logAnalytics("ads_speak")
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogListBinding {
