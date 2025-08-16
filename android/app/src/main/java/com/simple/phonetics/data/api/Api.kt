@@ -21,7 +21,7 @@ interface Api {
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/ipa/{language_code}/ipas-new.json")
     suspend fun syncIPA(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<Ipa>
 
-    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/event/{language_code}/events.json")
+    @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/event/{language_code}/events_v2.json")
     suspend fun syncEvent(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<Event>
 
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/popular/{language_code}/populars.json")

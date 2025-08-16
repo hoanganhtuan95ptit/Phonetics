@@ -26,6 +26,7 @@ import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.domain.usecase.event.GetCurrentEventAsyncUseCase
 import com.simple.phonetics.domain.usecase.event.UpdateEventShowUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.wrapLink
 import com.simple.state.ResultState
@@ -64,6 +65,11 @@ class EventHomeViewModel(
 
         val event = eventState.data
 
+        val title = translate.getOrKey(event.title)
+        if (title.contains("title_", true)) {
+            return@combineSourcesWithDiff
+        }
+
         ImageViewItem(
             id = "1",
             image = event.image.wrapLink(),
@@ -79,7 +85,7 @@ class EventHomeViewModel(
 
         NoneTextViewItem(
             id = "2",
-            text = translate[event.title].orEmpty()
+            text = translate.getOrKey(event.title)
                 .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 20f,
@@ -93,7 +99,7 @@ class EventHomeViewModel(
 
         NoneTextViewItem(
             id = "3",
-            text = translate[event.message].orEmpty()
+            text = translate.getOrKey(event.message)
                 .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
             textStyle = TextStyle(
                 textSize = 16f,
@@ -129,7 +135,7 @@ class EventHomeViewModel(
             event = event,
 
             positive = ButtonInfo(
-                text = translate[event.positive].orEmpty()
+                text = translate.getOrKey(event.positive)
                     .with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
                 background = Background(
                     backgroundColor = theme.getOrTransparent("colorPrimary"),
@@ -137,7 +143,7 @@ class EventHomeViewModel(
                 )
             ),
             negative = if (event.negative.isNotBlank()) ButtonInfo(
-                text = translate[event.negative].orEmpty()
+                text = translate.getOrKey(event.negative)
                     .with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant"))),
                 background = Background(
                     backgroundColor = theme.getOrTransparent("colorBackground"),
