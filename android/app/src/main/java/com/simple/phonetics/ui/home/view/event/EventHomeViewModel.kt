@@ -27,6 +27,7 @@ import com.simple.phonetics.domain.usecase.event.GetCurrentEventAsyncUseCase
 import com.simple.phonetics.domain.usecase.event.UpdateEventShowUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.simple.phonetics.utils.exts.wrapLink
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
 import kotlinx.coroutines.Dispatchers
@@ -65,7 +66,7 @@ class EventHomeViewModel(
 
         ImageViewItem(
             id = "1",
-            image = event.image,
+            image = event.image.wrapLink(),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = DP.DP_100 + DP.DP_70
