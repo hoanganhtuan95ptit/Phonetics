@@ -1,10 +1,8 @@
 package com.simple.phonetics.ui
 
 import android.animation.ObjectAnimator
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
@@ -50,11 +48,8 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
                 if (timeInit >= 1) logAnalytics("init_slow_$timeInit")
             }
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("tuanha", "onResume: ${System.currentTimeMillis() - PhoneticsApp.start}  ${Color.parseColor("#1877F2")}  ${Color.parseColor("#EEEEEE")}")
+        logAnalytics("ads_init")
     }
 
     private fun observeData() = with(viewModel) {
