@@ -1,2 +1,15 @@
 [
+  {
+    "id": "02/09/1945",
+    "name": "02/09/1945",
+    "timeEnd": "03/09/2025",
+    "timeStart": "01/07/2025",
+    "title": "Kỷ niệm 80 năm Quốc khánh Việt Nam 🇻🇳 (02/09/1945 – 02/09/2025)",
+    "message": "Ngày 2/9/1945, Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập tại Quảng trường Ba Đình, khai sinh nước Việt Nam Dân chủ Cộng hòa. 80 năm sau, chúng ta tự hào nhìn lại hành trình dựng nước và giữ nước ✨, tri ân những đóng góp của các thế hệ đi trước",
+    "image": "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/main/images/img_event_vn_02_09.png",
+    "positive": "Chiến thắng",
+    "positiveDeepLink": "",
+    "negative": "",
+    "negativeDeepLink": ""
+  }
 ]
