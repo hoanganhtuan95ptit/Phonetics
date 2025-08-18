@@ -21,6 +21,7 @@ import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
+import com.simple.phonetics.utils.exts.hasPermissions
 import com.simple.state.doSuccess
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -70,7 +71,7 @@ class DetectHomeView : HomeView {
             PermissionX.init(fragment.requireActivity())
                 .permissions(REQUIRED_PERMISSIONS_READ_FILE.toList())
                 .request { allGranted, _, _ ->
-                    if (allGranted) {
+                    if (allGranted && fragment.hasPermissions(*REQUIRED_PERMISSIONS_READ_FILE)) {
                         takeImageFromGalleryResult.launchTakeImageFromGallery()
                     }
                 }
@@ -81,7 +82,7 @@ class DetectHomeView : HomeView {
             PermissionX.init(fragment.requireActivity())
                 .permissions(REQUIRED_PERMISSIONS_CAMERA.toList())
                 .request { allGranted, _, _ ->
-                    if (allGranted) {
+                    if (allGranted && fragment.hasPermissions(*REQUIRED_PERMISSIONS_CAMERA)) {
                         currentPhotoPath = takeImageFromCameraResult.launchTakeImageFromCamera(fragment.requireContext(), "image")?.absolutePath ?: return@request
                     }
                 }
