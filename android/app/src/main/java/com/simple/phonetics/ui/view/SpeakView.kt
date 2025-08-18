@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognitionListener
@@ -38,7 +39,7 @@ class SpeakView : MainView {
             val languageWrap = languageCode?.languageWrap()
 
             val isSupport = languageWrap != null
-                    && SpeechRecognizer.isRecognitionAvailable(activity)
+                    && activity.isSpeechRecognitionAvailableSafe()
                     && Locale(languageCode).runCatching { isO3Language }.getOrNull() != null
 
             val data = mapOf(
@@ -184,6 +185,14 @@ class SpeakView : MainView {
     private fun SpeechRecognizer.stopListen() {
 
         stopListening()
+    }
+
+    private fun Context.isSpeechRecognitionAvailableSafe(): Boolean = runCatching {
+
+        SpeechRecognizer.isRecognitionAvailable(this)
+    }.getOrElse {
+
+        false
     }
 
     private fun String.languageWrap() = when (this) {
