@@ -21,7 +21,6 @@ import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.simple.phonetics.utils.showAds
 import com.simple.state.doSuccess
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -103,7 +102,6 @@ class DetectHomeView : HomeView {
 
                 viewModel.getPhonetics("")
                 binding.etText.setText(it)
-                showAds()
             }
         }
 
