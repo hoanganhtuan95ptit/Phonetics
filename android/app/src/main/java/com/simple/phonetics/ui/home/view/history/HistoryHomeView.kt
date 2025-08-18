@@ -9,7 +9,6 @@ import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem
 import com.simple.phonetics.ui.home.view.HomeView
-import com.simple.phonetics.utils.showAds
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @AutoService(HomeView::class)
@@ -33,8 +32,6 @@ class HistoryHomeView : HomeView {
 
             viewModel.getPhonetics("")
             fragment.binding?.etText?.setText(viewItem.id)
-
-            showAds()
         }
     }
 }

@@ -46,6 +46,9 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
         observeData()
         observeGameData()
 
+        /**
+         * là next game
+         */
         if (arguments?.getString(Param.ROOT_TRANSITION_NAME, "").orEmpty().isNotEmpty()) {
             showAds()
         }

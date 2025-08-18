@@ -61,8 +61,6 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         setupRecyclerView()
 
         observeData()
-
-        logAnalytics("ads_speak")
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogListBinding {
@@ -79,6 +77,8 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         super.onDestroy()
 
         showAds()
+
+        logAnalytics("ads_speak")
     }
 
     private fun setupActionCopy() {
