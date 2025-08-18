@@ -146,7 +146,6 @@ class ReadView : MainView {
 
         val voiceList = withContext(handler + Dispatchers.IO) {
 
-
             textToSpeech.getVoice(localeTagList = localeTagList)
         }
 
@@ -185,7 +184,7 @@ class ReadView : MainView {
 
     private fun TextToSpeech.getVoice(localeTagList: List<String>): List<Voice> {
 
-        return voices?.filter {
+        return runCatching { voices }.getOrNull()?.filter {
 
             val voiceLocaleTag = it.locale.toString()
 
