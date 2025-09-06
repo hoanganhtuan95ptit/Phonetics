@@ -36,7 +36,6 @@ project.ext {
     localbroadcastmanager_version = '1.0.0'
     shimmerlayout_version = '2.1.0'
     play_core_ktx_version = '1.10.3'
-    hoanganhtuan95ptit_version = '1.3.30'
     camerax_version = '1.1.0'
     camera_view_version = '1.1.0'
     core_version = "1.1.4"
@@ -153,30 +152,35 @@ project.ext {
             auto_service: "com.google.auto.service:auto-service:$auto_service_version"
     ]
 
+
+    hoanganhtuan95ptit_version = '1.0.7.17'
+
     hoanganhtuan95Dependencies = [
-            base                : "com.github.hoanganhtuan95ptit.core:base:$hoanganhtuan95ptit_version",
-            android             : "com.github.hoanganhtuan95ptit.core:android:$hoanganhtuan95ptit_version",
-            size                : "com.github.hoanganhtuan95ptit.core:size:$hoanganhtuan95ptit_version",
-            task                : "com.github.hoanganhtuan95ptit.core:task:$hoanganhtuan95ptit_version",
-            event               : "com.github.hoanganhtuan95ptit.core:event:$hoanganhtuan95ptit_version",
-            state               : "com.github.hoanganhtuan95ptit.core:state:$hoanganhtuan95ptit_version",
-            image               : "com.github.hoanganhtuan95ptit.core:image:$hoanganhtuan95ptit_version",
-            color               : "com.github.hoanganhtuan95ptit.core:color:$hoanganhtuan95ptit_version",
-            string              : "com.github.hoanganhtuan95ptit.core:string:$hoanganhtuan95ptit_version",
-            detect              : "com.github.hoanganhtuan95ptit.core:detect:$hoanganhtuan95ptit_version",
-            detect_mlkit        : "com.github.hoanganhtuan95ptit.core:detect-mlkit:$hoanganhtuan95ptit_version",
-            translate           : "com.github.hoanganhtuan95ptit.core:translate:$hoanganhtuan95ptit_version",
-            translate_mlkit     : "com.github.hoanganhtuan95ptit.core:translate-mlkit:$hoanganhtuan95ptit_version",
-            analytics           : "com.github.hoanganhtuan95ptit.core:analytics:$hoanganhtuan95ptit_version",
-            analytics_log       : "com.github.hoanganhtuan95ptit.core:analytics-log:$hoanganhtuan95ptit_version",
-            analytics_firebase  : "com.github.hoanganhtuan95ptit.core:analytics-firebase:$hoanganhtuan95ptit_version",
-            crashlytics         : "com.github.hoanganhtuan95ptit.core:crashlytics:$hoanganhtuan95ptit_version",
-            crashlytics_log     : "com.github.hoanganhtuan95ptit.core:crashlytics-log:$hoanganhtuan95ptit_version",
-            crashlytics_firebase: "com.github.hoanganhtuan95ptit.core:crashlytics-firebase:$hoanganhtuan95ptit_version",
-            adapter             : "com.github.hoanganhtuan95ptit.core:adapter:$hoanganhtuan95ptit_version",
-            adapter_processor   : "com.github.hoanganhtuan95ptit.core:adapter-processor:$hoanganhtuan95ptit_version",
-            deeplink            : "com.github.hoanganhtuan95ptit.core:deeplink:$hoanganhtuan95ptit_version",
-            deeplink_processor  : "com.github.hoanganhtuan95ptit.core:deeplink-processor:$hoanganhtuan95ptit_version",
+            base                : "com.hoanganhtuan95ptit:base:$hoanganhtuan95ptit_version",
+            android             : "com.hoanganhtuan95ptit:android:$hoanganhtuan95ptit_version",
+            size                : "com.hoanganhtuan95ptit:size:$hoanganhtuan95ptit_version",
+            task                : "com.hoanganhtuan95ptit:task:$hoanganhtuan95ptit_version",
+            event               : "com.hoanganhtuan95ptit:event:$hoanganhtuan95ptit_version",
+            state               : "com.hoanganhtuan95ptit:state:$hoanganhtuan95ptit_version",
+            image               : "com.hoanganhtuan95ptit:image:$hoanganhtuan95ptit_version",
+            color               : "com.hoanganhtuan95ptit:color:$hoanganhtuan95ptit_version",
+            string              : "com.hoanganhtuan95ptit:string:$hoanganhtuan95ptit_version",
+            detect              : "com.hoanganhtuan95ptit:detect:$hoanganhtuan95ptit_version",
+            detect_mlkit        : "com.hoanganhtuan95ptit:detect-mlkit:$hoanganhtuan95ptit_version",
+            translate           : "com.hoanganhtuan95ptit:translate:$hoanganhtuan95ptit_version",
+            translate_mlkit     : "com.hoanganhtuan95ptit:translate-mlkit:$hoanganhtuan95ptit_version",
+            analytics           : "com.hoanganhtuan95ptit:analytics:$hoanganhtuan95ptit_version",
+            analytics_log       : "com.hoanganhtuan95ptit:analytics-log:$hoanganhtuan95ptit_version",
+            analytics_firebase  : "com.hoanganhtuan95ptit:analytics-firebase:$hoanganhtuan95ptit_version",
+            crashlytics         : "com.hoanganhtuan95ptit:crashlytics:$hoanganhtuan95ptit_version",
+            crashlytics_log     : "com.hoanganhtuan95ptit:crashlytics-log:$hoanganhtuan95ptit_version",
+            crashlytics_firebase: "com.hoanganhtuan95ptit:crashlytics-firebase:$hoanganhtuan95ptit_version",
+            adapter             : "com.hoanganhtuan95ptit:adapter:$hoanganhtuan95ptit_version",
+            adapter_processor   : "com.hoanganhtuan95ptit:adapter-processor:$hoanganhtuan95ptit_version",
+            deeplink            : "com.hoanganhtuan95ptit:deeplink:$hoanganhtuan95ptit_version",
+            deeplink_processor  : "com.hoanganhtuan95ptit:deeplink-processor:$hoanganhtuan95ptit_version",
+            autobind            : "com.hoanganhtuan95ptit:autobind:$hoanganhtuan95ptit_version",
+            autobind_processor  : "com.hoanganhtuan95ptit:autobind-processor:$hoanganhtuan95ptit_version",
     ]
 
     // ===================== Other dependencies for direct import =====================

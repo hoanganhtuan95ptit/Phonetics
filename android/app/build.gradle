@@ -112,6 +112,8 @@ dependencies {
     kapt hoanganhtuan95Dependencies.adapter_processor
     implementation hoanganhtuan95Dependencies.deeplink
     kapt hoanganhtuan95Dependencies.deeplink_processor
+    implementation hoanganhtuan95Dependencies.autobind
+    kapt hoanganhtuan95Dependencies.autobind_processor
 
     // Firebase BOM
     implementation platform(firebaseDependencies.bom)
