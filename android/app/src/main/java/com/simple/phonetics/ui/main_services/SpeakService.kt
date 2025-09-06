@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.view
+package com.simple.phonetics.ui.main_services
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.speech.SpeechRecognizer
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.google.auto.service.AutoService
+import com.hoanganhtuan95ptit.autobind.annotation.AutoBind
 import com.simple.core.utils.AppException
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.event.listenerEvent
@@ -21,9 +21,10 @@ import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
 import com.simple.state.ResultState
 import java.util.Locale
+import kotlin.collections.get
 
-@AutoService(MainView::class)
-class SpeakView : MainView {
+@AutoBind(MainService::class)
+class SpeakService : MainService {
 
     override fun setup(activity: MainActivity) {
 

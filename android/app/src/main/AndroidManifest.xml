@@ -64,6 +64,10 @@
             <meta-data
                 android:name="com.phonetics.size.StyleInitializer"
                 android:value="androidx.startup" />
+
+            <meta-data
+                android:name="com.simple.phonetics.ui.base.screen.ScreenInitializer"
+                android:value="androidx.startup" />
         </provider>
     </application>
 

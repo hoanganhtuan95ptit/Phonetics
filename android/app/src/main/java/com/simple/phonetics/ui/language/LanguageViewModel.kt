@@ -25,6 +25,9 @@ import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncU
 import com.simple.phonetics.domain.usecase.language.input.UpdateLanguageInputUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.base.fragments.button.ButtonViewModel
+import com.simple.phonetics.ui.base.fragments.header.HeaderViewModel
+import com.simple.phonetics.ui.base.fragments.list.ListViewModel
 import com.simple.phonetics.ui.language.adapters.LanguageLoadingViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
@@ -43,14 +46,14 @@ class LanguageViewModel(
     private val updateLanguageInputUseCase: UpdateLanguageInputUseCase,
     private val getLanguageInputAsyncUseCase: GetLanguageInputAsyncUseCase,
     private val getLanguageSupportAsyncUseCase: GetLanguageSupportAsyncUseCase
-) : BaseViewModel() {
+) : ListViewModel() , HeaderViewModel, ButtonViewModel{
 
-    val headerInfo: LiveData<HeaderInfo> = combineSourcesWithDiff(theme, translate) {
+    override val headerInfo: LiveData<HeaderViewModel.HeaderInfo> = combineSourcesWithDiff(theme, translate) {
 
         val theme = theme.value ?: return@combineSourcesWithDiff
         val translate = translate.value ?: return@combineSourcesWithDiff
 
-        val info = HeaderInfo(
+        val info = HeaderViewModel.HeaderInfo(
             title = translate["title_language"].orEmpty()
                 .with(ForegroundColor(theme.getOrTransparent("colorOnBackground"))),
             message = translate["message_select_language"].orEmpty()
@@ -162,7 +165,7 @@ class LanguageViewModel(
         postValue(viewItemList)
     }
 
-    val buttonInfo: LiveData<ButtonInfo> = listenerSourcesWithDiff(theme, languageOld, languageSelected, changeLanguageState, translate) {
+    override val buttonInfo: LiveData<ButtonViewModel.ButtonInfo> = listenerSourcesWithDiff(theme, languageOld, languageSelected, changeLanguageState, translate) {
 
         val theme = theme.value ?: return@listenerSourcesWithDiff
         val translate = translate.value ?: return@listenerSourcesWithDiff
@@ -176,7 +179,7 @@ class LanguageViewModel(
 
         val isClickable = isSelected && !changeLanguageState.isSuccess()
 
-        val info = ButtonInfo(
+        val info = ButtonViewModel.ButtonInfo(
             text = translate["action_confirm_change_language"]
                 .orEmpty()
                 .with(ForegroundColor(if (isSelected) theme.getOrTransparent("colorOnPrimary") else theme.getOrTransparent("colorOnSurface"))),
@@ -355,18 +358,4 @@ class LanguageViewModel(
 
         add(viewItem)
     }
-
-    data class HeaderInfo(
-        val title: RichText,
-        val message: RichText,
-    )
-
-    data class ButtonInfo(
-        val text: RichText,
-
-        val isClickable: Boolean,
-        val isShowLoading: Boolean,
-
-        val background: Background,
-    )
 }

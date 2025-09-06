@@ -7,47 +7,34 @@ import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.hoanganhtuan95ptit.autobind.AutoBind
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.databinding.ActivityMainBinding
-import com.simple.phonetics.ui.view.MainView
+import com.simple.phonetics.ui.main_services.MainService
 import kotlinx.coroutines.launch
-import java.util.ServiceLoader
 
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>() {
 
 
-    private val activityViewModel: TransitionGlobalViewModel by viewModels()
+    val activityViewModel: TransitionGlobalViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ServiceLoader.load(MainView::class.java).toList().forEach { it.setup(this) }
+        AutoBind.loadAsync(MainService::class.java, distinctPattern = true).launchCollect(this){ list ->
+
+            list.forEach { it.setup(this) }
+        }
 
         observeData()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) splashScreen.setOnExitAnimationListener { splashScreenView ->
-
-            lifecycleScope.launch {
-
-                activityViewModel.awaitTransition()
-
-                val slideUp = ObjectAnimator.ofFloat(splashScreenView, View.ALPHA, 1f, 0f)
-                slideUp.interpolator = AnticipateInterpolator()
-                slideUp.duration = 350L
-
-                slideUp.start()
-
-                val timeInit = (System.currentTimeMillis() - PhoneticsApp.start) / 1000
-                if (timeInit >= 1) logAnalytics("init_slow_$timeInit")
-            }
-        }
 
         logAnalytics("ads_init")
     }

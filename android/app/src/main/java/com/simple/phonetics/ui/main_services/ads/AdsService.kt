@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.view.ads
+package com.simple.phonetics.ui.main_services.ads
 
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
@@ -9,14 +9,15 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.google.auto.service.AutoService
+import com.hoanganhtuan95ptit.autobind.annotation.AutoBind
 import com.simple.analytics.logAnalytics
+import com.simple.config.phonetics.R
 import com.simple.core.utils.extentions.toJson
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.DeeplinkManager.ADS
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.view.MainView
+import com.simple.phonetics.ui.main_services.MainService
 import com.simple.phonetics.utils.sendDeeplinkWithThank
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -26,8 +27,8 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-@AutoService(MainView::class)
-class AdsView : MainView {
+@AutoBind(MainService::class)
+class AdsService : MainService {
 
     override fun setup(activity: MainActivity) {
 
@@ -59,7 +60,7 @@ class AdsView : MainView {
 
         val interstitialAd = channelFlow {
 
-            InterstitialAd.load(activity, activity.getString(com.simple.config.phonetics.R.string.ad_unit_id), AdRequest.Builder().build(), object : InterstitialAdLoadCallback() {
+            InterstitialAd.load(activity, activity.getString(R.string.ad_unit_id), AdRequest.Builder().build(), object : InterstitialAdLoadCallback() {
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
 

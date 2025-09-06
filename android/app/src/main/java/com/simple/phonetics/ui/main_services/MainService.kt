@@ -1,8 +1,8 @@
-package com.simple.phonetics.ui.view
+package com.simple.phonetics.ui.main_services
 
 import com.simple.phonetics.ui.MainActivity
 
-interface MainView {
+interface MainService {
 
     fun setup(activity: MainActivity)
 }

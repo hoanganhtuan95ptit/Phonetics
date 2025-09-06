@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.view
+package com.simple.phonetics.ui.main_services
 
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
-import com.google.auto.service.AutoService
+import com.hoanganhtuan95ptit.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.handler
 import com.simple.crashlytics.logCrashlytics
@@ -24,10 +24,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.util.Locale
+import kotlin.collections.get
 
 // ứng dụng sẽ đọc chữ
-@AutoService(MainView::class)
-class ReadView : MainView {
+@AutoBind(MainService::class)
+class ReadService : MainService {
 
     private val speakInitStatus = MediatorLiveData<Int>()
 
