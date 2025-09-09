@@ -92,7 +92,7 @@ class CacheInterceptor(context: Context) : Interceptor {
 
             val lock = synchronized(inFlightRequests) {
 
-                inFlightRequests.computeIfAbsent(key) { Object() }
+                inFlightRequests[key] ?: Object().apply { inFlightRequests[key] = this }
             }
 
             synchronized(lock) {
