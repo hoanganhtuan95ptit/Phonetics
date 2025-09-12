@@ -10,7 +10,7 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.phonetics.databinding.ItemVoiceSpeedBinding
 
 @ItemAdapter
-class VoiceSpeedAdapter(private val onItemClick: (View, VoiceSpeedViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<VoiceSpeedViewItem, ItemVoiceSpeedBinding>() {
+class VoiceSpeedAdapter(private val onItemClickV2: (View, VoiceSpeedViewItem) -> Unit = { _, _ -> }) : ViewItemAdapter<VoiceSpeedViewItem, ItemVoiceSpeedBinding>() {
 
     override val viewItemClass: Class<VoiceSpeedViewItem> by lazy {
         VoiceSpeedViewItem::class.java
@@ -46,7 +46,7 @@ class VoiceSpeedAdapter(private val onItemClick: (View, VoiceSpeedViewItem) -> U
 
                 item.current = current
 
-                onItemClick(binding.root, item)
+                onItemClickV2(binding.root, item)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {

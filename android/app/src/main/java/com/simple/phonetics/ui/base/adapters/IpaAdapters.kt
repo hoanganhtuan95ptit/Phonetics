@@ -34,7 +34,7 @@ import com.simple.phonetics.databinding.ItemIpaBinding
 import com.simple.phonetics.utils.width
 
 @ItemAdapter
-class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null) : ViewItemAdapter<IpaViewItem, ItemIpaBinding>() {
+class IpaAdapters(private val onItemClickV2: ((View, IpaViewItem) -> Unit)? = null) : ViewItemAdapter<IpaViewItem, ItemIpaBinding>() {
 
     override val viewItemClass: Class<IpaViewItem> by lazy {
         IpaViewItem::class.java
@@ -54,7 +54,7 @@ class IpaAdapters(private val onItemClick: ((View, IpaViewItem) -> Unit)? = null
 
             val viewItem = getViewItem(viewHolder.bindingAdapterPosition) ?: return@setDebouncedClickListener
 
-            onItemClick?.invoke(view, viewItem)
+            onItemClickV2?.invoke(view, viewItem)
             sendEvent(EventName.IPA_VIEW_ITEM_CLICKED, view to viewItem)
         }
 
