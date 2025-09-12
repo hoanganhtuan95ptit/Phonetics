@@ -98,11 +98,6 @@ project.ext {
             vectordrawable       : "androidx.vectordrawable:vectordrawable-animated:$vectordrawable_version",
             swiperefreshlayout   : "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version",
             recyclerview         : "androidx.recyclerview:recyclerview:$recycler_version",
-//            localbroadcastmanager: "androidx.localbroadcastmanager:localbroadcastmanager:$localbroadcastmanager_version",
-//            work                 : "androidx.work:work-runtime-ktx:$work_version",
-//            navigation_ui        : "androidx.navigation:navigation-ui-ktx:$nav_version",
-//            navigation_runtime   : "androidx.navigation:navigation-runtime-ktx:$nav_version",
-//            navigation_fragment  : "androidx.navigation:navigation-fragment-ktx:$nav_version",
             lifecycle_process    : "androidx.lifecycle:lifecycle-process:$lifecycle_version",
             lifecycle_livedata   : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version",
             lifecycle_common     : "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version",
@@ -110,9 +105,9 @@ project.ext {
     ]
 
     playDependencies = [
-            core  : "com.google.android.play:feature-delivery-ktx:2.1.0",
             review: "com.google.android.play:review-ktx:2.0.1",
             update: "com.google.android.play:app-update-ktx:2.0.0",
+            feature_delivery: "com.google.android.play:feature-delivery-ktx:2.1.0",
     ]
 
     // --- ML Kit ---
@@ -139,15 +134,6 @@ project.ext {
     coroutinesDependencies = [
             core   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4",
             android: "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4",
-    ]
-
-    sentryDependencies = [
-            android: "io.sentry:sentry-android:6.28.0"
-    ]
-
-    // Google
-    googleDependencies = [
-            auto_service: "com.google.auto.service:auto-service:$auto_service_version"
     ]
 
     hoanganhtuan95Dependencies = [

@@ -15,7 +15,7 @@ apply from: "../../../1CorePrivate/config/phonetics/config.gradle"// can remove
 
 android {
     namespace "com.simple.phonetics"
-    compileSdk project.ext.compileSdkVersion
+    compileSdkVersion project.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "com.ipa.english.phonetics"
@@ -113,7 +113,6 @@ dependencies {
     implementation hoanganhtuan95Dependencies.deeplink
     kapt hoanganhtuan95Dependencies.deeplink_processor
 
-    // Firebase BOM
     implementation platform(firebaseDependencies.bom)
     implementation firebaseDependencies.ads
     implementation firebaseDependencies.perf
@@ -121,18 +120,16 @@ dependencies {
     releaseImplementation firebaseDependencies.analytics
     releaseImplementation firebaseDependencies.crashlytics
 
-    // Glide
     implementation glideDependencies.glide
     implementation glideDependencies.glide_transformations
 
-    // Room
     implementation roomDependencies.room_ktx
     implementation roomDependencies.room_runtime
     kapt roomDependencies.room_compiler
 
-    // Các thư viện khác
-    implementation playDependencies.core
     implementation playDependencies.review
+    implementation playDependencies.feature_delivery
+
     implementation retrofit2Dependencies.logging_interceptor
 
     implementation mlkitDependencies.values()
