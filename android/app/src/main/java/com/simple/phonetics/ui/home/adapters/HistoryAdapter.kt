@@ -24,7 +24,7 @@ import com.simple.phonetics.databinding.ItemHistoryBinding
 import com.simple.phonetics.utils.width
 
 @ItemAdapter
-class HistoryAdapter(private val onItemClick: ((View, HistoryViewItem) -> Unit)? = null) : ViewItemAdapter<HistoryViewItem, ItemHistoryBinding>() {
+class HistoryAdapter(private val onItemClickV2: ((View, HistoryViewItem) -> Unit)? = null) : ViewItemAdapter<HistoryViewItem, ItemHistoryBinding>() {
 
     override val viewItemClass: Class<HistoryViewItem> by lazy {
         HistoryViewItem::class.java
@@ -44,7 +44,7 @@ class HistoryAdapter(private val onItemClick: ((View, HistoryViewItem) -> Unit)?
 
             val viewItem = getViewItem(viewHolder.bindingAdapterPosition) ?: return@setOnClickListener
 
-            onItemClick?.invoke(view, viewItem)
+            onItemClickV2?.invoke(view, viewItem)
             sendEvent(EventName.HISTORY_VIEW_ITEM_CLICKED, view to viewItem)
         }
 
