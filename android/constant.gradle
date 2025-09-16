@@ -160,6 +160,9 @@ project.ext {
             adapter_processor   : "com.github.hoanganhtuan95ptit.core:adapter-processor:$hoanganhtuan95ptit_version",
             deeplink            : "com.github.hoanganhtuan95ptit.core:deeplink:$hoanganhtuan95ptit_version",
             deeplink_processor  : "com.github.hoanganhtuan95ptit.core:deeplink-processor:$hoanganhtuan95ptit_version",
+
+            autobind          : "com.simple:autobind:1.0.0.7",
+            autobind_processor: "com.simple:autobind-processor:1.0.0.7",
     ]
 
     // ===================== Other dependencies for direct import =====================

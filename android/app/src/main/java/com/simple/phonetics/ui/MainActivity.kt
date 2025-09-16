@@ -8,14 +8,21 @@ import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
+import com.simple.autobind.AutoBind
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
+import com.simple.coreapp.utils.ext.handler
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.view.MainView
+import com.simple.startapp.ModuleInitializer
+import com.simple.startapp.StartApp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.ServiceLoader
 
@@ -50,6 +57,25 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         }
 
         logAnalytics("ads_init")
+
+        lifecycleScope.launch(handler + Dispatchers.IO) {
+
+            val moduleName = "test2"
+
+            val isInstalled = StartApp.isInstalled(moduleName).first()
+
+            logAnalytics("dynamic_feature1_delete_status_${StartApp.deleteAll().first()}")
+
+            StartApp.downloadModuleAsync(moduleName).launchCollect(coroutineScope = lifecycleScope, context = handler + Dispatchers.IO) {
+
+                logAnalytics("dynamic_feature1_download_module_${it}")
+            }
+
+            AutoBind.loadNameAsync(ModuleInitializer::class.java, true).launchCollect(coroutineScope = lifecycleScope, context = handler + Dispatchers.IO) {
+
+                logAnalytics("dynamic_feature1_module_init_${isInstalled}_${it.size}")
+            }
+        }
     }
 
     private fun observeData() = with(viewModel) {
