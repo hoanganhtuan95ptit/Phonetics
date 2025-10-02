@@ -7,12 +7,19 @@ import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.simple.analytics.logAnalytics
 import com.simple.autobind.AutoBind
+import com.simple.autobind.utils.doFailed
+import com.simple.autobind.utils.doSuccess
+import com.simple.autobind.utils.toSuccess
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
+import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
@@ -64,16 +71,40 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
             val isInstalled = StartApp.isInstalled(moduleName).first()
 
-            logAnalytics("dynamic_feature1_delete_status_${StartApp.deleteAll().first()}")
+            StartApp.downloadModuleAsync(moduleName).launchCollect(coroutineScope = lifecycleScope, context = handler + Dispatchers.IO) { state ->
 
-            StartApp.downloadModuleAsync(moduleName).launchCollect(coroutineScope = lifecycleScope, context = handler + Dispatchers.IO) {
+                state.doSuccess {
+                    logAnalytics("dynamic_feature1_download_module_${it}")
+                }
 
-                logAnalytics("dynamic_feature1_download_module_${it}")
+                state.doFailed {
+                    logCrashlytics("dynamic_feature1_download_module", it)
+                }
+
+
+                val status = state.toSuccess()?.data
+
+                if (status == SplitInstallSessionStatus.INSTALLED) {
+
+                    deleteAllModule()
+                }
             }
 
             AutoBind.loadNameAsync(ModuleInitializer::class.java, true).launchCollect(coroutineScope = lifecycleScope, context = handler + Dispatchers.IO) {
 
                 logAnalytics("dynamic_feature1_module_init_${isInstalled}_${it.size}")
+            }
+
+            runCatching {
+
+                val googleApiAvailability = GoogleApiAvailability.getInstance()
+                val resultCode = googleApiAvailability.isGooglePlayServicesAvailable(PhoneticsApp.share)
+                ConnectionResult.SUCCESS
+
+                logAnalytics("dynamic_feature1_google_play_$resultCode")
+            }.getOrElse {
+
+                logCrashlytics("dynamic_feature1_google_play", it)
             }
         }
     }
@@ -89,6 +120,19 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
                 sendDeeplink(DeeplinkManager.PHONETICS)
             }
+        }
+    }
+
+    private suspend fun deleteAllModule() {
+
+        val state = StartApp.deleteAll().first()
+
+        state.doSuccess {
+            logAnalytics("dynamic_feature1_delete_status_${it}")
+        }
+
+        state.doFailed {
+            logCrashlytics("dynamic_feature1_delete", it)
         }
     }
 }
