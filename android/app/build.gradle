@@ -75,7 +75,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
-    dynamicFeatures = [':feature:test2']
+    dynamicFeatures = [':feature:mlkit']
 }
 
 dependencies {
@@ -105,6 +105,12 @@ dependencies {
     implementation hoanganhtuan95Dependencies.crashlytics
     implementation hoanganhtuan95Dependencies.crashlytics_log
     implementation hoanganhtuan95Dependencies.crashlytics_firebase
+
+
+    implementation hoanganhtuan95Dependencies.service
+
+    implementation hoanganhtuan95Dependencies.translate_2
+
 
     implementation hoanganhtuan95Dependencies.detect_mlkit
     implementation hoanganhtuan95Dependencies.translate_mlkit

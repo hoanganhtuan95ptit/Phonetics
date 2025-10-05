@@ -14,6 +14,7 @@ import com.simple.analytics.logAnalytics
 import com.simple.autobind.AutoBind
 import com.simple.autobind.utils.doFailed
 import com.simple.autobind.utils.doSuccess
+import com.simple.autobind.utils.isCompleted
 import com.simple.autobind.utils.toSuccess
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
 import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
@@ -29,7 +30,9 @@ import com.simple.phonetics.ui.view.MainView
 import com.simple.startapp.ModuleInitializer
 import com.simple.startapp.StartApp
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.ServiceLoader
 
@@ -64,49 +67,6 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         }
 
         logAnalytics("ads_init")
-
-        lifecycleScope.launch(handler + Dispatchers.IO) {
-
-            val moduleName = "test2"
-
-            val isInstalled = StartApp.isInstalled(moduleName).first()
-
-            StartApp.downloadModuleAsync(moduleName).launchCollect(coroutineScope = lifecycleScope, context = handler + Dispatchers.IO) { state ->
-
-                state.doSuccess {
-                    logAnalytics("dynamic_feature1_download_module_${it}")
-                }
-
-                state.doFailed {
-                    logCrashlytics("dynamic_feature1_download_module", it)
-                }
-
-
-                val status = state.toSuccess()?.data
-
-                if (status == SplitInstallSessionStatus.INSTALLED) {
-
-                    deleteAllModule()
-                }
-            }
-
-            AutoBind.loadNameAsync(ModuleInitializer::class.java, true).launchCollect(coroutineScope = lifecycleScope, context = handler + Dispatchers.IO) {
-
-                logAnalytics("dynamic_feature1_module_init_${isInstalled}_${it.size}")
-            }
-
-            runCatching {
-
-                val googleApiAvailability = GoogleApiAvailability.getInstance()
-                val resultCode = googleApiAvailability.isGooglePlayServicesAvailable(PhoneticsApp.share)
-                ConnectionResult.SUCCESS
-
-                logAnalytics("dynamic_feature1_google_play_$resultCode")
-            }.getOrElse {
-
-                logCrashlytics("dynamic_feature1_google_play", it)
-            }
-        }
     }
 
     private fun observeData() = with(viewModel) {
@@ -120,19 +80,6 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
                 sendDeeplink(DeeplinkManager.PHONETICS)
             }
-        }
-    }
-
-    private suspend fun deleteAllModule() {
-
-        val state = StartApp.deleteAll().first()
-
-        state.doSuccess {
-            logAnalytics("dynamic_feature1_delete_status_${it}")
-        }
-
-        state.doFailed {
-            logCrashlytics("dynamic_feature1_delete", it)
         }
     }
 }

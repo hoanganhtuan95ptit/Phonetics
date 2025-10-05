@@ -1,0 +1,1 @@
+{"bindings":[{"type":"com.simple.phonetics.ui.MainActivity","impl":"com.simple.phonetics.ui.services.DynamicFeatureService"}]}

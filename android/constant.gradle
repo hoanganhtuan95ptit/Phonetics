@@ -161,8 +161,13 @@ project.ext {
             deeplink            : "com.github.hoanganhtuan95ptit.core:deeplink:$hoanganhtuan95ptit_version",
             deeplink_processor  : "com.github.hoanganhtuan95ptit.core:deeplink-processor:$hoanganhtuan95ptit_version",
 
-            autobind          : "com.simple:autobind:1.0.1",
-            autobind_processor: "com.simple:autobind-processor:1.0.1",
+            service             : "com.github.hoanganhtuan95ptit.core:service:1.3.37.beta1",
+
+            translate_2         : "com.github.hoanganhtuan95ptit.core:translate-2:1.3.37.beta1",
+            translate_2_mlkit   : "com.github.hoanganhtuan95ptit.core:translate-2-mlkit:1.3.37.beta1",
+
+            autobind            : "com.github.hoanganhtuan95ptit.core:autobind:1.3.37.beta1",
+            autobind_processor  : "com.github.hoanganhtuan95ptit.core:autobind-processor:1.3.37.beta1",
     ]
 
     // ===================== Other dependencies for direct import =====================
