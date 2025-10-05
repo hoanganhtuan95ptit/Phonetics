@@ -4,16 +4,18 @@ import android.app.Activity
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.autobind.annotation.AutoBind
-import com.simple.autobind.utils.ResultState
-import com.simple.autobind.utils.doFailed
-import com.simple.autobind.utils.doSuccess
-import com.simple.autobind.utils.isCompleted
 import com.simple.coreapp.utils.ext.handler
 import com.simple.crashlytics.logCrashlytics
+import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.ui.MainActivity
 import com.simple.service.ActivityService
 import com.simple.startapp.StartApp
+import com.simple.state.ResultState
+import com.simple.state.doFailed
+import com.simple.state.doSuccess
+import com.simple.state.isCompleted
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -29,9 +31,18 @@ class DynamicFeatureService : ActivityService {
 
         activity.lifecycleScope.launch(handler + Dispatchers.IO) {
 
+            if (BuildConfig.DEBUG) {
+                delay(5 * 1000)
+            }
+
             arrayOf("mlkit").map { moduleName ->
 
                 downloadModule(moduleName = moduleName)
+            }
+
+            if (BuildConfig.DEBUG) arrayOf("mlkit").let { moduleName ->
+
+                deleteModule(moduleName = moduleName)
             }
         }
     }

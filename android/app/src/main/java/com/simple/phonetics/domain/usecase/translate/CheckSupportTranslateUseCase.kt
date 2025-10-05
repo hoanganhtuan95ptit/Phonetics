@@ -9,7 +9,7 @@ class CheckSupportTranslateUseCase(
 
     suspend fun execute(param: Param): ResultState<Boolean> {
 
-        return appRepository.checkTranslate(languageCodeInput = param.inputLanguageCode, languageCodeOutput = param.outputLanguageCode)
+        return appRepository.isSupportTranslate(languageCodeInput = param.inputLanguageCode, languageCodeOutput = param.outputLanguageCode)
     }
 
     class Param(

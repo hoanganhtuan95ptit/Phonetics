@@ -3,12 +3,17 @@ package com.simple.phonetics.ui.home.view.detect
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.usecase.detect.CheckSupportDetectUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.state.doFailed
+import com.simple.state.doSuccess
+import com.simple.state.toSuccess
 
 class DetectHomeViewModel(
     private val checkSupportDetectUseCase: CheckSupportDetectUseCase
@@ -30,7 +35,21 @@ class DetectHomeViewModel(
             inputLanguage.id
         }
 
-        postValueIfActive(checkSupportDetectUseCase.execute(CheckSupportDetectUseCase.Param(languageCode = languageCode)))
+
+        val state = checkSupportDetectUseCase.execute(CheckSupportDetectUseCase.Param(languageCode = languageCode))
+
+        postValueIfActive(state.toSuccess()?.data == true)
+
+
+        state.doSuccess {
+
+            logAnalytics("feature_detect_${languageCode}_${it}")
+        }
+
+        state.doFailed {
+
+            logCrashlytics("feature_detect", it)
+        }
     }
 
     val detectInfo: LiveData<DetectInfo> = combineSourcesWithDiff(isSupportDetect) {

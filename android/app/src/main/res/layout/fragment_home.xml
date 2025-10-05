@@ -152,6 +152,8 @@
                             android:id="@+id/iv_gallery"
                             android:layout_width="40dp"
                             android:layout_height="56dp"
+                            android:visibility="gone"
+                            tools:visibility="visible"
                             android:contentDescription="take image from gallery"
                             android:paddingHorizontal="8dp"
                             android:src="@drawable/ic_gallery_accent_24dp" />
@@ -160,6 +162,8 @@
                             android:id="@+id/iv_camera"
                             android:layout_width="40dp"
                             android:layout_height="56dp"
+                            android:visibility="gone"
+                            tools:visibility="visible"
                             android:contentDescription="take image from camera"
                             android:paddingHorizontal="8dp"
                             android:src="@drawable/ic_camera_accent_24dp" />
