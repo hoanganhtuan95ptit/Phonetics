@@ -34,7 +34,6 @@ import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.domain.usecase.translate.CheckSupportTranslateUseCase
-import com.simple.phonetics.domain.usecase.translate.TranslateUseCase
 import com.simple.phonetics.domain.usecase.translate.selected.GetTranslateSelectedAsyncUseCase
 import com.simple.phonetics.domain.usecase.translate.selected.UpdateTranslateSelectedUseCase
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
@@ -50,10 +49,6 @@ val useCaseModule = module {
 
     single {
         DetectUseCase(get())
-    }
-
-    single {
-        TranslateUseCase(get())
     }
 
     single {
