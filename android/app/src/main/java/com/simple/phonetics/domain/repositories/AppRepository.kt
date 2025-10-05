@@ -2,11 +2,11 @@ package com.simple.phonetics.domain.repositories
 
 import com.simple.phonetics.entities.Event
 import com.simple.phonetics.entities.KeyTranslate
-import com.simple.state.ResultState
-import com.simple.translate.entities.TranslateResponse
 import kotlinx.coroutines.flow.Flow
 
-interface AppRepository {
+interface AppRepository :
+    DetectRepository,
+    TranslateRepository {
 
     @Deprecated("remove")
     suspend fun getCountTranslateOld(): Int
@@ -24,15 +24,6 @@ interface AppRepository {
     suspend fun getCountTranslate(): Int
 
     suspend fun getKeyTranslateDefault(): Map<String, String>
-
-
-    suspend fun detect(languageCodeInput: String, languageCodeOutput: String, path: String): ResultState<String>
-
-    suspend fun checkDetect(languageCodeInput: String, languageCodeOutput: String): Boolean
-
-    suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<TranslateResponse>>
-
-    suspend fun checkTranslate(languageCodeInput: String, languageCodeOutput: String): ResultState<Boolean>
 
 
     suspend fun syncConfigs(): Map<String, String>

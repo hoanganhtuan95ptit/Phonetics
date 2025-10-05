@@ -254,7 +254,7 @@ class CacheInterceptor(context: Context) : Interceptor {
     companion object {
 
         @Suppress("SimplifyBooleanWithConstants")
-        private val DEBUG = BuildConfig.DEBUG && true
+        private val DEBUG = BuildConfig.DEBUG && false
         private const val TAG = "tuanha->cache-interceptor"
     }
 }

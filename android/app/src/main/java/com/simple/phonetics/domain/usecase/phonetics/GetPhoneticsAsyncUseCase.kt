@@ -196,7 +196,7 @@ class GetPhoneticsAsyncUseCase(
             languageCodeOutput = languageCodeOutput
         )
 
-        return state.toSuccess()?.data?.firstOrNull()?.translateState ?: ResultState.Failed(RuntimeException(""))
+        return state.toSuccess()?.data?.firstOrNull()?.state ?: ResultState.Failed(RuntimeException(""))
     }
 
     data class Param(

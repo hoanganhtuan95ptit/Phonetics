@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.simple.adapter.entities.ViewItem
+import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
@@ -24,6 +25,8 @@ import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postValueIfActive
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.Id
 import com.simple.phonetics.Id.TRANSLATE
 import com.simple.phonetics.domain.usecase.phonetics.code.UpdatePhoneticCodeSelectedUseCase
@@ -111,17 +114,19 @@ class ConfigViewModel(
         val inputLanguageCode = inputLanguage.get().id
         val outputLanguageCode = outputLanguage.get().id
 
-        checkSupportTranslateUseCase.execute(CheckSupportTranslateUseCase.Param(inputLanguageCode = inputLanguageCode, outputLanguageCode = outputLanguageCode)).let { state ->
+        val state = checkSupportTranslateUseCase.execute(CheckSupportTranslateUseCase.Param(inputLanguageCode = inputLanguageCode, outputLanguageCode = outputLanguageCode))
 
-            state.doSuccess {
+        postValueIfActive(state)
 
-                postValue(ResultState.Success(true))
-            }
 
-            state.doFailed {
+        state.doSuccess {
 
-                postValue(ResultState.Failed(it))
-            }
+            logAnalytics("feature_translate_${inputLanguageCode}_${outputLanguageCode}_${it}")
+        }
+
+        state.doFailed {
+
+            logCrashlytics("feature_translate", it)
         }
     }
 

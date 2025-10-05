@@ -36,6 +36,7 @@ dependencies {
 
     implementation hoanganhtuan95Dependencies.service
 
+    implementation hoanganhtuan95Dependencies.detect_2_mlkit
     implementation hoanganhtuan95Dependencies.translate_2_mlkit
 
     implementation hoanganhtuan95Dependencies.autobind
