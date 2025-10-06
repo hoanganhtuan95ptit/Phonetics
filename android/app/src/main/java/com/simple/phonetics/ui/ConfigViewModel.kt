@@ -109,10 +109,12 @@ class ConfigViewModel(
     @VisibleForTesting
     val translateState: LiveData<ResultState<Boolean>> = combineSourcesWithDiff(inputLanguage, outputLanguage) {
 
-        postValue(ResultState.Start)
 
         val inputLanguageCode = inputLanguage.get().id
         val outputLanguageCode = outputLanguage.get().id
+
+
+        postValue(ResultState.Start)
 
         val state = checkSupportTranslateUseCase.execute(CheckSupportTranslateUseCase.Param(inputLanguageCode = inputLanguageCode, outputLanguageCode = outputLanguageCode))
 
@@ -141,14 +143,9 @@ class ConfigViewModel(
         val translateState = translateState.get()
         val translateSelect = translateSelect.get()
 
-        if (translateState.isFailed()) {
-
-            postValue(false)
-            return@combineSourcesWithDiff
-        }
-
         if (translateState !is ResultState.Success) {
 
+            postValue(false)
             return@combineSourcesWithDiff
         }
 

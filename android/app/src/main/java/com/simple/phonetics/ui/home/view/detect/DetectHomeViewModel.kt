@@ -36,6 +36,8 @@ class DetectHomeViewModel(
         }
 
 
+        postValue(false)
+
         val state = checkSupportDetectUseCase.execute(CheckSupportDetectUseCase.Param(languageCode = languageCode))
 
         postValueIfActive(state.toSuccess()?.data == true)
