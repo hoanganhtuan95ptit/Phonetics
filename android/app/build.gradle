@@ -88,7 +88,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
-//    dynamicFeatures = [':feature:mlkit']
+    dynamicFeatures = [':feature:mlkit']
 }
 
 dependencies {
