@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObject
-import com.simple.dao.ipa.RoomIpaNew
 import com.simple.okhttp.cache.entities.NetworkEntity
 
 private const val TABLE_NAME = "network_dao"

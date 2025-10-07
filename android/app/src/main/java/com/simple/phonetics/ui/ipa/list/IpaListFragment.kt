@@ -26,6 +26,7 @@ import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.submitListAwaitV2
+import com.unknown.theme.utils.exts.colorBackground
 
 class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaListViewModel>() {
 
@@ -92,7 +93,7 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
 
             val binding = binding ?: return@observe
 
-            binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
+            binding.root.setBackgroundColor(it.colorBackground)
         }
 
         title.observe(viewLifecycleOwner) {

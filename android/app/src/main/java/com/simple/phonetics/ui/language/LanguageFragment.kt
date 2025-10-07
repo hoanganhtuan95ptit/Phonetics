@@ -13,7 +13,6 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.awaitResumed
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
@@ -35,9 +34,13 @@ import com.simple.phonetics.ui.language.adapters.LanguageAdapter
 import com.simple.phonetics.utils.exts.awaitResume
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
+import com.simple.phonetics.utils.exts.colorErrorVariant
+import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
+import com.unknown.theme.utils.exts.colorBackground
+import com.unknown.theme.utils.exts.colorOnBackground
 
 class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, LanguageViewModel>() {
 
@@ -106,8 +109,8 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
-            binding.frameHeader.icBack.setColorFilter(it.getOrTransparent("colorOnBackground"))
+            binding.root.setBackgroundColor(it.colorBackground)
+            binding.frameHeader.icBack.setColorFilter(it.colorOnBackground)
         }
 
         headerInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "HEADER") {
@@ -187,9 +190,9 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
         }
 
         val extras = mapOf(
-            com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColor(theme.getOrTransparent("colorOnErrorVariant"))),
+            com.simple.coreapp.Param.MESSAGE to message.orEmpty().with(ForegroundColor(theme.colorOnErrorVariant)),
             com.simple.coreapp.Param.BACKGROUND to Background(
-                backgroundColor = theme.getOrTransparent("colorErrorVariant"),
+                backgroundColor = theme.colorErrorVariant,
                 cornerRadius = DP.DP_16,
             )
         )

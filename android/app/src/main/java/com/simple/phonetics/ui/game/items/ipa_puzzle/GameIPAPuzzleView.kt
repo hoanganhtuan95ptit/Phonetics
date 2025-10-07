@@ -18,15 +18,25 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Id
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
+import com.simple.phonetics.utils.exts.colorErrorVariant
+import com.simple.phonetics.utils.exts.colorLoading
+import com.simple.phonetics.utils.exts.colorOnErrorVariant
+import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
+import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.theme.utils.exts.colorError
+import com.unknown.theme.utils.exts.colorOnPrimary
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorOnSurfaceVariant
+import com.unknown.theme.utils.exts.colorPrimary
 
-fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Int>, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz, isAnswerCorrect: Boolean): GameItemViewModel.StateInfo {
+fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Any>, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz, isAnswerCorrect: Boolean): GameItemViewModel.StateInfo {
 
     val textColor = if (isAnswerCorrect) {
-        theme.getOrTransparent("colorOnPrimaryVariant")
+        theme.colorOnPrimaryVariant
     } else {
-        theme.getOrTransparent("colorOnErrorVariant")
+        theme.colorOnErrorVariant
     }
 
     val title = if (isAnswerCorrect) {
@@ -42,7 +52,7 @@ fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Int>, trans
         .trim()
         .replace("\$param1", param1)
         .with(ForegroundColor(textColor))
-        .with(param1, Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
+        .with(param1, Bold, ForegroundColor(theme.colorPrimary))
 
 
     val list = arrayListOf<ViewItem>()
@@ -93,14 +103,14 @@ fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Int>, trans
 
     val positive = ButtonInfo(
         text = buttonText.orEmpty()
-            .with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
+            .with(ForegroundColor(theme.colorOnPrimary)),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
             backgroundColor = if (isAnswerCorrect) {
-                theme.getOrTransparent("colorPrimary")
+                theme.colorPrimary
             } else {
-                theme.getOrTransparent("colorError")
+                theme.colorError
             }
         )
     )
@@ -112,40 +122,40 @@ fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Int>, trans
         positive = positive,
 
         backgroundColor = if (isAnswerCorrect) {
-            theme.getOrTransparent("colorPrimaryVariant")
+            theme.colorPrimaryVariant
         } else {
-            theme.getOrTransparent("colorErrorVariant")
+            theme.colorErrorVariant
         }
     )
 
     return info
 }
 
-fun getIPAPuzzleTitleViewItem(size: Map<String, Int>, theme: Map<String, Int>, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz): ViewItem {
+fun getIPAPuzzleTitleViewItem(size: Map<String, Int>, theme: Map<String, Any>, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz): ViewItem {
 
     return TitleViewItem(
         id = "TITLE",
         text = translate["game_ipa_puzzle_screen_title"].orEmpty()
             .replace("\$param1", quiz.question.text)
             .replace("\$param2", quiz.question.ipaIncomplete)
-            .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
-            .with(quiz.question.text, Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface")))
-            .with(quiz.question.ipaIncomplete, Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface")))
-            .with("____", Bold, ForegroundColor(theme.getOrTransparent("colorError"))),
+            .with(ForegroundColor(theme.colorOnSurface))
+            .with(quiz.question.text, Bold, ForegroundColor(theme.colorOnSurface))
+            .with(quiz.question.ipaIncomplete, Bold, ForegroundColor(theme.colorOnSurface))
+            .with("____", Bold, ForegroundColor(theme.colorError)),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
     )
 }
 
-fun getIPAPuzzleOptionViewItem(size: Map<String, Int>, theme: Map<String, Int>, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz, choose: String?) = quiz.answers.mapIndexed { index, answer ->
+fun getIPAPuzzleOptionViewItem(size: Map<String, Int>, theme: Map<String, Any>, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz, choose: String?) = quiz.answers.mapIndexed { index, answer ->
 
     ClickTextViewItem(
         id = "${Id.CHOOSE}_$index",
         data = answer,
 
         text = answer
-            .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+            .with(Bold, ForegroundColor(theme.colorOnSurface)),
         textStyle = TextStyle(
             textSize = 16f,
             textGravity = Gravity.CENTER
@@ -158,9 +168,9 @@ fun getIPAPuzzleOptionViewItem(size: Map<String, Int>, theme: Map<String, Int>, 
             cornerRadius = DP.DP_16,
             strokeWidth = DP.DP_2,
             strokeColor = if (answer.equals(choose, true)) {
-                theme.getOrTransparent("colorPrimary")
+                theme.colorPrimary
             } else {
-                theme.getOrTransparent("colorOnSurfaceVariant")
+                theme.colorOnSurfaceVariant
             }
         ),
 
@@ -175,11 +185,11 @@ fun getIPAPuzzleOptionViewItem(size: Map<String, Int>, theme: Map<String, Int>, 
     )
 }
 
-fun getIPAPuzzleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Int>): List<ViewItem> = arrayListOf<ViewItem>().apply {
+fun getIPAPuzzleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
     val background = Background(
         cornerRadius = DP.DP_24,
-        backgroundColor = theme.getOrTransparent("colorLoading")
+        backgroundColor = theme.colorLoading
     )
 
     NoneTextViewItem(

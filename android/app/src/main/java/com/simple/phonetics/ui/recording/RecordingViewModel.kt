@@ -37,6 +37,9 @@ import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorOnSurfaceVariant
+import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -86,8 +89,8 @@ class RecordingViewModel(
             id = "TITLE",
             text = translate["recording_screen_title"].orEmpty()
                 .replace("\$language_name", languageName)
-                .with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant")))
-                .with(languageName, Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(theme.colorOnSurfaceVariant))
+                .with(languageName, Bold, ForegroundColor(theme.colorOnSurface)),
             textStyle = TextStyle(
                 textSize = 20f,
                 textGravity = Gravity.CENTER
@@ -147,7 +150,7 @@ class RecordingViewModel(
             ),
             background = Background(
                 strokeWidth = DP.DP_2,
-                strokeColor = theme.getOrTransparent("colorPrimary"),
+                strokeColor = theme.colorPrimary,
                 cornerRadius = DP.DP_16
             ),
 

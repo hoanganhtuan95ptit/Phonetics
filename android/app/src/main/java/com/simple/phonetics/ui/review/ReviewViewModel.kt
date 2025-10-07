@@ -28,6 +28,11 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUse
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.unknown.theme.utils.exts.colorBackground
+import com.unknown.theme.utils.exts.colorOnPrimary
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorOnSurfaceVariant
+import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.Calendar
 import kotlin.math.absoluteValue
@@ -83,7 +88,7 @@ class ReviewViewModel(
         NoneTextViewItem(
             id = "2",
             text = translate["rate_title"].orEmpty()
-                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.colorOnSurface)),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -105,7 +110,7 @@ class ReviewViewModel(
         NoneTextViewItem(
             id = "3",
             text = translate["rate_message"].orEmpty()
-                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(theme.colorOnSurface)),
             textStyle = TextStyle(
                 textSize = 16f,
                 textGravity = Gravity.CENTER
@@ -141,17 +146,17 @@ class ReviewViewModel(
             viewItemList = viewItemList,
 
             positive = ButtonInfo(
-                text = translate["rate_action_positive"].orEmpty().with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
+                text = translate["rate_action_positive"].orEmpty().with(ForegroundColor(theme.colorOnPrimary)),
                 background = Background(
-                    backgroundColor = theme.getOrTransparent("colorPrimary"),
+                    backgroundColor = theme.colorPrimary,
                     cornerRadius = DP.DP_16
                 )
             ),
             negative = ButtonInfo(
-                text = translate["rate_action_negative"].orEmpty().with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant"))),
+                text = translate["rate_action_negative"].orEmpty().with(ForegroundColor(theme.colorOnSurfaceVariant)),
                 background = Background(
-                    backgroundColor = theme.getOrTransparent("colorBackground"),
-                    strokeColor = theme.getOrTransparent("colorOnSurfaceVariant"),
+                    backgroundColor = theme.colorBackground,
+                    strokeColor = theme.colorOnSurfaceVariant,
                     strokeWidth = DP.DP_1,
                     cornerRadius = DP.DP_16
                 )

@@ -31,9 +31,15 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
 import com.simple.phonetics.ui.base.ConfirmViewModel
 import com.simple.phonetics.ui.base.VerticalConfirmSheetFragment
+import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.wrapLink
+import com.unknown.theme.utils.exts.colorBackground
+import com.unknown.theme.utils.exts.colorOnPrimary
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorOnSurfaceVariant
+import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.UUID
@@ -85,7 +91,7 @@ class ThankDeeplink : DeeplinkHandler {
         NoneTextViewItem(
             id = "2",
             text = title
-                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.colorOnSurface)),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -107,8 +113,8 @@ class ThankDeeplink : DeeplinkHandler {
         NoneTextViewItem(
             id = "3",
             text = translate.getOrKey(thank.message.orEmpty()).replace("\$author", thank.author.orEmpty())
-                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
-                .with(thank.author.orEmpty(), Bold, ForegroundColor(theme.getOrTransparent("colorPrimary"))),
+                .with(ForegroundColor(theme.colorOnSurface))
+                .with(thank.author.orEmpty(), Bold, ForegroundColor(theme.colorPrimary)),
             textStyle = TextStyle(
                 textSize = 16f,
                 textGravity = Gravity.CENTER
@@ -124,30 +130,30 @@ class ThankDeeplink : DeeplinkHandler {
 
         val anchor = Background(
             cornerRadius = DP.DP_100,
-            backgroundColor = theme.getOrTransparent("colorDivider"),
+            backgroundColor = theme.colorDivider,
         )
 
         val background = Background(
             cornerRadius_TL = DP.DP_24,
             cornerRadius_TR = DP.DP_24,
-            backgroundColor = theme.getOrTransparent("colorBackground")
+            backgroundColor = theme.colorBackground
         )
 
         val positive = ButtonInfo(
             text = translate.getOrKey(thank.positive.orEmpty())
-                .with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
+                .with(ForegroundColor(theme.colorOnPrimary)),
             background = Background(
-                backgroundColor = theme.getOrTransparent("colorPrimary"),
+                backgroundColor = theme.colorPrimary,
                 cornerRadius = DP.DP_16
             )
         )
 
         val negative = ButtonInfo(
             text = translate.getOrKey(thank.negative.orEmpty())
-                .with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant"))),
+                .with(ForegroundColor(theme.colorOnSurfaceVariant)),
             background = Background(
-                backgroundColor = theme.getOrTransparent("colorBackground"),
-                strokeColor = theme.getOrTransparent("colorOnSurfaceVariant"),
+                backgroundColor = theme.colorBackground,
+                strokeColor = theme.colorOnSurfaceVariant,
                 strokeWidth = DP.DP_1,
                 cornerRadius = DP.DP_16
             )

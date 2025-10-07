@@ -21,6 +21,8 @@ import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorPrimary
 
 class PhoneticHomeViewModel(
     private val syncPhoneticAsyncUseCase: SyncPhoneticAsyncUseCase
@@ -64,13 +66,13 @@ class PhoneticHomeViewModel(
                 translate["message_start_sync_phonetics"].orEmpty()
                     .replace("\$ipa_name", ipaName)
                     .replace("\$percent", "$percentWrap")
-                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+                    .with(ForegroundColor(theme.colorOnSurface))
                     .with(ipaName, Bold)
-                    .with("${percentWrap}%", Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
+                    .with("${percentWrap}%", Bold, ForegroundColor(theme.colorPrimary))
             } else {
                 translate["message_completed_sync_phonetics"].orEmpty()
                     .replace("\$ipa_name", ipaName)
-                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
+                    .with(ForegroundColor(theme.colorOnSurface))
                     .with(ipaName, Bold)
             }
 

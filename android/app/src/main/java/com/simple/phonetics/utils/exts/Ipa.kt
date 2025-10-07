@@ -2,14 +2,14 @@ package com.simple.phonetics.utils.exts
 
 import com.simple.dao.entities.Ipa
 
-fun Ipa.BackgroundColor(theme: Map<String, Int>) = if (ipa.contains("ː") && type == Ipa.Type.VOWELS_LONG.value) {
-    theme.getOrTransparent("colorVowelsLong")
+fun Ipa.BackgroundColor(theme: Map<String, Any>) = if (ipa.contains("ː") && type == Ipa.Type.VOWELS_LONG.value) {
+    theme.colorVowelsLong
 } else if (type == Ipa.Type.VOWELS_SHORT.value) {
-    theme.getOrTransparent("colorVowelsShort")
+    theme.colorVowelsShort
 } else if (type == Ipa.Type.CONSONANTS_VOICED.value) {
-    theme.getOrTransparent("colorConsonantsVoiced")
+    theme.colorConsonantsVoiced
 } else if (type == Ipa.Type.CONSONANTS_UNVOICED.value) {
-    theme.getOrTransparent("colorConsonantsUnvoiced")
+    theme.colorConsonantsUnvoiced
 } else {
-    theme.getOrTransparent("colorDiphthongs")
+    theme.colorDiphthongs
 }

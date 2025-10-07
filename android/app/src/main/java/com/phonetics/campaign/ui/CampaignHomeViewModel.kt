@@ -20,6 +20,7 @@ import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.flow.firstOrNull
 
 class CampaignHomeViewModel : BaseViewModel() {
@@ -46,7 +47,7 @@ class CampaignHomeViewModel : BaseViewModel() {
         val backgroundColor = if (campaign.backgroundColor != 0) {
             campaign.backgroundColor
         } else {
-            theme.getOrTransparent("colorPrimary")
+            theme.colorPrimary
         }
 
 

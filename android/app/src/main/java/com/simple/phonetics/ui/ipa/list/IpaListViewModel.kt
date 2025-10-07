@@ -20,6 +20,7 @@ import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.theme.utils.exts.colorOnSurface
 
 class IpaListViewModel(
     private val getIpaStateAsyncUseCase: GetIpaStateAsyncUseCase
@@ -63,9 +64,9 @@ class IpaListViewModel(
                 data = it,
 
                 ipa = it.ipa
-                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                    .with(ForegroundColor(theme.colorOnSurface)),
                 text = it.examples.firstOrNull().orEmpty()
-                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                    .with(ForegroundColor(theme.colorOnSurface)),
 
                 size = Size(
                     width = (size.getOrZero("width") - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,

@@ -39,8 +39,10 @@ import com.simple.phonetics.databinding.LayoutActionConfirmGameBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
+import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.unknown.theme.utils.exts.colorBackground
 
 class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, DialogListBinding, GameConfigViewModel>() {
 
@@ -125,10 +127,10 @@ class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, Di
             val binding = binding ?: return@observe
             val bindingAction = bindingAction ?: return@observe
 
-            binding.vAnchor.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
+            binding.vAnchor.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
 
-            binding.root.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
-            bindingAction.root.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            binding.root.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
+            bindingAction.root.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_TL = DP.DP_16, cornerRadius_TR = DP.DP_16))
         }
 
         buttonInfo.observe(viewLifecycleOwner) { item ->

@@ -14,9 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
@@ -54,11 +51,14 @@ import com.simple.phonetics.ui.view.popup.PopupView
 import com.simple.phonetics.ui.view.popup.PopupViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
+import com.simple.phonetics.utils.exts.colorBackgroundVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.toSuccess
+import com.unknown.theme.utils.exts.colorBackground
+import com.unknown.theme.utils.exts.colorPrimary
 import java.util.ServiceLoader
 import kotlin.math.absoluteValue
 
@@ -248,19 +248,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.ivRead.setColorFilter(it.getOrTransparent("colorPrimary"))
-            binding.ivStop.setColorFilter(it.getOrTransparent("colorPrimary"))
-            binding.ivPaste.setColorFilter(it.getOrTransparent("colorPrimary"))
-            binding.ivCamera.setColorFilter(it.getOrTransparent("colorPrimary"))
-            binding.ivGallery.setColorFilter(it.getOrTransparent("colorPrimary"))
+            binding.ivRead.setColorFilter(it.colorPrimary)
+            binding.ivStop.setColorFilter(it.colorPrimary)
+            binding.ivPaste.setColorFilter(it.colorPrimary)
+            binding.ivCamera.setColorFilter(it.colorPrimary)
+            binding.ivGallery.setColorFilter(it.colorPrimary)
 
-            binding.progress.progressTintList = ColorStateList.valueOf(it.getOrTransparent("colorPrimary"))
+            binding.progress.progressTintList = ColorStateList.valueOf(it.colorPrimary)
 
-            binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
-            binding.frameContent.setBackground(Background(backgroundColor = it.getOrTransparent("colorBackground"), cornerRadius_BL = DP.DP_16, cornerRadius_BR = DP.DP_16))
+            binding.root.setBackgroundColor(it.colorBackground)
+            binding.frameContent.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_BL = DP.DP_16, cornerRadius_BR = DP.DP_16))
 
-            binding.vTemp.setBackgroundColor(it.getOrTransparent("colorBackgroundVariant"))
-            binding.frameRootContent.setBackgroundColor(it.getOrTransparent("colorBackgroundVariant"))
+            binding.vTemp.setBackgroundColor(it.colorBackgroundVariant)
+            binding.frameRootContent.setBackgroundColor(it.colorBackgroundVariant)
         }
 
         title.collectWithLockTransitionUntilData(fragment = fragment, tag = "TITLE") {

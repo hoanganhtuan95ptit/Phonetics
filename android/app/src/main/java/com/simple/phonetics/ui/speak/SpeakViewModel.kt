@@ -32,6 +32,10 @@ import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
+import com.simple.phonetics.utils.exts.colorErrorVariant
+import com.simple.phonetics.utils.exts.colorOnErrorVariant
+import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
+import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
@@ -45,6 +49,8 @@ import com.simple.state.isStart
 import com.simple.state.isSuccess
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
+import com.unknown.theme.utils.exts.colorError
+import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -182,7 +188,7 @@ class SpeakViewModel(
         val info = CopyInfo(
 
             image = R.drawable.ic_copy_24dp,
-            imageFilter = theme.getOrTransparent("colorPrimary"),
+            imageFilter = theme.colorPrimary,
 
             isShow = true,
             messageThankUser = emptyText()
@@ -231,15 +237,15 @@ class SpeakViewModel(
         val isCorrect = speakResult.equals(text, true)
 
         val background = Background(
-            strokeColor = if (isCorrect) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorError"),
+            strokeColor = if (isCorrect) theme.colorPrimary else theme.colorError,
             strokeWidth = DP.DP_1,
             cornerRadius = DP.DP_8,
-            backgroundColor = if (isCorrect) theme.getOrTransparent("colorPrimaryVariant") else theme.getOrTransparent("colorErrorVariant")
+            backgroundColor = if (isCorrect) theme.colorPrimaryVariant else theme.colorErrorVariant
         )
 
         val info = ResultInfo(
             result = speakResult
-                .with(ForegroundColor(if (isCorrect) theme.getOrTransparent("colorOnPrimaryVariant") else theme.getOrTransparent("colorOnErrorVariant"))),
+                .with(ForegroundColor(if (isCorrect) theme.colorOnPrimaryVariant else theme.colorOnErrorVariant)),
             isShow = speakResult.isNotBlank(),
             background = background
         )

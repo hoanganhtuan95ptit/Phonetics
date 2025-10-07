@@ -13,9 +13,9 @@ import com.simple.phonetics.domain.usecase.phonetics.code.GetPhoneticCodeSelecte
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Language
-import com.unknown.color.appColor
 import com.unknown.size.appSize
 import com.unknown.string.appString
+import com.unknown.theme.appTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -45,9 +45,9 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
-    val theme: LiveData<Map<String, Int>> = mediatorLiveData {
+    val theme: LiveData<Map<String, Any>> = mediatorLiveData {
 
-        appColor.collect {
+        appTheme.collect {
 
             postValue(it.toMutableMap())
         }

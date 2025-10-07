@@ -1,15 +1,15 @@
 package com.simple.phonetics.utils.provider.color
 
 import androidx.fragment.app.FragmentActivity
-import com.google.auto.service.AutoService
+import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.extentions.getColorFromAttr
-import com.unknown.color.provider.ColorProvider
+import com.unknown.theme.provider.ThemeProvider
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 
-@AutoService(ColorProvider::class)
-class DefaultColorProvider : ColorProvider {
+@AutoBind(ThemeProvider::class)
+class DefaultColorProvider : ThemeProvider {
 
     override fun priority(): Int {
         return 0

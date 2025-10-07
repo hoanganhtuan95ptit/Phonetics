@@ -22,6 +22,7 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.unknown.theme.utils.exts.colorBackground
 import kotlinx.coroutines.launch
 
 class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, GameViewModel>() {
@@ -69,7 +70,7 @@ class GameFragment : BaseFragment<FragmentContainerHeaderHorizontalBinding, Game
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
+            binding.root.setBackgroundColor(it.colorBackground)
         }
 
 

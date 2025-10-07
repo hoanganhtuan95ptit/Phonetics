@@ -48,7 +48,9 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionVerticalBinding
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.getOrTransparent
+import com.unknown.theme.utils.exts.colorBackground
 import kotlinx.coroutines.flow.first
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -293,13 +295,13 @@ class ConfirmDeeplinkHandler : DeeplinkHandler {
 
         val anchor = extras.orEmpty()[Param.ANCHOR].asObjectOrNull<Background>() ?: Background(
             cornerRadius = DP.DP_100,
-            backgroundColor = theme.getOrTransparent("colorDivider"),
+            backgroundColor = theme.colorDivider,
         )
 
         val background = extras.orEmpty()[Param.BACKGROUND].asObjectOrNull<Background>() ?: Background(
             cornerRadius_TL = DP.DP_24,
             cornerRadius_TR = DP.DP_24,
-            backgroundColor = theme.getOrTransparent("colorBackground")
+            backgroundColor = theme.colorBackground
         )
 
 
