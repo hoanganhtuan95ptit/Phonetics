@@ -10,7 +10,6 @@ import com.simple.phonetics.di.repositoryModule
 import com.simple.phonetics.di.taskModule
 import com.simple.phonetics.di.useCaseModule
 import com.simple.phonetics.di.viewModelModule
-import com.simple.startapp.StartApp
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

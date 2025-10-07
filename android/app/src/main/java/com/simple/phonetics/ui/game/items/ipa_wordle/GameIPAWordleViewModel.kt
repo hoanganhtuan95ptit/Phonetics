@@ -33,6 +33,9 @@ import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isStart
 import com.simple.state.toSuccess
+import com.unknown.theme.utils.exts.colorOnPrimary
+import com.unknown.theme.utils.exts.colorOnSurfaceVariant
+import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -156,7 +159,7 @@ class GameIPAWordleViewModel(
 
         val isClickable = choose != null
 
-        val textColor = if (isClickable) theme.getOrTransparent("colorOnPrimary") else theme.getOrTransparent("colorOnSurfaceVariant")
+        val textColor = if (isClickable) theme.colorOnPrimary else theme.colorOnSurfaceVariant
 
         val info = ActionInfo(
             text = translate["action_check"].orEmpty()
@@ -165,9 +168,9 @@ class GameIPAWordleViewModel(
 
             background = Background(
                 cornerRadius = DP.DP_16,
-                backgroundColor = if (isClickable) theme.getOrTransparent("colorPrimary") else Color.TRANSPARENT,
+                backgroundColor = if (isClickable) theme.colorPrimary else Color.TRANSPARENT,
                 strokeWidth = (DP.DP_1 + DP.DP_05).toInt(),
-                strokeColor = if (isClickable) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurfaceVariant"),
+                strokeColor = if (isClickable) theme.colorPrimary else theme.colorOnSurfaceVariant,
             )
         )
 

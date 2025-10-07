@@ -31,6 +31,11 @@ import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.wrapLink
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
+import com.unknown.theme.utils.exts.colorBackground
+import com.unknown.theme.utils.exts.colorOnPrimary
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorOnSurfaceVariant
+import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -86,7 +91,7 @@ class EventHomeViewModel(
         NoneTextViewItem(
             id = "2",
             text = translate.getOrKey(event.title)
-                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.colorOnSurface)),
             textStyle = TextStyle(
                 textSize = 20f,
                 textGravity = Gravity.CENTER
@@ -100,7 +105,7 @@ class EventHomeViewModel(
         NoneTextViewItem(
             id = "3",
             text = translate.getOrKey(event.message)
-                .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(theme.colorOnSurface)),
             textStyle = TextStyle(
                 textSize = 16f,
                 textGravity = Gravity.CENTER
@@ -136,18 +141,18 @@ class EventHomeViewModel(
 
             positive = ButtonInfo(
                 text = translate.getOrKey(event.positive)
-                    .with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
+                    .with(ForegroundColor(theme.colorOnPrimary)),
                 background = Background(
-                    backgroundColor = theme.getOrTransparent("colorPrimary"),
+                    backgroundColor = theme.colorPrimary,
                     cornerRadius = DP.DP_16
                 )
             ),
             negative = if (event.negative.isNotBlank()) ButtonInfo(
                 text = translate.getOrKey(event.negative)
-                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurfaceVariant"))),
+                    .with(ForegroundColor(theme.colorOnSurfaceVariant)),
                 background = Background(
-                    backgroundColor = theme.getOrTransparent("colorBackground"),
-                    strokeColor = theme.getOrTransparent("colorOnSurfaceVariant"),
+                    backgroundColor = theme.colorBackground,
+                    strokeColor = theme.colorOnSurfaceVariant,
                     strokeWidth = DP.DP_1,
                     cornerRadius = DP.DP_16
                 )

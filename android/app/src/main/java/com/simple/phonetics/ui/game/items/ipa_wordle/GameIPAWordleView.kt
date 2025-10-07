@@ -21,11 +21,16 @@ import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
-import com.simple.phonetics.utils.exts.getOrTransparent
+import com.simple.phonetics.utils.exts.*
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isStart
 import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.theme.utils.exts.colorError
+import com.unknown.theme.utils.exts.colorOnPrimary
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorOnSurfaceVariant
+import com.unknown.theme.utils.exts.colorPrimary
 
 private fun GameIPAWordleQuiz.Type.getName(translate: Map<String, String>): String = when (this) {
 
@@ -43,7 +48,7 @@ private fun GameIPAWordleQuiz.Type.getName(translate: Map<String, String>): Stri
 }
 
 fun getIPAWordleStateInfo(
-    theme: Map<String, Int>,
+    theme: Map<String, Any>,
     translate: Map<String, String>,
     quiz: GameIPAWordleQuiz,
 
@@ -74,9 +79,9 @@ fun getIPAWordleStateInfo(
     }
 
     val textColor = if (isAnswerCorrect) {
-        theme.getOrTransparent("colorOnPrimaryVariant")
+        theme.colorOnPrimaryVariant
     } else {
-        theme.getOrTransparent("colorOnErrorVariant")
+        theme.colorOnErrorVariant
     }
 
     val title = if (isAnswerCorrect) {
@@ -91,9 +96,9 @@ fun getIPAWordleStateInfo(
         .replace("\$param3", param3)
         .replace("  ", " ")
         .with(ForegroundColor(textColor))
-        .with(param1, Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
-        .with(param2, Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
-        .with(param3, Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
+        .with(param1, Bold, ForegroundColor(theme.colorPrimary))
+        .with(param2, Bold, ForegroundColor(theme.colorPrimary))
+        .with(param3, Bold, ForegroundColor(theme.colorPrimary))
 
 
     val list = arrayListOf<ViewItem>()
@@ -144,14 +149,14 @@ fun getIPAWordleStateInfo(
 
     val positive = ButtonInfo(
         text = buttonText.orEmpty()
-            .with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
+            .with(ForegroundColor(theme.colorOnPrimary)),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
             backgroundColor = if (isAnswerCorrect) {
-                theme.getOrTransparent("colorPrimary")
+                theme.colorPrimary
             } else {
-                theme.getOrTransparent("colorError")
+                theme.colorError
             }
         )
     )
@@ -163,16 +168,16 @@ fun getIPAWordleStateInfo(
         positive = positive,
 
         backgroundColor = if (isAnswerCorrect) {
-            theme.getOrTransparent("colorPrimaryVariant")
+            theme.colorPrimaryVariant
         } else {
-            theme.getOrTransparent("colorErrorVariant")
+            theme.colorErrorVariant
         }
     )
 
     return info
 }
 
-fun getIPAWordleTitleViewItem(theme: Map<String, Int>, translate: Map<String, String>, quiz: GameIPAWordleQuiz): ViewItem {
+fun getIPAWordleTitleViewItem(theme: Map<String, Any>, translate: Map<String, String>, quiz: GameIPAWordleQuiz): ViewItem {
 
     val param1 = quiz.answerType.getName(translate = translate)
     val param2 = quiz.questionType.getName(translate = translate)
@@ -182,9 +187,9 @@ fun getIPAWordleTitleViewItem(theme: Map<String, Int>, translate: Map<String, St
         text = translate["game_ipa_wordle_screen_title"].orEmpty()
             .replace("\$param1", param1)
             .replace("\$param2", param2)
-            .with(ForegroundColor(theme.getOrTransparent("colorOnSurface")))
-            .with(param1, Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface")))
-            .with(param2, Bold, ForegroundColor(theme.getOrTransparent("colorPrimary"))),
+            .with(ForegroundColor(theme.colorOnSurface))
+            .with(param1, Bold, ForegroundColor(theme.colorOnSurface))
+            .with(param2, Bold, ForegroundColor(theme.colorPrimary)),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
@@ -193,7 +198,7 @@ fun getIPAWordleTitleViewItem(theme: Map<String, Int>, translate: Map<String, St
 
 fun getIpaWordleQuestionViewItem(
     size: Map<String, Int>,
-    theme: Map<String, Int>,
+    theme: Map<String, Any>,
     quiz: GameIPAWordleQuiz,
 
     listenState: ResultState<String>?,
@@ -226,7 +231,7 @@ fun getIpaWordleQuestionViewItem(
     } else {
         quiz.question.ipa[phoneticCode]?.firstOrNull().orEmpty()
     }
-        .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+        .with(Bold, ForegroundColor(theme.colorOnSurface)),
     textStyle = TextStyle(
         textSize = 30f,
         textGravity = Gravity.CENTER
@@ -243,7 +248,7 @@ fun getIpaWordleQuestionViewItem(
 
 fun getIPAWordleOptionViewItem(
     size: Map<String, Int>,
-    theme: Map<String, Int>,
+    theme: Map<String, Any>,
     quiz: GameIPAWordleQuiz,
 
     choose: Phonetic?,
@@ -261,7 +266,7 @@ fun getIPAWordleOptionViewItem(
         data = phonetic,
 
         text = text
-            .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+            .with(Bold, ForegroundColor(theme.colorOnSurface)),
         textStyle = TextStyle(
             textSize = 16f,
             textGravity = Gravity.CENTER
@@ -274,9 +279,9 @@ fun getIPAWordleOptionViewItem(
             cornerRadius = DP.DP_16,
             strokeWidth = DP.DP_2,
             strokeColor = if (phonetic.text.equals(choose?.text, true)) {
-                theme.getOrTransparent("colorPrimary")
+                theme.colorPrimary
             } else {
-                theme.getOrTransparent("colorOnSurfaceVariant")
+                theme.colorOnSurfaceVariant
             }
         ),
 
@@ -291,11 +296,11 @@ fun getIPAWordleOptionViewItem(
     )
 }
 
-fun getIPAWordleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Int>): List<ViewItem> = arrayListOf<ViewItem>().apply {
+fun getIPAWordleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
     val background = Background(
         cornerRadius = DP.DP_24,
-        backgroundColor = theme.getOrTransparent("colorLoading")
+        backgroundColor = theme.colorLoading
     )
 
     NoneTextViewItem(

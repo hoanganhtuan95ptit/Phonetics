@@ -26,6 +26,8 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.width
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorPrimary
 
 class GameHomeViewModel(
     private val countWordAsyncUseCase: CountWordAsyncUseCase
@@ -64,7 +66,7 @@ class GameHomeViewModel(
         TextSimpleViewItem(
             id = "TITLE_GAME",
             text = translate.getOrEmpty("title_game")
-                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.colorOnSurface)),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
             margin = Margin(
                 marginHorizontal = DP.DP_4
@@ -79,7 +81,7 @@ class GameHomeViewModel(
         TextSimpleViewItem(
             id = Id.GAME,
             text = translate.getOrEmpty("action_play_game")
-                .with(Bold, ForegroundColor(theme.getOrTransparent("colorPrimary"))),
+                .with(Bold, ForegroundColor(theme.colorPrimary)),
             textStyle = R.style.TextAppearance_MaterialComponents_Body1,
 
             margin = Margin(
@@ -90,7 +92,7 @@ class GameHomeViewModel(
                 paddingHorizontal = DP.DP_16
             ),
             background = Background(
-                strokeColor = theme.getOrTransparent("colorPrimary"),
+                strokeColor = theme.colorPrimary,
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
             ),

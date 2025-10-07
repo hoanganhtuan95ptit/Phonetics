@@ -12,6 +12,8 @@ import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.colorErrorVariant
+import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.spans.RoundedBackgroundSpan
@@ -36,7 +38,7 @@ class GameViewModel : BaseViewModel() {
 
         val title = if (caption.isNotBlank()) {
             (translate["game_screen_title"].orEmpty() + " " + caption)
-                .with(caption, Bold, RoundedBackgroundSpan(backgroundColor = theme.getOrTransparent("colorErrorVariant"), textColor = theme.getOrTransparent("colorOnErrorVariant")))
+                .with(caption, Bold, RoundedBackgroundSpan(backgroundColor = theme.colorErrorVariant, textColor = theme.colorOnErrorVariant))
         } else {
             translate["game_screen_title"].orEmpty()
         }

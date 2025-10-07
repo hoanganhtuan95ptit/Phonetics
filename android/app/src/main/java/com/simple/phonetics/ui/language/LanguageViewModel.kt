@@ -28,6 +28,11 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.language.adapters.LanguageLoadingViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageStateViewItem
 import com.simple.phonetics.ui.language.adapters.LanguageViewItem
+import com.simple.phonetics.utils.exts.colorDivider
+import com.simple.phonetics.utils.exts.colorLoading
+import com.simple.phonetics.utils.exts.colorOnBackgroundVariant
+import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
+import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.simple.state.doFailed
@@ -36,6 +41,10 @@ import com.simple.state.isCompleted
 import com.simple.state.isSuccess
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
+import com.unknown.theme.utils.exts.colorOnBackground
+import com.unknown.theme.utils.exts.colorOnPrimary
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -52,9 +61,9 @@ class LanguageViewModel(
 
         val info = HeaderInfo(
             title = translate["title_language"].orEmpty()
-                .with(ForegroundColor(theme.getOrTransparent("colorOnBackground"))),
+                .with(ForegroundColor(theme.colorOnBackground)),
             message = translate["message_select_language"].orEmpty()
-                .with(ForegroundColor(theme.getOrTransparent("colorOnBackgroundVariant"))),
+                .with(ForegroundColor(theme.colorOnBackgroundVariant)),
         )
 
         postValue(info)
@@ -127,7 +136,7 @@ class LanguageViewModel(
             LanguageViewItem(
                 data = it,
                 name = name
-                    .with(ForegroundColor(if (isSelected) theme.getOrTransparent("colorOnPrimaryVariant") else theme.getOrTransparent("colorOnSurface"))),
+                    .with(ForegroundColor(if (isSelected) theme.colorOnPrimaryVariant else theme.colorOnSurface)),
 
                 image = it.image,
 
@@ -136,10 +145,10 @@ class LanguageViewModel(
                 background = Background(
                     cornerRadius = DP.DP_16,
                     strokeWidth = DP.DP_1,
-                    strokeColor = if (isSelected) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorDivider"),
+                    strokeColor = if (isSelected) theme.colorPrimary else theme.colorDivider,
                     strokeDashGap = DP.DP_4,
                     strokeDashWidth = DP.DP_4,
-                    backgroundColor = if (isSelected) theme.getOrTransparent("colorPrimaryVariant") else Color.TRANSPARENT
+                    backgroundColor = if (isSelected) theme.colorPrimaryVariant else Color.TRANSPARENT
                 ),
             )
         }
@@ -179,14 +188,14 @@ class LanguageViewModel(
         val info = ButtonInfo(
             text = translate["action_confirm_change_language"]
                 .orEmpty()
-                .with(ForegroundColor(if (isSelected) theme.getOrTransparent("colorOnPrimary") else theme.getOrTransparent("colorOnSurface"))),
+                .with(ForegroundColor(if (isSelected) theme.colorOnPrimary else theme.colorOnSurface)),
             isClickable = isClickable,
             isShowLoading = changeLanguageState != null && !changeLanguageState.isCompleted(),
             background = Background(
                 cornerRadius = DP.DP_16,
                 strokeWidth = DP.DP_1,
-                strokeColor = if (isSelected) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorDivider"),
-                backgroundColor = if (isSelected) theme.getOrTransparent("colorPrimary") else Color.TRANSPARENT
+                strokeColor = if (isSelected) theme.colorPrimary else theme.colorDivider,
+                backgroundColor = if (isSelected) theme.colorPrimary else Color.TRANSPARENT
             )
         )
 
@@ -244,7 +253,7 @@ class LanguageViewModel(
         }
     }
 
-    private fun Map<String, Int>.toListLoadingViewItem() = arrayListOf<ViewItem>().apply {
+    private fun Map<String, Any>.toListLoadingViewItem() = arrayListOf<ViewItem>().apply {
 
         add(toLoadingViewItem())
 
@@ -253,10 +262,10 @@ class LanguageViewModel(
         add(toLoadingViewItem())
     }
 
-    private fun Map<String, Int>.toLoadingViewItem() = LanguageLoadingViewItem(
+    private fun Map<String, Any>.toLoadingViewItem() = LanguageLoadingViewItem(
         background = Background(
             cornerRadius = DP.DP_16,
-            strokeColor = getOrTransparent("colorDivider"),
+            strokeColor = colorDivider,
             strokeWidth = DP.DP_1,
             strokeDashGap = DP.DP_4,
             strokeDashWidth = DP.DP_4,
@@ -264,7 +273,7 @@ class LanguageViewModel(
         ),
         loadingBackground = Background(
             cornerRadius = DP.DP_16,
-            backgroundColor = getOrTransparent("colorLoading")
+            backgroundColor = colorLoading
         )
     )
 
@@ -310,7 +319,7 @@ class LanguageViewModel(
         }
     }
 
-    private fun UpdateLanguageInputUseCase.State.SyncPhonetics.toViewItem(theme: Map<String, Int>, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
+    private fun UpdateLanguageInputUseCase.State.SyncPhonetics.toViewItem(theme: Map<String, Any>, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
 
         val key = "ipa_" + code.lowercase()
 
@@ -328,7 +337,7 @@ class LanguageViewModel(
                 .replace("\$ipa_name", ipaName)
                 .replace("\$percent", "$percentWrap")
                 .with(ipaName, Bold)
-                .with("${percentWrap}%", Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
+                .with("${percentWrap}%", Bold, ForegroundColor(theme.colorPrimary))
         ) else LanguageStateViewItem(
             data = ipaName,
             name = translate["message_completed_sync_phonetics"].orEmpty()
@@ -339,7 +348,7 @@ class LanguageViewModel(
         add(viewItem)
     }
 
-    private fun UpdateLanguageInputUseCase.State.SyncTranslate.toViewItem(theme: Map<String, Int>, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
+    private fun UpdateLanguageInputUseCase.State.SyncTranslate.toViewItem(theme: Map<String, Any>, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
 
         val percentWrap = (percent * 100).toInt()
 
@@ -347,7 +356,7 @@ class LanguageViewModel(
             data = "SYNC_TRANSLATE",
             name = translate["message_start_sync_translate"].orEmpty()
                 .replace("\$percent", percentWrap.toString())
-                .with("${percentWrap}%", Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
+                .with("${percentWrap}%", Bold, ForegroundColor(theme.colorPrimary))
         ) else LanguageStateViewItem(
             data = "SYNC_TRANSLATE",
             name = translate["message_completed_sync_translate"].orEmpty().toRich()

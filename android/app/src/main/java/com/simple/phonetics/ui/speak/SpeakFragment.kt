@@ -39,6 +39,7 @@ import com.simple.phonetics.databinding.LayoutActionConfirmSpeakBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
+import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.playMedia
@@ -48,6 +49,8 @@ import com.simple.phonetics.utils.showAds
 import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isRunning
+import com.unknown.theme.utils.exts.colorBackground
+import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.launch
 
 class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, DialogListBinding, SpeakViewModel>() {
@@ -169,7 +172,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             val bindingConfigSpeak = bindingAction ?: return@observe
 
             val background = Background(
-                backgroundColor = it.getOrTransparent("colorBackground"),
+                backgroundColor = it.colorBackground,
                 cornerRadius_TL = DP.DP_16,
                 cornerRadius_TR = DP.DP_16
             )
@@ -177,8 +180,8 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             binding.root.setBackground(background = background)
             bindingConfigSpeak.root.setBackground(background = background)
 
-            binding.vAnchor.setBackground(Background(backgroundColor = it.getOrTransparent("colorDivider"), cornerRadius = DP.DP_100))
-            bindingConfigSpeak.frameSpeak.root.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.getOrTransparent("colorPrimary"), cornerRadius = DP.DP_16))
+            binding.vAnchor.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
+            bindingConfigSpeak.frameSpeak.root.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.colorPrimary, cornerRadius = DP.DP_16))
         }
 
         copyInfo.observe(viewLifecycleOwner) {

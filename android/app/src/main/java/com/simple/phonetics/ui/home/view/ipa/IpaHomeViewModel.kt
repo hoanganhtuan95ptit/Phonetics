@@ -31,6 +31,8 @@ import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.width
 import com.simple.state.ResultState
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorPrimary
 
 class IpaHomeViewModel(
     private val getIpaStateAsyncUseCase: GetIpaStateAsyncUseCase,
@@ -71,7 +73,7 @@ class IpaHomeViewModel(
         if (ipaList.isNotEmpty()) TextSimpleViewItem(
             id = "TITLE_IPA",
             text = translate["title_ipa"].orEmpty()
-                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.colorOnSurface)),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
             margin = Margin(
                 marginHorizontal = DP.DP_4
@@ -92,9 +94,9 @@ class IpaHomeViewModel(
                 data = it,
 
                 ipa = it.ipa
-                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                    .with(ForegroundColor(theme.colorOnSurface)),
                 text = it.examples.firstOrNull().orEmpty()
-                    .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                    .with(ForegroundColor(theme.colorOnSurface)),
 
                 size = Size(
                     width = (size.width - 6 * DP.DP_4 - 2 * DP.DP_12) / 3,
@@ -118,7 +120,7 @@ class IpaHomeViewModel(
 
 
         val actionText = translate["action_view_all_ipa"].orEmpty()
-            .with(Bold, ForegroundColor(theme.getOrTransparent("colorPrimary")))
+            .with(Bold, ForegroundColor(theme.colorPrimary))
 
         val ipaHeight = viewItemList.filterIsInstance<IpaViewItem>().firstOrNull()?.size?.height ?: DP.DP_72
 
@@ -147,7 +149,7 @@ class IpaHomeViewModel(
                 paddingHorizontal = DP.DP_16
             ),
             background = Background(
-                strokeColor = theme.getOrTransparent("colorPrimary"),
+                strokeColor = theme.colorPrimary,
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
             ),

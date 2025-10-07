@@ -22,19 +22,28 @@ import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
-import com.simple.phonetics.utils.exts.getOrEmpty
+import com.simple.phonetics.utils.exts.colorErrorVariant
+import com.simple.phonetics.utils.exts.colorLoading
+import com.simple.phonetics.utils.exts.colorOnErrorVariant
+import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
+import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isStart
 import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.theme.utils.exts.colorError
+import com.unknown.theme.utils.exts.colorOnPrimary
+import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorOnSurfaceVariant
+import com.unknown.theme.utils.exts.colorPrimary
 
-fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Int>, translate: Map<String, String>, quiz: GameIPAMatchQuiz, isAnswerCorrect: Boolean): GameItemViewModel.StateInfo {
+fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Any>, translate: Map<String, String>, quiz: GameIPAMatchQuiz, isAnswerCorrect: Boolean): GameItemViewModel.StateInfo {
 
     val textColor = if (isAnswerCorrect) {
-        theme.getOrTransparent("colorOnPrimaryVariant")
+        theme.colorOnPrimaryVariant
     } else {
-        theme.getOrTransparent("colorOnErrorVariant")
+        theme.colorOnErrorVariant
     }
 
     val title = if (isAnswerCorrect) {
@@ -99,14 +108,14 @@ fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Int>, transl
 
     val positive = ButtonInfo(
         text = buttonText.orEmpty()
-            .with(ForegroundColor(theme.getOrTransparent("colorOnPrimary"))),
+            .with(ForegroundColor(theme.colorOnPrimary)),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
             backgroundColor = if (isAnswerCorrect) {
-                theme.getOrTransparent("colorPrimary")
+                theme.colorPrimary
             } else {
-                theme.getOrTransparent("colorError")
+                theme.colorError
             }
         )
     )
@@ -118,9 +127,9 @@ fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Int>, transl
         positive = positive,
 
         backgroundColor = if (isAnswerCorrect) {
-            theme.getOrTransparent("colorPrimaryVariant")
+            theme.colorPrimaryVariant
         } else {
-            theme.getOrTransparent("colorErrorVariant")
+            theme.colorErrorVariant
         }
     )
 
@@ -129,7 +138,7 @@ fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Int>, transl
 
 fun getIPAMatchQuestionViewItem(
     size: Map<String, Int>,
-    theme: Map<String, Int>,
+    theme: Map<String, Any>,
     translate: Map<String, String>,
 
     quiz: GameIPAMatchQuiz,
@@ -146,7 +155,7 @@ fun getIPAMatchQuestionViewItem(
         if (option == null) OptionViewItem(
             size = size,
             theme = theme,
-            background = Background(strokeColor = theme.getOrTransparent("colorPrimary"), strokeDashEnable = true),
+            background = Background(strokeColor = theme.colorPrimary, strokeDashEnable = true),
 
             data = GameIPAMatchPair(GameIPAMatchQuiz.Option(GameIPAMatchQuiz.Option.Type.NONE, phonetic = Phonetic("$index")), null),
             listenState = listenState,
@@ -154,7 +163,7 @@ fun getIPAMatchQuestionViewItem(
         ) else OptionViewItem(
             size = size,
             theme = theme,
-            background = Background(strokeColor = if (warning && !optionPair?.phonetic?.text.equals(option.phonetic.text, true)) theme.getOrTransparent("colorOnErrorVariant") else theme.getOrTransparent("colorPrimary"), strokeDashEnable = false),
+            background = Background(strokeColor = if (warning && !optionPair?.phonetic?.text.equals(option.phonetic.text, true)) theme.colorOnErrorVariant else theme.colorPrimary, strokeDashEnable = false),
 
             data = GameIPAMatchPair(option = option, newType = option.type),
             listenState = listenState,
@@ -165,7 +174,7 @@ fun getIPAMatchQuestionViewItem(
     TitleViewItem(
         id = "TITLE",
         text = translate["game_ipa_match_screen_title"].orEmpty()
-            .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+            .with(ForegroundColor(theme.colorOnSurface)),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
@@ -181,7 +190,7 @@ fun getIPAMatchQuestionViewItem(
 
 fun getIPAMatchOptionViewItem(
     size: Map<String, Int>,
-    theme: Map<String, Int>,
+    theme: Map<String, Any>,
     translate: Map<String, String>,
 
     quiz: GameIPAMatchQuiz,
@@ -199,7 +208,7 @@ fun getIPAMatchOptionViewItem(
         OptionViewItem(
             size = size,
             theme = theme,
-            background = Background(strokeColor = theme.getOrTransparent("colorOnSurfaceVariant"), strokeDashEnable = true),
+            background = Background(strokeColor = theme.colorOnSurfaceVariant, strokeDashEnable = true),
 
             data = GameIPAMatchPair(option = it, newType = if (it in chooseList) GameIPAMatchQuiz.Option.Type.NONE else it.type),
             listenState = listenState,
@@ -210,7 +219,7 @@ fun getIPAMatchOptionViewItem(
     TitleViewItem(
         id = "TITLE_OPTION_CHO0SE",
         text = translate["game_ipa_match_screen_title_choose"].orEmpty()
-            .with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+            .with(ForegroundColor(theme.colorOnSurface)),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
@@ -224,11 +233,11 @@ fun getIPAMatchOptionViewItem(
     }
 }
 
-fun getIPAMatchLoadingViewItem(size: Map<String, Int>, theme: Map<String, Int>): List<ViewItem> = arrayListOf<ViewItem>().apply {
+fun getIPAMatchLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
     val background = Background(
         cornerRadius = DP.DP_24,
-        backgroundColor = theme.getOrTransparent("colorLoading")
+        backgroundColor = theme.colorLoading
     )
 
     NoneTextViewItem(
@@ -272,7 +281,7 @@ fun getIPAMatchLoadingViewItem(size: Map<String, Int>, theme: Map<String, Int>):
 
 private fun OptionViewItem(
     size: Map<String, Int>,
-    theme: Map<String, Int>,
+    theme: Map<String, Any>,
     background: Background,
 
     data: GameIPAMatchPair,
@@ -289,7 +298,7 @@ private fun OptionViewItem(
 
 private fun OptionTextViewItem(
     size: Map<String, Int>,
-    theme: Map<String, Int>,
+    theme: Map<String, Any>,
     background: Background,
 
     data: GameIPAMatchPair,
@@ -312,7 +321,7 @@ private fun OptionTextViewItem(
         data = data,
 
         text = text.orEmpty()
-            .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+            .with(Bold, ForegroundColor(theme.colorOnSurface)),
         textStyle = TextStyle(
             textSize = 16f,
             textGravity = Gravity.CENTER
@@ -336,7 +345,7 @@ private fun OptionTextViewItem(
 
 private fun OptionVoiceViewItem(
     size: Map<String, Int>,
-    theme: Map<String, Int>,
+    theme: Map<String, Any>,
     background: Background,
 
     data: GameIPAMatchPair,

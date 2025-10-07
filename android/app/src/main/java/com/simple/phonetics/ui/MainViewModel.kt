@@ -1,19 +1,15 @@
 package com.simple.phonetics.ui
 
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.ViewModels.BaseViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import com.phonetics.word.dao.WordProvider
 import com.simple.analytics.logAnalytics
-import com.simple.core.utils.extentions.toJson
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.phonetics.BuildConfig
-import com.simple.phonetics.data.dao.PhoneticRoomDatabaseProvider
 import com.simple.phonetics.domain.usecase.SyncDataUseCase
 import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputUseCase
@@ -24,7 +20,6 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import org.koin.core.context.GlobalContext
 
 class MainViewModel(
     private val syncDataUseCase: SyncDataUseCase,

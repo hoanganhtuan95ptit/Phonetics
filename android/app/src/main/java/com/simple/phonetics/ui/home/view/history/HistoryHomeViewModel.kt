@@ -24,6 +24,7 @@ import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.width
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
+import com.unknown.theme.utils.exts.colorOnSurface
 
 class HistoryHomeViewModel(
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
@@ -63,7 +64,7 @@ class HistoryHomeViewModel(
         if (historyList.isNotEmpty()) TextSimpleViewItem(
             id = "TITLE_HISTORY",
             text = translate["title_history"].orEmpty()
-                .with(Bold, ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                .with(Bold, ForegroundColor(theme.colorOnSurface)),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
             margin = Margin(
                 marginHorizontal = DP.DP_4
@@ -79,7 +80,7 @@ class HistoryHomeViewModel(
 
             HistoryViewItem(
                 id = sentence.text,
-                text = sentence.text.with(ForegroundColor(theme.getOrTransparent("colorOnSurface"))),
+                text = sentence.text.with(ForegroundColor(theme.colorOnSurface)),
             )
         }.let {
 

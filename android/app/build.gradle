@@ -88,7 +88,9 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
-    dynamicFeatures = [':feature:mlkit']
+    dynamicFeatures = [
+        ':feature:mlkit'
+    ]
 }
 
 dependencies {
@@ -107,8 +109,10 @@ dependencies {
     implementation hoanganhtuan95Dependencies.task
     implementation hoanganhtuan95Dependencies.event
     implementation hoanganhtuan95Dependencies.state
+    implementation hoanganhtuan95Dependencies.state
     implementation hoanganhtuan95Dependencies.image
-    implementation hoanganhtuan95Dependencies.color
+    implementation hoanganhtuan95Dependencies.theme
+//    implementation hoanganhtuan95Dependencies.color
     implementation hoanganhtuan95Dependencies.string
     implementation hoanganhtuan95Dependencies.analytics
     implementation hoanganhtuan95Dependencies.analytics_log

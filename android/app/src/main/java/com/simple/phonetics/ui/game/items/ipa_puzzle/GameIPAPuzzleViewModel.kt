@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
-import com.simple.analytics.logAnalytics
 import com.simple.core.utils.AppException
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
@@ -29,10 +28,12 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.getOrTransparent
-import com.simple.phonetics.utils.exts.removeSpecialCharacters
 import com.simple.state.ResultState
 import com.simple.state.isStart
 import com.simple.state.toSuccess
+import com.unknown.theme.utils.exts.colorOnPrimary
+import com.unknown.theme.utils.exts.colorOnSurfaceVariant
+import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -166,7 +167,7 @@ class GameIPAPuzzleViewModel(
 
         val isClickable = choose != null
 
-        val textColor = if (isClickable) theme.getOrTransparent("colorOnPrimary") else theme.getOrTransparent("colorOnSurfaceVariant")
+        val textColor = if (isClickable) theme.colorOnPrimary else theme.colorOnSurfaceVariant
 
         val info = ActionInfo(
             text = translate["action_check"].orEmpty()
@@ -175,9 +176,9 @@ class GameIPAPuzzleViewModel(
 
             background = Background(
                 cornerRadius = DP.DP_16,
-                backgroundColor = if (isClickable) theme.getOrTransparent("colorPrimary") else Color.TRANSPARENT,
+                backgroundColor = if (isClickable) theme.colorPrimary else Color.TRANSPARENT,
                 strokeWidth = (DP.DP_1 + DP.DP_05).toInt(),
-                strokeColor = if (isClickable) theme.getOrTransparent("colorPrimary") else theme.getOrTransparent("colorOnSurfaceVariant"),
+                strokeColor = if (isClickable) theme.colorPrimary else theme.colorOnSurfaceVariant,
             )
         )
 

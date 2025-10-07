@@ -25,6 +25,7 @@ import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isSuccess
+import com.unknown.theme.utils.exts.colorBackground
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -64,7 +65,7 @@ abstract class GameItemFragment<VM : GameItemViewModel> : BaseFragment<FragmentL
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.root.setBackgroundColor(it.getOrTransparent("colorBackground"))
+            binding.root.setBackgroundColor(it.colorBackground)
         }
     }
 
