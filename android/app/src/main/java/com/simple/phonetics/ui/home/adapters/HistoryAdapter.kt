@@ -21,7 +21,7 @@ import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemHistoryBinding
-import com.simple.phonetics.utils.width
+import com.unknown.size.uitls.exts.width
 
 @ItemAdapter
 class HistoryAdapter(private val onItemClickV2: ((View, HistoryViewItem) -> Unit)? = null) : ViewItemAdapter<HistoryViewItem, ItemHistoryBinding>() {

@@ -41,7 +41,6 @@ import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
 import com.simple.phonetics.utils.sendDeeplinkWithThank

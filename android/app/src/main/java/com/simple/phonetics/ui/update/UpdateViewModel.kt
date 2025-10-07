@@ -27,7 +27,6 @@ import com.simple.phonetics.Constants
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.GetConfigAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurface

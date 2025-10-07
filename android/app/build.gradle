@@ -155,6 +155,9 @@ dependencies {
 
     implementation retrofit2Dependencies.logging_interceptor
 
+    implementation googleDependencies.auto_service
+    kapt googleDependencies.auto_service
+
     implementation otherDependencies.lottie
     implementation otherDependencies.flexbox
     implementation otherDependencies.material

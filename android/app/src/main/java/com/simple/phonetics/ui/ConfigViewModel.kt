@@ -44,7 +44,6 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrEmpty
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess

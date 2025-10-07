@@ -21,11 +21,16 @@ import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
-import com.simple.phonetics.utils.exts.*
+import com.simple.phonetics.utils.exts.colorErrorVariant
+import com.simple.phonetics.utils.exts.colorLoading
+import com.simple.phonetics.utils.exts.colorOnErrorVariant
+import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
+import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isStart
 import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurface
@@ -221,7 +226,7 @@ fun getIpaWordleQuestionViewItem(
 
     size = Size(
         width = ViewGroup.LayoutParams.MATCH_PARENT,
-        height = (size.getOrZero("width") / 2.5f).toInt()
+        height = (size.width / 2.5f).toInt()
     )
 ) else NoneTextViewItem(
     id = "TEXT",
@@ -242,7 +247,7 @@ fun getIpaWordleQuestionViewItem(
     ),
     size = Size(
         width = ViewGroup.LayoutParams.MATCH_PARENT,
-        height = (size.getOrZero("width") / 2.5f).toInt()
+        height = (size.width / 2.5f).toInt()
     )
 )
 
@@ -286,8 +291,8 @@ fun getIPAWordleOptionViewItem(
         ),
 
         size = Size(
-            width = (size.getOrZero("width") - 2 * DP.DP_8) / 2,
-            height = (size.getOrZero("width") - 2 * DP.DP_8) / 2 + DP.DP_16
+            width = (size.width - 2 * DP.DP_8) / 2,
+            height = (size.width - 2 * DP.DP_8) / 2 + DP.DP_16
         ),
         padding = Padding(
             paddingVertical = DP.DP_8,
@@ -353,8 +358,8 @@ fun getIPAWordleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>)
         textBackground = background,
 
         size = Size(
-            width = (size.getOrZero("width") - 2 * DP.DP_8) / 2,
-            height = (size.getOrZero("width") - 2 * DP.DP_8) / 2 + DP.DP_16
+            width = (size.width - 2 * DP.DP_8) / 2,
+            height = (size.width - 2 * DP.DP_8) / 2 + DP.DP_16
         ),
     ).let {
 

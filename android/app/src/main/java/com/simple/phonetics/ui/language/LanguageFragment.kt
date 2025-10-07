@@ -36,7 +36,6 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
 import com.unknown.theme.utils.exts.colorBackground

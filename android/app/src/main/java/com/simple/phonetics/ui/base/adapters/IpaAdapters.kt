@@ -31,7 +31,7 @@ import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemIpaBinding
-import com.simple.phonetics.utils.width
+import com.unknown.size.uitls.exts.width
 
 @ItemAdapter
 class IpaAdapters(private val onItemClickV2: ((View, IpaViewItem) -> Unit)? = null) : ViewItemAdapter<IpaViewItem, ItemIpaBinding>() {

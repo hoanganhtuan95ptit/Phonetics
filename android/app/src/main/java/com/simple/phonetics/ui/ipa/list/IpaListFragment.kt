@@ -24,7 +24,6 @@ import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.unknown.theme.utils.exts.colorBackground
 

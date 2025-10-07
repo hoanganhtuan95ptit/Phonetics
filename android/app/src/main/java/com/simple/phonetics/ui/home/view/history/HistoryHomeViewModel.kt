@@ -20,10 +20,9 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem
-import com.simple.phonetics.utils.exts.getOrTransparent
-import com.simple.phonetics.utils.width
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 
 class HistoryHomeViewModel(

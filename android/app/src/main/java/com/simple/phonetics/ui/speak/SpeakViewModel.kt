@@ -36,7 +36,6 @@ import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.state.ResultState

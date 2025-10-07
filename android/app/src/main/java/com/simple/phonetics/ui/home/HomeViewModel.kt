@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -49,10 +50,8 @@ import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrKey
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
-import com.simple.phonetics.utils.height
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
@@ -62,6 +61,7 @@ import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
+import com.unknown.size.uitls.exts.height
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorOnSurfaceVariant
 import com.unknown.theme.utils.exts.colorPrimary

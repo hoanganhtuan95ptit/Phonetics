@@ -3,6 +3,7 @@ package com.simple.phonetics.utils.exts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
+import com.simple.adapter.utils.exts.attachToAdapter
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ fun <T> LiveData<T>.collectWithLockTransitionUntilData(
 
     fragment.lockTransition(tag = tag)
 
-    asFlow().collect {
+    asFlow().attachToAdapter().collect {
 
         block(it)
 
@@ -41,7 +42,7 @@ fun <T> LiveData<T>.collectWithLockTransitionIfCached(
         fragment.unlockTransition(tag = tag)
     }
 
-    asFlow().collect {
+    asFlow().attachToAdapter().collect {
 
         val diff = data == null || withContext(Dispatchers.IO) {
             data != it

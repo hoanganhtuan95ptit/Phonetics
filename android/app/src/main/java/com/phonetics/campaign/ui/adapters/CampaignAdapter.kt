@@ -25,7 +25,7 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemCampaignBinding
-import com.simple.phonetics.utils.width
+import com.unknown.size.uitls.exts.width
 import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min

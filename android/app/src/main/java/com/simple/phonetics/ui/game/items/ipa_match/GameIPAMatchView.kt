@@ -27,11 +27,11 @@ import com.simple.phonetics.utils.exts.colorLoading
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isStart
 import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurface
@@ -269,7 +269,7 @@ fun getIPAMatchLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>):
         textBackground = background,
 
         size = Size(
-            width = (size.getOrZero("width") - 2 * DP.DP_8) / 2,
+            width = (size.width - 2 * DP.DP_8) / 2,
             height = DP.DP_56
         ),
     ).let {
@@ -333,7 +333,7 @@ private fun OptionTextViewItem(
         textBackground = background,
 
         size = Size(
-            width = (size.getOrZero("width") - 2 * DP.DP_8) / 2,
+            width = (size.width - 2 * DP.DP_8) / 2,
             height = DP.DP_56
         ),
         padding = Padding(
@@ -379,7 +379,7 @@ private fun OptionVoiceViewItem(
         isLoading = state.isStart(),
 
         size = Size(
-            width = (size.getOrZero("width") - 2 * DP.DP_8) / 2,
+            width = (size.width - 2 * DP.DP_8) / 2,
             height = DP.DP_56
         ),
         padding = Padding(
