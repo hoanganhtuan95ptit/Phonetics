@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting

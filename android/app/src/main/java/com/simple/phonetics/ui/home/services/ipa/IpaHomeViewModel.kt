@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.home.view.ipa
+package com.simple.phonetics.ui.home.services.ipa
 
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting

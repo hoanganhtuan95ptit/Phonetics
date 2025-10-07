@@ -18,7 +18,6 @@ import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.state.ResultState
-import com.unknown.size.uitls.exts.getOrZero
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 
