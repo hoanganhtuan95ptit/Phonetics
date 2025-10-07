@@ -1,6 +1,6 @@
-package com.phonetics.campaign.data.api
+package com.simple.feature.campaign.data.api
 
-import com.phonetics.campaign.entities.Campaign
+import com.simple.feature.campaign.entities.Campaign
 import com.simple.phonetics.BRANCH
 import org.koin.core.context.GlobalContext
 import retrofit2.Retrofit

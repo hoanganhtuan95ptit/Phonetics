@@ -3,9 +3,6 @@ package com.simple.phonetics.ui.home.services.ipa
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import com.phonetics.campaign.ui.adapters.SizeViewItem
-import com.phonetics.campaign.ui.adapters.measureTextViewHeight
-import com.phonetics.campaign.ui.adapters.measureTextViewWidth
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -25,7 +22,10 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
+import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
+import com.simple.phonetics.ui.base.adapters.measureTextViewHeight
+import com.simple.phonetics.ui.base.adapters.measureTextViewWidth
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.state.ResultState

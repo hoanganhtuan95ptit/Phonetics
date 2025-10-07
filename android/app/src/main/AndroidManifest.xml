@@ -62,7 +62,7 @@
                 android:value="androidx.startup" />
 
             <meta-data
-                android:name="com.phonetics.size.StyleInitializer"
+                android:name="com.simple.phonetics.utils.StyleInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>

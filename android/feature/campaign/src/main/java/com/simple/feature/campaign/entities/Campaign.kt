@@ -1,4 +1,4 @@
-package com.phonetics.campaign.entities
+package com.simple.feature.campaign.entities
 
 import android.graphics.Color
 

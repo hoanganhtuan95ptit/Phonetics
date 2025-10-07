@@ -2,8 +2,8 @@ package com.simple.phonetics.ui.base.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.phonetics.size.TextViewMetrics
-import com.phonetics.size.appStyle
+import com.simple.phonetics.utils.TextViewMetrics
+import com.simple.phonetics.utils.appStyle
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.mediatorLiveData

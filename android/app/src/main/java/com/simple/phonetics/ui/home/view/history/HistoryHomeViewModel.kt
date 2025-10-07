@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.home.view.history
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import com.phonetics.campaign.ui.adapters.SizeViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -17,6 +16,7 @@ import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
+import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem

@@ -89,7 +89,7 @@ android {
         }
     }
     dynamicFeatures = [
-        ':feature:mlkit'
+            ':feature:mlkit', ':feature:campaign'
     ]
 }
 
@@ -98,31 +98,31 @@ dependencies {
     implementation project(':dao')
     implementation project(':config:phonetics') // can remove
 
-    implementation koinDependencies.values()
-    implementation jacksonDependencies.values()
-    implementation androidxDependencies.values()
-    implementation retrofit2Dependencies.values()
+    api koinDependencies.values()
+    api jacksonDependencies.values()
+    api androidxDependencies.values()
+    api retrofit2Dependencies.values()
 
-    implementation hoanganhtuan95Dependencies.base
-    implementation hoanganhtuan95Dependencies.android
-    implementation hoanganhtuan95Dependencies.size
-    implementation hoanganhtuan95Dependencies.task
-    implementation hoanganhtuan95Dependencies.event
-    implementation hoanganhtuan95Dependencies.state
-    implementation hoanganhtuan95Dependencies.state
-    implementation hoanganhtuan95Dependencies.image
-    implementation hoanganhtuan95Dependencies.theme
-//    implementation hoanganhtuan95Dependencies.color
-    implementation hoanganhtuan95Dependencies.string
-    implementation hoanganhtuan95Dependencies.analytics
+    api hoanganhtuan95Dependencies.base
+    api hoanganhtuan95Dependencies.android
+
+    api hoanganhtuan95Dependencies.size
+    api hoanganhtuan95Dependencies.task
+    api hoanganhtuan95Dependencies.event
+    api hoanganhtuan95Dependencies.state
+    api hoanganhtuan95Dependencies.image
+    api hoanganhtuan95Dependencies.theme
+    api hoanganhtuan95Dependencies.string
+    api hoanganhtuan95Dependencies.service
+
+    api hoanganhtuan95Dependencies.analytics
     implementation hoanganhtuan95Dependencies.analytics_log
     implementation hoanganhtuan95Dependencies.analytics_firebase
-    implementation hoanganhtuan95Dependencies.crashlytics
+
+    api hoanganhtuan95Dependencies.crashlytics
     implementation hoanganhtuan95Dependencies.crashlytics_log
     implementation hoanganhtuan95Dependencies.crashlytics_firebase
 
-
-    implementation hoanganhtuan95Dependencies.service
 
     implementation hoanganhtuan95Dependencies.detect_2
 
@@ -136,6 +136,7 @@ dependencies {
     implementation hoanganhtuan95Dependencies.autobind
     kapt hoanganhtuan95Dependencies.autobind_processor
 
+
     implementation platform(firebaseDependencies.bom)
     implementation firebaseDependencies.ads
     implementation firebaseDependencies.perf
@@ -143,8 +144,8 @@ dependencies {
     releaseImplementation firebaseDependencies.analytics
     releaseImplementation firebaseDependencies.crashlytics
 
-    implementation glideDependencies.glide
-    implementation glideDependencies.glide_transformations
+    api glideDependencies.glide
+    api glideDependencies.glide_transformations
 
     implementation roomDependencies.room_ktx
     implementation roomDependencies.room_runtime
