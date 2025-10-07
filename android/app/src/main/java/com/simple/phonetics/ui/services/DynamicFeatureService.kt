@@ -35,7 +35,7 @@ class DynamicFeatureService : ActivityService {
                 delay(5 * 1000)
             }
 
-            arrayOf("mlkit").map { moduleName ->
+            arrayOf("mlkit", "campaign").map { moduleName ->
 
                 downloadModule(moduleName = moduleName)
             }

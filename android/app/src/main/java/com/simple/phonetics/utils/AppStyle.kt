@@ -1,4 +1,4 @@
-package com.phonetics.size
+package com.simple.phonetics.utils
 
 import android.app.Activity
 import android.app.Application
@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.startup.Initializer
 import com.simple.coreapp.utils.ext.handler
+import com.simple.phonetics.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -37,7 +38,7 @@ class StyleInitializer : Initializer<Unit> {
 
                 if(activity is FragmentActivity)activity.lifecycleScope.launch(handler+Dispatchers.IO){
                     listOf(
-                        com.simple.phonetics.R.style::class.java,
+                        R.style::class.java,
                     ).flatMap {
 
                         it.fields.toList()
@@ -46,7 +47,7 @@ class StyleInitializer : Initializer<Unit> {
                         it.name.startsWith("Text", true)
                     }.forEach {
 
-                        kotlin.runCatching {
+                        runCatching {
 
                             val textView = TextView(ContextThemeWrapper(activity, it.getInt(null)), null, 0, it.getInt(null))
 
@@ -66,7 +67,7 @@ class StyleInitializer : Initializer<Unit> {
                             map[it.name] = style
                         }
 
-                        kotlin.runCatching {
+                        runCatching {
 
                             val textView = TextView(activity)
                             textView.setTextAppearance(it.getInt(null))

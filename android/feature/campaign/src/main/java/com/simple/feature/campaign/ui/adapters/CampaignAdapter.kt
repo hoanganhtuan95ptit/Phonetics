@@ -1,13 +1,9 @@
-package com.phonetics.campaign.ui.adapters
+package com.simple.feature.campaign.ui.adapters
 
-import android.graphics.Paint
-import android.text.Layout
-import android.text.StaticLayout
-import android.text.TextPaint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.phonetics.campaign.entities.Campaign
-import com.phonetics.size.TextViewMetrics
+import com.simple.feature.campaign.entities.Campaign
+import com.simple.phonetics.utils.TextViewMetrics
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
@@ -25,10 +21,10 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemCampaignBinding
+import com.simple.phonetics.ui.base.adapters.SizeViewItem
+import com.simple.phonetics.ui.base.adapters.measureTextViewHeight
 import com.unknown.size.uitls.exts.width
-import kotlin.math.ceil
 import kotlin.math.max
-import kotlin.math.min
 
 @ItemAdapter
 class CampaignAdapter : ViewItemAdapter<CampaignViewItem, ItemCampaignBinding>() {
@@ -113,82 +109,4 @@ data class CampaignViewItem(
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
         text to Payload.TEXT,
     )
-}
-
-interface SizeViewItem {
-
-    var size: Size
-
-    fun measure(appSize: Map<String, Int>, style: Map<String, TextViewMetrics>) {
-
-        if (size.height != ViewGroup.LayoutParams.WRAP_CONTENT && size.width != ViewGroup.LayoutParams.WRAP_CONTENT) {
-
-            return
-        }
-
-        size = measureSize(appSize, style)
-    }
-
-    fun measureSize(appSize: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
-
-        return size
-    }
-}
-
-fun measureTextViewWidth(
-    text: CharSequence,
-    maxWidth: Int,
-    metrics: TextViewMetrics
-): Int {
-
-    val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = metrics.textSizePx
-        typeface = metrics.typeface
-        textScaleX = metrics.textScaleX
-        letterSpacing = metrics.letterSpacing
-    }
-
-    val layout = StaticLayout.Builder.obtain(text, 0, text.length, paint, maxWidth)
-        .setAlignment(Layout.Alignment.ALIGN_NORMAL)
-        .setLineSpacing(metrics.lineSpacingExtra, metrics.lineSpacingMultiplier)
-        .setIncludePad(metrics.includeFontPadding)
-        .build()
-
-    var maxLineWidth = 0f
-    for (i in 0 until layout.lineCount) {
-        maxLineWidth = max(maxLineWidth, layout.getLineWidth(i))
-    }
-
-    return ceil(maxLineWidth).toInt()
-}
-
-fun measureTextViewHeight(
-    text: CharSequence,
-    maxWidth: Int,
-    metrics: TextViewMetrics,
-    maxLines: Int? = null
-): Int {
-
-    val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = metrics.textSizePx
-        typeface = metrics.typeface
-        textScaleX = metrics.textScaleX
-        letterSpacing = metrics.letterSpacing
-    }
-
-    val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, maxWidth)
-        .setAlignment(Layout.Alignment.ALIGN_NORMAL)
-        .setLineSpacing(metrics.lineSpacingExtra, metrics.lineSpacingMultiplier)
-        .setIncludePad(metrics.includeFontPadding)
-        .build()
-
-    val maxLines = maxLines ?: Int.MAX_VALUE
-    val lineCount = min(staticLayout.lineCount, maxLines)
-
-    // Nếu lineCount = 0 → không có gì để đo
-    if (lineCount == 0) return 0
-
-    val height = staticLayout.getLineBottom(lineCount - 1)
-
-    return height
 }

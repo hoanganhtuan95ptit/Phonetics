@@ -3,9 +3,7 @@ package com.simple.phonetics.ui.home.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.phonetics.campaign.ui.adapters.SizeViewItem
-import com.phonetics.campaign.ui.adapters.measureTextViewHeight
-import com.phonetics.size.TextViewMetrics
+import com.simple.phonetics.utils.TextViewMetrics
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
@@ -21,6 +19,8 @@ import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemHistoryBinding
+import com.simple.phonetics.ui.base.adapters.SizeViewItem
+import com.simple.phonetics.ui.base.adapters.measureTextViewHeight
 import com.unknown.size.uitls.exts.width
 
 @ItemAdapter
