@@ -28,9 +28,8 @@ import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor
-import com.simple.phonetics.utils.exts.getOrTransparent
-import com.simple.phonetics.utils.width
 import com.simple.state.ResultState
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 

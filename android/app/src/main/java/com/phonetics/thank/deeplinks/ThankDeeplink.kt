@@ -33,7 +33,6 @@ import com.simple.phonetics.ui.base.ConfirmViewModel
 import com.simple.phonetics.ui.base.VerticalConfirmSheetFragment
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.getOrKey
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.wrapLink
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorOnPrimary

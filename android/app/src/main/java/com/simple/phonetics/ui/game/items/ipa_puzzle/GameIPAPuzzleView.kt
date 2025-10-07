@@ -23,8 +23,8 @@ import com.simple.phonetics.utils.exts.colorLoading
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurface
@@ -175,8 +175,8 @@ fun getIPAPuzzleOptionViewItem(size: Map<String, Int>, theme: Map<String, Any>, 
         ),
 
         size = Size(
-            width = (size.getOrZero("width") - 2 * DP.DP_8) / 2,
-            height = (size.getOrZero("width") - 2 * DP.DP_8) / 2 + DP.DP_16
+            width = (size.width - 2 * DP.DP_8) / 2,
+            height = (size.width - 2 * DP.DP_8) / 2 + DP.DP_16
         ),
         padding = Padding(
             paddingVertical = DP.DP_8,
@@ -221,8 +221,8 @@ fun getIPAPuzzleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>)
         textBackground = background,
 
         size = Size(
-            width = (size.getOrZero("width") - 2 * DP.DP_8) / 2,
-            height = (size.getOrZero("width") - 2 * DP.DP_8) / 2 + DP.DP_16
+            width = (size.width - 2 * DP.DP_8) / 2,
+            height = (size.width - 2 * DP.DP_8) / 2 + DP.DP_16
         ),
     ).let {
 

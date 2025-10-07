@@ -49,7 +49,6 @@ import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionVerticalBinding
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.colorDivider
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.unknown.theme.utils.exts.colorBackground
 import kotlinx.coroutines.flow.first
 import java.util.UUID

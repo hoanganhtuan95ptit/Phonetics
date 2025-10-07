@@ -31,12 +31,12 @@ import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorOnSurfaceVariant
 import com.unknown.theme.utils.exts.colorPrimary
@@ -124,7 +124,7 @@ class RecordingViewModel(
 
         val speakState = speakState.value
 
-        val width = (size.getOrZero("width") - 2 * DP.DP_24) / 3
+        val width = (size.width - 2 * DP.DP_24) / 3
 
         val viewItem = ImageStateViewItem(
             id = ID.SPEAK,

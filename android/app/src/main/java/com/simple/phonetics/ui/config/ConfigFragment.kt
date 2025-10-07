@@ -31,7 +31,6 @@ import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.unknown.theme.utils.exts.colorBackground
 
 class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {

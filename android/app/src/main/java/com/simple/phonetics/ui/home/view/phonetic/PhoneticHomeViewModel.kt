@@ -19,7 +19,6 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary

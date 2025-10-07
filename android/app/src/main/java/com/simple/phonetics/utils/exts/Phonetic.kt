@@ -26,7 +26,6 @@ import com.simple.state.ResultState
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
-import kotlin.let
 
 fun Phonetics(text: String, ipa: HashMap<String, List<String>>) = Phonetic(
     text = text

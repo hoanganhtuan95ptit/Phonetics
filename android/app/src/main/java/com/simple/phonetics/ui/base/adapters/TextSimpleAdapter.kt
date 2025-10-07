@@ -30,7 +30,7 @@ import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.ItemTextSimpleBinding
-import com.simple.phonetics.utils.width
+import com.unknown.size.uitls.exts.width
 
 @ItemAdapter
 class TextSimpleAdapter() : ViewItemAdapter<TextSimpleViewItem, ItemTextSimpleBinding>() {

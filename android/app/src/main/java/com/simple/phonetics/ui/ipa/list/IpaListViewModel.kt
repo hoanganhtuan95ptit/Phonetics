@@ -17,9 +17,9 @@ import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.BackgroundColor
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.ResultState
 import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 
 class IpaListViewModel(
@@ -69,7 +69,7 @@ class IpaListViewModel(
                     .with(ForegroundColor(theme.colorOnSurface)),
 
                 size = Size(
-                    width = (size.getOrZero("width") - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
+                    width = (size.width - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
                     height = DP.DP_90
                 ),
                 margin = Margin(

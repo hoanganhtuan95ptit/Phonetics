@@ -41,7 +41,6 @@ import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.unknown.theme.utils.exts.colorBackground
 
 class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, DialogListBinding, GameConfigViewModel>() {

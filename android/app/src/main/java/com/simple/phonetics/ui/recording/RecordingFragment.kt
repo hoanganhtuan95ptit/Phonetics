@@ -36,7 +36,6 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess

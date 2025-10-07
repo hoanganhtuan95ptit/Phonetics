@@ -16,7 +16,6 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary

@@ -17,7 +17,6 @@ import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.game.GameViewModel
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
 import com.simple.phonetics.utils.showAds

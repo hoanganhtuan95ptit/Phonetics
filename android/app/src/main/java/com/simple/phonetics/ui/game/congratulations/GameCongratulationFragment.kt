@@ -21,7 +21,6 @@ import com.simple.phonetics.databinding.DialogCongratulationBinding
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.utils.exts.colorDivider
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.unknown.theme.utils.exts.colorBackground
 
 class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, GameCongratulationViewModel>() {

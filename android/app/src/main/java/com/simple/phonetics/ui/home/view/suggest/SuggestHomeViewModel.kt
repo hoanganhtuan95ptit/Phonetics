@@ -22,7 +22,6 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.phonetics.suggest.GetPhoneticsSuggestUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.colorOnBackgroundVariant
-import com.simple.phonetics.utils.exts.getOrTransparent
 import com.unknown.theme.utils.exts.colorOnSurface
 
 class SuggestHomeViewModel(
