@@ -29,7 +29,6 @@ import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isStart
-import com.unknown.size.uitls.exts.getOrZero
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnPrimary

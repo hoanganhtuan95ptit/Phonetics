@@ -35,7 +35,6 @@ import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isStart
-import com.unknown.size.uitls.exts.getOrZero
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorOnSurfaceVariant

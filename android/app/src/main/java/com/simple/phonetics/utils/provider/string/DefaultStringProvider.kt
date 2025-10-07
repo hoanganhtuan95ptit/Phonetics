@@ -1,7 +1,6 @@
 package com.simple.phonetics.utils.provider.string
 
 import androidx.fragment.app.FragmentActivity
-import com.google.auto.service.AutoService
 import com.simple.autobind.annotation.AutoBind
 import com.simple.phonetics.domain.usecase.GetTranslateAsyncUseCase
 import com.unknown.string.provider.StringProvider
