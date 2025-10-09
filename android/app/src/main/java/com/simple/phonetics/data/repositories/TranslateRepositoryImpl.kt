@@ -1,17 +1,21 @@
 package com.simple.phonetics.data.repositories
 
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.domain.repositories.TranslateRepository
 import com.simple.state.ResultState
 import com.simple.state.isSuccess
 import com.simple.state.runResultState
-import com.simple.state.wrap
 import com.tuanha.translate_2.TranslateTask
 import com.tuanha.translate_2.entities.Translate
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 class TranslateRepositoryImpl : TranslateRepository {
 
-    override suspend fun translate(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<Translate.Response>> {
+    override suspend fun translateAsync(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<Translate.Response>> {
 
         val input = text.map {
 
@@ -30,11 +34,27 @@ class TranslateRepositoryImpl : TranslateRepository {
         }
     }
 
-    override suspend fun isSupportTranslate(languageCodeInput: String, languageCodeOutput: String): ResultState<Boolean> {
+    override suspend fun checkSupportTranslateAsync(languageCodeInput: String, languageCodeOutput: String): Flow<ResultState<Boolean>> = channelFlow {
 
-        return translate(languageCodeInput = languageCodeInput, languageCodeOutput = languageCodeOutput, "hello").wrap {
+        trySend(ResultState.Start)
 
-            firstOrNull()?.state.isSuccess()
+        val input = listOf(
+
+            Translate.Request(
+                text = "hello",
+                languageCode = languageCodeInput
+            )
+        )
+
+        TranslateTask.instant.map { list ->
+
+            list.isNotEmpty() && list.any { it.translate(input = input, outputLanguageCode = languageCodeOutput).firstOrNull()?.state.isSuccess() }
+        }.launchCollect(this) {
+
+            trySend(ResultState.Success(it))
+        }
+
+        awaitClose {
         }
     }
 }

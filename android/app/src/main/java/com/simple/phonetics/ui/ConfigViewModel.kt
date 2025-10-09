@@ -109,28 +109,29 @@ class ConfigViewModel(
 
 
     @VisibleForTesting
-    val translateState: LiveData<ResultState<Boolean>> = combineSourcesWithDiff(inputLanguage, outputLanguage) {
+    val isSupportTranslateState: LiveData<ResultState<Boolean>> = combineSourcesWithDiff(inputLanguage, outputLanguage) {
 
 
         val inputLanguageCode = inputLanguage.get().id
         val outputLanguageCode = outputLanguage.get().id
 
 
-        postValue(ResultState.Start)
+        val param = CheckSupportTranslateUseCase.Param(inputLanguageCode = inputLanguageCode, outputLanguageCode = outputLanguageCode)
 
-        val state = checkSupportTranslateUseCase.execute(CheckSupportTranslateUseCase.Param(inputLanguageCode = inputLanguageCode, outputLanguageCode = outputLanguageCode))
+        checkSupportTranslateUseCase.execute(param).collect { state ->
 
-        postValueIfActive(state)
+            postValueIfActive(state)
 
 
-        state.doSuccess {
+            state.doSuccess {
 
-            logAnalytics("feature_translate_${inputLanguageCode}_${outputLanguageCode}_${it}")
-        }
+                logAnalytics("feature_translate_${inputLanguageCode}_${outputLanguageCode}_${it}")
+            }
 
-        state.doFailed {
+            state.doFailed {
 
-            logCrashlytics("feature_translate", it)
+                logCrashlytics("feature_translate", it)
+            }
         }
     }
 
@@ -140,9 +141,9 @@ class ConfigViewModel(
         postValue(getTranslateSelectedAsyncUseCase.execute().first())
     }
 
-    val translateEnable: LiveData<Boolean> = combineSourcesWithDiff(translateState, translateSelect) {
+    val translateEnable: LiveData<Boolean> = combineSourcesWithDiff(isSupportTranslateState, translateSelect) {
 
-        val translateState = translateState.get()
+        val translateState = isSupportTranslateState.get()
         val translateSelect = translateSelect.get()
 
         if (translateState !is ResultState.Success) {
@@ -155,12 +156,12 @@ class ConfigViewModel(
     }
 
     @VisibleForTesting
-    val translateViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff<List<ViewItem>>(theme, translate, translateState, translateSelect) {
+    val translateViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff<List<ViewItem>>(theme, translate, isSupportTranslateState, translateSelect) {
 
         val theme = theme.get()
         val translate = translate.get()
 
-        val translateState = translateState.get()
+        val translateState = isSupportTranslateState.get()
         val translateSelect = translateSelect.get()
 
         if (translateState.isFailed()) {

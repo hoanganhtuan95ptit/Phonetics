@@ -11,6 +11,7 @@ import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.usecase.detect.CheckSupportDetectUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.toSuccess
@@ -23,7 +24,7 @@ class DetectHomeViewModel(
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)
 
     @VisibleForTesting
-    val isSupportDetect: LiveData<Boolean> = combineSourcesWithDiff(isReverse, inputLanguage, outputLanguage) {
+    val isSupportDetectState: LiveData<ResultState<Boolean>> = combineSourcesWithDiff(isReverse, inputLanguage, outputLanguage) {
 
         val isReverse = isReverse.get()
         val inputLanguage = inputLanguage.get()
@@ -35,28 +36,27 @@ class DetectHomeViewModel(
             inputLanguage.id
         }
 
+        val param = CheckSupportDetectUseCase.Param(languageCode = languageCode)
 
-        postValue(false)
+        checkSupportDetectUseCase.execute(param).collect { state ->
 
-        val state = checkSupportDetectUseCase.execute(CheckSupportDetectUseCase.Param(languageCode = languageCode))
+            postValueIfActive(state)
 
-        postValueIfActive(state.toSuccess()?.data == true)
+            state.doSuccess {
 
+                logAnalytics("feature_detect_${languageCode}_${it}")
+            }
 
-        state.doSuccess {
+            state.doFailed {
 
-            logAnalytics("feature_detect_${languageCode}_${it}")
-        }
-
-        state.doFailed {
-
-            logCrashlytics("feature_detect", it)
+                logCrashlytics("feature_detect", it)
+            }
         }
     }
 
-    val detectInfo: LiveData<DetectInfo> = combineSourcesWithDiff(isSupportDetect) {
+    val detectInfo: LiveData<DetectInfo> = combineSourcesWithDiff(isSupportDetectState) {
 
-        val isSupportDetect = isSupportDetect.get()
+        val isSupportDetect = isSupportDetectState.get().toSuccess()?.data == true
 
         val info = DetectInfo(
             isShow = isSupportDetect

@@ -2,14 +2,15 @@ package com.simple.phonetics.domain.usecase.translate
 
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.state.ResultState
+import kotlinx.coroutines.flow.Flow
 
 class CheckSupportTranslateUseCase(
     private val appRepository: AppRepository
 ) {
 
-    suspend fun execute(param: Param): ResultState<Boolean> {
+    suspend fun execute(param: Param): Flow<ResultState<Boolean>> {
 
-        return appRepository.isSupportTranslate(languageCodeInput = param.inputLanguageCode, languageCodeOutput = param.outputLanguageCode)
+        return appRepository.checkSupportTranslateAsync(languageCodeInput = param.inputLanguageCode, languageCodeOutput = param.outputLanguageCode)
     }
 
     class Param(

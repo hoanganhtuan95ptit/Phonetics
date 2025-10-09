@@ -103,7 +103,7 @@ class UpdateLanguageInputUseCase(
 
             val languageOutput = languageRepository.getLanguageOutput()
 
-            appRepository.translate(language.id, languageOutput.id, "hello")
+            appRepository.translateAsync(language.id, languageOutput.id, "hello")
         }
 
         job.cancel()
