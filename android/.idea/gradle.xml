@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/config" />
             <option value="$PROJECT_DIR$/dao" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/campaign" />
             <option value="$PROJECT_DIR$/feature/mlkit" />
           </set>
         </option>

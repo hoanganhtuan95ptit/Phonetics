@@ -9,7 +9,7 @@ class DetectUseCase(
 
     suspend fun execute(param: Param): ResultState<String> {
 
-        return appRepository.detect(languageCodeInput = param.inputLanguageCode, languageCodeOutput = param.outputLanguageCode, path = param.path)
+        return appRepository.detectAsync(languageCodeInput = param.inputLanguageCode, languageCodeOutput = param.outputLanguageCode, path = param.path)
     }
 
     data class Param(

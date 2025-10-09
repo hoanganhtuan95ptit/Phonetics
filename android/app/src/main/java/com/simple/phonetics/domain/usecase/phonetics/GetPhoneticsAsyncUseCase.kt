@@ -189,7 +189,7 @@ class GetPhoneticsAsyncUseCase(
      */
     private suspend fun translateState(text: String, languageCodeInput: String, languageCodeOutput: String): ResultState<String> {
 
-        val state = appRepository.translate(
+        val state = appRepository.translateAsync(
             text = arrayOf(text),
 
             languageCodeInput = languageCodeInput,
