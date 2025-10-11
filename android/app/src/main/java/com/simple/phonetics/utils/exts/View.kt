@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.ImageView
@@ -42,3 +44,19 @@ fun View.listenerOnHeightChange() = channelFlow {
         viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
     }
 }.distinctUntilChanged()
+
+fun View.ensureGradientUpdates() = channelFlow<Unit> {
+
+    val view = this@ensureGradientUpdates
+
+    val onGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+
+        (view.background as? GradientDrawable)?.setBounds(0, 0, view.width, view.height)
+    }
+
+    viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener)
+
+    awaitClose {
+        viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
+    }
+}

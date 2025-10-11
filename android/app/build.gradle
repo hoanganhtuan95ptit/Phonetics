@@ -23,8 +23,8 @@ android {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
 
-        versionCode 136
-        versionName "1.3.30"
+        versionCode 137
+        versionName "1.3.31"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
