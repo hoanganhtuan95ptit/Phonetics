@@ -41,6 +41,7 @@ import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.simple.phonetics.utils.exts.ensureGradientUpdates
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
 import com.simple.phonetics.utils.sendDeeplinkWithThank
@@ -50,6 +51,8 @@ import com.simple.state.isFailed
 import com.simple.state.isRunning
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, DialogListBinding, SpeakViewModel>() {
@@ -165,6 +168,8 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
     private fun observeData() = with(viewModel) {
 
+        var rootSizeJob: Job? = null
+
         theme.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
@@ -175,6 +180,9 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
                 cornerRadius_TL = DP.DP_16,
                 cornerRadius_TR = DP.DP_16
             )
+
+            rootSizeJob?.cancel()
+            rootSizeJob = binding.root.ensureGradientUpdates().launchIn(viewLifecycleOwner.lifecycleScope)
 
             binding.root.setBackground(background = background)
             bindingConfigSpeak.root.setBackground(background = background)
