@@ -115,13 +115,13 @@ class ConfigViewModel(
         val inputLanguageCode = inputLanguage.get().id
         val outputLanguageCode = outputLanguage.get().id
 
-
         val param = CheckSupportTranslateUseCase.Param(inputLanguageCode = inputLanguageCode, outputLanguageCode = outputLanguageCode)
 
         checkSupportTranslateUseCase.execute(param).collect { state ->
 
             postValueIfActive(state)
 
+            logAnalytics("feature_translate_${state.javaClass.simpleName.lowercase()}")
 
             state.doSuccess {
 

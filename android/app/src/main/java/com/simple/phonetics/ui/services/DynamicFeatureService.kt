@@ -1,6 +1,6 @@
 package com.simple.phonetics.ui.services
 
-import android.app.Activity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.autobind.annotation.AutoBind
@@ -23,13 +23,13 @@ import kotlinx.coroutines.launch
 @AutoBind(MainActivity::class)
 class DynamicFeatureService : ActivityService {
 
-    override suspend fun setup(activity: Activity) {
+    override suspend fun setup(fragmentActivity: FragmentActivity) {
 
-        if (activity !is MainActivity) {
+        if (fragmentActivity !is MainActivity) {
             return
         }
 
-        activity.lifecycleScope.launch(handler + Dispatchers.IO) {
+        fragmentActivity.lifecycleScope.launch(handler + Dispatchers.IO) {
 
             if (BuildConfig.DEBUG) {
                 delay(5 * 1000)

@@ -42,6 +42,8 @@ class DetectHomeViewModel(
 
             postValueIfActive(state)
 
+            logAnalytics("feature_detect_${state.javaClass.simpleName.lowercase()}")
+
             state.doSuccess {
 
                 logAnalytics("feature_detect_${languageCode}_${it}")
