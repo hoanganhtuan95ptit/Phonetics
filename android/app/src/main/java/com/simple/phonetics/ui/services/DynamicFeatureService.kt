@@ -1,12 +1,15 @@
 package com.simple.phonetics.ui.services
 
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.handler
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.BuildConfig
+import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
 import com.simple.service.ActivityService
 import com.simple.startapp.StartApp
@@ -35,10 +38,27 @@ class DynamicFeatureService : ActivityService {
                 delay(5 * 1000)
             }
 
-            arrayOf("mlkit", "campaign").map { moduleName ->
+
+            val featureListDefault = arrayOf("mlkit", "campaign")
+
+            featureListDefault.map { moduleName ->
 
                 downloadModule(moduleName = moduleName)
             }
+
+
+            val featureList = arrayListOf<String>()
+
+            if (fragmentActivity.viewModel.inputLanguage.asFlow().first().id.equals(Language.EN, true)) {
+
+                featureList.add("ipa_voice_en")
+            }
+
+            featureList.map { moduleName ->
+
+                downloadModule(moduleName = moduleName)
+            }
+
 
             if (BuildConfig.DEBUG) arrayOf("mlkit").let { moduleName ->
 
