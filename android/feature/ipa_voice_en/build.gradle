@@ -1,0 +1,40 @@
+plugins {
+    id 'com.android.dynamic-feature'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+apply from: "$rootDir/constant.gradle"
+
+android {
+    namespace 'com.simple.feature.ipa_voice_en'
+    compileSdkVersion project.ext.compileSdkVersion
+
+    defaultConfig {
+
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+    }
+    compileOptions {
+        sourceCompatibility project.ext.javaVersion
+        targetCompatibility project.ext.javaVersion
+    }
+    kotlinOptions {
+        jvmTarget = project.ext.javaVersion.toString()
+    }
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+}
+
+dependencies {
+
+    implementation project(":app")
+    implementation project(':dao')
+
+    implementation hoanganhtuan95Dependencies.service
+
+    implementation hoanganhtuan95Dependencies.autobind
+    kapt hoanganhtuan95Dependencies.autobind_processor
+}

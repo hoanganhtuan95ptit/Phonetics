@@ -37,11 +37,11 @@ class MainViewModel(
         }
     }
 
-    @VisibleForTesting
     val inputLanguage: LiveData<Language> = mediatorLiveData {
 
         getLanguageInputAsyncUseCase.execute().collect {
 
+            postValue(it)
             logAnalytics("input_language_code_${it.id}")
         }
     }
@@ -51,6 +51,7 @@ class MainViewModel(
 
         getLanguageOutputAsyncUseCase.execute().collect {
 
+            postValue(it)
             logAnalytics("output_language_code_${it.id}")
         }
     }

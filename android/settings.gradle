@@ -33,3 +33,4 @@ include ':dao'
 
 include ':feature:mlkit'
 include ':feature:campaign'
+include ':feature:ipa_voice_en'

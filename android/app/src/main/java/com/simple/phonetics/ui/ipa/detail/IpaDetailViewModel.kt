@@ -1,7 +1,5 @@
 package com.simple.phonetics.ui.ipa.detail
 
-import android.media.AudioAttributes
-import android.media.MediaPlayer
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -48,7 +46,7 @@ import com.simple.phonetics.utils.exts.colorLoading
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
-import com.simple.phonetics.utils.exts.wrapLink
+import com.simple.phonetics.utils.provider.ipa_reading.IpaReading
 import com.simple.phonetics.utils.spans.RoundedBackground
 import com.simple.state.ResultState
 import com.simple.state.doFailed
@@ -61,8 +59,6 @@ import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -73,7 +69,8 @@ class IpaDetailViewModel(
     private val getPhoneticsRandomUseCase: GetPhoneticsRandomUseCase
 ) : BaseViewModel() {
 
-    private var job: Job? = null
+    private var readingIpaJob: Job? = null
+    private var readingTextJob: Job? = null
 
     val ipa: LiveData<Ipa> = MediatorLiveData()
 
@@ -315,13 +312,13 @@ class IpaDetailViewModel(
         this.ipa.postDifferentValue(ipa)
     }
 
-    fun startReading(data: Ipa) {
+    fun startReading(data: Ipa) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        job?.cancel()
+        readingIpaJob?.cancel()
 
-        job = viewModelScope.launch(handler + Dispatchers.IO) {
+        readingIpaJob = IpaReading.install.first().minByOrNull { it.order() }!!.reading(ipa = data, phoneticCode = phoneticCodeSelected.value.orEmpty()).launchCollect(viewModelScope) {
 
-            startReadingWait(data)
+            readingState.postValue(it)
         }
     }
 
@@ -333,91 +330,21 @@ class IpaDetailViewModel(
             text = text
         )
 
-        var job: Job? = null
+        readingTextJob?.cancel()
 
-        job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
+        readingTextJob = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
             readingState.postValue(state)
 
             state.doSuccess {
-                job?.cancel()
+                readingTextJob?.cancel()
             }
 
             state.doFailed {
-                job?.cancel()
+                readingTextJob?.cancel()
             }
         }
     }
-
-    private suspend fun startReadingWait(data: Ipa) = channelFlow {
-
-        readingState.postValue(ResultState.Start)
-
-        var voice: String? = null
-
-
-        if (data.voices.isNotEmpty()) {
-
-            voice = data.voices[phoneticCodeSelected.value.orEmpty()]
-        }
-
-        if (voice == null) {
-
-            voice = data.voice
-        }
-
-        voice = voice.wrapLink()
-
-
-        val job = launch {
-
-            kotlinx.coroutines.delay(1 * 60 * 1000)
-
-            readingState.postValue(ResultState.Failed(RuntimeException("")))
-            trySend(Unit)
-        }
-
-
-        val mediaPlayer = MediaPlayer().apply {
-
-            val audioAttributes = AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .build()
-
-            setAudioAttributes(audioAttributes)
-            setDataSource(voice)
-            prepareAsync()
-
-            setOnPreparedListener {
-
-                job.cancel()
-
-                readingState.postValue(ResultState.Running(""))
-                start() // Bắt đầu phát nhạc khi đã chuẩn bị xong
-            }
-
-            setOnErrorListener { _, _, _ ->
-
-                readingState.postValue(ResultState.Failed(RuntimeException("")))
-                trySend(Unit)
-
-                true // Trả về true nếu đã xử lý lỗi
-            }
-
-            setOnCompletionListener { _ ->
-
-                readingState.postValue(ResultState.Success(""))
-                trySend(Unit)
-            }
-        }
-
-        awaitClose {
-
-            mediaPlayer.reset()
-            mediaPlayer.release()
-        }
-    }.first()
 
     private fun getLoadingViewItem(theme: Map<String, Any>): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
