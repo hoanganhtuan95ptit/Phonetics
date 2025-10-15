@@ -1,6 +1,11 @@
 project.ext {
 
     // ===================== Android SDK & Java =====================
+    versionCode = 139
+    versionName = "1.3.33"
+    versionNameBetaSuffix = "-beta"
+    versionNameDebugSuffix = "-debug"
+
     minSdkVersion = 23
     targetSdkVersion = 35
     compileSdkVersion = 35
@@ -33,7 +38,7 @@ project.ext {
     logging_interceptor_version = '4.12.0'
     shimmerlayout_version = '2.1.0'
     play_core_ktx_version = '1.10.3'
-    hoanganhtuan95ptit_version = '1.3.39.beta12'
+    hoanganhtuan95ptit_version = '1.3.39.beta15'
     camerax_version = '1.1.0'
     camera_view_version = '1.1.0'
     core_version = "1.1.4"
