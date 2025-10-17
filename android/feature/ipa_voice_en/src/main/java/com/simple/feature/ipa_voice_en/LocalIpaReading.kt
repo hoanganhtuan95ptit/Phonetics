@@ -20,6 +20,10 @@ import kotlinx.coroutines.launch
 @AutoBind(IpaReading::class)
 class LocalIpaReading : IpaReading {
 
+    override fun order(): Int {
+        return -1
+    }
+
     override fun reading(ipa: Ipa, phoneticCode: String): Flow<ResultState<String>> = channelFlow {
 
 
@@ -90,13 +94,18 @@ class LocalIpaReading : IpaReading {
     }.map {
 
         it.doFailed {
-            logCrashlytics("LocalIpaReading", it)
+            logCrashlytics(TAG, it)
         }
 
         it.doSuccess {
-            logAnalytics("LocalIpaReading_Success")
+            logAnalytics("${TAG}_success".lowercase())
         }
 
         it
+    }
+
+    companion object{
+
+        private const val TAG = "local_ipa_reading"
     }
 }
