@@ -29,8 +29,10 @@ include ':config:phonetics'// can remove
 project(':config:phonetics').projectDir = file('../../1CorePrivate/config/phonetics')// can remove
 
 include ':app'
-include ':dao'
 
 include ':feature:mlkit'
 include ':feature:campaign'
 include ':feature:ipa_voice_en'
+
+include ':library:dao'
+include ':library:okhttp-cache'

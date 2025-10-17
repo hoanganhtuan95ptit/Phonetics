@@ -1,19 +1,24 @@
 plugins {
-    id 'com.android.dynamic-feature'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+
+    id 'kotlin-parcelize'
     id 'kotlin-kapt'
 }
 
 apply from: "$rootDir/constant.gradle"
 
 android {
-    namespace 'com.simple.feature.ipa_voice_en'
+    namespace 'com.simple.okhttp.cache'
     compileSdkVersion project.ext.compileSdkVersion
 
     defaultConfig {
 
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
     compileOptions {
         sourceCompatibility project.ext.javaVersion
@@ -30,11 +35,15 @@ android {
 
 dependencies {
 
-    implementation project(":app")
-    implementation project(':library:dao')
+    implementation koinDependencies.values()
+    implementation jacksonDependencies.values()
+    api retrofit2Dependencies.values()
 
-    implementation hoanganhtuan95Dependencies.service
+    implementation hoanganhtuan95Dependencies.base
 
-    implementation hoanganhtuan95Dependencies.autobind
-    kapt hoanganhtuan95Dependencies.autobind_processor
+    implementation roomDependencies.room_ktx
+    implementation roomDependencies.room_runtime
+    kapt roomDependencies.room_compiler
+
+    implementation androidxDependencies.startup_runtime
 }

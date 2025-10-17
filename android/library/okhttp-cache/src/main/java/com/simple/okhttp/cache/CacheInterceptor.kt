@@ -7,7 +7,6 @@ import com.simple.core.utils.extentions.toObject
 import com.simple.okhttp.cache.data.dao.NetworkProvider
 import com.simple.okhttp.cache.entities.Header
 import com.simple.okhttp.cache.entities.NetworkEntity
-import com.simple.phonetics.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Protocol
@@ -15,6 +14,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
+import org.koin.android.BuildConfig
 import java.security.MessageDigest
 
 private val timeSession = System.currentTimeMillis()
@@ -254,7 +254,7 @@ class CacheInterceptor(context: Context) : Interceptor {
     companion object {
 
         @Suppress("SimplifyBooleanWithConstants")
-        private val DEBUG = BuildConfig.DEBUG && false
+        private val DEBUG = BuildConfig.DEBUG && true
         private const val TAG = "tuanha->cache-interceptor"
     }
 }
