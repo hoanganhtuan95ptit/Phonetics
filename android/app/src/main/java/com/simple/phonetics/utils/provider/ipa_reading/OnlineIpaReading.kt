@@ -86,13 +86,18 @@ class OnlineIpaReading : IpaReading {
     }.map {
 
         it.doFailed {
-            logCrashlytics("OnlineIpaReading", it)
+            logCrashlytics(TAG, it)
         }
 
         it.doSuccess {
-            logAnalytics("OnlineIpaReading_Success")
+            logAnalytics("${TAG}_success")
         }
 
         it
+    }
+
+    companion object{
+
+        private const val TAG = "online_ipa_reading"
     }
 }
