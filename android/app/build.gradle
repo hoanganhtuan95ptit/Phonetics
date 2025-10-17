@@ -96,8 +96,10 @@ android {
 
 dependencies {
 
-    implementation project(':dao')
     implementation project(':config:phonetics') // can remove
+
+    implementation project(':library:dao')
+    implementation project(':library:okhttp-cache')
 
     api koinDependencies.values()
     api jacksonDependencies.values()
