@@ -1,6 +1,6 @@
 package com.simple.phonetics.data.api
 
-import com.simple.dao.entities.Ipa
+import com.simple.ipa.entities.Ipa
 import com.simple.okhttp.cache.entities.Header
 import com.simple.phonetics.BRANCH
 import com.simple.phonetics.entities.Event

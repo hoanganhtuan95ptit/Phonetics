@@ -1,12 +1,12 @@
 package com.simple.phonetics.data.repositories
 
-import com.phonetics.word.dao.WordProvider
-import com.phonetics.word.entities.WordResourceCount
 import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.dao.word.WordOldProvider
 import com.simple.phonetics.domain.repositories.WordRepository
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.entities.WordTopic
+import com.simple.word.dao.WordProvider
+import com.simple.word.entities.WordResourceCount
 import kotlinx.coroutines.flow.Flow
 
 class WordRepositoryImpl(

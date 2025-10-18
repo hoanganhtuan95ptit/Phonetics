@@ -5,7 +5,7 @@ import android.media.MediaPlayer
 import com.simple.analytics.logAnalytics
 import com.simple.autobind.annotation.AutoBind
 import com.simple.crashlytics.logCrashlytics
-import com.simple.dao.entities.Ipa
+import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.utils.exts.wrapLink
 import com.simple.state.ResultState
 import com.simple.state.doFailed

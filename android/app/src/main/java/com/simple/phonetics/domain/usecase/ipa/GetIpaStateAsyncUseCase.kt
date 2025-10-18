@@ -1,7 +1,7 @@
 package com.simple.phonetics.domain.usecase.ipa
 
 import com.simple.coreapp.utils.ext.launchCollect
-import com.simple.dao.entities.Ipa
+import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.domain.repositories.IpaRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.state.ResultState

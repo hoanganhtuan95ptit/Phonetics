@@ -126,22 +126,6 @@ class AppRepositoryImpl(
         appCache.setData(TRANSLATE_STATUS, translateSelected)
     }
 
-
-    override fun <T> updateData(key: String, value: T) {
-
-        appCache.setData(key, value)
-    }
-
-    override fun <T> getData(key: String, default: T): T {
-
-        return appCache.getData(key, default)
-    }
-
-    override fun <T> getDataAsync(key: String, default: T): Flow<T> {
-
-        return appCache.getDataAsync(key, default)
-    }
-
     companion object {
 
         private const val TRANSLATE_STATUS = "translate_status"

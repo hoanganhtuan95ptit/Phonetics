@@ -1,8 +1,8 @@
 package com.simple.phonetics.domain.repositories
 
-import com.phonetics.word.entities.WordResourceCount
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.entities.WordTopic
+import com.simple.word.entities.WordResourceCount
 import kotlinx.coroutines.flow.Flow
 
 interface WordRepository {

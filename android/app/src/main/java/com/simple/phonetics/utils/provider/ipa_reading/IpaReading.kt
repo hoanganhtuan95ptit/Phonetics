@@ -1,7 +1,7 @@
 package com.simple.phonetics.utils.provider.ipa_reading
 
 import com.simple.autobind.AutoBind
-import com.simple.dao.entities.Ipa
+import com.simple.ipa.entities.Ipa
 import com.simple.state.ResultState
 import kotlinx.coroutines.flow.Flow
 

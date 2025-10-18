@@ -90,15 +90,16 @@ android {
         }
     }
     dynamicFeatures = [
-            ':feature:mlkit', ':feature:campaign', ':feature:ipa_voice_en'
+            ':feature:mlkit', ':feature:campaign', ':feature:ipa_voice_en', ':feature:thanks'
     ]
 }
 
 dependencies {
 
-    implementation project(':config:phonetics') // can remove
+    implementation project(':config:phonetics')// can remove
 
-    implementation project(':library:dao')
+    implementation project(':library:ipa')
+    implementation project(':library:word')
     implementation project(':library:okhttp-cache')
 
     api koinDependencies.values()

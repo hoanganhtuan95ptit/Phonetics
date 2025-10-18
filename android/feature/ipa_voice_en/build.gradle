@@ -8,30 +8,12 @@ apply from: "$rootDir/constant.gradle"
 
 android {
     namespace 'com.simple.feature.ipa_voice_en'
-    compileSdkVersion project.ext.compileSdkVersion
-
-    defaultConfig {
-
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-    }
-    compileOptions {
-        sourceCompatibility project.ext.javaVersion
-        targetCompatibility project.ext.javaVersion
-    }
-    kotlinOptions {
-        jvmTarget = project.ext.javaVersion.toString()
-    }
-    buildFeatures {
-        viewBinding true
-        buildConfig true
-    }
 }
 
 dependencies {
 
     implementation project(":app")
-    implementation project(':library:dao')
+    implementation project(':library:ipa')
 
     implementation hoanganhtuan95Dependencies.service
 

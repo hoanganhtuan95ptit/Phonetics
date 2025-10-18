@@ -30,7 +30,7 @@ import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
-import com.simple.dao.entities.Ipa
+import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase

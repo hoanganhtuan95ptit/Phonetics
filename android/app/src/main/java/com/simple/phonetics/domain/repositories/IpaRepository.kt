@@ -1,6 +1,6 @@
 package com.simple.phonetics.domain.repositories
 
-import com.simple.dao.entities.Ipa
+import com.simple.ipa.entities.Ipa
 import kotlinx.coroutines.flow.Flow
 
 interface IpaRepository {

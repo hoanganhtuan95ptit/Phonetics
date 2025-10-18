@@ -1,7 +1,7 @@
 package com.simple.phonetics.domain.usecase.word
 
-import com.phonetics.word.entities.WordResourceCount
 import com.simple.phonetics.domain.repositories.WordRepository
+import com.simple.word.entities.WordResourceCount
 import kotlinx.coroutines.flow.Flow
 
 class GetListWordResourceCountAsyncUseCase(

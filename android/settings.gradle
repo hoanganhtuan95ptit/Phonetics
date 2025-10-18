@@ -31,8 +31,10 @@ project(':config:phonetics').projectDir = file('../../1CorePrivate/config/phonet
 include ':app'
 
 include ':feature:mlkit'
+include ':feature:thanks'
 include ':feature:campaign'
 include ':feature:ipa_voice_en'
 
-include ':library:dao'
+include ':library:ipa'
+include ':library:word'
 include ':library:okhttp-cache'

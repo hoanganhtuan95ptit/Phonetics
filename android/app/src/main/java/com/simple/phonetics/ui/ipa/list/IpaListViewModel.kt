@@ -12,7 +12,7 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValueIfActive
-import com.simple.dao.entities.Ipa
+import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel

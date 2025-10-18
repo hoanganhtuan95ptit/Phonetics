@@ -10,27 +10,6 @@ apply from: "$rootDir/constant.gradle"
 
 android {
     namespace 'com.simple.okhttp.cache'
-    compileSdkVersion project.ext.compileSdkVersion
-
-    defaultConfig {
-
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-    compileOptions {
-        sourceCompatibility project.ext.javaVersion
-        targetCompatibility project.ext.javaVersion
-    }
-    kotlinOptions {
-        jvmTarget = project.ext.javaVersion.toString()
-    }
-    buildFeatures {
-        viewBinding true
-        buildConfig true
-    }
 }
 
 dependencies {

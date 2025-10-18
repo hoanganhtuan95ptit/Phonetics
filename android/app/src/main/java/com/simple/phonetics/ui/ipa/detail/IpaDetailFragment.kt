@@ -20,10 +20,10 @@ import com.simple.coreapp.utils.ext.getParcelableOrNull
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.with
 import com.simple.crashlytics.logCrashlytics
-import com.simple.dao.entities.Ipa
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
+import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.ErrorCode.NOT_INTERNET
 import com.simple.phonetics.Id

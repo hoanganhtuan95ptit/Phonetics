@@ -1,7 +1,7 @@
 package com.simple.phonetics.data.repositories
 
-import com.simple.dao.entities.Ipa
-import com.simple.dao.ipa.IpaProvider
+import com.simple.ipa.dao.IpaProvider
+import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.dao.ipa.IpaOldProvider
 import com.simple.phonetics.domain.repositories.IpaRepository
