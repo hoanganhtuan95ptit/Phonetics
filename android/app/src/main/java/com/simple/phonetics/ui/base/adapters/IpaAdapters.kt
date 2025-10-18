@@ -3,7 +3,6 @@ package com.simple.phonetics.ui.base.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.simple.phonetics.utils.TextViewMetrics
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
@@ -24,11 +23,12 @@ import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setText
-import com.simple.dao.entities.Ipa
 import com.simple.event.sendEvent
+import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemIpaBinding
+import com.simple.phonetics.utils.TextViewMetrics
 import com.unknown.size.uitls.exts.width
 
 @ItemAdapter

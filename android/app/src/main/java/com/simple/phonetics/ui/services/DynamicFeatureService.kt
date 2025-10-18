@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.services
 
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
@@ -39,7 +38,7 @@ class DynamicFeatureService : ActivityService {
             }
 
 
-            val featureListDefault = arrayOf("mlkit", "campaign")
+            val featureListDefault = arrayOf("mlkit", "campaign", "thanks")
 
             featureListDefault.map { moduleName ->
 

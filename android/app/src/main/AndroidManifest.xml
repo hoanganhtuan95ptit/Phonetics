@@ -57,9 +57,6 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-            <meta-data
-                android:name="com.phonetics.word.WordInitializer"
-                android:value="androidx.startup" />
 
             <meta-data
                 android:name="com.simple.phonetics.utils.StyleInitializer"

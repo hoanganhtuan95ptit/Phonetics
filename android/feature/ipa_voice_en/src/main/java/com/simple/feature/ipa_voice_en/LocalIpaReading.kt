@@ -5,7 +5,7 @@ import android.media.MediaPlayer
 import com.simple.analytics.logAnalytics
 import com.simple.autobind.annotation.AutoBind
 import com.simple.crashlytics.logCrashlytics
-import com.simple.dao.entities.Ipa
+import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.utils.provider.ipa_reading.IpaReading
 import com.simple.state.ResultState
@@ -32,7 +32,7 @@ class LocalIpaReading : IpaReading {
 
         var fileName = ipa.ipa.replace("/", "").replace("ː", "_").lowercase() + ".mp3"
 
-        if (phoneticCode.equals("us")) {
+        if (phoneticCode.equals("us", true)) {
             fileName = "us_$fileName"
         }
 

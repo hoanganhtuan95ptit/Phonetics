@@ -49,11 +49,4 @@ interface AppRepository :
     suspend fun getTranslateSelectedAsync(): Flow<String>
 
     suspend fun updateTranslateSelected(translateSelected: String)
-
-
-    fun <T> updateData(key: String, value: T)
-
-    fun <T> getData(key: String, default: T): T
-
-    fun <T> getDataAsync(key: String, default: T): Flow<T>
 }
