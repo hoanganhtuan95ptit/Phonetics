@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/library/ipa" />
             <option value="$PROJECT_DIR$/library/okhttp-cache" />
+            <option value="$PROJECT_DIR$/library/phonetic" />
             <option value="$PROJECT_DIR$/library/word" />
           </set>
         </option>

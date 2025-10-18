@@ -100,6 +100,7 @@ dependencies {
 
     implementation project(':library:ipa')
     implementation project(':library:word')
+    implementation project(':library:phonetic')
     implementation project(':library:okhttp-cache')
 
     api koinDependencies.values()
