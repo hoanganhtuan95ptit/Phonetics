@@ -1,0 +1,30 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+}
+
+apply from: "$rootDir/constant.gradle"
+
+android {
+    namespace 'com.simple.phonetic'
+}
+
+dependencies {
+
+    implementation koinDependencies.values()
+    implementation jacksonDependencies.values()
+
+    implementation hoanganhtuan95Dependencies.base
+
+    implementation hoanganhtuan95Dependencies.autobind
+    kapt hoanganhtuan95Dependencies.autobind_processor
+
+    implementation roomDependencies.room_ktx
+    implementation roomDependencies.room_runtime
+    kapt roomDependencies.room_compiler
+
+    implementation androidxDependencies.startup_runtime
+}

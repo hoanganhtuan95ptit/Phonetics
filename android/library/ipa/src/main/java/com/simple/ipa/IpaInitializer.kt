@@ -2,7 +2,7 @@ package com.simple.ipa
 
 import android.content.Context
 import androidx.startup.Initializer
-import com.simple.ipa.dao.IpaProvider
+import com.simple.ipa.dao.IpaProviderV2
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 
@@ -14,7 +14,7 @@ class IpaInitializer : Initializer<Unit> {
             module {
 
                 single {
-                    IpaProvider(get())
+                    IpaProviderV2(get())
                 }
             }
         )

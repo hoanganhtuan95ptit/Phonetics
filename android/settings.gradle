@@ -37,4 +37,5 @@ include ':feature:ipa_voice_en'
 
 include ':library:ipa'
 include ':library:word'
+include ':library:phonetic'
 include ':library:okhttp-cache'

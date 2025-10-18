@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.map
 private const val TABLE_NAME = "ipa_dao"
 
 @Dao
-interface IpaDaoNew {
+interface IpaDaoV2 {
 
     fun getListAsync(languageCode: String): Flow<List<Ipa>> = getRoomListAsync(languageCode = languageCode).map { list ->
 
@@ -88,11 +88,11 @@ private fun RoomIpaNew.toEntity() = extra.toObject<Ipa>()
 @Database(entities = [RoomIpaNew::class], version = 1, exportSchema = false)
 abstract class IpaRoomDatabaseNew : RoomDatabase() {
 
-    abstract fun providerIpaDao(): IpaDaoNew
+    abstract fun providerIpaDao(): IpaDaoV2
 }
 
 
-class IpaProvider(context: Context) {
+class IpaProviderV2(context: Context) {
 
     val ipaDao by lazy {
         Room.databaseBuilder(context, IpaRoomDatabaseNew::class.java, "ipa_database_new")

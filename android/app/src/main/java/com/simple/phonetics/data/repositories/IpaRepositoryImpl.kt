@@ -1,6 +1,6 @@
 package com.simple.phonetics.data.repositories
 
-import com.simple.ipa.dao.IpaProvider
+import com.simple.ipa.dao.IpaProviderV2
 import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.dao.ipa.IpaOldProvider
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 class IpaRepositoryImpl(
     private val apiProvider: ApiProvider,
-    private val ipaProvider: IpaProvider,
+    private val ipaProviderV2: IpaProviderV2,
     private val ipaOldProvider: IpaOldProvider
 ) : IpaRepository {
 
@@ -18,7 +18,7 @@ class IpaRepositoryImpl(
     }
 
     private val ipaDaoNew by lazy {
-        ipaProvider.ipaDao
+        ipaProviderV2.ipaDao
     }
 
     private val ipaDaoOld by lazy {
