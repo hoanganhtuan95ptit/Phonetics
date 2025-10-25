@@ -34,7 +34,7 @@ class GetPhoneticsAsyncUseCase(
 
     private var id: String = ""
 
-    suspend fun execute(param: Param): Flow<ResultState<List<Sentence>>> = channelFlow {
+    fun execute(param: Param): Flow<ResultState<List<Sentence>>> = channelFlow {
 
         val text = param.textNew.replace("  ", " ").trim().lowercase()
 
@@ -49,12 +49,6 @@ class GetPhoneticsAsyncUseCase(
 
             offerActive(ResultState.Start)
         }
-
-
-        /**
-         * lăng nghe việc đồng bộ phonetic kết thúc
-         */
-        phoneticRepository.copyStateAsync().filter { it.isCompleted() }.first()
 
 
         // nếu đang bật chế độ đảo ngược thì thực hiện dịch nội dung
