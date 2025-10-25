@@ -8,7 +8,7 @@ class PhoneticSyncTask : SyncTask {
 
     override fun priority(): Int {
 
-        return Int.MAX_VALUE - 5
+        return Int.MIN_VALUE
     }
 
     override suspend fun executeTask(param: SyncTask.Param) {

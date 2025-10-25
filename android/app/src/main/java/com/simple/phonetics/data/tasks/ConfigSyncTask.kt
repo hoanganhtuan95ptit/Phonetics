@@ -11,7 +11,7 @@ class ConfigSyncTask(
     private var sync: Boolean = false
 
     override fun priority(): Int {
-        return Int.MIN_VALUE
+        return Int.MIN_VALUE + 1
     }
 
     override suspend fun executeTask(param: SyncTask.Param) {
