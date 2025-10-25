@@ -15,13 +15,10 @@ import com.simple.phonetics.utils.exts.getLineDelimiters
 import com.simple.phonetics.utils.exts.getWordDelimiters
 import com.simple.phonetics.utils.exts.removeSpecialCharacters
 import com.simple.state.ResultState
-import com.simple.state.isCompleted
 import com.simple.state.toSuccess
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.UUID
 
