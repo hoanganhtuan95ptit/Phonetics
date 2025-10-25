@@ -17,8 +17,8 @@ import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
+import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.R
-import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
@@ -156,7 +156,7 @@ fun getIPAMatchQuestionViewItem(
             theme = theme,
             background = Background(strokeColor = theme.colorPrimary, strokeDashEnable = true),
 
-            data = GameIPAMatchPair(GameIPAMatchQuiz.Option(GameIPAMatchQuiz.Option.Type.NONE, phonetic = Phonetic("$index")), null),
+            data = GameIPAMatchPair(GameIPAMatchQuiz.Option(GameIPAMatchQuiz.Option.Type.NONE, phonetic = com.simple.phonetic.entities.Phonetic(text = "$index")), null),
             listenState = listenState,
             phoneticCode = phoneticCode
         ) else OptionViewItem(
@@ -310,7 +310,7 @@ private fun OptionTextViewItem(
     val text = if (data.newType == GameIPAMatchQuiz.Option.Type.TEXT) {
         phonetic?.text
     } else if (data.newType == GameIPAMatchQuiz.Option.Type.IPA) {
-        (phonetic?.ipa?.get(phoneticCode) ?: phonetic?.ipa?.flatMap { it.value })?.firstOrNull()
+        phonetic?.ipaValueList?.firstOrNull()
     } else {
         ""
     }

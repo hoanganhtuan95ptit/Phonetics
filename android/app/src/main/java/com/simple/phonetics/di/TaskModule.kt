@@ -4,6 +4,7 @@ import com.simple.phonetics.data.tasks.ConfigSyncTask
 import com.simple.phonetics.data.tasks.EventSyncTask
 import com.simple.phonetics.data.tasks.IpaSyncTask
 import com.simple.phonetics.data.tasks.LanguageSyncTask
+import com.simple.phonetics.data.tasks.PhoneticSyncTask
 import com.simple.phonetics.data.tasks.TranslateSyncTask
 import com.simple.phonetics.data.tasks.WordSyncTask
 import com.simple.phonetics.domain.tasks.SyncTask
@@ -22,6 +23,8 @@ val taskModule = module {
     single { ConfigSyncTask(get()) } bind SyncTask::class
 
     single { LanguageSyncTask(get()) } bind SyncTask::class
+
+    single { PhoneticSyncTask() } bind SyncTask::class
 
     single { TranslateSyncTask(get(), get()) } bind SyncTask::class
 }

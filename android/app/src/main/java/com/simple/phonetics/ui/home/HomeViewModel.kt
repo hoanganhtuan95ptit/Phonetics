@@ -44,6 +44,7 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.entities.Language
+import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
@@ -231,7 +232,7 @@ class HomeViewModel(
 
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, isReverse, inputLanguage, outputLanguage, phoneticCodeSelected) {
+    val phoneticsState: LiveData<ResultState<List<Sentence>>> = combineSources(text, isReverse, inputLanguage, outputLanguage, phoneticCodeSelected) {
 
         val text = text.get()
 
@@ -258,7 +259,6 @@ class HomeViewModel(
         val translate = translate.get()
 
         val state = phoneticsState.get()
-        val phoneticsCode = phoneticCodeSelected.get()
         val isSupportTranslate = isSupportTranslate.get()
 
         state.doStart {
@@ -269,24 +269,14 @@ class HomeViewModel(
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        val listItem = state.toSuccess()?.data.orEmpty()
+        state.toSuccess()?.data.orEmpty().toViewItem(
+            isSupportSpeak = isSupportSpeak.value == true,
+            isSupportListen = isSupportReading.value == true,
+            isSupportTranslate = isSupportTranslate,
 
-        listItem.flatMapIndexed { indexItem: Int, item: Any ->
-
-            item.toViewItem(
-                index = indexItem,
-                total = listItem.lastIndex,
-
-                phoneticsCode = phoneticsCode,
-                isSupportTranslate = isSupportTranslate,
-
-                theme = theme,
-                translate = translate,
-
-                isSupportSpeak = isSupportSpeak.value == true,
-                isSupportListen = isSupportReading.value == true
-            )
-        }.let {
+            theme = theme,
+            translate = translate
+        ).let {
 
             viewItemList.addAll(it)
         }

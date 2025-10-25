@@ -121,8 +121,8 @@ class WordSyncTask(
         }.getOrNull().orEmpty()
 
         // chỉ lấy những từ có IPA
-        val wordAvailableList = phoneticRepository.getPhonetics(wordList).filter {
-            it.ipa.isNotEmpty()
+        val wordAvailableList = phoneticRepository.getPhonetic(wordList).filter {
+            it.ipaValue.isNotEmpty()
         }.map {
             it.text
         }

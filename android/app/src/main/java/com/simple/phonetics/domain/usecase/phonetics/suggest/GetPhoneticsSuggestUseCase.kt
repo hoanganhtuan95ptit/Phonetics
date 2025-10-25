@@ -1,15 +1,14 @@
 package com.simple.phonetics.domain.usecase.phonetics.suggest
 
 import com.simple.phonetics.domain.repositories.PhoneticRepository
-import com.simple.phonetics.entities.Phonetic
 
 class GetPhoneticsSuggestUseCase(
     private val phoneticRepository: PhoneticRepository,
 ) {
 
-    suspend fun execute(param: Param): List<Phonetic> {
+    suspend fun execute(param: Param): List<com.simple.phonetic.entities.Phonetic> {
 
-        return phoneticRepository.suggestPhonetics(param.text)
+        return phoneticRepository.suggest(param.text)
     }
 
     data class Param(

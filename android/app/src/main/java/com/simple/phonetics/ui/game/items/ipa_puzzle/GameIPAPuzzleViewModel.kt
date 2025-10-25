@@ -23,9 +23,9 @@ import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.ipa.entities.Ipa
+import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
-import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.state.ResultState
 import com.simple.state.isStart
@@ -51,7 +51,7 @@ class GameIPAPuzzleViewModel(
     }
 
     @VisibleForTesting
-    val phoneticState: LiveData<ResultState<List<Phonetic>>> = combineSourcesWithDiff(resourceSelected, phoneticCodeSelected) {
+    val phoneticState: LiveData<ResultState<List<com.simple.phonetic.entities.Phonetic>>> = combineSourcesWithDiff(resourceSelected, phoneticCodeSelected) {
 
         val resourceSelected = resourceSelected.get()
         val phoneticCodeSelected = phoneticCodeSelected.get()
@@ -233,11 +233,9 @@ class GameIPAPuzzleViewModel(
         checkState.postValue(state)
     }
 
-    private fun getQuestionIpaList(phonetic: Phonetic, ipaList: List<String>, phoneticCode: String): List<Pair<Int, String>> {
+    private fun getQuestionIpaList(phonetic: com.simple.phonetic.entities.Phonetic, ipaList: List<String>, phoneticCode: String): List<Pair<Int, String>> {
 
-        val questionPhonetic = phonetic.ipa[phoneticCode]?.firstOrNull().orEmpty()
-            .replace("/", "")
-
+        val questionPhonetic = phonetic.ipaValueList.firstOrNull().orEmpty().replace("/", "")
 
         val questionIpaList = questionPhonetic.split("").filter {
 

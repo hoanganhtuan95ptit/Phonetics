@@ -15,9 +15,9 @@ import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
+import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
-import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
@@ -68,7 +68,7 @@ fun getIPAWordleStateInfo(
     val param2 = (when (quiz.questionType) {
         GameIPAWordleQuiz.Type.VOICE -> translate["type_voice"].orEmpty()
         GameIPAWordleQuiz.Type.TEXT -> quiz.question.text
-        else -> quiz.question.ipa[phoneticCode]?.firstOrNull().orEmpty()
+        else -> quiz.question.ipaValueList.firstOrNull().orEmpty()
     }).let {
 
         " $it "
@@ -77,7 +77,7 @@ fun getIPAWordleStateInfo(
     val param3 = (if (quiz.answerType == GameIPAWordleQuiz.Type.TEXT)
         quiz.question.text
     else
-        quiz.question.ipa[phoneticCode]?.firstOrNull().orEmpty()).let {
+        quiz.question.ipaValueList.firstOrNull().orEmpty()).let {
 
         " $it "
     }
@@ -233,7 +233,7 @@ fun getIpaWordleQuestionViewItem(
     text = if (quiz.questionType == GameIPAWordleQuiz.Type.TEXT) {
         quiz.question.text
     } else {
-        quiz.question.ipa[phoneticCode]?.firstOrNull().orEmpty()
+        quiz.question.ipaValueList.firstOrNull().orEmpty()
     }
         .with(Bold, ForegroundColor(theme.colorOnSurface)),
     textStyle = TextStyle(
@@ -255,14 +255,14 @@ fun getIPAWordleOptionViewItem(
     theme: Map<String, Any>,
     quiz: GameIPAWordleQuiz,
 
-    choose: Phonetic?,
+    choose: com.simple.phonetic.entities.Phonetic?,
     phoneticCode: String
 ) = quiz.answers.mapIndexed { index, phonetic ->
 
     val text = if (quiz.answerType == GameIPAWordleQuiz.Type.TEXT)
         phonetic.text
     else
-        phonetic.ipa[phoneticCode]?.firstOrNull().orEmpty()
+        phonetic.ipaValueList.firstOrNull().orEmpty()
 
 
     ClickTextViewItem(

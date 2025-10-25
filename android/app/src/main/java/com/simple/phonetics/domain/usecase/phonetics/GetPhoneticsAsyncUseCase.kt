@@ -3,22 +3,25 @@ package com.simple.phonetics.domain.usecase.phonetics
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.coreapp.utils.extentions.offerActiveAwait
+import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.data.dao.HistoryDao
 import com.simple.phonetics.data.dao.RoomHistory
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
-import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getLineDelimiters
 import com.simple.phonetics.utils.exts.getWordDelimiters
 import com.simple.phonetics.utils.exts.removeSpecialCharacters
 import com.simple.state.ResultState
+import com.simple.state.isCompleted
 import com.simple.state.toSuccess
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -31,9 +34,7 @@ class GetPhoneticsAsyncUseCase(
 
     private var id: String = ""
 
-    suspend fun execute(param: Param?): Flow<ResultState<List<Any>>> = channelFlow {
-        checkNotNull(param)
-
+    suspend fun execute(param: Param): Flow<ResultState<List<Sentence>>> = channelFlow {
 
         val text = param.textNew.replace("  ", " ").trim().lowercase()
 
@@ -48,6 +49,13 @@ class GetPhoneticsAsyncUseCase(
 
             offerActive(ResultState.Start)
         }
+
+
+        /**
+         * lăng nghe việc đồng bộ phonetic kết thúc
+         */
+        phoneticRepository.copyStateAsync().filter { it.isCompleted() }.first()
+
 
         // nếu đang bật chế độ đảo ngược thì thực hiện dịch nội dung
         val textWrap = if (param.isReverse) {
@@ -92,7 +100,7 @@ class GetPhoneticsAsyncUseCase(
 
             sentenceObject.phonetics = wordList.map {
 
-                Phonetic(text = it)
+                com.simple.phonetic.entities.Phonetic(text = it.lowercase())
             }
 
             sentenceObject
@@ -105,25 +113,26 @@ class GetPhoneticsAsyncUseCase(
         // tìm kiếm phiên âm
         val ipaJob = launch {
 
-            val wordList = sentenceList.flatMap { sentence -> sentence.phonetics.map { it.text } }
+            val wordList = sentenceList.flatMap { sentence ->
 
-            val mapTextAndPhonetics = phoneticRepository.getPhonetics(
-                textList = wordList,
-                phoneticCode = param.phoneticCode
-            ).associateBy {
-                it.text.lowercase()
+                sentence.phonetics.map { it.text }
             }
 
-            sentenceList.flatMap {
+            val mapTextAndPhonetics = phoneticRepository.getPhonetic(
+                phoneticCode = param.phoneticCode,
+                textList = wordList
+            ).associateBy {
+                it.text
+            }
 
-                it.phonetics
-            }.forEach {
+            sentenceList.forEach { sentence ->
 
-                it.ipa = mapTextAndPhonetics[it.text]?.ipa ?: hashMapOf()
+                sentence.phonetics = sentence.phonetics.map { mapTextAndPhonetics[it.text] ?: it }
             }
 
             offerActive(ResultState.Success(sentenceList))
         }
+
 
         // thực hiện dịch
         launch {
@@ -136,6 +145,7 @@ class GetPhoneticsAsyncUseCase(
             }
         }
 
+
         // thực hiện lưu những từ đã tra phiên âm
         if (param.saveToHistory) launch {
 
@@ -146,7 +156,7 @@ class GetPhoneticsAsyncUseCase(
             val wordList = sentenceList.flatMap {
                 it.phonetics
             }.filter {
-                it.ipa[param.phoneticCode].orEmpty().isNotEmpty()
+                it.ipaValueList.isNotEmpty()
             }.map {
                 it.text
             }

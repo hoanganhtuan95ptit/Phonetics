@@ -1,7 +1,5 @@
 package com.simple.phonetics.ui.game.items.ipa_match
 
-import com.simple.phonetics.entities.Phonetic
-
 
 data class GameIPAMatchQuiz(
     val match: List<Pair<Option, Option>>,
@@ -9,7 +7,7 @@ data class GameIPAMatchQuiz(
 
     data class Option(
         val type: Type,
-        val phonetic: Phonetic
+        val phonetic: com.simple.phonetic.entities.Phonetic
     ) {
 
         enum class Type {

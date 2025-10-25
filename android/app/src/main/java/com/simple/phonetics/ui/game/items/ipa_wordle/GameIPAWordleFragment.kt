@@ -25,7 +25,6 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
-import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.game.GameFragment
 import com.simple.phonetics.ui.game.items.GameItemFragment
@@ -72,13 +71,13 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
         val clickTextAdapter = ClickTextAdapter { view, item ->
 
             if (item.id.startsWith(Id.CHOOSE)) {
-                viewModel.updateChoose(item.data.asObjectOrNull<Phonetic>() ?: return@ClickTextAdapter)
+                viewModel.updateChoose(item.data.asObjectOrNull<com.simple.phonetic.entities.Phonetic>() ?: return@ClickTextAdapter)
             }
 
             val quiz = viewModel.quiz.value ?: return@ClickTextAdapter
 
             if (quiz.answerType != GameIPAWordleQuiz.Type.VOICE && quiz.questionType != GameIPAWordleQuiz.Type.VOICE) {
-                viewModel.startReading(item.data.asObjectOrNull<Phonetic>()?.text)
+                viewModel.startReading(item.data.asObjectOrNull<com.simple.phonetic.entities.Phonetic>()?.text)
             }
         }
 

@@ -31,6 +31,7 @@ import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.entities.Language
+import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
@@ -73,7 +74,7 @@ class SpeakViewModel(
 
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(text, inputLanguage, outputLanguage, phoneticCodeSelected) {
+    val phoneticsState: LiveData<ResultState<List<Sentence>>> = combineSources(text, inputLanguage, outputLanguage, phoneticCodeSelected) {
 
         val param = GetPhoneticsAsyncUseCase.Param(
             textNew = text.get(),
@@ -97,7 +98,6 @@ class SpeakViewModel(
         val translate = translate.get()
 
         val state = phoneticsState.get()
-        val phoneticsCode = phoneticCodeSelected.get()
 
         state.doStart {
 
@@ -105,26 +105,17 @@ class SpeakViewModel(
             return@combineSourcesWithDiff
         }
 
+
         val viewItemList = arrayListOf<ViewItem>()
 
-        val listItem = state.toSuccess()?.data.orEmpty()
+        state.toSuccess()?.data.orEmpty().toViewItem(
+            isSupportSpeak = false,
+            isSupportListen = isSupportReading.value == true,
+            isSupportTranslate = false,
 
-        listItem.flatMapIndexed { indexItem: Int, item: Any ->
-
-            item.toViewItem(
-                index = indexItem,
-                total = listItem.lastIndex,
-
-                phoneticsCode = phoneticsCode,
-
-                isSupportSpeak = false,
-                isSupportListen = isSupportReading.value == true,
-                isSupportTranslate = false,
-
-                theme = theme,
-                translate = translate
-            )
-        }.let {
+            theme = theme,
+            translate = translate
+        ).let {
 
             viewItemList.add(SpaceViewItem(id = "1", height = DP.DP_16))
             viewItemList.addAll(it)
