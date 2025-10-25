@@ -1,5 +1,6 @@
 package com.simple.phonetics.entities
 
+@Deprecated("")
 class Phonetic(
     val text: String
 ) {

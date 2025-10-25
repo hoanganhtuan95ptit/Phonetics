@@ -15,9 +15,9 @@ import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
+import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
-import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingViewItem
 import com.simple.phonetics.ui.base.adapters.PhoneticsViewItem
@@ -26,12 +26,6 @@ import com.simple.state.ResultState
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
-
-fun Phonetics(text: String, ipa: HashMap<String, List<String>>) = Phonetic(
-    text = text
-).apply {
-    this.ipa = ipa
-}
 
 fun getPhoneticLoadingViewItem(theme: Map<String, Any>, background: Background? = null): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
@@ -47,8 +41,34 @@ fun getPhoneticLoadingViewItem(theme: Map<String, Any>, background: Background? 
     add(PhoneticsLoadingViewItem(id = "5", background = backgroundWrap))
 }
 
-fun Any.toViewItem(
-    index: Int, total: Int, phoneticsCode: String,
+
+fun List<Sentence>.toViewItem(
+    isShowSpeak: Boolean = true,
+
+    isSupportSpeak: Boolean = false,
+    isSupportListen: Boolean = false,
+    isSupportTranslate: Boolean = false,
+
+    theme: Map<String, Any>, translate: Map<String, String>
+) = flatMapIndexed { indexItem: Int, item: Sentence ->
+
+    item.toViewItem(
+        index = indexItem,
+        total = lastIndex,
+
+        isShowSpeak = isShowSpeak,
+
+        isSupportSpeak = isSupportSpeak,
+        isSupportListen = isSupportListen,
+        isSupportTranslate = isSupportTranslate,
+
+        theme = theme,
+        translate = translate
+    )
+}
+
+private fun Sentence.toViewItem(
+    index: Int, total: Int,
 
     isShowSpeak: Boolean = true,
 
@@ -61,31 +81,12 @@ fun Any.toViewItem(
 
     val item = this@toViewItem
 
-    if (item is Phonetic) item.toViewItem(
-        id = "${index * 1000}",
-
-        isSupportSpeak = isSupportSpeak,
-        isSupportListen = isSupportListen,
-
-        phoneticsCode = phoneticsCode,
-
-        theme = theme
-    ).let {
-
-        add(it)
-        return@apply
-    }
-
-
-    if (item !is Sentence) {
-
-        return@apply
-    }
 
     if (isShowSpeak && isSupportSpeak && item.phonetics.size >= 2) {
 
         add(item.toSpeakViewItem(index, theme, translate))
     }
+
 
     item.phonetics.mapIndexed { indexPhonetic, phonetic ->
 
@@ -95,14 +96,13 @@ fun Any.toViewItem(
             isSupportSpeak = isSupportSpeak,
             isSupportListen = isSupportListen,
 
-            phoneticsCode = phoneticsCode,
-
             theme = theme
         )
     }.let {
 
         addAll(it)
     }
+
 
     if (isSupportTranslate) item.translateState.let { translateState ->
 
@@ -138,7 +138,7 @@ fun Any.toViewItem(
     }
 }
 
-fun Sentence.toSpeakViewItem(index: Int, theme: Map<String, Any>, translate: Map<String, String>): ViewItem {
+private fun Sentence.toSpeakViewItem(index: Int, theme: Map<String, Any>, translate: Map<String, String>): ViewItem {
 
     return ClickTextViewItem(
         id = "${Id.SENTENCE}_${index}",
@@ -191,19 +191,17 @@ fun Sentence.toSpeakViewItem(index: Int, theme: Map<String, Any>, translate: Map
     )
 }
 
-fun Phonetic.toViewItem(
+private fun com.simple.phonetic.entities.Phonetic.toViewItem(
     id: String,
 
     isSupportSpeak: Boolean = false,
     isSupportListen: Boolean = false,
 
-    phoneticsCode: String, theme: Map<String, Any>
+    theme: Map<String, Any>
 ): ViewItem {
 
-    val codeAndIpa = this.ipa.filter { it.value.isNotEmpty() }.takeIf { it.isNotEmpty() }
-
-    val ipaList = (codeAndIpa?.get(phoneticsCode) ?: codeAndIpa?.toList()?.first()?.second).orEmpty()
-    val text = ipaList.joinToString(separator = " - ")
+    val ipaList = ipaValueList
+    val ipa = ipaList.joinToString(separator = " - ")
 
     val image = if (isSupportSpeak) {
         R.drawable.img_down
@@ -217,7 +215,7 @@ fun Phonetic.toViewItem(
         id = id,
         data = this,
 
-        ipa = text.with(ForegroundColor(if (ipaList.size > 1) theme.colorPrimary else theme.colorError)),
+        ipa = ipa.with(ForegroundColor(if (ipaList.size > 1) theme.colorPrimary else theme.colorError)),
         text = this.text.with(ForegroundColor(theme.colorOnSurface)),
 
         image = image,

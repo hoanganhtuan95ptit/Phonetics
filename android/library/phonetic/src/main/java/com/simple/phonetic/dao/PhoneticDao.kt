@@ -21,14 +21,14 @@ private const val TABLE_NAME_FTS = "${TABLE_NAME}_fts"
 @Dao
 interface PhoneticDaoV2 {
 
-    @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE r.text IN (:textList)")
-    fun getListBy(textList: List<String>): List<RoomPhonetic>
+    @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE r.text IN (:textList) LIMIT :limit")
+    fun getListBy(textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
 
-    @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE r.ipaCode = :ipaCode AND r.text IN (:textList)")
-    fun getListBy(ipaCode: String, textList: List<String>): List<RoomPhonetic>
+    @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE r.ipaCode = :ipaCode AND r.text IN (:textList) LIMIT :limit")
+    fun getListBy(ipaCode: String, textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
 
-    @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE f.ipaValue MATCH :ipaQuery AND r.ipaCode = :ipaCode AND r.text IN (:textList)")
-    fun getListBy(ipaQuery: String, ipaCode: String, textList: List<String>): List<Phonetic>
+    @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE f.ipaValue MATCH :ipaQuery AND r.ipaCode = :ipaCode AND r.text IN (:textList) LIMIT :limit")
+    fun getListBy(ipaQuery: String, ipaCode: String, textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
 
 
     @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE f.text MATCH :textQuery LIMIT :limit")
@@ -86,7 +86,7 @@ private fun Phonetic.toRoom() = RoomPhonetic(
     ipaCode = ipaCode.lowercase(),
     ipaValue = ipaValue.lowercase(),
 
-    extras = this.toJson(),
+    extras = this.toJson().lowercase(),
 )
 
 @Database(entities = [RoomPhonetic::class, RoomPhoneticFTS::class], version = 1, exportSchema = false)

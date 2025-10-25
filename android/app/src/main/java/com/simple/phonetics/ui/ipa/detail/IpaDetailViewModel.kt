@@ -36,6 +36,7 @@ import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
+import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailViewItem
@@ -123,7 +124,7 @@ class IpaDetailViewModel(
 
 
     @VisibleForTesting
-    val phoneticsState: LiveData<ResultState<List<Any>>> = combineSources(ipa, inputLanguage, outputLanguage, phoneticCodeSelected) {
+    val phoneticsState: LiveData<ResultState<List<Sentence>>> = combineSources(ipa, inputLanguage, outputLanguage, phoneticCodeSelected) {
 
         postValue(ResultState.Start)
 
@@ -172,24 +173,16 @@ class IpaDetailViewModel(
 
         val listItem = state.toSuccess()?.data.orEmpty()
 
-        listItem.flatMapIndexed { indexItem: Int, item: Any ->
+        listItem.toViewItem(
 
-            item.toViewItem(
-                index = indexItem,
-                total = listItem.lastIndex,
+            isShowSpeak = false,
+            isSupportSpeak = isSupportSpeak.value == true,
+            isSupportListen = isSupportReading.value == true,
+            isSupportTranslate = false,
 
-                phoneticsCode = phoneticsCode,
-
-                isShowSpeak = false,
-
-                isSupportSpeak = isSupportSpeak.value == true,
-                isSupportListen = isSupportReading.value == true,
-                isSupportTranslate = false,
-
-                theme = theme,
-                translate = translate
-            )
-        }.let {
+            theme = theme,
+            translate = translate
+        ).let {
 
             viewItemList.addAll(it)
         }

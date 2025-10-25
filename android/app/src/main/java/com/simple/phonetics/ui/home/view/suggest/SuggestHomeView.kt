@@ -14,8 +14,8 @@ import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.observeLaunch
 import com.simple.crashlytics.logCrashlytics
 import com.simple.event.listenerEvent
+import com.simple.phonetic.entities.Phonetic
 import com.simple.phonetics.Id
-import com.simple.phonetics.entities.Phonetic
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.ui.view.SelectionEdittext
