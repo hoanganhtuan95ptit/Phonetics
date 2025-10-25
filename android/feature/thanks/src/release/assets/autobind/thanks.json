@@ -1,0 +1,1 @@
+{"bindings":[{"type":"com.simple.phonetics.ui.MainActivity","impl":"com.simple.feature.thanks.ThankMainService"},{"type":"com.simple.deeplink.queue.DeeplinkQueue","impl":"com.simple.feature.thanks.deeplinks.ThankQueue"},{"type":"com.simple.deeplink.provider.DeeplinkProvider","impl":"com.simple.feature.thanks.deeplinks.DeeplinkProvider"}]}

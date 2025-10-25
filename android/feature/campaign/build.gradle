@@ -7,7 +7,7 @@ plugins {
 apply from: "$rootDir/constant.gradle"
 
 android {
-    namespace 'com.simple.feature.mlkit'
+    namespace 'com.simple.feature.campaign'
 }
 
 dependencies {

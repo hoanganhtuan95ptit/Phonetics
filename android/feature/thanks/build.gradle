@@ -13,7 +13,7 @@ android {
 dependencies {
     implementation project(":app")
 
-    implementation otherDependencies.material
+    implementation googleDependencies.material
 
     implementation roomDependencies.room_ktx
     implementation roomDependencies.room_runtime
