@@ -1,9 +1,8 @@
 project.ext {
 
     // ===================== Android SDK & Java =====================
-    versionCode = 147
-    versionName = "1.3.35"
-    versionNameBetaSuffix = "-beta2"
+    versionCode = 149
+    versionName = "1.3.36"
     versionNameDebugSuffix = "-debug"
 
     minSdkVersion = 23
@@ -37,8 +36,7 @@ project.ext {
     glide_transformations_version = '4.3.0'
     logging_interceptor_version = '4.12.0'
     shimmerlayout_version = '2.1.0'
-    play_core_ktx_version = '1.10.3'
-    hoanganhtuan95ptit_version = '1.3.39.beta15'
+    hoanganhtuan95ptit_version = '1.3.39.beta18'
     camerax_version = '1.1.0'
     camera_view_version = '1.1.0'
     core_version = "1.1.4"
@@ -47,15 +45,18 @@ project.ext {
     lottie_version = '4.2.1'
     core_splashscreen_version = '1.1.0-rc01'
     keyboardvisibilityevent_version = '3.0.0-RC3'
-    play_services_ads_version = '21.3.0'
     flexbox_version = '3.0.0'
     permissionx_version = '1.7.1'
     material_version = '1.13.0-alpha08'
     auto_service_version = '1.0-rc4'
 
     // ===================== Firebase Versions ======================
-    firebase_ads_version = '21.1.0'
+    firebase_ads_version = '23.6.0'
     firebase_bom_version = '33.1.0'
+
+    // --- google play ---
+    play_services_ads_version = '22.6.0'
+    play_services_base_version = '18.5.0'
 
     // --- ML Kit Versions ---
     mlkit_translate_version = '17.0.3'
@@ -92,27 +93,30 @@ project.ext {
     ]
 
     androidxDependencies = [
-            startup_runtime      : "androidx.startup:startup-runtime:1.2.0",
-            core                 : "androidx.core:core-ktx:1.13.1",
-            multidex             : "androidx.multidex:multidex:$multidex_version",
-            appcompat            : "androidx.appcompat:appcompat:$appcompat_version",
-            fragment             : "androidx.fragment:fragment-ktx:$fragment_version",
-            legacy               : "androidx.legacy:legacy-support-v4:$legacy_support_version",
-            preference           : "androidx.preference:preference-ktx:$preference_ktx_version",
-            constraintlayout     : "androidx.constraintlayout:constraintlayout:$constraint_layout_version",
-            vectordrawable       : "androidx.vectordrawable:vectordrawable-animated:$vectordrawable_version",
-            swiperefreshlayout   : "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version",
-            recyclerview         : "androidx.recyclerview:recyclerview:$recycler_version",
-            lifecycle_process    : "androidx.lifecycle:lifecycle-process:$lifecycle_version",
-            lifecycle_livedata   : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version",
-            lifecycle_common     : "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version",
-            lifecycle_viewmodel  : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
+            startup_runtime    : "androidx.startup:startup-runtime:1.2.0",
+            core               : "androidx.core:core-ktx:1.13.1",
+            multidex           : "androidx.multidex:multidex:$multidex_version",
+            appcompat          : "androidx.appcompat:appcompat:$appcompat_version",
+            fragment           : "androidx.fragment:fragment-ktx:$fragment_version",
+            legacy             : "androidx.legacy:legacy-support-v4:$legacy_support_version",
+            preference         : "androidx.preference:preference-ktx:$preference_ktx_version",
+            constraintlayout   : "androidx.constraintlayout:constraintlayout:$constraint_layout_version",
+            vectordrawable     : "androidx.vectordrawable:vectordrawable-animated:$vectordrawable_version",
+            swiperefreshlayout : "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version",
+            recyclerview       : "androidx.recyclerview:recyclerview:$recycler_version",
+            lifecycle_process  : "androidx.lifecycle:lifecycle-process:$lifecycle_version",
+            lifecycle_livedata : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version",
+            lifecycle_common   : "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version",
+            lifecycle_viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
+            core_splashscreen  : "androidx.core:core-splashscreen:$core_splashscreen_version",
     ]
 
     playDependencies = [
-            review: "com.google.android.play:review-ktx:2.0.1",
-            update: "com.google.android.play:app-update-ktx:2.0.0",
-            feature_delivery: "com.google.android.play:feature-delivery-ktx:2.1.0",
+            review            : "com.google.android.play:review-ktx:2.0.1",
+            update            : "com.google.android.play:app-update-ktx:2.0.0",
+            feature_delivery  : "com.google.android.play:feature-delivery-ktx:2.1.0",
+            play_services_ads : "com.google.android.gms:play-services-ads:$play_services_ads_version",
+            play_services_base: "com.google.android.gms:play-services-base:$play_services_base_version",
     ]
 
     // --- ML Kit ---
@@ -124,6 +128,13 @@ project.ext {
             text_recognition_devanagari: "com.google.mlkit:text-recognition-devanagari:$mlkit_text_recognition_version",
             text_recognition_japanese  : "com.google.mlkit:text-recognition-japanese:$mlkit_text_recognition_version",
             text_recognition_korean    : "com.google.mlkit:text-recognition-korean:$mlkit_text_recognition_version"
+    ]
+
+    // Google
+    googleDependencies = [
+            flexbox     : "com.google.android.flexbox:flexbox:$flexbox_version",
+            material    : "com.google.android.material:material:$material_version",
+            auto_service: "com.google.auto.service:auto-service:$auto_service_version"
     ]
 
     firebaseDependencies = [
@@ -144,19 +155,21 @@ project.ext {
     hoanganhtuan95Dependencies = [
             base                : "com.github.hoanganhtuan95ptit.core:base:$hoanganhtuan95ptit_version",
             android             : "com.github.hoanganhtuan95ptit.core:android:$hoanganhtuan95ptit_version",
+
             size                : "com.github.hoanganhtuan95ptit.core:size:$hoanganhtuan95ptit_version",
             task                : "com.github.hoanganhtuan95ptit.core:task:$hoanganhtuan95ptit_version",
             event               : "com.github.hoanganhtuan95ptit.core:event:$hoanganhtuan95ptit_version",
             image               : "com.github.hoanganhtuan95ptit.core:image:$hoanganhtuan95ptit_version",
             color               : "com.github.hoanganhtuan95ptit.core:color:$hoanganhtuan95ptit_version",
+            state               : "com.github.hoanganhtuan95ptit.core:state:$hoanganhtuan95ptit_version",
+            theme               : "com.github.hoanganhtuan95ptit.core:theme:$hoanganhtuan95ptit_version",
             string              : "com.github.hoanganhtuan95ptit.core:string:$hoanganhtuan95ptit_version",
-            detect              : "com.github.hoanganhtuan95ptit.core:detect:$hoanganhtuan95ptit_version",
-            detect_mlkit        : "com.github.hoanganhtuan95ptit.core:detect-mlkit:$hoanganhtuan95ptit_version",
-            translate           : "com.github.hoanganhtuan95ptit.core:translate:$hoanganhtuan95ptit_version",
-            translate_mlkit     : "com.github.hoanganhtuan95ptit.core:translate-mlkit:$hoanganhtuan95ptit_version",
+            service             : "com.github.hoanganhtuan95ptit.core:service:$hoanganhtuan95ptit_version",
+
             analytics           : "com.github.hoanganhtuan95ptit.core:analytics:$hoanganhtuan95ptit_version",
             analytics_log       : "com.github.hoanganhtuan95ptit.core:analytics-log:$hoanganhtuan95ptit_version",
             analytics_firebase  : "com.github.hoanganhtuan95ptit.core:analytics-firebase:$hoanganhtuan95ptit_version",
+
             crashlytics         : "com.github.hoanganhtuan95ptit.core:crashlytics:$hoanganhtuan95ptit_version",
             crashlytics_log     : "com.github.hoanganhtuan95ptit.core:crashlytics-log:$hoanganhtuan95ptit_version",
             crashlytics_firebase: "com.github.hoanganhtuan95ptit.core:crashlytics-firebase:$hoanganhtuan95ptit_version",
@@ -170,11 +183,6 @@ project.ext {
             deeplink            : "com.github.hoanganhtuan95ptit.core:deeplink:$hoanganhtuan95ptit_version",
             deeplink_processor  : "com.github.hoanganhtuan95ptit.core:deeplink-processor:$hoanganhtuan95ptit_version",
 
-            state               : "com.github.hoanganhtuan95ptit.core:state:$hoanganhtuan95ptit_version",
-            theme               : "com.github.hoanganhtuan95ptit.core:theme:$hoanganhtuan95ptit_version",
-
-            service             : "com.github.hoanganhtuan95ptit.core:service:$hoanganhtuan95ptit_version",
-
             detect_2            : "com.github.hoanganhtuan95ptit.core:detect-2:$hoanganhtuan95ptit_version",
             detect_2_mlkit      : "com.github.hoanganhtuan95ptit.core:detect-2-mlkit:$hoanganhtuan95ptit_version",
 
@@ -182,20 +190,10 @@ project.ext {
             translate_2_mlkit   : "com.github.hoanganhtuan95ptit.core:translate-2-mlkit:$hoanganhtuan95ptit_version",
     ]
 
-    // Google
-    googleDependencies = [
-            auto_service: "com.google.auto.service:auto-service:$auto_service_version"
-    ]
-
     // ===================== Other dependencies for direct import =====================
     otherDependencies = [
-            core_splashscreen      : "androidx.core:core-splashscreen:$core_splashscreen_version",
             keyboardvisibilityevent: "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:$keyboardvisibilityevent_version",
-            flexbox                : "com.google.android.flexbox:flexbox:$flexbox_version",
             permissionx            : "com.guolindev.permissionx:permissionx:$permissionx_version",
-            play_services_ads      : "com.google.android.gms:play-services-ads:$play_services_ads_version",
-            play_services_base     : "com.google.android.gms:play-services-base:18.5.0",
-            material               : "com.google.android.material:material:$material_version",
             lottie                 : "com.airbnb.android:lottie:$lottie_version",
     ]
 }

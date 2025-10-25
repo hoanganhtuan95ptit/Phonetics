@@ -53,18 +53,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
-        beta {
-            initWith release // kế thừa từ release
-            versionNameSuffix project.ext.versionNameBetaSuffix
-            resValue "string", "app_name", "EPhonetics Beta"
-
-            matchingFallbacks = ['release']
-
-            buildConfigField 'boolean', 'DEBUG', 'false'
-            signingConfig signingConfigs.keystore  // can remove
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-
         release {
             resValue "string", "app_name", "EPhonetics"
 
@@ -158,19 +146,18 @@ dependencies {
 
     implementation playDependencies.review
     implementation playDependencies.feature_delivery
+    implementation playDependencies.play_services_ads
+    implementation playDependencies.play_services_base
 
     implementation retrofit2Dependencies.logging_interceptor
 
+    implementation googleDependencies.flexbox
+    implementation googleDependencies.material
     implementation googleDependencies.auto_service
     kapt googleDependencies.auto_service
 
     implementation otherDependencies.lottie
-    implementation otherDependencies.flexbox
-    implementation otherDependencies.material
     implementation otherDependencies.permissionx
-    implementation otherDependencies.core_splashscreen
-    implementation otherDependencies.play_services_ads
-    implementation otherDependencies.play_services_base
     implementation otherDependencies.keyboardvisibilityevent
 }
 
