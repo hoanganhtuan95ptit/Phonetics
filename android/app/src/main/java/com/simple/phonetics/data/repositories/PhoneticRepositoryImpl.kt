@@ -221,7 +221,7 @@ class PhoneticRepositoryImpl(
             offset += batch.size
 
             appCache.getData(PHONETIC_COPY, offset)
-            trySend(ResultState.Running(min(100f, offset * 1f / phoneticOldCount)))
+            trySend(ResultState.Running(min(100f, offset * 100f / phoneticOldCount)))
         }
 
 
