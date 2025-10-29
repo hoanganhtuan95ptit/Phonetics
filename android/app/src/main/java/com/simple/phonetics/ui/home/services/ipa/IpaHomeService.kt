@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.home.services.ipa
 
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.asFlow
 import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
@@ -16,29 +15,26 @@ import com.simple.phonetics.ui.base.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
-import com.simple.service.FragmentService
+import com.simple.phonetics.ui.home.services.HomeService
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @AutoBind(HomeFragment::class)
-class IpaHomeService : FragmentService {
+class IpaHomeService : HomeService {
 
-    override suspend fun setup(fragment: Fragment) {
+    override suspend fun setup(homeFragment: HomeFragment) {
 
-        if (fragment !is HomeFragment) return
+        val viewModel: HomeViewModel by homeFragment.viewModel()
 
-
-        val viewModel: HomeViewModel by fragment.viewModel()
-
-        val ipaHomeViewModel: IpaHomeViewModel by fragment.viewModel()
+        val ipaHomeViewModel: IpaHomeViewModel by homeFragment.viewModel()
 
 
-        ipaHomeViewModel.ipaViewItemList.asFlow().launchCollect(fragment.viewLifecycleOwner) {
+        ipaHomeViewModel.ipaViewItemList.asFlow().launchCollect(homeFragment.viewLifecycleOwner) {
 
             viewModel.updateTypeViewItemList(type = 2, it)
         }
 
 
-        listenerEvent(eventName = EventName.TEXT_SIMPLE_VIEW_ITEM_CLICKED, lifecycle = fragment.viewLifecycleOwner.lifecycle) {
+        listenerEvent(eventName = EventName.TEXT_SIMPLE_VIEW_ITEM_CLICKED, lifecycle = homeFragment.viewLifecycleOwner.lifecycle) {
 
             val (view, viewItem) = it.asObjectOrNull<Pair<View, TextSimpleViewItem>>() ?: return@listenerEvent
 
@@ -56,7 +52,7 @@ class IpaHomeService : FragmentService {
             )
         }
 
-        listenerEvent(eventName = EventName.IPA_VIEW_ITEM_CLICKED, lifecycle = fragment.viewLifecycleOwner.lifecycle) {
+        listenerEvent(eventName = EventName.IPA_VIEW_ITEM_CLICKED, lifecycle = homeFragment.viewLifecycleOwner.lifecycle) {
 
             val (view, viewItem) = it.asObjectOrNull<Pair<View, IpaViewItem>>() ?: return@listenerEvent
 
