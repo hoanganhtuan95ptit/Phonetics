@@ -341,15 +341,6 @@ class IpaDetailViewModel(
 
     private fun getLoadingViewItem(theme: Map<String, Any>): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
-        val background = Background(
-            cornerRadius = DP.DP_24,
-            backgroundColor = theme.colorLoading
-        )
-
-        add(IpaDetailLoadingViewItem(id = "1", background = background))
-
-        add(SpaceViewItem(id = "2", height = DP.DP_24))
-
         addAll(getPhoneticLoadingViewItem(theme = theme))
     }
 }
