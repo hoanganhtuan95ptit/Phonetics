@@ -180,6 +180,11 @@
   "thank_screen_action_negative": "🙏 Merci",
   "thank_screen_action_positive": "Rejoindre la communauté",
 
+  "thank_screen_title_for_action_ads": "💡 Merci",
+  "thank_screen_message_for_action_ads": "Merci d’avoir regardé la publicité ! 🙏 Les publicités nous aident à maintenir le projet 💡 et à améliorer l’application chaque jour 🌱📱.",
+  "thank_screen_action_negative_ads": "",
+  "thank_screen_action_positive_ads": "Fermer",
+
   "campaign_screen_title_for_join_group": "🤝 Rejoignez la communauté et grandissons ensemble !",
   "campaign_screen_message_for_join_group": "📢 Partagez des idées, suggérez des fonctionnalités et collaborez avec d'autres pour améliorer l'application chaque jour ! 🚀💡",
 

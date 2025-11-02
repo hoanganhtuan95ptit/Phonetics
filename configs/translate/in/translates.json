@@ -180,6 +180,11 @@
   "thank_screen_action_negative": "🙏 Terima Kasih",
   "thank_screen_action_positive": "Bergabung Komunitas",
 
+  "thank_screen_title_for_action_ads": "💡 Terima kasih",
+  "thank_screen_message_for_action_ads": "Terima kasih telah menonton iklan! 🙏 Iklan membantu kami menjaga proyek ini 💡 dan terus meningkatkan aplikasi setiap hari 🌱📱.",
+  "thank_screen_action_negative_ads": "",
+  "thank_screen_action_positive_ads": "Tutup",
+
   "campaign_screen_title_for_join_group": "🤝 Bergabunglah dengan Komunitas dan Berkembang Bersama!",
   "campaign_screen_message_for_join_group": "📢 Bagikan ide, sarankan fitur, dan berkolaborasi dengan orang lain untuk menjadikan aplikasi lebih baik setiap hari! 🚀💡",
 

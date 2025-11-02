@@ -157,11 +157,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/HomeService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/ipa/IpaHomeService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/ipa/IpaHomeService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/ipa/detail/IpaDetailViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/ipa/detail/IpaDetailViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constant.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/constant.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -268,7 +264,7 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;com.developerphil.adbidea.selecteddevices&quot;: &quot;emulator-5554&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;release/1.3.37-beta1&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;release/1.3.38&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_directory_selection&quot;: &quot;/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/app/src/main/java&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/library/phonetic/src/main/java/com/simple/phonetic/dao&quot;,

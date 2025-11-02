@@ -180,6 +180,11 @@
   "thank_screen_action_negative": "🙏 Teşekkürler",
   "thank_screen_action_positive": "Topluluğa Katıl",
 
+  "thank_screen_title_for_action_ads": "💡 Teşekkürler",
+  "thank_screen_message_for_action_ads": "Reklamı izlediğin için teşekkürler! 🙏 Reklamlar, projeyi sürdürmemize 💡 ve uygulamayı her gün geliştirmemize yardımcı olur 🌱📱.",
+  "thank_screen_action_negative_ads": "",
+  "thank_screen_action_positive_ads": "Kapat",
+
   "campaign_screen_title_for_join_group": "🤝 Topluluğa Katıl ve Birlikte Büyü!",
   "campaign_screen_message_for_join_group": "📢 Fikirlerini paylaş, özellikler öner ve uygulamayı her gün daha iyi hale getirmek için başkalarıyla işbirliği yap! 🚀💡",
 

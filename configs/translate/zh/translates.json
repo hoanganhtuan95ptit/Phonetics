@@ -180,6 +180,11 @@
   "thank_screen_action_negative": "🙏 谢谢",
   "thank_screen_action_positive": "加入社区",
 
+  "thank_screen_title_for_action_ads": "💡 感谢您",
+  "thank_screen_message_for_action_ads": "感谢您观看广告！🙏 广告帮助我们维持项目 💡 并每天不断改进应用 🌱📱。",
+  "thank_screen_action_negative_ads": "",
+  "thank_screen_action_positive_ads": "关闭",
+  
   "campaign_screen_title_for_join_group": "🤝 加入社区，共同成长！",
   "campaign_screen_message_for_join_group": "📢 分享想法，提出功能建议，并与他人协作，让应用每天都变得更好！🚀💡",
 
