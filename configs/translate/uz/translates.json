@@ -180,6 +180,11 @@
   "thank_screen_action_negative": "🙏 Rahmat",
   "thank_screen_action_positive": "Jamoaga qoʻshilish",
 
+  "thank_screen_title_for_action_ads": "💡 Rahmat",
+  "thank_screen_message_for_action_ads": "Reklamani tomosha qilganingiz uchun rahmat! 🙏 Reklamalar bizga loyihani qo‘llab-quvvatlashga 💡 va ilovani har kuni yaxshilashga yordam beradi 🌱📱.",
+  "thank_screen_action_negative_ads": "",
+  "thank_screen_action_positive_ads": "Yopish",
+
   "campaign_screen_title_for_join_group": "🤝 Jamoaga qoʻshiling va birga rivojlaning!",
   "campaign_screen_message_for_join_group": "📢 Gʻoyalaringizni baham koʻring, funksiyalarni taklif qiling va ilovani har kuni yaxshilash uchun boshqalar bilan hamkorlik qiling! 🚀💡",
 
