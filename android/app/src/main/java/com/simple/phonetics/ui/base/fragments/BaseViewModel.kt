@@ -2,8 +2,6 @@ package com.simple.phonetics.ui.base.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.simple.phonetics.utils.TextViewMetrics
-import com.simple.phonetics.utils.appStyle
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.mediatorLiveData
@@ -13,6 +11,8 @@ import com.simple.phonetics.domain.usecase.phonetics.code.GetPhoneticCodeSelecte
 import com.simple.phonetics.domain.usecase.reading.CheckSupportReadingAsyncUseCase
 import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Language
+import com.simple.phonetics.utils.TextViewMetrics
+import com.simple.phonetics.utils.appStyle
 import com.unknown.size.appSize
 import com.unknown.string.appString
 import com.unknown.theme.appTheme

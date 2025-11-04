@@ -16,11 +16,9 @@ import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
-import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.Config.UPDATE_DEBUG
 import com.simple.phonetics.Constants
