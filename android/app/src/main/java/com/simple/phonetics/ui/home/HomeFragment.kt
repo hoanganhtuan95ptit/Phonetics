@@ -9,7 +9,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -21,7 +20,6 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
@@ -32,7 +30,6 @@ import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
-import com.simple.event.sendEvent
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
@@ -47,25 +44,20 @@ import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 import com.simple.phonetics.ui.home.view.HomeView
-import com.simple.phonetics.ui.view.popup.PopupView
-import com.simple.phonetics.ui.view.popup.PopupViewModel
+import com.simple.phonetics.ui.services.queue.QueueEventState
+import com.simple.phonetics.ui.view.HomeScreen
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorBackgroundVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.simple.state.toSuccess
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
 import java.util.ServiceLoader
 import kotlin.math.absoluteValue
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
-
-    private val popupViewModel: PopupViewModel by lazy {
-        getViewModel(requireActivity(), PopupViewModel::class)
-    }
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScreen {
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
@@ -95,7 +87,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         })
 
         ServiceLoader.load(HomeView::class.java).toList().forEach { it.setup(this) }
-        ServiceLoader.load(PopupView::class.java).sortedBy { it.priority() }.forEach { it.setup(this) }
 
         setupSpeak()
         setupInput()
@@ -104,7 +95,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         setupRecyclerViewConfig()
 
         observeData()
-        observePopupData()
         observePhoneticsConfigData()
     }
 
@@ -307,25 +297,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
+            QueueEventState.addTag("view_item_list")
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
-
-            sendEvent(EventName.SHOW_POPUP, bundleOf())
-        }
-    }
-
-    private fun observePopupData() = with(popupViewModel) {
-
-        popupEvent.asFlow().launchCollect(viewLifecycleOwner) { event ->
-
-            val map = event.getContentIfNotHandled() ?: return@launchCollect
-
-            map.values.mapNotNull {
-
-                it.toSuccess()?.data
-            }.forEach {
-
-                sendDeeplink(deepLink = it.deepLink, extras = it.extras)
-            }
+            QueueEventState.endTag("view_item_list")
         }
     }
 

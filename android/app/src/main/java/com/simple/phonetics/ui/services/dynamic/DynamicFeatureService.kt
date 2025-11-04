@@ -1,6 +1,5 @@
-package com.simple.phonetics.ui.services
+package com.simple.phonetics.ui.services.dynamic
 
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
@@ -10,7 +9,7 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
-import com.simple.service.ActivityService
+import com.simple.phonetics.ui.services.MainService
 import com.simple.startapp.StartApp
 import com.simple.state.ResultState
 import com.simple.state.doFailed
@@ -23,15 +22,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AutoBind(MainActivity::class)
-class DynamicFeatureService : ActivityService {
+class DynamicFeatureService : MainService {
 
-    override suspend fun setup(fragmentActivity: FragmentActivity) {
+    override fun setup(mainActivity: MainActivity) {
 
-        if (fragmentActivity !is MainActivity) {
-            return
-        }
-
-        fragmentActivity.lifecycleScope.launch(handler + Dispatchers.IO) {
+        mainActivity.lifecycleScope.launch(handler + Dispatchers.IO) {
 
             if (BuildConfig.DEBUG) {
                 delay(5 * 1000)
@@ -48,7 +43,7 @@ class DynamicFeatureService : ActivityService {
 
             val featureList = arrayListOf<String>()
 
-            if (fragmentActivity.viewModel.inputLanguage.asFlow().first().id.equals(Language.EN, true)) {
+            if (mainActivity.viewModel.inputLanguage.asFlow().first().id.equals(Language.Companion.EN, true)) {
 
                 featureList.add("ipa_voice_en")
             }

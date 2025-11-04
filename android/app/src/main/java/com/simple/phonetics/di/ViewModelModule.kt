@@ -10,9 +10,8 @@ import com.simple.phonetics.ui.game.items.ipa_match.GameIPAMatchViewModel
 import com.simple.phonetics.ui.game.items.ipa_puzzle.GameIPAPuzzleViewModel
 import com.simple.phonetics.ui.game.items.ipa_wordle.GameIPAWordleViewModel
 import com.simple.phonetics.ui.home.HomeViewModel
-import com.simple.phonetics.ui.home.services.ipa.IpaHomeViewModel
 import com.simple.phonetics.ui.home.services.detect.DetectHomeViewModel
-import com.simple.phonetics.ui.home.view.event.EventHomeViewModel
+import com.simple.phonetics.ui.home.services.ipa.IpaHomeViewModel
 import com.simple.phonetics.ui.home.view.game.GameHomeViewModel
 import com.simple.phonetics.ui.home.view.history.HistoryHomeViewModel
 import com.simple.phonetics.ui.home.view.microphone.MicrophoneHomeViewModel
@@ -22,11 +21,11 @@ import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
 import com.simple.phonetics.ui.ipa.list.IpaListViewModel
 import com.simple.phonetics.ui.language.LanguageViewModel
 import com.simple.phonetics.ui.recording.RecordingViewModel
-import com.simple.phonetics.ui.review.ReviewViewModel
+import com.simple.phonetics.ui.services.event.EventViewModel
+import com.simple.phonetics.ui.services.review.ReviewViewModel
+import com.simple.phonetics.ui.services.update.UpdateViewModel
 import com.simple.phonetics.ui.speak.SpeakViewModel
-import com.simple.phonetics.ui.update.UpdateViewModel
 import com.simple.phonetics.ui.view.ads.AdsViewModel
-import com.simple.phonetics.ui.view.popup.PopupViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -43,10 +42,6 @@ val viewModelModule = module {
 
     viewModel {
         SuggestHomeViewModel(get())
-    }
-
-    viewModel {
-        PopupViewModel()
     }
 
     viewModel {
@@ -85,7 +80,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        EventHomeViewModel(get(), get())
+        EventViewModel(get(), get())
     }
 
     viewModel {

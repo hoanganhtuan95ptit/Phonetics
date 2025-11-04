@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.home.view.event
+package com.simple.phonetics.ui.services.event
 
 import android.view.Gravity
 import android.view.ViewGroup
@@ -18,11 +18,9 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
-import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.phonetics.domain.usecase.event.GetCurrentEventAsyncUseCase
 import com.simple.phonetics.domain.usecase.event.UpdateEventShowUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -38,7 +36,7 @@ import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class EventHomeViewModel(
+class EventViewModel(
     private val updateEventShowUseCase: UpdateEventShowUseCase,
     private val getCurrentEventAsyncUseCase: GetCurrentEventAsyncUseCase
 ) : BaseViewModel() {
@@ -118,7 +116,6 @@ class EventHomeViewModel(
         postValue(list)
     }
 
-    @VisibleForTesting
     val eventInfo: LiveData<EventInfo> = combineSourcesWithDiff(theme, translate, eventState, viewItemList) {
 
         val theme = theme.value ?: return@combineSourcesWithDiff
@@ -165,7 +162,6 @@ class EventHomeViewModel(
             postValue(this)
         }
     }
-    val eventInfoEvent: LiveData<Event<EventInfo>> = eventInfo.toEvent()
 
     fun updateShowEvent() = viewModelScope.launch(handler + Dispatchers.IO) {
 
