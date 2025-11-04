@@ -2,9 +2,6 @@ package com.simple.feature.campaign.ui
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import com.simple.feature.campaign.data.repositories.CampaignRepository
-import com.simple.feature.campaign.entities.Campaign
-import com.simple.feature.campaign.ui.adapters.CampaignViewItem
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.view.Background
@@ -16,6 +13,9 @@ import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValueIfActive
+import com.simple.feature.campaign.data.repositories.CampaignRepository
+import com.simple.feature.campaign.entities.Campaign
+import com.simple.feature.campaign.ui.adapters.CampaignViewItem
 import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrKey

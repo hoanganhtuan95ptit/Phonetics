@@ -2,9 +2,9 @@ package com.simple.feature.campaign.data.repositories
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
+import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.feature.campaign.data.api.Api
 import com.simple.feature.campaign.entities.Campaign
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.BRANCH
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.GradientDrawable
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.ImageView

@@ -38,12 +38,10 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
-import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailLoadingViewItem
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailViewItem
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorErrorVariant
-import com.simple.phonetics.utils.exts.colorLoading
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem

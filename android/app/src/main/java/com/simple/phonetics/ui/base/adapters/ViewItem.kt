@@ -5,8 +5,8 @@ import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.view.ViewGroup
-import com.simple.phonetics.utils.TextViewMetrics
 import com.simple.coreapp.ui.view.Size
+import com.simple.phonetics.utils.TextViewMetrics
 import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min

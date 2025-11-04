@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.base.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.simple.phonetics.utils.TextViewMetrics
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
@@ -27,6 +26,7 @@ import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.ItemTextSimpleBinding
+import com.simple.phonetics.utils.TextViewMetrics
 import com.unknown.size.uitls.exts.width
 
 @ItemAdapter
