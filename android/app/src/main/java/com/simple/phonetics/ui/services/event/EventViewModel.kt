@@ -69,6 +69,7 @@ class EventViewModel(
 
         val title = translate.getOrKey(event.title)
         if (title.contains("title_", true)) {
+            postValue(list)
             return@combineSourcesWithDiff
         }
 

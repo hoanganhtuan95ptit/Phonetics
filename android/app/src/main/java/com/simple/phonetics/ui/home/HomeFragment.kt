@@ -297,9 +297,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
-            QueueEventState.addTag("view_item_list")
+            QueueEventState.addTag("view_item_list", order = Int.MAX_VALUE)
             binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
-            QueueEventState.endTag("view_item_list")
+            QueueEventState.endTag("view_item_list", order = Int.MAX_VALUE)
         }
     }
 

@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val tag = "UPDATE"
+private const val order = Int.MIN_VALUE
 private const val KEY_REQUEST = "${tag}_KEY_REQUEST"
 
 @AutoBind(MainActivity::class)
@@ -34,7 +35,7 @@ class UpdateView : MainService {
         val viewModel: UpdateViewModel by mainActivity.viewModel()
 
 
-        QueueEventState.addTag(tag = tag)
+        QueueEventState.addTag(tag = tag, order = order)
 
         viewModel.updateInfo.asFlow().launchCollect(mainActivity) { data ->
 
@@ -44,14 +45,14 @@ class UpdateView : MainService {
                 ResultState.Success(Unit)
             }
 
-            QueueEventState.updateState(tag = tag, state = state)
+            QueueEventState.updateState(tag = tag, order = order, state = state)
         }
 
         listenerEvent(mainActivity.lifecycle, eventName = tag) {
 
             openConfirmAwait(mainActivity = mainActivity, info = viewModel.updateInfo.asFlow().first())
 
-            QueueEventState.endTag(tag = tag)
+            QueueEventState.endTag(tag = tag, order = order)
         }
     }
 

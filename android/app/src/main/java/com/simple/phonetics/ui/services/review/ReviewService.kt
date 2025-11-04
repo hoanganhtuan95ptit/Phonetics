@@ -37,6 +37,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Calendar
 
 private const val tag = "REVIEW"
+private const val order = 9
 private const val KEY_REQUEST = "${tag}_KEY_REQUEST"
 
 private val sharedPreferences: SharedPreferences by lazy {
@@ -53,7 +54,7 @@ class ReviewService : MainService {
         val viewModel: ReviewViewModel by mainActivity.viewModel()
 
 
-        QueueEventState.addTag(tag = tag)
+        QueueEventState.addTag(tag = tag, order = order)
 
         viewModel.rateInfo.asFlow().launchCollect(mainActivity) { data ->
 
@@ -63,7 +64,7 @@ class ReviewService : MainService {
                 ResultState.Success(Unit)
             }
 
-            QueueEventState.updateState(tag = tag, state = state)
+            QueueEventState.updateState(tag = tag, order = order, state = state)
         }
 
         listenerEvent(mainActivity.lifecycle, tag) {
@@ -79,7 +80,7 @@ class ReviewService : MainService {
                 openConfirmAwait(mainActivity = mainActivity, info = info)
             }
 
-            QueueEventState.endTag(tag = tag, success = true)
+            QueueEventState.endTag(tag = tag, order = order, success = true)
         }
 
 
