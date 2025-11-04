@@ -7,6 +7,7 @@ import com.simple.state.ResultState
 import com.simple.state.isRunning
 import com.simple.state.isStart
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -14,16 +15,16 @@ import java.util.concurrent.ConcurrentHashMap
 
 object QueueEventState {
 
-    private val map = ConcurrentHashMap<String, ResultState<Unit>>()
+    private val map = ConcurrentHashMap<String, Pair<Int, ResultState<Unit>>>()
     private val queueLive = MediatorLiveData<Long>()
 
 
-    fun addTag(tag: String) {
+    fun addTag(tag: String, order: Int = Int.MAX_VALUE) {
 
-        updateState(tag = tag, state = ResultState.Start)
+        updateState(tag = tag, order = order, state = ResultState.Start)
     }
 
-    fun endTag(tag: String, success: Boolean = true) {
+    fun endTag(tag: String, order: Int = Int.MAX_VALUE, success: Boolean = true) {
 
         val state = if (success) {
             ResultState.Success(Unit)
@@ -31,12 +32,12 @@ object QueueEventState {
             ResultState.Failed(RuntimeException())
         }
 
-        updateState(tag = tag, state = state)
+        updateState(tag = tag, order = order, state = state)
     }
 
-    fun updateState(tag: String, state: ResultState<Unit>) {
+    fun updateState(tag: String, order: Int = Int.MAX_VALUE, state: ResultState<Unit>) {
 
-        map[tag] = state
+        map[tag] = order to state
         queueLive.postValue(System.currentTimeMillis())
     }
 
@@ -45,10 +46,14 @@ object QueueEventState {
         map.toList()
     }.filter {
 
-        Log.d("tuanha", "getQueueAsync: $it")
-        it.all { !it.second.isStart() }
+        Log.d("tuanha", "getQueueAsync: ${it.sortedBy { it.second.first }}")
+        it.all { !it.second.second.isStart() }
     }.mapNotNull { it ->
 
-        it.firstOrNull { it.second.isRunning() }?.first
-    }
+        it.sortedBy { it.second.first }.firstOrNull { it.second.second.isRunning() }?.first
+    }.map {
+
+        Log.d("tuanha", "getQueueAsync: $it")
+        it
+    }.distinctUntilChanged()
 }

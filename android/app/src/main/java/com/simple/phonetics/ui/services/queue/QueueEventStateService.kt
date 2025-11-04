@@ -3,6 +3,7 @@ package com.simple.phonetics.ui.services.queue
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -26,22 +27,34 @@ class QueueEventStateService : MainService {
         mainActivity.listenerActivityLifecycleCallbacks(object : DefaultActivityLifecycleCallbacks() {
 
             override fun onActivityResumed(activity: Activity) {
-                QueueEventState.updateState("main", ResultState.Success(Unit))
+                QueueEventState.updateState(tag = "main", state = ResultState.Success(Unit))
             }
 
             override fun onActivityPaused(activity: Activity) {
-                QueueEventState.updateState("main", ResultState.Start)
+                QueueEventState.updateState(tag = "main", state = ResultState.Start)
             }
         })
 
         mainActivity.listenerFragmentLifecycleCallbacks(object : FragmentManager.FragmentLifecycleCallbacks() {
 
             override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
-                if (f is HomeScreen) QueueEventState.updateState("home", ResultState.Success(Unit))
+
+                if (f is DialogFragment) return
+
+                val state = if (f is HomeScreen) {
+                    ResultState.Success(Unit)
+                } else {
+                    ResultState.Start
+                }
+
+                QueueEventState.updateState(tag = "home", state = state)
             }
 
             override fun onFragmentPaused(fm: FragmentManager, f: Fragment) {
-                if (f is HomeScreen) QueueEventState.updateState("home", ResultState.Start)
+
+                if (f is HomeScreen) {
+                    QueueEventState.updateState(tag = "home", state = ResultState.Start)
+                }
             }
         })
 
@@ -53,7 +66,7 @@ class QueueEventStateService : MainService {
 
     private fun FragmentActivity.listenerFragmentLifecycleCallbacks(listener: FragmentManager.FragmentLifecycleCallbacks) = channelFlow<Unit> {
 
-        supportFragmentManager.registerFragmentLifecycleCallbacks(listener, true)
+        supportFragmentManager.registerFragmentLifecycleCallbacks(listener, false)
 
         awaitClose {
 

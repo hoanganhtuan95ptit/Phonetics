@@ -40,7 +40,7 @@ class AppRepositoryImpl(
     }
 
 
-    private val events: LiveData<List<Event>> = MutableLiveData()
+    private val events: LiveData<List<Event>> = MutableLiveData(emptyList())
 
     private val configs: LiveData<Map<String, String>> = MutableLiveData()
 

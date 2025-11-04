@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.first
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val tag = "EVENT_HOME"
+private const val order = 8
 private const val KEY_REQUEST = "${tag}_KEY_REQUEST"
 
 @AutoBind(MainActivity::class)
@@ -32,7 +33,7 @@ class EventService : MainService {
 
         val viewModel: EventViewModel by mainActivity.viewModel()
 
-        QueueEventState.addTag(tag = tag)
+        QueueEventState.addTag(tag = tag, order = order)
 
         viewModel.eventInfo.asFlow().launchCollect(mainActivity) { data ->
 
@@ -42,7 +43,7 @@ class EventService : MainService {
                 ResultState.Success(Unit)
             }
 
-            QueueEventState.updateState(tag = tag, state = state)
+            QueueEventState.updateState(tag = tag, order = order, state = state)
         }
 
         listenerEvent(mainActivity.lifecycle, tag) {
@@ -58,7 +59,7 @@ class EventService : MainService {
             }
 
 
-            QueueEventState.endTag(tag = tag)
+            QueueEventState.endTag(tag = tag, order = order)
         }
     }
 
