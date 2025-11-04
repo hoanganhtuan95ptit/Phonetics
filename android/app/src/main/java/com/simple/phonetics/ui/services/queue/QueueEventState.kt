@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.services.queue
 
-import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import com.simple.state.ResultState
@@ -46,14 +45,9 @@ object QueueEventState {
         map.toList()
     }.filter {
 
-        Log.d("tuanha", "getQueueAsync: ${it.sortedBy { it.second.first }}")
         it.all { !it.second.second.isStart() }
     }.mapNotNull { it ->
 
         it.sortedBy { it.second.first }.firstOrNull { it.second.second.isRunning() }?.first
-    }.map {
-
-        Log.d("tuanha", "getQueueAsync: $it")
-        it
     }.distinctUntilChanged()
 }
