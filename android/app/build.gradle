@@ -78,7 +78,7 @@ android {
         }
     }
     dynamicFeatures = [
-            ':feature:mlkit', ':feature:campaign', ':feature:ipa_voice_en', ':feature:thanks'
+            ':feature:mlkit', ':feature:campaign', ':feature:ipa_voice_en', ':feature:thanks', ':feature:reminder'
     ]
 }
 

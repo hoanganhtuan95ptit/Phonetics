@@ -1,10 +1,9 @@
-package com.simple.phonetics.ui.review
+package com.simple.phonetics.ui.services.update
 
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.ImageViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -19,64 +18,57 @@ import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
+import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
-import com.simple.phonetics.Config.RATE_DEBUG
+import com.simple.phonetics.BuildConfig
+import com.simple.phonetics.Config.UPDATE_DEBUG
+import com.simple.phonetics.Constants
 import com.simple.phonetics.R
-import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
-import com.simple.phonetics.entities.Sentence
+import com.simple.phonetics.domain.usecase.GetConfigAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorOnSurfaceVariant
 import com.unknown.theme.utils.exts.colorPrimary
-import kotlinx.coroutines.flow.firstOrNull
-import java.util.Calendar
-import kotlin.math.absoluteValue
 
-class ReviewViewModel(
-    private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
+class UpdateViewModel(
+    private val getConfigAsyncUseCase: GetConfigAsyncUseCase
 ) : BaseViewModel() {
 
     @VisibleForTesting
-    val rate: LiveData<Rate> = MediatorLiveData()
+    val config: LiveData<Map<String, String>> = mediatorLiveData {
 
-    val historyList: LiveData<List<Sentence>> = mediatorLiveData {
+        getConfigAsyncUseCase.execute().collect {
 
-        val list = getPhoneticsHistoryAsyncUseCase.execute(GetPhoneticsHistoryAsyncUseCase.Param(1)).firstOrNull()
-
-        postValue(list)
+            postValue(it)
+        }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, rate, historyList) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, config) {
 
-        val theme = theme.value ?: return@combineSourcesWithDiff
-        val translate = translate.value ?: return@combineSourcesWithDiff
+        val theme = theme.get()
+        val translate = translate.get()
 
-        val rate = rate.value ?: return@combineSourcesWithDiff
-        val historyList = historyList.value ?: return@combineSourcesWithDiff
-
-
-        val isValidate = rate.date == 0 || (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - rate.date).absoluteValue >= 3
-
-        // nếu người dùng đã xác nhận mở rate
-        if (!RATE_DEBUG) if (rate.status == Rate.Status.OPEN_RATE.value || !isValidate || historyList.isEmpty()) {
-
-            postValue(emptyList())
-            return@combineSourcesWithDiff
-        }
-
+        val config = config.get()
 
         val list = arrayListOf<ViewItem>()
 
+        val newVersion = config[Constants.NEW_VERSION]?.toIntOrNull() ?: BuildConfig.VERSION_CODE
+
+        if (!UPDATE_DEBUG) if (newVersion <= BuildConfig.VERSION_CODE || !translate.containsKey("update_title")) {
+
+            postValue(list)
+            return@combineSourcesWithDiff
+        }
+
         ImageViewItem(
             id = "1",
-            anim = R.raw.anim_rate,
+            anim = R.raw.anim_update,
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
-                height = DP.DP_100 + DP.DP_70
+                height = DP.DP_100 + DP.DP_100
             )
         ).let {
 
@@ -86,7 +78,7 @@ class ReviewViewModel(
 
         NoneTextViewItem(
             id = "2",
-            text = translate["rate_title"].orEmpty()
+            text = translate["update_title"].orEmpty()
                 .with(Bold, ForegroundColor(theme.colorOnSurface)),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
@@ -108,7 +100,7 @@ class ReviewViewModel(
 
         NoneTextViewItem(
             id = "3",
-            text = translate["rate_message"].orEmpty()
+            text = translate["update_message"].orEmpty()
                 .with(ForegroundColor(theme.colorOnSurface)),
             textStyle = TextStyle(
                 textSize = 16f,
@@ -123,8 +115,7 @@ class ReviewViewModel(
         postValue(list)
     }
 
-    @VisibleForTesting
-    val rateInfo: LiveData<RateInfo> = combineSourcesWithDiff(theme, translate, viewItemList) {
+    val updateInfo: LiveData<UpdateInfo> = combineSourcesWithDiff(theme, translate, viewItemList) {
 
         val theme = theme.value ?: return@combineSourcesWithDiff
         val translate = translate.value ?: return@combineSourcesWithDiff
@@ -134,25 +125,25 @@ class ReviewViewModel(
 
         if (viewItemList.isEmpty()) {
 
-            postValue(RateInfo(show = false))
+            postValue(UpdateInfo(show = false))
             return@combineSourcesWithDiff
         }
 
 
-        val info = RateInfo(
+        val info = UpdateInfo(
             show = true,
 
             viewItemList = viewItemList,
 
             positive = ButtonInfo(
-                text = translate["rate_action_positive"].orEmpty().with(ForegroundColor(theme.colorOnPrimary)),
+                text = translate["update_action_positive"].orEmpty().with(ForegroundColor(theme.colorOnPrimary)),
                 background = Background(
                     backgroundColor = theme.colorPrimary,
                     cornerRadius = DP.DP_16
                 )
             ),
             negative = ButtonInfo(
-                text = translate["rate_action_negative"].orEmpty().with(ForegroundColor(theme.colorOnSurfaceVariant)),
+                text = translate["update_action_negative"].orEmpty().with(ForegroundColor(theme.colorOnSurfaceVariant)),
                 background = Background(
                     backgroundColor = theme.colorBackground,
                     strokeColor = theme.colorOnSurfaceVariant,
@@ -165,26 +156,7 @@ class ReviewViewModel(
         postValue(info)
     }
 
-    val rateInfoEvent: LiveData<Event<RateInfo>> = rateInfo.toEvent()
-
-
-    fun updateRate(rate: Rate?) {
-
-        if (this.rate.value != null) return
-        this.rate.postValue(rate ?: Rate())
-    }
-
-    data class Rate(
-        val date: Int = 0,
-        val status: Int = Status.NONE.value
-    ) {
-
-        enum class Status(val value: Int) {
-            NONE(0), OPEN_RATE(1), DISMISS(2),
-        }
-    }
-
-    data class RateInfo(
+    data class UpdateInfo(
         val show: Boolean,
 
         val positive: ButtonInfo? = null,

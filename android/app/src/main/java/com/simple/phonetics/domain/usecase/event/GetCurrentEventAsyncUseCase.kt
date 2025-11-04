@@ -16,14 +16,18 @@ class GetCurrentEventAsyncUseCase(
     private val appRepository: AppRepository
 ) {
 
-    suspend fun execute(): Flow<ResultState<Event>> = channelFlow {
+    fun execute(): Flow<ResultState<Event>> = channelFlow {
 
         val currentTime = System.currentTimeMillis()
 
-        appRepository.getEventsAsync().launchCollect(this) {
+        appRepository.getEventsAsync().launchCollect(this) { events ->
 
-            val event = it.firstOrNull {
+            val event = if (!EVENT_DEBUG) events.firstOrNull {
+
                 currentTime in it.start..it.end
+            } else {
+
+                events.firstOrNull()
             }
 
             if (event == null) {

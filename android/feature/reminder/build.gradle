@@ -1,0 +1,31 @@
+plugins {
+    id 'com.android.dynamic-feature'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+apply from: "$rootDir/constant.gradle"
+
+android {
+    namespace 'com.simple.feature.reminder'
+}
+
+dependencies {
+    implementation project(":app")
+
+    implementation "androidx.work:work-runtime-ktx:2.9.1"
+
+    implementation googleDependencies.material
+
+    implementation roomDependencies.room_ktx
+    implementation roomDependencies.room_runtime
+    implementation 'androidx.test:monitor:1.8.0'
+    kapt roomDependencies.room_compiler
+
+    implementation hoanganhtuan95Dependencies.adapter
+    kapt hoanganhtuan95Dependencies.adapter_processor
+    implementation hoanganhtuan95Dependencies.deeplink
+    kapt hoanganhtuan95Dependencies.deeplink_processor
+    implementation hoanganhtuan95Dependencies.autobind
+    kapt hoanganhtuan95Dependencies.autobind_processor
+}
