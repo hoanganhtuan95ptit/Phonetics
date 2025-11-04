@@ -158,7 +158,16 @@
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/assets/autobind/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/debug/assets/autobind/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/DefaultTranslate.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/DefaultTranslate.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/di/ViewModelModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/di/ViewModelModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/detect/DetectHomeView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/detect/DetectHomeView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/detect/DetectHomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/detect/DetectHomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/release/assets/autobind/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/release/assets/autobind/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constant.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/constant.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/ipa_voice_en/src/androidTest/java/com/simple/feature/ipa_voice_en/ExampleInstrumentedTest.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -237,52 +246,56 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Android App.app.executor&quot;: &quot;Run&quot;,
-    &quot;DEBUGGABLE_DEVICE&quot;: &quot;Pixel_9a [emulator-5554]&quot;,
-    &quot;DEBUGGABLE_PROCESS&quot;: &quot;com.ipa.english.phonetics.debug&quot;,
-    &quot;DEBUGGER_ID&quot;: &quot;Auto&quot;,
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ExampleUnitTest.addition_isCorrect.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Upgrade Gradle wrapper.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.android [app:dependencies].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.android [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.android [clean build].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;PROJECT_TRUSTED_KEY&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;SHOW_ALL_PROCESSES&quot;: &quot;false&quot;,
-    &quot;ScreenshotViewer.SavePath&quot;: &quot;/Users/hoanganhtuan/Desktop&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;com.developerphil.adbidea.selecteddevices&quot;: &quot;emulator-5554&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;release/1.3.38&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_directory_selection&quot;: &quot;/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/app/src/main/java&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/library/phonetic/src/main/java/com/simple/phonetic/dao&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Android App.app.executor": "Run",
+    "DEBUGGABLE_DEVICE": "Pixel_9a [emulator-5554]",
+    "DEBUGGABLE_PROCESS": "com.ipa.english.phonetics.debug",
+    "DEBUGGER_ID": "Auto",
+    "Gradle.Download Sources.executor": "Run",
+    "Gradle.ExampleUnitTest.addition_isCorrect.executor": "Run",
+    "Gradle.Upgrade Gradle wrapper.executor": "Run",
+    "Gradle.android [app:dependencies | grep -A 5 bundled].executor": "Run",
+    "Gradle.android [app:dependencies].executor": "Run",
+    "Gradle.android [build].executor": "Run",
+    "Gradle.android [clean build].executor": "Run",
+    "Gradle.android [dependencies].executor": "Run",
+    "Gradle.android [feature:mlkit:dependencies].executor": "Run",
+    "Gradle.android [mlkit:dependencies].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "PROJECT_TRUSTED_KEY": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "SHOW_ALL_PROCESSES": "false",
+    "ScreenshotViewer.SavePath": "/Users/hoanganhtuan/Desktop",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "com.developerphil.adbidea.selecteddevices": "emulator-5554",
+    "git-widget-placeholder": "release/1.4.0",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/app/src/main/java",
+    "last_opened_file_path": "/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/library/phonetic/src/main/java/com/simple/phonetic/dao",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.android.tools.idea.sqlite.queryhistory&quot;: [
-      &quot;DELETE FROM phonetic_history&quot;,
-      &quot;select * from phonetics where ipa like '%oʊ%'&quot;,
-      &quot;select * from phonetics where ipa like '%r%'&quot;,
-      &quot;select * from phonetics where text =='aves'&quot;,
-      &quot;select * from phonetics where text = 'aves'&quot;
+  "keyToStringList": {
+    "com.android.tools.idea.sqlite.queryhistory": [
+      "DELETE FROM phonetic_history",
+      "select * from phonetics where ipa like '%oʊ%'",
+      "select * from phonetics where ipa like '%r%'",
+      "select * from phonetics where text =='aves'",
+      "select * from phonetics where text = 'aves'"
     ]
   }
-}</component>
+}]]></component>
   <component name="PsdUISettings">
     <option name="RESOLVED_DEPENDENCIES_MINIMIZE" value="true" />
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
@@ -334,6 +347,11 @@
       <command value="./gradlew clean build --stacktrace" />
       <command value="./gradlew build --info " />
       <command value="gradle app:dependencies" />
+      <command value="./gradlew app:dependencies | grep -A 5 bundled" />
+      <command value="./gradlew app:dependencies" />
+      <command value="./gradlew dependencies" />
+      <command value="./gradlew mlkit:dependencies" />
+      <command value="./gradlew feature:mlkit:dependencies" />
     </option>
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -433,7 +451,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="android [app:dependencies]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="android [app:dependencies | grep -A 5 bundled]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -445,6 +463,11 @@
         <option name="taskNames">
           <list>
             <option value="app:dependencies" />
+            <option value="|" />
+            <option value="grep" />
+            <option value="-A" />
+            <option value="5" />
+            <option value="bundled" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -455,18 +478,18 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="android [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="android [dependencies]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--info" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="build" />
+            <option value="dependencies" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -477,19 +500,40 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="android [clean build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="android [feature:mlkit:dependencies]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--stacktrace" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="clean" />
-            <option value="build" />
+            <option value="feature:mlkit:dependencies" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="android [mlkit:dependencies]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="mlkit:dependencies" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -508,11 +552,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.android [feature:mlkit:dependencies]" />
+        <item itemvalue="Gradle.android [mlkit:dependencies]" />
+        <item itemvalue="Gradle.android [dependencies]" />
+        <item itemvalue="Gradle.android [app:dependencies | grep -A 5 bundled]" />
         <item itemvalue="Gradle.ExampleUnitTest.addition_isCorrect" />
-        <item itemvalue="Gradle.android [app:dependencies]" />
-        <item itemvalue="Gradle.android [build]" />
-        <item itemvalue="Gradle.android [clean build]" />
-        <item itemvalue="Gradle.android [clean build]" />
       </list>
     </recent_temporary>
   </component>
@@ -764,7 +808,7 @@
           <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/detect/DetectHomeView.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/detect/DetectHomeView.kt</url>
           <line>49</line>
           <option name="timeStamp" value="88" />
         </line-breakpoint>
@@ -912,27 +956,27 @@
       <map>
         <entry key="com.ipa.english.phonetics">
           <value>
-            <CheckInfo lastCheckTimestamp="1761748038651" />
+            <CheckInfo lastCheckTimestamp="1762173656749" />
           </value>
         </entry>
         <entry key="com.ipa.english.phonetics.debug">
           <value>
-            <CheckInfo lastCheckTimestamp="1761748038680" />
+            <CheckInfo lastCheckTimestamp="1762173656744" />
           </value>
         </entry>
         <entry key="com.ipa.english.phonetics.debug.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1761748038682" />
+            <CheckInfo lastCheckTimestamp="1762173656749" />
           </value>
         </entry>
         <entry key="com.simple.config.phonetics.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1759635760783" />
+            <CheckInfo lastCheckTimestamp="1762182390691" />
           </value>
         </entry>
         <entry key="com.simple.feature.mlkit.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1759834126283" />
+            <CheckInfo lastCheckTimestamp="1762173688285" />
           </value>
         </entry>
         <entry key="com.simple.feature.test.test">

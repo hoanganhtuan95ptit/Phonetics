@@ -182,6 +182,11 @@ val DEFAULT_TRANSLATE = mapOf(
     "thank_screen_action_negative" to "🙏 Thanks",
     "thank_screen_action_positive" to "Join Community",
 
+    "thank_screen_title_for_action_ads" to "💡 Thank you",
+    "thank_screen_message_for_action_ads" to "Thank you for watching the ad! 🙏 Ads help us maintain the project 💡 and keep improving the app every day 🌱📱.",
+    "thank_screen_action_negative_ads" to "",
+    "thank_screen_action_positive_ads" to "Close",
+
     "campaign_screen_title_for_join_group" to "🤝 Join the Community and Grow Together!",
     "campaign_screen_message_for_join_group" to "📢 Share ideas, suggest features, and collaborate with others to make the app better every day! 🚀💡",
 
