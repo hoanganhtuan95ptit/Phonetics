@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.home.view.detect
+package com.simple.phonetics.ui.home.services.detect
 
 import android.Manifest
 import android.app.Activity
@@ -13,13 +13,13 @@ import android.provider.MediaStore
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import com.google.auto.service.AutoService
 import com.permissionx.guolindev.PermissionX
+import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
-import com.simple.phonetics.ui.home.view.HomeView
+import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.hasPermissions
 import com.simple.state.doSuccess
@@ -27,21 +27,21 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.IOException
 
-@AutoService(HomeView::class)
-class DetectHomeView : HomeView {
+@AutoBind(HomeFragment::class)
+class DetectHomeView : HomeService {
 
-    override fun setup(fragment: HomeFragment) {
+    override suspend fun setup(homeFragment: HomeFragment) {
 
-        val binding = fragment.binding ?: return
+        val binding = homeFragment.binding ?: return
 
-        val viewModel: HomeViewModel by fragment.viewModel()
+        val viewModel: HomeViewModel by homeFragment.viewModel()
 
-        val detectHomeViewModel: DetectHomeViewModel by fragment.viewModel()
+        val detectHomeViewModel: DetectHomeViewModel by homeFragment.viewModel()
 
 
         var currentPhotoPath: String? = null
 
-        val takeImageFromCameraResult = fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val takeImageFromCameraResult = homeFragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
             val path = currentPhotoPath ?: return@registerForActivityResult
 
@@ -51,11 +51,11 @@ class DetectHomeView : HomeView {
             }
         }
 
-        val takeImageFromGalleryResult = fragment.registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        val takeImageFromGalleryResult = homeFragment.registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
 
             uri?.runCatching {
 
-                getFilePath(fragment.requireContext(), this)
+                getFilePath(homeFragment.requireContext(), this)
             }?.getOrNull()?.takeIf {
 
                 it.isNotBlank()
@@ -68,35 +68,29 @@ class DetectHomeView : HomeView {
 
         binding.ivGallery.setDebouncedClickListener {
 
-            PermissionX.init(fragment.requireActivity())
-                .permissions(REQUIRED_PERMISSIONS_READ_FILE.toList())
-                .request { allGranted, _, _ ->
-                    if (allGranted && fragment.hasPermissions(*REQUIRED_PERMISSIONS_READ_FILE)) {
-                        takeImageFromGalleryResult.launchTakeImageFromGallery()
-                    }
-                }
+            takeImageFromGalleryResult.launchTakeImageFromGallery()
         }
 
         binding.ivCamera.setDebouncedClickListener {
 
-            PermissionX.init(fragment.requireActivity())
+            PermissionX.init(homeFragment.requireActivity())
                 .permissions(REQUIRED_PERMISSIONS_CAMERA.toList())
                 .request { allGranted, _, _ ->
-                    if (allGranted && fragment.hasPermissions(*REQUIRED_PERMISSIONS_CAMERA)) {
-                        currentPhotoPath = takeImageFromCameraResult.launchTakeImageFromCamera(fragment.requireContext(), "image")?.absolutePath ?: return@request
+                    if (allGranted && homeFragment.hasPermissions(*REQUIRED_PERMISSIONS_CAMERA)) {
+                        currentPhotoPath = takeImageFromCameraResult.launchTakeImageFromCamera(homeFragment.requireContext(), "image")?.absolutePath ?: return@request
                     }
                 }
         }
 
 
-        viewModel.isReverse.observe(fragment.viewLifecycleOwner) {
+        viewModel.isReverse.observe(homeFragment.viewLifecycleOwner) {
 
             detectHomeViewModel.updateReverse(it)
         }
 
-        viewModel.detectStateEvent.observe(fragment.viewLifecycleOwner) { event ->
+        viewModel.detectStateEvent.observe(homeFragment.viewLifecycleOwner) { event ->
 
-            fragment.binding ?: return@observe
+            homeFragment.binding ?: return@observe
             val state = event.getContentIfNotHandled() ?: return@observe
 
             state.doSuccess {
@@ -106,9 +100,9 @@ class DetectHomeView : HomeView {
             }
         }
 
-        detectHomeViewModel.detectInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "DETECT") {
+        detectHomeViewModel.detectInfo.collectWithLockTransitionUntilData(fragment = homeFragment, tag = "DETECT") {
 
-            fragment.binding ?: return@collectWithLockTransitionUntilData
+            homeFragment.binding ?: return@collectWithLockTransitionUntilData
 
             binding.ivCamera.setVisible(it.isShow)
             binding.ivGallery.setVisible(it.isShow)

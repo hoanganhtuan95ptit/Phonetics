@@ -11,7 +11,7 @@ import com.simple.phonetics.ui.game.items.ipa_puzzle.GameIPAPuzzleViewModel
 import com.simple.phonetics.ui.game.items.ipa_wordle.GameIPAWordleViewModel
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.services.ipa.IpaHomeViewModel
-import com.simple.phonetics.ui.home.view.detect.DetectHomeViewModel
+import com.simple.phonetics.ui.home.services.detect.DetectHomeViewModel
 import com.simple.phonetics.ui.home.view.event.EventHomeViewModel
 import com.simple.phonetics.ui.home.view.game.GameHomeViewModel
 import com.simple.phonetics.ui.home.view.history.HistoryHomeViewModel
