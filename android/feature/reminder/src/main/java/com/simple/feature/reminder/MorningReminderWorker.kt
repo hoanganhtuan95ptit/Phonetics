@@ -28,7 +28,7 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
 
         val daysSinceLastUse = (System.currentTimeMillis() - lastUsed) / (1000 * 60 * 60 * 24)
 
-        if (daysSinceLastUse >= 3) {
+        if (BuildConfig.DEBUG || daysSinceLastUse >= 3) {
 
             randomNotification()
         }
@@ -67,7 +67,7 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
         val translateMap = AppRepository.instant.getTranslateAsync(keys = listOf(*titles, *messages), languageCode = languageCode).first()
 
 
-        val titlesMap = messages.mapNotNull {
+        val titlesMap = titles.mapNotNull {
             translateMap[it]
         }
 
@@ -84,8 +84,9 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
 
     private fun showNotification(title: String, message: String) {
 
-        val channelId = "morning_reminder_channel"
+        val channelId = "Reminder_channel"
         val channelName = "Reminder"
+
         val manager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -99,7 +100,7 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
         val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notification = NotificationCompat.Builder(applicationContext, channelId)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(message)
             .setContentIntent(pendingIntent)

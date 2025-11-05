@@ -150,6 +150,11 @@
           <theme>@style/Theme.Phonetics</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/feature/reminder/src/main/res/drawable/ic_notification.xml">
+        <config>
+          <theme>@style/Theme.AppCompat.Light.NoActionBar</theme>
+        </config>
+      </layout>
     </layouts>
   </component>
   <component name="AutoImportSettings">
@@ -157,17 +162,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
-      <change afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/data/cache/AppCache.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/home/services/ReminderService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/feature/reminder/src/main/res/drawable/ic_notification.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/dao/translate/TranslateDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/dao/translate/TranslateDao.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/repositories/AppRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/repositories/AppRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/repositories/AppRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/repositories/AppRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/repositories/LanguageRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/repositories/LanguageRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/reminder/src/debug/assets/autobind/reminder.json" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/debug/assets/autobind/reminder.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/MorningReminderWorker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/MorningReminderWorker.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/ReminderApplicationService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/ReminderApplicationService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/services/ReminderService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/services/ReminderService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../configs/translate/vi/translates.json" beforeDir="false" afterPath="$PROJECT_DIR$/../configs/translate/vi/translates.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -309,11 +309,11 @@
       <recent name="$PROJECT_DIR$/library/okhttp-cache/src/main/java/com/simple/okhttp/cache" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/feature/reminder/src/main/res/drawable" />
       <recent name="$PROJECT_DIR$/library" />
       <recent name="$PROJECT_DIR$/feature/ipa-voice-en/src/main/assets/voices" />
       <recent name="$PROJECT_DIR$/app/src/main/res/raw" />
       <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/phonetics/thanks" />
     </key>
     <key name="CreateKotlinClassDialog.RecentsKey">
       <recent name="com.simple.okhttp" />
@@ -992,6 +992,11 @@
         <entry key="com.simple.feature.mlkit.test">
           <value>
             <CheckInfo lastCheckTimestamp="1762173688285" />
+          </value>
+        </entry>
+        <entry key="com.simple.feature.reminder.test">
+          <value>
+            <CheckInfo lastCheckTimestamp="1762345884403" />
           </value>
         </entry>
         <entry key="com.simple.feature.test.test">
