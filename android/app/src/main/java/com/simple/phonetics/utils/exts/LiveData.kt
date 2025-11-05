@@ -3,17 +3,18 @@ package com.simple.phonetics.utils.exts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
-import com.simple.adapter.entities.ViewItem
 import com.simple.adapter.provider.AdapterProvider
 import com.simple.autobind.AutoBind
 import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+private val adapterFlow by lazy {
+    AutoBind.loadNameAsync(AdapterProvider::class.java, true)
+}
 
 fun <T> LiveData<T>.collectWithLockTransitionUntilData(
     fragment: TransitionFragment<*, *>,
@@ -65,21 +66,9 @@ fun <T> LiveData<T>.collectWithLockTransitionIfCached(
     }
 }
 
-fun <T> Flow<T>.attachToAdapter(): Flow<T> = this@attachToAdapter.flatMapLatest { data ->
-
-    val flowWrap = flowOf(data)
-
-    if (data is List<*> && data.firstOrNull() is ViewItem) {
-
-        // Chỉ gọi AutoBind nếu là List<ViewItem>
-        combine(
-            flowWrap,
-            AutoBind.loadNameAsync(AdapterProvider::class.java, true)
-        ) { d, _ ->
-            d
-        }
-    } else {
-
-        flowWrap
-    }
+fun <T> Flow<T>.attachToAdapter(): Flow<T> = combine(
+    this,
+    adapterFlow
+) { d, _ ->
+    d
 }
