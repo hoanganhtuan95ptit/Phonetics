@@ -21,11 +21,22 @@ private const val TABLE_NAME = "translates"
 @Dao
 interface TranslateDao {
 
+    fun getByAsync(keys: List<String>, languageCode: String): Flow<Map<String, String>> = getRoomByAsync(keys = keys, languageCode = languageCode).map { list ->
+
+        list.associate {
+            it.key to it.value
+        }
+    }
+
+    @Query("SELECT * FROM $TABLE_NAME WHERE languageCode = :languageCode AND `key` COLLATE NOCASE IN (:keys)")
+    fun getRoomByAsync(keys: List<String>, languageCode: String): Flow<List<RoomTranslate>>
+
+
     fun getAllAsync(languageCode: String): Flow<Map<String, String>> = getRoomAllAsync(languageCode = languageCode).map { list ->
 
-        list.map {
+        list.associate {
             it.key to it.value
-        }.toMap()
+        }
     }
 
     @Query("SELECT * FROM $TABLE_NAME WHERE languageCode = :languageCode")

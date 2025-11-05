@@ -2,6 +2,7 @@ package com.simple.phonetics.domain.repositories
 
 import com.simple.phonetics.entities.Language
 import kotlinx.coroutines.flow.Flow
+import org.koin.core.context.GlobalContext
 
 interface LanguageRepository {
 
@@ -27,4 +28,11 @@ interface LanguageRepository {
     suspend fun getLanguageSupport(languageCode: String): List<Language>
 
     suspend fun getLanguageSupportedOrDefaultAsync(): Flow<List<Language>>
+
+    companion object {
+
+        val instant by lazy {
+            GlobalContext.get().get<LanguageRepository>()
+        }
+    }
 }

@@ -66,6 +66,10 @@ class AppRepositoryImpl(
         return translateDao.getAllAsync(languageCode = languageCode)
     }
 
+    override suspend fun getTranslateAsync(keys: List<String>, languageCode: String): Flow<Map<String, String>> {
+        return translateDao.getByAsync(keys = keys, languageCode = languageCode)
+    }
+
     override suspend fun getCountTranslate(): Int {
         return translateDao.getCount()
     }
