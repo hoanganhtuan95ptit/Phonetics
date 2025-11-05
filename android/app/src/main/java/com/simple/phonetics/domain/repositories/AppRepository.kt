@@ -3,6 +3,7 @@ package com.simple.phonetics.domain.repositories
 import com.simple.phonetics.entities.Event
 import com.simple.phonetics.entities.KeyTranslate
 import kotlinx.coroutines.flow.Flow
+import org.koin.core.context.GlobalContext
 
 interface AppRepository :
     DetectRepository,
@@ -20,6 +21,8 @@ interface AppRepository :
     suspend fun updateTranslate(languageCode: String, map: Map<String, String>)
 
     suspend fun getTranslateAsync(languageCode: String): Flow<Map<String, String>>
+
+    suspend fun getTranslateAsync(keys: List<String>, languageCode: String): Flow<Map<String, String>>
 
     suspend fun getCountTranslate(): Int
 
@@ -49,4 +52,11 @@ interface AppRepository :
     suspend fun getTranslateSelectedAsync(): Flow<String>
 
     suspend fun updateTranslateSelected(translateSelected: String)
+
+    companion object {
+
+        val instant by lazy {
+            GlobalContext.get().get<AppRepository>()
+        }
+    }
 }

@@ -188,5 +188,13 @@
   "campaign_screen_title_for_join_group":"🤝 Tham gia cộng đồng, cùng nhau phát triển!",
   "campaign_screen_message_for_join_group":"📢 Chia sẻ ý tưởng, góp ý tính năng và đồng hành cùng mọi người để ứng dụng ngày càng hoàn thiện hơn! 🚀💡",
 
-  "version_name": "🚀 Phiên bản: $version"
+  "version_name": "🚀 Phiên bản: $version",
+
+  "reminder_title_1":  "Chào buổi sáng ☀️",
+
+  "reminder_message_1": "Chúc bạn một ngày tốt lành 🌼 Đừng quên ghé lại ứng dụng nhé!",
+  "reminder_message_2":  "Chúc bạn buổi sáng vui vẻ ☀️ Và đừng quên dành chút thời gian cho ứng dụng hôm nay!",
+  "reminder_message_3": "Chào ngày mới 🌻 Chúc bạn tràn đầy năng lượng, và nhớ quay lại app nhé!",
+  "reminder_message_4":  "Chúc bạn một ngày tuyệt vời 🌅 Đừng quên mở ứng dụng để khám phá điều mới mẻ!",
+  "reminder_message_5":  "Chúc bạn ngày mới hứng khởi 🌞 Đừng quên luyện tập cùng chúng tôi hôm nay!"
 }
