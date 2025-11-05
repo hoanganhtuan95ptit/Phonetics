@@ -16,13 +16,26 @@ private val adapterFlow by lazy {
     AutoBind.loadNameAsync(AdapterProvider::class.java, true)
 }
 
+/**
+ * đợi có dữ liệu thì mới mở unlock hiệu ứng mở màn hình
+ */
 fun <T> LiveData<T>.collectWithLockTransitionUntilData(
     fragment: TransitionFragment<*, *>,
     tag: String = "",
     block: suspend (data: T) -> Unit
 ) = fragment.viewLifecycleOwner.lifecycleScope.launch {
 
+    val data = value
+
     fragment.lockTransition(tag = tag)
+
+
+    if (data != null) {
+
+        block(data)
+
+        fragment.unlockTransition(tag = tag)
+    }
 
     asFlow().attachToAdapter().collect {
 
@@ -32,6 +45,10 @@ fun <T> LiveData<T>.collectWithLockTransitionUntilData(
     }
 }
 
+/**
+ * nếu đang có dữ liệu thì binding xong mới cho chạy hiệu ứng mở màn hình
+ * nếu chưa có dữ liệu thì đợi cho hiệu ứng mở màn hình chạy xong mới binding
+ */
 fun <T> LiveData<T>.collectWithLockTransitionIfCached(
     fragment: TransitionFragment<*, *>,
     tag: String = "",
