@@ -14,17 +14,31 @@ import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.ui.MainActivity
 import kotlinx.coroutines.flow.first
+import java.util.Calendar
 
 class MorningReminderWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
 
-        val lastUsed = AppCache.getTimeUserInteractInHome()
+        val now = Calendar.getInstance()
 
-        if (lastUsed == 0L) {
+        val date = now.get(Calendar.DAY_OF_YEAR)
+        val hour = now.get(Calendar.HOUR_OF_DAY)
+
+        /**
+         * nếu giờ hiện tại nhỏ hơn 8 thì bỏ qua
+         * nếu ngày hiện tại bằng với ngày đã check thì vũng bỏ qua
+         */
+        if (hour <= 8 || date == AppCache.getDateMorningReminder()) {
 
             return Result.success()
         }
+
+        AppCache.updateDateMorningReminder()
+
+
+
+        val lastUsed = AppCache.getTimeUserInteractInHome()
 
         val daysSinceLastUse = (System.currentTimeMillis() - lastUsed) / (1000 * 60 * 60 * 24)
 
@@ -32,6 +46,7 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
 
             randomNotification()
         }
+
 
         return Result.success()
     }
