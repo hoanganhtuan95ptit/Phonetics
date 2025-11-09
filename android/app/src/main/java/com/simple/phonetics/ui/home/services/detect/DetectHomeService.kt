@@ -34,9 +34,9 @@ class DetectHomeService : HomeService {
 
         val binding = homeFragment.binding ?: return
 
-        val viewModel: HomeViewModel by homeFragment.viewModel()
+        val homeViewModel: HomeViewModel by homeFragment.viewModel()
 
-        val detectHomeViewModel: DetectHomeViewModel by homeFragment.viewModel()
+        val viewModel: DetectHomeViewModel by homeFragment.viewModel()
 
 
         var currentPhotoPath: String? = null
@@ -47,7 +47,7 @@ class DetectHomeService : HomeService {
 
             if (result.resultCode == Activity.RESULT_OK) {
 
-                viewModel.getTextFromImage(path)
+                homeViewModel.getTextFromImage(path)
             }
         }
 
@@ -61,7 +61,7 @@ class DetectHomeService : HomeService {
                 it.isNotBlank()
             }?.let {
 
-                viewModel.getTextFromImage(it)
+                homeViewModel.getTextFromImage(it)
             }
         }
 
@@ -83,24 +83,24 @@ class DetectHomeService : HomeService {
         }
 
 
-        viewModel.isReverse.observe(homeFragment.viewLifecycleOwner) {
+        homeViewModel.isReverse.observe(homeFragment.viewLifecycleOwner) {
 
-            detectHomeViewModel.updateReverse(it)
+            viewModel.updateReverse(it)
         }
 
-        viewModel.detectStateEvent.observe(homeFragment.viewLifecycleOwner) { event ->
+        homeViewModel.detectStateEvent.observe(homeFragment.viewLifecycleOwner) { event ->
 
             homeFragment.binding ?: return@observe
             val state = event.getContentIfNotHandled() ?: return@observe
 
             state.doSuccess {
 
-                viewModel.getPhonetics("")
+                homeViewModel.getPhonetics("")
                 binding.etText.setText(it)
             }
         }
 
-        detectHomeViewModel.detectInfo.collectWithLockTransitionUntilData(fragment = homeFragment, tag = "DETECT") {
+        viewModel.detectInfo.collectWithLockTransitionUntilData(fragment = homeFragment, tag = "DETECT") {
 
             homeFragment.binding ?: return@collectWithLockTransitionUntilData
 
