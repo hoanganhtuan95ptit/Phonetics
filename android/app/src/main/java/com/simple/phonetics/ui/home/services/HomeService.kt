@@ -2,14 +2,14 @@ package com.simple.phonetics.ui.home.services
 
 import androidx.fragment.app.Fragment
 import com.simple.phonetics.ui.home.HomeFragment
-import com.simple.service.FragmentService
+import com.simple.service.FragmentViewCreatedService
 
-interface HomeService : FragmentService {
+interface HomeService : FragmentViewCreatedService {
 
-    override suspend fun setup(fragment: Fragment) {
+    override fun setup(fragment: Fragment) {
 
         if (fragment is HomeFragment) setup(homeFragment = fragment)
     }
 
-    suspend fun setup(homeFragment: HomeFragment)
+    fun setup(homeFragment: HomeFragment)
 }

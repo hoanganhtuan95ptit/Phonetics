@@ -5,25 +5,23 @@ import androidx.fragment.app.activityViewModels
 import com.simple.autobind.annotation.AutoBind
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
-import com.simple.service.FragmentService
+import com.simple.phonetics.ui.home.services.HomeService
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @AutoBind(HomeFragment::class)
-class CampaignHomeView : FragmentService {
+class CampaignHomeView : HomeService {
 
     private lateinit var viewModel: CampaignHomeViewModel
 
     private lateinit var homeViewModel: HomeViewModel
 
-    override suspend fun setup(fragment: Fragment) {
+    override fun setup(homeFragment: HomeFragment) {
 
-        if (fragment !is HomeFragment) return
-
-        viewModel = fragment.activityViewModels<CampaignHomeViewModel>().value
-        homeViewModel = fragment.viewModel<HomeViewModel>().value
+        viewModel = homeFragment.activityViewModels<CampaignHomeViewModel>().value
+        homeViewModel = homeFragment.viewModel<HomeViewModel>().value
 
 
-        observeData(fragment)
+        observeData(homeFragment)
     }
 
     private fun observeData(fragment: HomeFragment) = with(viewModel) {

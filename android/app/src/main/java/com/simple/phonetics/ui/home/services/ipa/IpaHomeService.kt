@@ -21,7 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 @AutoBind(HomeFragment::class)
 class IpaHomeService : HomeService {
 
-    override suspend fun setup(homeFragment: HomeFragment) {
+    override fun setup(homeFragment: HomeFragment) {
 
         val viewModel: HomeViewModel by homeFragment.viewModel()
 

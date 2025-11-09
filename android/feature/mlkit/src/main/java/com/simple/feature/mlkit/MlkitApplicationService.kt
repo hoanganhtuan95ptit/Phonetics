@@ -14,7 +14,7 @@ import com.simple.service.ApplicationService
 @AutoBind(ApplicationService::class)
 class MlkitApplicationService : ApplicationService {
 
-    override suspend fun setup(application: Application) {
+    override fun setup(application: Application) {
 
         val registrars = listOf(
             TextRegistrar(),

@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -20,32 +21,34 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
 
     override suspend fun doWork(): Result {
 
-        val now = Calendar.getInstance()
+//        val now = Calendar.getInstance()
+//
+//        val date = now.get(Calendar.DAY_OF_YEAR)
+//        val hour = now.get(Calendar.HOUR_OF_DAY)
+//
+//        Log.d("tuanha", "doWork: ")
+//        /**
+//         * nếu giờ hiện tại nhỏ hơn 8 thì bỏ qua
+//         * nếu ngày hiện tại bằng với ngày đã check thì vũng bỏ qua
+//         */
+//        if (!BuildConfig.DEBUG) if (hour <= 8 || date == AppCache.getDateMorningReminder()) {
+//
+//            return Result.success()
+//        }
+//
+//        AppCache.updateDateMorningReminder()
+//
+//
+//
+//        val lastUsed = AppCache.getTimeUserInteractInHome()
+//
+//        val daysSinceLastUse = (System.currentTimeMillis() - lastUsed) / (1000 * 60 * 60 * 24)
+//
+//        if (BuildConfig.DEBUG || daysSinceLastUse >= 3) {
 
-        val date = now.get(Calendar.DAY_OF_YEAR)
-        val hour = now.get(Calendar.HOUR_OF_DAY)
-
-        /**
-         * nếu giờ hiện tại nhỏ hơn 8 thì bỏ qua
-         * nếu ngày hiện tại bằng với ngày đã check thì vũng bỏ qua
-         */
-        if (hour <= 8 || date == AppCache.getDateMorningReminder()) {
-
-            return Result.success()
-        }
-
-        AppCache.updateDateMorningReminder()
-
-
-
-        val lastUsed = AppCache.getTimeUserInteractInHome()
-
-        val daysSinceLastUse = (System.currentTimeMillis() - lastUsed) / (1000 * 60 * 60 * 24)
-
-        if (BuildConfig.DEBUG || daysSinceLastUse >= 3) {
-
+            Log.d("tuanha", "doWork: 1")
             randomNotification()
-        }
+//        }
 
 
         return Result.success()

@@ -10,7 +10,7 @@ import com.simple.phonetics.ui.home.services.HomeService
 class ReminderService : HomeService {
 
     @SuppressLint("ClickableViewAccessibility")
-    override suspend fun setup(homeFragment: HomeFragment) {
+    override fun setup(homeFragment: HomeFragment) {
 
         homeFragment.view?.setOnTouchListener { _, _ ->
 

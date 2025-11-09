@@ -5,6 +5,7 @@ import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
@@ -153,6 +154,9 @@ class ConfigViewModel(
         }
 
         postValue(translateSelect.isNotBlank())
+    }.apply {
+
+        this.asObjectOrNull<MutableLiveData<Boolean>>()?.value = false
     }
 
     @VisibleForTesting

@@ -80,6 +80,8 @@ abstract class BaseViewModel : TransitionViewModel() {
 
     open val isSupportSpeak: LiveData<Boolean> = mediatorLiveData {
 
+        postValue(false)
+
         GlobalContext.get().get<CheckSupportSpeakAsyncUseCase>().execute().collect {
 
             postValue(it)
@@ -87,6 +89,8 @@ abstract class BaseViewModel : TransitionViewModel() {
     }
 
     val isSupportReading: LiveData<Boolean> = mediatorLiveData {
+
+        postValue(false)
 
         GlobalContext.get().get<CheckSupportReadingAsyncUseCase>().execute().collect {
 

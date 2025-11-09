@@ -15,6 +15,7 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.databinding.ActivityMainBinding
+import com.simple.phonetics.ui.base.services.transition.onTransitionEndAwait
 import com.simple.phonetics.ui.view.MainView
 import kotlinx.coroutines.launch
 import java.util.ServiceLoader
@@ -36,7 +37,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
             lifecycleScope.launch {
 
-                activityViewModel.awaitTransition()
+                onTransitionEndAwait()
 
                 val slideUp = ObjectAnimator.ofFloat(splashScreenView, View.ALPHA, 1f, 0f)
                 slideUp.interpolator = AnticipateInterpolator()
