@@ -1,49 +1,50 @@
-package com.simple.phonetics.ui.home.view.microphone
+package com.simple.phonetics.ui.home.services.microphone
 
-import com.google.auto.service.AutoService
+import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.deeplink.sendDeeplink
+import com.simple.event.listenerEvent
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
-import com.simple.phonetics.ui.home.view.HomeView
+import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AutoService(HomeView::class)
-class MicrophoneHomeView : HomeView {
+@AutoBind(HomeFragment::class)
+class MicrophoneHomeService : HomeService {
 
-    override fun setup(fragment: HomeFragment) {
+    override fun setup(homeFragment: HomeFragment) {
 
-        val viewModel: HomeViewModel by fragment.viewModel()
+        val viewModel: HomeViewModel by homeFragment.viewModel()
 
-        val configViewModel: ConfigViewModel by fragment.activityViewModel()
+        val configViewModel: ConfigViewModel by homeFragment.activityViewModel()
 
-        val microphoneHomeViewModel: MicrophoneHomeViewModel by fragment.viewModel()
+        val microphoneHomeViewModel: MicrophoneHomeViewModel by homeFragment.viewModel()
 
 
-        fragment.binding?.ivMicrophone?.setDebouncedClickListener {
+        homeFragment.binding?.ivMicrophone?.setDebouncedClickListener {
 
             sendDeeplink(DeeplinkManager.RECORDING, extras = mapOf(Param.REVERSE to viewModel.isReverse.value, Param.KEY_REQUEST to EventName.MICROPHONE))
         }
 
-        com.simple.event.listenerEvent(lifecycle = fragment.viewLifecycleOwner.lifecycle, eventName = EventName.MICROPHONE) {
+        listenerEvent(lifecycle = homeFragment.viewLifecycleOwner.lifecycle, eventName = EventName.MICROPHONE) {
 
             val result = it.asObjectOrNull<String>() ?: return@listenerEvent
-            val binding = fragment.binding ?: return@listenerEvent
+            val binding = homeFragment.binding ?: return@listenerEvent
 
             viewModel.getPhonetics("")
             binding.etText.setText(result)
         }
 
-        observeData(fragment = fragment, viewModel = viewModel, configViewModel = configViewModel, microphoneHomeViewModel = microphoneHomeViewModel)
-        observeMicrophoneData(fragment = fragment, viewModel = viewModel, configViewModel = configViewModel, microphoneHomeViewModel = microphoneHomeViewModel)
+        observeData(fragment = homeFragment, viewModel = viewModel, configViewModel = configViewModel, microphoneHomeViewModel = microphoneHomeViewModel)
+        observeMicrophoneData(fragment = homeFragment, viewModel = viewModel, configViewModel = configViewModel, microphoneHomeViewModel = microphoneHomeViewModel)
     }
 
     private fun observeData(fragment: HomeFragment, viewModel: HomeViewModel, configViewModel: ConfigViewModel, microphoneHomeViewModel: MicrophoneHomeViewModel) = with(viewModel) {

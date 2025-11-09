@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.home.view.microphone
+package com.simple.phonetics.ui.home.services.microphone
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
