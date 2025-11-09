@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.base.fragments
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
@@ -62,9 +63,11 @@ abstract class BaseViewModel : TransitionViewModel() {
     }
 
     val inputLanguage: LiveData<Language> = mediatorLiveData {
+        if(this@BaseViewModel.javaClass.name.contains("ConfigViewModel"))Log.d("tuanha", "inputLanguage: ")
 
         GlobalContext.get().get<GetLanguageInputAsyncUseCase>().execute().collect {
 
+            if(this@BaseViewModel.javaClass.name.contains("ConfigViewModel")) Log.d("tuanha", "inputLanguage: $it")
             postValue(it)
         }
     }

@@ -78,7 +78,7 @@ class LockTransitionService : FragmentCreatedService {
             var count = 0
             while (isActive()) {
 
-                delay(500)
+                delay(300)
                 count++
 
                 if (Transition.DEBUG) {

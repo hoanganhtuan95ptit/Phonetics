@@ -71,12 +71,12 @@ class StateTransitionService : FragmentCreatedService {
             }
         }
 
-        viewModel.transition.asFlow().launchCollect(fragment) {
-
-            if (Transition.DEBUG) {
-                Log.d("tuanha", "setup: StateTransitionService ${fragment.javaClass.name}  $it")
-            }
-        }
+//        viewModel.transition.asFlow().launchCollect(fragment) {
+//
+//            if (Transition.DEBUG) {
+//                Log.d("tuanha", "setup: StateTransitionService ${fragment.javaClass.name}  $it")
+//            }
+//        }
     }
 }
 
