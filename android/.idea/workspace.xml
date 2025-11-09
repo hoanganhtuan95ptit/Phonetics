@@ -157,7 +157,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/TransitionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/TransitionService.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,9 +203,9 @@
         <option value="Kotlin Data Class" />
         <option value="layoutResourceFile" />
         <option value="Kotlin File" />
-        <option value="Kotlin Interface" />
         <option value="Kotlin Object" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Interface" />
       </list>
     </option>
   </component>
@@ -323,11 +325,11 @@
       <recent name="com.unknown.community" />
     </key>
     <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
+      <recent name="com.simple.phonetics.ui.base.services.transition" />
       <recent name="com.simple.phonetic.entities" />
       <recent name="com.simple.ipa.dao" />
       <recent name="com.phonetics.word" />
       <recent name="com.simple.feature.thanks" />
-      <recent name="com.simple.okhttp.cache" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -793,7 +795,7 @@
           <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/detect/DetectHomeView.kt</url>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/detect/DetectHomeService.kt</url>
           <line>49</line>
           <option name="timeStamp" value="88" />
         </line-breakpoint>

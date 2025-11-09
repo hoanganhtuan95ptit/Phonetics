@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.base.services.transition
 
 import android.graphics.Color
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.asFlow
@@ -17,7 +16,7 @@ import kotlinx.coroutines.flow.filterNotNull
 
 
 @AutoBind(FragmentCreatedService::class)
-class TransitionService : FragmentCreatedService {
+class ConfigTransitionService : FragmentCreatedService {
 
 
     private val transitionDuration = 350L
@@ -29,10 +28,6 @@ class TransitionService : FragmentCreatedService {
         if (fragment !is com.simple.phonetics.ui.base.services.transition.Transition) return
 
         val transitionName = fragment.arguments?.getString(Param.ROOT_TRANSITION_NAME)
-
-        if (com.simple.phonetics.ui.base.services.transition.Transition.DEBUG){
-            Log.d("tuanha", "setup: ${fragment.javaClass.simpleName} transitionName:$transitionName")
-        }
 
         isCanUseTransition = !transitionName.isNullOrBlank()
 
@@ -107,28 +102,28 @@ class TransitionService : FragmentCreatedService {
             addListener(DefaultTransitionListener(name = "sharedElementEnterTransition", fragment = fragment))
         }
     }
+}
 
-    private class DefaultTransitionListener(val name: String, val fragment: Fragment) : Transition.TransitionListener {
+private class DefaultTransitionListener(val name: String, val fragment: Fragment) : Transition.TransitionListener {
 
-        override fun onTransitionStart(transition: Transition) {
-            fragment.startTransition("${fragment.javaClass.name}_${name}_START")
-        }
+    override fun onTransitionStart(transition: Transition) {
+        fragment.startTransition("${fragment.javaClass.name}_${name}_START")
+    }
 
-        override fun onTransitionEnd(transition: Transition) {
-            fragment.endTransition("${fragment.javaClass.name}_${name}_START")
-        }
+    override fun onTransitionEnd(transition: Transition) {
+        fragment.endTransition("${fragment.javaClass.name}_${name}_START")
+    }
 
-        override fun onTransitionCancel(transition: Transition) {
-            fragment.endTransition("${fragment.javaClass.name}_${name}_START")
-        }
+    override fun onTransitionCancel(transition: Transition) {
+        fragment.endTransition("${fragment.javaClass.name}_${name}_START")
+    }
 
 
-        override fun onTransitionPause(transition: Transition) {
-            fragment.startTransition("${fragment.javaClass.name}_${name}_PAUSE")
-        }
+    override fun onTransitionPause(transition: Transition) {
+        fragment.startTransition("${fragment.javaClass.name}_${name}_PAUSE")
+    }
 
-        override fun onTransitionResume(transition: Transition) {
-            fragment.endTransition("${fragment.javaClass.name}_${name}_PAUSE")
-        }
+    override fun onTransitionResume(transition: Transition) {
+        fragment.endTransition("${fragment.javaClass.name}_${name}_PAUSE")
     }
 }
