@@ -28,9 +28,9 @@ import java.io.File
 import java.io.IOException
 
 @AutoBind(HomeFragment::class)
-class DetectHomeView : HomeService {
+class DetectHomeService : HomeService {
 
-    override suspend fun setup(homeFragment: HomeFragment) {
+    override fun setup(homeFragment: HomeFragment) {
 
         val binding = homeFragment.binding ?: return
 

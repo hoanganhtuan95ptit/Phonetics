@@ -1,11 +1,14 @@
 package com.simple.phonetics.utils.exts
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.simple.adapter.provider.AdapterProvider
 import com.simple.autobind.AutoBind
-import com.simple.coreapp.ui.base.fragments.transition.TransitionFragment
+import com.simple.phonetics.ui.base.services.transition.lockTransition
+import com.simple.phonetics.ui.base.services.transition.onTransitionEndAwait
+import com.simple.phonetics.ui.base.services.transition.unlockTransition
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -20,7 +23,7 @@ private val adapterFlow by lazy {
  * đợi có dữ liệu thì mới mở unlock hiệu ứng mở màn hình
  */
 fun <T> LiveData<T>.collectWithLockTransitionUntilData(
-    fragment: TransitionFragment<*, *>,
+    fragment: Fragment,
     tag: String = "",
     block: suspend (data: T) -> Unit
 ) = fragment.viewLifecycleOwner.lifecycleScope.launch {
@@ -50,7 +53,7 @@ fun <T> LiveData<T>.collectWithLockTransitionUntilData(
  * nếu chưa có dữ liệu thì đợi cho hiệu ứng mở màn hình chạy xong mới binding
  */
 fun <T> LiveData<T>.collectWithLockTransitionIfCached(
-    fragment: TransitionFragment<*, *>,
+    fragment: Fragment,
     tag: String = "",
     block: suspend (data: T, isFirst: Boolean) -> Unit
 ) = fragment.viewLifecycleOwner.lifecycleScope.launch {
@@ -69,12 +72,13 @@ fun <T> LiveData<T>.collectWithLockTransitionIfCached(
     asFlow().attachToAdapter().collect {
 
         val diff = data == null || withContext(Dispatchers.IO) {
+
             data != it
         }
 
         if (diff) {
 
-            fragment.viewModel.awaitTransition()
+            fragment.onTransitionEndAwait()
 
             block(it, false)
         }
