@@ -1,7 +1,6 @@
 package com.simple.feature.reminder
 
 import android.app.Application
-import android.util.Log
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -14,15 +13,7 @@ class ReminderApplicationService : ApplicationService {
 
     override fun setup(application: Application) {
 
-
-        Log.d("tuanha", "setup: ReminderApplicationService")
-        val workRequestBuilder = if (BuildConfig.DEBUG) {
-
-            PeriodicWorkRequestBuilder<MorningReminderWorker>(15, TimeUnit.MINUTES)
-        } else {
-
-            PeriodicWorkRequestBuilder<MorningReminderWorker>(2, TimeUnit.HOURS)
-        }
+        val workRequestBuilder = PeriodicWorkRequestBuilder<MorningReminderWorker>(1, TimeUnit.HOURS)
 
         val workRequest = workRequestBuilder.addTag("reminder_work")
             .build()

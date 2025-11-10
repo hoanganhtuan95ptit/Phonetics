@@ -21,14 +21,31 @@ private const val TABLE_NAME_FTS = "${TABLE_NAME}_fts"
 @Dao
 interface PhoneticDaoV2 {
 
+    fun getListBy(textList: List<String>, limit: Int = Int.MAX_VALUE) = textList.chunked(300).flatMap {
+
+        getListRoomBy(textList = it, limit = limit)
+    }
+
     @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE r.text IN (:textList) LIMIT :limit")
-    fun getListBy(textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
+    fun getListRoomBy(textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
+
+
+    fun getListBy(ipaCode: String, textList: List<String>, limit: Int = Int.MAX_VALUE) = textList.chunked(300).flatMap {
+
+        getListRoomBy(ipaCode = ipaCode, textList = it, limit = limit)
+    }
 
     @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE r.ipaCode = :ipaCode AND r.text IN (:textList) LIMIT :limit")
-    fun getListBy(ipaCode: String, textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
+    fun getListRoomBy(ipaCode: String, textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
+
+
+    fun getListBy(ipaQuery: String, ipaCode: String, textList: List<String>, limit: Int = Int.MAX_VALUE) = textList.chunked(300).flatMap {
+
+        getListRoomBy(ipaQuery = ipaQuery, ipaCode = ipaCode, textList = it, limit = limit)
+    }
 
     @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE f.ipaValue MATCH :ipaQuery AND r.ipaCode = :ipaCode AND r.text IN (:textList) LIMIT :limit")
-    fun getListBy(ipaQuery: String, ipaCode: String, textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
+    fun getListRoomBy(ipaQuery: String, ipaCode: String, textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
 
 
     @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE f.text MATCH :textQuery LIMIT :limit")

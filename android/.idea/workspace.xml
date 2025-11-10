@@ -157,16 +157,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/language/LanguageHomeService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/view/InterceptConstraintLayout.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/debug/assets/autobind/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/debug/assets/autobind/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/di/ViewModelModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/di/ViewModelModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/fragments/BaseViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/fragments/BaseViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/LockTransitionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/LockTransitionService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/StateTransitionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/StateTransitionService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/LanguageHomeView.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/microphone/MicrophoneHomeView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/microphone/MicrophoneHomeService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/microphone/MicrophoneHomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/microphone/MicrophoneHomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/exts/LiveData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/exts/LiveData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/release/assets/autobind/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/release/assets/autobind/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constant.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/constant.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/MorningReminderWorker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/MorningReminderWorker.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/ReminderApplicationService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/ReminderApplicationService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/home/services/ReminderService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/home/services/ReminderService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/res/drawable/ic_notification.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/img_app_notification.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/phonetic/src/main/java/com/simple/phonetic/dao/PhoneticDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/library/phonetic/src/main/java/com/simple/phonetic/dao/PhoneticDao.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -308,11 +311,11 @@
       <recent name="$PROJECT_DIR$/library/okhttp-cache/src/main/java/com/simple/okhttp/cache" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
       <recent name="$PROJECT_DIR$/feature/reminder/src/main/res/drawable" />
       <recent name="$PROJECT_DIR$/library" />
       <recent name="$PROJECT_DIR$/feature/ipa-voice-en/src/main/assets/voices" />
       <recent name="$PROJECT_DIR$/app/src/main/res/raw" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
     </key>
     <key name="CreateKotlinClassDialog.RecentsKey">
       <recent name="com.simple.okhttp" />
@@ -929,7 +932,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeViewModel.kt</url>
-          <line>376</line>
+          <line>374</line>
           <option name="timeStamp" value="118" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
@@ -970,17 +973,17 @@
       <map>
         <entry key="com.ipa.english.phonetics">
           <value>
-            <CheckInfo lastCheckTimestamp="1762683572566" />
+            <CheckInfo lastCheckTimestamp="1762780679808" />
           </value>
         </entry>
         <entry key="com.ipa.english.phonetics.debug">
           <value>
-            <CheckInfo lastCheckTimestamp="1762683572541" />
+            <CheckInfo lastCheckTimestamp="1762780679762" />
           </value>
         </entry>
         <entry key="com.ipa.english.phonetics.debug.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1762683572567" />
+            <CheckInfo lastCheckTimestamp="1762780679807" />
           </value>
         </entry>
         <entry key="com.simple.config.phonetics.test">
