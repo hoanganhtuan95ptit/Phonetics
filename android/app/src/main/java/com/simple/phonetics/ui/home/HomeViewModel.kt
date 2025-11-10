@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -10,7 +9,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
-import com.simple.core.utils.extentions.toJson
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background

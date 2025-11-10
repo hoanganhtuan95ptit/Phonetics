@@ -97,12 +97,12 @@ class LockTransitionService : FragmentCreatedService {
             }
         }
 
-//        viewModel.lockTransition.asFlow().launchCollect(fragment) {
-//
-//            if (Transition.DEBUG) {
-//                Log.d("tuanha", "setup: LockTransitionService ${fragment.javaClass.name}  $it")
-//            }
-//        }
+        viewModel.lockTransition.asFlow().launchCollect(fragment) {
+
+            if (Transition.DEBUG) {
+                Log.d("tuanha", "setup: LockTransitionService ${fragment.javaClass.name}  $it")
+            }
+        }
     }
 }
 

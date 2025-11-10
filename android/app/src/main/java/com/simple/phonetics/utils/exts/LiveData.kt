@@ -12,11 +12,12 @@ import com.simple.phonetics.ui.base.services.transition.unlockTransition
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private val adapterFlow by lazy {
-    AutoBind.loadNameAsync(AdapterProvider::class.java, true)
+    AutoBind.loadNameAsync(AdapterProvider::class.java, false).distinctUntilChanged()
 }
 
 /**
