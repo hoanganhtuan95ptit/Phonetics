@@ -17,7 +17,6 @@ import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.ui.MainActivity
 import kotlinx.coroutines.flow.first
 import java.util.Calendar
-import kotlin.math.absoluteValue
 
 class MorningReminderWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
@@ -46,10 +45,10 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
         val daysSinceLastUse = (System.currentTimeMillis() - lastUsed) / (1000 * 60 * 60 * 24)
 
         Log.d("tuanha", "doWork: daysSinceLastUse:$daysSinceLastUse")
-        if (daysSinceLastUse.absoluteValue >= 3) {
+//        if (daysSinceLastUse.absoluteValue >= 3) {
 
             randomNotification()
-        }
+//        }
 
 
         return Result.success()
