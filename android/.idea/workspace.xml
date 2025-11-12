@@ -158,10 +158,7 @@
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constant.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/constant.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/MorningReminderWorker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/MorningReminderWorker.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/ReminderApplicationService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/ReminderApplicationService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/services/ReminderService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/services/ReminderService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../configs/translate/vi/translates.json" beforeDir="false" afterPath="$PROJECT_DIR$/../configs/translate/vi/translates.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +168,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=14101FDD400287)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/Users/hoanganhtuan/.android/avd/Pixel_9a.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
