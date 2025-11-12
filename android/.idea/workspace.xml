@@ -157,19 +157,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/view/InterceptConstraintLayout.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/LockTransitionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/LockTransitionService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/exts/LiveData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/exts/LiveData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/release/assets/autobind/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/release/assets/autobind/app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constant.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/constant.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/MorningReminderWorker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/MorningReminderWorker.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/ReminderApplicationService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/ReminderApplicationService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/home/services/ReminderService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/home/services/ReminderService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/res/drawable/ic_notification.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/img_app_notification.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/phonetic/src/main/java/com/simple/phonetic/dao/PhoneticDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/library/phonetic/src/main/java/com/simple/phonetic/dao/PhoneticDao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/services/ReminderService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/services/ReminderService.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -179,7 +171,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/Users/hoanganhtuan/.android/avd/Pixel_9a.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=14101FDD400287)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -960,11 +952,6 @@
           <line>133</line>
           <option name="timeStamp" value="126" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/services/review/ReviewService.kt</url>
-          <line>66</line>
-          <option name="timeStamp" value="128" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -998,7 +985,7 @@
         </entry>
         <entry key="com.simple.feature.reminder.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1762345884403" />
+            <CheckInfo lastCheckTimestamp="1762784361611" />
           </value>
         </entry>
         <entry key="com.simple.feature.test.test">
