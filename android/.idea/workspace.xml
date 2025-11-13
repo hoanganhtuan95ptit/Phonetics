@@ -158,6 +158,7 @@
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/MorningReminderWorker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/feature/reminder/src/main/java/com/simple/feature/reminder/MorningReminderWorker.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../configs/translate/vi/translates.json" beforeDir="false" afterPath="$PROJECT_DIR$/../configs/translate/vi/translates.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
