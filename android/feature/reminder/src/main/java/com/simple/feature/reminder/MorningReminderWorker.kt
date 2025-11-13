@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -17,6 +16,7 @@ import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.ui.MainActivity
 import kotlinx.coroutines.flow.first
 import java.util.Calendar
+import kotlin.math.absoluteValue
 
 class MorningReminderWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
@@ -27,7 +27,6 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
         val date = now.get(Calendar.DAY_OF_YEAR)
         val hour = now.get(Calendar.HOUR_OF_DAY)
 
-        Log.d("tuanha", "doWork: hour:$hour date:$date  getDateMorningReminder:${AppCache.getDateMorningReminder()}")
         /**
          * nếu giờ hiện tại nhỏ hơn 8 thì bỏ qua
          * nếu ngày hiện tại bằng với ngày đã check thì vũng bỏ qua
@@ -44,11 +43,10 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
 
         val daysSinceLastUse = (System.currentTimeMillis() - lastUsed) / (1000 * 60 * 60 * 24)
 
-        Log.d("tuanha", "doWork: daysSinceLastUse:$daysSinceLastUse")
-//        if (daysSinceLastUse.absoluteValue >= 3) {
+        if (daysSinceLastUse.absoluteValue >= 3) {
 
             randomNotification()
-//        }
+        }
 
 
         return Result.success()
@@ -56,29 +54,9 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
 
     private suspend fun randomNotification() {
 
-        val titles = arrayOf(
-            "reminder_title_1",
-            "reminder_title_1",
-            "reminder_title_1",
-            "reminder_title_1",
-            "reminder_title_1",
-            "reminder_title_1",
-            "reminder_title_1",
-            "reminder_title_1",
-            "reminder_title_1",
-        )
+        val titles = (1..20).map { "reminder_title_$it" }.toTypedArray()
 
-        val messages = arrayOf(
-            "reminder_message_1",
-            "reminder_message_1",
-            "reminder_message_1",
-            "reminder_message_1",
-            "reminder_message_1",
-            "reminder_message_1",
-            "reminder_message_1",
-            "reminder_message_1",
-            "reminder_message_1",
-        )
+        val messages = (1..20).map { "reminder_message_$it" }.toTypedArray()
 
         val languageCode = LanguageRepository.instant.getLanguageOutput().id
 
@@ -122,9 +100,10 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
             .setContentTitle(title)
             .setContentText(message)
             .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
+            .setAutoCancel(false)
+            .setOngoing(true)
             .build()
 
-        manager.notify(2001, notification)
+        manager.notify(System.currentTimeMillis().toInt(), notification)
     }
 }

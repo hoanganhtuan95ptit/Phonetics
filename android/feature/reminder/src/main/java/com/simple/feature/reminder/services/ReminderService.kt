@@ -46,7 +46,6 @@ class ReminderService : MainService {
             .setInitialDelay(1, TimeUnit.HOURS)
             .build()
 
-        Log.d("tuanha", "doWork: setupJob: ")
         WorkManager.getInstance(mainActivity).cancelUniqueWork("reminder_work")
         WorkManager.getInstance(mainActivity).enqueueUniquePeriodicWork("reminder_work", ExistingPeriodicWorkPolicy.REPLACE, workRequest)
     }
