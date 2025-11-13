@@ -31,7 +31,7 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
          * nếu giờ hiện tại nhỏ hơn 8 thì bỏ qua
          * nếu ngày hiện tại bằng với ngày đã check thì vũng bỏ qua
          */
-        if (hour <= 8 || date == AppCache.getDateMorningReminder()) {
+        if (hour <= 6 || date == AppCache.getDateMorningReminder()) {
 
             return Result.success()
         }
