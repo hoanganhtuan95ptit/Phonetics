@@ -38,8 +38,6 @@ class AdsView : MainView {
 
         activity.lifecycleScope.launch(handler + Dispatchers.IO) {
 
-            Log.d("tuanha", "setupAdsView: ${AdvertisingIdClient.getAdvertisingIdInfo(activity).id}")
-
             MobileAds.initialize(activity) { initializationStatus ->
 
                 logAnalytics("ads_onAdInitialize ${initializationStatus.adapterStatusMap.toList().sortedBy { it.first }.toMap().toJson()}")

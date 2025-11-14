@@ -157,17 +157,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/services/block/BlockService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/services/block/BlockViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/AppNew.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/exts/Any.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/debug/assets/autobind/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/debug/assets/autobind/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/MainActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/view/ads/AdsView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/view/ads/AdsView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/view/ads/AdsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/view/ads/AdsViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../configs/configs.json" beforeDir="false" afterPath="$PROJECT_DIR$/../configs/configs.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constant.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/constant.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
