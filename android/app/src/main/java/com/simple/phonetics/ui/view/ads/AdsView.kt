@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.view.ads
 
-import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope

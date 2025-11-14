@@ -12,9 +12,9 @@ import com.simple.phonetics.ui.game.items.ipa_wordle.GameIPAWordleViewModel
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.services.detect.DetectHomeViewModel
 import com.simple.phonetics.ui.home.services.ipa.IpaHomeViewModel
+import com.simple.phonetics.ui.home.services.microphone.MicrophoneHomeViewModel
 import com.simple.phonetics.ui.home.view.game.GameHomeViewModel
 import com.simple.phonetics.ui.home.view.history.HistoryHomeViewModel
-import com.simple.phonetics.ui.home.services.microphone.MicrophoneHomeViewModel
 import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeViewModel
 import com.simple.phonetics.ui.home.view.suggest.SuggestHomeViewModel
 import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
