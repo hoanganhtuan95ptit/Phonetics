@@ -4,6 +4,6 @@ interface Transition {
 
     companion object {
 
-        var DEBUG = true
+        var DEBUG = false
     }
 }

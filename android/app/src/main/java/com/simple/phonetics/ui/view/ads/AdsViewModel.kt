@@ -77,10 +77,7 @@ class AdsViewModel(
             it.trim()
         }
 
-        if (deviceIds.isNotEmpty()) {
-
-            postValue(deviceIds)
-        }
+        postValue(deviceIds)
     }
 
     init {
