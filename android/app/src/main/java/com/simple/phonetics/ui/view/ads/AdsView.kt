@@ -1,31 +1,26 @@
 package com.simple.phonetics.ui.view.ads
 
 import android.util.Log
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
-import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.auto.service.AutoService
 import com.simple.analytics.logAnalytics
-import com.simple.core.utils.extentions.toJson
-import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.DeeplinkManager.ADS
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.view.MainView
 import com.simple.phonetics.utils.sendDeeplinkWithThank
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -36,18 +31,17 @@ class AdsView : MainView {
 
         val adsViewModel by activity.viewModel<AdsViewModel>()
 
-        activity.lifecycleScope.launch(handler + Dispatchers.IO) {
-
-            MobileAds.initialize(activity) { initializationStatus ->
-
-                logAnalytics("ads_onAdInitialize ${initializationStatus.adapterStatusMap.toList().sortedBy { it.first }.toMap().toJson()}")
-            }
-        }
+        val adsInit = MediatorLiveData<Unit>()
 
         adsViewModel.show.asFlow().launchCollect(activity) {
 
+
+            adsInit.asFlow().first()
+
+
             it.getContentIfNotHandled() ?: return@launchCollect
 
+            Log.d("tuanha", "setup: ")
             runCatching {
 
                 showInterstitialAd(activity).first()
@@ -61,7 +55,14 @@ class AdsView : MainView {
                 .setTestDeviceIds(it)
                 .build()
 
-            MobileAds.setRequestConfiguration(config)
+            if (it.isNotEmpty()) {
+                MobileAds.setRequestConfiguration(config)
+            }
+
+            MobileAds.initialize(activity) {
+                Log.d("tuanha", "setup: deviceIdTestList")
+                adsInit.postValue(Unit)
+            }
         }
     }
 
