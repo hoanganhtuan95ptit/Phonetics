@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.view.ads
 
+import android.util.Log
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.ads.AdError
@@ -7,6 +8,8 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
+import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.auto.service.AutoService
@@ -35,6 +38,8 @@ class AdsView : MainView {
 
         activity.lifecycleScope.launch(handler + Dispatchers.IO) {
 
+            Log.d("tuanha", "setupAdsView: ${AdvertisingIdClient.getAdvertisingIdInfo(activity).id}")
+
             MobileAds.initialize(activity) { initializationStatus ->
 
                 logAnalytics("ads_onAdInitialize ${initializationStatus.adapterStatusMap.toList().sortedBy { it.first }.toMap().toJson()}")
@@ -50,6 +55,15 @@ class AdsView : MainView {
                 showInterstitialAd(activity).first()
                 adsViewModel.countShow()
             }
+        }
+
+        adsViewModel.deviceIdTestList.asFlow().launchCollect(activity) {
+
+            val config = RequestConfiguration.Builder()
+                .setTestDeviceIds(it)
+                .build()
+
+            MobileAds.setRequestConfiguration(config)
         }
     }
 

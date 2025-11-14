@@ -5,11 +5,9 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
-import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
-import com.simple.coreapp.ui.base.fragments.transition.TransitionGlobalViewModel
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
@@ -21,10 +19,6 @@ import kotlinx.coroutines.launch
 import java.util.ServiceLoader
 
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>() {
-
-
-    private val activityViewModel: TransitionGlobalViewModel by viewModels()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
