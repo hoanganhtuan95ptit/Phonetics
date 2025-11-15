@@ -16,7 +16,7 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnHeightStatusAndHeightNavigationChange
 import com.simple.coreapp.utils.ext.getViewModel
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics

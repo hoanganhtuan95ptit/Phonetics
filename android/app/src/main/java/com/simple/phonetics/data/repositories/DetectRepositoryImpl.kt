@@ -1,6 +1,5 @@
 package com.simple.phonetics.data.repositories
 
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.detect_2.DetectTask
 import com.simple.image.toBitmap
 import com.simple.phonetics.domain.repositories.DetectRepository
@@ -8,6 +7,7 @@ import com.simple.startapp.StartApp
 import com.simple.state.ResultState
 import com.simple.state.runResultState
 import com.simple.state.wrap
+import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow

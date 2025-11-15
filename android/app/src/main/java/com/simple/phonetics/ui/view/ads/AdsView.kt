@@ -13,8 +13,10 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.auto.service.AutoService
 import com.simple.analytics.logAnalytics
+import com.simple.core.utils.extentions.toJson
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
+import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.DeeplinkManager.ADS
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.view.MainView
@@ -58,22 +60,6 @@ class AdsView : MainView {
 
                 showInterstitialAd(activity).first()
                 adsViewModel.countShow()
-            }
-        }
-
-        adsViewModel.deviceIdTestList.asFlow().launchCollect(activity) {
-
-
-            adsInit.asFlow().first()
-
-
-            val config = RequestConfiguration.Builder()
-                .setTestDeviceIds(it)
-                .build()
-
-            if (it.isNotEmpty()) {
-
-                MobileAds.setRequestConfiguration(config)
             }
         }
     }

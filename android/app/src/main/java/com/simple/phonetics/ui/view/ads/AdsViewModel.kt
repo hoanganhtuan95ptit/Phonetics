@@ -6,11 +6,10 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.analytics.logAnalytics
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.toEvent
@@ -68,16 +67,6 @@ class AdsViewModel(
         }
 
         postValue(true.toEvent())
-    }
-
-    val deviceIdTestList: LiveData<List<String>> = combineSourcesWithDiff(config) {
-
-        val deviceIds = config.getOrEmpty().getValue("ads_device_id_tests").split(",").map {
-
-            it.trim()
-        }
-
-        postValue(deviceIds)
     }
 
     init {

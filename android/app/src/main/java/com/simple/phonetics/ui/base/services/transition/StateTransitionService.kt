@@ -13,7 +13,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.simple.autobind.annotation.AutoBind
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.service.FragmentCreatedService
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull

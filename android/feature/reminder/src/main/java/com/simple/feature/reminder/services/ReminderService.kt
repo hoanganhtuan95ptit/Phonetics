@@ -3,13 +3,13 @@ package com.simple.feature.reminder.services
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.permissionx.guolindev.PermissionX
 import com.simple.autobind.annotation.AutoBind
 import com.simple.event.listenerEvent
 import com.simple.feature.reminder.MorningReminderWorker
@@ -53,11 +53,6 @@ class ReminderService : MainService {
 
         QueueEventState.addTag(tag = tag, order = order)
 
-        val requestNotificationPermission = mainActivity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-
-            QueueEventState.endTag(tag = tag, order = order, success = isGranted)
-        }
-
 
         val state = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 
@@ -71,8 +66,9 @@ class ReminderService : MainService {
 
         listenerEvent(mainActivity.lifecycle, eventName = tag) {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) PermissionX.init(mainActivity).permissions(arrayListOf(Manifest.permission.POST_NOTIFICATIONS)).request { allGranted, _, _ ->
+
+                QueueEventState.endTag(tag = tag, order = order, success = allGranted)
             }
         }
     }

@@ -107,6 +107,7 @@ dependencies {
     api hoanganhtuan95Dependencies.theme
     api hoanganhtuan95Dependencies.string
     api hoanganhtuan95Dependencies.service
+    api hoanganhtuan95Dependencies.coroutines
 
     api hoanganhtuan95Dependencies.analytics
     implementation hoanganhtuan95Dependencies.analytics_log

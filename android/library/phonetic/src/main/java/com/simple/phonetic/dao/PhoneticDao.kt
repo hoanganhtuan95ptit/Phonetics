@@ -44,7 +44,7 @@ interface PhoneticDaoV2 {
         getListRoomBy(ipaQuery = ipaQuery, ipaCode = ipaCode, textList = it, limit = limit)
     }
 
-    @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE f.ipaValue MATCH :ipaQuery AND r.ipaCode = :ipaCode AND r.text IN (:textList) LIMIT :limit")
+    @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE f.ipaValue LIKE '%' || :ipaQuery || '%' AND r.ipaCode = :ipaCode AND r.text IN (:textList) LIMIT :limit")
     fun getListRoomBy(ipaQuery: String, ipaCode: String, textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
 
 

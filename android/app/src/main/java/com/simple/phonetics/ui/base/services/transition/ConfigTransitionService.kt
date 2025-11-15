@@ -10,8 +10,8 @@ import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.Param
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.service.FragmentCreatedService
+import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.flow.filterNotNull
 
 

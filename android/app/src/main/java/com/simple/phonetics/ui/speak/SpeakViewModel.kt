@@ -13,7 +13,7 @@ import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources

@@ -1,10 +1,10 @@
 package com.simple.phonetics.domain.usecase.ipa
 
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.domain.repositories.IpaRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.state.ResultState
+import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow

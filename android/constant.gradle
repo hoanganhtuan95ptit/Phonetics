@@ -1,8 +1,8 @@
 project.ext {
 
     // ===================== Android SDK & Java =====================
-    versionCode = 163
-    versionName = "1.4.3.2-beta"
+    versionCode = 168
+    versionName = "1.4.5"
     versionNameDebugSuffix = "-debug"
 
     minSdkVersion = 23
@@ -36,7 +36,7 @@ project.ext {
     glide_transformations_version = '4.3.0'
     logging_interceptor_version = '4.12.0'
     shimmerlayout_version = '2.1.0'
-    hoanganhtuan95ptit_version = '1.3.39.beta20'
+    hoanganhtuan95ptit_version = '1.3.39.beta22'
     camerax_version = '1.1.0'
     camera_view_version = '1.1.0'
     core_version = "1.1.4"
@@ -165,6 +165,7 @@ project.ext {
             theme               : "com.github.hoanganhtuan95ptit.core:theme:$hoanganhtuan95ptit_version",
             string              : "com.github.hoanganhtuan95ptit.core:string:$hoanganhtuan95ptit_version",
             service             : "com.github.hoanganhtuan95ptit.core:service:$hoanganhtuan95ptit_version",
+            coroutines          : "com.github.hoanganhtuan95ptit.core:coroutines:$hoanganhtuan95ptit_version",
 
             analytics           : "com.github.hoanganhtuan95ptit.core:analytics:$hoanganhtuan95ptit_version",
             analytics_log       : "com.github.hoanganhtuan95ptit.core:analytics-log:$hoanganhtuan95ptit_version",

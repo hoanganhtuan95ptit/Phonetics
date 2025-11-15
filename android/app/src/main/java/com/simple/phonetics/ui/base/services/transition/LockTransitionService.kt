@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.simple.autobind.annotation.AutoBind
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.extentions.isActive
 import com.simple.service.FragmentCreatedService
 import kotlinx.coroutines.delay

@@ -8,7 +8,7 @@ import androidx.lifecycle.asFlow
 import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.core.utils.extentions.orZero
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
 import com.simple.phonetics.DeeplinkManager

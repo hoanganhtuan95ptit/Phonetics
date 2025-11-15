@@ -7,7 +7,7 @@ import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.databinding.ItemTextBinding
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.setText
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel

@@ -21,7 +21,7 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
 import com.simple.coreapp.utils.ext.setText
