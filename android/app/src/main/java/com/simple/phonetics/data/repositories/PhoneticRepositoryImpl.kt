@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import com.simple.analytics.logAnalytics
+import com.simple.core.utils.extentions.toJson
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetic.dao.PhoneticProviderV2
 import com.simple.phonetic.entities.Phonetic

@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import com.simple.autobind.annotation.AutoBind
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.event.sendEvent
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.services.MainService

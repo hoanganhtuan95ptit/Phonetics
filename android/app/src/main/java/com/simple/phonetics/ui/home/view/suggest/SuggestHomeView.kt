@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.auto.service.AutoService
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.listenerOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.observeLaunch

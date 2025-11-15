@@ -1,5 +1,6 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
+import android.util.Log
 import com.simple.core.utils.extentions.toJson
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.LanguageRepository
@@ -27,7 +28,7 @@ class GetPhoneticsRandomUseCase(
         val wordList = getWords(param = param, languageCode = languageCode)
 
 
-        val phoneticList = if (!isQueryForIpa || wordList.isNotEmpty()) {
+        val phoneticList = if (!isQueryForIpa) {
 
             phoneticRepository.getPhonetic(textList = wordList, phoneticCode = param.phoneticsCode)
         } else param.resource.replace("/", "").let {
@@ -72,7 +73,7 @@ class GetPhoneticsRandomUseCase(
             resource = Word.Resource.Popular.value,
             languageCode = languageCode,
 
-            limit = 1000,
+            limit = 3000,
 
             textMin = textLengthMin,
             textLimit = param.textLengthMax

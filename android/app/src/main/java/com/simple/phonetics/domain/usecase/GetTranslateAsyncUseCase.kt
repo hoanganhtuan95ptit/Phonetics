@@ -1,8 +1,8 @@
 package com.simple.phonetics.domain.usecase
 
-import com.simple.coreapp.utils.ext.launchCollect
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
+import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow

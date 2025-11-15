@@ -15,7 +15,7 @@ import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObjectOrNull
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.launchCollect
+import com.unknown.coroutines.launchCollect
 import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
