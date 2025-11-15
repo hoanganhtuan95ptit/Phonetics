@@ -30,6 +30,8 @@ class DetectHomeViewModel(
         val inputLanguage = inputLanguage.get()
         val outputLanguage = outputLanguage.get()
 
+        postValue(ResultState.Success(false))
+
         val languageCode = if (isReverse) {
             outputLanguage.id
         } else {
@@ -40,7 +42,7 @@ class DetectHomeViewModel(
 
         checkSupportDetectUseCase.execute(param).collect { state ->
 
-            postValueIfActive(state)
+            postValue(state)
 
             logAnalytics("feature_detect_${state.javaClass.simpleName.lowercase()}")
 

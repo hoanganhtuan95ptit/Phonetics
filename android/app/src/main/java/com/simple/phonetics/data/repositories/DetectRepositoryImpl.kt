@@ -5,8 +5,8 @@ import com.simple.image.toBitmap
 import com.simple.phonetics.domain.repositories.DetectRepository
 import com.simple.startapp.StartApp
 import com.simple.state.ResultState
+import com.simple.state.map
 import com.simple.state.runResultState
-import com.simple.state.wrap
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -30,9 +30,9 @@ class DetectRepositoryImpl : DetectRepository {
         }.first().runResultState {
 
             detect(bitmap)
-        }.wrap {
+        }.map { list ->
 
-            joinToString("\n") { it.text }
+            list.joinToString("\n") { it.text }
         }
     }
 
