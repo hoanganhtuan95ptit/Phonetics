@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TranslateRepository {
 
-    suspend fun translateAsync(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<Translate.Response>>
+    suspend fun translateAwait(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<Translate.Response>>
 
     suspend fun checkSupportTranslateAsync(languageCodeInput: String, languageCodeOutput: String): Flow<ResultState<Boolean>>
 }

@@ -156,9 +156,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
-      <change beforePath="$PROJECT_DIR$/constant.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/constant.gradle" afterDir="false" />
-    </list>
+    <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -267,7 +265,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "com.developerphil.adbidea.selecteddevices": "emulator-5554",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "release/1.4.6",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/app/src/main/java",
     "last_opened_file_path": "/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/feature/reminder/src/main/java/com/simple/feature/reminder/home/services",
@@ -935,11 +933,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/services/review/ReviewViewModel.kt</url>
-          <line>47</line>
-          <option name="timeStamp" value="124" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/services/review/ReviewViewModel.kt</url>
           <line>64</line>
           <option name="timeStamp" value="125" />
         </line-breakpoint>
@@ -947,6 +940,101 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/services/review/ReviewViewModel.kt</url>
           <line>133</line>
           <option name="timeStamp" value="126" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta24/detect-2-mlkit-1.3.39.beta24-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>41</line>
+          <option name="timeStamp" value="129" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta24/detect-2-mlkit-1.3.39.beta24-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>38</line>
+          <option name="timeStamp" value="130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta24/detect-2-mlkit-1.3.39.beta24-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>89</line>
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta24/detect-2-mlkit-1.3.39.beta24-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>92</line>
+          <option name="timeStamp" value="132" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta24/detect-2-mlkit-1.3.39.beta24-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>95</line>
+          <option name="timeStamp" value="133" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta24/detect-2-mlkit-1.3.39.beta24-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>123</line>
+          <option name="timeStamp" value="136" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta24/detect-2-mlkit-1.3.39.beta24-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>126</line>
+          <option name="timeStamp" value="138" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/repositories/DetectRepositoryImpl.kt</url>
+          <line>47</line>
+          <option name="timeStamp" value="141" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta24/detect-2-mlkit-1.3.39.beta24-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>47</line>
+          <option name="timeStamp" value="142" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta24/detect-2-mlkit-1.3.39.beta24-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>50</line>
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta25/detect-2-mlkit-1.3.39.beta25-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>47</line>
+          <option name="timeStamp" value="145" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta25/detect-2-mlkit-1.3.39.beta25-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>53</line>
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta25/detect-2-mlkit-1.3.39.beta25-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>120</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta25/detect-2-mlkit-1.3.39.beta25-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>123</line>
+          <option name="timeStamp" value="148" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta25/detect-2-mlkit-1.3.39.beta25-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>126</line>
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta25/detect-2-mlkit-1.3.39.beta25-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>95</line>
+          <option name="timeStamp" value="150" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta25/detect-2-mlkit-1.3.39.beta25-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>92</line>
+          <option name="timeStamp" value="151" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta25/detect-2-mlkit-1.3.39.beta25-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>89</line>
+          <option name="timeStamp" value="152" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.m2/repository/com/github/hoanganhtuan95ptit/core/detect-2-mlkit/1.3.39.beta25/detect-2-mlkit-1.3.39.beta25-sources.jar!/main/com/simple/detect_2/mlkit/tasks/MlkitDetectTask.kt</url>
+          <line>85</line>
+          <option name="timeStamp" value="153" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.map
 
 class TranslateRepositoryImpl : TranslateRepository {
 
-    override suspend fun translateAsync(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<Translate.Response>> {
+    override suspend fun translateAwait(languageCodeInput: String, languageCodeOutput: String, vararg text: String): ResultState<List<Translate.Response>> {
 
         val input = text.map {
 
