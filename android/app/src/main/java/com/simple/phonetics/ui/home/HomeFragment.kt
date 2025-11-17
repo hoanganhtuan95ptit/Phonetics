@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
@@ -16,10 +15,10 @@ import com.google.android.flexbox.AlignItems
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
+import com.simple.coreapp.utils.ext.resize
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
@@ -50,12 +49,10 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorBackgroundVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
-import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
 import java.util.ServiceLoader
-import kotlin.math.absoluteValue
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScreen {
 
@@ -66,25 +63,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-
-            override fun handleOnBackPressed() {
-
-                val binding = binding ?: return
-
-                if (binding.etText.text.toString().isNotEmpty()) if (binding.appBarLayout.getCurrentOffset().absoluteValue >= binding.appBarLayout.totalScrollRange.absoluteValue / 2) {
-
-                    binding.appBarLayout.setExpanded(true, true)
-                } else {
-
-                    binding.etText.setText("")
-                } else {
-
-                    activity?.finish()
-                }
-            }
-        })
 
         ServiceLoader.load(HomeView::class.java).toList().forEach { it.setup(this) }
 
@@ -131,7 +109,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
         doOnHeightStatusChange {
 
-            binding.root.updatePadding(top = it)
+            binding.statusBar.resize(height = it)
         }
     }
 
@@ -245,11 +223,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             binding.progress.progressTintList = ColorStateList.valueOf(it.colorPrimary)
 
-            binding.root.setBackgroundColor(it.colorBackground)
-            binding.frameContent.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_BL = DP.DP_16, cornerRadius_BR = DP.DP_16))
+            binding.root.setBackgroundColor(it.colorBackgroundVariant)
+//            binding.frameContent.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_BL = DP.DP_16, cornerRadius_BR = DP.DP_16))
 
             binding.vTemp.setBackgroundColor(it.colorBackgroundVariant)
-            binding.frameRootContent.setBackgroundColor(it.colorBackgroundVariant)
+//            binding.frameRootContent.setBackgroundColor(it.colorBackgroundVariant)
         }
 
         title.collectWithLockTransitionUntilData(fragment = fragment, tag = "TITLE") {
