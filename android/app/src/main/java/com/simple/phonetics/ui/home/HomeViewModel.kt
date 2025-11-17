@@ -9,6 +9,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
+import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
@@ -22,7 +23,6 @@ import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.toRich
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
@@ -46,6 +46,7 @@ import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.home.adapters.InputViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
@@ -61,6 +62,7 @@ import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
+import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.height
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorOnSurfaceVariant
@@ -311,7 +313,9 @@ class HomeViewModel(
         postValue(map)
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, translate, typeViewItemList, phoneticsViewItemList) {
+    val inputHeight: LiveData<Int> = MediatorLiveData()
+
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, translate, inputHeight, typeViewItemList, phoneticsViewItemList) {
 
         val size = size.get()
         val style = style.get()
@@ -362,6 +366,8 @@ class HomeViewModel(
 
         list.add(SpaceViewItem(id = "BOTTOM_0", height = size.height - DP.DP_350))
 
+        list.add(0, InputViewItem(height = inputHeight.value.orZero()))
+
         postValueIfActive(list)
     }
 
@@ -396,6 +402,11 @@ class HomeViewModel(
     fun switchReverse() {
 
         this.isReverse.postValue(!this.isReverse.get())
+    }
+
+    fun updateInputHeight(height: Int) {
+
+        this.inputHeight.postValue(height)
     }
 
     fun updateSupportTranslate(b: Boolean) {

@@ -9,6 +9,7 @@ import com.simple.autobind.AutoBind
 import com.simple.phonetics.ui.base.services.transition.lockTransition
 import com.simple.phonetics.ui.base.services.transition.onTransitionEndAwait
 import com.simple.phonetics.ui.base.services.transition.unlockTransition
+import com.unknown.coroutines.handler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -27,19 +28,9 @@ fun <T> LiveData<T>.collectWithLockTransitionUntilData(
     fragment: Fragment,
     tag: String = "",
     block: suspend (data: T) -> Unit
-) = fragment.viewLifecycleOwner.lifecycleScope.launch {
-
-    val data = value
+) = fragment.viewLifecycleOwner.lifecycleScope.launch(handler) {
 
     fragment.lockTransition(tag = tag)
-
-
-    if (data != null) {
-
-        block(data)
-
-        fragment.unlockTransition(tag = tag)
-    }
 
     asFlow().attachToAdapter().collect {
 
@@ -57,7 +48,7 @@ fun <T> LiveData<T>.collectWithLockTransitionIfCached(
     fragment: Fragment,
     tag: String = "",
     block: suspend (data: T, isFirst: Boolean) -> Unit
-) = fragment.viewLifecycleOwner.lifecycleScope.launch {
+) = fragment.viewLifecycleOwner.lifecycleScope.launch(handler) {
 
     var data = value
 
