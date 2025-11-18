@@ -1,14 +1,15 @@
-package com.simple.phonetics.ui.home.view.suggest
+package com.simple.phonetics.ui.home.services.suggest
 
 import android.graphics.Rect
 import android.view.View
-import android.view.ViewTreeObserver
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.auto.service.AutoService
+import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
+import com.simple.coreapp.EventName
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.listenerOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.observeLaunch
@@ -17,42 +18,45 @@ import com.simple.event.listenerEvent
 import com.simple.phonetic.entities.Phonetic
 import com.simple.phonetics.Id
 import com.simple.phonetics.ui.home.HomeFragment
-import com.simple.phonetics.ui.home.view.HomeView
+import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.ui.view.SelectionEdittext
+import com.simple.phonetics.utils.exts.listenerLayoutChangeAsync
 import com.simple.phonetics.utils.exts.submitListAwaitV2
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-@AutoService(HomeView::class)
-class SuggestHomeView : HomeView {
+@AutoBind(HomeService::class)
+class SuggestHomeService : HomeService {
 
-    override fun setup(fragment: HomeFragment) {
+    override fun setup(homeFragment: HomeFragment) {
 
-        val binding = fragment.binding ?: return
+        val binding = homeFragment.binding ?: return
+
+        val suggestHomeViewModel: SuggestHomeViewModel by homeFragment.viewModel()
 
 
-        val suggestHomeViewModel: SuggestHomeViewModel by fragment.viewModel()
+        binding.recSuggest.layoutManager = LinearLayoutManager(homeFragment.requireContext(), RecyclerView.HORIZONTAL, false)
 
-
-        binding.recSuggest.layoutManager = LinearLayoutManager(fragment.requireContext(), RecyclerView.HORIZONTAL, false)
-
-        suggestHomeViewModel.theme.observe(fragment.viewLifecycleOwner) {
+        suggestHomeViewModel.theme.observe(homeFragment.viewLifecycleOwner) {
 
             binding.recSuggest.setBackgroundColor(it.colorBackground)
         }
 
-        suggestHomeViewModel.viewItemList.observeLaunch(fragment.viewLifecycleOwner) {
+        suggestHomeViewModel.viewItemList.observeLaunch(homeFragment.viewLifecycleOwner) {
 
             binding.recSuggest.submitListAwaitV2(it)
             binding.recSuggest.setVisible(it.isNotEmpty())
         }
 
-        listenerEvent(fragment.viewLifecycleOwner.lifecycle, eventName = com.simple.coreapp.EventName.TEXT_VIEW_ITEM_CLICKED) {
+
+        listenerEvent(homeFragment.viewLifecycleOwner.lifecycle, eventName = EventName.TEXT_VIEW_ITEM_CLICKED) {
 
             val (view, viewItem) = it.asObjectOrNull<Pair<View, ClickTextViewItem>>() ?: return@listenerEvent
 
@@ -85,23 +89,23 @@ class SuggestHomeView : HomeView {
         }
 
 
-        KeyboardVisibilityEvent.setEventListener(fragment.requireActivity(), fragment.viewLifecycleOwner) { isOpen ->
+        KeyboardVisibilityEvent.setEventListener(homeFragment.requireActivity(), homeFragment.viewLifecycleOwner) { isOpen ->
 
             suggestHomeViewModel.setKeyboardShow(isOpen)
         }
 
-        binding.root.listenerOnChangeHeightKeyboard().distinctUntilChanged().launchCollect(fragment.viewLifecycleOwner) {
+        binding.root.listenerChangeHeightKeyboardAsync().distinctUntilChanged().launchCollect(homeFragment.viewLifecycleOwner) {
 
             binding.recSuggest.animate().translationY(-it.toFloat()).setDuration(350).start()
         }
 
-        binding.etText.listenerOnSelectionChanged().distinctUntilChanged().launchCollect(fragment.viewLifecycleOwner) {
+        binding.etText.listenerSelectionChangeAsync().distinctUntilChanged().launchCollect(homeFragment.viewLifecycleOwner) {
 
             suggestHomeViewModel.setText(it)
         }
     }
 
-    private fun View.listenerOnChangeHeightKeyboard() = channelFlow {
+    private fun View.listenerChangeHeightKeyboardAsync() = channelFlow {
 
         var mHeightKeyboard = 0
         var mHeightStatusBar = 0
@@ -118,7 +122,7 @@ class SuggestHomeView : HomeView {
             onChange.invoke()
         }
 
-        val onGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+        listenerLayoutChangeAsync().map {
 
             val r = Rect()
             getWindowVisibleDisplayFrame(r)
@@ -126,27 +130,25 @@ class SuggestHomeView : HomeView {
             val screenHeight: Int = height
             val visibleHeight = r.height()
 
-            mHeightKeyboard = screenHeight - visibleHeight
+            screenHeight - visibleHeight
+        }.launchCollect(this) {
+
+            mHeightKeyboard = it
 
             onChange.invoke()
         }
 
-
-        viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener)
-
         awaitClose {
-
-            viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
         }
-    }
+    }.asLiveData().asFlow()
 
-    private fun SelectionEdittext.listenerOnSelectionChanged() = channelFlow<String> {
+    private fun SelectionEdittext.listenerSelectionChangeAsync() = channelFlow {
 
         onSelectionChangedListener = object : SelectionEdittext.OnSelectionChangedListener {
 
             override fun onSelectionChanged(selStart: Int, selEnd: Int) {
 
-                kotlin.runCatching {
+                runCatching {
 
                     val end: Int = selEnd
                     var start: Int = selStart

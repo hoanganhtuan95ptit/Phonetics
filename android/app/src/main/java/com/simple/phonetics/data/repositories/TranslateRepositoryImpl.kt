@@ -51,7 +51,13 @@ class TranslateRepositoryImpl : TranslateRepository {
             list.isNotEmpty() && list.any { it.translate(input = input, outputLanguageCode = languageCodeOutput).firstOrNull()?.state.isSuccess() }
         }.launchCollect(this) {
 
-            trySend(ResultState.Success(it))
+            val state = if (it) {
+                ResultState.Success(it)
+            } else {
+                ResultState.Failed()
+            }
+
+            trySend(state)
         }
 
         awaitClose {

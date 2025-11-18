@@ -57,7 +57,7 @@ class DetectHomeViewModel(
         }
     }.apply {
 
-        asObject<MediatorLiveData<ResultState<Boolean>>>().value = ResultState.Success(false)
+        asObject<MediatorLiveData<ResultState<Boolean>>>().value = ResultState.Start
     }
 
     val detectInfo: LiveData<DetectInfo> = combineSourcesWithDiff(isSupportDetectState) {

@@ -5,9 +5,11 @@ import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
+import com.simple.core.utils.extentions.asObject
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
@@ -112,7 +114,6 @@ class ConfigViewModel(
     @VisibleForTesting
     val isSupportTranslateState: LiveData<ResultState<Boolean>> = combineSourcesWithDiff(inputLanguage, outputLanguage) {
 
-
         val inputLanguageCode = inputLanguage.get().id
         val outputLanguageCode = outputLanguage.get().id
 
@@ -144,10 +145,10 @@ class ConfigViewModel(
 
     val translateEnable: LiveData<Boolean> = combineSourcesWithDiff(isSupportTranslateState, translateSelect) {
 
-        val translateState = isSupportTranslateState.get()
         val translateSelect = translateSelect.get()
+        val isSupportTranslateState = isSupportTranslateState.get()
 
-        if (translateState !is ResultState.Success) {
+        if (isSupportTranslateState !is ResultState.Success) {
 
             postValue(false)
             return@combineSourcesWithDiff

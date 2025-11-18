@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.home.view.suggest
+package com.simple.phonetics.ui.home.services.suggest
 
 import android.view.Gravity
 import android.view.ViewGroup
