@@ -1,6 +1,5 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
-import android.util.Log
 import com.simple.core.utils.extentions.toJson
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.LanguageRepository

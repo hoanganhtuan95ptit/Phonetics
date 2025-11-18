@@ -130,7 +130,8 @@ class IpaDetailViewModel(
             textNew = ipa.get().examples.joinToString(separator = " ") { it },
 
             isReverse = false,
-            saveToHistory = false,
+            isTranslate = false,
+            isSaveToHistory = false,
             phoneticCode = phoneticCodeSelected.get(),
             inputLanguageCode = inputLanguage.get().id,
             outputLanguageCode = outputLanguage.get().id

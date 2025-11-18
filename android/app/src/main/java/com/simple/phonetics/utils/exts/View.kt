@@ -10,6 +10,8 @@ import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -32,6 +34,7 @@ fun TextView.setTextColor(vararg pair: Pair<IntArray, Int>) {
     )
 }
 
+
 fun View.listenerLayoutChangeAsync() = channelFlow {
 
     val onGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
@@ -47,9 +50,10 @@ fun View.listenerLayoutChangeAsync() = channelFlow {
     awaitClose {
         viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
     }
-}
+}.asLiveData().asFlow()
 
 fun View.listenerHeightChangeAsync() = listenerLayoutChangeAsync().map { it.height }.distinctUntilChanged()
+
 
 fun View.ensureGradientUpdates() = channelFlow<Unit> {
 
