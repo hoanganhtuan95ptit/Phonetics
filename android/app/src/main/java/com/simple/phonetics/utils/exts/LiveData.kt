@@ -3,6 +3,7 @@ package com.simple.phonetics.utils.exts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.simple.adapter.provider.AdapterProvider
 import com.simple.autobind.AutoBind
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private val adapterFlow by lazy {
-    AutoBind.loadNameAsync(AdapterProvider::class.java, false).distinctUntilChanged()
+    AutoBind.loadNameAsync(AdapterProvider::class.java, false).distinctUntilChanged().asLiveData().asFlow()
 }
 
 /**

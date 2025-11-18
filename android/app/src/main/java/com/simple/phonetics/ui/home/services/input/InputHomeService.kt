@@ -1,9 +1,10 @@
 package com.simple.phonetics.ui.home.services.input
 
-import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.ui.view.setBackground
@@ -46,7 +47,6 @@ class InputHomeService : HomeService {
         setupScroll(homeFragment)
 
         observeData(fragment = homeFragment)
-        observeHomeData(fragment = homeFragment)
     }
 
     private fun setupBack(homeFragment: HomeFragment) {
@@ -118,7 +118,7 @@ class InputHomeService : HomeService {
 
                 binding.recyclerView.removeOnScrollListener(listener)
             }
-        }
+        }.asLiveData().asFlow()
 
         val inputSpaceViewFlow = channelFlow<View?> {
 
@@ -139,7 +139,7 @@ class InputHomeService : HomeService {
 
                 binding.recyclerView.onChildViewListener = null
             }
-        }.distinctUntilChanged()
+        }.distinctUntilChanged().asLiveData().asFlow()
 
 
 
@@ -185,13 +185,7 @@ class InputHomeService : HomeService {
 
             binding.vBackgroundInput.resize(height = it.inputHeight)
             binding.vBackgroundInput.setBackground(background = it.background)
-
-//            binding.ivBackgroundInput.setImage(it.imageBackground, ColorFilterTransformation(it.imageBackgroundFilter), BlurTransformation())
         }
-    }
-
-    private fun observeHomeData(fragment: HomeFragment) = with(homeViewModel) {
-
     }
 
     private fun updatePosition(binding: FragmentHomeBinding, y: Int = 0, headerTop: Int) {
@@ -203,25 +197,18 @@ class InputHomeService : HomeService {
         binding.statusBar.alpha = alpha
         binding.vBackgroundHeader.alpha = alpha
 
-//        binding.statusBar.elevation = alpha * DP.DP_24
-//        binding.frameHeader.elevation = alpha * DP.DP_24
 
         binding.etText.translationY = y + 0f
 
-//        if (binding.recFilter.top + binding.recFilter.translationY <= headerTop) {
-
-            binding.recFilter.translationY = y + 0f
-//        } else {
-//
-//            binding.recFilter.translationY = binding.recFilter.top - headerTop + 0f
-//        }
+        binding.recFilter.translationY = if (binding.recFilter.top + y >= headerTop) {
+            y + 0f
+        } else {
+            headerTop - binding.recFilter.top + 0f
+        }
 
         binding.frameControl.translationY = y + 0f
         binding.vBackgroundInput.translationY = y + 0f
         binding.ivBackgroundInput.translationY = y + 0f
-
-        Log.d("tuanha", "updatePosition: ${binding.recFilter.top}")
-
     }
 
     private fun View.locationY(): Int {

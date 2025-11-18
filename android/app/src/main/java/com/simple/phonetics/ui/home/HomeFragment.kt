@@ -50,7 +50,6 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorBackgroundVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
 import java.util.ServiceLoader
 

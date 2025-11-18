@@ -58,7 +58,7 @@ class GetPhoneticsAsyncUseCase(
         }
 
         // lưu lịch sử tìm kiếm phiên âm
-        if (param.saveToHistory) {
+        if (param.isSaveToHistory) {
 
             val id = getId(textOld = param.textOld, textNew = textWrap)
 
@@ -126,7 +126,7 @@ class GetPhoneticsAsyncUseCase(
 
 
         // thực hiện dịch
-        launch {
+        if (param.isTranslate) launch {
 
             sentenceList.forEach {
 
@@ -138,7 +138,7 @@ class GetPhoneticsAsyncUseCase(
 
 
         // thực hiện lưu những từ đã tra phiên âm
-        if (param.saveToHistory) launch {
+        if (param.isSaveToHistory) launch {
 
             // đợi cho luồng lấy IPA hoàn thành thì mới lưu vào db
             ipaJob.join()
@@ -204,12 +204,13 @@ class GetPhoneticsAsyncUseCase(
         val textOld: String = "",
         val textNew: String = "",
 
-        val isReverse: Boolean,
-
         val phoneticCode: String,
+
         val inputLanguageCode: String,
         val outputLanguageCode: String,
 
-        val saveToHistory: Boolean = true
+        val isReverse: Boolean = false,
+        val isTranslate: Boolean = true,
+        val isSaveToHistory: Boolean = true
     )
 }

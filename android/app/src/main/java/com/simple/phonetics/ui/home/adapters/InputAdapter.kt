@@ -21,11 +21,13 @@ class InputAdapter : ViewItemAdapter<InputViewItem, ItemHomeInputBinding>() {
 
     override fun onBindViewHolder(binding: ItemHomeInputBinding, viewType: Int, position: Int, item: InputViewItem, payloads: MutableList<Any>) {
         super.onBindViewHolder(binding, viewType, position, item, payloads)
+
         if(payloads.contains("height"))binding.root.resize(height = item.height)
     }
 
     override fun onBindViewHolder(binding: ItemHomeInputBinding, viewType: Int, position: Int, item: InputViewItem) {
         super.onBindViewHolder(binding, viewType, position, item)
+
         binding.root.resize(height = item.height)
     }
 }

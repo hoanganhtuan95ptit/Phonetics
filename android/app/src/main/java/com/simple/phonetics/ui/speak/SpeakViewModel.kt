@@ -80,7 +80,7 @@ class SpeakViewModel(
             textNew = text.get(),
 
             isReverse = false,
-            saveToHistory = false,
+            isSaveToHistory = false,
             phoneticCode = phoneticCodeSelected.get(),
             inputLanguageCode = inputLanguage.get().id,
             outputLanguageCode = outputLanguage.get().id

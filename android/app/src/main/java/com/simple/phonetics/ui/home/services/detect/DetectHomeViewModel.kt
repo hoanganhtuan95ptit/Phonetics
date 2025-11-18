@@ -4,9 +4,10 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.analytics.logAnalytics
+import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.postValue
+import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.usecase.detect.CheckSupportDetectUseCase
@@ -29,8 +30,6 @@ class DetectHomeViewModel(
         val isReverse = isReverse.get()
         val inputLanguage = inputLanguage.get()
         val outputLanguage = outputLanguage.get()
-
-        postValue(ResultState.Success(false))
 
         val languageCode = if (isReverse) {
             outputLanguage.id
@@ -56,6 +55,9 @@ class DetectHomeViewModel(
                 logCrashlytics("feature_detect", it)
             }
         }
+    }.apply {
+
+        asObject<MediatorLiveData<ResultState<Boolean>>>().value = ResultState.Success(false)
     }
 
     val detectInfo: LiveData<DetectInfo> = combineSourcesWithDiff(isSupportDetectState) {
@@ -71,7 +73,7 @@ class DetectHomeViewModel(
 
     fun updateReverse(it: Boolean) {
 
-        isReverse.postValue(it)
+        isReverse.postDifferentValue(it)
     }
 
     data class DetectInfo(
