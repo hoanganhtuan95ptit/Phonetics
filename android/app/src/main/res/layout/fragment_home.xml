@@ -14,7 +14,7 @@
         android:transitionName="temp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.simple.phonetics.ui.view.AttachRecyclerview
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

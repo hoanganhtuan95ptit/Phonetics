@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.home.services.input
 
 import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -14,9 +13,10 @@ import com.simple.phonetics.databinding.FragmentHomeBinding
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.services.HomeService
+import com.simple.phonetics.ui.view.AttachRecyclerview.OnChildViewListener
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorBackgroundVariant
-import com.simple.phonetics.utils.exts.listenerOnHeightChange
+import com.simple.phonetics.utils.exts.listenerHeightChangeAsync
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorSurface
 import kotlinx.coroutines.channels.awaitClose
@@ -76,29 +76,29 @@ class InputHomeService : HomeService {
         val binding = homeFragment.binding ?: return
 
         val headerTopFlow = combine(
-            binding.statusBar.listenerOnHeightChange(),
-            binding.frameHeader.listenerOnHeightChange(),
+            binding.statusBar.listenerHeightChangeAsync(),
+            binding.frameHeader.listenerHeightChangeAsync(),
         ) {
 
             it.sum()
-        }
+        }.distinctUntilChanged()
 
         val inputHeightFlow = combine(
             headerTopFlow,
-            binding.etText.listenerOnHeightChange(),
-            binding.frameControl.listenerOnHeightChange()
+            binding.etText.listenerHeightChangeAsync(),
+            binding.frameControl.listenerHeightChangeAsync()
         ) {
 
             it.sum()
-        }
+        }.distinctUntilChanged()
 
         val inputHeightIncludeFilterFlow = combine(
             inputHeightFlow,
-            binding.recFilter.listenerOnHeightChange(),
+            binding.recFilter.listenerHeightChangeAsync(),
         ) {
 
             it.sum()
-        }
+        }.distinctUntilChanged()
 
         val scrollFlow = channelFlow {
 
@@ -122,31 +122,33 @@ class InputHomeService : HomeService {
 
         val inputSpaceViewFlow = channelFlow<View?> {
 
-            val onGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+            binding.recyclerView.onChildViewListener = object : OnChildViewListener {
 
-                trySend(binding.recyclerView.findViewById(R.id.frame_home_input))
+                override fun onViewAdded(child: View?) {
+                    trySend(binding.recyclerView.findViewById(R.id.frame_home_input))
+                }
+
+                override fun onViewRemoved(child: View?) {
+                    trySend(binding.recyclerView.findViewById(R.id.frame_home_input))
+                }
             }
-
-            binding.recyclerView.viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener)
 
             trySend(binding.recyclerView.findViewById(R.id.frame_home_input))
 
             awaitClose {
 
-                binding.recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
+                binding.recyclerView.onChildViewListener = null
             }
-        }
+        }.distinctUntilChanged()
 
-        headerTopFlow.distinctUntilChanged().launchCollect(homeFragment.viewLifecycleOwner){
 
-        }
 
-        inputHeightFlow.distinctUntilChanged().launchCollect(homeFragment.viewLifecycleOwner) {
+        inputHeightFlow.launchCollect(homeFragment.viewLifecycleOwner) {
 
             viewModel.updateInputHeight(height = it)
         }
 
-        inputHeightIncludeFilterFlow.distinctUntilChanged().launchCollect(homeFragment.viewLifecycleOwner) {
+        inputHeightIncludeFilterFlow.launchCollect(homeFragment.viewLifecycleOwner) {
 
             homeViewModel.updateInputHeight(height = it)
             viewModel.updateInputHeightIncludeFilter(height = it)
@@ -157,11 +159,11 @@ class InputHomeService : HomeService {
             if (homeViewModel.viewItemList.value.isNullOrEmpty()) {
                 flowOf(0)
             } else {
-                inputSpaceViewFlow.distinctUntilChanged().map { it?.locationY() ?: -inputHeightIncludeFilterFlow.first() }
+                inputSpaceViewFlow.map { it?.locationY() ?: -inputHeightIncludeFilterFlow.first() }
             }
-        }.distinctUntilChanged().launchCollect(homeFragment) {
+        }.launchCollect(homeFragment) {
 
-            updatePosition(binding = binding, y = it, headerTop = 0)
+            updatePosition(binding = binding, y = it, headerTop = headerTopFlow.first())
         }
     }
 

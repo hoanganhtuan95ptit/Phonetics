@@ -13,6 +13,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 fun ImageView.setImageDrawable(context: Context, resId: Int, color: Int) {
 
@@ -31,18 +32,24 @@ fun TextView.setTextColor(vararg pair: Pair<IntArray, Int>) {
     )
 }
 
-fun View.listenerOnHeightChange() = channelFlow {
+fun View.listenerLayoutChangeAsync() = channelFlow {
 
     val onGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
-        trySend(height)
+        trySend(this@listenerLayoutChangeAsync)
     }
 
     viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener)
 
+    post {
+        trySend(this@listenerLayoutChangeAsync)
+    }
+
     awaitClose {
         viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
     }
-}.distinctUntilChanged()
+}
+
+fun View.listenerHeightChangeAsync() = listenerLayoutChangeAsync().map { it.height }.distinctUntilChanged()
 
 fun View.ensureGradientUpdates() = channelFlow<Unit> {
 

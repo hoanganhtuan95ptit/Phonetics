@@ -12,7 +12,7 @@ import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnHeightStatusAndHeightNavigationChange
 import com.simple.coreapp.utils.extentions.get
-import com.simple.phonetics.utils.exts.listenerOnHeightChange
+import com.simple.phonetics.utils.exts.listenerHeightChangeAsync
 import com.unknown.coroutines.launchCollect
 import kotlin.math.absoluteValue
 
@@ -54,7 +54,7 @@ abstract class BaseActionFragment<AVB : ViewBinding, VB : ViewBinding, VM : Base
             }
         })
 
-        binding.root.listenerOnHeightChange().launchCollect(viewLifecycleOwner) {
+        binding.root.listenerHeightChangeAsync().launchCollect(viewLifecycleOwner) {
 
             viewModel.updateActionHeight(it)
         }
