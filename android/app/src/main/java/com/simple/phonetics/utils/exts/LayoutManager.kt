@@ -6,7 +6,7 @@ import com.google.android.flexbox.FlexboxLayoutManagerWrap.OnErrorListener
 
 fun createFlexboxLayoutManager(context: Context?, error: ((Exception) -> Unit)? = null): FlexboxLayoutManagerWrap {
 
-    val layoutManager = FlexboxLayoutManagerWrap(context)
+    val layoutManager = NoAutoScrollFlexboxLayoutManager(context)
 
     layoutManager.onErrorListener = OnErrorListener {
 
@@ -14,4 +14,13 @@ fun createFlexboxLayoutManager(context: Context?, error: ((Exception) -> Unit)? 
     }
 
     return layoutManager
+}
+
+class NoAutoScrollFlexboxLayoutManager(context: Context?) : FlexboxLayoutManagerWrap(context) {
+
+    var isBinding = false
+
+    override fun canScrollVertically(): Boolean {
+        return !isBinding && super.canScrollVertically()
+    }
 }
