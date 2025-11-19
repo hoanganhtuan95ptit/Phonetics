@@ -48,7 +48,7 @@ interface PhoneticDaoV2 {
     fun getListRoomBy(ipaQuery: String, ipaCode: String, textList: List<String>, limit: Int = Int.MAX_VALUE): List<Phonetic>
 
 
-    @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE f.text MATCH :textQuery LIMIT :limit")
+    @Query("SELECT r.* FROM $TABLE_NAME_FTS f JOIN $TABLE_NAME r ON f.rowid = r.rowid WHERE f.text MATCH :textQuery GROUP BY r.text LIMIT :limit")
     fun suggest(textQuery: String, limit: Int = 10): List<Phonetic>
 
 

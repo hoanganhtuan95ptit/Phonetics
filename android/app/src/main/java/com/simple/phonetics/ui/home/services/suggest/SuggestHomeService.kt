@@ -32,7 +32,7 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-@AutoBind(HomeService::class)
+@AutoBind(HomeFragment::class)
 class SuggestHomeService : HomeService {
 
     override fun setup(homeFragment: HomeFragment) {
