@@ -86,12 +86,6 @@ class HistoryHomeViewModel(
             viewItemList.addAll(it)
         }
 
-
-        viewItemList.forEach {
-
-            if (it is SizeViewItem) it.measure(appSize = size, style = style)
-        }
-
         if (viewItemList.isNotEmpty()) {
             logAnalytics("history_home_show")
         }
