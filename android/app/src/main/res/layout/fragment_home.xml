@@ -14,223 +14,11 @@
         android:transitionName="temp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <com.simple.phonetics.ui.view.AttachRecyclerview
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false" />
-
-    <View
-        android:id="@+id/v_background_input"
-        android:layout_width="match_parent"
-        android:layout_height="1dp" />
-
-    <ImageView
-        android:id="@+id/iv_background_input"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitEnd" />
-
-    <com.simple.phonetics.ui.view.SelectionEdittext
-        android:id="@+id/et_text"
-        style="?attr/textBody1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:gravity="top"
-        android:maxHeight="300dp"
-        android:minHeight="250dp"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="56dp"
-        android:textColor="?attr/colorOnBackground"
-        android:textColorHint="?attr/colorOnBackgroundVariant"
-        android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@id/frame_header" />
-
-    <LinearLayout
-        android:id="@+id/frame_control"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom|end"
-        android:gravity="center_vertical"
-        android:paddingEnd="8dp"
-        app:layout_constraintTop_toBottomOf="@id/et_text">
-
-        <FrameLayout
-            android:layout_width="48dp"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="4dp">
-
-            <ImageView
-                android:id="@+id/iv_read"
-                android:layout_width="48dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center"
-                android:contentDescription="start read text"
-                android:padding="12dp"
-                android:src="@drawable/ic_volume_24dp"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/iv_stop"
-                android:layout_width="48dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center"
-                android:contentDescription="stop read text"
-                android:padding="12dp"
-                android:src="@drawable/ic_pause_24dp"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/iv_picture"
-                android:layout_width="48dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center"
-                android:contentDescription="image take text"
-                android:padding="12dp"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="48dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                tools:visibility="visible" />
-        </FrameLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <FrameLayout
-            android:id="@+id/frame_reverse"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:paddingHorizontal="8dp">
-
-            <TextView
-                android:id="@+id/tv_reverse"
-                style="?attr/textCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                tools:rv_cornerRadius="8dp"
-                tools:rv_strokeColor="?attr/colorPrimary"
-                tools:rv_strokeWidth="1dp"
-                tools:text="Reverse"
-                tools:textColor="?attr/colorAccent" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/frame_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:paddingHorizontal="8dp">
-
-            <TextView
-                android:id="@+id/tv_clear"
-                style="?attr/textCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                tools:rv_cornerRadius="8dp"
-                tools:rv_strokeColor="?attr/colorPrimary"
-                tools:rv_strokeWidth="1dp"
-                tools:text="Clear"
-                tools:textColor="?attr/colorAccent" />
-        </FrameLayout>
-
-        <ImageView
-            android:id="@+id/iv_paste"
-            android:layout_width="40dp"
-            android:layout_height="56dp"
-            android:contentDescription="get text from clip"
-            android:paddingHorizontal="8dp"
-            android:src="@drawable/ic_paste_accent_24dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/iv_microphone"
-            android:layout_width="40dp"
-            android:layout_height="56dp"
-            android:contentDescription="take text from microphone"
-            android:paddingHorizontal="8dp"
-            android:src="@drawable/ic_microphone_24dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/iv_gallery"
-            android:layout_width="40dp"
-            android:layout_height="56dp"
-            android:contentDescription="take image from gallery"
-            android:paddingHorizontal="8dp"
-            android:src="@drawable/ic_gallery_accent_24dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/iv_camera"
-            android:layout_width="40dp"
-            android:layout_height="56dp"
-            android:contentDescription="take image from camera"
-            android:paddingHorizontal="8dp"
-            android:src="@drawable/ic_camera_accent_24dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
-    </LinearLayout>
-
-    <com.simple.adapter.MultiRecyclerView
-        android:id="@+id/rec_filter"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:clipToPadding="false"
-        android:nestedScrollingEnabled="false"
-        android:paddingVertical="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="8dp"
-        app:layout_constraintTop_toBottomOf="@id/frame_control" />
-
-    <com.simple.adapter.MultiRecyclerView
-        android:id="@+id/rec_suggest"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:clipToPadding="false"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <View
-        android:id="@+id/status_bar"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <FrameLayout
         android:id="@+id/frame_header"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        app:layout_constraintTop_toBottomOf="@id/status_bar">
-
-        <View
-            android:id="@+id/v_background_header"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="@id/frame_header"
-            app:layout_constraintTop_toTopOf="@id/frame_header" />
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_title"
@@ -250,4 +38,213 @@
             android:padding="12dp"
             android:transitionName="select_language" />
     </FrameLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/frame_root_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?android:attr/colorBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frame_header">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <FrameLayout
+                    android:id="@+id/frame_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.simple.phonetics.ui.view.SelectionEdittext
+                        android:id="@+id/et_text"
+                        style="?attr/textBody1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:gravity="top"
+                        android:paddingHorizontal="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="56dp"
+                        android:textColor="?attr/colorOnBackground"
+                        android:textColorHint="?attr/colorOnBackgroundVariant"
+                        android:textSize="30sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:layout_gravity="bottom|end"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="8dp">
+
+                        <FrameLayout
+                            android:id="@+id/frame_reverse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="56dp"
+                            android:paddingHorizontal="8dp">
+
+                            <TextView
+                                android:id="@+id/tv_reverse"
+                                style="?attr/textCaption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:paddingHorizontal="8dp"
+                                tools:rv_cornerRadius="8dp"
+                                tools:rv_strokeColor="?attr/colorPrimary"
+                                tools:rv_strokeWidth="1dp"
+                                tools:text="Reverse"
+                                tools:textColor="?attr/colorAccent" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/frame_clear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="56dp"
+                            android:paddingHorizontal="8dp">
+
+                            <TextView
+                                android:id="@+id/tv_clear"
+                                style="?attr/textCaption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:paddingHorizontal="8dp"
+                                tools:rv_cornerRadius="8dp"
+                                tools:rv_strokeColor="?attr/colorPrimary"
+                                tools:rv_strokeWidth="1dp"
+                                tools:text="Clear"
+                                tools:textColor="?attr/colorAccent" />
+                        </FrameLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_paste"
+                            android:layout_width="40dp"
+                            android:layout_height="56dp"
+                            android:contentDescription="get text from clip"
+                            android:paddingHorizontal="8dp"
+                            android:src="@drawable/ic_paste_accent_24dp"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/iv_microphone"
+                            android:layout_width="40dp"
+                            android:layout_height="56dp"
+                            android:contentDescription="take text from microphone"
+                            android:paddingHorizontal="8dp"
+                            android:src="@drawable/ic_microphone_24dp"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/iv_gallery"
+                            android:layout_width="40dp"
+                            android:layout_height="56dp"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:contentDescription="take image from gallery"
+                            android:paddingHorizontal="8dp"
+                            android:src="@drawable/ic_gallery_accent_24dp" />
+
+                        <ImageView
+                            android:id="@+id/iv_camera"
+                            android:layout_width="40dp"
+                            android:layout_height="56dp"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:contentDescription="take image from camera"
+                            android:paddingHorizontal="8dp"
+                            android:src="@drawable/ic_camera_accent_24dp" />
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="48dp"
+                        android:layout_height="56dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="4dp">
+
+                        <ImageView
+                            android:id="@+id/iv_read"
+                            android:layout_width="48dp"
+                            android:layout_height="56dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="start read text"
+                            android:padding="12dp"
+                            android:src="@drawable/ic_volume_24dp"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/iv_stop"
+                            android:layout_width="48dp"
+                            android:layout_height="56dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="stop read text"
+                            android:padding="12dp"
+                            android:src="@drawable/ic_pause_24dp"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/iv_picture"
+                            android:layout_width="48dp"
+                            android:layout_height="56dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="image take text"
+                            android:padding="12dp"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <ProgressBar
+                            android:id="@+id/progress"
+                            android:layout_width="48dp"
+                            android:layout_height="56dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+                    </FrameLayout>
+                </FrameLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.simple.adapter.MultiRecyclerView
+                android:id="@+id/rec_filter"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingVertical="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="8dp" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.simple.adapter.MultiRecyclerView
+        android:id="@+id/rec_suggest"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </com.simple.phonetics.ui.view.InterceptConstraintLayout>
