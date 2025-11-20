@@ -48,7 +48,7 @@ class LockTransitionServiceImpl : LockTransitionService {
 
         start = System.currentTimeMillis()
 
-        lockTransitionViewModel.lockTransitionValue.launchCollect(fragment.viewLifecycleOwner) { isUnlock ->
+        lockTransitionViewModel.lockTransitionValue.distinctUntilChanged().launchCollect(fragment.viewLifecycleOwner) { isUnlock ->
 
             if (isUnlock) fragment.viewLifecycleOwner.lifecycleScope.launch {
 
@@ -95,8 +95,8 @@ class LockTransitionServiceImpl : LockTransitionService {
             Log.d(
                 "tuanha", "LockTransitionService ${fragment.javaClass.simpleName}  --->" +
                         "\ntime:${time}" +
-                        "\nisStart:${isStart}" +
-                        "\nlocKList:${list}"
+                        "\nstartPostponedEnterTransition:${isStart}" +
+                        "\nlocKList:${list.filter { it.second }}"
             )
         }
     }
