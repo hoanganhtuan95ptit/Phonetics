@@ -1,33 +1,29 @@
 package com.simple.phonetics.ui.base.services.transition
 
 import android.graphics.Color
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import androidx.lifecycle.asFlow
 import androidx.transition.Transition
 import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
-import com.simple.autobind.annotation.AutoBind
-import com.simple.coreapp.Param
-import com.simple.service.FragmentCreatedService
-import com.unknown.coroutines.launchCollect
-import kotlinx.coroutines.flow.filterNotNull
+import com.simple.coreapp.Param.ROOT_TRANSITION_NAME
 
+interface ConfigTransitionService {
 
-@AutoBind(FragmentCreatedService::class)
-class ConfigTransitionService : FragmentCreatedService {
+    fun setupTransitionConfig(fragment: Fragment)
+}
 
+class ConfigTransitionServiceImpl : ConfigTransitionService {
 
     private val transitionDuration = 350L
     private var isCanUseTransition: Boolean = false
 
 
-    override fun setup(fragment: Fragment) {
+    override fun setupTransitionConfig(fragment: Fragment) {
 
-        if (fragment !is com.simple.phonetics.ui.base.services.transition.Transition) return
-
-        val transitionName = fragment.arguments?.getString(Param.ROOT_TRANSITION_NAME)
+        val transitionName = fragment.arguments?.getString(ROOT_TRANSITION_NAME)
 
         isCanUseTransition = !transitionName.isNullOrBlank()
 
@@ -35,7 +31,7 @@ class ConfigTransitionService : FragmentCreatedService {
         setTransitionAnimation(fragment = fragment)
 
 
-        fragment.viewLifecycleOwnerLiveData.asFlow().filterNotNull().launchCollect(fragment) {
+        fragment.viewLifecycleOwnerLiveData.observe(fragment) {
 
             fragment.view?.transitionName = transitionName
         }
@@ -105,25 +101,34 @@ class ConfigTransitionService : FragmentCreatedService {
 }
 
 private class DefaultTransitionListener(val name: String, val fragment: Fragment) : Transition.TransitionListener {
+    
+    val fragmentName by lazy { 
+        
+        fragment.javaClass.simpleName
+    }
 
     override fun onTransitionStart(transition: Transition) {
-        fragment.startTransition("${fragment.javaClass.name}_${name}_START")
+//        Log.d("tuanha", "onTransitionStart: ${fragment.javaClass.simpleName}")
+        fragment.startTransition("${fragmentName}_${name}_START")
     }
 
     override fun onTransitionEnd(transition: Transition) {
-        fragment.endTransition("${fragment.javaClass.name}_${name}_START")
+//        Log.d("tuanha", "onTransitionEnd: ${fragmentName}")
+        fragment.endTransition("${fragmentName}_${name}_START")
     }
 
     override fun onTransitionCancel(transition: Transition) {
-        fragment.endTransition("${fragment.javaClass.name}_${name}_START")
+//        Log.d("tuanha", "onTransitionCancel: ${fragmentName}")
+        fragment.endTransition("${fragmentName}_${name}_START")
     }
 
-
     override fun onTransitionPause(transition: Transition) {
-        fragment.startTransition("${fragment.javaClass.name}_${name}_PAUSE")
+//        Log.d("tuanha", "onTransitionPause: ${fragmentName}")
+        fragment.startTransition("${fragmentName}_${name}_PAUSE")
     }
 
     override fun onTransitionResume(transition: Transition) {
-        fragment.endTransition("${fragment.javaClass.name}_${name}_PAUSE")
+//        Log.d("tuanha", "onTransitionResume: ${fragmentName}")
+        fragment.endTransition("${fragmentName}_${name}_PAUSE")
     }
 }

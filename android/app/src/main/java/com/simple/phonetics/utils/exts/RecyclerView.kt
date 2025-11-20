@@ -10,7 +10,6 @@ import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.utils.ext.awaitPost
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.channels.awaitClose
@@ -141,22 +140,13 @@ fun RecyclerView.listenerScrollAsync() = channelFlow {
 
 fun RecyclerView.listenerBindingAsync() = channelFlow {
 
-    val timeoutJob = launch {
-
-        awaitPost()
-        delay(350)
-        trySend(Unit)
-    }
-
     listenerAdapterDataAsync().launchCollect(this) {
 
-        timeoutJob.cancel()
         trySend(System.nanoTime())
     }
 
     listenerLayoutChangeAsync().launchCollect(this) {
 
-        timeoutJob.cancel()
         trySend(System.nanoTime())
     }
 
@@ -174,7 +164,5 @@ suspend fun RecyclerView.submitListAndAwait(
 
     if (isAnimation) {
         transitionAwait()
-    } else {
-        listenerBindingAsync().debounce(350).first()
     }
 }

@@ -1,49 +1,56 @@
 package com.simple.phonetics.ui.base.services.transition
 
 import android.util.Log
+import androidx.annotation.VisibleForTesting
+import androidx.core.view.doOnLayout
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
-import com.simple.autobind.annotation.AutoBind
+import androidx.lifecycle.viewModelScope
 import com.unknown.coroutines.launchCollect
-import com.simple.coreapp.utils.extentions.isActive
-import com.simple.service.FragmentCreatedService
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 
-@AutoBind(FragmentCreatedService::class)
-class LockTransitionService : FragmentCreatedService {
+interface LockTransitionService {
 
-    override fun setup(fragment: Fragment) {
+    var lockTransitionViewModel: LockTransitionViewModel
 
-        if (fragment !is Transition) return
+    fun setupTransitionLock(fragment: Fragment)
 
-        val viewModel = fragment.viewModels<LockTransitionViewModel>().value
+    fun setOnTransitionLockViewCreated(fragment: Fragment)
+}
 
-        viewModel.lockTransition("STATE")
+class LockTransitionServiceImpl : LockTransitionService {
 
+    private var start = System.currentTimeMillis()
 
-        val viewLifecycleOwner = fragment.viewLifecycleOwnerLiveData.asFlow()
-        val lockTransitionStatus = viewModel.lockTransitionStatus
+    override lateinit var lockTransitionViewModel: LockTransitionViewModel
 
+    override fun setupTransitionLock(fragment: Fragment) {
 
-        combine(viewLifecycleOwner.filterNotNull(), lockTransitionStatus) { _, v -> v }.launchCollect(fragment) { start ->
+        Log.d("tuanha", "setup: LockTransitionService ${fragment.javaClass.simpleName}")
 
-            if (Transition.DEBUG) {
-                Log.d("tuanha", "setup: LockTransitionService fragment:${fragment.javaClass.name} start:$start")
-            }
+        lockTransitionViewModel = fragment.viewModels<LockTransitionViewModel>().value
 
-            if (start) {
+        setupLockRecord(fragment = fragment)
+    }
+
+    override fun setOnTransitionLockViewCreated(fragment: Fragment) {
+
+        start = System.currentTimeMillis()
+
+        lockTransitionViewModel.lockTransitionValue.launchCollect(fragment.viewLifecycleOwner) { isUnlock ->
+
+            if (isUnlock) fragment.viewLifecycleOwner.lifecycleScope.launch {
 
                 fragment.startPostponedEnterTransition()
             } else {
@@ -52,104 +59,96 @@ class LockTransitionService : FragmentCreatedService {
             }
         }
 
-        viewLifecycleOwner.launchCollect(fragment) {
-
-            if (Transition.DEBUG) {
-                Log.d("tuanha", "setup: LockTransitionService fragment:${fragment.javaClass.name} ${it != null}")
-            }
-
-            if (it != null) {
-
-                viewModel.unlockTransition("STATE")
-            } else {
-
-                viewModel.lockTransition("STATE")
-            }
-        }
-
-
-        record(fragment = fragment, viewModel = viewModel)
+        setupLock(fragment = fragment)
     }
 
-    private fun record(fragment: Fragment, viewModel: LockTransitionViewModel) {
+    private fun setupLock(fragment: Fragment) {
 
-        val job = fragment.lifecycleScope.launch {
+        val tag = fragment.javaClass.simpleName + "_setupLock"
 
-            var count = 0
-            while (isActive()) {
 
-                delay(300)
-                count++
+        val view = fragment.view ?: return
 
-                if (Transition.DEBUG) {
-                    Log.d("tuanha", "setup: LockTransitionService ${fragment.javaClass.name} count:$count ${viewModel.lockTransition.value}")
-                }
-            }
+        view.doOnLayout {
+
+            lockTransitionViewModel.updateTransitionLock(tag + "_State", lock = true)
         }
 
-        fragment.lifecycleScope.launch {
+        view.doOnPreDraw {
 
-            viewModel.lockTransitionStatus.filter { it }.first()
-            job.cancel()
-
-            if (Transition.DEBUG) {
-                Log.d("tuanha", "setup: LockTransitionService ${fragment.javaClass.name} end")
-            }
+            lockTransitionViewModel.updateTransitionLock(tag + "_State", lock = false)
         }
 
-        viewModel.lockTransition.asFlow().launchCollect(fragment) {
+        view.post {
 
-            if (Transition.DEBUG) {
-                Log.d("tuanha", "setup: LockTransitionService ${fragment.javaClass.name}  $it")
-            }
+            lockTransitionViewModel.updateTransitionLock(tag + "_State", lock = false)
+        }
+    }
+
+    private fun setupLockRecord(fragment: Fragment) {
+
+        lockTransitionViewModel.lockTransitionList.launchCollect(fragment) { list ->
+
+            val time = System.currentTimeMillis() - start
+            val isStart = list.all { !it.second }
+
+            Log.d(
+                "tuanha", "LockTransitionService ${fragment.javaClass.simpleName}  --->" +
+                        "\ntime:${time}" +
+                        "\nisStart:${isStart}" +
+                        "\nlocKList:${list}"
+            )
         }
     }
 }
 
 class LockTransitionViewModel : ViewModel() {
 
+
+    @VisibleForTesting
     var lockTransition = MutableLiveData(ConcurrentHashMap<String, Boolean>())
 
-    val lockTransitionStatus = lockTransition.asFlow().map { map -> map.isNotEmpty() && map.values.all { it } }.distinctUntilChanged()
+    val lockTransitionList = lockTransition.asFlow().map { it.toList() }.filter { it.isNotEmpty() }
+
+    val lockTransitionValue = lockTransitionList.map { list -> list.all { !it.second } }
 
 
-    fun lockTransition(vararg tag: String) = tag.forEach {
+    init {
 
-        lockTransition(it)
-    }
-
-    fun unlockTransition(vararg tag: String) = tag.forEach {
-
-        unlockTransition(it)
+        lockTransitionValue.launchIn(viewModelScope)
     }
 
     fun lockTransition(tag: String) {
 
-        val map = lockTransition.value ?: return
-
-        map[tag] = false
-
-        lockTransition.postValue(map)
+        updateTransitionLock(tag = tag, lock = true)
     }
 
     fun unlockTransition(tag: String) {
 
+        updateTransitionLock(tag = tag, lock = false)
+    }
+
+    fun updateTransitionLock(tag: String, lock: Boolean) {
+
         val map = lockTransition.value ?: return
 
-        map[tag] = true
+        map[tag] = lock
 
-        lockTransition.postValue(map)
+        lockTransition.value = map
+    }
+
+    suspend fun onTransitionLockEndAwait() {
+
+        lockTransitionValue.filter { it }.first()
     }
 }
 
-fun Fragment.transitionLock() = viewModels<LockTransitionViewModel>().value
-
 fun Fragment.lockTransition(tag: String) {
 
-    transitionLock().lockTransition(tag = tag)
+    if (this is LockTransitionService) lockTransitionViewModel.lockTransition(tag = tag)
 }
 
 fun Fragment.unlockTransition(tag: String) {
 
-    transitionLock().unlockTransition(tag = tag)
+    if (this is LockTransitionService) lockTransitionViewModel.unlockTransition(tag = tag)
 }

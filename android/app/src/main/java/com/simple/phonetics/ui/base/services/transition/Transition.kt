@@ -1,9 +1,11 @@
 package com.simple.phonetics.ui.base.services.transition
 
-interface Transition {
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withResumed
+import kotlinx.coroutines.launch
 
-    companion object {
+inline fun LifecycleOwner.launchWithResumed(crossinline block: () -> Unit) = lifecycleScope.launch {
 
-        var DEBUG = false
-    }
+    withResumed(block)
 }

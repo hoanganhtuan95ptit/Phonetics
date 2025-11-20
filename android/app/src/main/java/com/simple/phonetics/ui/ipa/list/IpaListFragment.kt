@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.ipa.list
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
