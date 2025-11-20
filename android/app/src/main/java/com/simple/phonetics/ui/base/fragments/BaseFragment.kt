@@ -30,6 +30,8 @@ abstract class BaseFragment<T : androidx.viewbinding.ViewBinding, VM : BaseViewM
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        setupTransitionConfigOnViewCreated(this)
+
         setOnTransitionLockViewCreated(this)
 
         view.listenerLayoutChangeAsync().launchCollect(viewLifecycleOwner) {

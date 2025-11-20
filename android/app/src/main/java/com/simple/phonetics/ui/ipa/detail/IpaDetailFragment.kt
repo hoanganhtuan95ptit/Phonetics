@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.ipa.detail
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
@@ -40,8 +41,10 @@ import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.hasInternetConnection
+import com.simple.phonetics.utils.exts.listenerLayoutChangeAsync
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 
 

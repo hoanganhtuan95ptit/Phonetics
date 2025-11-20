@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.base.services.transition
 
 import android.graphics.Color
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.transition.Transition
@@ -13,30 +12,33 @@ import com.simple.coreapp.Param.ROOT_TRANSITION_NAME
 interface ConfigTransitionService {
 
     fun setupTransitionConfig(fragment: Fragment)
+
+    fun setupTransitionConfigOnViewCreated(fragment: Fragment)
 }
 
 class ConfigTransitionServiceImpl : ConfigTransitionService {
 
+
     private val transitionDuration = 350L
+
+    private var transitionName: String = ""
     private var isCanUseTransition: Boolean = false
 
 
     override fun setupTransitionConfig(fragment: Fragment) {
 
-        val transitionName = fragment.arguments?.getString(ROOT_TRANSITION_NAME)
+        transitionName = fragment.arguments?.getString(ROOT_TRANSITION_NAME).toString()
 
-        isCanUseTransition = !transitionName.isNullOrBlank()
+        isCanUseTransition = transitionName.isNotBlank()
 
 
         setTransitionAnimation(fragment = fragment)
-
-
-        fragment.viewLifecycleOwnerLiveData.observe(fragment) {
-
-            fragment.view?.transitionName = transitionName
-        }
     }
 
+    override fun setupTransitionConfigOnViewCreated(fragment: Fragment) {
+
+        fragment.view?.transitionName = transitionName
+    }
 
     private fun setTransitionAnimation(fragment: Fragment) {
 
@@ -102,7 +104,7 @@ class ConfigTransitionServiceImpl : ConfigTransitionService {
 
 private class DefaultTransitionListener(val name: String, val fragment: Fragment) : Transition.TransitionListener {
     
-    val fragmentName by lazy { 
+    private val fragmentName: String by lazy {
         
         fragment.javaClass.simpleName
     }

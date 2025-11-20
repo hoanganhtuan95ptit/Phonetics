@@ -25,7 +25,10 @@ import com.simple.phonetics.ui.base.adapters.IpaAdapters
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
+import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
+import com.simple.phonetics.utils.exts.listenerLayoutChangeAsync
 import com.simple.phonetics.utils.exts.submitListAwaitV2
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 
 class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaListViewModel>() {
@@ -76,6 +79,10 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
             )
         }
 
+        binding.recyclerView.listenerLayoutChangeAsync().launchCollect(viewLifecycleOwner){
+            Log.d("tuanha", "setupRecyclerView: IpaListFragment   ${binding.recyclerView.childCount}")
+        }
+
         adapter = MultiAdapter(ipaAdapter, *ListPreviewAdapter()).apply {
 
             binding.recyclerView.adapter = this
@@ -96,9 +103,9 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
             binding.root.setBackgroundColor(it.colorBackground)
         }
 
-        title.observe(viewLifecycleOwner) {
+        title.collectWithLockTransitionUntilData(fragment = fragment, tag = "title") {
 
-            val binding = binding ?: return@observe
+            val binding = binding ?: return@collectWithLockTransitionUntilData
 
             binding.frameHeader.tvTitle.text = it
         }
