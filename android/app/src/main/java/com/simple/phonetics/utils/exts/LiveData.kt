@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.simple.adapter.provider.AdapterProvider
 import com.simple.autobind.AutoBind
 import com.simple.phonetics.ui.base.services.transition.lockTransition
-import com.simple.phonetics.ui.base.services.transition.onTransitionEndAwait
+import com.simple.phonetics.ui.base.services.transition.onTransitionRunningEndAwait
 import com.simple.phonetics.ui.base.services.transition.unlockTransition
 import com.unknown.coroutines.handler
 import kotlinx.coroutines.Dispatchers
@@ -31,11 +31,17 @@ fun <T> LiveData<T>.collectWithLockTransitionUntilData(
     block: suspend (data: T) -> Unit
 ) = fragment.viewLifecycleOwner.lifecycleScope.launch(handler) {
 
+    var isHasData = false
+
     fragment.lockTransition(tag = tag)
 
     asFlow().attachToAdapter().collect {
 
+        if (isHasData) fragment.onTransitionRunningEndAwait()
+
         block(it)
+
+        isHasData = true
 
         fragment.unlockTransition(tag = tag)
     }
@@ -71,7 +77,7 @@ fun <T> LiveData<T>.collectWithLockTransitionIfCached(
 
         if (diff) {
 
-            fragment.onTransitionEndAwait()
+            fragment.onTransitionRunningEndAwait()
 
             block(it, false)
         }

@@ -16,7 +16,6 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.AlignItems
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
-import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
@@ -48,16 +47,13 @@ import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.ui.services.queue.QueueEventState
 import com.simple.phonetics.ui.view.HomeScreen
-import com.simple.phonetics.utils.exts.NoAutoScrollFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorBackgroundVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
-import com.simple.phonetics.utils.exts.listenerScrollAsync
 import com.simple.phonetics.utils.exts.submitListAndAwait
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
 import java.util.ServiceLoader
@@ -71,7 +67,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        Log.d("tuanha", "HomeFragment onViewCreated: 0")
         super.onViewCreated(view, savedInstanceState)
+        Log.d("tuanha", "HomeFragment onViewCreated: 1")
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
 

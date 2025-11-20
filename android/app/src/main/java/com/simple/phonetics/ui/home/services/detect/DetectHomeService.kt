@@ -13,8 +13,11 @@ import android.provider.MediaStore
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.asFlow
 import com.permissionx.guolindev.PermissionX
 import com.simple.autobind.annotation.AutoBind
+import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.ui.home.HomeFragment
@@ -22,15 +25,20 @@ import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.hasPermissions
+import com.simple.service.FragmentCreatedService
 import com.simple.state.doSuccess
+import com.unknown.coroutines.launchCollect
+import kotlinx.coroutines.flow.filterNotNull
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.IOException
 
 @AutoBind(HomeFragment::class)
-class DetectHomeService : HomeService {
+class DetectHomeService : FragmentCreatedService {
 
-    override fun setup(homeFragment: HomeFragment) {
+    override fun setup(fragment: Fragment) {
+
+        val homeFragment = fragment.asObjectOrNull<HomeFragment>() ?: return
 
         val binding = homeFragment.binding ?: return
 
@@ -65,47 +73,48 @@ class DetectHomeService : HomeService {
             }
         }
 
+        homeFragment.viewLifecycleOwnerLiveData.asFlow().filterNotNull().launchCollect(fragment){ viewLifecycleOwner->
 
-        binding.ivGallery.setDebouncedClickListener {
+            binding.ivGallery.setDebouncedClickListener {
 
-            takeImageFromGalleryResult.launchTakeImageFromGallery()
-        }
-
-        binding.ivCamera.setDebouncedClickListener {
-
-            PermissionX.init(homeFragment.requireActivity())
-                .permissions(REQUIRED_PERMISSIONS_CAMERA.toList())
-                .request { allGranted, _, _ ->
-                    if (allGranted && homeFragment.hasPermissions(*REQUIRED_PERMISSIONS_CAMERA)) {
-                        currentPhotoPath = takeImageFromCameraResult.launchTakeImageFromCamera(homeFragment.requireContext(), "image")?.absolutePath ?: return@request
-                    }
-                }
-        }
-
-
-        homeViewModel.isReverse.observe(homeFragment.viewLifecycleOwner) {
-
-            viewModel.updateReverse(it)
-        }
-
-        homeViewModel.detectStateEvent.observe(homeFragment.viewLifecycleOwner) { event ->
-
-            homeFragment.binding ?: return@observe
-            val state = event.getContentIfNotHandled() ?: return@observe
-
-            state.doSuccess {
-
-                homeViewModel.getPhonetics("")
-                binding.etText.setText(it)
+                takeImageFromGalleryResult.launchTakeImageFromGallery()
             }
-        }
 
-        viewModel.detectInfo.collectWithLockTransitionUntilData(fragment = homeFragment, tag = "DETECT") {
+            binding.ivCamera.setDebouncedClickListener {
 
-            homeFragment.binding ?: return@collectWithLockTransitionUntilData
+                PermissionX.init(homeFragment.requireActivity())
+                    .permissions(REQUIRED_PERMISSIONS_CAMERA.toList())
+                    .request { allGranted, _, _ ->
+                        if (allGranted && homeFragment.hasPermissions(*REQUIRED_PERMISSIONS_CAMERA)) {
+                            currentPhotoPath = takeImageFromCameraResult.launchTakeImageFromCamera(homeFragment.requireContext(), "image")?.absolutePath ?: return@request
+                        }
+                    }
+            }
 
-            binding.ivCamera.setVisible(it.isShow)
-            binding.ivGallery.setVisible(it.isShow)
+            homeViewModel.isReverse.observe(viewLifecycleOwner) {
+
+                viewModel.updateReverse(it)
+            }
+
+            homeViewModel.detectStateEvent.observe(viewLifecycleOwner) { event ->
+
+                homeFragment.binding ?: return@observe
+                val state = event.getContentIfNotHandled() ?: return@observe
+
+                state.doSuccess {
+
+                    homeViewModel.getPhonetics("")
+                    binding.etText.setText(it)
+                }
+            }
+
+            viewModel.detectInfo.collectWithLockTransitionUntilData(fragment = homeFragment, tag = "DETECT") {
+
+                homeFragment.binding ?: return@collectWithLockTransitionUntilData
+
+                binding.ivCamera.setVisible(it.isShow)
+                binding.ivGallery.setVisible(it.isShow)
+            }
         }
     }
 
