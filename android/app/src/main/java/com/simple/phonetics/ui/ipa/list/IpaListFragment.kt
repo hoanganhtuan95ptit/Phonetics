@@ -110,11 +110,11 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
             binding.frameHeader.tvTitle.text = it
         }
 
-        viewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFirst ->
+        viewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFromCache ->
 
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
-            binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
+            binding.recyclerView.submitListAwaitV2(viewItemList = data, isFromCache = isFromCache)
         }
     }
 }

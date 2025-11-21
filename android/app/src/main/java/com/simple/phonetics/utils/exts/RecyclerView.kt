@@ -1,74 +1,43 @@
 package com.simple.phonetics.utils.exts
 
+import androidx.core.view.children
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.Fade
-import androidx.transition.Scene
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
+import com.simple.adapter.MultiAdapter
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.utils.extentions.submitListAwait
-import com.unknown.coroutines.launchCollect
+import com.simple.core.utils.extentions.asObjectOrNull
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-suspend fun RecyclerView.submitListAwaitV2(
-    viewItemList: List<ViewItem>,
-    isFirst: Boolean = false
-) {
 
-    val isAnim = !isFirst
+fun RecyclerView.listenerScrollAsync() = channelFlow {
 
-    submitListAwait(viewItemList = viewItemList)
+    val listener = object : RecyclerView.OnScrollListener() {
 
-    if (isAnim) {
-        transitionAwait()
-    }
-}
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
-suspend fun RecyclerView.transitionAwait(transition: Transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))) = channelFlow<Unit> {
-
-    val timeoutJob = launch {
-
-        delay(350)
-        trySend(Unit)
-    }
-
-    val transitionListener = object : Transition.TransitionListener {
-
-        override fun onTransitionStart(transition: Transition) {
-            timeoutJob.cancel()
-        }
-
-        override fun onTransitionEnd(transition: Transition) {
-            trySend(Unit)
-        }
-
-        override fun onTransitionCancel(transition: Transition) {
-            trySend(Unit)
-        }
-
-        override fun onTransitionPause(transition: Transition) {
-        }
-
-        override fun onTransitionResume(transition: Transition) {
+            trySend(dx to dy)
         }
     }
 
-    TransitionManager.go(Scene(this@transitionAwait), transition.addListener(transitionListener))
+    addOnScrollListener(listener)
+
+    trySend(0f to 0f)
 
     awaitClose {
-        transition.removeListener(transitionListener)
-    }
-}.first()
 
+        removeOnScrollListener(listener)
+    }
+}.asLiveData().asFlow()
 
 fun RecyclerView.listenerAdapterDataAsync() = channelFlow {
 
@@ -118,51 +87,125 @@ fun RecyclerView.listenerAdapterDataAsync() = channelFlow {
     }
 }.asLiveData().asFlow()
 
-fun RecyclerView.listenerScrollAsync() = channelFlow {
 
-    val listener = object : RecyclerView.OnScrollListener() {
+fun RecyclerView.transitionAsync(transition: Transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))) = channelFlow {
 
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+    val layoutManagerCanDisableScroll = layoutManager.asObjectOrNull<CanDisableScroll>()
 
-            trySend(dx to dy)
+    val timeoutJob = launch {
+
+        delay(350)
+        trySend(Unit)
+    }
+
+    val transitionListener = object : Transition.TransitionListener {
+
+        override fun onTransitionStart(transition: Transition) {
+            layoutManagerCanDisableScroll?.isCanScroll = false
+            timeoutJob.cancel()
+        }
+
+        override fun onTransitionEnd(transition: Transition) {
+            layoutManagerCanDisableScroll?.isCanScroll = true
+            trySend(Unit)
+        }
+
+        override fun onTransitionCancel(transition: Transition) {
+            layoutManagerCanDisableScroll?.isCanScroll = true
+            trySend(Unit)
+        }
+
+        override fun onTransitionPause(transition: Transition) {
+            layoutManagerCanDisableScroll?.isCanScroll = true
+        }
+
+        override fun onTransitionResume(transition: Transition) {
+            layoutManagerCanDisableScroll?.isCanScroll = false
         }
     }
 
-    addOnScrollListener(listener)
-
-    trySend(0f to 0f)
+    TransitionManager.beginDelayedTransition(this@transitionAsync, transition.addListener(transitionListener))
 
     awaitClose {
-
-        removeOnScrollListener(listener)
+        transition.removeListener(transitionListener)
     }
-}.asLiveData().asFlow()
+}
 
-fun RecyclerView.listenerBindingAsync() = channelFlow {
+fun RecyclerView.submitListAndGetListPositionChangeAsync(viewItemList: List<ViewItem>) = channelFlow {
 
-    listenerAdapterDataAsync().launchCollect(this) {
-
-        trySend(System.nanoTime())
-    }
-
-    listenerLayoutChangeAsync().launchCollect(this) {
-
-        trySend(System.nanoTime())
+    val adapter = (adapter as? MultiAdapter) ?: run {
+        trySend(emptySet())
+        awaitClose {}
+        return@channelFlow
     }
 
+
+    val positionChangeSet = mutableSetOf<Int>()
+
+    // 3️⃣ Hàm kiểm tra item update giao với visible item
+    fun updateIndexChange(positionStart: Int, itemCount: Int) {
+        val updatedPositions = (positionStart until (positionStart + itemCount)).toSet()
+        positionChangeSet.addAll(updatedPositions)
+    }
+
+    // 4️⃣ AdapterDataObserver
+    val observer = object : RecyclerView.AdapterDataObserver() {
+
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            updateIndexChange(positionStart, itemCount)
+        }
+
+        override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+            updateIndexChange(positionStart, itemCount)
+        }
+
+        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+            updateIndexChange(toPosition, itemCount)
+            updateIndexChange(fromPosition, itemCount)
+        }
+
+        override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
+            updateIndexChange(positionStart, itemCount)
+        }
+
+        override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+            updateIndexChange(positionStart, itemCount)
+        }
+    }
+
+    adapter.registerAdapterDataObserver(observer)
+
+    // 2️⃣ Submit list
+    adapter.submitList(viewItemList) {
+
+        trySend(positionChangeSet)
+    }
+
+    // 6️⃣ awaitClose để hủy observer khi coroutine hoàn tất
     awaitClose {
-
+        adapter.unregisterAdapterDataObserver(observer)
     }
-}.asLiveData().asFlow()
+}
 
-suspend fun RecyclerView.submitListAndAwait(
-    viewItemList: List<ViewItem>,
-    isAnimation: Boolean = false
-) {
 
-    submitListAwait(viewItemList = viewItemList)
+suspend fun RecyclerView.submitListAndAwait(viewItemList: List<ViewItem>, isAnimation: Boolean = false) {
 
-    if (isAnimation) {
-        transitionAwait()
+
+    val updatedPositions = submitListAndGetListPositionChangeAsync(viewItemList = viewItemList).first()
+
+
+    val visiblePositionsBefore = children.map { getChildAdapterPosition(it) }.toSet()
+    val canChangeItemVisible = updatedPositions.intersect(visiblePositionsBefore).isNotEmpty()
+
+
+    if (canChangeItemVisible) if (isAnimation) {
+        transitionAsync().first()
+    } else {
+        doOnPreDrawAsync().first()
     }
+}
+
+suspend fun RecyclerView.submitListAwaitV2(viewItemList: List<ViewItem>, isFromCache: Boolean = false) {
+
+    submitListAndAwait(viewItemList = viewItemList, isAnimation = !isFromCache)
 }

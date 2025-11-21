@@ -135,7 +135,7 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
-            binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
+            binding.recyclerView.submitListAwaitV2(viewItemList = data, isFromCache = isFirst)
         }
 
         changeLanguageState.asFlow().launchCollect(viewLifecycleOwner) {

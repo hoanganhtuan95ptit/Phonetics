@@ -317,11 +317,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
             viewModel.updateSupportTranslate(it)
         }
 
-        listConfig.collectWithLockTransitionIfCached(fragment = fragment, tag = "CONFIG_VIEW_ITEM_LIST") { data, isFirst ->
+        listConfig.collectWithLockTransitionIfCached(fragment = fragment, tag = "CONFIG_VIEW_ITEM_LIST") { data, isFromCache ->
 
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
-            binding.recFilter.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
+            binding.recFilter.submitListAndAwait(viewItemList = data, isAnimation = !isFromCache)
         }
     }
 
