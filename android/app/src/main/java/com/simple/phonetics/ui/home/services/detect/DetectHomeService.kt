@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -33,14 +34,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.IOException
 
-@AutoBind(HomeFragment::class)
+@AutoBind(FragmentCreatedService::class)
 class DetectHomeService : FragmentCreatedService {
 
     override fun setup(fragment: Fragment) {
 
+        Log.d("tuanha", "setup: feature")
         val homeFragment = fragment.asObjectOrNull<HomeFragment>() ?: return
-
-        val binding = homeFragment.binding ?: return
 
         val homeViewModel: HomeViewModel by homeFragment.viewModel()
 
@@ -73,7 +73,9 @@ class DetectHomeService : FragmentCreatedService {
             }
         }
 
-        homeFragment.viewLifecycleOwnerLiveData.asFlow().filterNotNull().launchCollect(fragment){ viewLifecycleOwner->
+        homeFragment.viewLifecycleOwnerLiveData.asFlow().launchCollect(fragment){ viewLifecycleOwner->
+
+            val binding = homeFragment.binding ?: return@launchCollect
 
             binding.ivGallery.setDebouncedClickListener {
 

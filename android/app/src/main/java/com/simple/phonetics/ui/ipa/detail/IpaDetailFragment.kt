@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.ipa.detail
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
@@ -41,10 +40,8 @@ import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.hasInternetConnection
-import com.simple.phonetics.utils.exts.listenerLayoutChangeAsync
-import com.simple.phonetics.utils.exts.submitListAwaitV2
+import com.simple.phonetics.utils.exts.submitListAndAwait
 import com.simple.state.ResultState
-import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 
 
@@ -173,11 +170,11 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
             )
         }
 
-        viewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFirst ->
+        viewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFromCache ->
 
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
-            binding.recyclerView.submitListAwaitV2(viewItemList = data, isFirst = isFirst)
+            binding.recyclerView.submitListAndAwait(viewItemList = data, isAnimation = !isFromCache)
         }
 
         arguments?.getParcelableOrNull<Ipa>(Param.IPA)?.let {

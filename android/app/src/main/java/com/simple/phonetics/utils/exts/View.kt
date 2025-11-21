@@ -10,12 +10,15 @@ import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 fun ImageView.setImageDrawable(context: Context, resId: Int, color: Int) {
 
@@ -68,5 +71,23 @@ fun View.ensureGradientUpdates() = channelFlow<Unit> {
 
     awaitClose {
         viewTreeObserver.removeOnGlobalLayoutListener(onGlobalLayoutListener)
+    }
+}
+
+fun View.doOnPreDrawAsync() = channelFlow {
+
+    val timeoutJob = launch {
+
+        delay(350)
+        trySend(Unit)
+    }
+
+    doOnPreDraw {
+        timeoutJob.cancel()
+        trySend(Unit)
+    }
+
+    awaitClose {
+
     }
 }

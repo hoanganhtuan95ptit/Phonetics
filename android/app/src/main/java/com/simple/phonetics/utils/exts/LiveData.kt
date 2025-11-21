@@ -54,7 +54,7 @@ fun <T> LiveData<T>.collectWithLockTransitionUntilData(
 fun <T> LiveData<T>.collectWithLockTransitionIfCached(
     fragment: Fragment,
     tag: String = "",
-    block: suspend (data: T, isFirst: Boolean) -> Unit
+    block: suspend (data: T, isFromCache: Boolean) -> Unit
 ) = fragment.viewLifecycleOwner.lifecycleScope.launch(handler) {
 
     var data = value
