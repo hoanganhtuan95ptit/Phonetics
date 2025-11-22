@@ -1,36 +1,36 @@
-package com.simple.phonetics.ui.home.view.phonetic
+package com.simple.phonetics.ui.home.services.phonetic
 
 import androidx.lifecycle.asFlow
-import com.google.auto.service.AutoService
 import com.simple.adapter.MultiAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
+import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.databinding.ItemTextBinding
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.setText
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
-import com.simple.phonetics.ui.home.view.HomeView
+import com.simple.phonetics.ui.home.services.HomeService
+import com.unknown.coroutines.launchCollect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AutoService(HomeView::class)
-class PhoneticHomeView : HomeView {
+@AutoBind(HomeFragment::class)
+class PhoneticHomeService : HomeService {
 
-    override fun setup(fragment: HomeFragment) {
+    override fun setup(homeFragment: HomeFragment) {
 
-        val viewModel: HomeViewModel by fragment.viewModel()
+        val homeViewModel: HomeViewModel by homeFragment.viewModel()
 
-        val phoneticHomeViewModel: PhoneticHomeViewModel by fragment.viewModel()
+        val viewModel: PhoneticHomeViewModel by homeFragment.viewModel()
 
-        phoneticHomeViewModel.viewItemList.observe(fragment.viewLifecycleOwner) {
+        viewModel.viewItemList.observe(homeFragment.viewLifecycleOwner) {
 
-            viewModel.updateTypeViewItemList(type = -1, it)
+            homeViewModel.updateTypeViewItemList(type = -1, it)
         }
 
-        phoneticHomeViewModel.pairViewList.asFlow().launchCollect(fragment.viewLifecycleOwner) {
+        viewModel.pairViewList.asFlow().launchCollect(homeFragment.viewLifecycleOwner) {
 
-            val binding = fragment.binding?.recyclerView ?: return@launchCollect
+            val binding = homeFragment.binding?.recyclerView ?: return@launchCollect
 
             val adapter = binding.adapter.asObjectOrNull<MultiAdapter>() ?: return@launchCollect
 
