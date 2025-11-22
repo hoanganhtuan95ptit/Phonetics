@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.home.view.game
+package com.simple.phonetics.ui.home.services.game
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -28,7 +28,7 @@ import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 
-class GameHomeViewModel(
+class GameHomeServiceModel(
     private val countWordAsyncUseCase: CountWordAsyncUseCase
 ) : BaseViewModel() {
 
