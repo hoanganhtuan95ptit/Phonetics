@@ -9,8 +9,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.AlignItems
 import com.simple.adapter.MultiAdapter
@@ -51,7 +49,6 @@ import com.simple.phonetics.utils.exts.colorBackgroundVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.submitListAndAwait
-import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlin.math.absoluteValue
@@ -89,7 +86,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
         setupInput()
         setupReverse()
         setupRecyclerView()
-        setupRecyclerViewConfig()
 
         observeData()
         observePhoneticsConfigData()
@@ -193,24 +189,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
         }
     }
 
-    private fun setupRecyclerViewConfig() {
-
-        val binding = binding ?: return
-
-        val textAdapter = ClickTextAdapter { _, _ ->
-
-            sendDeeplink(DeeplinkManager.CONFIG)
-        }
-
-        MultiAdapter(textAdapter).apply {
-
-            binding.recFilter.adapter = this
-            binding.recFilter.itemAnimator = null
-
-            binding.recFilter.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        }
-    }
-
     private fun observeData() = with(viewModel) {
 
         val fragment = this@HomeFragment
@@ -302,18 +280,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
     private fun observePhoneticsConfigData() = with(configViewModel) {
 
-        val fragment = this@HomeFragment
-
         translateEnable.observe(viewLifecycleOwner) {
 
             viewModel.updateSupportTranslate(it)
-        }
-
-        listConfig.collectWithLockTransitionIfCached(fragment = fragment, tag = "CONFIG_VIEW_ITEM_LIST") { data, isFromCache ->
-
-            val binding = binding ?: return@collectWithLockTransitionIfCached
-
-            binding.recFilter.submitListAwaitV2(viewItemList = data, isFromCache = isFromCache)
         }
     }
 
