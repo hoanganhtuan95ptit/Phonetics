@@ -42,7 +42,7 @@ class ConfigTransitionServiceImpl : ConfigTransitionService {
         configTransitionViewModel = fragment.viewModels<ConfigTransitionViewModel>().value
 
 
-        val transitionName = fragment.arguments?.getString(ROOT_TRANSITION_NAME).toString()
+        val transitionName = fragment.arguments?.getString(ROOT_TRANSITION_NAME).orEmpty()
         isCanUseTransition = transitionName.isNotBlank()
 
 

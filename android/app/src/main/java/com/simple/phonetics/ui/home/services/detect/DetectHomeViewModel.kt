@@ -1,8 +1,10 @@
 package com.simple.phonetics.ui.home.services.detect
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
@@ -57,7 +59,7 @@ class DetectHomeViewModel(
         }
     }.apply {
 
-        asObject<MediatorLiveData<ResultState<Boolean>>>().value = ResultState.Start
+        this.asObject<MutableLiveData<ResultState<Boolean>>>().value = ResultState.Start
     }
 
     val detectInfo: LiveData<DetectInfo> = combineSourcesWithDiff(isSupportDetectState) {

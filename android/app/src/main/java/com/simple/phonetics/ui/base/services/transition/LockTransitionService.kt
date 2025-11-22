@@ -5,12 +5,15 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.Param.ROOT_TRANSITION_NAME
 import com.unknown.coroutines.launchCollect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -30,16 +33,29 @@ class LockTransitionServiceImpl : LockTransitionService {
     override lateinit var lockTransitionViewModel: LockTransitionViewModel
 
 
-    private var start = System.currentTimeMillis()
+    private var timeInit = System.currentTimeMillis()
+    private var timeCreate = 0L
+    private var timeCreateView = 0L
 
-    private var transitionName: String = ""
+    private var isRecreateView = false
+    private var isSupportEnterTransition = true
 
 
     override fun setupTransitionLock(fragment: Fragment) {
 
+        timeCreate = System.currentTimeMillis()
+
         lockTransitionViewModel = fragment.viewModels<LockTransitionViewModel>().value
 
-        transitionName = fragment.arguments?.getString(ROOT_TRANSITION_NAME).toString()
+
+        isSupportEnterTransition = fragment.arguments?.getString(ROOT_TRANSITION_NAME).orEmpty().isNotBlank()
+
+        fragment.doObserver(object : DefaultLifecycleObserver {
+
+            override fun onPause(owner: LifecycleOwner) {
+                isRecreateView = true
+            }
+        })
 
 
         setupLock(fragment = fragment)
@@ -49,27 +65,32 @@ class LockTransitionServiceImpl : LockTransitionService {
 
     private fun setupLock(fragment: Fragment) = fragment.viewLifecycleOwnerLiveData.observe(fragment) {
 
-        start = System.currentTimeMillis()
+        timeCreateView = System.currentTimeMillis()
 
         val tag = fragment.javaClass.simpleName + "_setupLock"
         val view = fragment.view ?: return@observe
 
-        lockTransitionViewModel.updateTransitionLock(tag + "_State", lock = true)
+        lockTransitionViewModel.updateTransitionLock(tag + "_State", isLock = true)
 
         view.doOnPreDraw {
 
-            lockTransitionViewModel.updateTransitionLock(tag + "_State", lock = false)
+            lockTransitionViewModel.updateTransitionLock(tag + "_State", isLock = false)
         }
 
         view.post {
 
-            lockTransitionViewModel.updateTransitionLock(tag + "_State", lock = false)
+            lockTransitionViewModel.updateTransitionLock(tag + "_State", isLock = false)
         }
     }
 
     private fun setupLockQueue(fragment: Fragment) = fragment.viewLifecycleOwnerLiveData.observe(fragment) {
 
-        lockTransitionViewModel.lockTransitionValue.launchCollect(fragment.viewLifecycleOwner) { isUnlock ->
+        lockTransitionViewModel.isUnlock.launchCollect(fragment.viewLifecycleOwner) { isUnlock ->
+
+
+            if (!isSupportEnterTransition && !isRecreateView) {
+                return@launchCollect
+            }
 
 
             fragment.onTransitionStatusEndAwait()// nếu transition đang run bị bỏ qua
@@ -87,59 +108,73 @@ class LockTransitionServiceImpl : LockTransitionService {
 
     private fun setupLockRecord(fragment: Fragment) {
 
-        lockTransitionViewModel.lockTransitionList.launchCollect(fragment) { list ->
+        lockTransitionViewModel.lockTransitionMap.map { list ->
 
-            val time = System.currentTimeMillis() - start
-            val isStart = list.all { !it.second }
+            list.filter { it.value.isLock }
+        }.distinctUntilChanged().launchCollect(fragment) { map ->
+
+            val isStart = map.isEmpty()
 
             Log.d(
                 "tuanha", "LockTransitionService ${fragment.javaClass.simpleName}  --->" +
-                        "\ntime:${time}" +
+                        "\ntimeInit:${System.currentTimeMillis() - timeInit.takeNowIfNotData()}" +
+                        "\ntimeCreate:${System.currentTimeMillis() - timeCreate.takeNowIfNotData()}" +
+                        "\ntimeCreateView:${System.currentTimeMillis() - timeCreateView.takeNowIfNotData()}" +
+                        "\nisRecreateView:${isRecreateView}" +
+                        "\nisSupportEnterTransition:${isSupportEnterTransition}" +
                         "\nstartPostponedEnterTransition:${isStart}" +
-                        "\nlocKList:${list.filter { it.second }}"
+                        "\nlocKList:${map.map { it.value.tag to (System.currentTimeMillis() - it.value.timeAdd) }}"
             )
         }
     }
+
+    private fun Long.takeNowIfNotData() = takeIf { it != 0L } ?: System.currentTimeMillis()
 }
 
 class LockTransitionViewModel : ViewModel() {
 
 
     @VisibleForTesting
-    var lockTransition = MutableLiveData(ConcurrentHashMap<String, Boolean>())
+    var lockTransition = MutableLiveData(ConcurrentHashMap<String, LockInfo>())
 
-    val lockTransitionList = lockTransition.asFlow().map { it.toList() }.filter { it.isNotEmpty() }
+    val lockTransitionMap = lockTransition.asFlow().filter { it.isNotEmpty() }
 
-    val lockTransitionValue = lockTransitionList.map { list -> list.all { !it.second } }
+    val isUnlock = lockTransitionMap.map { map -> map.all { !it.value.isLock } }
 
     init {
 
-        lockTransitionValue.launchIn(viewModelScope)
+        isUnlock.launchIn(viewModelScope)
     }
 
     fun lockTransition(tag: String) {
 
-        updateTransitionLock(tag = tag, lock = true)
+        updateTransitionLock(tag = tag, isLock = true)
     }
 
     fun unlockTransition(tag: String) {
 
-        updateTransitionLock(tag = tag, lock = false)
+        updateTransitionLock(tag = tag, isLock = false)
     }
 
-    fun updateTransitionLock(tag: String, lock: Boolean) {
+    fun updateTransitionLock(tag: String, isLock: Boolean) {
 
         val map = lockTransition.value ?: return
 
-        map[tag] = lock
+        map[tag] = map[tag]?.copy(isLock = isLock) ?: LockInfo(tag = tag, isLock = isLock)
 
         lockTransition.value = map
     }
 
     suspend fun onTransitionLockEndAwait() {
 
-        lockTransitionValue.filter { it }.first()
+        isUnlock.filter { it }.first()
     }
+
+    data class LockInfo(
+        val tag: String,
+        val isLock: Boolean,
+        val timeAdd: Long = System.currentTimeMillis()
+    )
 }
 
 

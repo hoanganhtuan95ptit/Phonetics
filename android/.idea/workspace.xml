@@ -164,17 +164,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/paste/PasteHomeService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/exts/FragmentManager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/release/assets/autobind/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/debug/assets/autobind/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/debug/assets/autobind/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/di/ViewModelModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/di/ViewModelModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/ConfigTransitionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/ConfigTransitionService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/LockTransitionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/LockTransitionService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/RunningTransitionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/RunningTransitionService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/Transition.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/Transition.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/HomeView.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/PasteHomeView.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/history/HistoryHomeView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/history/HistoryHomeService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/history/HistoryHomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/history/HistoryHomeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/phonetic/PhoneticHomeView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/phonetic/PhoneticHomeService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/phonetic/PhoneticHomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/phonetic/PhoneticHomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/detect/DetectHomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/detect/DetectHomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constant.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/constant.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +184,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/Users/hoanganhtuan/.android/avd/Pixel_9a.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=88PX01XCS)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -254,56 +254,56 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Android App.app.executor": "Run",
-    "DEBUGGABLE_DEVICE": "Pixel_9a [emulator-5554]",
-    "DEBUGGABLE_PROCESS": "com.ipa.english.phonetics.debug",
-    "DEBUGGER_ID": "Auto",
-    "Gradle.Download Sources.executor": "Run",
-    "Gradle.ExampleUnitTest.addition_isCorrect.executor": "Run",
-    "Gradle.Upgrade Gradle wrapper.executor": "Run",
-    "Gradle.android [app:dependencies | grep -A 5 bundled].executor": "Run",
-    "Gradle.android [app:dependencies].executor": "Run",
-    "Gradle.android [build].executor": "Run",
-    "Gradle.android [clean build].executor": "Run",
-    "Gradle.android [dependencies].executor": "Run",
-    "Gradle.android [feature:mlkit:dependencies].executor": "Run",
-    "Gradle.android [mlkit:dependencies].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "PROJECT_TRUSTED_KEY": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "SHOW_ALL_PROCESSES": "false",
-    "ScreenshotViewer.SavePath": "/Users/hoanganhtuan/Desktop",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "com.developerphil.adbidea.selecteddevices": "emulator-5554",
-    "git-widget-placeholder": "release/1.5.3",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/app/src/main/java",
-    "last_opened_file_path": "/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/feature/reminder/src/main/java/com/simple/feature/reminder/home/services",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Android App.app.executor&quot;: &quot;Run&quot;,
+    &quot;DEBUGGABLE_DEVICE&quot;: &quot;Pixel_9a [emulator-5554]&quot;,
+    &quot;DEBUGGABLE_PROCESS&quot;: &quot;com.ipa.english.phonetics.debug&quot;,
+    &quot;DEBUGGER_ID&quot;: &quot;Auto&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ExampleUnitTest.addition_isCorrect.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Upgrade Gradle wrapper.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.android [app:dependencies | grep -A 5 bundled].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.android [app:dependencies].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.android [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.android [clean build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.android [dependencies].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.android [feature:mlkit:dependencies].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.android [mlkit:dependencies].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;PROJECT_TRUSTED_KEY&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;SHOW_ALL_PROCESSES&quot;: &quot;false&quot;,
+    &quot;ScreenshotViewer.SavePath&quot;: &quot;/Users/hoanganhtuan/Desktop&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.developerphil.adbidea.selecteddevices&quot;: &quot;emulator-5554&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;release/1.5.3&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/app/src/main/java&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/hoanganhtuan/AndroidStudioProjects/EPhonetics/android/feature/reminder/src/main/java/com/simple/feature/reminder/home/services&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
   },
-  "keyToStringList": {
-    "com.android.tools.idea.sqlite.queryhistory": [
-      "DELETE FROM phonetic_history",
-      "select * from phonetics where ipa like '%oʊ%'",
-      "select * from phonetics where ipa like '%r%'",
-      "select * from phonetics where text =='aves'",
-      "select * from phonetics where text = 'aves'"
+  &quot;keyToStringList&quot;: {
+    &quot;com.android.tools.idea.sqlite.queryhistory&quot;: [
+      &quot;DELETE FROM phonetic_history&quot;,
+      &quot;select * from phonetics where ipa like '%oʊ%'&quot;,
+      &quot;select * from phonetics where ipa like '%r%'&quot;,
+      &quot;select * from phonetics where text =='aves'&quot;,
+      &quot;select * from phonetics where text = 'aves'&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="PsdUISettings">
     <option name="RESOLVED_DEPENDENCIES_MINIMIZE" value="true" />
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
@@ -601,7 +601,23 @@
       <option name="project" value="LOCAL" />
       <updated>1763777515075</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="optimize">
+      <option name="closed" value="true" />
+      <created>1763778309572</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1763778309572</updated>
+    </task>
+    <task id="LOCAL-00005" summary="optimize">
+      <option name="closed" value="true" />
+      <created>1763778842806</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1763778842806</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
