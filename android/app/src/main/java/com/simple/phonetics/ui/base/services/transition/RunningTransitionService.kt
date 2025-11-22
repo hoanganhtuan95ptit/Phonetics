@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.simple.phonetics.BuildConfig
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -61,7 +62,7 @@ class RunningTransitionServiceImpl : RunningTransitionService {
         }
 
 
-        fragment.lifecycle.addObserver(object : DefaultLifecycleObserver {
+        fragment.doObserver(object : DefaultLifecycleObserver {
 
             override fun onResume(owner: LifecycleOwner) {
 
@@ -91,7 +92,7 @@ class RunningTransitionServiceImpl : RunningTransitionService {
             val time = System.currentTimeMillis() - start
             val isRunning = map.filter { it.first.contains("Transition_", true) }.any { it.second }
 
-            Log.d(
+            if (BuildConfig.DEBUG && false) Log.d(
                 "tuanha", "RunningTransitionService ${fragment.javaClass.simpleName}  --->" +
                         "\ntime:${time}" +
                         "\nisRunning:${isRunning}" +

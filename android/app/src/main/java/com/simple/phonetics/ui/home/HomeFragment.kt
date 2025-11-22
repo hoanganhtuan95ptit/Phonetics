@@ -1,12 +1,11 @@
 package com.simple.phonetics.ui.home
 
-import android.content.ComponentCallbacks
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.core.os.bundleOf
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -22,7 +21,6 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
-import com.simple.coreapp.utils.extentions.isActive
 import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
@@ -33,11 +31,9 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
-import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentHomeBinding
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
-import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
@@ -48,6 +44,7 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorBackgroundVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
+import com.simple.phonetics.utils.exts.replace
 import com.simple.phonetics.utils.exts.submitListAndAwait
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
@@ -301,25 +298,9 @@ class PhoneticsDeeplink : DeeplinkHandler {
         return DeeplinkManager.PHONETICS
     }
 
-    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
+    override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        if (componentCallbacks !is MainActivity) return false
-
-        val fragment = HomeFragment()
-        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
-
-        val fragmentTransaction = componentCallbacks.supportFragmentManager
-            .beginTransaction()
-
-        sharedElement?.forEach { (t, u) ->
-
-            fragmentTransaction.addSharedElement(u, t)
-        }
-
-        if (isActive()) fragmentTransaction
-            .replace(R.id.fragment_container, fragment, "")
-            .addToBackStack("")
-            .commitAllowingStateLoss()
+        activity.replace(fragment = HomeFragment(), extras = extras, sharedElement = sharedElement)
 
         return true
     }
