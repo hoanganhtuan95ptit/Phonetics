@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import com.simple.autobind.annotation.AutoBind
 import com.simple.event.sendEvent
-import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.services.MainService
 import com.simple.phonetics.ui.view.HomeScreen
@@ -61,7 +60,7 @@ class QueueEventStateService : MainService {
 
         QueueEventState.getQueueAsync().launchCollect(mainActivity) { eventName ->
 
-            if (!BuildConfig.DEBUG) sendEvent(eventName = eventName, data = Unit)
+            sendEvent(eventName = eventName, data = Unit)
         }
     }
 

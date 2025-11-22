@@ -3,7 +3,6 @@ package com.simple.phonetics.ui.home
 import android.content.ComponentCallbacks
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -67,10 +66,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        Log.d("tuanha", "HomeFragment onViewCreated: 0")
         super.onViewCreated(view, savedInstanceState)
-        Log.d("tuanha", "HomeFragment onViewCreated: 1")
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
 
@@ -298,12 +294,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
             binding.tvReverse.setBackground(it.background)
         }
 
-        viewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFirst ->
+        viewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFromCache ->
 
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
             QueueEventState.addTag("view_item_list", order = Int.MAX_VALUE)
-            binding.recyclerView.submitListAndAwait(viewItemList = data)
+            binding.recyclerView.submitListAndAwait(viewItemList = data, isAnimation = !isFromCache)
             QueueEventState.endTag("view_item_list", order = Int.MAX_VALUE)
         }
     }
@@ -321,7 +317,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
-            binding.recFilter.submitListAndAwait(viewItemList = data, isAnimation = !isFromCache)
+            binding.recFilter.submitListAwaitV2(viewItemList = data, isFromCache = isFromCache)
         }
     }
 

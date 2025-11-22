@@ -2,49 +2,63 @@ package com.simple.phonetics.ui.base.services.transition
 
 import android.graphics.Color
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import androidx.transition.Transition
 import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
 import com.simple.coreapp.Param.ROOT_TRANSITION_NAME
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import java.util.concurrent.ConcurrentHashMap
+
+private const val TRANSITION_DURATION = 350L
 
 interface ConfigTransitionService {
 
-    fun setupTransitionConfig(fragment: Fragment)
+    var configTransitionViewModel: ConfigTransitionViewModel
 
-    fun setupTransitionConfigOnViewCreated(fragment: Fragment)
+    fun setupTransitionConfig(fragment: Fragment)
 }
 
 class ConfigTransitionServiceImpl : ConfigTransitionService {
 
 
-    private val transitionDuration = 350L
+    override lateinit var configTransitionViewModel: ConfigTransitionViewModel
 
-    private var transitionName: String = ""
+
     private var isCanUseTransition: Boolean = false
 
 
     override fun setupTransitionConfig(fragment: Fragment) {
 
-        transitionName = fragment.arguments?.getString(ROOT_TRANSITION_NAME).toString()
+        configTransitionViewModel = fragment.viewModels<ConfigTransitionViewModel>().value
 
+
+        val transitionName = fragment.arguments?.getString(ROOT_TRANSITION_NAME).toString()
         isCanUseTransition = transitionName.isNotBlank()
 
 
+        fragment.viewLifecycleOwnerLiveData.observe(fragment) {
+
+            fragment.view?.transitionName = transitionName
+        }
+
         setTransitionAnimation(fragment = fragment)
-    }
-
-    override fun setupTransitionConfigOnViewCreated(fragment: Fragment) {
-
-        fragment.view?.transitionName = transitionName
     }
 
     private fun setTransitionAnimation(fragment: Fragment) {
 
         fragment.exitTransition = Hold().apply {
 
-            duration = transitionDuration
+            duration = TRANSITION_DURATION
         }.apply {
 
             addListener(DefaultTransitionListener(name = "exitTransition", fragment = fragment))
@@ -52,7 +66,7 @@ class ConfigTransitionServiceImpl : ConfigTransitionService {
 
         fragment.reenterTransition = Hold().apply {
 
-            duration = transitionDuration
+            duration = TRANSITION_DURATION
         }.apply {
 
             addListener(DefaultTransitionListener(name = "reenterTransition", fragment = fragment))
@@ -69,7 +83,7 @@ class ConfigTransitionServiceImpl : ConfigTransitionService {
 
         fragment.sharedElementReturnTransition = MaterialContainerTransform(fragment.requireContext(), true).apply {
 
-            duration = transitionDuration
+            duration = TRANSITION_DURATION
 
             fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
 
@@ -87,7 +101,7 @@ class ConfigTransitionServiceImpl : ConfigTransitionService {
 
         fragment.sharedElementEnterTransition = MaterialContainerTransform(fragment.requireContext(), true).apply {
 
-            duration = transitionDuration
+            duration = TRANSITION_DURATION
 
             fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
 
@@ -102,6 +116,36 @@ class ConfigTransitionServiceImpl : ConfigTransitionService {
     }
 }
 
+class ConfigTransitionViewModel : ViewModel() {
+
+    val transitionStatus = MutableLiveData(ConcurrentHashMap<String, Boolean>())
+
+    val transitionStatusValue = transitionStatus.asFlow().map {
+        it.toList()
+    }.map { list ->
+        list.all { it.second }
+    }
+
+    init {
+
+        transitionStatusValue.launchIn(viewModelScope)
+    }
+
+    fun updateTransitionStatus(tag: String, isEnd: Boolean) {
+
+        val map = transitionStatus.value ?: return
+
+        map[tag] = isEnd
+
+        transitionStatus.value = map
+    }
+
+    suspend fun onTransitionStatusEndAwait() {
+
+        transitionStatusValue.filter { it }.first()
+    }
+}
+
 private class DefaultTransitionListener(val name: String, val fragment: Fragment) : Transition.TransitionListener {
     
     private val fragmentName: String by lazy {
@@ -112,16 +156,19 @@ private class DefaultTransitionListener(val name: String, val fragment: Fragment
     override fun onTransitionStart(transition: Transition) {
 //        Log.d("tuanha", "onTransitionStart: ${fragment.javaClass.simpleName}")
         fragment.startTransition("${fragmentName}_${name}_START")
+        fragment.updateTransitionStatus(tag = "${fragmentName}_${name}_START", isEnd = false)
     }
 
     override fun onTransitionEnd(transition: Transition) {
 //        Log.d("tuanha", "onTransitionEnd: ${fragmentName}")
         fragment.endTransition("${fragmentName}_${name}_START")
+        fragment.updateTransitionStatus(tag = "${fragmentName}_${name}_START", isEnd = true)
     }
 
     override fun onTransitionCancel(transition: Transition) {
 //        Log.d("tuanha", "onTransitionCancel: ${fragmentName}")
         fragment.endTransition("${fragmentName}_${name}_START")
+        fragment.updateTransitionStatus(tag = "${fragmentName}_${name}_START", isEnd = true)
     }
 
     override fun onTransitionPause(transition: Transition) {
@@ -133,4 +180,14 @@ private class DefaultTransitionListener(val name: String, val fragment: Fragment
 //        Log.d("tuanha", "onTransitionResume: ${fragmentName}")
         fragment.endTransition("${fragmentName}_${name}_PAUSE")
     }
+}
+
+fun Fragment.updateTransitionStatus(tag: String, isEnd: Boolean) {
+
+    if (this is ConfigTransitionService) configTransitionViewModel.updateTransitionStatus(tag = tag, isEnd = isEnd)
+}
+
+suspend fun Fragment.onTransitionStatusEndAwait() {
+
+    if (this is ConfigTransitionService) configTransitionViewModel.onTransitionStatusEndAwait()
 }

@@ -65,7 +65,7 @@ class DetectHomeViewModel(
         val isSupportDetect = isSupportDetectState.get().toSuccess()?.data == true
 
         val info = DetectInfo(
-            isShow = true
+            isShow = isSupportDetect
         )
 
         postValueIfActive(info)
