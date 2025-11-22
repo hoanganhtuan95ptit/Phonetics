@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -50,7 +51,10 @@ import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
+import com.simple.phonetics.utils.exts.listenerSources
+import com.simple.phonetics.utils.exts.listenerSourcesWithDiff
 import com.simple.phonetics.utils.exts.toViewItem
+import com.simple.phonetics.utils.exts.value
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
@@ -67,6 +71,7 @@ import com.unknown.theme.utils.exts.colorOnSurfaceVariant
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
@@ -204,12 +209,13 @@ class HomeViewModel(
         postValue(info)
     }
 
-    val enterInfo: LiveData<EnterInfo> = listenerSourcesWithDiff(theme, translate, isReverse, outputLanguage, inputLanguage) {
+    val enterInfo: Flow<EnterInfo> = listenerSources(themeFlow, translateFlow,  outputLanguageFlow, inputLanguageFlow) {
 
-        val theme = theme.value ?: return@listenerSourcesWithDiff
-        val translate = translate.value ?: return@listenerSourcesWithDiff
-        val inputLanguage = inputLanguage.value ?: return@listenerSourcesWithDiff
-        val outputLanguage = outputLanguage.value ?: return@listenerSourcesWithDiff
+        Log.d("tuanha", "LockTransitionService: 1")
+        val theme = themeFlow.value ?: return@listenerSources
+        val translate = translateFlow.value ?: return@listenerSources
+        val inputLanguage = outputLanguageFlow.value ?: return@listenerSources
+        val outputLanguage = inputLanguageFlow.value ?: return@listenerSources
 
         val languageName = if (isReverse.value == true) {
             outputLanguage.name
@@ -227,10 +233,8 @@ class HomeViewModel(
             textColor = theme.colorOnSurface,
         )
 
-        postValue(info)
-    }.apply {
-
-        asFlow().launchIn(viewModelScope)
+        Log.d("tuanha", "LockTransitionService: 2")
+        emit(info)
     }
 
 

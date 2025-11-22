@@ -11,6 +11,7 @@ import com.simple.phonetics.ui.base.services.transition.lockTransition
 import com.simple.phonetics.ui.base.services.transition.onTransitionRunningEndAwait
 import com.simple.phonetics.ui.base.services.transition.unlockTransition
 import com.unknown.coroutines.handler
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -20,6 +21,31 @@ import kotlinx.coroutines.withContext
 
 private val adapterFlow by lazy {
     AutoBind.loadNameAsync(AdapterProvider::class.java, false).distinctUntilChanged().asLiveData().asFlow()
+}
+
+/**
+ * đợi có dữ liệu thì mới mở unlock hiệu ứng mở màn hình
+ */
+fun <T> Flow<T>.collectWithLockTransitionUntilData(
+    fragment: Fragment,
+    tag: String = "",
+    block: suspend (data: T) -> Unit
+) = fragment.viewLifecycleOwner.lifecycleScope.launch(handler, start = CoroutineStart.UNDISPATCHED) {
+
+    var isHasData = false
+
+    fragment.lockTransition(tag = tag)
+
+    attachToAdapter().collect {
+
+        if (isHasData) fragment.onTransitionRunningEndAwait()
+
+        block(it)
+
+        isHasData = true
+
+        fragment.unlockTransition(tag = tag)
+    }
 }
 
 /**

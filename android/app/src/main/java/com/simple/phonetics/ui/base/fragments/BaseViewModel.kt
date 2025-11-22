@@ -13,6 +13,7 @@ import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.utils.TextViewMetrics
 import com.simple.phonetics.utils.appStyle
+import com.simple.phonetics.utils.exts.mutableSharedFlow
 import com.unknown.size.appSize
 import com.unknown.string.appString
 import com.unknown.theme.appTheme
@@ -53,11 +54,25 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
+    val themeFlow = mutableSharedFlow {
+
+        appTheme.collect {
+            emit(it)
+        }
+    }
+
     val translate: LiveData<Map<String, String>> = mediatorLiveData {
 
         appString.collect {
 
             postValue(it.toMutableMap())
+        }
+    }
+
+    val translateFlow = mutableSharedFlow {
+
+        appString.collect {
+            emit(it)
         }
     }
 
@@ -69,11 +84,27 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
+    val inputLanguageFlow = mutableSharedFlow {
+
+        GlobalContext.get().get<GetLanguageInputAsyncUseCase>().execute().collect {
+
+            emit(it)
+        }
+    }
+
     val outputLanguage: LiveData<Language> = mediatorLiveData {
 
         GlobalContext.get().get<GetLanguageOutputAsyncUseCase>().execute().collect {
 
             postValue(it)
+        }
+    }
+
+    val outputLanguageFlow = mutableSharedFlow {
+
+        GlobalContext.get().get<GetLanguageOutputAsyncUseCase>().execute().collect {
+
+            emit(it)
         }
     }
 
