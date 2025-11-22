@@ -14,8 +14,8 @@ import com.simple.phonetics.ui.home.services.detect.DetectHomeViewModel
 import com.simple.phonetics.ui.home.services.ipa.IpaHomeViewModel
 import com.simple.phonetics.ui.home.services.microphone.MicrophoneHomeViewModel
 import com.simple.phonetics.ui.home.services.game.GameHomeServiceModel
-import com.simple.phonetics.ui.home.view.history.HistoryHomeViewModel
-import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeViewModel
+import com.simple.phonetics.ui.home.services.history.HistoryHomeViewModel
+import com.simple.phonetics.ui.home.services.phonetic.PhoneticHomeViewModel
 import com.simple.phonetics.ui.home.services.suggest.SuggestHomeViewModel
 import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
 import com.simple.phonetics.ui.ipa.list.IpaListViewModel

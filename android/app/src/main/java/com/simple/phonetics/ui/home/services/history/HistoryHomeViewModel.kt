@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.home.view.history
+package com.simple.phonetics.ui.home.services.history
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData

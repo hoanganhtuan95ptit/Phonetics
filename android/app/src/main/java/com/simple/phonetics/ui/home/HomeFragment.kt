@@ -43,7 +43,6 @@ import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
-import com.simple.phonetics.ui.home.view.HomeView
 import com.simple.phonetics.ui.services.queue.QueueEventState
 import com.simple.phonetics.ui.view.HomeScreen
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
@@ -55,7 +54,6 @@ import com.simple.phonetics.utils.exts.submitListAndAwait
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
-import java.util.ServiceLoader
 import kotlin.math.absoluteValue
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScreen {
@@ -86,8 +84,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
                 }
             }
         })
-
-        ServiceLoader.load(HomeView::class.java).toList().forEach { it.setup(this) }
 
         setupSpeak()
         setupInput()

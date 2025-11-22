@@ -164,14 +164,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/paste/PasteHomeService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/fragments/BaseFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/fragments/BaseFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/ConfigTransitionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/ConfigTransitionService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/LockTransitionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/base/services/transition/LockTransitionService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/assets/autobind/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/debug/assets/autobind/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/di/ViewModelModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/di/ViewModelModule.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/detect/DetectHomeService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/detect/DetectHomeService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/ipa/list/IpaListFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/ipa/list/IpaListFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/exts/RecyclerView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/exts/RecyclerView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/HomeView.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/PasteHomeView.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/history/HistoryHomeView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/history/HistoryHomeService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/history/HistoryHomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/history/HistoryHomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/phonetic/PhoneticHomeView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/phonetic/PhoneticHomeService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/view/phonetic/PhoneticHomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/services/phonetic/PhoneticHomeViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,7 +184,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=88PX01XCS)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/Users/hoanganhtuan/.android/avd/Pixel_9a.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -338,11 +341,11 @@
       <recent name="com.unknown.community" />
     </key>
     <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
+      <recent name="com.simple.phonetics.ui.home.services.paste" />
       <recent name="com.simple.phonetics.ui.base.services.transition" />
       <recent name="com.simple.phonetics.utils" />
       <recent name="com.simple.phonetics.ui.home.services.language" />
       <recent name="com.simple.phonetic.entities" />
-      <recent name="com.simple.ipa.dao" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -590,7 +593,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759755896409</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="optimize">
+      <option name="closed" value="true" />
+      <created>1763777515075</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1763777515075</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

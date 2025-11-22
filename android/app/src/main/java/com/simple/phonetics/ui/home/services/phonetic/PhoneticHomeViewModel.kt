@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.home.view.phonetic
+package com.simple.phonetics.ui.home.services.phonetic
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
