@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.home
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.activity.OnBackPressedCallback
