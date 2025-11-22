@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.ipa.list
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
@@ -26,9 +25,7 @@ import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.simple.phonetics.utils.exts.listenerLayoutChangeAsync
 import com.simple.phonetics.utils.exts.submitListAwaitV2
-import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 
 class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaListViewModel>() {
@@ -77,10 +74,6 @@ class IpaListFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaLis
                 extras = mapOf(Param.IPA to item.data, Param.ROOT_TRANSITION_NAME to transitionName),
                 sharedElement = mapOf(transitionName to view)
             )
-        }
-
-        binding.recyclerView.listenerLayoutChangeAsync().launchCollect(viewLifecycleOwner){
-            Log.d("tuanha", "setupRecyclerView: IpaListFragment   ${binding.recyclerView.childCount}")
         }
 
         adapter = MultiAdapter(ipaAdapter, *ListPreviewAdapter()).apply {

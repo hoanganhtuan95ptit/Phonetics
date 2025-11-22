@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -23,13 +22,11 @@ import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
-import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.hasPermissions
 import com.simple.service.FragmentCreatedService
 import com.simple.state.doSuccess
 import com.unknown.coroutines.launchCollect
-import kotlinx.coroutines.flow.filterNotNull
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.IOException
@@ -39,7 +36,6 @@ class DetectHomeService : FragmentCreatedService {
 
     override fun setup(fragment: Fragment) {
 
-        Log.d("tuanha", "setup: feature")
         val homeFragment = fragment.asObjectOrNull<HomeFragment>() ?: return
 
         val homeViewModel: HomeViewModel by homeFragment.viewModel()

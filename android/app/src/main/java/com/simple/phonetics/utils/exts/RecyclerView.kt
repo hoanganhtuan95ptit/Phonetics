@@ -190,13 +190,11 @@ fun RecyclerView.submitListAndGetListPositionChangeAsync(viewItemList: List<View
 
 suspend fun RecyclerView.submitListAndAwait(viewItemList: List<ViewItem>, isAnimation: Boolean = false) {
 
+    val visiblePositionSet = children.map { getChildAdapterPosition(it) }.toSet()
+    val updatedPositionSet = submitListAndGetListPositionChangeAsync(viewItemList = viewItemList).first()
 
-    val updatedPositions = submitListAndGetListPositionChangeAsync(viewItemList = viewItemList).first()
 
-
-    val visiblePositionsBefore = children.map { getChildAdapterPosition(it) }.toSet()
-    val canChangeItemVisible = updatedPositions.intersect(visiblePositionsBefore).isNotEmpty()
-
+    val canChangeItemVisible = visiblePositionSet.isEmpty() || viewItemList.isEmpty() || updatedPositionSet.intersect(visiblePositionSet).isNotEmpty()
 
     if (canChangeItemVisible) if (isAnimation) {
         transitionAsync().first()
@@ -205,6 +203,7 @@ suspend fun RecyclerView.submitListAndAwait(viewItemList: List<ViewItem>, isAnim
     }
 }
 
+@Deprecated("use submitListAndAwait")
 suspend fun RecyclerView.submitListAwaitV2(viewItemList: List<ViewItem>, isFromCache: Boolean = false) {
 
     submitListAndAwait(viewItemList = viewItemList, isAnimation = !isFromCache)
