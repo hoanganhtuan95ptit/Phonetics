@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -52,7 +51,6 @@ import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.listenerSources
-import com.simple.phonetics.utils.exts.listenerSourcesWithDiff
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.phonetics.utils.exts.value
 import com.simple.state.ResultState
@@ -211,7 +209,6 @@ class HomeViewModel(
 
     val enterInfo: Flow<EnterInfo> = listenerSources(themeFlow, translateFlow,  outputLanguageFlow, inputLanguageFlow) {
 
-        Log.d("tuanha", "LockTransitionService: 1")
         val theme = themeFlow.value ?: return@listenerSources
         val translate = translateFlow.value ?: return@listenerSources
         val inputLanguage = outputLanguageFlow.value ?: return@listenerSources
@@ -233,7 +230,6 @@ class HomeViewModel(
             textColor = theme.colorOnSurface,
         )
 
-        Log.d("tuanha", "LockTransitionService: 2")
         emit(info)
     }
 

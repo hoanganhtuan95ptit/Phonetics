@@ -77,6 +77,45 @@ fun <T> LiveData<T>.collectWithLockTransitionUntilData(
  * nếu đang có dữ liệu thì binding xong mới cho chạy hiệu ứng mở màn hình
  * nếu chưa có dữ liệu thì đợi cho hiệu ứng mở màn hình chạy xong mới binding
  */
+fun <T> Flow<T>.collectWithLockTransitionIfCached(
+    fragment: Fragment,
+    tag: String = "",
+    block: suspend (data: T, isFromCache: Boolean) -> Unit
+) = fragment.viewLifecycleOwner.lifecycleScope.launch(handler) {
+
+    var data = value
+
+    if (data != null) {
+
+        fragment.lockTransition(tag = tag)
+
+        block(data, true)
+
+        fragment.unlockTransition(tag = tag)
+    }
+
+    attachToAdapter().collect {
+
+        val diff = data == null || withContext(Dispatchers.IO) {
+
+            data != it
+        }
+
+        if (diff) {
+
+            fragment.onTransitionRunningEndAwait()
+
+            block(it, false)
+        }
+
+        data = null
+    }
+}
+
+/**
+ * nếu đang có dữ liệu thì binding xong mới cho chạy hiệu ứng mở màn hình
+ * nếu chưa có dữ liệu thì đợi cho hiệu ứng mở màn hình chạy xong mới binding
+ */
 fun <T> LiveData<T>.collectWithLockTransitionIfCached(
     fragment: Fragment,
     tag: String = "",

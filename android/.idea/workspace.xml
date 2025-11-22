@@ -165,9 +165,9 @@
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/repositories/LanguageRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/repositories/LanguageRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/repositories/LanguageRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/repositories/LanguageRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constant.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/constant.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/exts/LiveData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/utils/exts/LiveData.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +177,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=88PX01XCS)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/Users/hoanganhtuan/.android/avd/Pixel_9a.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -213,12 +213,18 @@
         <option value="Kotlin Object" />
         <option value="valueResourceFile" />
         <option value="layoutResourceFile" />
-        <option value="Kotlin Class" />
         <option value="Kotlin File" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$/.." value="main" />
@@ -626,7 +632,23 @@
       <option name="project" value="LOCAL" />
       <updated>1763793585098</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="1.5.5">
+      <option name="closed" value="true" />
+      <created>1763795041405</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1763795041405</updated>
+    </task>
+    <task id="LOCAL-00009" summary="optimize">
+      <option name="closed" value="true" />
+      <created>1763806049351</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1763806049351</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -642,6 +664,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="1.5.5" />
     <MESSAGE value="optimize" />
     <option name="LAST_COMMIT_MESSAGE" value="optimize" />
   </component>
@@ -968,11 +991,6 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/usecase/phonetics/GetPhoneticsAsyncUseCase.kt</url>
           <line>119</line>
           <option name="timeStamp" value="113" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/home/HomeViewModel.kt</url>
-          <line>371</line>
-          <option name="timeStamp" value="118" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/tasks/EventSyncTask.kt</url>
