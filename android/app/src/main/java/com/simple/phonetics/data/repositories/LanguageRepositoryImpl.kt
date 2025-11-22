@@ -4,15 +4,13 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObject
-import com.simple.coreapp.utils.extentions.offerActive
 import com.simple.phonetics.DEFAULT_LANGUAGE
 import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.entities.Language
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -29,11 +27,28 @@ class LanguageRepositoryImpl(
 
     private val languageInput by lazy {
 
-        val data = appCache.getData("language_input", "")
+        MutableSharedFlow<Language?>(replay = 1, extraBufferCapacity = 1).apply {
 
-        MediatorLiveData(
-            if (data.isBlank()) null else data.toObject<Language>()
-        )
+            val data = appCache.getData("language_input", "")
+
+            tryEmit(if (data.isBlank()) null else data.toObject<Language>())
+        }
+    }
+
+    private val languageOutput by lazy {
+
+        MutableSharedFlow<Language>(replay = 1, extraBufferCapacity = 1).apply {
+
+            tryEmit(
+                Language(
+                    id = Locale.getDefault().language,
+                    name = Locale.getDefault().displayName,
+                    country = Locale.getDefault().country,
+                    image = "",
+                    listIpa = emptyList()
+                )
+            )
+        }
     }
 
     override suspend fun getPhoneticCodeSelected(): String {
@@ -75,40 +90,32 @@ class LanguageRepositoryImpl(
     }
 
 
-    override fun getLanguageInput(): Language? {
+    override suspend fun getLanguageInput(): Language? {
 
-        return languageInput.value
+        return languageInput.first()
     }
 
     override fun getLanguageInputAsync(): Flow<Language> {
 
-        return languageInput.asFlow().filterNotNull()
+        return languageInput.filterNotNull()
     }
 
     override fun updateLanguageInput(language: Language) {
 
         appCache.setData("language_input", language.toJson())
 
-        languageInput.postValue(language)
+        languageInput.tryEmit(language)
     }
 
 
-    override fun getLanguageOutput(): Language {
+    override suspend fun getLanguageOutput(): Language {
 
-        return Language(
-            id = Locale.getDefault().language,
-            name = Locale.getDefault().displayName,
-            country = Locale.getDefault().country,
-            image = "",
-            listIpa = emptyList()
-        )
+        return languageOutput.first()
     }
 
-    override fun getLanguageOutputAsync(): Flow<Language> = channelFlow {
+    override fun getLanguageOutputAsync(): Flow<Language> {
 
-        offerActive(getLanguageOutput())
-
-        awaitClose()
+        return languageOutput
     }
 
     override suspend fun getLanguageSupport(languageCode: String): List<Language> {
