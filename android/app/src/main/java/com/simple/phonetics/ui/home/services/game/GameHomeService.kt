@@ -1,12 +1,13 @@
-package com.simple.phonetics.ui.home.view.game
+package com.simple.phonetics.ui.home.services.game
 
 import android.view.View
-import com.google.auto.service.AutoService
+import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObject
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.EventName
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.deeplink.sendDeeplink
+import com.simple.event.listenerEvent
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName.TEXT_SIMPLE_VIEW_ITEM_CLICKED
 import com.simple.phonetics.Id
@@ -14,27 +15,27 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
-import com.simple.phonetics.ui.home.view.HomeView
+import com.simple.phonetics.ui.home.services.HomeService
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AutoService(HomeView::class)
-class GameHomeView : HomeView {
+@AutoBind(HomeFragment::class)
+class GameHomeService : HomeService {
 
-    override fun setup(fragment: HomeFragment) {
+    override fun setup(homeFragment: HomeFragment) {
 
-        val viewModel: HomeViewModel by fragment.viewModel()
+        val homeViewModel: HomeViewModel by homeFragment.viewModel()
 
-        val gameHomeViewModel: GameHomeViewModel by fragment.viewModel()
+        val gameHomeServiceModel: GameHomeServiceModel by homeFragment.viewModel()
 
-        gameHomeViewModel.viewItemList.observe(fragment.viewLifecycleOwner) {
+        gameHomeServiceModel.viewItemList.observe(homeFragment.viewLifecycleOwner) {
 
-            viewModel.updateTypeViewItemList(type = 0, it)
+            homeViewModel.updateTypeViewItemList(type = 0, it)
         }
 
-        com.simple.event.listenerEvent(eventName = EventName.TEXT_VIEW_ITEM_CLICKED, lifecycle = fragment.viewLifecycleOwner.lifecycle) {
+        listenerEvent(eventName = EventName.TEXT_VIEW_ITEM_CLICKED, lifecycle = homeFragment.viewLifecycleOwner.lifecycle) {
 
             val (view, viewItem) = it.asObjectOrNull<Pair<View, ClickTextViewItem>>() ?: return@listenerEvent
 
@@ -43,7 +44,7 @@ class GameHomeView : HomeView {
                 return@listenerEvent
             }
 
-            val result = openGameConfirmAwait().first()
+            val result = openGameConfirmAsync().first()
 
             if (result == 1) {
 
@@ -51,7 +52,7 @@ class GameHomeView : HomeView {
             }
         }
 
-        com.simple.event.listenerEvent(eventName = TEXT_SIMPLE_VIEW_ITEM_CLICKED, lifecycle = fragment.viewLifecycleOwner.lifecycle) {
+        listenerEvent(eventName = TEXT_SIMPLE_VIEW_ITEM_CLICKED, lifecycle = homeFragment.viewLifecycleOwner.lifecycle) {
 
             val (view, viewItem) = it.asObjectOrNull<Pair<View, TextSimpleViewItem>>() ?: return@listenerEvent
 
@@ -60,7 +61,7 @@ class GameHomeView : HomeView {
                 return@listenerEvent
             }
 
-            val result = openGameConfirmAwait().first()
+            val result = openGameConfirmAsync().first()
 
             if (result == 1) {
 
@@ -69,7 +70,7 @@ class GameHomeView : HomeView {
         }
     }
 
-    private fun openGameConfirmAwait() = channelFlow {
+    private fun openGameConfirmAsync() = channelFlow {
 
         val keyRequest = DeeplinkManager.GAME_CONFIG
 
@@ -80,7 +81,7 @@ class GameHomeView : HomeView {
             )
         )
 
-        com.simple.event.listenerEvent(coroutineScope = this, eventName = keyRequest) {
+        listenerEvent(coroutineScope = this, eventName = keyRequest) {
 
             trySend(it.asObject<Int>())
         }

@@ -13,7 +13,7 @@ import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.services.detect.DetectHomeViewModel
 import com.simple.phonetics.ui.home.services.ipa.IpaHomeViewModel
 import com.simple.phonetics.ui.home.services.microphone.MicrophoneHomeViewModel
-import com.simple.phonetics.ui.home.view.game.GameHomeViewModel
+import com.simple.phonetics.ui.home.services.game.GameHomeServiceModel
 import com.simple.phonetics.ui.home.view.history.HistoryHomeViewModel
 import com.simple.phonetics.ui.home.view.phonetic.PhoneticHomeViewModel
 import com.simple.phonetics.ui.home.services.suggest.SuggestHomeViewModel
@@ -96,7 +96,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        GameHomeViewModel(get())
+        GameHomeServiceModel(get())
     }
 
     viewModel {
