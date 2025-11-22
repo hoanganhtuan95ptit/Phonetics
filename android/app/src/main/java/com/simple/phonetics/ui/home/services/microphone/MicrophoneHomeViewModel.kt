@@ -3,6 +3,8 @@ package com.simple.phonetics.ui.home.services.microphone
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.postValue
@@ -31,6 +33,9 @@ class MicrophoneHomeViewModel(
         }
 
         postValue(checkSupportSpeakUseCase.execute(CheckSupportSpeakUseCase.Param(languageCode = languageCode)))
+    }.apply {
+
+        asObject<MutableLiveData<Boolean>>().value = false
     }
 
     val microphoneInfo: LiveData<MicrophoneInfo> = combineSourcesWithDiff(isSupportSpeak) {

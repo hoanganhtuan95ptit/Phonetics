@@ -12,7 +12,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.Param.ROOT_TRANSITION_NAME
+import com.simple.phonetics.BuildConfig
+import com.simple.phonetics.PhoneticsApp
+import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -111,15 +115,17 @@ class LockTransitionServiceImpl : LockTransitionService {
         lockTransitionViewModel.lockTransitionMap.map { list ->
 
             list.filter { it.value.isLock }
-        }.distinctUntilChanged().launchCollect(fragment) { map ->
+        }.distinctUntilChanged().launchCollect(fragment, context = handler + Dispatchers.IO) { map ->
 
             val isStart = map.isEmpty()
 
-            Log.d(
+            if (BuildConfig.DEBUG && true)Log.d(
                 "tuanha", "LockTransitionService ${fragment.javaClass.simpleName}  --->" +
-                        "\ntimeInit:${System.currentTimeMillis() - timeInit.takeNowIfNotData()}" +
+                        "\ntimeAppInit:${System.currentTimeMillis() - PhoneticsApp.start.takeNowIfNotData()}" +
+                        "\ntimeScreenInit:${System.currentTimeMillis() - timeInit.takeNowIfNotData()}" +
                         "\ntimeCreate:${System.currentTimeMillis() - timeCreate.takeNowIfNotData()}" +
                         "\ntimeCreateView:${System.currentTimeMillis() - timeCreateView.takeNowIfNotData()}" +
+                        "\nspaceCreate-View:${timeCreateView.takeNowIfNotData() - timeCreate.takeNowIfNotData()}" +
                         "\nisRecreateView:${isRecreateView}" +
                         "\nisSupportEnterTransition:${isSupportEnterTransition}" +
                         "\nstartPostponedEnterTransition:${isStart}" +

@@ -131,13 +131,13 @@ class HomeViewModel(
         postValue(inputLanguage.id != outputLanguage.id && isSupportTranslate)
     }
 
-    val reverseInfo: LiveData<ReverseInfo> = combineSourcesWithDiff(theme, translate, isReverse, isSupportReverse) {
+    val reverseInfo: LiveData<ReverseInfo> = listenerSourcesWithDiff(theme, translate, isReverse, isSupportReverse) {
 
-        val theme = theme.get()
-        val translate = translate.get()
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
-        val isReverse = isReverse.get()
-        val isSupportReverse = isSupportReverse.get()
+        val isReverse = isReverse.value ?: return@listenerSourcesWithDiff
+        val isSupportReverse = isSupportReverse.value ?: false
 
         val textColor = if (isReverse)
             theme.colorOnPrimaryVariant
@@ -204,12 +204,12 @@ class HomeViewModel(
         postValue(info)
     }
 
-    val enterInfo: LiveData<EnterInfo> = combineSourcesWithDiff(theme, translate, isReverse, outputLanguage, inputLanguage) {
+    val enterInfo: LiveData<EnterInfo> = listenerSourcesWithDiff(theme, translate, isReverse, outputLanguage, inputLanguage) {
 
-        val theme = theme.get()
-        val translate = translate.get()
-        val inputLanguage = inputLanguage.get()
-        val outputLanguage = outputLanguage.get()
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
+        val inputLanguage = inputLanguage.value ?: return@listenerSourcesWithDiff
+        val outputLanguage = outputLanguage.value ?: return@listenerSourcesWithDiff
 
         val languageName = if (isReverse.value == true) {
             outputLanguage.name
@@ -228,6 +228,9 @@ class HomeViewModel(
         )
 
         postValue(info)
+    }.apply {
+
+        asFlow().launchIn(viewModelScope)
     }
 
 

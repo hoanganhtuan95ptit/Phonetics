@@ -14,7 +14,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.phonetics.BuildConfig
+import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -66,14 +68,17 @@ class RunningTransitionServiceImpl : RunningTransitionService {
 
             override fun onResume(owner: LifecycleOwner) {
 
-                fragment.view?.isEnabled = true
                 fragment.updateTransitionRunning(tag + "_Lifecycle", isRunning = false)
             }
 
             override fun onPause(owner: LifecycleOwner) {
 
-                fragment.view?.isEnabled = false
                 fragment.updateTransitionRunning(tag + "_Lifecycle", isRunning = true)
+            }
+
+            override fun onDestroy(owner: LifecycleOwner) {
+
+                fragment.updateTransitionRunning(tag + "_Lifecycle", isRunning = false)
             }
         })
     }
@@ -87,12 +92,25 @@ class RunningTransitionServiceImpl : RunningTransitionService {
             start = System.currentTimeMillis()
         }
 
-        runTransitionViewModel.runningTransitionList.launchCollect(fragment.requireActivity()) { map ->
+        runTransitionViewModel.runningTransitionList.launchCollect(fragment, context = handler + Dispatchers.IO) { map ->
 
             val time = System.currentTimeMillis() - start
             val isRunning = map.filter { it.first.contains("Transition_", true) }.any { it.second }
 
             if (BuildConfig.DEBUG && false) Log.d(
+                "tuanha", "RunningTransitionService ${fragment.javaClass.simpleName}  --->" +
+                        "\ntime:${time}" +
+                        "\nisRunning:${isRunning}" +
+                        "\nrunningList:${map.filter { it.second }}"
+            )
+        }
+
+        runTransitionViewModelActivity.runningTransitionList.launchCollect(fragment, context = handler + Dispatchers.IO) { map ->
+
+            val time = System.currentTimeMillis() - start
+            val isRunning = map.filter { it.first.contains("Transition_", true) }.any { it.second }
+
+            if (BuildConfig.DEBUG && true) Log.d(
                 "tuanha", "RunningTransitionService ${fragment.javaClass.simpleName}  --->" +
                         "\ntime:${time}" +
                         "\nisRunning:${isRunning}" +
