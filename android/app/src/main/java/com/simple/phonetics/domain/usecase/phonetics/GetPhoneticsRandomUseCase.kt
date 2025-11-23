@@ -7,6 +7,7 @@ import com.simple.phonetics.domain.repositories.PhoneticRepository
 import com.simple.phonetics.domain.repositories.WordRepository
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getWordDelimiters
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlin.math.min
 
@@ -18,7 +19,7 @@ class GetPhoneticsRandomUseCase(
 
     suspend fun execute(param: Param): List<com.simple.phonetic.entities.Phonetic> {
 
-        val languageCode = languageRepository.getLanguageInputAsync().first().id
+        val languageCode = languageRepository.getLanguageInputAsync().filterNotNull().first().id
 
 
         val isQueryForIpa = param.resource.startsWith("/")

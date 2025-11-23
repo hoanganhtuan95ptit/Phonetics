@@ -14,10 +14,10 @@ import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.Param.ROOT_TRANSITION_NAME
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.PhoneticsApp
+import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -28,7 +28,7 @@ interface LockTransitionService {
 
     var lockTransitionViewModel: LockTransitionViewModel
 
-    fun setupTransitionLock(fragment: Fragment)
+    fun setupTransitionLock(fragment: BaseFragment<*, *>)
 }
 
 class LockTransitionServiceImpl : LockTransitionService {
@@ -45,7 +45,7 @@ class LockTransitionServiceImpl : LockTransitionService {
     private var isSupportEnterTransition = true
 
 
-    override fun setupTransitionLock(fragment: Fragment) {
+    override fun setupTransitionLock(fragment: BaseFragment<*, *>) {
 
         timeCreate = System.currentTimeMillis()
 
@@ -61,18 +61,17 @@ class LockTransitionServiceImpl : LockTransitionService {
             }
         })
 
-
         setupLock(fragment = fragment)
         setupLockQueue(fragment = fragment)
         setupLockRecord(fragment = fragment)
     }
 
-    private fun setupLock(fragment: Fragment) = fragment.viewLifecycleOwnerLiveData.observe(fragment) {
+    private fun setupLock(fragment: BaseFragment<*, *>) = fragment.viewLifecycleOwnerFlow.launchCollect(fragment) {
 
         timeCreateView = System.currentTimeMillis()
 
         val tag = fragment.javaClass.simpleName + "_setupLock"
-        val view = fragment.view ?: return@observe
+        val view = fragment.view ?: return@launchCollect
 
         lockTransitionViewModel.updateTransitionLock(tag + "_State", isLock = true)
 
@@ -87,7 +86,7 @@ class LockTransitionServiceImpl : LockTransitionService {
         }
     }
 
-    private fun setupLockQueue(fragment: Fragment) = fragment.viewLifecycleOwnerLiveData.observe(fragment) {
+    private fun setupLockQueue(fragment: BaseFragment<*, *>) = fragment.viewLifecycleOwnerFlow.launchCollect(fragment) {
 
         lockTransitionViewModel.isUnlock.launchCollect(fragment.viewLifecycleOwner) { isUnlock ->
 
@@ -115,17 +114,16 @@ class LockTransitionServiceImpl : LockTransitionService {
         lockTransitionViewModel.lockTransitionMap.map { list ->
 
             list.filter { it.value.isLock }
-        }.distinctUntilChanged().launchCollect(fragment, context = handler + Dispatchers.IO) { map ->
+        }.launchCollect(fragment, context = handler + Dispatchers.IO) { map ->
 
             val isStart = map.isEmpty()
 
             if (BuildConfig.DEBUG && true)Log.d(
                 "tuanha", "LockTransitionService ${fragment.javaClass.simpleName}  --->" +
                         "\ntimeAppInit:${System.currentTimeMillis() - PhoneticsApp.start.takeNowIfNotData()}" +
-                        "\ntimeScreenInit:${System.currentTimeMillis() - timeInit.takeNowIfNotData()}" +
-                        "\ntimeCreate:${System.currentTimeMillis() - timeCreate.takeNowIfNotData()}" +
-                        "\ntimeCreateView:${System.currentTimeMillis() - timeCreateView.takeNowIfNotData()}" +
-                        "\nspaceCreate-View:${timeCreateView.takeNowIfNotData() - timeCreate.takeNowIfNotData()}" +
+                        "\ntimeScreenInit:${System.currentTimeMillis() - timeInit.takeNowIfNotData()} -> space:${timeInit.takeNowIfNotData() - PhoneticsApp.start.takeNowIfNotData()}" +
+                        "\ntimeCreate:${System.currentTimeMillis() - timeCreate.takeNowIfNotData()} -> space:${timeCreate.takeNowIfNotData() - timeInit.takeNowIfNotData()} " +
+                        "\ntimeCreateView:${System.currentTimeMillis() - timeCreateView.takeNowIfNotData()} -> space:${timeCreateView.takeNowIfNotData() - timeCreate.takeNowIfNotData()}" +
                         "\nisRecreateView:${isRecreateView}" +
                         "\nisSupportEnterTransition:${isSupportEnterTransition}" +
                         "\nstartPostponedEnterTransition:${isStart}" +

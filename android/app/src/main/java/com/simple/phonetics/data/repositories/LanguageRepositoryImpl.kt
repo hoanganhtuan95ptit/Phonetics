@@ -9,12 +9,16 @@ import com.simple.phonetics.data.api.ApiProvider
 import com.simple.phonetics.data.cache.AppCache
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.entities.Language
+import com.unknown.coroutines.handler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class LanguageRepositoryImpl(
@@ -51,6 +55,13 @@ class LanguageRepositoryImpl(
         }
     }
 
+    init {
+
+        GlobalScope.launch(handler + Dispatchers.IO) {
+            languageInput.first()
+        }
+    }
+
     override suspend fun getPhoneticCodeSelected(): String {
 
         var phoneticCode = appCache.getData(PHONETIC_CODE, "")
@@ -79,7 +90,7 @@ class LanguageRepositoryImpl(
         return phoneticCode
     }
 
-    override suspend fun getPhoneticCodeSelectedAsync(): Flow<String> = appCache.getDataAsync(PHONETIC_CODE).map {
+    override fun getPhoneticCodeSelectedAsync(): Flow<String> = appCache.getDataAsync(PHONETIC_CODE).map {
 
         getPhoneticCodeSelected()
     }.distinctUntilChanged()

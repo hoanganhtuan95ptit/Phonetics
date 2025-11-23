@@ -48,9 +48,12 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
+import com.simple.phonetics.utils.exts.combineSourcesWithDiff
+import com.simple.phonetics.utils.exts.get
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.listenerSources
+import com.simple.phonetics.utils.exts.listenerSourcesWithDiff
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.phonetics.utils.exts.value
 import com.simple.state.ResultState
@@ -171,26 +174,26 @@ class HomeViewModel(
     @VisibleForTesting
     val readingState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
-    val readingInfo: LiveData<ReadingInfo> = listenerSourcesWithDiff(text, readingState, isSupportReading) {
+    val readingInfo: Flow<ReadingInfo> = listenerSourcesWithDiff(text.asFlow(), readingState.asFlow(), isSupportReadingFlow) {
 
         val text = text.value ?: return@listenerSourcesWithDiff
         val listenState = readingState.value
-        val isSupportReading = isSupportReading.value ?: return@listenerSourcesWithDiff && text.second.isNotBlank()
+        val isSupportReading = isSupportReadingFlow.value ?: return@listenerSourcesWithDiff && text.second.isNotBlank()
 
         val info = ReadingInfo(
             isShowPlay = !listenState.isRunning() && isSupportReading,
             isShowPause = listenState.isRunning() && isSupportReading
         )
 
-        postValue(info)
+        emit(info)
     }
 
 
-    val clearInfo: LiveData<ClearInfo> = combineSourcesWithDiff(theme, translate, text) {
+    val clearInfo: Flow<ClearInfo> = combineSourcesWithDiff(themeFlow, translateFlow, text.asFlow()) {
 
         val text = text.get()
-        val theme = theme.get()
-        val translate = translate.get()
+        val theme = themeFlow.get()
+        val translate = translateFlow.get()
 
         val info = ClearInfo(
             text = translate["action_clear"].orEmpty()
@@ -204,7 +207,7 @@ class HomeViewModel(
             ),
         )
 
-        postValue(info)
+        emit(info)
     }
 
     val enterInfo: Flow<EnterInfo> = listenerSources(themeFlow, translateFlow,  outputLanguageFlow, inputLanguageFlow) {

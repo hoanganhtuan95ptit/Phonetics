@@ -98,7 +98,7 @@ class RunningTransitionServiceImpl : RunningTransitionService {
             val isRunning = map.filter { it.first.contains("Transition_", true) }.any { it.second }
 
             if (BuildConfig.DEBUG && false) Log.d(
-                "tuanha", "RunningTransitionService ${fragment.javaClass.simpleName}  --->" +
+                "tuanha", "RunningTransitionService runTransitionViewModel ${fragment.javaClass.simpleName}  --->" +
                         "\ntime:${time}" +
                         "\nisRunning:${isRunning}" +
                         "\nrunningList:${map.filter { it.second }}"
@@ -110,8 +110,8 @@ class RunningTransitionServiceImpl : RunningTransitionService {
             val time = System.currentTimeMillis() - start
             val isRunning = map.filter { it.first.contains("Transition_", true) }.any { it.second }
 
-            if (BuildConfig.DEBUG && true) Log.d(
-                "tuanha", "RunningTransitionService ${fragment.javaClass.simpleName}  --->" +
+            if (BuildConfig.DEBUG && false) Log.d(
+                "tuanha", "RunningTransitionService runTransitionViewModelActivity ${fragment.javaClass.simpleName}  --->" +
                         "\ntime:${time}" +
                         "\nisRunning:${isRunning}" +
                         "\nrunningList:${map.filter { it.second }}"

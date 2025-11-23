@@ -1,10 +1,45 @@
 package com.simple.phonetics.domain.usecase.reading
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.ReadingRepository
 import com.simple.state.ResultState
+import com.unknown.coroutines.handler
+import com.unknown.coroutines.launchCollect
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+
+private val checkSupportReadingAsync: MutableLiveData<Boolean> = object : MutableLiveData<Boolean>() {
+
+    private var job: Job? = null
+
+    override fun onActive() {
+        super.onActive()
+
+        job?.cancel()
+
+        job = LanguageRepository.instant.getPhoneticCodeSelectedAsync().map {
+
+            val state = ReadingRepository.instant.getSupportedVoices(it)
+
+            state is ResultState.Success && state.data.isNotEmpty()
+        }.flowOn(handler + Dispatchers.IO).launchCollect(CoroutineScope(Dispatchers.Main)) {
+
+            value = it
+        }
+    }
+
+    override fun onInactive() {
+        super.onInactive()
+
+        job?.cancel()
+    }
+}
 
 class CheckSupportReadingAsyncUseCase(
     private val readingRepository: ReadingRepository,
@@ -13,12 +48,7 @@ class CheckSupportReadingAsyncUseCase(
 
     suspend fun execute(): Flow<Boolean> {
 
-        return languageRepository.getPhoneticCodeSelectedAsync().map {
-
-            val state = readingRepository.getSupportedVoices(it)
-
-            state is ResultState.Success && state.data.isNotEmpty()
-        }
+        return checkSupportReadingAsync.asFlow()
     }
 
     class Param()

@@ -10,6 +10,7 @@ import com.simple.phonetics.domain.tasks.SyncTask
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getWordDelimiters
 import com.simple.phonetics.utils.exts.getWords
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
 
@@ -28,7 +29,7 @@ class WordSyncTask(
 
     override suspend fun executeTask(param: SyncTask.Param) {
 
-        val languageCode = languageRepository.getLanguageInputAsync().first().id
+        val languageCode = languageRepository.getLanguageInputAsync().filterNotNull().first().id
 
         if (languageCodeOld == languageCode) return
 
