@@ -15,8 +15,10 @@ import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.base.services.transition.onTransitionRunningEndAwait
 import com.simple.phonetics.ui.view.MainView
+import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.ServiceLoader
@@ -57,7 +59,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
     private fun observeData() = with(viewModel) {
 
-        inputLanguageFlow.launchCollect(this@MainActivity, start = CoroutineStart.UNDISPATCHED) {
+        inputLanguageFlow.launchCollect(this@MainActivity, start = CoroutineStart.UNDISPATCHED, context = handler + Dispatchers.IO) {
 
             initCompleted.first()
 
