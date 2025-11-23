@@ -2,7 +2,7 @@ project.ext {
 
     // ===================== Android SDK & Java =====================
     versionCode = 175
-    versionName = "1.5.5"
+    versionName = "1.5.6"
     versionNameDebugSuffix = "-debug"
 
     minSdkVersion = 23
