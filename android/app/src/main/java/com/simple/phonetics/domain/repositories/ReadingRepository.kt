@@ -2,6 +2,7 @@ package com.simple.phonetics.domain.repositories
 
 import com.simple.state.ResultState
 import kotlinx.coroutines.flow.Flow
+import org.koin.core.context.GlobalContext
 
 interface ReadingRepository {
 
@@ -25,4 +26,10 @@ interface ReadingRepository {
 
     suspend fun stopReading(): ResultState<String>
 
+    companion object {
+
+        val instant by lazy {
+            GlobalContext.get().get<ReadingRepository>()
+        }
+    }
 }

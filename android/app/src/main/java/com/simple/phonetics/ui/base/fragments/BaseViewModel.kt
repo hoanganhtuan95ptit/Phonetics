@@ -20,6 +20,7 @@ import com.unknown.theme.appTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.koin.core.context.GlobalContext
 import java.util.concurrent.ConcurrentHashMap
@@ -126,6 +127,16 @@ abstract class BaseViewModel : TransitionViewModel() {
         GlobalContext.get().get<CheckSupportReadingAsyncUseCase>().execute().collect {
 
             postValue(it)
+        }
+    }
+
+    val isSupportReadingFlow: Flow<Boolean> = mutableSharedFlow {
+
+        emit(false)
+
+        GlobalContext.get().get<CheckSupportReadingAsyncUseCase>().execute().collect {
+
+            emit(it)
         }
     }
 

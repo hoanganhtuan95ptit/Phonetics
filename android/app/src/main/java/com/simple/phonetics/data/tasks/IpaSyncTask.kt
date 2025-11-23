@@ -6,6 +6,7 @@ import com.simple.phonetics.domain.repositories.IpaRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.tasks.SyncTask
 import com.simple.phonetics.entities.Language
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import retrofit2.HttpException
@@ -23,7 +24,7 @@ class IpaSyncTask(
 
     override suspend fun executeTask(param: SyncTask.Param) {
 
-        val languageCode = languageRepository.getLanguageInputAsync().first().id
+        val languageCode = languageRepository.getLanguageInputAsync().filterNotNull().first().id
 
         copy(languageCode = languageCode)
 

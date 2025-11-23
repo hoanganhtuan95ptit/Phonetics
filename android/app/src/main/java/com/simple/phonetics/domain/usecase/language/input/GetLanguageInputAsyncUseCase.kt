@@ -8,7 +8,7 @@ class GetLanguageInputAsyncUseCase(
     private val languageRepository: LanguageRepository
 ) {
 
-    suspend fun execute(): Flow<Language> {
+    fun execute(): Flow<Language?> {
 
         return languageRepository.getLanguageInputAsync()
     }

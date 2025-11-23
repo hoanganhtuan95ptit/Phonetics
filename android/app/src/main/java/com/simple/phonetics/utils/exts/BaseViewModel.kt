@@ -4,7 +4,6 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.utils.ext.handler
-import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -12,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -73,15 +73,9 @@ fun <T> ViewModel.mutableSharedFlowWithDiff(
     context: CoroutineContext? = null,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     onChanged: suspend MutableSharedFlow<T>.() -> Unit
-): MutableSharedFlow<T> = MutableSharedFlow<T>().apply {
+): Flow<T> = mutableSharedFlow {
 
-    var old: T? = null
-
-    mutableSharedFlow(context, start, onChanged).launchCollect(viewModelScope) {
-
-        if (old == it) return@launchCollect
-        old = it
-
+    mutableSharedFlow(context, start, onChanged).distinctUntilChanged().collect {
         emit(it)
     }
 }
@@ -92,34 +86,22 @@ fun <T> ViewModel.combineSourcesWithDiff(
     context: CoroutineContext? = null,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     onChanged: suspend MutableSharedFlow<T>.() -> Unit
-): MutableSharedFlow<T> = MutableSharedFlow<T>().apply {
+): Flow<T> = mutableSharedFlow {
 
-    var old: T? = null
-
-    combineSources(sources = sources, context, start, onChanged).launchCollect(viewModelScope) {
-
-        if (old == it) return@launchCollect
-        old = it
-
+    combineSources(sources = sources, context, start, onChanged).distinctUntilChanged().collect {
         emit(it)
     }
 }
 
 @MainThread
-fun <T> androidx.lifecycle.ViewModels.BaseViewModel.listenerSourcesWithDiff(
+fun <T> ViewModel.listenerSourcesWithDiff(
     vararg sources: Flow<*>,
     context: CoroutineContext? = null,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     onChanged: suspend MutableSharedFlow<T>.() -> Unit
-): MutableSharedFlow<T> = MutableSharedFlow<T>().apply {
+): Flow<T> = mutableSharedFlow {
 
-    var old: T? = null
-
-    listenerSources(sources = sources, context, start, onChanged).launchCollect(viewModelScope) {
-
-        if (old == it) return@launchCollect
-        old = it
-
+    listenerSources(sources = sources, context, start, onChanged).distinctUntilChanged().collect {
         emit(it)
     }
 }

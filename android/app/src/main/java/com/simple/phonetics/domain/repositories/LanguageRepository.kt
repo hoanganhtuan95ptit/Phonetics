@@ -8,14 +8,14 @@ interface LanguageRepository {
 
     suspend fun getPhoneticCodeSelected(): String
 
-    suspend fun getPhoneticCodeSelectedAsync(): Flow<String>
+    fun getPhoneticCodeSelectedAsync(): Flow<String>
 
     suspend fun updatePhoneticCodeSelected(code: String)
 
 
     suspend fun getLanguageInput(): Language?
 
-    fun getLanguageInputAsync(): Flow<Language>
+    fun getLanguageInputAsync(): Flow<Language?>
 
     fun updateLanguageInput(language: Language)
 
