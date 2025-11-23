@@ -3,7 +3,6 @@ package com.simple.phonetics.ui
 import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.lifecycle.lifecycleScope
@@ -17,23 +16,22 @@ import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.base.services.transition.onTransitionRunningEndAwait
 import com.simple.phonetics.ui.view.MainView
 import com.unknown.coroutines.launchCollect
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.ServiceLoader
 
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("tuanha", "onCreate: LockTransitionService  0  -> ${System.currentTimeMillis() - PhoneticsApp.start}")
 
         observeData()
         super.onCreate(savedInstanceState)
 
-        Log.d("tuanha", "onCreate: LockTransitionService  1  -> ${System.currentTimeMillis() - PhoneticsApp.start}")
-
+        /**
+         * khởi tạo dịch vụ
+         */
         ServiceLoader.load(MainView::class.java).toList().forEach { it.setup(this) }
-
-        Log.d("tuanha", "onCreate: LockTransitionService  2  -> ${System.currentTimeMillis() - PhoneticsApp.start}")
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) splashScreen.setOnExitAnimationListener { splashScreenView ->
 
@@ -54,17 +52,16 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
         logAnalytics("ads_init")
 
-        Log.d("tuanha", "onCreate: LockTransitionService  3  -> ${System.currentTimeMillis() - PhoneticsApp.start}")
+        viewModel.initCompleted()
     }
 
     private fun observeData() = with(viewModel) {
 
-        Log.d("tuanha", "observeData: LockTransitionService  1  -> ${System.currentTimeMillis() - PhoneticsApp.start}")
+        inputLanguageFlow.launchCollect(this@MainActivity, start = CoroutineStart.UNDISPATCHED) {
 
-        openLanguage.launchCollect(this@MainActivity) {
+            initCompleted.first()
 
-            Log.d("tuanha", "observeData: LockTransitionService ${System.currentTimeMillis() - PhoneticsApp.start}")
-            if (it) {
+            if (it == null) {
 
                 sendDeeplink(DeeplinkManager.LANGUAGE, extras = mapOf(Param.FIRST to true))
             } else {

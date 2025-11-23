@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 @MainThread
-fun <T> ViewModel.mutableSharedFlow(context: CoroutineContext? = null, start: CoroutineStart = CoroutineStart.DEFAULT, onChanged: suspend MutableSharedFlow<T>.() -> Unit): MutableSharedFlow<T> {
+fun <T> ViewModel.mutableSharedFlow(context: CoroutineContext? = null, start: CoroutineStart = CoroutineStart.DEFAULT, onChanged: suspend MutableSharedFlow<T>.() -> Unit = {}): MutableSharedFlow<T> {
 
     val liveData = MutableSharedFlow<T>(replay = 1, extraBufferCapacity = 1)
 

@@ -11,13 +11,10 @@ import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.domain.usecase.SyncDataUseCase
 import com.simple.phonetics.utils.exts.awaitResume
-import com.simple.phonetics.utils.exts.combineSourcesWithDiff
 import com.simple.phonetics.utils.exts.mutableSharedFlow
-import com.simple.phonetics.utils.exts.value
 import com.simple.state.ResultState
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
@@ -36,15 +33,7 @@ class MainViewModel(
     }
 
 
-    val initCompleted = mutableSharedFlow<Boolean> {
-
-    }
-
-    val openLanguage: Flow<Boolean> = combineSourcesWithDiff( inputLanguageFlow) {
-
-        emit(inputLanguageFlow.value == null)
-    }
-
+    val initCompleted = mutableSharedFlow<Boolean>()
 
     init {
 

@@ -18,6 +18,7 @@ import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -114,7 +115,7 @@ class LockTransitionServiceImpl : LockTransitionService {
         lockTransitionViewModel.lockTransitionMap.map { list ->
 
             list.filter { it.value.isLock }
-        }.launchCollect(fragment, context = handler + Dispatchers.IO) { map ->
+        }.distinctUntilChanged().launchCollect(fragment, context = handler + Dispatchers.IO) { map ->
 
             val isStart = map.isEmpty()
 

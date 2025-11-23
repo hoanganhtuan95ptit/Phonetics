@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.phonetics.BuildConfig
+import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +29,7 @@ interface RunningTransitionService {
     var runTransitionViewModel: RunTransitionViewModel
     var runTransitionViewModelActivity: RunTransitionViewModel
 
-    fun setupTransitionRunning(fragment: Fragment)
+    fun setupTransitionRunning(fragment: BaseFragment<*, *>)
 }
 
 class RunningTransitionServiceImpl : RunningTransitionService {
@@ -36,7 +37,7 @@ class RunningTransitionServiceImpl : RunningTransitionService {
     override lateinit var runTransitionViewModel: RunTransitionViewModel
     override lateinit var runTransitionViewModelActivity: RunTransitionViewModel
 
-    override fun setupTransitionRunning(fragment: Fragment) {
+    override fun setupTransitionRunning(fragment: BaseFragment<*, *>) {
 
         runTransitionViewModel = fragment.viewModels<RunTransitionViewModel>().value
         runTransitionViewModelActivity = fragment.activityViewModels<RunTransitionViewModel>().value
@@ -46,14 +47,14 @@ class RunningTransitionServiceImpl : RunningTransitionService {
         setupRunningRecord(fragment = fragment)
     }
 
-    private fun setupRunning(fragment: Fragment) {
+    private fun setupRunning(fragment: BaseFragment<*, *>) {
 
         val tag = fragment.javaClass.simpleName + "_setupRunning"
 
 
         fragment.updateTransitionRunning(tag + "_State", isRunning = true)
 
-        fragment.viewLifecycleOwnerLiveData.observe(fragment) {
+        fragment.viewLifecycleOwnerFlow.launchCollect(fragment) {
 
             fragment.updateTransitionRunning(tag + "_State", isRunning = true)
 
