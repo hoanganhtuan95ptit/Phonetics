@@ -22,18 +22,16 @@ class GetPhoneticsRandomUseCase(
         val languageCode = languageRepository.getLanguageInputAsync().filterNotNull().first().id
 
 
-        val isQueryForIpa = param.resource.startsWith("/")
-
 
         val wordList = getWords(param = param, languageCode = languageCode)
 
 
-        val phoneticList = if (!isQueryForIpa) {
+        val phoneticList = if (!param.resource.startsWith("/")) {
 
             phoneticRepository.getPhonetic(textList = wordList, phoneticCode = param.phoneticsCode)
         } else param.resource.replace("/", "").let {
 
-            phoneticRepository.getPhonetic(ipaQuery = it, textList = wordList, phoneticCode = param.phoneticsCode)
+            phoneticRepository.getPhonetic(ipaQuery = ipaWrap(phoneticCode = param.phoneticsCode, ipa = it), textList = wordList, phoneticCode = param.phoneticsCode)
         }
 
 
@@ -80,6 +78,33 @@ class GetPhoneticsRandomUseCase(
         )
 
         return list
+    }
+
+    private fun ipaWrap(phoneticCode: String, ipa: String): String {
+
+        return if (ipa.equals("l", true) && phoneticCode.equals("us", true)) {
+            "ɫ"
+        } else if (ipa.equals("eə", true) && phoneticCode.equals("us", true)) {
+            "ɛɹ"
+        } else if (ipa.equals("ɜː", true) && phoneticCode.equals("us", true)) {
+            "ɝ"
+        } else if (ipa.equals("ʌ", true) && phoneticCode.equals("us", true)) {
+            "ə"
+        } else if (ipa.equals("uː", true) && phoneticCode.equals("us", true)) {
+            "u"
+        } else if (ipa.equals("ɔː", true) && phoneticCode.equals("us", true)) {
+            "ɔ"
+        } else if (ipa.equals("iː", true) && phoneticCode.equals("us", true)) {
+            "i"
+        } else if (ipa.equals("ɑː", true) && phoneticCode.equals("us", true)) {
+            "ə"
+        } else if (ipa.equals("oʊ", true) && phoneticCode.equals("uk", true)) {
+            "əʊ"
+        } else if (ipa.equals("g", true)) {
+            "ɡ"
+        } else {
+            ipa
+        }
     }
 
     data class Param(

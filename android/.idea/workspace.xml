@@ -163,8 +163,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="1.5.6">
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/ui/MainActivity.kt" afterDir="false" />
+    <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/repositories/PhoneticRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/repositories/PhoneticRepositoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/usecase/phonetics/GetPhoneticsRandomUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/usecase/phonetics/GetPhoneticsRandomUseCase.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -206,12 +208,12 @@
         <option value="Class" />
         <option value="resourceFile" />
         <option value="Kotlin Data Class" />
-        <option value="Kotlin Interface" />
         <option value="Kotlin Object" />
         <option value="valueResourceFile" />
         <option value="layoutResourceFile" />
         <option value="Kotlin File" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Interface" />
       </list>
     </option>
   </component>
@@ -669,7 +671,23 @@
       <option name="project" value="LOCAL" />
       <updated>1763907798545</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="optimize">
+      <option name="closed" value="true" />
+      <created>1763908331217</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1763908331217</updated>
+    </task>
+    <task id="LOCAL-00014" summary="optimize">
+      <option name="closed" value="true" />
+      <created>1763987810685</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1763987810685</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -686,9 +704,9 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="1.5.5" />
-    <MESSAGE value="optimize" />
     <MESSAGE value="1.5.6" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.5.6" />
+    <MESSAGE value="optimize" />
+    <option name="LAST_COMMIT_MESSAGE" value="optimize" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1145,17 +1163,17 @@
       <map>
         <entry key="com.ipa.english.phonetics">
           <value>
-            <CheckInfo lastCheckTimestamp="1763789384049" />
+            <CheckInfo lastCheckTimestamp="1763909456155" />
           </value>
         </entry>
         <entry key="com.ipa.english.phonetics.debug">
           <value>
-            <CheckInfo lastCheckTimestamp="1763789384023" />
+            <CheckInfo lastCheckTimestamp="1763909456155" />
           </value>
         </entry>
         <entry key="com.ipa.english.phonetics.debug.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1763789384073" />
+            <CheckInfo lastCheckTimestamp="1763909456107" />
           </value>
         </entry>
         <entry key="com.simple.config.phonetics.test">
