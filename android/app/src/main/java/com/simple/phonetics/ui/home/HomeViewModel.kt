@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -87,16 +88,16 @@ class HomeViewModel(
     @VisibleForTesting
     val jobQueue = JobQueue()
 
-    val title: LiveData<RichText> = combineSourcesWithDiff(theme, translate) {
+    val title: Flow<RichText> = combineSourcesWithDiff(themeFlow, translateFlow) {
 
-        val theme = theme.get()
-        val translate = translate.getOrEmpty()
+        val theme = themeFlow.get()
+        val translate = translateFlow.get()
 
         val title = translate.getOrKey("Ephonetics")
             .with(ForegroundColor(theme.colorOnSurface))
             .with("Ep", Bold, ForegroundColor(theme.colorPrimary))
 
-        postValue(title)
+        emit(title)
     }
 
 

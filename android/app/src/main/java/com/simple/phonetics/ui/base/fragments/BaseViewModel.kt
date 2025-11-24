@@ -13,7 +13,7 @@ import com.simple.phonetics.domain.usecase.speak.CheckSupportSpeakAsyncUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.utils.TextViewMetrics
 import com.simple.phonetics.utils.appStyle
-import com.simple.phonetics.utils.exts.mutableSharedFlow
+import com.simple.phonetics.utils.exts.mutableSharedFlowWithDiff
 import com.unknown.size.appSize
 import com.unknown.string.appString
 import com.unknown.theme.appTheme
@@ -55,10 +55,10 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
-    val themeFlow = mutableSharedFlow {
+    val themeFlow = mutableSharedFlowWithDiff {
 
         appTheme.collect {
-            emit(it)
+            emit(it.toMap())
         }
     }
 
@@ -70,10 +70,10 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
-    val translateFlow = mutableSharedFlow {
+    val translateFlow = mutableSharedFlowWithDiff {
 
         appString.collect {
-            emit(it)
+            emit(it.toMap())
         }
     }
 
@@ -85,7 +85,7 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
-    val inputLanguageFlow = mutableSharedFlow {
+    val inputLanguageFlow = mutableSharedFlowWithDiff {
 
         GlobalContext.get().get<GetLanguageInputAsyncUseCase>().execute().collect {
 
@@ -101,7 +101,7 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
-    val outputLanguageFlow = mutableSharedFlow {
+    val outputLanguageFlow = mutableSharedFlowWithDiff {
 
         GlobalContext.get().get<GetLanguageOutputAsyncUseCase>().execute().collect {
 
@@ -130,7 +130,7 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
-    val isSupportReadingFlow: Flow<Boolean> = mutableSharedFlow {
+    val isSupportReadingFlow: Flow<Boolean> = mutableSharedFlowWithDiff {
 
         emit(false)
 
