@@ -2,6 +2,8 @@ package com.simple.phonetics
 
 import android.app.Application
 import android.content.Context
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import com.google.android.play.core.splitcompat.SplitCompat
 import com.simple.phonetics.di.apiModule
 import com.simple.phonetics.di.cacheModule
@@ -14,6 +16,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
+
 
 class PhoneticsApp : Application() {
 
@@ -40,6 +43,19 @@ class PhoneticsApp : Application() {
                 repositoryModule,
             )
         }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        val threadPolicy by lazy {
+            ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build()
+        }
+
+        if (BuildConfig.DEBUG) StrictMode.setThreadPolicy(threadPolicy)
     }
 
     companion object {

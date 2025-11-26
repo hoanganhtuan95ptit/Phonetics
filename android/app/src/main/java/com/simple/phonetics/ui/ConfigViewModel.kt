@@ -5,11 +5,9 @@ import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
-import com.simple.core.utils.extentions.asObject
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
@@ -227,12 +225,10 @@ class ConfigViewModel(
 
         val state = voiceState.get()
 
-        state.doSuccess {
+        if (state is ResultState.Success) {
 
-            postValue(it)
-        }
-
-        state.doFailed {
+            postValue(state.data)
+        } else {
 
             postValue(emptyList())
         }

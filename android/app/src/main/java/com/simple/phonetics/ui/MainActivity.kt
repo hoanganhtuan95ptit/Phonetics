@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
@@ -20,6 +21,8 @@ import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.util.ServiceLoader
 
@@ -33,7 +36,13 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         /**
          * khởi tạo dịch vụ
          */
-        ServiceLoader.load(MainView::class.java).toList().forEach { it.setup(this) }
+        flow {
+
+            emit(ServiceLoader.load(MainView::class.java).toList())
+        }.flowOn(handler + Dispatchers.IO).launchCollect(lifecycleScope) {
+
+            it.forEach { it.setup(this) }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) splashScreen.setOnExitAnimationListener { splashScreenView ->
 
