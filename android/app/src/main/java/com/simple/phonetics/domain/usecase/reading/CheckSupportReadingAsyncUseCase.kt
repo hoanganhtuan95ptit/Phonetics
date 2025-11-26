@@ -10,7 +10,9 @@ import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
@@ -23,12 +25,7 @@ private val checkSupportReadingAsync: MutableLiveData<Boolean> = object : Mutabl
 
         job?.cancel()
 
-        job = LanguageRepository.instant.getPhoneticCodeSelectedAsync().map {
-
-            val state = ReadingRepository.instant.getSupportedVoices(it)
-
-            state is ResultState.Success && state.data.isNotEmpty()
-        }.flowOn(handler + Dispatchers.IO).launchCollect(CoroutineScope(Dispatchers.Main)) {
+        job = refreshAsync().launchCollect(CoroutineScope(Dispatchers.Main)) {
 
             value = it
         }
@@ -39,6 +36,21 @@ private val checkSupportReadingAsync: MutableLiveData<Boolean> = object : Mutabl
 
         job?.cancel()
     }
+
+    private fun refreshAsync() = channelFlow {
+
+        LanguageRepository.instant.getPhoneticCodeSelectedAsync().map {
+
+            val state = ReadingRepository.instant.getSupportedVoices(it)
+
+            state is ResultState.Success && state.data.isNotEmpty()
+        }.collect {
+
+            trySend(it)
+        }
+
+        awaitClose()
+    }.flowOn(handler + Dispatchers.IO)
 }
 
 class CheckSupportReadingAsyncUseCase(

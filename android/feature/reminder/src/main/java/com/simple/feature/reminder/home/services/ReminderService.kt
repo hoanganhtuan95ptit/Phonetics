@@ -6,6 +6,8 @@ import com.simple.autobind.annotation.AutoBind
 import com.simple.feature.reminder.data.cache.AppCache
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.services.HomeService
+import com.unknown.coroutines.handler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,7 +23,7 @@ class ReminderService : HomeService {
         homeFragment.binding?.root?.setOnInterceptTouchListener {
 
             job?.cancel()
-            job = homeFragment.viewLifecycleOwner.lifecycleScope.launch {
+            job = homeFragment.viewLifecycleOwner.lifecycleScope.launch(handler + Dispatchers.IO) {
 
                 delay(350)
                 AppCache.updateTimeUserInteractInHome()

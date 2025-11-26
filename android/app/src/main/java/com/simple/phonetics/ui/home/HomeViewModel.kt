@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -49,12 +48,9 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
-import com.simple.phonetics.utils.exts.combineSourcesWithDiff
-import com.simple.phonetics.utils.exts.get
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.listenerSources
-import com.simple.phonetics.utils.exts.listenerSourcesWithDiff
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.phonetics.utils.exts.value
 import com.simple.state.ResultState
@@ -88,16 +84,16 @@ class HomeViewModel(
     @VisibleForTesting
     val jobQueue = JobQueue()
 
-    val title: Flow<RichText> = combineSourcesWithDiff(themeFlow, translateFlow) {
+    val title: LiveData<RichText> = combineSourcesWithDiff(theme, translate) {
 
-        val theme = themeFlow.get()
-        val translate = translateFlow.get()
+        val theme = theme.get()
+        val translate = translate.get()
 
         val title = translate.getOrKey("Ephonetics")
             .with(ForegroundColor(theme.colorOnSurface))
             .with("Ep", Bold, ForegroundColor(theme.colorPrimary))
 
-        emit(title)
+        postValue(title)
     }
 
 
@@ -175,26 +171,26 @@ class HomeViewModel(
     @VisibleForTesting
     val readingState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Success(""))
 
-    val readingInfo: Flow<ReadingInfo> = listenerSourcesWithDiff(text.asFlow(), readingState.asFlow(), isSupportReadingFlow) {
+    val readingInfo: LiveData<ReadingInfo> = listenerSourcesWithDiff(text, readingState, isSupportReading) {
 
         val text = text.value ?: return@listenerSourcesWithDiff
         val listenState = readingState.value
-        val isSupportReading = isSupportReadingFlow.value ?: return@listenerSourcesWithDiff && text.second.isNotBlank()
+        val isSupportReading = isSupportReading.value ?: return@listenerSourcesWithDiff && text.second.isNotBlank()
 
         val info = ReadingInfo(
             isShowPlay = !listenState.isRunning() && isSupportReading,
             isShowPause = listenState.isRunning() && isSupportReading
         )
 
-        emit(info)
+        postValue(info)
     }
 
 
-    val clearInfo: Flow<ClearInfo> = combineSourcesWithDiff(themeFlow, translateFlow, text.asFlow()) {
+    val clearInfo: LiveData<ClearInfo> = combineSourcesWithDiff(theme, translate, text) {
 
         val text = text.get()
-        val theme = themeFlow.get()
-        val translate = translateFlow.get()
+        val theme = theme.get()
+        val translate = translate.get()
 
         val info = ClearInfo(
             text = translate["action_clear"].orEmpty()
@@ -208,15 +204,15 @@ class HomeViewModel(
             ),
         )
 
-        emit(info)
+        postValue(info)
     }
 
     val enterInfo: Flow<EnterInfo> = listenerSources(themeFlow, translateFlow,  outputLanguageFlow, inputLanguageFlow) {
 
         val theme = themeFlow.value ?: return@listenerSources
         val translate = translateFlow.value ?: return@listenerSources
-        val inputLanguage = outputLanguageFlow.value ?: return@listenerSources
-        val outputLanguage = inputLanguageFlow.value ?: return@listenerSources
+        val inputLanguage = inputLanguageFlow.value ?: return@listenerSources
+        val outputLanguage = outputLanguageFlow.value ?: return@listenerSources
 
         val languageName = if (isReverse.value == true) {
             outputLanguage.name

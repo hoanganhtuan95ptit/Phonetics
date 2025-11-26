@@ -9,7 +9,9 @@ import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -23,10 +25,7 @@ private val checkSupportSpeakAsync: MutableLiveData<Boolean> = object : MutableL
 
         job?.cancel()
 
-        job = LanguageRepository.instant.getLanguageInputAsync().filterNotNull().map {
-
-            SpeakRepository.instant.checkSpeak(it.id)
-        }.flowOn(handler + Dispatchers.IO).launchCollect(CoroutineScope(Dispatchers.Main)) {
+        job = refreshAsync().launchCollect(CoroutineScope(Dispatchers.Main)) {
 
             value = it
         }
@@ -37,6 +36,19 @@ private val checkSupportSpeakAsync: MutableLiveData<Boolean> = object : MutableL
 
         job?.cancel()
     }
+
+    private fun refreshAsync() = channelFlow {
+
+        LanguageRepository.instant.getLanguageInputAsync().filterNotNull().map {
+
+            SpeakRepository.instant.checkSpeak(it.id)
+        }.collect {
+
+            trySend(it)
+        }
+
+        awaitClose()
+    }.flowOn(handler + Dispatchers.IO)
 }
 
 class CheckSupportSpeakAsyncUseCase(

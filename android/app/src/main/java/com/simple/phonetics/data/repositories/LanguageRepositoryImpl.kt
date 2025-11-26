@@ -66,7 +66,7 @@ class LanguageRepositoryImpl(
 
         var phoneticCode = appCache.getData(PHONETIC_CODE, "")
 
-        val languageInput = getLanguageInputAsync().first()
+        val languageInput = languageInput.filterNotNull().first()
 
         if (languageInput.listIpa.firstOrNull { it.code == phoneticCode } != null) {
 
@@ -106,9 +106,9 @@ class LanguageRepositoryImpl(
         return languageInput.first()
     }
 
-    override fun getLanguageInputAsync(): Flow<Language> {
+    override fun getLanguageInputAsync(): Flow<Language?> {
 
-        return languageInput.filterNotNull()
+        return languageInput
     }
 
     override fun updateLanguageInput(language: Language) {
