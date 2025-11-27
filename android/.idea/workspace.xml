@@ -165,9 +165,10 @@
   <component name="ChangeListManager">
     <list default="true" id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="optimize">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/repositories/PhoneticRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/data/repositories/PhoneticRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/usecase/phonetics/GetPhoneticsRandomUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/simple/phonetics/domain/usecase/phonetics/GetPhoneticsRandomUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constant.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/constant.gradle" afterDir="false" />
     </list>
+    <list id="85ce1c6b-dd6a-4ad4-bbf8-508c9b4537c2" name="Not push" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -212,8 +213,8 @@
         <option value="valueResourceFile" />
         <option value="layoutResourceFile" />
         <option value="Kotlin File" />
-        <option value="Kotlin Class" />
         <option value="Kotlin Interface" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -570,6 +571,7 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="eafc7c44-b5b7-4a2e-a3a1-907f400667d1" name="Changes" comment="" />
+      <changelist id="85ce1c6b-dd6a-4ad4-bbf8-508c9b4537c2" name="Not push" comment="" />
       <created>1736912855507</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -687,7 +689,31 @@
       <option name="project" value="LOCAL" />
       <updated>1763987810685</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="fix random ipa">
+      <option name="closed" value="true" />
+      <created>1763994822059</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1763994822059</updated>
+    </task>
+    <task id="LOCAL-00016" summary="1.5.7">
+      <option name="closed" value="true" />
+      <created>1763994990532</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1763994990532</updated>
+    </task>
+    <task id="LOCAL-00017" summary="optimize">
+      <option name="closed" value="true" />
+      <created>1764170352608</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1764170352608</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -705,6 +731,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="1.5.5" />
     <MESSAGE value="1.5.6" />
+    <MESSAGE value="fix random ipa" />
+    <MESSAGE value="1.5.7" />
     <MESSAGE value="optimize" />
     <option name="LAST_COMMIT_MESSAGE" value="optimize" />
   </component>
@@ -1163,17 +1191,17 @@
       <map>
         <entry key="com.ipa.english.phonetics">
           <value>
-            <CheckInfo lastCheckTimestamp="1763909456155" />
+            <CheckInfo lastCheckTimestamp="1764136421679" />
           </value>
         </entry>
         <entry key="com.ipa.english.phonetics.debug">
           <value>
-            <CheckInfo lastCheckTimestamp="1763909456155" />
+            <CheckInfo lastCheckTimestamp="1764136421679" />
           </value>
         </entry>
         <entry key="com.ipa.english.phonetics.debug.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1763909456107" />
+            <CheckInfo lastCheckTimestamp="1764136421679" />
           </value>
         </entry>
         <entry key="com.simple.config.phonetics.test">
