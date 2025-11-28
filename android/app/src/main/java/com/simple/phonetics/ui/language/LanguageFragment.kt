@@ -142,7 +142,7 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
             binding ?: return@launchCollect
 
-            viewLifecycleOwner.awaitResume()
+            fragment.awaitResume()
 
             if (it is ResultState.Success) {
 
