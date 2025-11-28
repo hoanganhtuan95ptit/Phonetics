@@ -50,7 +50,8 @@ import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
-import com.simple.phonetics.utils.exts.listenerSources
+import com.simple.phonetics.utils.exts.listenerSourcesWithDiff
+import com.simple.phonetics.utils.exts.mutableSharedFlow
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.phonetics.utils.exts.value
 import com.simple.state.ResultState
@@ -122,7 +123,14 @@ class HomeViewModel(
     }
 
 
+    @Deprecated("")
     val isReverse: LiveData<Boolean> = MediatorLiveData(false)
+
+    val isReverseFlow = mutableSharedFlow {
+
+        emit(false)
+    }
+
 
     @VisibleForTesting
     val isSupportReverse: LiveData<Boolean> = combineSourcesWithDiff(inputLanguage, outputLanguage, isSupportTranslate) {
@@ -207,14 +215,14 @@ class HomeViewModel(
         postValue(info)
     }
 
-    val enterInfo: Flow<EnterInfo> = listenerSources(themeFlow, translateFlow,  outputLanguageFlow, inputLanguageFlow) {
+    val enterInfo: Flow<EnterInfo> = listenerSourcesWithDiff(themeFlow, translateFlow, isReverseFlow, outputLanguageFlow, inputLanguageFlow) {
 
-        val theme = themeFlow.value ?: return@listenerSources
-        val translate = translateFlow.value ?: return@listenerSources
-        val inputLanguage = inputLanguageFlow.value ?: return@listenerSources
-        val outputLanguage = outputLanguageFlow.value ?: return@listenerSources
+        val theme = themeFlow.value ?: return@listenerSourcesWithDiff
+        val translate = translateFlow.value ?: return@listenerSourcesWithDiff
+        val inputLanguage = inputLanguageFlow.value ?: return@listenerSourcesWithDiff
+        val outputLanguage = outputLanguageFlow.value ?: return@listenerSourcesWithDiff
 
-        val languageName = if (isReverse.value == true) {
+        val languageName = if (isReverseFlow.value == true) {
             outputLanguage.name
         } else {
             inputLanguage.name
@@ -399,6 +407,7 @@ class HomeViewModel(
     fun switchReverse() {
 
         this.isReverse.postValue(!this.isReverse.get())
+        this.isReverseFlow.tryEmit(!this.isReverse.get())
     }
 
     fun updateSupportTranslate(b: Boolean) {
