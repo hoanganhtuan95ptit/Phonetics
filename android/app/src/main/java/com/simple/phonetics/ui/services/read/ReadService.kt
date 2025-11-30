@@ -1,60 +1,63 @@
-package com.simple.phonetics.ui.view
+package com.simple.phonetics.ui.services.read
 
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.speech.tts.Voice
+import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import com.google.auto.service.AutoService
+import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.handler
 import com.simple.crashlytics.logCrashlytics
 import com.simple.event.listenerEvent
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
-import com.simple.phonetics.EventName.GET_VOICE_RESPONSE
-import com.simple.phonetics.EventName.START_READING_TEXT_RESPONSE
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.services.MainService
 import com.simple.state.ResultState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.util.Locale
+import kotlin.collections.get
+import kotlin.collections.orEmpty
 
 // ứng dụng sẽ đọc chữ
-@AutoService(MainView::class)
-class ReadView : MainView {
+@AutoBind(MainActivity::class)
+class ReadService : MainService {
 
     private val speakInitStatus = MediatorLiveData<Int>()
 
-    override fun setup(activity: MainActivity) {
+    override fun setup(mainActivity: MainActivity) {
 
-        val textToSpeech = TextToSpeech(activity) { status ->
+        val textToSpeech = TextToSpeech(mainActivity) { status ->
 
             speakInitStatus.postValue(status)
         }
 
-        listenerEvent(activity.lifecycle, EventName.GET_VOICE_REQUEST) {
+        listenerEvent(mainActivity.lifecycle, EventName.GET_VOICE_REQUEST) {
 
             getVoiceAndFilter(textToSpeech = textToSpeech, params = it)
         }
 
-        listenerEvent(activity.lifecycle, EventName.START_READING_TEXT_REQUEST) {
+        listenerEvent(mainActivity.lifecycle, EventName.START_READING_TEXT_REQUEST) {
 
             speakText(textToSpeech = textToSpeech, params = it)
         }
 
-        listenerEvent(activity.lifecycle, EventName.STOP_READING_TEXT_REQUEST) {
+        listenerEvent(mainActivity.lifecycle, EventName.STOP_READING_TEXT_REQUEST) {
 
-            sendEvent(START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException("stop speak")))
+            sendEvent(EventName.START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException("stop speak")))
             textToSpeech.stop()
         }
 
-        activity.lifecycle.addObserver(object : LifecycleEventObserver {
+        mainActivity.lifecycle.addObserver(object : LifecycleEventObserver {
 
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
 
@@ -67,11 +70,14 @@ class ReadView : MainView {
 
             private fun TextToSpeech.stopSpeak() {
 
-                sendEvent(START_READING_TEXT_RESPONSE, ResultState.Success(""))
+                sendEvent(EventName.START_READING_TEXT_RESPONSE, ResultState.Success(""))
 
                 stop()
             }
         })
+
+
+        mainActivity.viewModels<ReadViewModel>().value.notifyInitCompleted()
     }
 
     private suspend fun getVoiceAndFilter(textToSpeech: TextToSpeech, params: Any) {
@@ -80,7 +86,7 @@ class ReadView : MainView {
 
         if (status == TextToSpeech.ERROR || params !is Map<*, *>) {
 
-            sendEvent(GET_VOICE_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
+            sendEvent(EventName.GET_VOICE_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
             return
         }
 
@@ -107,10 +113,10 @@ class ReadView : MainView {
 
         if (voiceList.isEmpty()) {
 
-            sendEvent(GET_VOICE_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
+            sendEvent(EventName.GET_VOICE_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
         } else {
 
-            sendEvent(GET_VOICE_RESPONSE, ResultState.Success(extras))
+            sendEvent(EventName.GET_VOICE_RESPONSE, ResultState.Success(extras))
         }
 
         if (voiceList.isEmpty()) withContext(handler + Dispatchers.IO) {
@@ -130,7 +136,7 @@ class ReadView : MainView {
 
         if (status == TextToSpeech.ERROR || params !is Map<*, *>) {
 
-            sendEvent(START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
+            sendEvent(EventName.START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
             return
         }
 
@@ -153,7 +159,7 @@ class ReadView : MainView {
 
         if (voice == null) {
 
-            sendEvent(START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
+            sendEvent(EventName.START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException("not support speak")))
             return
         }
 
@@ -164,18 +170,18 @@ class ReadView : MainView {
 
             override fun onStart(p0: String?) {
 
-                sendEvent(START_READING_TEXT_RESPONSE, ResultState.Running(""))
+                sendEvent(EventName.START_READING_TEXT_RESPONSE, ResultState.Running(""))
             }
 
             override fun onDone(p0: String?) {
 
-                sendEvent(START_READING_TEXT_RESPONSE, ResultState.Success(""))
+                sendEvent(EventName.START_READING_TEXT_RESPONSE, ResultState.Success(""))
             }
 
             @Deprecated("Deprecated in Java", ReplaceWith("viewModel.updateSpeakStatus(false)"))
             override fun onError(p0: String?) {
 
-                sendEvent(START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException(p0 ?: "")))
+                sendEvent(EventName.START_READING_TEXT_RESPONSE, ResultState.Failed(RuntimeException(p0 ?: "")))
             }
         })
 

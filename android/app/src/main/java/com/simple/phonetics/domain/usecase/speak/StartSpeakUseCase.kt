@@ -8,7 +8,7 @@ class StartSpeakUseCase(
     private val speakRepository: SpeakRepository
 ) {
 
-    suspend fun execute(param: Param): Flow<ResultState<String>> {
+    fun execute(param: Param): Flow<ResultState<String>> {
 
         return speakRepository.startSpeakText(
             languageCode = param.languageCode,

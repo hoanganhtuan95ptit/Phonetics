@@ -21,7 +21,7 @@ import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
-import com.simple.phonetics.ui.base.adapters.IpaViewItem
+import com.simple.phonetics.ui.common.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.adapters.measureTextViewHeight

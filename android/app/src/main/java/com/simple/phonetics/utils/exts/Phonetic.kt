@@ -19,8 +19,8 @@ import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.base.adapters.PhoneticsLoadingViewItem
-import com.simple.phonetics.ui.base.adapters.PhoneticsViewItem
+import com.simple.phonetics.ui.common.adapters.PhoneticsLoadingViewItem
+import com.simple.phonetics.ui.common.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 import com.simple.state.ResultState
 import com.unknown.theme.utils.exts.colorError

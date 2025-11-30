@@ -11,7 +11,7 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
-import com.simple.phonetics.ui.base.adapters.IpaViewItem
+import com.simple.phonetics.ui.common.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel

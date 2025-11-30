@@ -20,7 +20,7 @@ class UpdateLanguageInputUseCase(
     private val languageRepository: LanguageRepository,
 ) {
 
-    suspend fun execute(param: Param): Flow<ResultState<Map<String, State>>> = channelFlow {
+    fun execute(param: Param): Flow<ResultState<Map<String, State>>> = channelFlow {
 
         val listState = linkedMapOf<String, State>()
 

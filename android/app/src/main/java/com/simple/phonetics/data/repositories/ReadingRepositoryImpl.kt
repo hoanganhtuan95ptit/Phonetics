@@ -1,5 +1,7 @@
 package com.simple.phonetics.data.repositories
 
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.asFlow
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.event.listenerEvent
 import com.simple.event.sendEvent
@@ -22,6 +24,13 @@ import java.util.UUID
 class ReadingRepositoryImpl(
     private val appCache: AppCache
 ) : ReadingRepository {
+
+    private val init = MediatorLiveData<Unit>()
+
+    override fun initCompleted() {
+
+        init.postValue(Unit)
+    }
 
 
     override suspend fun getVoiceIdSelected(): Int {
@@ -62,6 +71,8 @@ class ReadingRepositoryImpl(
 
     override suspend fun getSupportedVoices(phoneticCode: String): ResultState<List<Int>> = channelFlow {
 
+        init.asFlow().first()
+
         val taskId = "SUPPORTED_VOICES_" + UUID.randomUUID().toString()
 
         listenerEvent(EventName.GET_VOICE_RESPONSE) {
@@ -101,6 +112,8 @@ class ReadingRepositoryImpl(
     }.first()
 
     override suspend fun startReading(text: String, phoneticCode: String, voiceId: Int, voiceSpeed: Float): Flow<ResultState<String>> = channelFlow {
+
+        init.asFlow().first()
 
         listenerEvent(EventName.START_READING_TEXT_RESPONSE) {
 
@@ -146,6 +159,8 @@ class ReadingRepositoryImpl(
     }
 
     override suspend fun stopReading(): ResultState<String> {
+
+        init.asFlow().first()
 
         sendEvent(EventName.STOP_READING_TEXT_REQUEST, Unit)
 

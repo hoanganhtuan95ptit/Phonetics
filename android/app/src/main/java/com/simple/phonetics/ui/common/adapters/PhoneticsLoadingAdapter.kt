@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.base.adapters
+package com.simple.phonetics.ui.common.adapters
 
 import android.view.LayoutInflater
 import android.view.View

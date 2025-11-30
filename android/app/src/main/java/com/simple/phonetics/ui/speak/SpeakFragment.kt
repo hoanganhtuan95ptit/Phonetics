@@ -37,7 +37,7 @@ import com.simple.phonetics.R
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionConfirmSpeakBinding
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager

@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.view.ads
+package com.simple.phonetics.ui.services.ads
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
@@ -8,18 +8,16 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.google.auto.service.AutoService
 import com.simple.analytics.logAnalytics
-import com.simple.core.utils.extentions.toJson
+import com.simple.autobind.annotation.AutoBind
+import com.simple.config.phonetics.R
 import com.simple.coreapp.utils.ext.handler
 import com.unknown.coroutines.launchCollect
-import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.DeeplinkManager.ADS
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.view.MainView
+import com.simple.phonetics.ui.services.MainService
 import com.simple.phonetics.utils.sendDeeplinkWithThank
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -29,26 +27,26 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-@AutoService(MainView::class)
-class AdsView : MainView {
+@AutoBind(MainActivity::class)
+class AdsService : MainService {
 
-    override fun setup(activity: MainActivity) {
+    override fun setup(mainActivity: MainActivity) {
 
-        val adsViewModel by activity.viewModel<AdsViewModel>()
+        val adsViewModel by mainActivity.viewModel<AdsViewModel>()
 
 
         val adsInit = MediatorLiveData<Unit>()
 
 
-        activity.lifecycleScope.launch(handler + Dispatchers.IO) {
+        mainActivity.lifecycleScope.launch(handler + Dispatchers.IO) {
 
-            MobileAds.initialize(activity) {
+            MobileAds.initialize(mainActivity) {
 
                 adsInit.postValue(Unit)
             }
         }
 
-        adsViewModel.show.asFlow().launchCollect(activity) {
+        adsViewModel.show.asFlow().launchCollect(mainActivity) {
 
 
             adsInit.asFlow().first()
@@ -58,7 +56,7 @@ class AdsView : MainView {
 
             runCatching {
 
-                showInterstitialAd(activity).first()
+                showInterstitialAd(mainActivity).first()
                 adsViewModel.countShow()
             }
         }
@@ -70,7 +68,7 @@ class AdsView : MainView {
 
         val interstitialAd = channelFlow {
 
-            InterstitialAd.load(activity, activity.getString(com.simple.config.phonetics.R.string.ad_unit_id), AdRequest.Builder().build(), object : InterstitialAdLoadCallback() {
+            InterstitialAd.load(activity, activity.getString(R.string.ad_unit_id), AdRequest.Builder().build(), object : InterstitialAdLoadCallback() {
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
 

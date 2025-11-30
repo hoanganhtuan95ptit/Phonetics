@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.base
+package com.simple.phonetics.ui.common
 
 import android.content.ComponentCallbacks
 import android.os.Bundle

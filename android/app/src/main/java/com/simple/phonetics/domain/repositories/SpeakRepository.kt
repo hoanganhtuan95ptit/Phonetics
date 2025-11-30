@@ -6,9 +6,11 @@ import org.koin.core.context.GlobalContext
 
 interface SpeakRepository {
 
+    fun initCompleted()
+
     suspend fun checkSpeak(languageCode: String): Boolean
 
-    suspend fun startSpeakText(languageCode: String): Flow<ResultState<String>>
+    fun startSpeakText(languageCode: String): Flow<ResultState<String>>
 
     suspend fun stopSpeakText(): ResultState<String>
 

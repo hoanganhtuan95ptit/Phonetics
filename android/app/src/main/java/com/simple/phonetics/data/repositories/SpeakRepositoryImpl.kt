@@ -1,5 +1,7 @@
 package com.simple.phonetics.data.repositories
 
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.asFlow
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.event.listenerEvent
 import com.simple.event.sendEvent
@@ -15,7 +17,16 @@ import java.util.UUID
 
 class SpeakRepositoryImpl : SpeakRepository {
 
+    private val init = MediatorLiveData<Unit>()
+
+    override fun initCompleted() {
+
+        init.postValue(Unit)
+    }
+
     override suspend fun checkSpeak(languageCode: String): Boolean = channelFlow {
+
+        init.asFlow().first()
 
         val taskId = UUID.randomUUID().toString()
 
@@ -42,7 +53,9 @@ class SpeakRepositoryImpl : SpeakRepository {
         }
     }.first()
 
-    override suspend fun startSpeakText(languageCode: String): Flow<ResultState<String>> = channelFlow {
+    override fun startSpeakText(languageCode: String): Flow<ResultState<String>> = channelFlow {
+
+        init.asFlow().first()
 
         listenerEvent(EventName.START_SPEAK_TEXT_RESPONSE) {
 
@@ -84,6 +97,8 @@ class SpeakRepositoryImpl : SpeakRepository {
     }
 
     override suspend fun stopSpeakText(): ResultState<String> {
+
+        init.asFlow().first()
 
         sendEvent(EventName.STOP_SPEAK_TEXT_REQUEST, Unit)
 
