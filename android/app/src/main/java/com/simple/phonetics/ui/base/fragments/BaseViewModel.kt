@@ -31,6 +31,7 @@ abstract class BaseViewModel : TransitionViewModel() {
     private val map = ConcurrentHashMap<String, Job>()
 
 
+    @Deprecated("")
     val size: LiveData<Map<String, Int>> = mediatorLiveData {
 
         appSize.collect {
@@ -39,6 +40,16 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
+    val sizeFlow: Flow<Map<String, Int>> = mutableSharedFlowWithDiff {
+
+        appSize.collect {
+
+            emit(it.toMutableMap())
+        }
+    }
+
+
+    @Deprecated("")
     val style: LiveData<Map<String, TextViewMetrics>> = mediatorLiveData {
 
         appStyle.collect {
@@ -47,6 +58,16 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
+    val styleFlow: Flow<Map<String, TextViewMetrics>> = mutableSharedFlowWithDiff {
+
+        appStyle.collect {
+
+            emit(it.toMutableMap())
+        }
+    }
+
+
+    @Deprecated("")
     val theme: LiveData<Map<String, Any>> = mediatorLiveData {
 
         appTheme.collect {
@@ -62,6 +83,8 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
+
+    @Deprecated("")
     val translate: LiveData<Map<String, String>> = mediatorLiveData {
 
         appString.collect {
@@ -77,6 +100,8 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
+
+    @Deprecated("")
     val inputLanguage: LiveData<Language> = mediatorLiveData {
 
         GlobalContext.get().get<GetLanguageInputAsyncUseCase>().execute().collect {
@@ -93,6 +118,8 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
+
+    @Deprecated("")
     val outputLanguage: LiveData<Language> = mediatorLiveData {
 
         GlobalContext.get().get<GetLanguageOutputAsyncUseCase>().execute().collect {
@@ -110,6 +137,7 @@ abstract class BaseViewModel : TransitionViewModel() {
     }
 
 
+    @Deprecated("")
     open val isSupportSpeak: LiveData<Boolean> = mediatorLiveData {
 
         postValue(false)
@@ -120,6 +148,18 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
+    open val isSupportSpeakFlow: Flow<Boolean> = mutableSharedFlowWithDiff {
+
+        emit(false)
+
+        GlobalContext.get().get<CheckSupportSpeakAsyncUseCase>().execute().collect {
+
+            emit(it)
+        }
+    }
+
+
+    @Deprecated("")
     val isSupportReading: LiveData<Boolean> = mediatorLiveData {
 
         postValue(false)
@@ -141,6 +181,7 @@ abstract class BaseViewModel : TransitionViewModel() {
     }
 
 
+    @Deprecated("")
     val phoneticCodeSelected: LiveData<String> = mediatorLiveData {
 
         GlobalContext.get().get<GetPhoneticCodeSelectedAsyncUseCase>().execute().collect {
@@ -148,6 +189,15 @@ abstract class BaseViewModel : TransitionViewModel() {
             postValue(it)
         }
     }
+
+    val phoneticCodeSelectedFlow: Flow<String> = mutableSharedFlowWithDiff {
+
+        GlobalContext.get().get<GetPhoneticCodeSelectedAsyncUseCase>().execute().collect {
+
+            emit(it)
+        }
+    }
+
 
     override fun onCleared() {
         super.onCleared()
