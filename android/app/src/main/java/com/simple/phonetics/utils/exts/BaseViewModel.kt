@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -73,7 +75,7 @@ fun <T> ViewModel.mutableSharedFlowWithDiff(
     context: CoroutineContext? = null,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     onChanged: suspend MutableSharedFlow<T>.() -> Unit
-): Flow<T> = mutableSharedFlow {
+): MutableSharedFlow<T> = mutableSharedFlow {
 
     mutableSharedFlow(context, start, onChanged).distinctUntilChanged().collect {
         emit(it)
@@ -86,7 +88,7 @@ fun <T> ViewModel.combineSourcesWithDiff(
     context: CoroutineContext? = null,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     onChanged: suspend MutableSharedFlow<T>.() -> Unit
-): Flow<T> = mutableSharedFlow {
+): MutableSharedFlow<T> = mutableSharedFlow {
 
     combineSources(sources = sources, context, start, onChanged).distinctUntilChanged().collect {
         emit(it)
@@ -99,7 +101,7 @@ fun <T> ViewModel.listenerSourcesWithDiff(
     context: CoroutineContext? = null,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     onChanged: suspend MutableSharedFlow<T>.() -> Unit
-): Flow<T> = mutableSharedFlow {
+): MutableSharedFlow<T> = mutableSharedFlow {
 
     listenerSources(sources = sources, context, start, onChanged).distinctUntilChanged().collect {
         emit(it)
@@ -107,8 +109,17 @@ fun <T> ViewModel.listenerSourcesWithDiff(
 }
 
 val <T> Flow<T>.value: T?
-    get() = if (this is SharedFlow) replayCache.firstOrNull()
-    else null
+    get() = when (this) {
+        is SharedFlow -> this.replayCache.firstOrNull()
+        else -> null
+    }
 
+suspend fun <T> Flow<T>.get(): T =
+    when (this) {
+        else -> this.first()
+    }
 
-fun <T> Flow<T>.get(): T = value!!
+suspend fun <T> Flow<T>.getNotNull(): T =
+    when (this) {
+        else -> this.filterNotNull().first()
+    }
