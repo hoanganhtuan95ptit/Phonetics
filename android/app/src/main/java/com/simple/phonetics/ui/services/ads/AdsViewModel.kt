@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.view.ads
+package com.simple.phonetics.ui.services.ads
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData

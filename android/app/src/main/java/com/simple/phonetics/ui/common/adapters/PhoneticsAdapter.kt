@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.base.adapters
+package com.simple.phonetics.ui.common.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +14,7 @@ import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.image.setImage
+import com.simple.phonetic.entities.Phonetic
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemPhoneticsBinding
 
@@ -66,7 +67,7 @@ class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null)
 
 data class PhoneticsViewItem(
     val id: String,
-    val data: com.simple.phonetic.entities.Phonetic,
+    val data: Phonetic,
 
     var ipa: RichText = emptyText(),
     var text: RichText = emptyText(),

@@ -29,7 +29,7 @@ import com.simple.coreapp.utils.extentions.toPx
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
-import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
+import com.simple.phonetics.ui.common.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.state.ResultState
 import com.simple.state.isCompleted

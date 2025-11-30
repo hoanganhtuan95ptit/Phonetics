@@ -18,7 +18,7 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
-import com.simple.phonetics.ui.base.adapters.ImageStateViewItem
+import com.simple.phonetics.ui.common.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorErrorVariant

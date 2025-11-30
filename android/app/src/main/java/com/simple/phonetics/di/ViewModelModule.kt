@@ -25,7 +25,7 @@ import com.simple.phonetics.ui.services.event.EventViewModel
 import com.simple.phonetics.ui.services.review.ReviewViewModel
 import com.simple.phonetics.ui.services.update.UpdateViewModel
 import com.simple.phonetics.ui.speak.SpeakViewModel
-import com.simple.phonetics.ui.view.ads.AdsViewModel
+import com.simple.phonetics.ui.services.ads.AdsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

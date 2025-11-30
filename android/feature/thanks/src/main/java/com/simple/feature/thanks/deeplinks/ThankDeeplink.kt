@@ -29,8 +29,8 @@ import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
 import com.simple.feature.thanks.ThankViewModel
-import com.simple.phonetics.ui.base.ConfirmViewModel
-import com.simple.phonetics.ui.base.VerticalConfirmSheetFragment
+import com.simple.phonetics.ui.common.ConfirmViewModel
+import com.simple.phonetics.ui.common.VerticalConfirmSheetFragment
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.wrapLink

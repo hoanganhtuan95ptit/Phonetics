@@ -6,6 +6,8 @@ import org.koin.core.context.GlobalContext
 
 interface ReadingRepository {
 
+    fun initCompleted()
+
     suspend fun getVoiceIdSelected(): Int
 
     suspend fun getVoiceIdSelectedAsync(): Flow<Int>

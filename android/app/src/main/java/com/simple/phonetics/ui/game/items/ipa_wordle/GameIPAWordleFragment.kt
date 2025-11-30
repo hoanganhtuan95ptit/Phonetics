@@ -25,7 +25,7 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
-import com.simple.phonetics.ui.base.adapters.ImageStateAdapter
+import com.simple.phonetics.ui.common.adapters.ImageStateAdapter
 import com.simple.phonetics.ui.game.GameFragment
 import com.simple.phonetics.ui.game.items.GameItemFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached

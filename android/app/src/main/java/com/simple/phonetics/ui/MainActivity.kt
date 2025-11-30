@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.base.activities.BaseViewModelActivity
@@ -15,16 +14,12 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.base.services.transition.onTransitionRunningEndAwait
-import com.simple.phonetics.ui.view.MainView
 import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import java.util.ServiceLoader
 
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>() {
 
@@ -32,17 +27,6 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
         observeData()
         super.onCreate(savedInstanceState)
-
-        /**
-         * khởi tạo dịch vụ
-         */
-        flow {
-
-            emit(ServiceLoader.load(MainView::class.java).toList())
-        }.flowOn(handler + Dispatchers.IO).launchCollect(lifecycleScope) {
-
-            it.forEach { it.setup(this) }
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) splashScreen.setOnExitAnimationListener { splashScreenView ->
 

@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.base.adapters
+package com.simple.phonetics.ui.common.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +28,8 @@ import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemIpaBinding
+import com.simple.phonetics.ui.base.adapters.SizeViewItem
+import com.simple.phonetics.ui.base.adapters.measureTextViewHeight
 import com.simple.phonetics.utils.TextViewMetrics
 import com.unknown.size.uitls.exts.width
 

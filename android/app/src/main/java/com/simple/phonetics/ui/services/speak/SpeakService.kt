@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.view
+package com.simple.phonetics.ui.services.speak
 
 import android.content.Context
 import android.content.Intent
@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.google.auto.service.AutoService
+import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.AppException
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.event.listenerEvent
@@ -19,15 +20,16 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.SpeakState
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.services.MainService
 import com.simple.state.ResultState
 import java.util.Locale
 
-@AutoService(MainView::class)
-class SpeakView : MainView {
+@AutoBind(MainActivity::class)
+class SpeakService : MainService {
 
-    override fun setup(activity: MainActivity) {
+    override fun setup(mainActivity: MainActivity) {
 
-        listenerEvent(activity.lifecycle, EventName.CHECK_SUPPORT_SPEAK_TEXT_REQUEST) {
+        listenerEvent(mainActivity.lifecycle, EventName.CHECK_SUPPORT_SPEAK_TEXT_REQUEST) {
 
             if (it !is Map<*, *>) {
 
@@ -39,7 +41,7 @@ class SpeakView : MainView {
             val languageWrap = languageCode?.languageWrap()
 
             val isSupport = languageWrap != null
-                    && activity.isSpeechRecognitionAvailableSafe()
+                    && mainActivity.isSpeechRecognitionAvailableSafe()
                     && Locale(languageCode).runCatching { isO3Language }.getOrNull() != null
 
             val data = mapOf(
@@ -52,12 +54,12 @@ class SpeakView : MainView {
 
 
         val speechRecognizer = runCatching {
-            SpeechRecognizer.createSpeechRecognizer(activity)
+            SpeechRecognizer.createSpeechRecognizer(mainActivity)
         }.getOrElse {
             null
         }
 
-        listenerEvent(activity.lifecycle, EventName.START_SPEAK_TEXT_REQUEST) {
+        listenerEvent(mainActivity.lifecycle, EventName.START_SPEAK_TEXT_REQUEST) {
 
             if (it !is Map<*, *>) {
 
@@ -87,14 +89,14 @@ class SpeakView : MainView {
             }
         }
 
-        listenerEvent(activity.lifecycle, EventName.STOP_SPEAK_TEXT_REQUEST) {
+        listenerEvent(mainActivity.lifecycle, EventName.STOP_SPEAK_TEXT_REQUEST) {
 
             val speechRecognizer = speechRecognizer ?: return@listenerEvent
 
             speechRecognizer.stopListen()
         }
 
-        activity.lifecycle.addObserver(object : LifecycleEventObserver {
+        mainActivity.lifecycle.addObserver(object : LifecycleEventObserver {
 
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
 
@@ -180,6 +182,9 @@ class SpeakView : MainView {
 //                Log.d("tuanha", "onEvent: ")
             }
         })
+
+
+        mainActivity.viewModels<SpeakViewModel>().value.notifyInitCompleted()
     }
 
     private fun SpeechRecognizer.stopListen() {
@@ -196,14 +201,14 @@ class SpeakView : MainView {
     }
 
     private fun String.languageWrap() = when (this) {
-        Language.EN -> "en-US"
-        Language.VI -> "vi-VN"
+        Language.Companion.EN -> "en-US"
+        Language.Companion.VI -> "vi-VN"
         "es" -> "es-ES"
         "fr" -> "fr-FR"
         "de" -> "de-DE"
         "zh" -> "zh-CN"
-        Language.JA -> "ja-JP"
-        Language.KO -> "ko-KR"
+        Language.Companion.JA -> "ja-JP"
+        Language.Companion.KO -> "ko-KR"
         "hi" -> "hi-IN"
         "ar" -> "ar-SA"
         else -> null

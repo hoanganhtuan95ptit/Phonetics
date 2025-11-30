@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.home
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -35,7 +34,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.FragmentHomeBinding
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
-import com.simple.phonetics.ui.base.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 import com.simple.phonetics.ui.services.queue.QueueEventState
