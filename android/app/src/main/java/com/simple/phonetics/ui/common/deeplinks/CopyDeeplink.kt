@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.deeplinks
+package com.simple.phonetics.ui.common.deeplinks
 
 import android.content.ComponentCallbacks
 import android.view.View

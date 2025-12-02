@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.deeplinks
+package com.simple.phonetics.ui.common.deeplinks
 
 import android.content.ComponentCallbacks
 import android.content.Intent
@@ -27,7 +27,7 @@ class WebDeeplink : DeeplinkHandler {
 
         componentCallbacks.awaitResume()
 
-        kotlin.runCatching {
+        runCatching {
 
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
             componentCallbacks.startActivity(intent)
