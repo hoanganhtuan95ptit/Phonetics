@@ -119,7 +119,7 @@ class LockTransitionServiceImpl : LockTransitionService {
 
             val isStart = map.isEmpty()
 
-            if (BuildConfig.DEBUG && false)Log.d(
+            if (BuildConfig.DEBUG && true) Log.d(
                 "tuanha", "LockTransitionService ${fragment.javaClass.simpleName}  --->" +
                         "\ntimeAppInit:${System.currentTimeMillis() - PhoneticsApp.start.takeNowIfNotData()}" +
                         "\ntimeScreenInit:${System.currentTimeMillis() - timeInit.takeNowIfNotData()} -> space:${timeInit.takeNowIfNotData() - PhoneticsApp.start.takeNowIfNotData()}" +

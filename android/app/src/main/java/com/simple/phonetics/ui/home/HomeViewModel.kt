@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.home
 
 import android.graphics.Color
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
@@ -103,7 +104,7 @@ class HomeViewModel(
 
 
     @VisibleForTesting
-    val isSupportTranslate: LiveData<Boolean> = MediatorLiveData()
+    val isSupportTranslate: LiveData<Boolean> = MediatorLiveData(false)
 
 
     @VisibleForTesting
@@ -196,9 +197,10 @@ class HomeViewModel(
 
     val clearInfo: LiveData<ClearInfo> = combineSourcesWithDiff(theme, translate, text) {
 
-        val text = text.get()
         val theme = theme.get()
         val translate = translate.get()
+
+        val text = text.get()
 
         val info = ClearInfo(
             text = translate["action_clear"].orEmpty()

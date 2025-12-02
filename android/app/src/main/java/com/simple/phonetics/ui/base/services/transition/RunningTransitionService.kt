@@ -111,7 +111,7 @@ class RunningTransitionServiceImpl : RunningTransitionService {
             val time = System.currentTimeMillis() - start
             val isRunning = map.filter { it.first.contains("Transition_", true) }.any { it.second }
 
-            if (BuildConfig.DEBUG && false) Log.d(
+            if (BuildConfig.DEBUG && true) Log.d(
                 "tuanha", "RunningTransitionService runTransitionViewModelActivity ${fragment.javaClass.simpleName}  --->" +
                         "\ntime:${time}" +
                         "\nisRunning:${isRunning}" +
