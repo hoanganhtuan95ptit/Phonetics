@@ -9,7 +9,6 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
-import com.google.auto.service.AutoService
 import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.utils.ext.handler
@@ -25,8 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.util.Locale
-import kotlin.collections.get
-import kotlin.collections.orEmpty
 
 // ứng dụng sẽ đọc chữ
 @AutoBind(MainActivity::class)

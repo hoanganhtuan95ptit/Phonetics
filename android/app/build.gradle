@@ -160,6 +160,8 @@ dependencies {
     implementation otherDependencies.lottie
     implementation otherDependencies.permissionx
     implementation otherDependencies.keyboardvisibilityevent
+
+    implementation "com.microsoft.cognitiveservices.speech:client-sdk:1.40.0"
 }
 
 def getGitBranchName() {

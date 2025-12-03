@@ -20,8 +20,8 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.common.adapters.IpaAdapters
 import com.simple.phonetics.ui.base.fragments.BaseFragment
+import com.simple.phonetics.ui.common.adapters.IpaAdapters
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData

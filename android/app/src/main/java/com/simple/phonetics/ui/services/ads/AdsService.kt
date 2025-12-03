@@ -14,11 +14,11 @@ import com.simple.analytics.logAnalytics
 import com.simple.autobind.annotation.AutoBind
 import com.simple.config.phonetics.R
 import com.simple.coreapp.utils.ext.handler
-import com.unknown.coroutines.launchCollect
 import com.simple.phonetics.DeeplinkManager.ADS
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.services.MainService
 import com.simple.phonetics.utils.sendDeeplinkWithThank
+import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow

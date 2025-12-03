@@ -18,7 +18,6 @@ import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.ui.view.setSize
 import com.simple.coreapp.utils.ext.DP
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
@@ -39,6 +38,7 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 
 class RecordingFragment : BaseActionFragment<LayoutActionConfirmRecordingBinding, DialogListBinding, RecordingViewModel>() {

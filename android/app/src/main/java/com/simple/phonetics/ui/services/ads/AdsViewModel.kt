@@ -6,7 +6,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.analytics.logAnalytics
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
@@ -17,6 +16,7 @@ import com.simple.phonetics.Config.ADS_DEBUG
 import com.simple.phonetics.domain.usecase.GetConfigAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.appAds
+import com.unknown.coroutines.launchCollect
 
 class AdsViewModel(
     private val getConfigAsyncUseCase: GetConfigAsyncUseCase

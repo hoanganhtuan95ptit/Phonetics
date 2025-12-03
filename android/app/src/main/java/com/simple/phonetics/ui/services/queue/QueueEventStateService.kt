@@ -14,7 +14,6 @@ import com.simple.phonetic.BuildConfig
 import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.services.transition.onTransitionRunningEndAwait
 import com.simple.phonetics.ui.services.MainService
-import com.simple.phonetics.ui.services.queue.HomeScreen
 import com.simple.state.ResultState
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.channels.awaitClose

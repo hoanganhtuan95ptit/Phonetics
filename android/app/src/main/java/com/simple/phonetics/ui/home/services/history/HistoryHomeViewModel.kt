@@ -16,7 +16,6 @@ import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem

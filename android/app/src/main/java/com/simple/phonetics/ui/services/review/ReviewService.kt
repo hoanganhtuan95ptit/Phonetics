@@ -15,7 +15,6 @@ import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.core.utils.extentions.toJson
 import com.simple.core.utils.extentions.toObjectOrNull
 import com.simple.coreapp.utils.ext.handler
-import com.unknown.coroutines.launchCollect
 import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
@@ -27,6 +26,7 @@ import com.simple.phonetics.ui.services.MainService
 import com.simple.phonetics.ui.services.queue.QueueEventState
 import com.simple.phonetics.ui.services.review.ReviewViewModel.RateInfo
 import com.simple.state.ResultState
+import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow

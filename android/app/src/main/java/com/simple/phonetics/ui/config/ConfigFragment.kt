@@ -16,7 +16,6 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnHeightStatusAndHeightNavigationChange
 import com.simple.coreapp.utils.ext.getViewModel
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.crashlytics.logCrashlytics
@@ -31,6 +30,7 @@ import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 
 class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
