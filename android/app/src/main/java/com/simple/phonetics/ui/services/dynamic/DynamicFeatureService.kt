@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.services.dynamic
 
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.simple.analytics.logAnalytics
 import com.simple.autobind.annotation.AutoBind
@@ -18,6 +17,7 @@ import com.simple.state.isCompleted
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -43,7 +43,7 @@ class DynamicFeatureService : MainService {
 
             val featureList = arrayListOf<String>()
 
-            if (mainActivity.viewModel.inputLanguage.asFlow().first().id.equals(Language.Companion.EN, true)) {
+            if (mainActivity.viewModel.inputLanguageFlow.filterNotNull().first().id.equals(Language.Companion.EN, true)) {
 
                 featureList.add("ipa_voice_en")
             }
