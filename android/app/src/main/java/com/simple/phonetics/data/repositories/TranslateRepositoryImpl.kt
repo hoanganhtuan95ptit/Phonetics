@@ -52,7 +52,7 @@ class TranslateRepositoryImpl : TranslateRepository {
         }.launchCollect(this) {
 
             val state = if (it) {
-                ResultState.Success(it)
+                ResultState.Success(true)
             } else {
                 ResultState.Failed()
             }

@@ -1,6 +1,7 @@
 package com.simple.feature.campaign.ui
 
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.simple.autobind.annotation.AutoBind
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
@@ -25,7 +26,7 @@ class CampaignHomeView : HomeService {
 
     private fun observeData(fragment: HomeFragment) = with(viewModel) {
 
-        viewItemList.observe(fragment.viewLifecycleOwner) {
+        viewItemList.observe(fragment) {
 
             homeViewModel.updateTypeViewItemList(type = -1, it)
         }
