@@ -3,6 +3,7 @@ package com.simple.phonetics.ui.ipa.detail
 import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import com.google.android.flexbox.FlexDirection
@@ -31,7 +32,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailAdapters
@@ -209,14 +210,12 @@ class IpaDetailDeeplink : DeeplinkHandler {
         return DeeplinkManager.IPA_DETAIL
     }
 
-    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
-
-        if (componentCallbacks !is MainActivity) return false
+    override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         val fragment = IpaDetailFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
 
-        val fragmentTransaction = componentCallbacks.supportFragmentManager
+        val fragmentTransaction = activity.supportFragmentManager
             .beginTransaction()
 
         sharedElement?.forEach { (t, u) ->

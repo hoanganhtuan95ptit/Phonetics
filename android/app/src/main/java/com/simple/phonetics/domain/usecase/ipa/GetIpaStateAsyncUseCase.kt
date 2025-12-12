@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import org.koin.core.context.GlobalContext
 
 class GetIpaStateAsyncUseCase(
     private val ipaRepository: IpaRepository,
@@ -33,4 +34,11 @@ class GetIpaStateAsyncUseCase(
     }
 
     data class Param(val sync: Boolean = true)
+
+    companion object {
+
+        val install: GetIpaStateAsyncUseCase by lazy {
+            GlobalContext.get().get()
+        }
+    }
 }

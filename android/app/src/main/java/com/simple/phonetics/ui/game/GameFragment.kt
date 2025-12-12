@@ -3,6 +3,7 @@ package com.simple.phonetics.ui.game
 import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +19,7 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentContainerHeaderHorizontalBinding
-import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.unknown.theme.utils.exts.colorBackground
@@ -98,14 +99,12 @@ class GameDeeplink : DeeplinkHandler {
         return DeeplinkManager.GAME
     }
 
-    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
-
-        if (componentCallbacks !is MainActivity) return false
+    override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         val fragment = GameFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
 
-        val fragmentTransaction = componentCallbacks.supportFragmentManager
+        val fragmentTransaction = activity.supportFragmentManager
             .beginTransaction()
 
         sharedElement?.forEach { (t, u) ->

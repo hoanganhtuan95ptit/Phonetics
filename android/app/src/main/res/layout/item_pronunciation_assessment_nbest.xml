@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.simple.coreapp.ui.view.round.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    app:rv_backgroundColor="#D8F8E4"
+    app:rv_cornerRadius="16dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_accuracy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Độ chính xác từng âm: \n78%" />
+
+        <TextView
+            android:id="@+id/tv_fluency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="Độ trôi chảy: \n96%" />
+
+        <TextView
+            android:id="@+id/tv_completeness"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="Độ đầy đủ câu: \n100%" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+
+        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+            android:id="@+id/pron_score"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cpb_background_progressbar_color="#FFFFFF"
+            app:cpb_background_progressbar_width="10dp"
+            app:cpb_progress_direction="to_right"
+            app:cpb_progressbar_color="#24C663"
+            app:cpb_progressbar_width="10dp"
+            app:cpb_round_border="true" />
+
+        <TextView
+            android:id="@+id/tv_pron"
+            style="?attr/textHeadline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            tools:text="86" />
+    </FrameLayout>
+</com.simple.coreapp.ui.view.round.RoundLinearLayout>

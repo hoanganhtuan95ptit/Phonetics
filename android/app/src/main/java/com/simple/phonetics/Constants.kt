@@ -47,6 +47,7 @@ object DeeplinkManager {
     const val PHONETICS = "app://phonetics"
     const val RECORDING = "app://recording"
     const val IPA_DETAIL = "app://ipa_detail"
+    const val PRONUNCIATION_ASSESSMENT = "app://pronunciation_assessment"
 
     const val GAME = "app://game"
     const val GAME_CONFIG = "app://game_config"

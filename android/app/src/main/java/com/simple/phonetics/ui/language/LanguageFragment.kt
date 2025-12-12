@@ -4,6 +4,7 @@ import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
@@ -27,7 +28,7 @@ import com.simple.phonetics.ErrorCode
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderVerticalBinding
-import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
 import com.simple.phonetics.utils.exts.awaitResume
@@ -210,14 +211,12 @@ class LanguageDeeplink : DeeplinkHandler {
         return DeeplinkManager.LANGUAGE
     }
 
-    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
-
-        if (componentCallbacks !is MainActivity) return false
+    override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         val fragment = LanguageFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
 
-        val fragmentTransaction = componentCallbacks.supportFragmentManager
+        val fragmentTransaction = activity.supportFragmentManager
             .beginTransaction()
 
         sharedElement?.forEach { (t, u) ->

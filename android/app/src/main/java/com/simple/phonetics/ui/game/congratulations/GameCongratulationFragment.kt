@@ -18,7 +18,7 @@ import com.simple.event.sendEvent
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogCongratulationBinding
-import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.utils.exts.colorDivider
 import com.unknown.theme.utils.exts.colorBackground

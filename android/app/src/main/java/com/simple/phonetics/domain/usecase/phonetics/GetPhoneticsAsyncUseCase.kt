@@ -20,6 +20,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
+import org.koin.core.context.GlobalContext
 import java.util.UUID
 
 class GetPhoneticsAsyncUseCase(
@@ -213,4 +214,11 @@ class GetPhoneticsAsyncUseCase(
         val isTranslate: Boolean = true,
         val isSaveToHistory: Boolean = true
     )
+
+    companion object {
+
+        val install: GetPhoneticsAsyncUseCase by lazy {
+            GlobalContext.get().get()
+        }
+    }
 }

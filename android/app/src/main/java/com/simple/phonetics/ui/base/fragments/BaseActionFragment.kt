@@ -21,7 +21,7 @@ abstract class BaseActionFragment<AVB : ViewBinding, VB : ViewBinding, VM : Base
     protected abstract fun createBindingAction(): AVB
 
 
-    protected var bindingAction by autoCleared<AVB>()
+    var bindingAction by autoCleared<AVB>()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -119,7 +119,7 @@ suspend fun <T> Flow<T>.get(): T =
         else -> this.first()
     }
 
-suspend fun <T> Flow<T>.getNotNull(): T =
+suspend fun <T> Flow<T?>.getNotNull(): T =
     when (this) {
         else -> this.filterNotNull().first()
     }

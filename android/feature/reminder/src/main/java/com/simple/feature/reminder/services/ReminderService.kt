@@ -13,9 +13,9 @@ import com.permissionx.guolindev.PermissionX
 import com.simple.autobind.annotation.AutoBind
 import com.simple.event.listenerEvent
 import com.simple.feature.reminder.MorningReminderWorker
-import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.services.MainService
-import com.simple.phonetics.ui.services.queue.QueueEventState
+import com.simple.phonetics.ui.main.MainActivity
+import com.simple.phonetics.ui.main.services.MainService
+import com.simple.phonetics.ui.main.services.queue.QueueEventState
 import com.simple.state.ResultState
 import java.util.concurrent.TimeUnit
 

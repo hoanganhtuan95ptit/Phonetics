@@ -20,11 +20,11 @@ import com.simple.phonetics.ui.home.services.suggest.SuggestHomeViewModel
 import com.simple.phonetics.ui.ipa.detail.IpaDetailViewModel
 import com.simple.phonetics.ui.ipa.list.IpaListViewModel
 import com.simple.phonetics.ui.language.LanguageViewModel
+import com.simple.phonetics.ui.main.services.ads.AdsViewModel
+import com.simple.phonetics.ui.main.services.event.EventViewModel
+import com.simple.phonetics.ui.main.services.review.ReviewViewModel
+import com.simple.phonetics.ui.main.services.update.UpdateViewModel
 import com.simple.phonetics.ui.recording.RecordingViewModel
-import com.simple.phonetics.ui.services.ads.AdsViewModel
-import com.simple.phonetics.ui.services.event.EventViewModel
-import com.simple.phonetics.ui.services.review.ReviewViewModel
-import com.simple.phonetics.ui.services.update.UpdateViewModel
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

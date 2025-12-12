@@ -4,6 +4,7 @@ import android.graphics.Color
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -18,6 +19,7 @@ import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
+import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
@@ -92,7 +94,9 @@ class SpeakViewModel(
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, actionHeight, phoneticCodeSelected, phoneticsState, isSupportReading) {
+    val otherViewItemList: MutableLiveData<List<ViewItem>> = MutableLiveData(emptyList())
+
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, actionHeight, phoneticCodeSelected, phoneticsState, isSupportReading, otherViewItemList) {
 
         val theme = theme.get()
         val translate = translate.get()
@@ -119,8 +123,11 @@ class SpeakViewModel(
 
             viewItemList.add(SpaceViewItem(id = "1", height = DP.DP_16))
             viewItemList.addAll(it)
-            viewItemList.add(SpaceViewItem(id = "2", height = actionHeight.get()))
         }
+
+
+        viewItemList.addAll(otherViewItemList.getOrEmpty())
+        viewItemList.add(SpaceViewItem(id = "2", height = actionHeight.get()))
 
         postValueIfActive(viewItemList)
     }

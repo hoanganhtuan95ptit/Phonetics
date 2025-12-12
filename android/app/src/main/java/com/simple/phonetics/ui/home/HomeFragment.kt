@@ -37,8 +37,8 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
-import com.simple.phonetics.ui.services.queue.HomeScreen
-import com.simple.phonetics.ui.services.queue.QueueEventState
+import com.simple.phonetics.ui.main.services.queue.HomeScreen
+import com.simple.phonetics.ui.main.services.queue.QueueEventState
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorBackgroundVariant

@@ -11,89 +11,111 @@ import com.microsoft.cognitiveservices.speech.ResultReason
 import com.microsoft.cognitiveservices.speech.SpeechConfig
 import com.microsoft.cognitiveservices.speech.SpeechRecognizer
 import com.microsoft.cognitiveservices.speech.audio.AudioConfig
+import com.simple.phonetics.BuildConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.withContext
 
 
-private const val subscriptionKeyDefault = ""
+sealed class AssessmentState {
+    data class Recognizing(val text: String) : AssessmentState()
+    data class Recognized(val text: String) : AssessmentState()
+    data class Error(val message: String) : AssessmentState()
+    data class FinalResult(
+        val accuracy: Double,
+        val pronunciations: Double,
+        val fluency: Double,
+        val completeness: Double,
+        val json: String
+    ) : AssessmentState()
+}
 
-fun runPronunciationAssessment(
-    subscriptionKey: String = subscriptionKeyDefault, // tốt nhất lấy từ backend token endpoint
+fun runPronunciationAssessmentFlow(
+    subscriptionKey: String = BuildConfig.AZURE_SPEECH_REGION,
     region: String = "eastus",
     referenceText: String = "read this sentence"
-) {
-    // 1. Tạo cấu hình
-    val speechConfig = SpeechConfig.fromSubscription(subscriptionKey, region)
-    speechConfig.speechRecognitionLanguage = "en-US"
+) = channelFlow<AssessmentState> {
 
-    // (tùy chỉnh timeout nếu cần)
-    speechConfig.setProperty(
-        PropertyId.SpeechServiceConnection_InitialSilenceTimeoutMs,
-        "15000" // 15 giây - đủ thời gian người dùng bắt đầu nói
-    )
-    speechConfig.setProperty(
-        PropertyId.SpeechServiceConnection_EndSilenceTimeoutMs,
-        "3000" // 3 giây im lặng sau khi nói xong
-    )
+    val speechConfig = SpeechConfig.fromSubscription(subscriptionKey, region).apply {
+        speechRecognitionLanguage = "en-US"
 
-    // 2. Audio từ micro
+        setProperty(PropertyId.SpeechServiceConnection_InitialSilenceTimeoutMs, "15000")
+        setProperty(PropertyId.SpeechServiceConnection_EndSilenceTimeoutMs, "3000")
+    }
+
     val audioConfig = AudioConfig.fromDefaultMicrophoneInput()
-
-    // 3. Tạo recognizer
     val recognizer = SpeechRecognizer(speechConfig, audioConfig)
 
-    // 4. Tạo PronunciationAssessmentConfig
-    // Các option: gradingSystem (HundredMark / FivePoint), granularity (Word/Phoneme), enableMiscue
-    val pronConfig = PronunciationAssessmentConfig(referenceText, PronunciationAssessmentGradingSystem.HundredMark, PronunciationAssessmentGranularity.Phoneme)
-
-    // Gán config vào recognizer
+    val pronConfig = PronunciationAssessmentConfig(
+        referenceText,
+        PronunciationAssessmentGradingSystem.HundredMark,
+        PronunciationAssessmentGranularity.Phoneme
+    )
     pronConfig.applyTo(recognizer)
 
-    try {
-        recognizer.recognizing.addEventListener { _, e ->
-            Log.d("tuanha", "Recognizing: ${e.result.text}")
+    // --- STREAM SỰ KIỆN REALTIME ---
+    recognizer.recognizing.addEventListener { _, e ->
+        Log.d("tuanha", "recognizing: ${e.result.text}")
+        trySend(AssessmentState.Recognizing(e.result.text))
+    }
+
+    recognizer.recognized.addEventListener { _, e ->
+        Log.d("tuanha", "recognized: ${e.result.text}")
+        trySend(AssessmentState.Recognized(e.result.text))
+    }
+
+    recognizer.canceled.addEventListener { _, e ->
+        Log.d("tuanha", "canceled: "+e.errorDetails)
+        trySend(AssessmentState.Error("Canceled: ${e.errorDetails}"))
+    }
+
+    // --- NHẬN MỘT LẦN recognizeOnceAsync ---
+    val task = recognizer.recognizeOnceAsync()
+
+    // chạy trong Dispatchers.IO
+    val result = withContext(Dispatchers.IO) { task.get() }
+
+    Log.d("tuanha", "runPronunciationAssessmentFlow: ${result.reason}")
+
+    when (result.reason) {
+        ResultReason.RecognizedSpeech -> {
+            val paResult = PronunciationAssessmentResult.fromResult(result)
+
+            val json = result.properties.getProperty(
+                PropertyId.SpeechServiceResponse_JsonResult
+            ) ?: ""
+
+            trySend(
+                AssessmentState.FinalResult(
+                    accuracy = paResult.accuracyScore,
+                    pronunciations = paResult.pronunciationScore,
+                    fluency = paResult.fluencyScore,
+                    completeness = paResult.completenessScore,
+                    json = json
+                )
+            )
         }
 
-        recognizer.recognized.addEventListener { _, e ->
-            Log.d("tuanha", "Recognized: ${e.result.text}")
+        ResultReason.NoMatch -> {
+            trySend(AssessmentState.Error("No speech recognized"))
         }
 
-        recognizer.canceled.addEventListener { _, e ->
-            Log.e("tuanha", "Canceled: ${e.errorDetails}")
+        ResultReason.Canceled -> {
+            val cancel = CancellationDetails.fromResult(result)
+            trySend(AssessmentState.Error("Canceled: ${cancel.errorDetails}"))
         }
 
-        // 5. Thực hiện 1 lần nhận (hoặc startContinuousRecognitionAsync cho continuous)
-        val task = recognizer.recognizeOnceAsync()
-        val result = task.get() // gọi trong worker thread / coroutine
-
-        Log.d("tuanha", "runPronunciationAssessment: ${result.toString()}")
-        when (result.reason) {
-            ResultReason.RecognizedSpeech -> {
-                // Lấy kết quả dưới dạng object SDK
-                val paResult = PronunciationAssessmentResult.fromResult(result)
-                val accuracy = paResult.accuracyScore
-                val fluency = paResult.fluencyScore
-                val completeness = paResult.completenessScore
-                val pronunciation = paResult.pronunciationScore
-                // Nếu cần phoneme/word detail, lấy JSON raw:
-                val json = result.properties.getProperty(PropertyId.SpeechServiceResponse_JsonResult)
-                // xử lý / hiển thị
-                println("Accuracy=$accuracy Pronunciation=$pronunciation Fluency=$fluency")
-                println("JSON detail: $json")
-            }
-
-            ResultReason.NoMatch -> {
-                println("No speech recognized.")
-            }
-
-            ResultReason.Canceled -> {
-                val cancel = CancellationDetails.fromResult(result)
-                println("Canceled: ${cancel.errorDetails}")
-            }
-
-            else -> {
-                println("Other result: ${result.reason}")
-            }
+        else -> {
+            trySend(AssessmentState.Error("Other: ${result.reason}"))
         }
-    } finally {
+    }
+
+    // cleanup khi flow bị cancel
+    awaitClose {
+
+        Log.d("tuanha", "runPronunciationAssessmentFlow: close")
+
         recognizer.close()
         audioConfig.close()
         speechConfig.close()

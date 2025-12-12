@@ -1,11 +1,11 @@
 package com.simple.phonetics.ui.speak
 
 import android.Manifest
-import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
@@ -35,7 +35,6 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionConfirmSpeakBinding
-import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
 import com.simple.phonetics.utils.exts.colorDivider
@@ -57,6 +56,16 @@ import kotlinx.coroutines.launch
 
 class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, DialogListBinding, SpeakViewModel>() {
 
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogListBinding {
+
+        return DialogListBinding.inflate(inflater, container, false)
+    }
+
+    override fun createBindingAction(): LayoutActionConfirmSpeakBinding {
+
+        return LayoutActionConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -66,16 +75,6 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         setupRecyclerView()
 
         observeData()
-    }
-
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogListBinding {
-
-        return DialogListBinding.inflate(inflater, container, false)
-    }
-
-    override fun createBindingAction(): LayoutActionConfirmSpeakBinding {
-
-        return LayoutActionConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
     }
 
     override fun onDestroy() {
@@ -188,7 +187,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             bindingConfigSpeak.root.setBackground(background = background)
 
             binding.vAnchor.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
-            bindingConfigSpeak.frameSpeak.root.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.colorPrimary, cornerRadius = DP.DP_16))
+//            bindingConfigSpeak.frameSpeak.root.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.colorPrimary, cornerRadius = DP.DP_16))
         }
 
         copyInfo.observe(viewLifecycleOwner) {
@@ -306,7 +305,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
     companion object {
 
-        private val REQUIRED_PERMISSIONS_RECORD_AUDIO = arrayOf(Manifest.permission.RECORD_AUDIO)
+        val REQUIRED_PERMISSIONS_RECORD_AUDIO = arrayOf(Manifest.permission.RECORD_AUDIO)
     }
 }
 
@@ -317,13 +316,11 @@ class SpeakDeeplink : DeeplinkHandler {
         return DeeplinkManager.SPEAK
     }
 
-    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
-
-        if (componentCallbacks !is MainActivity) return false
+    override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         val fragment = SpeakFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
-        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, "")
+        fragment.showOrAwaitDismiss(activity.supportFragmentManager, "")
 
         return true
     }

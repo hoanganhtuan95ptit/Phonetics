@@ -210,4 +210,9 @@ abstract class BaseViewModel : TransitionViewModel() {
         map[tag]?.cancel()
         map[tag] = viewModelScope.launch(handler + Dispatchers.IO, block = block)
     }
+
+    fun cancel(tag: String) {
+
+        map[tag]?.cancel()
+    }
 }

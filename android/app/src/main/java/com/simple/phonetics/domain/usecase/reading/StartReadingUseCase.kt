@@ -4,6 +4,7 @@ import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.ReadingRepository
 import com.simple.state.ResultState
 import kotlinx.coroutines.flow.Flow
+import org.koin.core.context.GlobalContext
 
 class StartReadingUseCase(
     private val readingRepository: ReadingRepository,
@@ -25,4 +26,11 @@ class StartReadingUseCase(
     data class Param(
         val text: String
     )
+
+    companion object {
+
+        val install: StartReadingUseCase by lazy {
+            GlobalContext.get().get()
+        }
+    }
 }

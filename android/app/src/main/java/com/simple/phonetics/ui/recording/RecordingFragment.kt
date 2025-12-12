@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.lifecycle.asFlow
 import com.google.android.flexbox.FlexDirection
@@ -31,7 +32,7 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionConfirmRecordingBinding
-import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
@@ -188,13 +189,11 @@ class RecordingDeeplink : DeeplinkHandler {
         return DeeplinkManager.RECORDING
     }
 
-    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
-
-        if (componentCallbacks !is MainActivity) return false
+    override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         val fragment = RecordingFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
-        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, "")
+        fragment.showOrAwaitDismiss(activity.supportFragmentManager, "")
 
         return true
     }

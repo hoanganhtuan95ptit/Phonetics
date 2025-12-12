@@ -13,6 +13,12 @@ plugins {
 apply from: "$rootDir/constant.gradle"
 apply from: "../../../1CorePrivate/config/phonetics/config.gradle"// can remove
 
+Properties localProps = new Properties()
+File localFile = rootProject.file("local.properties")
+if (localFile.exists()) {
+    localProps.load(localFile.newDataInputStream())
+}
+
 android {
     namespace "com.simple.phonetics"
     compileSdkVersion project.ext.compileSdkVersion
@@ -32,6 +38,7 @@ android {
         }
 
         buildConfigField("String", "BRANCH", "\"${getGitBranchName()}\"")
+        buildConfigField("String", "AZURE_SPEECH_REGION", "\"${localProps.getProperty("azure.speech.key")}\"")
     }
 
     signingConfigs {
@@ -161,7 +168,10 @@ dependencies {
     implementation otherDependencies.permissionx
     implementation otherDependencies.keyboardvisibilityevent
 
-    implementation "com.microsoft.cognitiveservices.speech:client-sdk:1.40.0"
+    implementation 'com.github.skydoves:balloon:1.6.13'
+    implementation "com.github.skydoves:progressview:1.1.3"
+    implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
+    implementation "com.microsoft.cognitiveservices.speech:client-sdk:1.44.0"
 }
 
 def getGitBranchName() {

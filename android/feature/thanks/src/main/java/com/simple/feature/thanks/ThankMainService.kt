@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.handler
-import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.service.ActivityService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

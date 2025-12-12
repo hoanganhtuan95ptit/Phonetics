@@ -3,6 +3,7 @@ package com.simple.phonetics.ui.config
 import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
@@ -25,7 +26,7 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
-import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 import com.simple.phonetics.utils.exts.colorDivider
@@ -122,13 +123,11 @@ class ConfigDeeplink : DeeplinkHandler {
         return DeeplinkManager.CONFIG
     }
 
-    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
-
-        if (componentCallbacks !is MainActivity) return false
+    override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         val fragment = ConfigFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
-        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, tag = "")
+        fragment.showOrAwaitDismiss(activity.supportFragmentManager, tag = "")
 
         return true
     }
