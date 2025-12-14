@@ -2,6 +2,8 @@ package com.simple.phonetics.ui.home.services.history
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -16,14 +18,16 @@ import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
+import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 class HistoryHomeViewModel(
     private val getPhoneticsHistoryAsyncUseCase: GetPhoneticsHistoryAsyncUseCase
@@ -40,7 +44,7 @@ class HistoryHomeViewModel(
         }
     }
 
-    val historyViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, historyState) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, historyState) {
 
         val size = size.value ?: return@combineSourcesWithDiff
         val style = style.value ?: return@combineSourcesWithDiff
@@ -86,10 +90,14 @@ class HistoryHomeViewModel(
             viewItemList.addAll(it)
         }
 
-        if (viewItemList.isNotEmpty()) {
-            logAnalytics("history_home_show")
-        }
-
         postValueIfActive(viewItemList)
+    }
+
+    init {
+
+        viewItemList.asFlow().map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
+
+            logAnalytics("feature_history_home_show_$it")
+        }
     }
 }

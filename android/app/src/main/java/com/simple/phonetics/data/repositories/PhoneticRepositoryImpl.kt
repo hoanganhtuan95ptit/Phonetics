@@ -1,7 +1,6 @@
 package com.simple.phonetics.data.repositories
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import com.simple.analytics.logAnalytics
@@ -68,7 +67,6 @@ class PhoneticRepositoryImpl(
 
             state.doRunning {
 
-                Log.d("tuanha", "copy: $it")
                 if (it == 0f) logAnalytics("${PHONETIC_COPY}_start")
             }
 

@@ -21,7 +21,7 @@ class HistoryHomeService : HomeService {
 
         val viewModel: HistoryHomeViewModel by homeFragment.viewModel()
 
-        viewModel.historyViewItemList.observe(homeFragment.viewLifecycleOwner) {
+        viewModel.viewItemList.observe(homeFragment.viewLifecycleOwner) {
 
             homeViewModel.updateTypeViewItemList(type = TYPE_HISTORY, it)
         }

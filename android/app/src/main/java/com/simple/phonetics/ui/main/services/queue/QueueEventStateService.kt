@@ -1,0 +1,115 @@
+package com.simple.phonetics.ui.main.services.queue
+
+import android.app.Activity
+import android.app.Application
+import android.os.Bundle
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
+import com.simple.autobind.annotation.AutoBind
+import com.simple.event.sendEvent
+import com.simple.phonetic.BuildConfig
+import com.simple.phonetics.ui.base.services.transition.running.exts.onTransitionRunningEndAwait
+import com.simple.phonetics.ui.main.MainActivity
+import com.simple.phonetics.ui.main.services.MainService
+import com.simple.state.ResultState
+import com.unknown.coroutines.launchCollect
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.launchIn
+
+@AutoBind(MainActivity::class)
+class QueueEventStateService : MainService {
+
+    override fun setup(mainActivity: MainActivity) {
+
+        mainActivity.listenerActivityLifecycleCallbacks(object : DefaultActivityLifecycleCallbacks() {
+
+            override fun onActivityResumed(activity: Activity) {
+                QueueEventState.updateState(tag = "main", state = ResultState.Success(Unit))
+            }
+
+            override fun onActivityPaused(activity: Activity) {
+                QueueEventState.updateState(tag = "main", state = ResultState.Start)
+            }
+        })
+
+        mainActivity.listenerFragmentLifecycleCallbacks(object : FragmentManager.FragmentLifecycleCallbacks() {
+
+            override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
+
+                if (f is DialogFragment) return
+
+                val state = if (f is HomeScreen) {
+                    ResultState.Success(Unit)
+                } else {
+                    ResultState.Start
+                }
+
+                QueueEventState.updateState(tag = "home", state = state)
+            }
+
+            override fun onFragmentPaused(fm: FragmentManager, f: Fragment) {
+
+                if (f is HomeScreen) {
+                    QueueEventState.updateState(tag = "home", state = ResultState.Start)
+                }
+            }
+        })
+
+        QueueEventState.getQueueAsync().launchCollect(mainActivity) { eventName ->
+
+            mainActivity.onTransitionRunningEndAwait()
+
+            if (!BuildConfig.DEBUG) sendEvent(eventName = eventName, data = Unit)
+        }
+    }
+
+    private fun FragmentActivity.listenerFragmentLifecycleCallbacks(listener: FragmentManager.FragmentLifecycleCallbacks) = channelFlow<Unit> {
+
+        supportFragmentManager.registerFragmentLifecycleCallbacks(listener, false)
+
+        awaitClose {
+
+            supportFragmentManager.unregisterFragmentLifecycleCallbacks(listener)
+        }
+    }.launchIn(lifecycleScope)
+
+
+    private fun FragmentActivity.listenerActivityLifecycleCallbacks(listener: Application.ActivityLifecycleCallbacks) = channelFlow<Unit> {
+
+        application.registerActivityLifecycleCallbacks(listener)
+
+        awaitClose {
+
+            application.unregisterActivityLifecycleCallbacks(listener)
+        }
+    }.launchIn(lifecycleScope)
+
+
+    private abstract class DefaultActivityLifecycleCallbacks: Application.ActivityLifecycleCallbacks {
+
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        }
+
+        override fun onActivityStarted(activity: Activity) {
+        }
+
+        override fun onActivityResumed(activity: Activity) {
+        }
+
+        override fun onActivityPaused(activity: Activity) {
+        }
+
+        override fun onActivityStopped(activity: Activity) {
+        }
+
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+        }
+
+        override fun onActivityDestroyed(activity: Activity) {
+        }
+    }
+}

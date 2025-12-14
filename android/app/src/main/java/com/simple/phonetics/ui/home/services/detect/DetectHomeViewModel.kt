@@ -4,6 +4,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
@@ -17,6 +19,9 @@ import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.toSuccess
+import com.unknown.coroutines.launchCollect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 class DetectHomeViewModel(
     private val checkSupportDetectUseCase: CheckSupportDetectUseCase
@@ -78,6 +83,14 @@ class DetectHomeViewModel(
         )
 
         postValueIfActive(info)
+    }
+
+    init {
+
+        detectInfo.asFlow().map { it.isShow }.distinctUntilChanged().launchCollect(viewModelScope) {
+
+            logAnalytics("feature_detect_home_show_$it")
+        }
     }
 
     fun updateReverse(it: Boolean) {

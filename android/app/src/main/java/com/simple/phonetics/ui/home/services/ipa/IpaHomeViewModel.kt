@@ -3,6 +3,8 @@ package com.simple.phonetics.ui.home.services.ipa
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -21,17 +23,20 @@ import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
-import com.simple.phonetics.ui.common.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.adapters.measureTextViewHeight
 import com.simple.phonetics.ui.base.adapters.measureTextViewWidth
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.common.adapters.IpaViewItem
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.state.ResultState
+import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 class IpaHomeViewModel(
     private val getIpaStateAsyncUseCase: GetIpaStateAsyncUseCase,
@@ -48,7 +53,7 @@ class IpaHomeViewModel(
         }
     }
 
-    val ipaViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, ipaState) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, ipaState) {
 
         val size = size.value ?: return@combineSourcesWithDiff
         val style = style.value ?: return@combineSourcesWithDiff
@@ -158,15 +163,19 @@ class IpaHomeViewModel(
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_IPA_2", height = DP.DP_16))
         }
 
-        if (viewItemList.isNotEmpty()) {
-            logAnalytics("ipa_home_show")
-        }
-
         viewItemList.forEach {
 
             if (it is SizeViewItem) it.measure(size, style)
         }
 
         postValueIfActive(viewItemList)
+    }
+
+    init {
+
+        viewItemList.asFlow().map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
+
+            logAnalytics("feature_ipa_home_show_$it")
+        }
     }
 }

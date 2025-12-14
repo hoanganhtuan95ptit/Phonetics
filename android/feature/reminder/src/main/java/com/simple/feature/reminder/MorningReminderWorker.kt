@@ -9,11 +9,12 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.simple.analytics.logAnalytics
 import com.simple.feature.reminder.data.cache.AppCache
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.repositories.AppRepository
 import com.simple.phonetics.domain.repositories.LanguageRepository
-import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.main.MainActivity
 import kotlinx.coroutines.flow.first
 import java.util.Calendar
 import kotlin.math.absoluteValue
@@ -105,5 +106,7 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
             .build()
 
         manager.notify(System.currentTimeMillis().toInt(), notification)
+
+        logAnalytics("feature_reminder_notification_show_true")
     }
 }

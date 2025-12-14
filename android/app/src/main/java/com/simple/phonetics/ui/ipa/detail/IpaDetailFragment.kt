@@ -31,10 +31,10 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseFragment
+import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailAdapters
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant

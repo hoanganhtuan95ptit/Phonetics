@@ -4,18 +4,18 @@ import android.view.View
 import androidx.lifecycle.asFlow
 import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
-import com.unknown.coroutines.launchCollect
 import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
-import com.simple.phonetics.ui.common.adapters.IpaViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
+import com.simple.phonetics.ui.common.adapters.IpaViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.services.HomeService
+import com.unknown.coroutines.launchCollect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @AutoBind(HomeFragment::class)
@@ -28,7 +28,7 @@ class IpaHomeService : HomeService {
         val ipaHomeViewModel: IpaHomeViewModel by homeFragment.viewModel()
 
 
-        ipaHomeViewModel.ipaViewItemList.asFlow().launchCollect(homeFragment.viewLifecycleOwner) {
+        ipaHomeViewModel.viewItemList.asFlow().launchCollect(homeFragment.viewLifecycleOwner) {
 
             viewModel.updateTypeViewItemList(type = 2, it)
         }

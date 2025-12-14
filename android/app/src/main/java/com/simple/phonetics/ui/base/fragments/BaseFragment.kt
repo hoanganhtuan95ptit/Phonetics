@@ -8,26 +8,24 @@ import com.simple.coreapp.ui.base.fragments.BaseViewModelFragment
 import com.simple.coreapp.utils.ext.setFullScreen
 import com.simple.phonetics.ui.base.services.transition.ConfigTransitionService
 import com.simple.phonetics.ui.base.services.transition.ConfigTransitionServiceImpl
-import com.simple.phonetics.ui.base.services.transition.LockTransitionService
-import com.simple.phonetics.ui.base.services.transition.LockTransitionServiceImpl
-import com.simple.phonetics.ui.base.services.transition.RunningTransitionService
-import com.simple.phonetics.ui.base.services.transition.RunningTransitionServiceImpl
+import com.simple.phonetics.ui.base.services.transition.locking.LockingTransitionService
+import com.simple.phonetics.ui.base.services.transition.locking.LockingTransitionServiceImpl
+import com.simple.phonetics.ui.base.services.transition.running.RunningTransitionService
+import com.simple.phonetics.ui.base.services.transition.running.RunningTransitionServiceImpl
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 abstract class BaseFragment<T : androidx.viewbinding.ViewBinding, VM : BaseViewModel>(@androidx.annotation.LayoutRes contentLayoutId: Int = 0) : BaseViewModelFragment<T, VM>(contentLayoutId),
     LifecycleService,
     ViewLifecycleService,
-    LockTransitionService by LockTransitionServiceImpl(),
+    LockingTransitionService by LockingTransitionServiceImpl(),
     ConfigTransitionService by ConfigTransitionServiceImpl(),
     RunningTransitionService by RunningTransitionServiceImpl() {
 
     override var stateFlow: MutableSharedFlow<LifecycleState> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-
     override var lifecycleOwnerFlow: MutableSharedFlow<LifecycleOwner> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
 
 
     override var viewStateFlow: MutableSharedFlow<LifecycleState> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-
     override var viewLifecycleOwnerFlow = MutableSharedFlow<LifecycleOwner>(replay = 1, extraBufferCapacity = 1)
 
 

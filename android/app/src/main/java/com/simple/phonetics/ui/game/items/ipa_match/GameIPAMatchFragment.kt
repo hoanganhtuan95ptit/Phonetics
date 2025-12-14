@@ -13,7 +13,6 @@ import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
@@ -36,6 +35,7 @@ import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isFailed
 import com.simple.state.isSuccess
+import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.delay
 import java.util.UUID
 
