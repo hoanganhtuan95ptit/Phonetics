@@ -44,11 +44,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
                 val transitionLock = getTransitionLockInfo().takeIf { it.isNotEmpty() }?.toJson()?.let { "lock:$it" }
                 val transitionRunning = getTransitionRunningInfo().takeIf { it.isNotEmpty() }?.toJson()?.let { "running:$it" }
 
-                if (transitionLock == null && transitionRunning == null) continue
-
-                val message = "count:$count ${transitionLock.orEmpty()} \n ${transitionRunning.orEmpty()}".trim()
-
-                logCrashlytics("transition_tracking", RuntimeException(message))
+                if (transitionLock != null || transitionRunning != null) logCrashlytics("transition_tracking", RuntimeException("count:$count ${transitionLock.orEmpty()} \n ${transitionRunning.orEmpty()}".trim()))
                 count++
             }
         }
