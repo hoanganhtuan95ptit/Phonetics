@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
@@ -20,7 +21,6 @@ import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.handler
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
@@ -54,11 +54,14 @@ import com.simple.state.doSuccess
 import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.simple.state.toSuccess
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
@@ -297,6 +300,14 @@ class IpaDetailViewModel(
         }
 
         postValueIfActive(list)
+    }
+
+    init {
+
+        gameViewItemList.asFlow().map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
+
+            logAnalytics("feature_ipa_game_show_$it")
+        }
     }
 
     fun updateIpa(ipa: Ipa) {

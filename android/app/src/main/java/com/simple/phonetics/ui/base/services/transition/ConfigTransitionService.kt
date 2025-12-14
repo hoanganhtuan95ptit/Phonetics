@@ -13,6 +13,8 @@ import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialArcMotion
 import com.google.android.material.transition.MaterialContainerTransform
 import com.simple.coreapp.Param.ROOT_TRANSITION_NAME
+import com.simple.phonetics.ui.base.services.transition.running.exts.endTransition
+import com.simple.phonetics.ui.base.services.transition.running.exts.startTransition
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -154,31 +156,26 @@ private class DefaultTransitionListener(val name: String, val fragment: Fragment
     }
 
     override fun onTransitionStart(transition: Transition) {
-//        Log.d("tuanha", "onTransitionStart: ${fragment.javaClass.simpleName}")
-        fragment.startTransition("${fragmentName}_${name}_START")
+        fragment.startTransition("${name}_START")
         fragment.updateTransitionStatus(tag = "${fragmentName}_${name}_START", isEnd = false)
     }
 
     override fun onTransitionEnd(transition: Transition) {
-//        Log.d("tuanha", "onTransitionEnd: ${fragmentName}")
-        fragment.endTransition("${fragmentName}_${name}_START")
+        fragment.endTransition("${name}_START")
         fragment.updateTransitionStatus(tag = "${fragmentName}_${name}_START", isEnd = true)
     }
 
     override fun onTransitionCancel(transition: Transition) {
-//        Log.d("tuanha", "onTransitionCancel: ${fragmentName}")
-        fragment.endTransition("${fragmentName}_${name}_START")
+        fragment.endTransition("${name}_START")
         fragment.updateTransitionStatus(tag = "${fragmentName}_${name}_START", isEnd = true)
     }
 
     override fun onTransitionPause(transition: Transition) {
-//        Log.d("tuanha", "onTransitionPause: ${fragmentName}")
-        fragment.startTransition("${fragmentName}_${name}_PAUSE")
+        fragment.startTransition("${name}_PAUSE")
     }
 
     override fun onTransitionResume(transition: Transition) {
-//        Log.d("tuanha", "onTransitionResume: ${fragmentName}")
-        fragment.endTransition("${fragmentName}_${name}_PAUSE")
+        fragment.endTransition("${name}_PAUSE")
     }
 }
 

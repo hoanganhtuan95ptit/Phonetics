@@ -6,17 +6,13 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.analytics.logAnalytics
-import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.domain.usecase.SyncDataUseCase
 import com.simple.phonetics.utils.exts.awaitResume
 import com.simple.phonetics.utils.exts.mutableSharedFlow
 import com.simple.state.ResultState
 import com.unknown.coroutines.launchCollect
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val syncDataUseCase: SyncDataUseCase
@@ -47,11 +43,6 @@ class MainViewModel(
         outputLanguageFlow.launchCollect(viewModelScope) {
 
             logAnalytics("output_language_code_${it.id}")
-        }
-
-        viewModelScope.launch(handler + Dispatchers.IO) {
-
-            logAnalytics("version_name_${BuildConfig.VERSION_NAME.replace(".", "_")}")
         }
     }
 

@@ -11,7 +11,7 @@ import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.phonetics.DeeplinkManager
-import com.simple.phonetics.ui.MainActivity
+import com.simple.phonetics.ui.main.MainActivity
 
 @Deeplink
 class ToastDeeplink : DeeplinkHandler {

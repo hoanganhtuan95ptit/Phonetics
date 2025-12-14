@@ -21,7 +21,6 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.ext.DP
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
 import com.simple.coreapp.utils.ext.setText
@@ -36,9 +35,9 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionConfirmSpeakBinding
-import com.simple.phonetics.ui.MainActivity
-import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
+import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.ensureGradientUpdates
@@ -49,6 +48,7 @@ import com.simple.phonetics.utils.showAds
 import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isRunning
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Job

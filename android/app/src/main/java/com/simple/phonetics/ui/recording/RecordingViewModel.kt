@@ -17,7 +17,6 @@ import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.handler
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
@@ -29,12 +28,13 @@ import com.simple.coreapp.utils.extentions.toPx
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
-import com.simple.phonetics.ui.common.adapters.ImageStateViewItem
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
+import com.simple.phonetics.ui.common.adapters.ImageStateViewItem
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isStart
+import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorOnSurfaceVariant

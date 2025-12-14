@@ -7,9 +7,9 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.simple.adapter.provider.AdapterProvider
 import com.simple.autobind.AutoBind
-import com.simple.phonetics.ui.base.services.transition.lockTransition
-import com.simple.phonetics.ui.base.services.transition.onTransitionRunningEndAwait
-import com.simple.phonetics.ui.base.services.transition.unlockTransition
+import com.simple.phonetics.ui.base.services.transition.locking.exts.lockTransition
+import com.simple.phonetics.ui.base.services.transition.locking.exts.unlockTransition
+import com.simple.phonetics.ui.base.services.transition.running.exts.onTransitionRunningEndAwait
 import com.unknown.coroutines.handler
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers

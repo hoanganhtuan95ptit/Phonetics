@@ -1,7 +1,6 @@
 package com.simple.feature.campaign.ui
 
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import com.simple.autobind.annotation.AutoBind
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel

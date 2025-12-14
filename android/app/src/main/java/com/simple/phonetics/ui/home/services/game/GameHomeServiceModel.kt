@@ -2,6 +2,8 @@ package com.simple.phonetics.ui.home.services.game
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -24,9 +26,12 @@ import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrEmpty
+import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 class GameHomeServiceModel(
     private val countWordAsyncUseCase: CountWordAsyncUseCase
@@ -101,15 +106,19 @@ class GameHomeServiceModel(
             viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_2", width = size.width, height = DP.DP_16))
         }
 
-        if (viewItemList.isNotEmpty()) {
-            logAnalytics("game_home_show")
-        }
-
         viewItemList.forEach {
 
             if (it is SizeViewItem) it.measure(size, style)
         }
 
         postValueIfActive(viewItemList)
+    }
+
+    init {
+
+        viewItemList.asFlow().map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
+
+            logAnalytics("feature_game_home_show_$it")
+        }
     }
 }

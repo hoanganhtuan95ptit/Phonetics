@@ -14,7 +14,6 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
-import com.unknown.coroutines.launchCollect
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
 import com.simple.coreapp.utils.ext.setText
@@ -28,9 +27,9 @@ import com.simple.phonetics.ErrorCode
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderVerticalBinding
-import com.simple.phonetics.ui.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.awaitResume
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
@@ -38,6 +37,7 @@ import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorOnBackground
 
