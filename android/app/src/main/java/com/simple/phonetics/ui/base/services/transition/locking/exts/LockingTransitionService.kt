@@ -17,7 +17,9 @@ fun Fragment.unlockTransition(tag: String) {
     if (this is LockingTransitionService) unlockTransition(tag = tag)
 }
 
-fun FragmentActivity.getTransitionLock(): Map<String, LockingTransitionViewModel.Locking> {
+fun FragmentActivity.getTransitionLockInfo(): List<String> {
 
-    return viewModels<LockingTransitionViewModel>().value.locking.value.orEmpty().filter { it.value.isLocking }
+    return viewModels<LockingTransitionViewModel>().value.locking.value.orEmpty().filter { it.value.isLocking }.map { it.value.toJson() }
 }
+
+private fun LockingTransitionViewModel.Locking.toJson() = "tag:$tag timeLocking:$timeLocking"

@@ -70,7 +70,7 @@ class DynamicFeatureService : MainService {
         }
 
         downloadState.doFailed {
-            logCrashlytics("dynamic_feature1_download_module", it)
+            logCrashlytics("dynamic_feature1_download_module_${moduleName.lowercase()}", it)
         }
 
         return downloadState

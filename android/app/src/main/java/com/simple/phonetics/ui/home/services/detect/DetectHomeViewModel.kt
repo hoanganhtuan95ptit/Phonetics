@@ -18,10 +18,12 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
+import com.simple.state.isCompleted
+import com.simple.state.isSuccess
 import com.simple.state.toSuccess
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.filter
 
 class DetectHomeViewModel(
     private val checkSupportDetectUseCase: CheckSupportDetectUseCase
@@ -87,9 +89,9 @@ class DetectHomeViewModel(
 
     init {
 
-        detectInfo.asFlow().map { it.isShow }.distinctUntilChanged().launchCollect(viewModelScope) {
+        isSupportDetectState.asFlow().filter { it.isCompleted() }.distinctUntilChanged().launchCollect(viewModelScope) {
 
-            logAnalytics("feature_detect_home_show_$it")
+            logAnalytics("feature_detect_home_show_${it.isSuccess()}")
         }
     }
 

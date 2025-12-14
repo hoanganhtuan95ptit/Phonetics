@@ -15,7 +15,6 @@ import java.util.concurrent.ConcurrentHashMap
 class RunTransitionViewModel : ViewModel() {
 
 
-    @VisibleForTesting
     val running = MutableLiveData(ConcurrentHashMap<String, Running>())
 
     val runningFilter = running.asFlow().filter { it.isNotEmpty() }
@@ -30,7 +29,7 @@ class RunTransitionViewModel : ViewModel() {
 
         RunInfo(
             data = it,
-            isRunning = it.isEmpty()
+            isRunning = it.isNotEmpty()
         )
     }
 
@@ -68,7 +67,11 @@ class RunTransitionViewModel : ViewModel() {
         val tag: String,
         val isRunning: Boolean,
         val timeAdd: Long = System.currentTimeMillis()
-    )
+    ) {
+
+        val timeRunning: Long
+            get() = System.currentTimeMillis() - timeAdd
+    }
 
     data class RunInfo(
         val data: Map<String, Running>,

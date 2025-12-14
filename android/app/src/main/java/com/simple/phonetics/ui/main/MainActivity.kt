@@ -3,7 +3,6 @@ package com.simple.phonetics.ui.main
 import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.lifecycle.lifecycleScope
@@ -17,8 +16,8 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.MainViewModel
-import com.simple.phonetics.ui.base.services.transition.locking.exts.getTransitionLock
-import com.simple.phonetics.ui.base.services.transition.running.exts.getTransitionRunning
+import com.simple.phonetics.ui.base.services.transition.locking.exts.getTransitionLockInfo
+import com.simple.phonetics.ui.base.services.transition.running.exts.getTransitionRunningInfo
 import com.simple.phonetics.ui.base.services.transition.running.exts.onTransitionRunningEndAwait
 import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect
@@ -38,19 +37,18 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
 
         val transitionCheckJob = lifecycleScope.launch {
 
-            var count = 1
+            var count = 0
             while (isActive) {
                 delay(500)
 
-                val transitionLock = getTransitionLock().takeIf { it.isNotEmpty() }?.toJson()?.let { "lock:$it" }
-                val transitionRunning = getTransitionRunning().takeIf { it.isNotEmpty() }?.toJson()?.let { "running:$it" }
+                val transitionLock = getTransitionLockInfo().takeIf { it.isNotEmpty() }?.toJson()?.let { "lock:$it" }
+                val transitionRunning = getTransitionRunningInfo().takeIf { it.isNotEmpty() }?.toJson()?.let { "running:$it" }
 
                 if (transitionLock == null && transitionRunning == null) continue
 
                 val message = "count:$count ${transitionLock.orEmpty()} \n ${transitionRunning.orEmpty()}".trim()
 
-                Log.d("tuanha", "onCreate: $message")
-                logCrashlytics("transition_check", RuntimeException(message))
+                logCrashlytics("transition_tracking", RuntimeException(message))
                 count++
             }
         }

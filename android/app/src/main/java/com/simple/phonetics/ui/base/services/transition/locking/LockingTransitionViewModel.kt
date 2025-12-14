@@ -56,7 +56,10 @@ class LockingTransitionViewModel : ViewModel() {
         val tag: String,
         val isLocking: Boolean,
         val timeAdd: Long = System.currentTimeMillis()
-    )
+    ) {
+        val timeLocking: Long
+            get() = System.currentTimeMillis() - timeAdd
+    }
 
     data class LockInfo(
         val data: Map<String, Locking>,

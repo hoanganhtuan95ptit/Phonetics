@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 
 class LockingTransitionServiceImpl : LockingTransitionService {
 
+    private lateinit var tagName: String
 
     override lateinit var lockingTransitionViewModel: LockingTransitionViewModel
     override lateinit var lockingTransitionViewModelActivity: LockingTransitionViewModel
@@ -28,6 +29,8 @@ class LockingTransitionServiceImpl : LockingTransitionService {
 
 
     override fun setupTransitionLock(fragment: BaseFragment<*, *>) {
+
+        tagName = fragment.javaClass.simpleName.lowercase()
 
         lockingTransitionViewModel = fragment.viewModels<LockingTransitionViewModel>().value
         lockingTransitionViewModelActivity = fragment.activityViewModels<LockingTransitionViewModel>().value
@@ -48,14 +51,14 @@ class LockingTransitionServiceImpl : LockingTransitionService {
 
     override fun lockTransition(tag: String) {
 
-        lockingTransitionViewModel.lockTransition(tag)
-        lockingTransitionViewModelActivity.lockTransition(tag)
+        lockingTransitionViewModel.lockTransition(tag = "${tagName}_$tag")
+        lockingTransitionViewModelActivity.lockTransition(tag = "${tagName}_$tag")
     }
 
     override fun unlockTransition(tag: String) {
 
-        lockingTransitionViewModel.unlockTransition(tag)
-        lockingTransitionViewModelActivity.unlockTransition(tag)
+        lockingTransitionViewModel.unlockTransition(tag = "${tagName}_$tag")
+        lockingTransitionViewModelActivity.unlockTransition(tag = "${tagName}_$tag")
     }
 
     private fun setupLock(fragment: BaseFragment<*, *>) = fragment.viewLifecycleOwnerFlow.launchCollect(fragment) {

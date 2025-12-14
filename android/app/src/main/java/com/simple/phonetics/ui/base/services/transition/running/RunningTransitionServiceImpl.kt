@@ -23,7 +23,7 @@ class RunningTransitionServiceImpl : RunningTransitionService {
 
     override fun setupTransitionRunning(fragment: BaseFragment<*, *>) {
 
-        tagName = this.javaClass.simpleName.lowercase()
+        tagName = fragment.javaClass.simpleName.lowercase()
 
         runTransitionViewModel = fragment.viewModels<RunTransitionViewModel>().value
         runTransitionViewModelActivity = fragment.activityViewModels<RunTransitionViewModel>().value

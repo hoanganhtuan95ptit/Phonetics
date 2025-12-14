@@ -23,12 +23,14 @@ suspend fun Fragment.onTransitionRunningEndAwait() {
     if (this is RunningTransitionService) runTransitionViewModel.onTransitionRunningEndAwait()
 }
 
-fun FragmentActivity.getTransitionRunning(): Map<String, Any> {
+fun FragmentActivity.getTransitionRunningInfo(): List<String> {
 
-    return viewModels<RunTransitionViewModel>().value.running.value.orEmpty().filter { it.value.isRunning }
+    return viewModels<RunTransitionViewModel>().value.running.value.orEmpty().filter { it.value.isRunning }.map { it.value.toJson() }
 }
 
 suspend fun FragmentActivity.onTransitionRunningEndAwait() {
 
     viewModels<RunTransitionViewModel>().value.onTransitionRunningEndAwait()
 }
+
+private fun RunTransitionViewModel.Running.toJson() = "tag:$tag timeRunning:$timeRunning"

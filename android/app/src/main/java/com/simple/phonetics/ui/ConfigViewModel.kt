@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
@@ -48,10 +50,15 @@ import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
+import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isStart
+import com.simple.state.isSuccess
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 
 class ConfigViewModel(
@@ -433,6 +440,13 @@ class ConfigViewModel(
         postValue(list)
     }
 
+    init {
+
+        isSupportTranslateState.asFlow().filter { it.isCompleted() }.distinctUntilChanged().launchCollect(viewModelScope) {
+
+            logAnalytics("feature_translate_show_${it.isSuccess()}")
+        }
+    }
 
     fun updateVoiceSpeed(current: Float) = launchWithTag("VOICE_SPEED") {
 
