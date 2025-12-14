@@ -23,10 +23,68 @@ dependencyResolutionManagement {
     }
 }
 
+
 rootProject.name = "EPhonetics"
 
-include ':config:phonetics'// can remove
-project(':config:phonetics').projectDir = file('../../1CorePrivate/config/phonetics')// can remove
+
+def props = new Properties()
+def propsFile = new File(rootDir, "local.properties")
+
+if (propsFile.exists()) {
+    propsFile.withInputStream { props.load(it) }
+}
+
+def entries = [:]
+
+props.each { key, value ->
+    def m = (key =~ /^(.+)\.(path_repo|module|library)$/)
+    if (!m.matches()) return
+
+    def prefix = m[0][1]
+    def field = m[0][2]
+
+    entries.computeIfAbsent(prefix) { [:] }
+    entries[prefix][field] = value
+}
+
+def repos = [:]
+
+entries.each { _, data ->
+    def pathRepo = data.path_repo
+    if (!pathRepo) return
+
+    repos.computeIfAbsent(pathRepo) {
+        [modules: []]
+    }
+
+    if (data.module && data.library) {
+        repos[pathRepo].modules << [
+                module : data.module,   // e.g. config:phonetics
+                library: data.library   // e.g. group:artifact
+        ]
+    }
+}
+
+repos.each { pathRepo, data ->
+
+    def repoDir = new File(pathRepo)
+    if (!repoDir.exists()) {
+        return
+    }
+
+    includeBuild(pathRepo) {
+
+        if (!data.modules.isEmpty()) {
+            dependencySubstitution {
+
+                data.modules.each { m ->
+                    substitute module("${m.library}") using project("${m.module}")
+                }
+            }
+        }
+    }
+}
+
 
 include ':app'
 
