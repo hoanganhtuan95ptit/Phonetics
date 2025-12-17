@@ -17,7 +17,6 @@ import com.simple.feature.reminder.MorningReminderWorker
 import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.main.services.MainService
 import com.simple.phonetics.ui.main.services.queue.QueueEventState
-import com.simple.state.ResultState
 import java.util.concurrent.TimeUnit
 
 private const val tag = "REMINDER"
@@ -57,21 +56,20 @@ class ReminderService : MainService {
         QueueEventState.addTag(tag = tag, order = order)
 
 
-        val state = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 
-            ResultState.Running(Unit)
+            QueueEventState.readyTag(tag)
         } else {
 
-            ResultState.Success(Unit)
+            QueueEventState.endTag(tag)
         }
 
-        QueueEventState.updateState(tag, order = order, state = state)
 
         listenerEvent(mainActivity.lifecycle, eventName = tag) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) PermissionX.init(mainActivity).permissions(arrayListOf(Manifest.permission.POST_NOTIFICATIONS)).request { allGranted, _, _ ->
 
-                QueueEventState.endTag(tag = tag, order = order, success = allGranted)
+                QueueEventState.endTag(tag = tag)
             }
         }
     }

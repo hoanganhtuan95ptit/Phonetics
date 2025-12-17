@@ -10,11 +10,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import com.simple.autobind.annotation.AutoBind
 import com.simple.event.sendEvent
-import com.simple.phonetic.BuildConfig
 import com.simple.phonetics.ui.base.services.transition.running.exts.onTransitionRunningEndAwait
 import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.main.services.MainService
-import com.simple.state.ResultState
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
@@ -28,11 +26,11 @@ class QueueEventStateService : MainService {
         mainActivity.listenerActivityLifecycleCallbacks(object : DefaultActivityLifecycleCallbacks() {
 
             override fun onActivityResumed(activity: Activity) {
-                QueueEventState.updateState(tag = "main", state = ResultState.Success(Unit))
+                QueueEventState.endTag(tag = "main")
             }
 
             override fun onActivityPaused(activity: Activity) {
-                QueueEventState.updateState(tag = "main", state = ResultState.Start)
+                QueueEventState.addTag(tag = "main")
             }
         })
 
@@ -40,21 +38,17 @@ class QueueEventStateService : MainService {
 
             override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
 
-                if (f is DialogFragment) return
-
-                val state = if (f is HomeScreen) {
-                    ResultState.Success(Unit)
-                } else {
-                    ResultState.Start
+                if (f is HomeScreen) {
+                    QueueEventState.endTag(tag = "home")
+                } else if (f !is DialogFragment) {
+                    QueueEventState.addTag(tag = "home")
                 }
-
-                QueueEventState.updateState(tag = "home", state = state)
             }
 
             override fun onFragmentPaused(fm: FragmentManager, f: Fragment) {
 
                 if (f is HomeScreen) {
-                    QueueEventState.updateState(tag = "home", state = ResultState.Start)
+                    QueueEventState.endTag(tag = "home")
                 }
             }
         })
@@ -63,7 +57,9 @@ class QueueEventStateService : MainService {
 
             mainActivity.onTransitionRunningEndAwait()
 
-            if (!BuildConfig.DEBUG) sendEvent(eventName = eventName, data = Unit)
+            QueueEventState.runningTag(eventName)
+
+            sendEvent(eventName = eventName, data = Unit)
         }
     }
 
