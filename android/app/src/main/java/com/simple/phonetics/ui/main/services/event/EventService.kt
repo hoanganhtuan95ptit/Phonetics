@@ -37,13 +37,11 @@ class EventService : MainService {
 
         viewModel.eventInfo.asFlow().launchCollect(mainActivity) { data ->
 
-            val state = if (data.show) {
-                ResultState.Running(Unit)
+            if (data.show) {
+                QueueEventState.readyTag(tag = tag)
             } else {
-                ResultState.Success(Unit)
+                QueueEventState.endTag(tag = tag)
             }
-
-            QueueEventState.updateState(tag = tag, order = order, state = state)
         }
 
         listenerEvent(mainActivity.lifecycle, tag) {
@@ -59,7 +57,7 @@ class EventService : MainService {
             }
 
 
-            QueueEventState.endTag(tag = tag, order = order)
+            QueueEventState.endTag(tag = tag)
         }
     }
 

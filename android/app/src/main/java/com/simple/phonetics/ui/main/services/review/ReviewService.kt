@@ -25,7 +25,6 @@ import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.main.services.MainService
 import com.simple.phonetics.ui.main.services.queue.QueueEventState
 import com.simple.phonetics.ui.main.services.review.ReviewViewModel.RateInfo
-import com.simple.state.ResultState
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -58,13 +57,12 @@ class ReviewService : MainService {
 
         viewModel.rateInfo.asFlow().launchCollect(mainActivity) { data ->
 
-            val state = if (data.show) {
-                ResultState.Running(Unit)
+            if (data.show) {
+                QueueEventState.readyTag(tag = tag)
             } else {
-                ResultState.Success(Unit)
+                QueueEventState.endTag(tag = tag)
             }
 
-            QueueEventState.updateState(tag = tag, order = order, state = state)
         }
 
         listenerEvent(mainActivity.lifecycle, tag) {
@@ -80,7 +78,7 @@ class ReviewService : MainService {
                 openConfirmAwait(mainActivity = mainActivity, info = info)
             }
 
-            QueueEventState.endTag(tag = tag, order = order, success = true)
+            QueueEventState.endTag(tag = tag)
         }
 
 
