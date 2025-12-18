@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.language
 
-import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -28,7 +27,6 @@ import com.simple.phonetics.ErrorCode
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderVerticalBinding
-import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
 import com.simple.phonetics.utils.exts.awaitResume

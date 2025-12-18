@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.game
 
-import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +18,6 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentContainerHeaderHorizontalBinding
-import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.unknown.theme.utils.exts.colorBackground

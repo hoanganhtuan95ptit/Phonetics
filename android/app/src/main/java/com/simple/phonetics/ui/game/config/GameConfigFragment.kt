@@ -36,9 +36,9 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionConfirmGameBinding
-import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
+import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.unknown.theme.utils.exts.colorBackground

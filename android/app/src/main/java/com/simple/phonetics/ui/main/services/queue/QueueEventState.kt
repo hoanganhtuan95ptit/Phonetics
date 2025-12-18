@@ -1,53 +1,68 @@
 package com.simple.phonetics.ui.main.services.queue
 
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
-import com.simple.state.ResultState
-import com.simple.state.isRunning
-import com.simple.state.isStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import java.util.concurrent.ConcurrentHashMap
 
 object QueueEventState {
 
-    private val map = ConcurrentHashMap<String, Pair<Int, ResultState<Unit>>>()
-    private val queueLive = MediatorLiveData<Long>()
+
+    private val queueMap = MutableLiveData(ConcurrentHashMap<String, QueueEvent>())
 
 
     fun addTag(tag: String, order: Int = Int.MAX_VALUE) {
 
-        updateState(tag = tag, order = order, state = ResultState.Start)
+        updateState(tag = tag, order = order, status = Status.None)
     }
 
-    fun endTag(tag: String, order: Int = Int.MAX_VALUE, success: Boolean = true) {
+    fun readyTag(tag: String) {
 
-        val state = if (success) {
-            ResultState.Success(Unit)
-        } else {
-            ResultState.Failed(RuntimeException())
-        }
-
-        updateState(tag = tag, order = order, state = state)
+        updateState(tag = tag, status = Status.Ready)
     }
 
-    fun updateState(tag: String, order: Int = Int.MAX_VALUE, state: ResultState<Unit>) {
+    fun runningTag(tag: String) {
 
-        map[tag] = order to state
-        queueLive.postValue(System.currentTimeMillis())
+        updateState(tag = tag, status = Status.Running)
     }
 
-    fun getQueueAsync(): Flow<String> = queueLive.asFlow().map {
+    fun endTag(tag: String) {
 
-        map.toList()
-    }.filter {
+        updateState(tag = tag, status = Status.End)
+    }
 
-        it.all { !it.second.second.isStart() }
+
+    fun updateState(tag: String, order: Int = Int.MAX_VALUE, status: Status) {
+
+        val map = queueMap.value ?: return
+
+        map[tag] = map[tag]?.copy(status = status) ?: QueueEvent(tag = tag, order = order, status = status)
+
+        queueMap.postValue(map)
+    }
+
+    fun getQueueAsync(): Flow<String> = queueMap.asFlow().filter {
+
+        it.all { it.value.status !in listOf(Status.None, Status.Running) }
     }.mapNotNull { it ->
 
-        it.sortedBy { it.second.first }.firstOrNull { it.second.second.isRunning() }?.first
+        it.values.sortedBy { it.order }.firstOrNull { it.status == Status.Ready }?.tag
     }.distinctUntilChanged()
+
+
+    private data class QueueEvent(
+        val tag: String,
+        val order: Int,
+        val status: Status
+    )
+
+    enum class Status {
+        None,
+        Ready,
+        Running,
+        End
+    }
 }

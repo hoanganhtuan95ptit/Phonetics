@@ -49,7 +49,6 @@ import com.simple.state.isFailed
 import com.simple.state.isRunning
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
-import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch

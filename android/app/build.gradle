@@ -91,7 +91,7 @@ android {
 
 dependencies {
 
-    implementation project(':config:phonetics')// can remove
+    implementation "com.hoanganhtuan95pit.config:phonetic:1.0.0"// can remove
 
     implementation project(':library:ipa')
     implementation project(':library:word')

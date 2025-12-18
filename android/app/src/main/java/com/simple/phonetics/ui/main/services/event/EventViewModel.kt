@@ -23,6 +23,7 @@ import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.phonetics.domain.usecase.event.GetCurrentEventAsyncUseCase
 import com.simple.phonetics.domain.usecase.event.UpdateEventShowUseCase
+import com.simple.phonetics.entities.Event
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.wrapLink
@@ -42,7 +43,7 @@ class EventViewModel(
 ) : BaseViewModel() {
 
     @VisibleForTesting
-    val eventState: LiveData<ResultState<com.simple.phonetics.entities.Event>> = mediatorLiveData {
+    val eventState: LiveData<ResultState<Event>> = mediatorLiveData {
 
         getCurrentEventAsyncUseCase.execute().collect {
 
@@ -172,7 +173,7 @@ class EventViewModel(
 
     data class EventInfo(
         val show: Boolean,
-        val event: com.simple.phonetics.entities.Event? = null,
+        val event: Event? = null,
 
         val positive: ButtonInfo? = null,
         val negative: ButtonInfo? = null,

@@ -271,7 +271,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             QueueEventState.addTag("view_item_list", order = Int.MAX_VALUE)
             binding.recyclerView.submitListAndAwait(viewItemList = data, isAnimation = !isFromCache)
-            QueueEventState.endTag("view_item_list", order = Int.MAX_VALUE)
+            QueueEventState.endTag("view_item_list")
         }
     }
 

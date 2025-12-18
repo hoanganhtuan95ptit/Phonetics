@@ -2,6 +2,8 @@ package com.simple.feature.campaign.ui
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.view.Background
@@ -19,8 +21,11 @@ import com.simple.feature.campaign.ui.adapters.CampaignViewItem
 import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrKey
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorPrimary
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 
 class CampaignHomeViewModel : BaseViewModel() {
 
@@ -77,16 +82,19 @@ class CampaignHomeViewModel : BaseViewModel() {
             viewItemList.add(it)
         }
 
-        if (viewItemList.isNotEmpty()) {
-
-            logAnalytics("campaign_show")
-        }
-
         viewItemList.forEach {
 
             if (it is SizeViewItem) it.measure(appSize = size, style = style)
         }
 
         postValueIfActive(viewItemList)
+    }
+
+    init {
+
+        viewItemList.asFlow().map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
+
+            logAnalytics("feature_campaign_show_$it")
+        }
     }
 }
