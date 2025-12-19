@@ -29,6 +29,7 @@ import com.simple.phonetics.ui.speak.SpeakViewModel.ResultInfo
 import com.simple.phonetics.ui.speak.SpeakViewModel.SpeakInfo
 import com.simple.phonetics.ui.speak.services.pronunciation_assessment.adapters.ListViewItem
 import com.simple.phonetics.ui.speak.services.pronunciation_assessment.adapters.NBestPronunciationAssessmentViewItem
+import com.simple.phonetics.ui.speak.services.pronunciation_assessment.adapters.WordPronunciationAssessmentViewItem
 import com.simple.phonetics.ui.speak.services.pronunciation_assessment.entities.AssessmentResult
 import com.simple.phonetics.ui.speak.services.pronunciation_assessment.utils.PronunciationAssessmentUtils
 import com.simple.phonetics.utils.exts.colorErrorVariant
@@ -50,7 +51,6 @@ import com.simple.state.isStart
 import com.simple.state.toFailed
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
-import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 import com.unknown.theme.utils.exts.colorSurface
 import kotlinx.coroutines.channels.awaitClose
@@ -59,7 +59,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 
 class PronunciationAssessmentViewModel : BaseViewModel() {
-
 
     private val phonemeMap = mapOf(
         "r" to PhonemeConfig("/r/", 1),
@@ -75,11 +74,6 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
         "t" to PhonemeConfig("/t/", 1),
         "ax" to PhonemeConfig("/ə/", 2)
     )
-
-    val text = mutableSharedFlow<String> {
-
-//        emit("Read this sentence.")
-    }
 
     val buttonInfo = combineSourcesWithDiff<ButtonAssessmentInfo>(themeFlow) {
 
@@ -102,12 +96,18 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
         emit(info)
     }
 
+
+    val text = mutableSharedFlow<String> {
+
+//        emit("Read this sentence.")
+    }
+
     val assessmentState = mutableSharedFlow<ResultState<String>> {
 
 //        val text =
 //            "{\"Id\":\"9ca283b939414b8e92f218649536ade7\",\"RecognitionStatus\":\"Success\",\"Offset\":2300000,\"Duration\":16000000,\"Channel\":0,\"DisplayText\":\"Readthissentence.\",\"SNR\":18.502283,\"NBest\":[{\"Confidence\":0.9504961,\"Lexical\":\"readthissentence\",\"ITN\":\"readthissentence\",\"MaskedITN\":\"readthissentence\",\"Display\":\"Readthissentence.\",\"PronunciationAssessment\":{\"AccuracyScore\":78.0,\"FluencyScore\":96.0,\"CompletenessScore\":100.0,\"PronScore\":86.0},\"Words\":[{\"Word\":\"read\",\"Offset\":2300000,\"Duration\":5000000,\"PronunciationAssessment\":{\"AccuracyScore\":79.0,\"ErrorType\":\"None\"},\"Syllables\":[{\"Syllable\":\"riyd\",\"Grapheme\":\"read\",\"PronunciationAssessment\":{\"AccuracyScore\":77.0},\"Offset\":2300000,\"Duration\":5000000}],\"Phonemes\":[{\"Phoneme\":\"r\",\"PronunciationAssessment\":{\"AccuracyScore\":84.0},\"Offset\":2300000,\"Duration\":2200000},{\"Phoneme\":\"iy\",\"PronunciationAssessment\":{\"AccuracyScore\":92.0},\"Offset\":4600000,\"Duration\":900000},{\"Phoneme\":\"d\",\"PronunciationAssessment\":{\"AccuracyScore\":61.0},\"Offset\":5600000,\"Duration\":1700000}]},{\"Word\":\"this\",\"Offset\":7800000,\"Duration\":3900000,\"PronunciationAssessment\":{\"AccuracyScore\":91.0,\"ErrorType\":\"None\"},\"Syllables\":[{\"Syllable\":\"dhihs\",\"Grapheme\":\"this\",\"PronunciationAssessment\":{\"AccuracyScore\":68.0},\"Offset\":7800000,\"Duration\":3900000}],\"Phonemes\":[{\"Phoneme\":\"dh\",\"PronunciationAssessment\":{\"AccuracyScore\":56.0},\"Offset\":7800000,\"Duration\":1500000},{\"Phoneme\":\"ih\",\"PronunciationAssessment\":{\"AccuracyScore\":84.0},\"Offset\":9400000,\"Duration\":900000},{\"Phoneme\":\"s\",\"PronunciationAssessment\":{\"AccuracyScore\":69.0},\"Offset\":10400000,\"Duration\":1300000}]},{\"Word\":\"sentence\",\"Offset\":12000000,\"Duration\":6300000,\"PronunciationAssessment\":{\"AccuracyScore\":64.0,\"ErrorType\":\"None\"},\"Syllables\":[{\"Syllable\":\"sehn\",\"Grapheme\":\"sen\",\"PronunciationAssessment\":{\"AccuracyScore\":81.0},\"Offset\":12000000,\"Duration\":2900000},{\"Syllable\":\"taxns\",\"Grapheme\":\"tence\",\"PronunciationAssessment\":{\"AccuracyScore\":52.0},\"Offset\":15000000,\"Duration\":3300000}],\"Phonemes\":[{\"Phoneme\":\"s\",\"PronunciationAssessment\":{\"AccuracyScore\":83.0},\"Offset\":12000000,\"Duration\":1400000},{\"Phoneme\":\"eh\",\"PronunciationAssessment\":{\"AccuracyScore\":72.0},\"Offset\":13500000,\"Duration\":400000},{\"Phoneme\":\"n\",\"PronunciationAssessment\":{\"AccuracyScore\":83.0},\"Offset\":14000000,\"Duration\":900000},{\"Phoneme\":\"t\",\"PronunciationAssessment\":{\"AccuracyScore\":82.0},\"Offset\":15000000,\"Duration\":700000},{\"Phoneme\":\"ax\",\"PronunciationAssessment\":{\"AccuracyScore\":68.0},\"Offset\":15800000,\"Duration\":1400000},{\"Phoneme\":\"n\",\"PronunciationAssessment\":{\"AccuracyScore\":7.0},\"Offset\":17300000,\"Duration\":400000},{\"Phoneme\":\"s\",\"PronunciationAssessment\":{\"AccuracyScore\":9.0},\"Offset\":17800000,\"Duration\":500000}]}]}]}"
 //
-//        emit(ResultState.Success(text.toObject<AssessmentResult>()))
+//        emit(ResultState.Success(text))
     }
 
     val speakInfo = listenerSourcesWithDiff(themeFlow, translateFlow, isSupportSpeakFlow, assessmentState) {
@@ -221,7 +221,10 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
                 .with(ForegroundColor(assessment.completenessScore.scoreToColor().first))
                 .with(assessment.completenessScore.toPercentSmart(), Bold),
 
-            pronScore = assessment.pronScore.orZero().toFloat()
+            pronScore = assessment.pronScore.orZero().toFloat(),
+            pronScoreColor = assessment.pronScore.scoreToColor().first,
+
+            backgroundColor = assessment.pronScore.scoreToColor().second
         ).let {
 
             list.add(it)
@@ -247,8 +250,7 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
             it.words
         }.filter {
 
-            true
-//            it.pronunciationAssessment.accuracyScore < 50
+            it.pronunciationAssessment.accuracyScore < 50
         }.sortedBy {
 
             it.pronunciationAssessment.accuracyScore.orZero()
@@ -269,7 +271,7 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT
             ),
-            margin = Margin(left = DP.DP_8, top = DP.DP_8, right = DP.DP_8, bottom = DP.DP_16),
+            margin = Margin(top = DP.DP_8, right = DP.DP_8, bottom = DP.DP_16),
         ).let {
 
             viewItemList.add(it)
@@ -277,27 +279,25 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
 
         words.map { word ->
 
-            var text = word.word.with(ForegroundColor(theme.colorOnSurface))
+            var phonetic = word.phonemes.joinToString(separator = "") { phonemeMap[it.phoneme]?.ipa?.replace("/", "") ?: it.phoneme }.toRich()
 
             var start = 0
             word.phonemes.forEach {
 
-                val letters = phonemeMap[it.phoneme]?.charCount ?: 1
+                val letters = (phonemeMap[it.phoneme]?.ipa?.replace("/", "") ?: it.phoneme).length
 
                 val end = start + letters
 
-                text = text.with(RichRange(start, end), ForegroundColor(it.pronunciationAssessment.accuracyScore.scoreToColor().first))
+                phonetic = phonetic.with(RichRange(start, end), ForegroundColor(it.pronunciationAssessment.accuracyScore.scoreToColor().first))
 
                 start = end
             }
 
-            TextSimpleViewItem(
+            WordPronunciationAssessmentViewItem(
                 id = word.word,
-                data = word.word,
-                text = text,
-                margin = Margin(left = DP.DP_8, right = DP.DP_8, bottom = DP.DP_8),
-                padding = Padding(paddingVertical = DP.DP_8, paddingHorizontal = DP.DP_16),
-                background = Background(strokeColor = theme.colorPrimary, strokeWidth = DP.DP_1, cornerRadius = DP.DP_8)
+                word = word.word.toRich(),
+                phonetic = phonetic,
+                backgroundStrokeColor = word.pronunciationAssessment.accuracyScore.scoreToColor().first
             )
         }.let {
 
@@ -340,8 +340,7 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
             it.phonemes
         }.filter {
 
-            true
-//            it.pronunciationAssessment.accuracyScore <= 50
+            it.pronunciationAssessment.accuracyScore <= 50
         }.sortedByDescending {
 
             it.pronunciationAssessment.accuracyScore
@@ -365,7 +364,7 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT
             ),
-            margin = Margin(left = DP.DP_8, top = DP.DP_8, right = DP.DP_8, bottom = DP.DP_16),
+            margin = Margin(top = DP.DP_8, right = DP.DP_8, bottom = DP.DP_16),
         ).let {
 
             viewItemList.add(it)
@@ -380,9 +379,9 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
                 id = phoneme.phoneme,
                 data = ipaMap[ipa],
                 text = text,
-                margin = Margin(left = DP.DP_8, right = DP.DP_8, bottom = DP.DP_8),
+                margin = Margin(right = DP.DP_8, bottom = DP.DP_8),
                 padding = Padding(paddingVertical = DP.DP_8, paddingHorizontal = DP.DP_16),
-                background = Background(strokeColor = theme.colorPrimary, strokeWidth = DP.DP_1, cornerRadius = DP.DP_8)
+                background = Background(strokeColor = phoneme.pronunciationAssessment.accuracyScore.scoreToColor().first, strokeWidth = DP.DP_1, cornerRadius = DP.DP_8)
             )
         }.let {
 

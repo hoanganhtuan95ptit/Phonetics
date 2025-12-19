@@ -1,10 +1,10 @@
 package com.simple.phonetics.ui.game.config
 
-import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
@@ -38,7 +38,6 @@ import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionConfirmGameBinding
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.ui.game.GameConfigViewModel
-import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.unknown.theme.utils.exts.colorBackground
@@ -179,13 +178,11 @@ class ConfigDeeplink : DeeplinkHandler {
         return DeeplinkManager.GAME_CONFIG
     }
 
-    override suspend fun navigation(componentCallbacks: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
-
-        if (componentCallbacks !is MainActivity) return false
+    override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         val fragment = GameConfigFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
-        fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, tag = "")
+        fragment.showOrAwaitDismiss(activity.supportFragmentManager, tag = "")
 
         return true
     }

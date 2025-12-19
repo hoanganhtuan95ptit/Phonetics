@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.base.services.transition.doObserver
+import com.simple.phonetics.ui.base.services.transition.launchRepeatOnLifecycle
 import com.simple.phonetics.ui.base.services.transition.launchWithResumed
 import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect

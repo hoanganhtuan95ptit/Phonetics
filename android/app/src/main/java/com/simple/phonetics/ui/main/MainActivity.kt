@@ -17,7 +17,6 @@ import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.databinding.ActivityMainBinding
 import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.base.services.transition.locking.exts.getTransitionLockInfo
-import com.simple.phonetics.ui.base.services.transition.onTransitionRunningEndAwait
 import com.simple.phonetics.ui.base.services.transition.running.exts.getTransitionRunningInfo
 import com.simple.phonetics.ui.base.services.transition.running.exts.onTransitionRunningEndAwait
 import com.unknown.coroutines.handler

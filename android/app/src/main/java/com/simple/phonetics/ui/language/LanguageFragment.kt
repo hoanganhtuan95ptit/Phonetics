@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asFlow
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +24,6 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.ErrorCode
 import com.simple.phonetics.Param
-import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderVerticalBinding
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.language.adapters.LanguageAdapter
@@ -34,6 +32,7 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
+import com.simple.phonetics.utils.exts.replace
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
 import com.unknown.coroutines.launchCollect
@@ -211,21 +210,7 @@ class LanguageDeeplink : DeeplinkHandler {
 
     override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        val fragment = LanguageFragment()
-        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
-
-        val fragmentTransaction = activity.supportFragmentManager
-            .beginTransaction()
-
-        sharedElement?.forEach { (t, u) ->
-
-            fragmentTransaction.addSharedElement(u, t)
-        }
-
-        fragmentTransaction
-            .replace(R.id.fragment_container, fragment, "")
-            .addToBackStack("")
-            .commitAllowingStateLoss()
+        activity.supportFragmentManager.replace(fragment = LanguageFragment(), extras = extras, sharedElement = sharedElement)
 
         return true
     }

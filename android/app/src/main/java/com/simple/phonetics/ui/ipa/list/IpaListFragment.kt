@@ -3,7 +3,6 @@ package com.simple.phonetics.ui.ipa.list
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.GridLayoutManager
 import com.simple.adapter.MultiAdapter
@@ -17,13 +16,13 @@ import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
-import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.common.adapters.IpaAdapters
 import com.simple.phonetics.utils.exts.ListPreviewAdapter
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
+import com.simple.phonetics.utils.exts.replace
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.unknown.theme.utils.exts.colorBackground
 
@@ -120,21 +119,7 @@ class IpaListDeeplink : DeeplinkHandler {
 
     override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        val fragment = IpaListFragment()
-        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
-
-        val fragmentTransaction = activity.supportFragmentManager
-            .beginTransaction()
-
-        sharedElement?.forEach { (t, u) ->
-
-            fragmentTransaction.addSharedElement(u, t)
-        }
-
-        fragmentTransaction
-            .replace(R.id.fragment_container, fragment, "")
-            .addToBackStack("")
-            .commitAllowingStateLoss()
+        activity.supportFragmentManager.replace(fragment = IpaListFragment(), extras = extras, sharedElement = sharedElement)
 
         return true
     }

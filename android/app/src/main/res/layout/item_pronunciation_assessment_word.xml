@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.simple.coreapp.ui.view.round.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="4dp"
+    app:rv_strokeWidth="1dp"
+    app:rv_cornerRadius="8dp">
+
+    <TextView
+        android:id="@+id/tv_word"
+        style="?attr/textBody2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="Độ chính xác từng âm: 78%" />
+
+    <TextView
+        android:id="@+id/tv_phonetic"
+        style="?attr/textBody1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="Độ trôi chảy: 96%" />
+</com.simple.coreapp.ui.view.round.RoundLinearLayout>

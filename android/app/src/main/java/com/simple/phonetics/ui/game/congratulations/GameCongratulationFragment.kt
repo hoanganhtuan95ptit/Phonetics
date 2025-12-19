@@ -1,8 +1,8 @@
 package com.simple.phonetics.ui.game.congratulations
 
-import android.content.ComponentCallbacks
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import com.simple.coreapp.ui.view.Background
@@ -19,7 +19,6 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogCongratulationBinding
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
-import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.colorDivider
 import com.unknown.theme.utils.exts.colorBackground
 
@@ -86,9 +85,7 @@ class GameCongratulationDeeplink : DeeplinkHandler {
         return DeeplinkManager.GAME_CONGRATULATION
     }
 
-    override suspend fun navigation(activity: ComponentCallbacks, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
-
-        if (activity !is MainActivity) return false
+    override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
         val fragment = CongratulationFragment()
         fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())

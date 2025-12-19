@@ -3,7 +3,6 @@ package com.simple.phonetics.ui.ipa.detail
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
@@ -28,7 +27,6 @@ import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.ErrorCode.NOT_INTERNET
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
-import com.simple.phonetics.R
 import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseFragment
@@ -39,6 +37,7 @@ import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.hasInternetConnection
+import com.simple.phonetics.utils.exts.replace
 import com.simple.phonetics.utils.exts.submitListAndAwait
 import com.simple.state.ResultState
 import com.unknown.theme.utils.exts.colorBackground
@@ -210,21 +209,7 @@ class IpaDetailDeeplink : DeeplinkHandler {
 
     override suspend fun navigation(activity: AppCompatActivity, deepLink: String, extras: Map<String, Any?>?, sharedElement: Map<String, View>?): Boolean {
 
-        val fragment = IpaDetailFragment()
-        fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
-
-        val fragmentTransaction = activity.supportFragmentManager
-            .beginTransaction()
-
-        sharedElement?.forEach { (t, u) ->
-
-            fragmentTransaction.addSharedElement(u, t)
-        }
-
-        fragmentTransaction
-            .replace(R.id.fragment_container, fragment, "")
-            .addToBackStack("")
-            .commitAllowingStateLoss()
+        activity.supportFragmentManager.replace(fragment = IpaDetailFragment(), extras = extras, sharedElement = sharedElement)
 
         return true
     }

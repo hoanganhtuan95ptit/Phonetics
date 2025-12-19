@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.speak.services.pronunciation_assessment.utils
 
-import android.util.Log
 import com.microsoft.cognitiveservices.speech.PronunciationAssessmentConfig
 import com.microsoft.cognitiveservices.speech.PronunciationAssessmentGradingSystem
 import com.microsoft.cognitiveservices.speech.PronunciationAssessmentGranularity
@@ -15,7 +14,7 @@ import com.simple.state.ResultState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 
 object PronunciationAssessmentUtils {
 
@@ -37,7 +36,7 @@ object PronunciationAssessmentUtils {
         val pronConfig = PronunciationAssessmentConfig(
             referenceText,
             PronunciationAssessmentGradingSystem.HundredMark,
-            PronunciationAssessmentGranularity.Phoneme
+            PronunciationAssessmentGranularity.Phoneme,
         )
         pronConfig.applyTo(recognizer)
 
@@ -51,26 +50,27 @@ object PronunciationAssessmentUtils {
         val task = recognizer.recognizeOnceAsync()
 
         // chạy trong Dispatchers.IO
-        val result = withContext(Dispatchers.IO) {
-            task.get()
-        }
+        launch(Dispatchers.IO) {
 
-        when (result.reason) {
+            val result = task.get()
 
-            ResultReason.RecognizedSpeech -> {
-                trySend(ResultState.Success(result.properties.getProperty(PropertyId.SpeechServiceResponse_JsonResult).orEmpty()))
-            }
+            when (result.reason) {
 
-            ResultReason.NoMatch -> {
-                trySend(ResultState.Failed(AppException(code = "", message = "NoMatch")))
-            }
+                ResultReason.RecognizedSpeech -> {
+                    trySend(ResultState.Success(result.properties.getProperty(PropertyId.SpeechServiceResponse_JsonResult).orEmpty()))
+                }
 
-            ResultReason.Canceled -> {
-                trySend(ResultState.Failed(AppException(code = "", message = "Canceled")))
-            }
+                ResultReason.NoMatch -> {
+                    trySend(ResultState.Failed(AppException(code = "", message = "NoMatch")))
+                }
 
-            else -> {
-                trySend(ResultState.Failed(AppException(code = "", message = "Other")))
+                ResultReason.Canceled -> {
+                    trySend(ResultState.Failed(AppException(code = "", message = "Canceled")))
+                }
+
+                else -> {
+                    trySend(ResultState.Failed(AppException(code = "", message = "Other")))
+                }
             }
         }
 
