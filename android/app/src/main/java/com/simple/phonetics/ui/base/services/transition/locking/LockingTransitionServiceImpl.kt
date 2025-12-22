@@ -5,12 +5,11 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.Param.ROOT_TRANSITION_NAME
 import com.simple.phonetics.ui.base.fragments.BaseFragment
-import com.simple.phonetics.ui.base.services.transition.doObserver
+import com.simple.phonetics.ui.base.fragments.LifecycleState.Companion.doPause
 import com.simple.phonetics.ui.base.services.transition.onTransitionStatusEndAwait
 import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect
@@ -37,12 +36,12 @@ class LockingTransitionServiceImpl : LockingTransitionService {
 
         isSupportEnterTransition = fragment.arguments?.getString(ROOT_TRANSITION_NAME).orEmpty().isNotBlank()
 
-        fragment.doObserver(object : DefaultLifecycleObserver {
+        fragment.stateFlow.launchCollect(fragment.lifecycleScope) {
 
-            override fun onPause(owner: LifecycleOwner) {
+            it.doPause {
                 isRecreateView = true
             }
-        })
+        }
 
         setupLock(fragment = fragment)
         setupLockQueue(fragment = fragment)

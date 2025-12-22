@@ -18,6 +18,22 @@ enum class LifecycleState {
     companion object {
 
         fun LifecycleState.isCanBinding() = this in listOf(CREATED, RESUMED)
+
+        fun LifecycleState.doCreated(block: () -> Unit) {
+            if (this == CREATED) block()
+        }
+
+        fun LifecycleState.doResumed(block: () -> Unit) {
+            if (this == RESUMED) block()
+        }
+
+        fun LifecycleState.doPause(block: () -> Unit) {
+            if (this == PAUSE) block()
+        }
+
+        fun LifecycleState.doDestroyed(block: () -> Unit) {
+            if (this == DESTROYED) block()
+        }
     }
 }
 
