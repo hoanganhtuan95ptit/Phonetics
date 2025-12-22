@@ -35,7 +35,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         observeData()
         super.onCreate(savedInstanceState)
 
-        val transitionCheckJob = lifecycleScope.launch {
+        val transitionCheckJob = lifecycleScope.launch(handler + Dispatchers.IO) {
 
             var count = 0
             while (isActive) {
