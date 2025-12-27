@@ -25,29 +25,29 @@ class TrackingActivity : ActivityService {
 
 
             override fun onFragmentAttached(fm: FragmentManager, f: Fragment, context: Context) {
-                logAnalytics("fragment_attached", "fragment_name" to f.javaClass.simpleName.lowercase())
+//                logAnalytics("fragment_attached", "fragment_name" to f.javaClass.simpleName.lowercase())
             }
 
             override fun onFragmentDetached(fm: FragmentManager, f: Fragment) {
-                logAnalytics("fragment_detached", "fragment_name" to f.javaClass.simpleName.lowercase())
+//                logAnalytics("fragment_detached", "fragment_name" to f.javaClass.simpleName.lowercase())
             }
 
 
             override fun onFragmentCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
-                logAnalytics("fragment_created", "fragment_name" to f.javaClass.simpleName.lowercase())
+//                logAnalytics("fragment_created", "fragment_name" to f.javaClass.simpleName.lowercase())
             }
 
             override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
-                logAnalytics("fragment_destroyed", "fragment_name" to f.javaClass.simpleName.lowercase())
+//                logAnalytics("fragment_destroyed", "fragment_name" to f.javaClass.simpleName.lowercase())
             }
 
 
             override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
-                logAnalytics("fragment_view_created", "fragment_name" to f.javaClass.simpleName.lowercase())
+//                logAnalytics("fragment_view_created", "fragment_name" to f.javaClass.simpleName.lowercase())
             }
 
             override fun onFragmentViewDestroyed(fm: FragmentManager, f: Fragment) {
-                logAnalytics("fragment_view_destroyed", "fragment_name" to f.javaClass.simpleName.lowercase())
+//                logAnalytics("fragment_view_destroyed", "fragment_name" to f.javaClass.simpleName.lowercase())
 
             }
 

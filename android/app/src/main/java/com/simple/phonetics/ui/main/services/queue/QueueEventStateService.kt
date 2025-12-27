@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import com.simple.autobind.annotation.AutoBind
 import com.simple.event.sendEvent
+import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.ui.base.services.transition.running.exts.onTransitionRunningEndAwait
 import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.main.services.MainService
@@ -59,7 +60,7 @@ class QueueEventStateService : MainService {
 
             QueueEventState.runningTag(eventName)
 
-            sendEvent(eventName = eventName, data = Unit)
+            if (!BuildConfig.DEBUG) sendEvent(eventName = eventName, data = Unit)
         }
     }
 

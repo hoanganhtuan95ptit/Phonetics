@@ -101,7 +101,7 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
             .setContentTitle(title)
             .setContentText(message)
             .setContentIntent(pendingIntent)
-            .setAutoCancel(false)
+            .setAutoCancel(true)
             .setOngoing(true)
             .build()
 
