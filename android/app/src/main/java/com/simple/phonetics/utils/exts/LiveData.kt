@@ -38,7 +38,7 @@ fun <T> Flow<T>.collectWithLockTransitionUntilData(
 
     attachToAdapter().collect {
 
-        if (isHasData) fragment.onTransitionRunningEndAwait()
+        if (isHasData) fragment.activity?.onTransitionRunningEndAwait()
 
         block(it)
 
@@ -63,7 +63,7 @@ fun <T> LiveData<T>.collectWithLockTransitionUntilData(
 
     asFlow().attachToAdapter().collect {
 
-        if (isHasData) fragment.onTransitionRunningEndAwait()
+        if (isHasData) fragment.activity?.onTransitionRunningEndAwait()
 
         block(it)
 
@@ -103,7 +103,7 @@ fun <T> Flow<T>.collectWithLockTransitionIfCached(
 
         if (diff) {
 
-            fragment.onTransitionRunningEndAwait()
+            fragment.activity?.onTransitionRunningEndAwait()
 
             block(it, false)
         }
@@ -142,7 +142,7 @@ fun <T> LiveData<T>.collectWithLockTransitionIfCached(
 
         if (diff) {
 
-            fragment.onTransitionRunningEndAwait()
+            fragment.activity?.onTransitionRunningEndAwait()
 
             block(it, false)
         }

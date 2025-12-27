@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/tv_name"
         style="?attr/textHeadline6"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         tools:text="Tiếng Anh" />

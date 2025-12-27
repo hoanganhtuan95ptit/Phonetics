@@ -4,14 +4,13 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.ui.base.fragments.BaseFragment
-import com.simple.phonetics.ui.base.services.transition.doObserver
-import com.simple.phonetics.ui.base.services.transition.launchRepeatOnLifecycle
-import com.simple.phonetics.ui.base.services.transition.launchWithResumed
+import com.simple.phonetics.ui.base.fragments.LifecycleState.Companion.doCreated
+import com.simple.phonetics.ui.base.fragments.LifecycleState.Companion.doDestroyed
+import com.simple.phonetics.ui.base.fragments.LifecycleState.Companion.doPause
+import com.simple.phonetics.ui.base.fragments.LifecycleState.Companion.doResumed
 import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.Dispatchers
@@ -49,38 +48,47 @@ class RunningTransitionServiceImpl : RunningTransitionService {
 
     private fun setupRunning(fragment: BaseFragment<*, *>) {
 
-        val tag = "setupRunning"
+        val fragmentLifecycleTag = "fragmentLifecycle"
 
-        startTransition(tag + "_state")
+        fragment.stateFlow.launchCollect(fragment.lifecycleScope) {
 
-        fragment.viewLifecycleOwnerFlow.launchCollect(fragment) {
-
-            startTransition(tag + "_state")
-
-            it.launchWithResumed {
-
-                endTransition(tag + "_state")
+            it.doCreated {
+                startTransition(tag = fragmentLifecycleTag)
             }
+
+            it.doResumed {
+                endTransition(tag = fragmentLifecycleTag)
+            }
+
+//            it.doPause {
+//                startTransition(tag = fragmentLifecycleTag)
+//            }
+//
+//            it.doDestroyed {
+//                endTransition(tag = fragmentLifecycleTag)
+//            }
         }
 
+        val fragmentViewLifecycleTag = "fragmentViewLifecycle"
 
-        fragment.doObserver(object : DefaultLifecycleObserver {
+        fragment.viewStateFlow.launchCollect(fragment.lifecycleScope) {
 
-            override fun onResume(owner: LifecycleOwner) {
-
-                endTransition(tag + "_lifecycle")
+            it.doCreated {
+                startTransition(tag = fragmentViewLifecycleTag)
             }
 
-            override fun onPause(owner: LifecycleOwner) {
-
-                startTransition(tag + "_lifecycle")
+            it.doResumed {
+                endTransition(tag = fragmentViewLifecycleTag)
             }
 
-            override fun onDestroy(owner: LifecycleOwner) {
-
-                endTransition(tag + "_lifecycle")
+            it.doPause {
+                startTransition(tag = fragmentViewLifecycleTag)
             }
-        })
+
+            it.doDestroyed {
+                endTransition(tag = fragmentViewLifecycleTag)
+            }
+        }
     }
 
     private fun setupRunningTracking(fragment: Fragment) {
