@@ -6,6 +6,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import java.util.concurrent.ConcurrentHashMap
@@ -50,6 +51,11 @@ class LockingTransitionViewModel : ViewModel() {
         map[tag] = map[tag]?.copy(isLocking = isLocking) ?: Locking(tag = tag, isLocking = isLocking)
 
         locking.value = map
+    }
+
+    suspend fun onTransitionLockEndAwait() {
+
+        isUnlock.filter { it }.first()
     }
 
     data class Locking(

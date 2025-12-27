@@ -22,4 +22,10 @@ fun FragmentActivity.getTransitionLockInfo(): List<String> {
     return viewModels<LockingTransitionViewModel>().value.locking.value.orEmpty().filter { it.value.isLocking }.map { it.value.toJson() }
 }
 
+suspend fun FragmentActivity.onTransitionLockEndAwait() {
+
+    viewModels<LockingTransitionViewModel>().value.onTransitionLockEndAwait()
+}
+
+
 private fun LockingTransitionViewModel.Locking.toJson() = "tag:$tag timeLocking:$timeLocking"

@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.base.services.transition.running
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
