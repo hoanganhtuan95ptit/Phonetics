@@ -9,7 +9,8 @@ import java.util.UUID
 
 fun Animator.startWithTransition(fragmentActivity: FragmentActivity, onEnd: () -> Unit) {
 
-    val id = UUID.randomUUID().toString()
+    val id = "animator_${UUID.randomUUID()}"
+
     fragmentActivity.startTransition(id)
 
     doOnEnd {
