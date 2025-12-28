@@ -61,3 +61,37 @@ data class PhonemeItem(
     @JsonProperty("Offset") val offset: Long,
     @JsonProperty("Duration") val duration: Long
 )
+
+enum class ResultReason(val value: String) {
+    NoMatch("NoMatch"),
+    Canceled("Canceled"),
+    RecognizingSpeech("RecognizingSpeech"),
+    RecognizedSpeech("RecognizedSpeech"),
+    RecognizingIntent("RecognizingIntent"),
+    RecognizedIntent("RecognizedIntent"),
+    TranslatingSpeech("TranslatingSpeech"),
+    TranslatedSpeech("TranslatedSpeech"),
+    SynthesizingAudio("SynthesizingAudio"),
+    SynthesizingAudioCompleted("SynthesizingAudioCompleted"),
+    RecognizingKeyword("RecognizingKeyword"),
+    RecognizedKeyword("RecognizedKeyword"),
+    SynthesizingAudioStarted("SynthesizingAudioStarted"),
+    TranslatingParticipantSpeech("TranslatingParticipantSpeech"),
+    TranslatedParticipantSpeech("TranslatedParticipantSpeech"),
+    TranslatedInstantMessage("TranslatedInstantMessage"),
+    TranslatedParticipantInstantMessage("TranslatedParticipantInstantMessage"),
+    EnrollingVoiceProfile("EnrollingVoiceProfile"),
+    EnrolledVoiceProfile("EnrolledVoiceProfile"),
+    RecognizedSpeakers("RecognizedSpeakers"),
+    RecognizedSpeaker("RecognizedSpeaker"),
+    ResetVoiceProfile("ResetVoiceProfile"),
+    DeletedVoiceProfile("DeletedVoiceProfile"),
+    VoicesListRetrieved("VoicesListRetrieved");
+
+    companion object {
+
+        fun String?.toResultReason() = entries.firstOrNull { it.value.equals(this, true) }
+
+        fun String?.toResultReasonOrDefault(default: ResultReason = NoMatch) = toResultReason() ?: default
+    }
+}

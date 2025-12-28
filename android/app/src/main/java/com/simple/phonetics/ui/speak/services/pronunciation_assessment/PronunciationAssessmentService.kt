@@ -22,6 +22,7 @@ import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.ui.speak.SpeakFragment.Companion.REQUIRED_PERMISSIONS_RECORD_AUDIO
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import com.simple.phonetics.ui.speak.services.SpeakService
+import com.simple.phonetics.utils.AppNew
 import com.simple.phonetics.utils.exts.value
 import com.simple.state.isCompleted
 import com.skydoves.balloon.ArrowPositionRules
@@ -110,19 +111,17 @@ class PronunciationAssessmentService : SpeakService {
                     }
                 }.first()
 
-                Balloon.Builder(fragment.requireContext())
+                if (AppNew.isNew("PronunciationAssessmentNew", 10)) Balloon.Builder(fragment.requireContext())
                     .setWidth(BalloonSizeSpec.WRAP)
                     .setHeight(BalloonSizeSpec.WRAP)
                     .setText("Vui lòng phát âm lại")
                     .setTextColor(Color.WHITE)
                     .setTextSize(15f)
-//                    .setIconDrawableResource(R.drawable.ic_edit)
                     .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
                     .setArrowSize(10)
                     .setArrowPosition(0.5f)
                     .setPadding(12)
                     .setCornerRadius(8f)
-//                    .setBackgroundColorResource(R.color.skyBlue)
                     .setBalloonAnimation(BalloonAnimation.ELASTIC)
                     .setLifecycleOwner(fragment.viewLifecycleOwner)
                     .build().showAlignTop(bindingAction.frameSpeak.root)

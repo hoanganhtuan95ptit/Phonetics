@@ -60,16 +60,8 @@ object PronunciationAssessmentUtils {
                     trySend(ResultState.Success(result.properties.getProperty(PropertyId.SpeechServiceResponse_JsonResult).orEmpty()))
                 }
 
-                ResultReason.NoMatch -> {
-                    trySend(ResultState.Failed(AppException(code = "", message = "NoMatch")))
-                }
-
-                ResultReason.Canceled -> {
-                    trySend(ResultState.Failed(AppException(code = "", message = "Canceled")))
-                }
-
                 else -> {
-                    trySend(ResultState.Failed(AppException(code = "", message = "Other")))
+                    trySend(ResultState.Failed(AppException(code = result.reason.name, message = result.reason.name)))
                 }
             }
         }

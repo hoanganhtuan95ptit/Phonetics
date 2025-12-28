@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import com.simple.adapter.entities.ViewItem
+import com.simple.core.utils.AppException
+import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.core.utils.extentions.orZero
-import com.simple.core.utils.extentions.toObject
+import com.simple.core.utils.extentions.toObjectOrNull
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
@@ -21,23 +23,25 @@ import com.simple.coreapp.utils.ext.RichStyle
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.toRich
 import com.simple.coreapp.utils.ext.with
+import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.speak.SpeakViewModel.ResultInfo
 import com.simple.phonetics.ui.speak.SpeakViewModel.SpeakInfo
-import com.simple.phonetics.ui.speak.services.pronunciation_assessment.adapters.ListViewItem
-import com.simple.phonetics.ui.speak.services.pronunciation_assessment.adapters.NBestPronunciationAssessmentViewItem
-import com.simple.phonetics.ui.speak.services.pronunciation_assessment.adapters.WordPronunciationAssessmentViewItem
 import com.simple.phonetics.ui.speak.services.pronunciation_assessment.entities.AssessmentResult
+import com.simple.phonetics.ui.speak.services.pronunciation_assessment.entities.ResultReason.Companion.toResultReason
+import com.simple.phonetics.ui.speak.services.pronunciation_assessment.ui.adapters.ListViewItem
+import com.simple.phonetics.ui.speak.services.pronunciation_assessment.ui.adapters.NBestPronunciationAssessmentViewItem
+import com.simple.phonetics.ui.speak.services.pronunciation_assessment.ui.adapters.WordPronunciationAssessmentViewItem
 import com.simple.phonetics.ui.speak.services.pronunciation_assessment.utils.PronunciationAssessmentUtils
 import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.combineSourcesWithDiff
-import com.simple.phonetics.utils.exts.get
+import com.simple.phonetics.utils.exts.doOnClose
 import com.simple.phonetics.utils.exts.getNotNull
 import com.simple.phonetics.utils.exts.listenerSourcesWithDiff
 import com.simple.phonetics.utils.exts.mutableSharedFlow
@@ -53,34 +57,44 @@ import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import com.unknown.theme.utils.exts.colorPrimary
 import com.unknown.theme.utils.exts.colorSurface
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
 
 class PronunciationAssessmentViewModel : BaseViewModel() {
 
     private val phonemeMap = mapOf(
-        "r" to PhonemeConfig("/r/", 1),
-        "iy" to PhonemeConfig("/iː/", 2),
-        "d" to PhonemeConfig("/d/", 1),
+        "r" to "/r/",
+        "iy" to "/iː/",
+        "d" to "/d/",
 
-        "dh" to PhonemeConfig("/ð/", 2),
-        "ih" to PhonemeConfig("/ɪ/", 1),
-        "s" to PhonemeConfig("/s/", 1),
+        "dh" to "/ð/",
+        "ih" to "/ɪ/",
+        "s" to "/s/",
 
-        "eh" to PhonemeConfig("/ɛ/", 1),
-        "n" to PhonemeConfig("/n/", 1),
-        "t" to PhonemeConfig("/t/", 1),
-        "ax" to PhonemeConfig("/ə/", 2)
+        "eh" to "/ɛ/",
+        "n" to "/n/",
+        "t" to "/t/",
+        "ax" to "/ə/",
+
+        "p" to "/p/",
+        "ey" to "/eɪ/"
     )
 
-    val buttonInfo = combineSourcesWithDiff<ButtonAssessmentInfo>(themeFlow) {
+    val isEnable = combineSourcesWithDiff(phoneticCodeSelectedFlow) {
+
+        val phoneticCodeSelected = phoneticCodeSelectedFlow.getNotNull()
+
+        Log.d("tuanha", "phoneticCodeSelected:$phoneticCodeSelected")
+        val isEnable = phoneticCodeSelected.equals("US", true)
+
+        emit(isEnable)
+    }
+
+    val buttonInfo = combineSourcesWithDiff<ButtonAssessmentInfo>(themeFlow, isEnable) {
 
         val theme = themeFlow.getNotNull()
 
         val info = ButtonAssessmentInfo(
-            isShow = true,
+            isShow = isEnable.getNotNull(),
 
             text = "Chấm điểm phát âm Beta"
                 .with(ForegroundColor(theme.colorPrimary))
@@ -167,7 +181,7 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
         val assessmentState = assessmentState.getNotNull()
 
         Log.d("tuanha", "assessmentState: ${assessmentState.toSuccess()?.data}")
-        emit(assessmentState.toSuccess()?.data?.toObject<AssessmentResult>())
+        emit(assessmentState.toSuccess()?.data?.toObjectOrNull<AssessmentResult>())
     }
 
 
@@ -192,9 +206,32 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
     }
 
 
+    val statusViewItem = combineSourcesWithDiff(assessmentState) {
+
+        val assessmentState = assessmentState.getNotNull()
+
+        val list = arrayListOf<ViewItem>()
+
+        val resultReason = assessmentState.toFailed()?.cause?.asObjectOrNull<AppException>()?.code.toResultReason()
+
+        if (resultReason != null) TextSimpleViewItem(
+            id = resultReason.name,
+            text = if (BuildConfig.DEBUG) resultReason.value.toRich() else "Không khớp".toRich(),
+            size = Size(
+                width = ViewGroup.LayoutParams.MATCH_PARENT
+            ),
+            margin = Margin(top = DP.DP_8, right = DP.DP_8, bottom = DP.DP_16),
+        ).let {
+
+            list.add(it)
+        }
+
+        emit(list)
+    }
+
     val nBestViewItem = combineSourcesWithDiff(assessment) {
 
-        val assessment = assessment.getNotNull().nbest.firstOrNull()?.pronunciationAssessment
+        val assessment = assessment.value?.nbest?.firstOrNull()?.pronunciationAssessment
 
         if (assessment == null) {
 
@@ -236,7 +273,7 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
     val weakWordViewItem = combineSourcesWithDiff(themeFlow, assessment) {
 
         val theme = themeFlow.getNotNull()
-        val assessment = assessment.get()
+        val assessment = assessment.value
 
         if (assessment == null) {
 
@@ -279,12 +316,12 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
 
         words.map { word ->
 
-            var phonetic = word.phonemes.joinToString(separator = "") { phonemeMap[it.phoneme]?.ipa?.replace("/", "") ?: it.phoneme }.toRich()
+            var phonetic = word.phonemes.joinToString(separator = "") { phonemeMap[it.phoneme]?.replace("/", "") ?: it.phoneme }.toRich()
 
             var start = 0
             word.phonemes.forEach {
 
-                val letters = (phonemeMap[it.phoneme]?.ipa?.replace("/", "") ?: it.phoneme).length
+                val letters = (phonemeMap[it.phoneme]?.replace("/", "") ?: it.phoneme).length
 
                 val end = start + letters
 
@@ -323,7 +360,7 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
         val theme = themeFlow.getNotNull()
 
         val ipaMap = ipaMap.getNotNull()
-        val assessment = assessment.get()
+        val assessment = assessment.value
 
         if (assessment == null) {
 
@@ -372,7 +409,7 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
 
         phoneme.map { phoneme ->
 
-            val ipa = phonemeMap[phoneme.phoneme]?.ipa ?: phoneme.phoneme
+            val ipa = phonemeMap[phoneme.phoneme] ?: phoneme.phoneme
             var text = ipa.with(ForegroundColor(phoneme.pronunciationAssessment.accuracyScore.scoreToColor().first))
 
             TextSimpleViewItem(
@@ -403,15 +440,17 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
     }
 
 
-    val viewItemList = listenerSourcesWithDiff(nBestViewItem, weakWordViewItem, weakPhonemesViewItem) {
+    val viewItemList = listenerSourcesWithDiff(statusViewItem, nBestViewItem, weakWordViewItem, weakPhonemesViewItem) {
 
         val list = arrayListOf<ViewItem>()
 
-        list.add(SpaceViewItem(id = "12", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_16))
+        if (statusViewItem.value.orEmpty().isNotEmpty()) list.add(SpaceViewItem(id = "1", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_16))
+        list.addAll(statusViewItem.value.orEmpty())
+        if (nBestViewItem.value.orEmpty().isNotEmpty()) list.add(SpaceViewItem(id = "12", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_16))
         list.addAll(nBestViewItem.value.orEmpty())
-        list.add(SpaceViewItem(id = "123", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_16))
+        if (weakWordViewItem.value.orEmpty().isNotEmpty()) list.add(SpaceViewItem(id = "123", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_16))
         list.addAll(weakWordViewItem.value.orEmpty())
-        list.add(SpaceViewItem(id = "1234", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_16))
+        if (weakPhonemesViewItem.value.orEmpty().isNotEmpty()) list.add(SpaceViewItem(id = "1234", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_16))
         list.addAll(weakPhonemesViewItem.value.orEmpty())
 
         emit(list)
@@ -430,13 +469,10 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
 
     fun startSpeak() = launchWithTag(tag = "speak") {
 
-        channelFlow<Unit> {
+        doOnClose {
 
-            awaitClose {
-
-                assessmentState.tryEmit(ResultState.Failed())
-            }
-        }.launchIn(this)
+            assessmentState.tryEmit(ResultState.Failed())
+        }
 
         PronunciationAssessmentUtils.recodeAsync(referenceText = text.first()).collect { state ->
 
@@ -491,10 +527,5 @@ class PronunciationAssessmentViewModel : BaseViewModel() {
 
         val text: RichText,
         val background: Background,
-    )
-
-    private data class PhonemeConfig(
-        val ipa: String,
-        val charCount: Int
     )
 }

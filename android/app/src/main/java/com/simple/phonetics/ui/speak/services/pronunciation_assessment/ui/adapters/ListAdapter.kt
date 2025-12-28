@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.speak.services.pronunciation_assessment.adapters
+package com.simple.phonetics.ui.speak.services.pronunciation_assessment.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
