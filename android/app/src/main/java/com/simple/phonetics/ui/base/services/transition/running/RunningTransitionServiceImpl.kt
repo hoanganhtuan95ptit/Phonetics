@@ -59,14 +59,6 @@ class RunningTransitionServiceImpl : RunningTransitionService {
             it.doResumed {
                 endTransition(tag = fragmentLifecycleTag)
             }
-
-//            it.doPause {
-//                startTransition(tag = fragmentLifecycleTag)
-//            }
-//
-//            it.doDestroyed {
-//                endTransition(tag = fragmentLifecycleTag)
-//            }
         }
 
         val fragmentViewLifecycleTag = "fragmentViewLifecycle"
@@ -78,14 +70,6 @@ class RunningTransitionServiceImpl : RunningTransitionService {
             }
 
             it.doResumed {
-                endTransition(tag = fragmentViewLifecycleTag)
-            }
-
-            it.doPause {
-                startTransition(tag = fragmentViewLifecycleTag)
-            }
-
-            it.doDestroyed {
                 endTransition(tag = fragmentViewLifecycleTag)
             }
         }
