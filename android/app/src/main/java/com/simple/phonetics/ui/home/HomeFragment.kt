@@ -16,11 +16,13 @@ import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
+import com.simple.coreapp.utils.ext.getStatusBarHeight
 import com.simple.coreapp.utils.ext.getViewModel
+import com.simple.coreapp.utils.ext.resize
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
-import com.simple.coreapp.utils.extentions.doOnHeightStatusChange
+import com.simple.coreapp.utils.extentions.getHeightStatusBarOrNull
 import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
@@ -44,13 +46,18 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorBackgroundVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
+import com.simple.phonetics.utils.exts.listenerWindowInsetsChangeAsync
 import com.simple.phonetics.utils.exts.replace
 import com.simple.phonetics.utils.exts.submitListAndAwait
+import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
+import kotlinx.coroutines.flow.map
+import kotlin.math.abs
 import kotlin.math.absoluteValue
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScreen {
+
 
     private val configViewModel: ConfigViewModel by lazy {
         getViewModel(requireActivity(), ConfigViewModel::class)
@@ -117,11 +124,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
         binding.frameClear.setDebouncedClickListener {
 
             binding.etText.setText("")
-        }
-
-        doOnHeightStatusChange {
-
-            binding.root.updatePadding(top = it)
         }
     }
 
@@ -217,8 +219,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             binding.progress.progressTintList = ColorStateList.valueOf(it.colorPrimary)
 
-            binding.root.setBackgroundColor(it.colorBackground)
-            binding.frameContent.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_BL = DP.DP_16, cornerRadius_BR = DP.DP_16))
+            binding.collapsingToolbarLayout.setBackground(Background(backgroundColor = it.colorBackground, cornerRadius_BL = DP.DP_16, cornerRadius_BR = DP.DP_16))
 
             binding.vTemp.setBackgroundColor(it.colorBackgroundVariant)
             binding.frameRootContent.setBackgroundColor(it.colorBackgroundVariant)
