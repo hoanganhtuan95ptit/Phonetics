@@ -29,8 +29,6 @@ class MainViewModel(
     }
 
 
-    val initCompleted = mutableSharedFlow<Boolean>()
-
     init {
 
         sync.asFlow().launchIn(viewModelScope)
@@ -44,10 +42,5 @@ class MainViewModel(
 
             logAnalytics("output_language_code_${it.id}")
         }
-    }
-
-    fun initCompleted() {
-
-        initCompleted.tryEmit(true)
     }
 }

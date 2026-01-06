@@ -1,5 +1,6 @@
 package com.simple.phonetics.utils.exts
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
@@ -7,16 +8,22 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.WindowInsets
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.ViewCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
+import com.google.android.material.internal.ViewUtils
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -91,3 +98,29 @@ fun View.doOnPreDrawAsync() = channelFlow {
 
     }
 }
+
+
+@SuppressLint("RestrictedApi")
+fun View.listenerWindowInsetsChangeAsync(): Flow<WindowInsets> = callbackFlow {
+
+    val view = this@listenerWindowInsetsChangeAsync
+
+    val listener = ViewUtils.OnApplyWindowInsetsListener { view, insets, initialPadding ->
+
+        trySend(insets?.toWindowInsets())
+
+        insets
+    }
+
+    post {
+
+        trySend(rootWindowInsets)
+    }
+
+    ViewUtils.doOnApplyWindowInsets(this@listenerWindowInsetsChangeAsync, listener)
+
+    awaitClose {
+
+        ViewCompat.setOnApplyWindowInsetsListener(view, null)
+    }
+}.filterNotNull()
