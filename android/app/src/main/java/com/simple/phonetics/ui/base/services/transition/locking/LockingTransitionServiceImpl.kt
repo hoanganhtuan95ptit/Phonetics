@@ -40,6 +40,7 @@ class LockingTransitionServiceImpl : LockingTransitionService {
 
             it.doPause {
                 isRecreateView = true
+                lockingTransitionViewModel.locking.value?.clear()
             }
         }
 
@@ -105,7 +106,7 @@ class LockingTransitionServiceImpl : LockingTransitionService {
 
         lockingTransitionViewModel.lockingData.launchCollect(fragment, context = handler + Dispatchers.IO) { info ->
 
-            if (BuildConfig.DEBUG && false) Log.d(
+            if (BuildConfig.DEBUG && true) Log.d(
                 "tuanha", "LockingTransitionServiceFragment  ${fragment.javaClass.simpleName}  --->" +
                         "\nisRecreateView:${isRecreateView}" +
                         "\nisSupportEnterTransition:${isSupportEnterTransition}" +

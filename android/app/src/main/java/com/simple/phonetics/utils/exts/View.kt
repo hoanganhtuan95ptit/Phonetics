@@ -17,6 +17,8 @@ import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
 import com.google.android.material.internal.ViewUtils
+import com.simple.coreapp.utils.ext.getStatusBarHeight
+import com.simple.coreapp.utils.extentions.getHeightStatusBarOrNull
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -124,3 +126,7 @@ fun View.listenerWindowInsetsChangeAsync(): Flow<WindowInsets> = callbackFlow {
         ViewCompat.setOnApplyWindowInsetsListener(view, null)
     }
 }.filterNotNull()
+
+fun View.listenerStatusBarHeightChangeAsync() = listenerWindowInsetsChangeAsync().map {
+    it.getHeightStatusBarOrNull() ?: getStatusBarHeight(context = context)
+}.distinctUntilChanged()

@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.base.fragments
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel

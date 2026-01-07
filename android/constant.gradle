@@ -152,7 +152,7 @@ project.ext {
     ]
 
 
-    hoanganhtuan95ptit_version = '1.3.39.beta46'
+    hoanganhtuan95ptit_version = '1.3.39.beta47'
 
     hoanganhtuan95Dependencies = [
             base                : "com.github.hoanganhtuan95ptit.core:base:$hoanganhtuan95ptit_version",

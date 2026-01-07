@@ -1,21 +1,26 @@
 package com.simple.phonetics.ui.home.services.background
 
 import androidx.core.view.updatePadding
+import androidx.fragment.app.viewModels
 import com.google.android.material.appbar.AppBarLayout
 import com.simple.autobind.annotation.AutoBind
+import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.getStatusBarHeight
 import com.simple.coreapp.utils.ext.resize
-import com.simple.coreapp.utils.extentions.getHeightStatusBarOrNull
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.services.HomeService
-import com.simple.phonetics.utils.exts.listenerWindowInsetsChangeAsync
+import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
+import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
+import com.simple.phonetics.utils.exts.listenerHeightChangeAsync
 import com.unknown.coroutines.launchCollect
+import com.unknown.size.uitls.exts.getOrZero
+import com.unknown.size.uitls.exts.statusBarHeight
 import com.unknown.theme.utils.exts.colorBackground
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.distinctUntilChanged
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.absoluteValue
 
 
@@ -24,32 +29,50 @@ class BackgroundHomeService : HomeService {
 
     override fun setup(homeFragment: HomeFragment) {
 
-        val statusBarHeightDefault = getStatusBarHeight(homeFragment.requireContext())
+        val backgroundHomeViewModel: BackgroundHomeViewModel by homeFragment.viewModels()
 
-        homeFragment.viewModel.themeFlow.launchCollect(homeFragment.viewLifecycleOwner) {
+        backgroundHomeViewModel.sizeFlow.collectWithLockTransitionIfCached(fragment = homeFragment, tag = "BACKGROUND_RESIZE") { size, isFromCache ->
 
-            val binding = homeFragment.binding ?: return@launchCollect
+            val binding = homeFragment.binding ?: return@collectWithLockTransitionIfCached
 
-            binding.toolbarBackground.setBackgroundColor(it.colorBackground)
+            val statusBarHeight = size.statusBarHeight
+
+            binding.toolbar.resize(height = statusBarHeight + DP.DP_56)
+
+            binding.tvTitle.translationY = statusBarHeight / 2f
+            binding.ivLanguage.translationY = statusBarHeight / 2f
+
+            binding.etText.updatePadding(top = statusBarHeight + DP.DP_56)
+        }
+
+        backgroundHomeViewModel.themeFlow.collectWithLockTransitionIfCached(fragment = homeFragment, tag = "BACKGROUND_THEME") { theme, isFromCache ->
+
+            val binding = homeFragment.binding ?: return@collectWithLockTransitionIfCached
+
+            binding.toolbarBackground.setBackgroundColor(theme.colorBackground)
+        }
+
+        backgroundHomeViewModel.backgroundSize.collectWithLockTransitionIfCached(fragment = homeFragment, tag = "BACKGROUND_TRANSLATION") { size, isFromCache ->
+
+            val binding = homeFragment.binding ?: return@collectWithLockTransitionIfCached
+
+            binding.ivBackground.translationX = size.width * 1.5f / 5
+            binding.ivBackground.translationY = -size.height * 1f / 5
+        }
+
+        backgroundHomeViewModel.backgroundAlpha.collectWithLockTransitionIfCached(fragment = homeFragment, tag = "BACKGROUND_ALPHA") { alpha, isFromCache ->
+
+            val binding = homeFragment.binding ?: return@collectWithLockTransitionIfCached
+
+            binding.toolbarBackground.alpha = alpha
         }
 
 
         val binding = homeFragment.binding ?: return
 
-        binding.ivBackground.post {
+        binding.ivBackground.listenerHeightChangeAsync().launchCollect(homeFragment.viewLifecycleOwner) {
 
-            binding.ivBackground.translationX = binding.ivBackground.width * 1.5f / 5
-            binding.ivBackground.translationY = -binding.ivBackground.height * 1f / 5
-        }
-
-        binding.root.listenerWindowInsetsChangeAsync().map { it.getHeightStatusBarOrNull() ?: statusBarHeightDefault }.launchCollect(homeFragment.viewLifecycleOwner) {
-
-            binding.toolbar.resize(height = it + DP.DP_56)
-
-            binding.tvTitle.translationY = it / 2f
-            binding.ivLanguage.translationY = it / 2f
-
-            binding.etText.updatePadding(top = it + DP.DP_56)
+            backgroundHomeViewModel.updateBackgroundSize(Size(width = binding.ivBackground.width, height = binding.ivBackground.height))
         }
 
         binding.appBarLayout.listenerOffsetChangesAsync().launchCollect(homeFragment.viewLifecycleOwner) { verticalOffset ->
@@ -59,7 +82,7 @@ class BackgroundHomeService : HomeService {
 
             val percentage = verticalOffset.absoluteValue / totalRange
 
-            binding.toolbarBackground.alpha = (percentage * 3.0f).coerceIn(0f, 1f)
+            backgroundHomeViewModel.updateBackgroundAlpha(alpha = (percentage * 3.0f).coerceIn(0f, 1f))
         }
     }
 
