@@ -1,26 +1,23 @@
 package com.simple.phonetics.ui.home.services.background
 
+import android.graphics.Outline
+import android.view.View
+import android.view.ViewOutlineProvider
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import com.google.android.material.appbar.AppBarLayout
 import com.simple.autobind.annotation.AutoBind
-import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.resize
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
-import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.simple.phonetics.utils.exts.listenerHeightChangeAsync
 import com.unknown.coroutines.launchCollect
-import com.unknown.size.uitls.exts.getOrZero
 import com.unknown.size.uitls.exts.statusBarHeight
 import com.unknown.theme.utils.exts.colorBackground
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.absoluteValue
 
 
@@ -52,14 +49,6 @@ class BackgroundHomeService : HomeService {
             binding.toolbarBackground.setBackgroundColor(theme.colorBackground)
         }
 
-        backgroundHomeViewModel.backgroundSize.collectWithLockTransitionIfCached(fragment = homeFragment, tag = "BACKGROUND_TRANSLATION") { size, isFromCache ->
-
-            val binding = homeFragment.binding ?: return@collectWithLockTransitionIfCached
-
-            binding.ivBackground.translationX = size.width * 1.5f / 5
-            binding.ivBackground.translationY = -size.height * 1f / 5
-        }
-
         backgroundHomeViewModel.backgroundAlpha.collectWithLockTransitionIfCached(fragment = homeFragment, tag = "BACKGROUND_ALPHA") { alpha, isFromCache ->
 
             val binding = homeFragment.binding ?: return@collectWithLockTransitionIfCached
@@ -70,10 +59,13 @@ class BackgroundHomeService : HomeService {
 
         val binding = homeFragment.binding ?: return
 
-        binding.ivBackground.listenerHeightChangeAsync().launchCollect(homeFragment.viewLifecycleOwner) {
+        binding.collapsingToolbarLayout.outlineProvider = object : ViewOutlineProvider() {
 
-            backgroundHomeViewModel.updateBackgroundSize(Size(width = binding.ivBackground.width, height = binding.ivBackground.height))
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(0, 0, view.width, view.height, DP.DP_16 * 1f)
+            }
         }
+        binding.collapsingToolbarLayout.clipToOutline = true
 
         binding.appBarLayout.listenerOffsetChangesAsync().launchCollect(homeFragment.viewLifecycleOwner) { verticalOffset ->
 
