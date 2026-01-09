@@ -23,7 +23,10 @@
             <ImageView
                 android:id="@+id/iv_background"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scaleX="2.5"
+                android:scaleY="2.5"
+                android:alpha="0.3" />
 
             <FrameLayout
                 android:id="@+id/frame_content"

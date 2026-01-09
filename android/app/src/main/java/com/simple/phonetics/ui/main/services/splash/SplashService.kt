@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.main.services.splash
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.os.Build
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
@@ -66,7 +67,7 @@ class SplashService : MainService {
         }
 
 
-        splashScreen.setOnExitAnimationListener { splashScreenView ->
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) splashScreen.setOnExitAnimationListener { splashScreenView ->
 
             // Tạo hiệu ứng mờ dần
             val alpha = ObjectAnimator.ofFloat(splashScreenView.view, View.ALPHA, 1f, 0f)
