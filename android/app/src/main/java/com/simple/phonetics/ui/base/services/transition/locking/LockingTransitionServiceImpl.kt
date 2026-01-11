@@ -63,19 +63,19 @@ class LockingTransitionServiceImpl : LockingTransitionService {
 
     private fun setupLock(fragment: BaseFragment<*, *>) = fragment.viewLifecycleOwnerFlow.launchCollect(fragment) {
 
-        val tag = fragment.javaClass.simpleName + "_setupLock"
+        val tag = "setupLockState"
         val view = fragment.view ?: return@launchCollect
 
-        lockTransition(tag + "_State")
+        lockTransition(tag)
 
         view.doOnPreDraw {
 
-            unlockTransition(tag + "_State")
+            unlockTransition(tag)
         }
 
         view.post {
 
-            unlockTransition(tag + "_State")
+            unlockTransition(tag)
         }
     }
 
