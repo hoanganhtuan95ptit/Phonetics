@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.services.tracking
+package com.simple.phonetics.ui.base.services.tracking
 
 import android.content.Context
 import android.os.Bundle
