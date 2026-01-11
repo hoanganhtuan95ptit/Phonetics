@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.simple.autobind.annotation.AutoBind
-import com.simple.core.utils.extentions.toJson
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.ui.base.services.transition.locking.exts.getTransitionLockInfo
@@ -97,25 +96,15 @@ class SplashService : MainService {
 
         val timeInit = System.currentTimeMillis() - PhoneticsApp.Companion.start
 
-        val transitionLock by lazy {
-            mainActivity.getTransitionLockInfo().takeIf { it.isNotEmpty() }?.toJson()?.let { "lock:$it" }
-        }
-        val transitionRunning by lazy {
-            mainActivity.getTransitionRunningInfo().takeIf { it.isNotEmpty() }?.toJson()?.let { "running:$it" }
-        }
-
         if (timeInit >= 2000) {
-            logCrashlytics("init_slow_$timeInit", RuntimeException("timeInit:$timeInit ${transitionLock.orEmpty()} \n ${transitionRunning.orEmpty()}".trim()))
+            logCrashlytics("init_slow_$timeInit", RuntimeException("timeInit:$timeInit\n ${mainActivity.getTransitionLockInfo()}\n ${mainActivity.getTransitionRunningInfo()}\n".trim()))
         }
     }
 
     private fun trackingTransition(mainActivity: MainActivity, count: Int) {
 
-        val transitionLock = mainActivity.getTransitionLockInfo().takeIf { it.isNotEmpty() }?.toJson()?.let { "lock:$it" }
-        val transitionRunning = mainActivity.getTransitionRunningInfo().takeIf { it.isNotEmpty() }?.toJson()?.let { "running:$it" }
-
-        if (transitionLock != null || transitionRunning != null) if (count > 2) {
-            logCrashlytics("transition_tracking_$count", RuntimeException("count:$count ${transitionLock.orEmpty()} \n ${transitionRunning.orEmpty()}".trim()))
+        if (count > 1) {
+            logCrashlytics("transition_tracking_$count", RuntimeException("count:$count\n ${mainActivity.getTransitionLockInfo()}\n ${mainActivity.getTransitionRunningInfo()}\n".trim()))
         }
     }
 }

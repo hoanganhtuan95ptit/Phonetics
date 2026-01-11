@@ -3,6 +3,7 @@ package com.simple.phonetics.ui.base.services.transition.running.exts
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.simple.core.utils.extentions.toJson
 import com.simple.phonetics.ui.base.services.transition.running.RunTransitionViewModel
 import com.simple.phonetics.ui.base.services.transition.running.RunningTransitionService
 
@@ -24,9 +25,11 @@ suspend fun Fragment.onTransitionRunningEndAwait() {
 }
 
 
-fun FragmentActivity.getTransitionRunningInfo(): List<String> {
+fun FragmentActivity.getTransitionRunningInfo(): String {
 
-    return viewModels<RunTransitionViewModel>().value.running.value.orEmpty().filter { it.value.isRunning }.map { it.value.toJson() }
+    return viewModels<RunTransitionViewModel>().value.running.value.orEmpty().values
+        .sortedBy { it.timeAdd }.sortedByDescending { it.isRunning }
+        .map { " ${it.tag}-${it.isRunning}-${it.timeRunning} " }.toJson().let { "running:$it" }
 }
 
 
@@ -44,6 +47,3 @@ suspend fun FragmentActivity.onTransitionRunningEndAwait() {
 
     viewModels<RunTransitionViewModel>().value.onTransitionRunningEndAwait()
 }
-
-
-private fun RunTransitionViewModel.Running.toJson() = "tag:$tag timeRunning:$timeRunning"

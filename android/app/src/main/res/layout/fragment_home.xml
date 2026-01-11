@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
 
+    <ImageView
+        android:id="@+id/iv_background"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:alpha="0.3"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:src="@drawable/img_blur"
+        android:translationZ="-2dp"
+        app:layout_anchor="@id/recycler_view"
+        app:layout_anchorGravity="top" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
@@ -19,14 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="380dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <ImageView
-                android:id="@+id/iv_background"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleX="2.5"
-                android:scaleY="2.5"
-                android:alpha="0.3" />
 
             <FrameLayout
                 android:id="@+id/frame_content"

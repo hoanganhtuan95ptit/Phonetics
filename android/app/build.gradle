@@ -110,12 +110,12 @@ dependencies {
     api hoanganhtuan95Dependencies.coroutines
 
     api hoanganhtuan95Dependencies.analytics
-    implementation hoanganhtuan95Dependencies.analytics_log
-    implementation hoanganhtuan95Dependencies.analytics_firebase
+    debugImplementation hoanganhtuan95Dependencies.analytics_log
+    releaseImplementation hoanganhtuan95Dependencies.analytics_firebase
 
     api hoanganhtuan95Dependencies.crashlytics
-    implementation hoanganhtuan95Dependencies.crashlytics_log
-    implementation hoanganhtuan95Dependencies.crashlytics_firebase
+    debugImplementation hoanganhtuan95Dependencies.crashlytics_log
+    releaseImplementation hoanganhtuan95Dependencies.crashlytics_firebase
 
 
     implementation hoanganhtuan95Dependencies.detect_2
