@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 Rejoignez la communauté et grandissons ensemble !",
   "campaign_screen_message_for_join_group": "📢 Partagez des idées, suggérez des fonctionnalités et collaborez avec d'autres pour améliorer l'application chaque jour ! 🚀💡",
 
-  "version_name": "🚀 Version : $version"
+  "version_name": "🚀 Version : $version",
+
+  "reminder_title_1": "Bonjour ☀️",
+  "reminder_title_2": "Bonjour, nouvelle journée ☀️",
+  "reminder_title_3": "Énergie positive ✨",
+  "reminder_title_4": "Esprit clair 🧘‍♀️",
+  "reminder_title_5": "Les opportunités t’attendent 🎁",
+  "reminder_title_6": "Un excellent départ ! 🌟",
+  "reminder_title_7": "Conquiers la journée ! 🏆",
+  "reminder_title_8": "Profite de l’instant ☕",
+  "reminder_title_9": "Souris 😊",
+  "reminder_title_10": "La paix commence 🕊️",
+  "reminder_title_11": "Prêt à apprendre 💡",
+  "reminder_title_12": "Un nouveau voyage 🗺️",
+
+  "reminder_message_1": "Bonjour ! Donnons le meilleur de nous-mêmes aujourd’hui et rendons cette journée merveilleuse ! ✨",
+  "reminder_message_2": "Une nouvelle journée commence. Nous te souhaitons beaucoup d’énergie et de joie ! 💪",
+  "reminder_message_3": "Réveille-toi avec le sourire 😊 et commence une journée pleine d’espoir ! 🌈",
+  "reminder_message_4": "Nouvelle journée, nouveaux objectifs 🎯 — avançons ensemble ! 🚀",
+  "reminder_message_5": "Rien n’est impossible quand tu commences la journée avec détermination ! 🔥",
+  "reminder_message_6": "Prends un moment pour savourer un café ☕ et planifier une journée productive.",
+  "reminder_message_7": "N’oublie pas de respirer profondément et de te détendre 😌. Un esprit apaisé aide à surmonter tous les défis.",
+  "reminder_message_8": "Chaque jour est une nouvelle page. Écris aujourd’hui ta propre histoire de réussite ! 📖🖊️",
+  "reminder_message_9": "Les défis sont des occasions de briller. Sois courageux et donne le meilleur de toi-même ! 💡💪",
+  "reminder_message_10": "N’oublie pas de prendre soin de toi ! Mange sainement 🥗 et reste en bonne santé ! ❤️"
 }

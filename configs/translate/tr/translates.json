@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 Topluluğa Katıl ve Birlikte Büyü!",
   "campaign_screen_message_for_join_group": "📢 Fikirlerini paylaş, özellikler öner ve uygulamayı her gün daha iyi hale getirmek için başkalarıyla işbirliği yap! 🚀💡",
 
-  "version_name": "🚀 Sürüm: $version"
+  "version_name": "🚀 Sürüm: $version",
+
+  "reminder_title_1": "Günaydın ☀️",
+  "reminder_title_2": "Merhaba, yeni gün ☀️",
+  "reminder_title_3": "Pozitif enerji ✨",
+  "reminder_title_4": "Taze bir zihin 🧘‍♀️",
+  "reminder_title_5": "Fırsatlar seni bekliyor 🎁",
+  "reminder_title_6": "Harika bir başlangıç! 🌟",
+  "reminder_title_7": "Bugünü fethet! 🏆",
+  "reminder_title_8": "Anın tadını çıkar ☕",
+  "reminder_title_9": "Gülümsemeye devam et 😄",
+  "reminder_title_10": "Huzur başlıyor 🕊️",
+  "reminder_title_11": "Öğrenmeye hazır 💡",
+  "reminder_title_12": "Yeni bir yolculuk 🗺️",
+
+  "reminder_message_1": "Günaydın! Bugün elimizden gelenin en iyisini yapalım ve her şeyi harika kılalım! ✨",
+  "reminder_message_2": "Yeni bir gün başladı. Sana bol enerji ve mutluluk diliyorum! 💪",
+  "reminder_message_3": "Gülümseyerek uyan 😊 ve umut dolu bir güne başla! 🌈",
+  "reminder_message_4": "Yeni gün, yeni hedefler 🎯 — birlikte ileriye gidelim! 🚀",
+  "reminder_message_5": "Bugüne kararlılıkla başladığında hiçbir şey imkânsız değildir! 🔥",
+  "reminder_message_6": "Kahveni yudumlamak ☕ ve verimli bir gün planlamak için bir an ayır!",
+  "reminder_message_7": "Derin bir nefes almayı ve rahatlamayı unutma 😌. Sakin bir zihin her zorluğun üstesinden gelmene yardımcı olur.",
+  "reminder_message_8": "Her gün yeni bir sayfadır. Bugün kendi başarı hikâyeni yaz! 📖🖊️",
+  "reminder_message_9": "Zorluklar parlamak için fırsattır. Cesur ol ve elinden gelenin en iyisini yap! 💡💪",
+  "reminder_message_10": "Kendine iyi bakmayı unutma! Sağlıklı beslen 🥗 ve sağlıklı kal! ❤️"
 }

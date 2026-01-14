@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 Bergabunglah dengan Komunitas dan Berkembang Bersama!",
   "campaign_screen_message_for_join_group": "📢 Bagikan ide, sarankan fitur, dan berkolaborasi dengan orang lain untuk menjadikan aplikasi lebih baik setiap hari! 🚀💡",
 
-  "version_name": "🚀 Versi: $version"
+  "version_name": "🚀 Versi: $version",
+
+  "reminder_title_1": "Selamat pagi ☀️",
+  "reminder_title_2": "Halo, hari baru ☀️",
+  "reminder_title_3": "Energi positif ✨",
+  "reminder_title_4": "Pikiran segar 🧘‍♀️",
+  "reminder_title_5": "Peluang menantimu 🎁",
+  "reminder_title_6": "Awal yang luar biasa! 🌟",
+  "reminder_title_7": "Taklukkan hari ini! 🏆",
+  "reminder_title_8": "Nikmati momennya ☕",
+  "reminder_title_9": "Tetap tersenyum 😄",
+  "reminder_title_10": "Kedamaian dimulai 🕊️",
+  "reminder_title_11": "Siap belajar 💡",
+  "reminder_title_12": "Perjalanan baru 🗺️",
+
+  "reminder_message_1": "Selamat pagi! Mari lakukan yang terbaik hari ini dan buat segalanya menjadi indah! ✨",
+  "reminder_message_2": "Hari baru telah dimulai. Semoga kamu penuh energi dan kebahagiaan! 💪",
+  "reminder_message_3": "Bangun dengan senyuman 😊 dan mulailah hari yang penuh harapan! 🌈",
+  "reminder_message_4": "Hari baru, tujuan baru 🎯 — mari melangkah maju bersama! 🚀",
+  "reminder_message_5": "Tidak ada yang mustahil jika kamu memulai hari ini dengan tekad! 🔥",
+  "reminder_message_6": "Luangkan waktu sejenak untuk menikmati kopi ☕ dan merencanakan hari yang produktif!",
+  "reminder_message_7": "Jangan lupa tarik napas dalam-dalam dan rileks 😌. Pikiran yang tenang membantumu menghadapi setiap tantangan.",
+  "reminder_message_8": "Setiap hari adalah halaman baru. Tulis kisah suksesmu sendiri hari ini! 📖🖊️",
+  "reminder_message_9": "Tantangan adalah peluang untuk bersinar. Beranilah dan lakukan yang terbaik! 💡💪",
+  "reminder_message_10": "Ingat untuk menjaga dirimu! Makan makanan sehat 🥗 dan tetap sehat! ❤️"
 }

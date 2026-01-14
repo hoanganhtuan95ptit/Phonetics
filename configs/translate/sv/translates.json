@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 Gå med i communityn och väx tillsammans!",
   "campaign_screen_message_for_join_group": "📢 Dela idéer, föreslå funktioner och samarbeta med andra för att göra appen bättre varje dag! 🚀💡",
 
-  "version_name": "🚀 Version: $version"
+  "version_name": "🚀 Version: $version",
+
+  "reminder_title_1": "God morgon ☀️",
+  "reminder_title_2": "Hej, ny dag ☀️",
+  "reminder_title_3": "Positiv energi ✨",
+  "reminder_title_4": "Ett klart sinne 🧘‍♀️",
+  "reminder_title_5": "Möjligheter väntar 🎁",
+  "reminder_title_6": "En fantastisk start! 🌟",
+  "reminder_title_7": "Erövra dagen! 🏆",
+  "reminder_title_8": "Njut av stunden ☕",
+  "reminder_title_9": "Fortsätt le 😄",
+  "reminder_title_10": "Frid börjar 🕊️",
+  "reminder_title_11": "Redo att lära 💡",
+  "reminder_title_12": "En ny resa 🗺️",
+
+  "reminder_message_1": "God morgon! Låt oss göra vårt bästa idag och göra allt fantastiskt! ✨",
+  "reminder_message_2": "En ny dag har börjat. Önskar dig massor av energi och glädje! 💪",
+  "reminder_message_3": "Vakna med ett leende 😊 och börja en dag full av hopp! 🌈",
+  "reminder_message_4": "Ny dag, nya mål 🎯 — låt oss gå framåt tillsammans! 🚀",
+  "reminder_message_5": "Inget är omöjligt när du börjar idag med beslutsamhet! 🔥",
+  "reminder_message_6": "Ta en stund för att njuta av ditt kaffe ☕ och planera en produktiv dag!",
+  "reminder_message_7": "Glöm inte att ta ett djupt andetag och slappna av 😌. Ett lugnt sinne hjälper dig att klara alla utmaningar.",
+  "reminder_message_8": "Varje dag är en ny sida. Skriv din egen framgångshistoria idag! 📖🖊️",
+  "reminder_message_9": "Utmaningar är möjligheter att glänsa. Var modig och gör ditt bästa! 💡💪",
+  "reminder_message_10": "Kom ihåg att ta hand om dig själv! Ät bra 🥗 och håll dig frisk! ❤️"
 }

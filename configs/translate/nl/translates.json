@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 Sluit je aan bij de Community en groei samen!",
   "campaign_screen_message_for_join_group": "📢 Deel ideeën, stel functies voor en werk samen met anderen om de app elke dag beter te maken! 🚀💡",
 
-  "version_name": "🚀 Versie: $version"
+  "version_name": "🚀 Versie: $version",
+
+  "reminder_title_1": "Goedemorgen ☀️",
+  "reminder_title_2": "Hallo, nieuwe dag ☀️",
+  "reminder_title_3": "Positieve energie ✨",
+  "reminder_title_4": "Een frisse geest 🧘‍♀️",
+  "reminder_title_5": "Kansen wachten 🎁",
+  "reminder_title_6": "Een geweldige start! 🌟",
+  "reminder_title_7": "Verover vandaag! 🏆",
+  "reminder_title_8": "Geniet van het moment ☕",
+  "reminder_title_9": "Blijf glimlachen 😄",
+  "reminder_title_10": "Vrede begint 🕊️",
+  "reminder_title_11": "Klaar om te leren 💡",
+  "reminder_title_12": "Een nieuwe reis 🗺️",
+
+  "reminder_message_1": "Goedemorgen! Laten we vandaag ons best doen en alles geweldig maken! ✨",
+  "reminder_message_2": "Een nieuwe dag is begonnen. Ik wens je veel energie en plezier! 💪",
+  "reminder_message_3": "Word wakker met een glimlach 😊 en begin een dag vol hoop! 🌈",
+  "reminder_message_4": "Nieuwe dag, nieuwe doelen 🎯 — laten we samen vooruitgaan! 🚀",
+  "reminder_message_5": "Niets is onmogelijk als je vandaag begint met vastberadenheid! 🔥",
+  "reminder_message_6": "Neem even de tijd om van je koffie te genieten ☕ en plan een productieve dag!",
+  "reminder_message_7": "Vergeet niet diep adem te halen en te ontspannen 😌. Een rustige geest helpt je elke uitdaging te overwinnen.",
+  "reminder_message_8": "Elke dag is een nieuwe pagina. Schrijf vandaag je eigen succesverhaal! 📖🖊️",
+  "reminder_message_9": "Uitdagingen zijn kansen om te schitteren. Wees moedig en geef het beste van jezelf! 💡💪",
+  "reminder_message_10": "Vergeet niet goed voor jezelf te zorgen! Eet gezond 🥗 en blijf gezond! ❤️"
 }

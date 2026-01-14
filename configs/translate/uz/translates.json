@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 Jamoaga qoʻshiling va birga rivojlaning!",
   "campaign_screen_message_for_join_group": "📢 Gʻoyalaringizni baham koʻring, funksiyalarni taklif qiling va ilovani har kuni yaxshilash uchun boshqalar bilan hamkorlik qiling! 🚀💡",
 
-  "version_name": "🚀 Versiya: $version"
+  "version_name": "🚀 Versiya: $version",
+
+  "reminder_title_1": "Xayrli tong ☀️",
+  "reminder_title_2": "Salom, yangi kun ☀️",
+  "reminder_title_3": "Ijobiy energiya ✨",
+  "reminder_title_4": "Toza ong 🧘‍♀️",
+  "reminder_title_5": "Imkoniyatlar kutmoqda 🎁",
+  "reminder_title_6": "Ajoyib boshlanish! 🌟",
+  "reminder_title_7": "Bugunni zabt et! 🏆",
+  "reminder_title_8": "Lahzadan zavqlan ☕",
+  "reminder_title_9": "Tabassum qil 😄",
+  "reminder_title_10": "Tinchlik boshlanadi 🕊️",
+  "reminder_title_11": "O‘rganishga tayyor 💡",
+  "reminder_title_12": "Yangi sayohat 🗺️",
+
+  "reminder_message_1": "Xayrli tong! Bugun qo‘limizdan kelganicha harakat qilaylik va hammasini ajoyib qilaylik! ✨",
+  "reminder_message_2": "Yangi kun boshlandi. Sizga ko‘p energiya va quvonch tilayman! 💪",
+  "reminder_message_3": "Tabassum bilan uyg‘oning 😊 va umidga to‘la kunni boshlang! 🌈",
+  "reminder_message_4": "Yangi kun, yangi maqsadlar 🎯 — keling, birga oldinga yuraylik! 🚀",
+  "reminder_message_5": "Agar bugunni qat’iyat bilan boshlasangiz, hech narsa imkonsiz emas! 🔥",
+  "reminder_message_6": "Bir zum to‘xtab, qahvangizdan bahramand bo‘ling ☕ va samarali kunni rejalashtiring!",
+  "reminder_message_7": "Chuqur nafas olishni va dam olishni unutmang 😌. Tinch ong har qanday qiyinchilikni yengishga yordam beradi.",
+  "reminder_message_8": "Har bir kun — yangi sahifa. Bugun o‘z muvaffaqiyat hikoyangizni yozing! 📖🖊️",
+  "reminder_message_9": "Qiyinchiliklar porlash uchun imkoniyatdir. Jasur bo‘ling va qo‘lingizdan kelganini qiling! 💡💪",
+  "reminder_message_10": "O‘zingizga g‘amxo‘rlik qilishni unutmang! Sog‘lom ovqatlaning 🥗 va sog‘lom bo‘ling! ❤️"
 }

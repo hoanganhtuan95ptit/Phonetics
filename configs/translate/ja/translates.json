@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 コミュニティに参加して共に成長しましょう！",
   "campaign_screen_message_for_join_group": "📢 アイデアを共有し、機能を提案し、他のユーザーと協力して毎日アプリを改善しましょう！🚀💡",
 
-  "version_name": "🚀 バージョン: $version"
+  "version_name": "🚀 バージョン: $version",
+
+  "reminder_title_1": "おはようございます ☀️",
+  "reminder_title_2": "新しい一日 ☀️",
+  "reminder_title_3": "ポジティブなエネルギー ✨",
+  "reminder_title_4": "すっきりした気持ち 🧘‍♀️",
+  "reminder_title_5": "チャンスが待っています 🎁",
+  "reminder_title_6": "素晴らしいスタート！ 🌟",
+  "reminder_title_7": "今日を制覇しよう！ 🏆",
+  "reminder_title_8": "ひとときを楽しんで ☕",
+  "reminder_title_9": "笑顔でいこう 😊",
+  "reminder_title_10": "平和はここから 🕊️",
+  "reminder_title_11": "学ぶ準備はできています 💡",
+  "reminder_title_12": "新しい旅 🗺️",
+
+  "reminder_message_1": "おはようございます！今日もベストを尽くして、素敵な一日にしましょう！ ✨",
+  "reminder_message_2": "新しい一日が始まりました。エネルギーと喜びに満ちた一日になりますように！ 💪",
+  "reminder_message_3": "笑顔で目覚めて 😊、希望に満ちた一日を始めましょう！ 🌈",
+  "reminder_message_4": "新しい日、新しい目標 🎯 ― 一緒に前へ進みましょう！ 🚀",
+  "reminder_message_5": "強い気持ちで始めれば、不可能なことはありません！ 🔥",
+  "reminder_message_6": "コーヒーを楽しむ時間を少しとって ☕、生産的な一日を計画しましょう。",
+  "reminder_message_7": "深呼吸してリラックスすることを忘れないでください 😌。落ち着いた心は、どんな挑戦も乗り越える力になります。",
+  "reminder_message_8": "毎日は新しいページです。今日は自分だけの成功ストーリーを書きましょう！ 📖🖊️",
+  "reminder_message_9": "挑戦は輝くチャンスです。勇気を持って、全力を尽くしましょう！ 💡💪",
+  "reminder_message_10": "自分を大切にしてください。バランスの良い食事を心がけ 🥗、健康でいましょう！ ❤️"
 }
