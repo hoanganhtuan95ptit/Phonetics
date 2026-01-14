@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 Dołącz do społeczności i rozwijaj się razem!",
   "campaign_screen_message_for_join_group": "📢 Dziel się pomysłami, sugeruj funkcje i współpracuj z innymi, aby każdego dnia ulepszać aplikację! 🚀💡",
 
-  "version_name": "🚀 Wersja: $version"
+  "version_name": "🚀 Wersja: $version",
+
+  "reminder_title_1": "Dzień dobry ☀️",
+  "reminder_title_2": "Witaj, nowy dniu ☀️",
+  "reminder_title_3": "Pozytywna energia ✨",
+  "reminder_title_4": "Świeży umysł 🧘‍♀️",
+  "reminder_title_5": "Czekają możliwości 🎁",
+  "reminder_title_6": "Świetny start! 🌟",
+  "reminder_title_7": "Podbij dzisiejszy dzień! 🏆",
+  "reminder_title_8": "Ciesz się chwilą ☕",
+  "reminder_title_9": "Uśmiechaj się 😄",
+  "reminder_title_10": "Początek spokoju 🕊️",
+  "reminder_title_11": "Gotowy do nauki 💡",
+  "reminder_title_12": "Nowa podróż 🗺️",
+
+  "reminder_message_1": "Dzień dobry! Dajmy z siebie wszystko i sprawmy, aby ten dzień był wspaniały! ✨",
+  "reminder_message_2": "Rozpoczął się nowy dzień. Życzę Ci mnóstwa energii i radości! 💪",
+  "reminder_message_3": "Obudź się z uśmiechem 😊 i rozpocznij dzień pełen nadziei! 🌈",
+  "reminder_message_4": "Nowy dzień, nowe cele 🎯 — idźmy naprzód razem! 🚀",
+  "reminder_message_5": "Nic nie jest niemożliwe, jeśli zaczynasz ten dzień z determinacją! 🔥",
+  "reminder_message_6": "Poświęć chwilę, aby cieszyć się kawą ☕ i zaplanować produktywny dzień!",
+  "reminder_message_7": "Nie zapomnij wziąć głębokiego oddechu i się zrelaksować 😌. Spokojny umysł pomaga pokonać każde wyzwanie.",
+  "reminder_message_8": "Każdy dzień to nowa strona. Napisz dziś swoją własną historię sukcesu! 📖🖊️",
+  "reminder_message_9": "Wyzwania to szanse, by zabłysnąć. Bądź odważny i daj z siebie wszystko! 💡💪",
+  "reminder_message_10": "Pamiętaj, aby dbać o siebie! Jedz zdrowo 🥗 i bądź w dobrej formie! ❤️"
 }

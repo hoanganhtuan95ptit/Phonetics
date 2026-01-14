@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 Join the Community and Grow Together!",
   "campaign_screen_message_for_join_group": "📢 Share ideas, suggest features, and collaborate with others to make the app better every day! 🚀💡",
 
-  "version_name": "🚀 Version: $version"
+  "version_name": "🚀 Version: $version",
+
+  "reminder_title_1": "Good morning ☀️",
+  "reminder_title_2": "Hello, new day ☀️",
+  "reminder_title_3": "Positive energy ✨",
+  "reminder_title_4": "A fresh mind 🧘‍♀️",
+  "reminder_title_5": "Opportunities await 🎁",
+  "reminder_title_6": "A great start! 🌟",
+  "reminder_title_7": "Conquer today! 🏆",
+  "reminder_title_8": "Enjoy the moment ☕",
+  "reminder_title_9": "Keep smiling 😄",
+  "reminder_title_10": "Peace begins 🕊️",
+  "reminder_title_11": "Ready to learn 💡",
+  "reminder_title_12": "A new journey 🗺️",
+
+  "reminder_message_1": "Good morning! Let’s do our best today and make everything wonderful! ✨",
+  "reminder_message_2": "A new day has begun. Wishing you lots of energy and joy! 💪",
+  "reminder_message_3": "Wake up with a smile 😊 and start a day full of hope! 🌈",
+  "reminder_message_4": "New day, new goals 🎯 — let’s move forward together! 🚀",
+  "reminder_message_5": "Nothing is impossible when you start today with determination! 🔥",
+  "reminder_message_6": "Take a moment to enjoy your coffee ☕ and plan for a productive day!",
+  "reminder_message_7": "Don’t forget to take a deep breath and relax 😌. A peaceful mind helps you overcome any challenge.",
+  "reminder_message_8": "Every day is a new page. Write your own success story today! 📖🖊️",
+  "reminder_message_9": "Challenges are opportunities to shine. Be brave and give it your best! 💡💪",
+  "reminder_message_10": "Remember to take care of yourself! Eat well 🥗 and stay healthy! ❤️"
 }

@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 Werden Sie Teil der Community und wachsen Sie gemeinsam!",
   "campaign_screen_message_for_join_group": "📢 Teilen Sie Ideen, schlagen Sie Funktionen vor und arbeiten Sie mit anderen zusammen, um die App jeden Tag besser zu machen! 🚀💡",
 
-  "version_name": "🚀 Version: $version"
+  "version_name": "🚀 Version: $version",
+
+  "reminder_title_1": "Guten Morgen ☀️",
+  "reminder_title_2": "Hallo, neuer Tag ☀️",
+  "reminder_title_3": "Positive Energie ✨",
+  "reminder_title_4": "Klarer Geist 🧘‍♀️",
+  "reminder_title_5": "Chancen warten 🎁",
+  "reminder_title_6": "Ein großartiger Start! 🌟",
+  "reminder_title_7": "Erobere den Tag! 🏆",
+  "reminder_title_8": "Genieße den Moment ☕",
+  "reminder_title_9": "Lächle 😊",
+  "reminder_title_10": "Frieden beginnt 🕊️",
+  "reminder_title_11": "Bereit zu lernen 💡",
+  "reminder_title_12": "Eine neue Reise 🗺️",
+
+  "reminder_message_1": "Guten Morgen! Lass uns heute unser Bestes geben und den Tag wunderbar machen! ✨",
+  "reminder_message_2": "Ein neuer Tag hat begonnen. Wir wünschen dir viel Energie und Freude! 💪",
+  "reminder_message_3": "Wach mit einem Lächeln auf 😊 und starte hoffnungsvoll in den Tag! 🌈",
+  "reminder_message_4": "Neuer Tag, neue Ziele 🎯 — lass uns gemeinsam vorangehen! 🚀",
+  "reminder_message_5": "Nichts ist unmöglich, wenn du den Tag mit Entschlossenheit beginnst! 🔥",
+  "reminder_message_6": "Nimm dir einen Moment für einen Kaffee ☕ und plane einen produktiven Tag!",
+  "reminder_message_7": "Vergiss nicht, tief durchzuatmen und zu entspannen 😌. Ein ruhiger Geist hilft dir, jede Herausforderung zu meistern.",
+  "reminder_message_8": "Jeder Tag ist eine neue Seite. Schreibe heute deine eigene Erfolgsgeschichte! 📖🖊️",
+  "reminder_message_9": "Herausforderungen sind Chancen zu glänzen. Sei mutig und gib dein Bestes! 💡💪",
+  "reminder_message_10": "Denk daran, gut für dich zu sorgen! Iss gesund 🥗 und bleib fit! ❤️"
 }

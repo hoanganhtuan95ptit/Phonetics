@@ -188,5 +188,29 @@
   "campaign_screen_title_for_join_group": "🤝 Unisciti alla Community e cresciamo insieme!",
   "campaign_screen_message_for_join_group": "📢 Condividi idee, suggerisci funzionalità e collabora con altri per migliorare l'app ogni giorno! 🚀💡",
 
-  "version_name": "🚀 Versione: $version"
+  "version_name": "🚀 Versione: $version",
+
+  "reminder_title_1": "Buongiorno ☀️",
+  "reminder_title_2": "Ciao, nuovo giorno ☀️",
+  "reminder_title_3": "Energia positiva ✨",
+  "reminder_title_4": "Mente fresca 🧘‍♀️",
+  "reminder_title_5": "Le opportunità ti aspettano 🎁",
+  "reminder_title_6": "Un ottimo inizio! 🌟",
+  "reminder_title_7": "Conquista la giornata! 🏆",
+  "reminder_title_8": "Goditi il momento ☕",
+  "reminder_title_9": "Sorridi 😊",
+  "reminder_title_10": "La pace inizia 🕊️",
+  "reminder_title_11": "Pronto a imparare 💡",
+  "reminder_title_12": "Un nuovo viaggio 🗺️",
+
+  "reminder_message_1": "Buongiorno! Diamo il meglio di noi oggi e rendiamo questa giornata meravigliosa! ✨",
+  "reminder_message_2": "È iniziato un nuovo giorno. Ti auguriamo tanta energia e gioia! 💪",
+  "reminder_message_3": "Svegliati con un sorriso 😊 e inizia una giornata piena di speranza! 🌈",
+  "reminder_message_4": "Nuovo giorno, nuovi obiettivi 🎯 — andiamo avanti insieme! 🚀",
+  "reminder_message_5": "Nulla è impossibile se inizi oggi con determinazione! 🔥",
+  "reminder_message_6": "Prenditi un momento per gustare un caffè ☕ e pianificare una giornata produttiva.",
+  "reminder_message_7": "Non dimenticare di respirare profondamente e rilassarti 😌. Una mente tranquilla ti aiuta a superare ogni sfida.",
+  "reminder_message_8": "Ogni giorno è una nuova pagina. Scrivi oggi la tua storia di successo! 📖🖊️",
+  "reminder_message_9": "Le sfide sono opportunità per brillare. Sii coraggioso e dai il massimo! 💡💪",
+  "reminder_message_10": "Ricordati di prenderti cura di te! Mangia sano 🥗 e resta in salute! ❤️"
 }
