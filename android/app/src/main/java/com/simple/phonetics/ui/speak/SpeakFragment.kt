@@ -3,6 +3,7 @@ package com.simple.phonetics.ui.speak
 import android.Manifest
 import android.content.ComponentCallbacks
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,6 +67,10 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         setupRecyclerView()
 
         observeData()
+    }
+
+    override fun setupPaddingBottom() {
+
     }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogListBinding {
@@ -173,7 +178,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         theme.observe(viewLifecycleOwner) {
 
             val binding = binding ?: return@observe
-            val bindingConfigSpeak = bindingAction ?: return@observe
+            val bindingAction = this@SpeakFragment.bindingAction ?: return@observe
 
             val background = Background(
                 backgroundColor = it.colorBackground,
@@ -185,10 +190,10 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             rootSizeJob = binding.root.ensureGradientUpdates().launchIn(viewLifecycleOwner.lifecycleScope)
 
             binding.root.setBackground(background = background)
-            bindingConfigSpeak.root.setBackground(background = background)
+            bindingAction.root.setBackground(background = background)
 
             binding.vAnchor.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
-            bindingConfigSpeak.frameSpeak.root.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.colorPrimary, cornerRadius = DP.DP_16))
+            bindingAction.frameSpeak.root.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.colorPrimary, cornerRadius = DP.DP_16))
         }
 
         copyInfo.observe(viewLifecycleOwner) {
@@ -196,7 +201,6 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             val binding = bindingAction?.frameCopy ?: return@observe
 
             binding.ivImage.setImage(it.image)
-            binding.ivImage.setColorFilter(it.imageFilter)
 
             binding.root.isClickable = it.isShow
             binding.root.setInvisible(!it.isShow)

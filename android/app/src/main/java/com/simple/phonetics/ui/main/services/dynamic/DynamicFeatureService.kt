@@ -33,7 +33,7 @@ class DynamicFeatureService : MainService {
             }
 
 
-            val featureListDefault = arrayOf("mlkit", "campaign", "thanks")
+            val featureListDefault = arrayOf("mlkit", "campaign", "thanks", "subscription")
 
             featureListDefault.map { moduleName ->
 

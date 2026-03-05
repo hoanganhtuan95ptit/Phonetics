@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.base.fragments
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.ui.base.fragments.transition.TransitionViewModel
@@ -77,7 +76,7 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
-    val themeFlow = mutableSharedFlowWithDiff {
+    val themes = mutableSharedFlowWithDiff {
 
         appTheme.collect {
             emit(it.toMap())
@@ -94,7 +93,7 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
-    val translateFlow = mutableSharedFlowWithDiff {
+    val strings = mutableSharedFlowWithDiff {
 
         appString.collect {
             emit(it.toMap())
