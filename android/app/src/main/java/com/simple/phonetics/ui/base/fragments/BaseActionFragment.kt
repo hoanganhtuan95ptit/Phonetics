@@ -10,10 +10,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.utils.autoCleared
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.doOnHeightStatusAndHeightNavigationChange
 import com.simple.coreapp.utils.extentions.get
 import com.simple.phonetics.utils.exts.listenerHeightChangeAsync
 import com.unknown.coroutines.launchCollect
+import com.unknown.size.uitls.exts.navigationBarHeight
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlin.math.absoluteValue
 
 abstract class BaseActionFragment<AVB : ViewBinding, VB : ViewBinding, VM : BaseActionViewModel>() : BaseSheetFragment<VB, VM>() {
@@ -21,15 +23,15 @@ abstract class BaseActionFragment<AVB : ViewBinding, VB : ViewBinding, VM : Base
     protected abstract fun createBindingAction(): AVB
 
 
-    protected var bindingAction by autoCleared<AVB>()
+    var bindingAction by autoCleared<AVB>()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindingAction = createBindingAction()
+        this@BaseActionFragment.bindingAction = createBindingAction()
 
-        val binding = bindingAction ?: return
+        val bindingAction = this@BaseActionFragment.bindingAction ?: return
 
         val layoutParam = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
@@ -38,7 +40,7 @@ abstract class BaseActionFragment<AVB : ViewBinding, VB : ViewBinding, VM : Base
             gravity = Gravity.BOTTOM
         }
 
-        container?.addView(binding.root, layoutParam)
+        container?.addView(bindingAction.root, layoutParam)
 
 
         behavior?.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -50,20 +52,26 @@ abstract class BaseActionFragment<AVB : ViewBinding, VB : ViewBinding, VM : Base
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
                 val translateY = (1 + slideOffset) * this@BaseActionFragment.bottomSheet?.height.orZero() - viewModel.actionHeight.get()
-                if (translateY < 0) binding.root.translationY = translateY.absoluteValue
+                if (translateY < 0) bindingAction.root.translationY = translateY.absoluteValue
+                else bindingAction.root.translationY = 0f
             }
         })
 
-        binding.root.listenerHeightChangeAsync().launchCollect(viewLifecycleOwner) {
+        bindingAction.root.listenerHeightChangeAsync().launchCollect(viewLifecycleOwner) {
 
             viewModel.updateActionHeight(it)
         }
 
-        doOnHeightStatusAndHeightNavigationChange { heightStatusBar: Int, heightNavigationBar: Int ->
+        setupPaddingBottom()
+    }
 
-            val bindingAction = bindingAction ?: return@doOnHeightStatusAndHeightNavigationChange
+    open fun setupPaddingBottom() {
 
-            bindingAction.root.updatePadding(bottom = heightNavigationBar + DP.DP_24)
+        viewModel.sizeFlow.map { it.navigationBarHeight }.distinctUntilChanged().launchCollect(viewLifecycleOwner) {
+
+            val bindingAction = bindingAction ?: return@launchCollect
+
+            bindingAction.root.updatePadding(bottom = it + DP.DP_24)
         }
     }
 }

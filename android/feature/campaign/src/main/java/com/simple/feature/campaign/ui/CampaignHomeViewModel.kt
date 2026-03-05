@@ -18,6 +18,7 @@ import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.feature.campaign.data.repositories.CampaignRepository
 import com.simple.feature.campaign.entities.Campaign
 import com.simple.feature.campaign.ui.adapters.CampaignViewItem
+import com.simple.image.ImagePath
 import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrKey
@@ -67,7 +68,7 @@ class CampaignHomeViewModel : BaseViewModel() {
             id = "CAMPAIGN",
             data = campaign,
 
-            image = campaign.image.orEmpty(),
+            image = ImagePath(campaign.image.orEmpty()),
 
             text = titleSpan,
 

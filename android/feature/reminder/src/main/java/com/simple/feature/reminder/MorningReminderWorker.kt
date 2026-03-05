@@ -44,7 +44,7 @@ class MorningReminderWorker(context: Context, params: WorkerParameters) : Corout
 
         val daysSinceLastUse = (System.currentTimeMillis() - lastUsed) / (1000 * 60 * 60 * 24)
 
-        if (daysSinceLastUse.absoluteValue >= 3) {
+        if (daysSinceLastUse.absoluteValue >= 2) {
 
             randomNotification()
         }

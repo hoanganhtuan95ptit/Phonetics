@@ -4,6 +4,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.deeplink.sendDeeplink
+import com.simple.image.ImagePath
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
@@ -24,7 +25,7 @@ class LanguageHomeService() : HomeService {
 
             val binding = homeFragment.binding ?: return@collectWithLockTransitionUntilData
 
-            binding.ivLanguage.setImage(it.image, CircleCrop())
+            binding.ivLanguage.setImage(ImagePath(it.image), CircleCrop())
         }
 
 

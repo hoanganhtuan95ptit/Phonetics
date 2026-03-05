@@ -1,5 +1,6 @@
 package com.simple.phonetics.ui.home.services.ipa
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.asFlow
 import com.simple.autobind.annotation.AutoBind

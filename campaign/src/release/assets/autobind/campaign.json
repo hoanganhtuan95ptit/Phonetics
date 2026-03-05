@@ -1,0 +1,1 @@
+{"bindings":[{"type":"com.simple.phonetics.ui.home.HomeFragment","impl":"com.simple.feature.campaign.ui.CampaignHomeView"},{"type":"com.simple.adapter.provider.AdapterProvider","impl":"com.simple.feature.campaign.ui.adapters.AdapterProvider"}]}

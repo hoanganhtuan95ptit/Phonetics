@@ -17,6 +17,7 @@ import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.setText
 import com.simple.deeplink.sendDeeplink
 import com.simple.feature.campaign.entities.Campaign
+import com.simple.image.RichImage
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemCampaignBinding
@@ -72,7 +73,7 @@ data class CampaignViewItem(
     val id: String,
     val data: Campaign,
 
-    val image: String,
+    val image: RichImage,
 
     val text: RichText = emptyText(),
     val message: RichText = emptyText(),

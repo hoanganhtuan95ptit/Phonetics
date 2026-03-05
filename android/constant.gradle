@@ -1,8 +1,8 @@
 project.ext {
 
     // ===================== Android SDK & Java =====================
-    versionCode = 193
-    versionName = "1.5.24"
+    versionCode = 201
+    versionName = "1.5.27.5"
     versionNameDebugSuffix = "-debug"
 
     minSdkVersion = 23
@@ -152,7 +152,7 @@ project.ext {
     ]
 
 
-    hoanganhtuan95ptit_version = '1.3.39.beta50'
+    hoanganhtuan95ptit_version = '1.3.39.beta56'
 
     hoanganhtuan95Dependencies = [
             base                : "com.github.hoanganhtuan95ptit.core:base:$hoanganhtuan95ptit_version",

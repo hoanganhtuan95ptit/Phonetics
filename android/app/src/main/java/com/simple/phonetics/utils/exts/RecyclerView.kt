@@ -88,7 +88,7 @@ fun RecyclerView.listenerAdapterDataAsync() = channelFlow {
 }.asLiveData().asFlow()
 
 
-fun RecyclerView.transitionAsync(transition: Transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))) = channelFlow {
+private fun RecyclerView.transitionAsync(transition: Transition = TransitionSet().addTransition(ChangeBounds().setDuration(350)).addTransition(Fade().setDuration(350))) = channelFlow {
 
     val layoutManagerCanDisableScroll = layoutManager.asObjectOrNull<CanDisableScroll>()
 
@@ -131,7 +131,7 @@ fun RecyclerView.transitionAsync(transition: Transition = TransitionSet().addTra
     }
 }
 
-fun RecyclerView.submitListAndGetListPositionChangeAsync(viewItemList: List<ViewItem>) = channelFlow {
+private fun RecyclerView.submitListAndGetListPositionChangeAsync(viewItemList: List<ViewItem>) = channelFlow {
 
     val adapter = (adapter as? MultiAdapter) ?: run {
         trySend(emptySet())

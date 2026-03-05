@@ -216,10 +216,10 @@ class HomeViewModel(
         postValue(info)
     }
 
-    val enterInfo: Flow<EnterInfo> = listenerSourcesWithDiff(themeFlow, translateFlow, isReverseFlow, outputLanguageFlow, inputLanguageFlow) {
+    val enterInfo: Flow<EnterInfo> = listenerSourcesWithDiff(themes, strings, isReverseFlow, outputLanguageFlow, inputLanguageFlow) {
 
-        val theme = themeFlow.value ?: return@listenerSourcesWithDiff
-        val translate = translateFlow.value ?: return@listenerSourcesWithDiff
+        val theme = themes.value ?: return@listenerSourcesWithDiff
+        val translate = strings.value ?: return@listenerSourcesWithDiff
         val inputLanguage = inputLanguageFlow.value ?: return@listenerSourcesWithDiff
         val outputLanguage = outputLanguageFlow.value ?: return@listenerSourcesWithDiff
 

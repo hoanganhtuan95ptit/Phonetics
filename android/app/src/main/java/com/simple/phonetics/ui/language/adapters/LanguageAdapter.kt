@@ -11,6 +11,7 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.setText
+import com.simple.image.RichImage
 import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemLanguageBinding
@@ -58,7 +59,7 @@ data class LanguageViewItem(
     val data: Language,
 
     val name: RichText,
-    val image: String,
+    val image: RichImage,
     val isSelected: Boolean,
 
     val background: Background,

@@ -20,6 +20,7 @@ import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.crashlytics.logCrashlytics
+import com.simple.image.ImagePath
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.UpdateLanguageInputUseCase
@@ -137,7 +138,7 @@ class LanguageViewModel(
                 name = name
                     .with(ForegroundColor(if (isSelected) theme.colorOnPrimaryVariant else theme.colorOnSurface)),
 
-                image = it.image,
+                image = ImagePath(it.image),
 
                 isSelected = isSelected,
 

@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.speak
 
-import android.graphics.Color
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -22,6 +21,8 @@ import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toEvent
+import com.simple.image.ImageRes
+import com.simple.image.RichImage
 import com.simple.phonetics.R
 import com.simple.phonetics.SpeakState
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
@@ -127,6 +128,8 @@ class SpeakViewModel(
 
     val speakInfo: LiveData<SpeakInfo> = listenerSourcesWithDiff(size, theme, translate, isSupportSpeak, speakState) {
 
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+
         val speakState = speakState.value
 
         val info = SpeakInfo(
@@ -139,9 +142,9 @@ class SpeakViewModel(
             image = if (speakState.isRunning()) {
                 null
             } else if (speakState == null || speakState.isStart() || speakState.isCompleted()) {
-                R.drawable.ic_microphone_24dp
+                ImageRes(data = R.drawable.ic_microphone_24dp, colorFilter = theme.colorPrimary)
             } else {
-                R.drawable.ic_microphone_slash_24dp
+                ImageRes(data = R.drawable.ic_microphone_slash_24dp, colorFilter = theme.colorPrimary)
             },
 
             isLoading = speakState.isStart(),
@@ -154,14 +157,16 @@ class SpeakViewModel(
 
     val readingInfo: LiveData<ReadingInfo> = listenerSourcesWithDiff(size, theme, translate, isSupportReading, readingState) {
 
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+
         val listenState = readingState.value
 
         val info = ReadingInfo(
 
             image = if (listenState == null || listenState.isStart() || listenState.isCompleted()) {
-                R.drawable.ic_volume_24dp
+                ImageRes(data = R.drawable.ic_volume_24dp, colorFilter = theme.colorPrimary)
             } else {
-                R.drawable.ic_pause_24dp
+                ImageRes(data = R.drawable.ic_pause_24dp, colorFilter = theme.colorPrimary)
             },
 
             isShow = isSupportReading.value == true,
@@ -177,8 +182,7 @@ class SpeakViewModel(
 
         val info = CopyInfo(
 
-            image = R.drawable.ic_copy_24dp,
-            imageFilter = theme.colorPrimary,
+            image = ImageRes(R.drawable.ic_copy_24dp, theme.colorPrimary),
 
             isShow = true,
             messageThankUser = emptyText()
@@ -307,8 +311,7 @@ class SpeakViewModel(
     )
 
     data class CopyInfo(
-        val image: Int,
-        val imageFilter: Int = Color.TRANSPARENT,
+        val image: RichImage,
 
         val isShow: Boolean,
         val messageThankUser: RichText,
@@ -316,13 +319,13 @@ class SpeakViewModel(
 
     data class SpeakInfo(
         val anim: Int?,
-        val image: Int?,
+        val image: RichImage?,
         val isShow: Boolean,
         val isLoading: Boolean
     )
 
     data class ReadingInfo(
-        val image: Int,
+        val image: RichImage,
         val isShow: Boolean,
         val isLoading: Boolean
     )

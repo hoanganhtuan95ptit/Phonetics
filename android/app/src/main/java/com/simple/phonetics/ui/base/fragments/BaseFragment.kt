@@ -3,6 +3,7 @@ package com.simple.phonetics.ui.base.fragments
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.simple.coreapp.ui.base.fragments.BaseViewModelFragment
 import com.simple.coreapp.utils.ext.setFullScreen
@@ -88,5 +89,10 @@ abstract class BaseFragment<T : androidx.viewbinding.ViewBinding, VM : BaseViewM
         stateFlow.tryEmit(LifecycleState.DESTROYED)
 
         super.onDestroy()
+    }
+
+    fun dismiss(name: String = this.javaClass.name, flag: Int = FragmentManager.POP_BACK_STACK_INCLUSIVE) {
+
+        activity?.supportFragmentManager?.popBackStack(name, flag)
     }
 }

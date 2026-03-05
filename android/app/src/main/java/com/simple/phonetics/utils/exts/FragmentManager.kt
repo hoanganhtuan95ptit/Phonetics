@@ -19,6 +19,8 @@ fun Fragment.replace(fragment: Fragment, containerViewId: Int = R.id.fragment_co
 
 fun FragmentManager.replace(fragment: Fragment, containerViewId: Int = R.id.fragment_container, extras: Map<String, Any?>?, sharedElement: Map<String, View>?) {
 
+    val tag = fragment.javaClass.name
+
     fragment.arguments = bundleOf(*extras?.toList().orEmpty().toTypedArray())
 
     val fragmentTransaction = beginTransaction()
@@ -29,7 +31,7 @@ fun FragmentManager.replace(fragment: Fragment, containerViewId: Int = R.id.frag
     }
 
     fragmentTransaction
-        .replace(containerViewId, fragment, "")
-        .addToBackStack("")
+        .replace(containerViewId, fragment, tag)
+        .addToBackStack(tag)
         .commitAllowingStateLoss()
 }

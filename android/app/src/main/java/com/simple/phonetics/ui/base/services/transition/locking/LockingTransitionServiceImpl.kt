@@ -106,7 +106,7 @@ class LockingTransitionServiceImpl : LockingTransitionService {
 
         lockingTransitionViewModel.lockingData.launchCollect(fragment, context = handler + Dispatchers.IO) { info ->
 
-            if (BuildConfig.DEBUG && true) Log.d(
+            if (BuildConfig.DEBUG && false) Log.d(
                 "tuanha", "LockingTransitionServiceFragment  ${fragment.javaClass.simpleName}  --->" +
                         "\nisRecreateView:${isRecreateView}" +
                         "\nisSupportEnterTransition:${isSupportEnterTransition}" +
