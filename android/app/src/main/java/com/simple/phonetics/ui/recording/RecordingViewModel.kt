@@ -10,6 +10,7 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
@@ -25,6 +26,8 @@ import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toPx
+import com.simple.image.ImageRes
+import com.simple.image.RichImage
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
@@ -116,7 +119,7 @@ class RecordingViewModel(
         postValueIfActive(list)
     }
 
-    val actionInfo: LiveData<ImageStateViewItem> = listenerSourcesWithDiff(size, theme, titleViewItemList, speakState) {
+    val actionInfo: LiveData<ActionInfo> = listenerSourcesWithDiff(size, theme, titleViewItemList, speakState) {
 
         val size = size.value ?: return@listenerSourcesWithDiff
         val theme = theme.value ?: return@listenerSourcesWithDiff
@@ -125,7 +128,7 @@ class RecordingViewModel(
 
         val width = (size.width - 2 * DP.DP_24) / 3
 
-        val viewItem = ImageStateViewItem(
+        val viewItem = ActionInfo(
             id = ID.SPEAK,
 
             anim = if (speakState.isRunning()) {
@@ -136,9 +139,9 @@ class RecordingViewModel(
             image = if (speakState.isRunning()) {
                 null
             } else if (speakState == null || speakState.isStart() || speakState.isCompleted()) {
-                R.drawable.ic_microphone_24dp
+                ImageRes(R.drawable.ic_microphone_24dp, theme.colorPrimary)
             } else {
-                R.drawable.ic_microphone_slash_24dp
+                ImageRes(R.drawable.ic_microphone_slash_24dp, theme.colorPrimary)
             },
 
             isLoading = speakState.isStart(),
@@ -200,6 +203,28 @@ class RecordingViewModel(
 
         stopSpeakUseCase.execute()
     }
+
+
+    data class ActionInfo(
+        val id: String,
+
+        val data: Any? = null,
+
+        val anim: Int? = null,
+        val image: RichImage? = null,
+
+        val isLoading: Boolean = false,
+
+        val size: Size? = null,
+        val margin: Margin? = null,
+        val padding: Padding? = null,
+        val background: Background? = null,
+
+        val imageSize: Size? = null,
+        val imageMargin: Margin? = null,
+        val imagePadding: Padding? = null,
+        val imageBackground: Background? = null,
+    )
 
     object ID {
 
