@@ -61,9 +61,9 @@ class SubscriptionViewModel : BaseViewModel() {
 
         val info = HeaderInfo(
             back = ImageRes(R.drawable.ic_arrow_left_on_surface, themes.colorOnBackground),
-            title = strings.getOrKey("title_subscription")
+            title = strings.getOrKey("subscription_screen_title")
                 .with(ForegroundColor(themes.colorOnBackground)),
-            message = strings.getOrKey("message_select_subscription")
+            message = strings.getOrKey("subscription_screen_message")
                 .with(ForegroundColor(themes.colorOnBackgroundVariant)),
         )
 
