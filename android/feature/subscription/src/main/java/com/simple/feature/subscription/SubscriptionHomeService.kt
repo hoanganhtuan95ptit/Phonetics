@@ -43,7 +43,7 @@ class SubscriptionHomeService : HomeService {
             sendDeeplink(DeeplinkManager.SUBSCRIPTION, extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivPremium))
         }
 
-        binding.ivPremium.setImage(ImageRes(R.drawable.ic_crown_24dp))
+        binding.ivPremium.setImage(ImageRes(R.drawable.ic_subs_vip_24dp))
     }
 
     private fun collectData(homeFragment: HomeFragment) = with(viewModel) {
