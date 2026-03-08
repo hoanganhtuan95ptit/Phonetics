@@ -9,6 +9,7 @@ import com.simple.feature.subscription.ui.SubscriptionViewModel
 import com.simple.image.ImageRes
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
+import com.simple.phonetics.Param
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.ui.main.services.ads.AdsViewModel
@@ -37,7 +38,9 @@ class SubscriptionHomeService : HomeService {
 
         binding.ivPremium.setDebouncedClickListener {
 
-            sendDeeplink(DeeplinkManager.SUBSCRIPTION)
+            val transitionName = binding.ivPremium.transitionName
+
+            sendDeeplink(DeeplinkManager.SUBSCRIPTION, extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivPremium))
         }
 
         binding.ivPremium.setImage(ImageRes(R.drawable.ic_crown_24dp))

@@ -179,6 +179,9 @@ object SubscriptionRepository {
                 id = it.productId,
                 price = it.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice ?: "",
             )
+        }.sortedBy {
+
+            productIds.indexOf(it.id)
         }
     }
 
