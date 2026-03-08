@@ -190,6 +190,15 @@
 
   "subscription_screen_title": "Chọn gói dịch vụ của bạn",
   "subscription_screen_message": "Nâng cấp để trải nghiệm đầy đủ tính năng tuyệt vời nhất",
+  "subscription_screen_action": "Đăng ký gói dịch vụ",
+  "subscription_screen_premiummonthlyplan1monthly_title": "Gói 1 tháng 🎟️",
+  "subscription_screen_premiummonthlyplan1monthly_description": "Trải nghiệm cực đã suốt 30 ngày. Tự động làm mới, không lo gián đoạn! ✨",
+  "subscription_screen_premiummonthlyplan3monthly_title": "Gói 3 tháng 🎈",
+  "subscription_screen_premiummonthlyplan3monthly_description": "Thỏa sức khám phá trọn 1 quý. Gia hạn tự động, niềm vui nối tiếp! 🥳",
+  "subscription_screen_premiummonthlyplan6monthly_title": "Gói 6 tháng 🌟",
+  "subscription_screen_premiummonthlyplan6monthly_description": "Nửa năm đồng hành tuyệt vời. Tự động gia hạn, bắt trọn từng khoảnh khắc! 🌈",
+  "subscription_screen_premiummonthlyplan12monthly_title": "Gói 1 năm (Tiết kiệm nhất) 👑",
+  "subscription_screen_premiummonthlyplan12monthly_description": "365 ngày trọn vẹn đặc quyền. Tự động gia hạn - Lựa chọn hoàn hảo cho bạn! 💖",
 
   "version_name": "🚀 Phiên bản: $version",
 
