@@ -1,7 +1,6 @@
 package com.simple.feature.subscription.ui
 
 import android.graphics.Color
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
@@ -122,9 +121,9 @@ class SubscriptionViewModel : BaseViewModel() {
             SubscriptionPlanViewItem(
                 id = it.id,
                 data = it,
-                title = strings.getOrKey("title_${it.id}")
+                title = strings.getOrKey("subscription_screen_${it.id}_title")
                     .with(Bold, ForegroundColor(themes.colorOnBackground)),
-                description = strings.getOrKey("description_${it.id}")
+                description = strings.getOrKey("subscription_screen_${it.id}_description")
                     .with(ForegroundColor(themes.colorOnBackgroundVariant)),
                 price = it.price
                     .with(ForegroundColor(themes.colorOnBackgroundVariant)),
@@ -167,7 +166,7 @@ class SubscriptionViewModel : BaseViewModel() {
         val isClickable = isSelected && !confirmState.isSuccess() && subscriptionPlanListState.isSuccess()
 
         val info = ConfirmInfo(
-            text = strings.getOrKey("action_confirm_change_subscription")
+            text = strings.getOrKey("subscription_screen_action")
                 .with(ForegroundColor(if (isSelected) themes.colorOnPrimary else themes.colorOnSurface)),
             isClickable = isClickable,
             isShowLoading = confirmState.isStart() || subscriptionPlanListState.isStart(),
