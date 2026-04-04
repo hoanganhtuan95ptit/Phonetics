@@ -1,6 +1,7 @@
 package com.simple.feature.subscription.ui
 
 import android.graphics.Color
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,7 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.with
+import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.feature.subscription.R
 import com.simple.feature.subscription.data.repositories.SubscriptionRepository
 import com.simple.feature.subscription.entities.SubscriptionPlan
@@ -47,6 +49,7 @@ import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -114,7 +117,10 @@ class SubscriptionViewModel : BaseViewModel() {
 
         val subscriptionIdNew = subscriptionIdNew.value
 
-        subscriptionPlanListState.get().toSuccess()?.data.orEmpty().map {
+        subscriptionPlanListState.get().toSuccess()?.data.orEmpty().filter {
+
+            strings.contains("subscription_screen_${it.id}_title")
+        }.map {
 
             val isSelected = it.id.equals(subscriptionIdNew, true)
 
@@ -144,8 +150,11 @@ class SubscriptionViewModel : BaseViewModel() {
     }
 
 
-    val confirmState = mutableSharedFlowWithDiff<ResultState<ResultInfo>> {
+    val confirmState = mutableSharedFlowWithDiff<ResultState<ResultInfo>> {}
 
+    val confirmStateEvent = combineSourcesWithDiff<com.simple.coreapp.utils.extentions.Event<ResultState<ResultInfo>>>(confirmState) {
+
+        emit(confirmState.get().toEvent())
     }
 
 
@@ -163,7 +172,7 @@ class SubscriptionViewModel : BaseViewModel() {
 
         val isSelected = subscriptionIdOld != subscriptionIdNew
 
-        val isClickable = isSelected && !confirmState.isSuccess() && subscriptionPlanListState.isSuccess()
+        val isClickable = isSelected && !confirmState.isStart() && subscriptionPlanListState.isSuccess()
 
         val info = ConfirmInfo(
             text = strings.getOrKey("subscription_screen_action")
@@ -181,17 +190,21 @@ class SubscriptionViewModel : BaseViewModel() {
         emit(info)
     }
 
+    init {
+        Log.d("tuanha", "init: ")
+    }
 
     fun changeSubscriptionPlan() = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val themes = themes.first()
         val strings = strings.first()
+        val subscriptionIdNew = subscriptionIdNew.first()
 
         confirmState.emit(ResultState.Start)
 
         val state = runCatching {
 
-            SubscriptionRepository.subscription(subscriptionIdNew.get()).first()
+            SubscriptionRepository.subscription(subscriptionIdNew).first()
         }.getOrElse {
 
             ResultState.Failed(it)
@@ -228,9 +241,9 @@ class SubscriptionViewModel : BaseViewModel() {
 
 
         val title = if (state.isSuccess()) {
-           "title_subs_success"
+            "subscription_screen_title_subs_success"
         } else {
-           "title_subs_error"
+            "subscription_screen_title_subs_error"
         }
 
         NoneTextViewItem(
@@ -257,15 +270,20 @@ class SubscriptionViewModel : BaseViewModel() {
 
 
         val message = if (state.isSuccess()) {
-            "message_subs_success"
+            "subscription_screen_message_subs_success"
         } else {
-            "message_subs_error"
+            "subscription_screen_message_subs_error"
         }
+
+        val subscriptionName = strings.getOrKey("subscription_screen_${subscriptionIdNew}_title")
+
 
         NoneTextViewItem(
             id = "3",
             text = strings.getOrKey(message)
-                .with(ForegroundColor(themes.colorOnSurface)),
+                .replace("\$subscriptionId", subscriptionName)
+                .with(ForegroundColor(themes.colorOnSurface))
+                .with(subscriptionName, Bold, ForegroundColor(themes.colorPrimary)),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -286,9 +304,9 @@ class SubscriptionViewModel : BaseViewModel() {
 
 
         val action = if (state.isSuccess()) {
-            "action_subs_success"
+            "subscription_screen_action_subs_success"
         } else {
-            "action_subs_error"
+            "subscription_screen_action_subs_error"
         }
 
         val info = ResultInfo(

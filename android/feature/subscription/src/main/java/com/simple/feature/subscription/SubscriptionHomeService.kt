@@ -5,7 +5,6 @@ import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.deeplink.sendDeeplink
-import com.simple.feature.subscription.ui.SubscriptionViewModel
 import com.simple.image.ImageRes
 import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
@@ -18,13 +17,13 @@ import com.unknown.coroutines.launchCollect
 @AutoBind(HomeFragment::class)
 class SubscriptionHomeService : HomeService {
 
-    private lateinit var viewModel: SubscriptionViewModel
+    private lateinit var viewModel: SubscriptionHomeViewModel
 
     private lateinit var adsViewModel: AdsViewModel
 
     override fun setup(homeFragment: HomeFragment) {
 
-        viewModel = homeFragment.activityViewModels<SubscriptionViewModel>().value
+        viewModel = homeFragment.activityViewModels<SubscriptionHomeViewModel>().value
         adsViewModel = homeFragment.activityViewModels<AdsViewModel>().value
 
         setupView(homeFragment)
