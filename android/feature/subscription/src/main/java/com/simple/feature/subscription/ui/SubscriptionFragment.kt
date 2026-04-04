@@ -1,10 +1,12 @@
 package com.simple.feature.subscription.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.simple.adapter.MultiAdapter
 import com.simple.coreapp.ui.view.setBackground
@@ -31,7 +33,7 @@ import com.unknown.theme.utils.exts.colorBackground
 
 class SubscriptionFragment : BaseFragment<FragmentListHeaderVerticalBinding, SubscriptionViewModel>() {
 
-    override val viewModel: SubscriptionViewModel by activityViewModels()
+    override val viewModel: SubscriptionViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -120,7 +122,9 @@ class SubscriptionFragment : BaseFragment<FragmentListHeaderVerticalBinding, Sub
             binding.root.setBackground(it.background)
         }
 
-        confirmState.launchCollect(viewLifecycleOwner) {
+        confirmStateEvent.launchCollect(viewLifecycleOwner) { event ->
+
+            val it = event.getContentIfNotHandled() ?: return@launchCollect
 
             it.doSuccess {
 
