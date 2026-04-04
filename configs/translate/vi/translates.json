@@ -188,6 +188,12 @@
   "campaign_screen_title_for_join_group":"🤝 Tham gia cộng đồng, cùng nhau phát triển!",
   "campaign_screen_message_for_join_group":"📢 Chia sẻ ý tưởng, góp ý tính năng và đồng hành cùng mọi người để ứng dụng ngày càng hoàn thiện hơn! 🚀💡",
 
+  "subscription_screen_title_subs_success": "Tuyệt vời! Đăng ký thành công 🎉",
+  "subscription_screen_title_subs_error": "Ôi không! Có lỗi xảy ra 😥",
+  "subscription_screen_message_subs_success": "Gói $subscriptionId của bạn đã sẵn sàng. Cùng tận hưởng ngay nhé!",
+  "subscription_screen_message_subs_error": "Chúng tôi chưa thể kích hoạt gói $subscriptionId lúc này. Bạn vui lòng thử lại sau nhé!",
+  "subscription_screen_action_subs_success": "Khám phá ngay",
+  "subscription_screen_action_subs_error": "Thử lại",
   "subscription_screen_title": "Chọn gói dịch vụ của bạn",
   "subscription_screen_message": "Nâng cấp để trải nghiệm đầy đủ tính năng tuyệt vời nhất",
   "subscription_screen_action": "Đăng ký gói dịch vụ",
