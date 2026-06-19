@@ -61,7 +61,6 @@ android {
 
     buildTypes {
         debug {
-//            applicationIdSuffix ".debug"
             versionNameSuffix project.ext.versionNameDebugSuffix
 
             resValue "string", "app_name", "EPhoDebug"
@@ -210,6 +209,13 @@ dependencies {
     }
 }
 
+def getGitHash() {
+    return runGitCommand(
+            ['git', 'rev-parse', '--short', 'HEAD'],
+            'dev'
+    )
+}
+
 def getGitBranchName() {
     def stdout = new ByteArrayOutputStream()
     exec {
@@ -217,6 +223,13 @@ def getGitBranchName() {
         standardOutput = stdout
     }
     return stdout.toString().trim()
+}
+
+def getGitVersionCode() {
+    return runGitCommand(
+            ['git', 'rev-list', '--count', 'HEAD'],
+            1
+    )
 }
 
 def runGitCommand(List<String> command, def defaultValue) {
@@ -243,18 +256,4 @@ def runGitCommand(List<String> command, def defaultValue) {
     }
 
     return defaultValue
-}
-
-def getGitVersionCode() {
-    return runGitCommand(
-            ['git', 'rev-list', '--count', 'HEAD'],
-            1
-    )
-}
-
-def getGitHash() {
-    return runGitCommand(
-            ['git', 'rev-parse', '--short', 'HEAD'],
-            'dev'
-    )
 }

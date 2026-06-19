@@ -42,7 +42,7 @@ class SubscriptionHomeViewModel : BaseViewModel() {
             .map { it.trim() }
             .takeIf { it.isNotEmpty() }
 
-        SubscriptionRepository.getSubscriptionPlanStateAsync(productIds ?: listOf("premium_monthly_plan")).collect {
+        SubscriptionRepository.getSubscriptionPlanStateAsync(productIds ?: emptyList()).collect {
 
             emit(it)
         }
