@@ -2,6 +2,7 @@ package com.simple.feature.ipa_voice_en
 
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.util.Log
 import com.simple.analytics.logAnalytics
 import com.simple.autobind.annotation.AutoBind
 import com.simple.crashlytics.logCrashlytics
@@ -30,7 +31,11 @@ class LocalIpaReading : IpaReading {
         trySend(ResultState.Start)
 
 
-        var fileName = ipa.ipa.replace("/", "").replace("ː", "_").lowercase() + ".mp3"
+        var fileName = ipa.ipa
+            .replace("/", "", true)
+            .replace("ː", "_", true)
+            .replace("ɹ", "r", true)
+            .lowercase() + ".mp3"
 
         if (phoneticCode.equals("us", true)) {
             fileName = "us_$fileName"
@@ -104,7 +109,7 @@ class LocalIpaReading : IpaReading {
         it
     }
 
-    companion object{
+    companion object {
 
         private const val TAG = "local_ipa_reading"
     }
