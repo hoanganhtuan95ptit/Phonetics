@@ -11,7 +11,23 @@ plugins {
 }
 
 apply from: "$rootDir/constant.gradle"
-apply from: "../../../1CorePrivate/config/phonetics/config.gradle"// can remove
+
+// Optimization: Safe loading of local.properties and external config
+def localProperties = new Properties()
+def localPropertiesFile = project.rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.newDataInputStream())
+}
+
+// Apply config from retirement_launcher if exists (keep specific logic for signing)
+def configPath = localProperties.getProperty('module.config')
+if (configPath != null) {
+    def configFile = file("${configPath}/config.gradle")
+    if (configFile.exists()) {
+        apply from: configFile
+    }
+}
+
 
 android {
     namespace "com.simple.phonetics"
@@ -23,8 +39,8 @@ android {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
 
-        versionCode project.ext.versionCode
-        versionName project.ext.versionName
+        versionCode getGitVersionCode()
+        versionName "1.${new Date().format('yy.MM')}.${getGitHash()}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -36,28 +52,34 @@ android {
 
     signingConfigs {
         keystore {
-            keyAlias project.ext.keyAlias // can remove
-            keyPassword project.ext.keyPassword // can remove
-
-            storeFile file(project.ext.storeFile) // can remove
-            storePassword project.ext.storePassword // can remove
+            keyAlias = project.hasProperty('keyAlias') ? project.ext.keyAlias : ""
+            keyPassword = project.hasProperty('keyPassword') ? project.ext.keyPassword : ""
+            storeFile = project.hasProperty('storeFile') ? file(project.ext.storeFile) : null
+            storePassword = project.hasProperty('storePassword') ? project.ext.storePassword : ""
         }
     }
+
     buildTypes {
         debug {
 //            applicationIdSuffix ".debug"
             versionNameSuffix project.ext.versionNameDebugSuffix
-            resValue "string", "app_name", "EPhoDebug"
 
+            resValue "string", "app_name", "EPhoDebug"
             buildConfigField 'boolean', 'DEBUG', 'true'
+
+            if (signingConfigs.keystore.storeFile != null) {
+                signingConfig signingConfigs.keystore
+            }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         release {
             resValue "string", "app_name", "EPhonetics"
-
             buildConfigField 'boolean', 'DEBUG', 'false'
-            signingConfig signingConfigs.keystore  // can remove
+
+            if (signingConfigs.keystore.storeFile != null) {
+                signingConfig signingConfigs.keystore
+            }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -89,7 +111,15 @@ android {
 
 dependencies {
 
-    implementation "com.hoanganhtuan95pit.config:phonetic:1.0.0"// can remove
+    // Optimization: Automatically implement all modules defined in local.properties
+    localProperties.each { key, path ->
+        if (key.startsWith("module.")) {
+            def moduleName = key.substring("module.".length())
+            if (findProject(":${moduleName}") != null) {
+                implementation project(":${moduleName}")
+            }
+        }
+    }
 
     implementation project(':library:ipa')
     implementation project(':library:word')
@@ -174,4 +204,44 @@ def getGitBranchName() {
         standardOutput = stdout
     }
     return stdout.toString().trim()
+}
+
+def runGitCommand(List<String> command, def defaultValue) {
+    try {
+        def process = new ProcessBuilder(command)
+                .directory(rootProject.rootDir)
+                .redirectErrorStream(true)
+                .start()
+
+        process.waitFor()
+
+        if (process.exitValue() == 0) {
+            def output = process.inputStream.text.trim()
+
+            if (!output.isEmpty()) {
+                return defaultValue instanceof Integer
+                        ? output.toInteger()
+                        : output
+            }
+        }
+
+    } catch (Exception e) {
+        println("⚠️ Git command failed: ${e.message}")
+    }
+
+    return defaultValue
+}
+
+def getGitVersionCode() {
+    return runGitCommand(
+            ['git', 'rev-list', '--count', 'HEAD'],
+            1
+    )
+}
+
+def getGitHash() {
+    return runGitCommand(
+            ['git', 'rev-parse', '--short', 'HEAD'],
+            'dev'
+    )
 }
