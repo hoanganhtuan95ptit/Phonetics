@@ -98,6 +98,12 @@ object SubscriptionRepository {
             return@channelFlow
         }
 
+        val offerToken = productDetails.subscriptionOfferDetails?.firstOrNull()?.offerToken
+        if (offerToken == null) {
+            trySend(ResultState.Failed(RuntimeException("Không tìm thấy gói cước")))
+            return@channelFlow
+        }
+
 
         // 3. Chuẩn bị Listener để bắt kết quả TRƯỚC khi gọi launch
         val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
@@ -126,6 +132,7 @@ object SubscriptionRepository {
 
         val productDetailsParamsList = BillingFlowParams.ProductDetailsParams.newBuilder()
             .setProductDetails(productDetails)
+            .setOfferToken(offerToken)
             .build()
 
         val billingFlowParams = BillingFlowParams.newBuilder()
