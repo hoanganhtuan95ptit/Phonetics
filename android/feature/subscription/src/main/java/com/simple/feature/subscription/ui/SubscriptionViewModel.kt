@@ -1,7 +1,6 @@
 package com.simple.feature.subscription.ui
 
 import android.graphics.Color
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
@@ -190,9 +189,6 @@ class SubscriptionViewModel : BaseViewModel() {
         emit(info)
     }
 
-    init {
-        Log.d("tuanha", "init: ")
-    }
 
     fun changeSubscriptionPlan() = viewModelScope.launch(handler + Dispatchers.IO) {
 
