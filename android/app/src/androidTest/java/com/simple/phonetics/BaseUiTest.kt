@@ -147,12 +147,10 @@ open class BaseUiTest {
      * - Nếu đang ở Home rồi (toolbar + ô nhập et_text đã hiển thị) → return ngay, không làm gì.
      * - Nếu đang ở màn chọn ngôn ngữ → chọn ngôn ngữ đầu tiên rồi confirm.
      */
-    protected fun navigateToHome() = logFunction("navigateToHome"){
+    protected fun navigateToHome() = logFunction("navigateToHome") {
         ActivityScenario.launch(MainActivity::class.java)
 
-        if (isAtHome()) {
-            // App đã sẵn sàng ở Home, quét lại dialog lần nữa cho chắc
-            waitDialogSuggestShowAndDismiss()
+        if (waitDialogSuggestShowAndDismiss()) {
             return@logFunction
         }
 
@@ -187,19 +185,23 @@ open class BaseUiTest {
         }
     }
 
-    protected fun waitDialogSuggestShowAndDismiss() = logFunction("waitDialogSuggestShowAndDismiss")  {
+    protected fun waitDialogSuggestShowAndDismiss() = logFunction("waitDialogSuggestShowAndDismiss") {
+        var hasDialog = false
         Thread.sleep(1000)
         waitForView(By.textContains("Later")).also {
             it.click()
+            hasDialog = true
         }
 
         Thread.sleep(1000)
         waitForView(By.textContains("Late")).also {
             it.click()
+            hasDialog = true
         }
+        return@logFunction hasDialog
     }
 
-    protected fun waitDialogPermissionShowAndDismiss() = logFunction("waitDialogPermissionShowAndDismiss")  {
+    protected fun waitDialogPermissionShowAndDismiss() = logFunction("waitDialogPermissionShowAndDismiss") {
         Thread.sleep(1000)
         waitForView(By.res("com.android.permissioncontroller", "permission_allow_button")).also {
             it.click()

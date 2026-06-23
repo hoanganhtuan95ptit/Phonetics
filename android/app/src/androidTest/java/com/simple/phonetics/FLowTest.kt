@@ -2,6 +2,7 @@ package com.simple.phonetics
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -18,11 +19,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class FLowTest : BaseUiTest() {
 
-    /**
-     * Test case: Kiểm tra xem màn hình Home có hiển thị đầy đủ các thành phần chức năng hay không.
-     */
-    @Test
-    fun testHomeUiComponentsVisibility() {
+    fun awaitHomeReady(){
         // --- Bước chuẩn bị: Vào Home ---
         navigateToHome()
 
@@ -74,5 +71,52 @@ class FLowTest : BaseUiTest() {
 
         // 4.4. Kiểm tra nút "View all" ở cuối danh sách Ipa
         onView(withText("View all")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun verifyHomeLayoutAndConfigurationSelection() {
+        awaitHomeReady()
+
+        // --- 5. Kiểm tra chuyển cấu hình trong rec_filter ---
+
+        // 5.1. Thay đổi Phonetic
+        // Click vào chip đầu tiên trong thanh filter để mở bottom sheet Config
+        onView(withId(R.id.rec_filter))
+            .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        waitForDisplayed(R.id.v_anchor)
+
+        // Chọn "English - UK"
+        onView(withText("English - UK")).perform(click())
+        device.pressBack()
+        // Kiểm tra rec_filter cập nhật đúng Phonetic vừa chọn
+        onView(allOf(isDescendantOfA(withId(R.id.rec_filter)), withText("English - UK"))).check(matches(isDisplayed()))
+
+        // Mở lại Config để chọn "English - US"
+        onView(withId(R.id.rec_filter))
+            .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        waitForDisplayed(R.id.v_anchor)
+        onView(withText("English - US")).perform(click())
+        device.pressBack()
+        onView(allOf(isDescendantOfA(withId(R.id.rec_filter)), withText("English - US"))).check(matches(isDisplayed()))
+
+
+        // 5.2. Thay đổi Voice
+        // Mở Config (có thể click vào chip Voice trong rec_filter, thường là chip cuối cùng)
+        // Để chắc chắn, ta cứ mở từ chip đầu tiên
+        onView(withId(R.id.rec_filter))
+            .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        waitForDisplayed(R.id.v_anchor)
+
+        // Cuộn xuống để thấy section Voice và chọn "Voice 2"
+        onView(allOf(withId(R.id.recycler_view), hasSibling(withId(R.id.v_anchor))))
+            .perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(hasDescendant(withText("Voice 2"))))
+        onView(withText("Voice 2")).perform(click())
+        device.pressBack()
+
+        // Kiểm tra rec_filter cập nhật Voice vừa chọn
+        // Vì rec_filter nằm ngang nên cần scroll để tìm thấy chip Voice 2 vừa chọn
+        onView(withId(R.id.rec_filter))
+            .perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(hasDescendant(withText(containsString("Voice 2")))))
+        onView(allOf(isDescendantOfA(withId(R.id.rec_filter)), withText(containsString("Voice 2")))).check(matches(isDisplayed()))
     }
 }
