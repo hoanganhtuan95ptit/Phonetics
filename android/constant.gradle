@@ -5,7 +5,7 @@ project.ext {
     versionName = "1.5.27.8"
     versionNameDebugSuffix = "-debug"
 
-    minSdkVersion = 23
+    minSdkVersion = 24
     targetSdkVersion = 35
     compileSdkVersion = 35
     javaVersion = JavaVersion.VERSION_17
@@ -48,6 +48,7 @@ project.ext {
     permissionx_version = '1.7.1'
     material_version = '1.13.0-alpha08'
     auto_service_version = '1.0-rc4'
+    onnxruntime_version = '1.26.0'  // 1.25+ cần thiết để hỗ trợ 16KB page size (Android 15+) và IR v10
 
     // ===================== Firebase Versions ======================
     firebase_ads_version = '23.6.0'
@@ -198,5 +199,6 @@ project.ext {
             keyboardvisibilityevent: "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:$keyboardvisibilityevent_version",
             permissionx            : "com.guolindev.permissionx:permissionx:$permissionx_version",
             lottie                 : "com.airbnb.android:lottie:$lottie_version",
+            onnxruntime            : "com.microsoft.onnxruntime:onnxruntime-android:$onnxruntime_version",
     ]
 }

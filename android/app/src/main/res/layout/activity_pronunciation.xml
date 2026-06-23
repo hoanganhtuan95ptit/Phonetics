@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF7F6F1">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ── Status ── -->
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sẵn sàng"
+                android:textSize="13sp"
+                android:textColor="#FF6F6E69"
+                android:layout_marginBottom="4dp" />
+
+            <!-- ── Reference label ── -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Câu tham chiếu"
+                android:textSize="12sp"
+                android:textColor="#FF888780"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:id="@+id/referenceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&quot;the cat sat on the mat&quot;"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FF2C2C2A"
+                android:layout_marginBottom="16dp" />
+
+            <!-- ── Word cards (dynamic) ── -->
+            <LinearLayout
+                android:id="@+id/wordsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- ── Metric grid (4 cards) ── -->
+            <LinearLayout
+                android:id="@+id/metricsRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:weightSum="4">
+
+                <include
+                    android:id="@+id/metricAccuracy"
+                    layout="@layout/include_metric_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp" />
+
+                <include
+                    android:id="@+id/metricCompleteness"
+                    layout="@layout/include_metric_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp" />
+
+                <include
+                    android:id="@+id/metricFluency"
+                    layout="@layout/include_metric_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp" />
+
+                <include
+                    android:id="@+id/metricFinal"
+                    layout="@layout/include_metric_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- ── Errors card ── -->
+            <LinearLayout
+                android:id="@+id/errorsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_score_card"
+                android:padding="14dp"
+                android:layout_marginTop="12dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lỗi cần sửa"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFBA7517"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:id="@+id/errorsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/micButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bắt đầu nói"
+        android:layout_margin="16dp" />
+
+</LinearLayout>
