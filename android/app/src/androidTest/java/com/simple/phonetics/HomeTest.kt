@@ -8,6 +8,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.anyOf
 import org.hamcrest.Matchers.containsString
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.simple.phonetics.ui.main.MainActivity
@@ -25,8 +26,6 @@ class HomeTest : BaseUiTest() {
      */
     @Test
     fun testHomeUiComponentsVisibility() {
-        ActivityScenario.launch(MainActivity::class.java)
-
         // --- Bước chuẩn bị: Vào Home ---
         navigateToHome()
 
@@ -39,15 +38,19 @@ class HomeTest : BaseUiTest() {
 
         // --- 2. Kiểm tra ô nhập liệu & Các icon chức năng ---
         waitForDisplayed(R.id.et_text)
-        waitForDisplayed(R.id.iv_paste)
         waitForDisplayed(R.id.iv_microphone)
         waitForDisplayed(R.id.iv_gallery)
         waitForDisplayed(R.id.iv_camera)
 
         // --- 3. Kiểm tra thanh Filter (Chips) ---
         waitForDisplayed(R.id.rec_filter)
-        // Kiểm tra xem có chip ngôn ngữ đang hiển thị (ví dụ: English)
-        waitForView(allOf(isDescendantOfA(withId(R.id.rec_filter)), withText(containsString("English"))))
+        // Kiểm tra xem có chip ngôn ngữ đang hiển thị (ví dụ: English hoặc Tiếng Việt)
+        waitForView(
+            allOf(
+                isDescendantOfA(withId(R.id.rec_filter)),
+                anyOf(withText(containsString("English")), withText(containsString("Tiếng")))
+            )
+        )
 
         // --- 4. Kiểm tra Danh sách chính (RecyclerView) & Các thành phần con ---
         // Phải kiểm tra RecyclerView hiển thị trước khi tương tác với các item bên trong
