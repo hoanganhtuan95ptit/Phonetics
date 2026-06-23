@@ -1,9 +1,7 @@
 package com.simple.phonetics
 
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -11,7 +9,6 @@ import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.anyOf
 import org.hamcrest.Matchers.containsString
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.simple.phonetics.ui.main.MainActivity
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -19,7 +16,7 @@ import org.junit.runner.RunWith
  * UI Test cho màn hình Home.
  */
 @RunWith(AndroidJUnit4::class)
-class HomeTest : BaseUiTest() {
+class FLowTest : BaseUiTest() {
 
     /**
      * Test case: Kiểm tra xem màn hình Home có hiển thị đầy đủ các thành phần chức năng hay không.
