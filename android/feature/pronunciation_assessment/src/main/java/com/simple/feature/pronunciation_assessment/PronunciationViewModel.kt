@@ -16,12 +16,12 @@ import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.feature.pronunciation_assessment.use_case.PronunciationPipeline
 import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.base.fragments.BaseViewModel
-import com.simple.feature.pronunciation_assessment.use_case.PronunciationPipeline
 import com.simple.phonetics.entities.SentenceScore
+import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.state.ResultState
 import com.simple.state.isIdea
 import com.simple.state.isLoading
@@ -55,7 +55,7 @@ class PronunciationViewModel : BaseViewModel() {
 
     val recordState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.IDEA)
 
-    val assessmentState: LiveData<ResultState<SentenceScore>> = MediatorLiveData(ResultState.IDEA)
+    val assessmentState: LiveData<ResultState<SentenceScore>> = MediatorLiveData(fakeState)
 
 
     val buttonData: LiveData<ButtonData> = combineSourcesWithDiff<ButtonData>(translate, theme, initState, recordState, assessmentState) {
