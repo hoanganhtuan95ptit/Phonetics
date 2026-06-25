@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.view
+package com.simple.feature.pronunciation_assessment.ui.views
 
 import android.content.Context
 import android.util.AttributeSet

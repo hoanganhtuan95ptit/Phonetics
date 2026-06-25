@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.view
+package com.simple.feature.pronunciation_assessment.ui.views
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -10,7 +10,6 @@ import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
-import kotlin.math.abs
 import kotlin.math.sin
 
 /**

@@ -19,7 +19,7 @@
         app:ov_strokeWidth="1dp"
         tools:visibility="visible" />
 
-    <com.simple.phonetics.ui.view.AudioView
+    <com.simple.feature.pronunciation_assessment.ui.views.AudioView
         android:id="@+id/tv_audio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -8,7 +8,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import com.permissionx.guolindev.PermissionX
@@ -20,7 +19,6 @@ import com.simple.coreapp.utils.ext.setText
 import com.simple.feature.pronunciation_assessment.R
 import com.simple.feature.pronunciation_assessment.PronunciationViewModel
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.view.RecordingWaveView
 import com.simple.phonetics.ui.view.outline.OutlineFrameLayout
 import com.simple.state.doRunning
 import com.simple.state.isLoading

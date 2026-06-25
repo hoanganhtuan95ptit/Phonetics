@@ -58,7 +58,7 @@ class PronunciationViewModel : BaseViewModel() {
 
     val recordState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.IDEA)
 
-    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(fakeState)
+    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(fakeState) // todo fake
 
 
     val buttonData: StateFlow<ButtonData> = combineState(
