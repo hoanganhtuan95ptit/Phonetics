@@ -61,6 +61,7 @@ class PronunciationService : FragmentViewCreatedService {
 
         viewModel.initState.asFlow().launchCollect(fragment.viewLifecycleOwner) {
 
+            val binding = fragment.binding ?: return@launchCollect
             val bindingAction = fragment.bindingAction ?: return@launchCollect
 
             it.doSuccess {
@@ -83,6 +84,12 @@ class PronunciationService : FragmentViewCreatedService {
                 bindingAction.frameReading.root.visibility = visibility
 
                 bindingActionPronunciation.tvTextToSpeech.isVisible = it.isSuccess()
+            }
+
+            if (it.isSuccess()) binding.root.awaitDelayedTransition {
+
+                binding.vAnchor.isVisible = false
+                binding.frameHeader.root.isVisible = true
             }
         }
 
