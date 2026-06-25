@@ -236,5 +236,9 @@
   "speak_screen_action_loading_model": "Đang tải model $percent",
   "speak_screen_action_loading_ai_model": "Đang load model AI",
   "speak_screen_action_assessing": "Đang chấm điểm",
-  "speak_screen_action_practice": "Luyện phát âm"
+  "speak_screen_action_practice": "Luyện phát âm",
+  "speak_screen_note_pronunciation_assessment": "GHI NHỚ PHÁT ÂM \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ đọc thành /$substitutedWith}/  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ thêm thừa\n",
+  "speak_screen_note_deletion": "• /$phoneme/ bị nuốt  (\"$wordContext\")\n"
 }

@@ -15,7 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.resize
 import com.simple.coreapp.utils.extentions.postValue
-import com.simple.feature.pronunciation_assessment.databinding.LayoutPronunciationAssessmentBinding
+import com.simple.feature.pronunciation_assessment.databinding.PronunciationAssessmentLayoutPronunciationAssessmentBinding
 import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import com.simple.service.FragmentViewCreatedService
@@ -41,10 +41,15 @@ class PronunciationService : FragmentViewCreatedService {
             return
         }
 
+        val dialog = fragment.dialog as BottomSheetDialog
+
+        val behavior = dialog.behavior
+        behavior.isDraggable = false
+
         viewModel = fragment.viewModels<PronunciationViewModel>().value
         speakViewModel = fragment.viewModel<SpeakViewModel>().value
 
-        val bindingActionPronunciation = LayoutPronunciationAssessmentBinding.inflate(fragment.layoutInflater, fragment.bindingAction!!.framePronunciation)
+        val bindingActionPronunciation = PronunciationAssessmentLayoutPronunciationAssessmentBinding.inflate(fragment.layoutInflater, fragment.bindingAction!!.framePronunciation)
 
         speakViewModel.text.asFlow().launchCollect(fragment.viewLifecycleOwner) {
 
@@ -108,6 +113,11 @@ class PronunciationService : FragmentViewCreatedService {
                 bindingActionPronunciation.tvAudio.isVisible = assessment.isSuccess()
                 bindingActionPronunciation.tvTextToSpeech.isVisible = (!record.isLoading() && !assessment.isLoading() && viewModel.initState.value.isSuccess())
             }
+        }
+
+        viewModel.noteViewItem.launchCollect(fragment.viewLifecycleOwner) {
+
+            speakViewModel.add(2, it)
         }
 
         viewModel.assessmentState.launchCollect(fragment.viewLifecycleOwner) {

@@ -42,7 +42,7 @@ class PronunciationView @JvmOverloads constructor(
     }
 
     init {
-        inflate(context, R.layout.layout_pronunciation, this)
+        inflate(context, R.layout.pronunciation_assessment_layout_pronunciation, this)
 
         tvAction = findViewById(R.id.tv_action)
         ivRecord = findViewById(R.id.recordingWaveView)

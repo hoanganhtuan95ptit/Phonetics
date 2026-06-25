@@ -2,24 +2,20 @@ package com.simple.phonetics.ui.speak
 
 import android.content.res.Resources
 import android.graphics.Color
-import android.util.Log
 import android.util.TypedValue
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
-import com.simple.core.utils.extentions.toJson
 import com.simple.coreapp.ui.adapters.SpaceViewItem
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.toRich
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
@@ -64,13 +60,13 @@ import com.simple.state.isSuccess
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import com.unknown.coroutines.launchCollect
-import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentHashMap
 
 class SpeakViewModel(
     private val stopSpeakUseCase: StopSpeakUseCase,
@@ -114,12 +110,12 @@ class SpeakViewModel(
 
         getPhoneticsAsyncUseCase.execute(param).collect {
 
-            Log.d("tuanha", "${it.toJson()}: ")
             postValue(it)
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(size, theme, translate, actionHeight, phoneticCodeSelected, phoneticsState, isSupportReading, sentenceScore) {
+
+    val phoneticViewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(size, theme, translate, phoneticCodeSelected, phoneticsState, isSupportReading, sentenceScore) {
 
         val size = size.value ?: return@listenerSourcesWithDiff
         val theme = theme.value ?: return@listenerSourcesWithDiff
@@ -158,7 +154,7 @@ class SpeakViewModel(
                 score.finalScore >= 90 -> "Xuất sắc!"
                 score.finalScore >= 70 -> "Khá tốt — còn $errorCount âm cần luyện"
                 score.finalScore >= 50 -> "Cần cố gắng thêm — còn $errorCount âm cần luyện"
-                else                   -> "Hãy luyện tập thêm — còn $errorCount âm cần luyện"
+                else -> "Hãy luyện tập thêm — còn $errorCount âm cần luyện"
             }
             viewItemList.add(SpaceViewItem(id = "score_space_top", height = DP.DP_16))
             viewItemList.add(
@@ -214,28 +210,28 @@ class SpeakViewModel(
             viewItemList.addAll(it)
         }
 
-        sentenceScore?.errors?.map {
-            val msg = when (it.errorType) {
-                ErrorType.SUBSTITUTION -> "• /${it.phoneme}/ đọc thành /${it.substitutedWith}/  (\"${it.wordContext}\")"
-                ErrorType.DELETION     -> "• /${it.phoneme}/ bị nuốt  (\"${it.wordContext}\")"
-                ErrorType.INSERTION    -> "• /${it.phoneme}/ thêm thừa"
-                else                   -> ""
-            }
+        postValueIfActive(viewItemList)
+    }
 
-            NoneTextViewItem(
-                id = it.phoneme,
-                text = msg.toRich(),
-                size = Size(width = size.width)
-            )
-        }?.let {
+    val viewItemMap: LiveData<ConcurrentHashMap<Double, List<ViewItem>>> = MediatorLiveData(ConcurrentHashMap())
 
-            viewItemList.add(SpaceViewItem(id = "1", height = DP.DP_16))
+    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(actionHeight, viewItemMap) {
+
+        val map = viewItemMap.value ?: return@listenerSourcesWithDiff
+
+        val viewItemList = arrayListOf<ViewItem>()
+
+        map.toList().sortedBy {
+            it.first
+        }.flatMap {
+            it.second
+        }.let {
             viewItemList.addAll(it)
         }
 
         viewItemList.add(SpaceViewItem(id = "2", height = actionHeight.get()))
 
-        postValueIfActive(viewItemList)
+        postValue(viewItemList)
     }
 
     val speakInfo: LiveData<SpeakInfo> = listenerSourcesWithDiff(size, theme, translate, isSupportSpeak, speakState) {
@@ -357,6 +353,24 @@ class SpeakViewModel(
         )
 
         postValue(info)
+    }
+
+    init {
+
+        phoneticViewItemList.asFlow().launchCollect(viewModelScope) {
+
+            add(1, it)
+        }
+    }
+
+    fun add(order: Int, list: List<ViewItem>) {
+        add(order.toDouble(), list)
+    }
+
+    fun add(order: Double, list: List<ViewItem>) {
+        val map = viewItemMap.value
+        map?.put(order, list)
+        viewItemMap.postValue(map)
     }
 
     fun updateText(it: String) {

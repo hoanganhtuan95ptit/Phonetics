@@ -22,6 +22,8 @@ dependencies {
 
     implementation hoanganhtuan95Dependencies.service
 
+    implementation hoanganhtuan95Dependencies.adapter
+    kapt hoanganhtuan95Dependencies.adapter_processor
     implementation hoanganhtuan95Dependencies.autobind
     kapt hoanganhtuan95Dependencies.autobind_processor
 }
