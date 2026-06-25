@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.resize
 import com.simple.coreapp.utils.extentions.postValue
+import com.simple.phonetics.databinding.LayoutPronunciationAssessmentBinding
 import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import com.simple.service.FragmentViewCreatedService
@@ -42,21 +43,18 @@ class PronunciationService : FragmentViewCreatedService {
         viewModel = fragment.viewModels<PronunciationViewModel>().value
         speakViewModel = fragment.viewModel<SpeakViewModel>().value
 
+        val bindingActionPronunciation = LayoutPronunciationAssessmentBinding.inflate(fragment.layoutInflater, fragment.bindingAction!!.framePronunciation)
 
         speakViewModel.text.asFlow().launchCollect(fragment.viewLifecycleOwner) {
 
-            val bindingAction = fragment.bindingAction ?: return@launchCollect
-
-            bindingAction.tvTextToSpeech.text = it
+            bindingActionPronunciation.tvTextToSpeech.text = it
         }
 
         speakViewModel.phoneticsState.asFlow().launchCollect(fragment.viewLifecycleOwner) {
 
-            val bindingAction = fragment.bindingAction ?: return@launchCollect
-
             it.doSuccess {
 
-                bindingAction.tvActionPlay.sentences = it
+                bindingActionPronunciation.tvActionPlay.sentences = it
             }
         }
 
@@ -84,7 +82,7 @@ class PronunciationService : FragmentViewCreatedService {
                 bindingAction.frameSpeak.root.visibility = visibility
                 bindingAction.frameReading.root.visibility = visibility
 
-                bindingAction.tvTextToSpeech.isVisible = it.isSuccess()
+                bindingActionPronunciation.tvTextToSpeech.isVisible = it.isSuccess()
             }
         }
 
@@ -99,18 +97,16 @@ class PronunciationService : FragmentViewCreatedService {
 
             bindingAction.root.awaitDelayedTransition {
 
-                bindingAction.tvAudio.isVisible = assessment.isSuccess()
-                bindingAction.tvTextToSpeech.isVisible = (!record.isLoading() && !assessment.isLoading() && viewModel.initState.value.isSuccess())
+                bindingActionPronunciation.tvAudio.isVisible = assessment.isSuccess()
+                bindingActionPronunciation.tvTextToSpeech.isVisible = (!record.isLoading() && !assessment.isLoading() && viewModel.initState.value.isSuccess())
             }
         }
 
         viewModel.assessmentState.asFlow().launchCollect(fragment.viewLifecycleOwner) {
 
-            val bindingAction = fragment.bindingAction ?: return@launchCollect
-
             it.doSuccess {
 
-                bindingAction.tvAudio.audioPath = it.audioFilePath.orEmpty()
+                bindingActionPronunciation.tvAudio.audioPath = it.audioFilePath.orEmpty()
                 speakViewModel.sentenceScore.postValue(it)
             }
         }

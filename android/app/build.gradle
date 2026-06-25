@@ -104,7 +104,8 @@ android {
             ':feature:ipa_voice_en',
             ':feature:thanks',
             ':feature:reminder',
-            ':feature:subscription'
+            ':feature:subscription',
+            ':feature:pronunciation_assessment'
     ]
 
     configurations.all {

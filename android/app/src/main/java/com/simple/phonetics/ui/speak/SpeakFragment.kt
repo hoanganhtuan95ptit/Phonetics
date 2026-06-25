@@ -3,7 +3,6 @@ package com.simple.phonetics.ui.speak
 import android.Manifest
 import android.content.ComponentCallbacks
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +33,7 @@ import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
-import com.simple.phonetics.databinding.DialogListBinding
+import com.simple.phonetics.databinding.DialogSpeakBinding
 import com.simple.phonetics.databinding.LayoutActionConfirmSpeakBinding
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
 import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
@@ -50,17 +49,36 @@ import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isRunning
 import com.unknown.coroutines.launchCollect
+import com.unknown.size.uitls.exts.height
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, DialogListBinding, SpeakViewModel>() {
+class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, DialogSpeakBinding, SpeakViewModel>() {
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogSpeakBinding {
+
+        return DialogSpeakBinding.inflate(inflater, container, false)
+    }
+
+    override fun createBindingAction(): LayoutActionConfirmSpeakBinding {
+
+        return LayoutActionConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding?.frameHeader?.root?.setVisible(false)
+        viewModel.sizeFlow.map { it.height }.distinctUntilChanged().launchCollect(viewLifecycleOwner){
+            behavior?.peekHeight = it
+        }
+
+        setupHeader()
         setupActionCopy()
         setupActionSpeak()
         setupActionListen()
@@ -73,22 +91,21 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
     }
 
-    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): DialogListBinding {
-
-        return DialogListBinding.inflate(inflater, container, false)
-    }
-
-    override fun createBindingAction(): LayoutActionConfirmSpeakBinding {
-
-        return LayoutActionConfirmSpeakBinding.inflate(LayoutInflater.from(requireContext()))
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 
         showAds()
 
         logAnalytics("ads_speak")
+    }
+
+    private fun setupHeader() {
+
+        val binding = binding?.frameHeader ?: return
+
+        binding.icBack.setDebouncedClickListener {
+            dismiss()
+        }
     }
 
     private fun setupActionCopy() {
@@ -189,11 +206,18 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             rootSizeJob?.cancel()
             rootSizeJob = binding.root.ensureGradientUpdates().launchIn(viewLifecycleOwner.lifecycleScope)
 
+            bottomSheet?.setBackground(background = background)
             binding.root.setBackground(background = background)
             bindingAction.root.setBackground(background = background)
 
             binding.vAnchor.setBackground(Background(backgroundColor = it.colorDivider, cornerRadius = DP.DP_100))
             bindingAction.frameSpeak.root.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.colorPrimary, cornerRadius = DP.DP_16))
+        }
+
+        title.observe(viewLifecycleOwner) {
+
+            val binding = binding ?: return@observe
+            binding.frameHeader.tvTitle.setText(it)
         }
 
         copyInfo.observe(viewLifecycleOwner) {

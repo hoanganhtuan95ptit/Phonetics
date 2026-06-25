@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.simple.phonetics.ui.view.TextToSpeechLinearLayout
+        android:id="@+id/tv_text_to_speech"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:gravity="center"
+        android:minHeight="52dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:visibility="gone"
+        app:ov_cornerRadius="10dp"
+        app:ov_strokeWidth="1dp"
+        tools:visibility="visible" />
+
+    <com.simple.phonetics.ui.view.AudioLinearLayout
+        android:id="@+id/tv_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:gravity="center"
+        android:minHeight="52dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:visibility="gone"
+        app:ov_cornerRadius="10dp"
+        app:ov_strokeWidth="1dp"
+        tools:visibility="visible" />
+
+    <com.simple.phonetics.ui.view.PronunciationView
+        android:id="@+id/tv_action_play"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:minHeight="52dp"
+        app:ov_cornerRadius="10dp"
+        app:ov_strokeWidth="1dp" />
+</merge>

@@ -34,6 +34,7 @@ include ':feature:campaign'
 include ':feature:reminder'
 include ':feature:subscription'
 include ':feature:ipa_voice_en'
+include ':feature:pronunciation_assessment'
 
 include ':library:ipa'
 include ':library:word'

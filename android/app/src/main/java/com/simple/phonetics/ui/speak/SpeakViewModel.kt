@@ -23,6 +23,7 @@ import com.simple.coreapp.utils.ext.toRich
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
+import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
@@ -49,6 +50,7 @@ import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
+import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
@@ -89,6 +91,14 @@ class SpeakViewModel(
 
     val readingState: LiveData<ResultState<String>> = MediatorLiveData()
 
+
+    val title: LiveData<RichText> = combineSourcesWithDiff(theme, translate) {
+
+        val theme = theme.value ?: return@combineSourcesWithDiff
+        val translate = translate.value ?: return@combineSourcesWithDiff
+
+        postValueIfActive(translate.getOrKey("speak_screen_title").with(ForegroundColor(theme.colorOnSurface)))
+    }
 
     val phoneticsState: LiveData<ResultState<List<Sentence>>> = combineSources(text, inputLanguage, outputLanguage, phoneticCodeSelected) {
 
