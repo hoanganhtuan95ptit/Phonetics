@@ -8,10 +8,8 @@
   "action_reverse": "Balikkan",
   "action_try_speak": "Coba bicara",
   "action_view_all_ipa": "Lihat semua",
-
   "hint_enter_language_text": "Masukkan $language_name di sini!",
   "hint_enter_text": "Masukkan teks di sini!",
-
   "ipa_c": "Tengah",
   "ipa_de": "Jerman",
   "ipa_eo": "Esperanto",
@@ -41,7 +39,6 @@
   "ipa_yue": "Kanton",
   "ipa_zh_hans": "Mandarin Sederhana",
   "ipa_zh_hant": "Mandarin Tradisional",
-
   "language_ar": "Arab",
   "language_de": "Jerman",
   "language_en": "Inggris",
@@ -65,7 +62,6 @@
   "language_tts": "Thailand",
   "language_vi": "Vietnam",
   "language_zh": "Mandarin",
-
   "message_completed_sync_phonetics": "Fonetik $ipa_name berhasil disinkronkan",
   "message_completed_sync_translate": "Terjemahan berhasil disinkronkan",
   "message_result_empty": "Belum ada konten!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "Sinkronisasi selesai",
   "message_translate_download": "Mengunduh terjemahan...",
   "message_error_io_exception": "🔌 Tidak Ada Koneksi Internet",
-
   "rate_action_negative": "Nanti",
   "rate_action_positive": "Beri Nilai",
   "rate_message": "Kami ingin umpan balik Anda untuk membuat aplikasi ini lebih baik lagi. Ulasan Anda sangat berarti! 🌟",
   "rate_title": "Beri nilai aplikasi",
-
   "update_action_negative": "⏳ Nanti",
   "update_action_positive": "⚡ Perbarui sekarang",
   "update_message": "✨ Versi baru sudah siap! 🚀 Perbarui sekarang untuk pengalaman yang lebih lancar dan fitur baru yang menarik! 🎉",
   "update_title": "🔄 Pembaruan Aplikasi",
-
   "resource_history": "Dari riwayat pencarian",
   "resource_popular": "Dari daftar populer",
   "resource_category_introducing_yourself": "Memperkenalkan diri",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "Buah-buahan",
   "resource_category_clothes": "Pakaian",
   "resource_category_shopping": "Belanja",
-
   "speed_lever": "Kecepatan $lever",
-
   "title_game": "Game Ipa 🎮",
   "title_answer_failed": "Kurang tepat",
   "title_answer_true": "Hebat",
@@ -116,16 +107,12 @@
   "title_translate": "Terjemahkan:",
   "title_voice": "Suara:",
   "title_voice_speed": "Kecepatan suara:",
-
   "translating": "Menerjemahkan",
   "translate_failed": "Terjemahan gagal",
-
   "type_ipa": "Transkripsi",
   "type_text": "Huruf",
   "type_voice": "Ucapkan",
-
   "voice_index": "Suara $index",
-
   "game_config_screen_action_play_game": "Mulai mainkan sekarang!",
   "game_config_screen_message_resource_from_history": "Berdasarkan kata-kata yang sebelumnya dicari",
   "game_config_screen_message_resource_from_popular": "Berdasarkan kata-kata yang umum digunakan",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "Pilih game berdasarkan Sumber",
   "game_config_screen_title_resource_ipa": "Pilih game berdasarkan IPA",
   "game_config_screen_title_resource_category": "Pilih game berdasarkan Kategori",
-
   "game_congratulation_screen_action": "Mari kita lanjutkan!",
   "game_congratulation_screen_message": "Hebat! Anda telah menjawab dengan benar $number kali berturut-turut! Teruslah dan jangan sampai kehilangan rekor Anda! 😆👏",
   "game_congratulation_screen_message_1": "Luar biasa! Anda mendapatkan $number jawaban yang benar berturut-turut! Sayang sekali jika melewatkannya sekarang! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "Luar biasa! 😎",
   "game_congratulation_screen_title_3": "Saya tunduk di hadapan Anda! 🙇‍♂️",
   "game_congratulation_screen_title_4": "Legenda hidup! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "Jawabannya adalah: $param1.",
   "game_ipa_puzzle_screen_title": "Kata $param1 memiliki pengucapan $param2, tetapi tidak lengkap. Harap lengkapi bagian yang hilang.",
-
   "game_ipa_wordle_screen_action": "Periksa",
   "game_ipa_wordle_screen_action_continue": "Lanjutkan",
   "game_ipa_wordle_screen_action_retry": "Coba lagi",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "Pilih $param1 yang benar untuk $param2 di bawah ini?",
   "game_ipa_wordle_screen_title_answer_failed": "Kurang tepat",
   "game_ipa_wordle_screen_title_answer_true": "Hebat",
-
   "game_ipa_match_screen_title": "Cocokkan pasangan yang sesuai",
   "game_ipa_match_screen_title_choose": "Pasangan",
   "game_ipa_match_screen_message_answer_correct": "Pasangan telah dicocokkan",
   "game_ipa_match_screen_message_answer_failed": "Beberapa pasangan tidak cocok",
-
   "game_screen_title": "Game",
-
   "ipa_detail_screen_consonants_unvoiced": "Konsonan tanpa suara",
   "ipa_detail_screen_consonants_voiced": "Konsonan bersuara",
   "ipa_detail_screen_diphthongs": "Diftong",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "Vokal panjang",
   "ipa_detail_screen_vowels_short": "Vokal pendek",
   "ipa_detail_screen_practice_with_games": "Latih $ipa dengan game 🎮🧠",
-
   "ipa_list_screen_title": "Daftar IPA",
   "recording_screen_title": "Tolong bicara $language_name",
-
   "thank_screen_title_for_action_copy": "💡 Ucapan Terima Kasih Khusus",
   "thank_screen_message_for_action_copy": "🎉 Fitur yang baru saja Anda gunakan dikontribusikan oleh 💬 $author.\nBergabunglah dengan komunitas untuk membantu membangun produk yang lebih baik setiap hari! 🤝",
   "thank_screen_action_negative": "🙏 Terima Kasih",
   "thank_screen_action_positive": "Bergabung Komunitas",
-
   "thank_screen_title_for_action_ads": "💡 Terima kasih",
   "thank_screen_message_for_action_ads": "Terima kasih telah menonton iklan! 🙏 Iklan membantu kami menjaga proyek ini 💡 dan terus meningkatkan aplikasi setiap hari 🌱📱.",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "Tutup",
-
   "campaign_screen_title_for_join_group": "🤝 Bergabunglah dengan Komunitas dan Berkembang Bersama!",
   "campaign_screen_message_for_join_group": "📢 Bagikan ide, sarankan fitur, dan berkolaborasi dengan orang lain untuk menjadikan aplikasi lebih baik setiap hari! 🚀💡",
-
   "version_name": "🚀 Versi: $version",
-
   "reminder_title_1": "Selamat pagi ☀️",
   "reminder_title_2": "Halo, hari baru ☀️",
   "reminder_title_3": "Energi positif ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "Kedamaian dimulai 🕊️",
   "reminder_title_11": "Siap belajar 💡",
   "reminder_title_12": "Perjalanan baru 🗺️",
-
   "reminder_message_1": "Selamat pagi! Mari lakukan yang terbaik hari ini dan buat segalanya menjadi indah! ✨",
   "reminder_message_2": "Hari baru telah dimulai. Semoga kamu penuh energi dan kebahagiaan! 💪",
   "reminder_message_3": "Bangun dengan senyuman 😊 dan mulailah hari yang penuh harapan! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "Jangan lupa tarik napas dalam-dalam dan rileks 😌. Pikiran yang tenang membantumu menghadapi setiap tantangan.",
   "reminder_message_8": "Setiap hari adalah halaman baru. Tulis kisah suksesmu sendiri hari ini! 📖🖊️",
   "reminder_message_9": "Tantangan adalah peluang untuk bersinar. Beranilah dan lakukan yang terbaik! 💡💪",
-  "reminder_message_10": "Ingat untuk menjaga dirimu! Makan makanan sehat 🥗 dan tetap sehat! ❤️"
+  "reminder_message_10": "Ingat untuk menjaga dirimu! Makan makanan sehat 🥗 dan tetap sehat! ❤️",
+  "subscription_screen_title_subs_success": "Luar Biasa! Berlangganan berhasil 🎉",
+  "subscription_screen_title_subs_error": "Oh tidak! Terjadi kesalahan 😥",
+  "subscription_screen_message_subs_success": "Paket $subscriptionId Anda sudah siap. Nikmati sekarang!",
+  "subscription_screen_message_subs_error": "Kami tidak dapat mengaktifkan paket $subscriptionId Anda saat ini. Silakan coba lagi nanti!",
+  "subscription_screen_action_subs_success": "Jelajahi sekarang",
+  "subscription_screen_action_subs_error": "Coba lagi",
+  "subscription_screen_title": "Pilih paket Anda",
+  "subscription_screen_message": "Upgrade untuk menikmati fitur-fitur luar biasa",
+  "subscription_screen_action": "Berlangganan",
+  "subscription_screen_premium_1_monthly_plan_title": "Paket 1 Bulan 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "Nikmati 30 hari yang luar biasa. Tanpa iklan, perpanjangan otomatis – tanpa gangguan! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "Paket 3 Bulan 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "Jelajahi dengan bebas selama satu kuartal penuh. Tanpa iklan, perpanjangan otomatis – kesenangan berlanjut! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "Paket 6 Bulan 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "Setengah tahun pengalaman luar biasa. Tanpa iklan, perpanjangan otomatis – nikmati sepenuhnya! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "Paket 1 Tahun (Nilai Terbaik) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365 hari hak istimewa penuh. Tanpa iklan, perpanjangan otomatis – pilihan sempurna untuk Anda! 💖",
+  "speak_screen_action_pronunciation_assessment": "Penilaian Pengucapan",
+  "speak_screen_action_loading_model": "Memuat model $percent",
+  "speak_screen_action_loading_ai_model": "Memuat model AI",
+  "speak_screen_action_assessing": "Sedang menilai",
+  "speak_screen_action_practice": "Latihan pengucapan",
+  "speak_screen_note_pronunciation_assessment": "CATATAN PENGUCAPAN \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ diucapkan sebagai /$substitutedWith/  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ tambahan\n",
+  "speak_screen_note_deletion": "• /$phoneme/ dihilangkan  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "Luar biasa!",
+  "speak_screen_result_subtitle_70": "Cukup bagus — $error_count suara perlu latihan",
+  "speak_screen_result_subtitle_50": "Terus mencoba — $error_count suara perlu latihan",
+  "speak_screen_result_subtitle_0": "Lebih banyak latihan — $error_count suara perlu latihan",
+  "speak_screen_result_label_score": "Skor",
+  "speak_screen_result_label_accuracy": "Akurasi",
+  "speak_screen_result_label_completion": "Penyelesaian",
+  "speak_screen_result_label_fluency": "Kelancaran"
 }

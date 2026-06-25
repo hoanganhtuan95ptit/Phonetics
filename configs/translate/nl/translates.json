@@ -8,10 +8,8 @@
   "action_reverse": "Omkeren",
   "action_try_speak": "Probeer te spreken",
   "action_view_all_ipa": "Alles bekijken",
-
   "hint_enter_language_text": "Voer $language_name hier in!",
   "hint_enter_text": "Voer tekst hier in!",
-
   "ipa_c": "Centraal",
   "ipa_de": "Duits",
   "ipa_eo": "Esperanto",
@@ -41,7 +39,6 @@
   "ipa_yue": "Kantonees",
   "ipa_zh_hans": "Vereenvoudigd Chinees",
   "ipa_zh_hant": "Traditioneel Chinees",
-
   "language_ar": "Arabisch",
   "language_de": "Duitsland",
   "language_en": "Engels",
@@ -65,7 +62,6 @@
   "language_tts": "Thailand",
   "language_vi": "Vietnamees",
   "language_zh": "Chinees",
-
   "message_completed_sync_phonetics": "Fonetiek $ipa_name succesvol gesynchroniseerd",
   "message_completed_sync_translate": "Vertaling succesvol gesynchroniseerd",
   "message_result_empty": "Nog geen inhoud!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "Synchronisatie voltooid",
   "message_translate_download": "Vertaling downloaden...",
   "message_error_io_exception": "🔌 Geen internetverbinding",
-
   "rate_action_negative": "Later",
   "rate_action_positive": "Beoordeel",
   "rate_message": "We horen graag je feedback om de app nog beter te maken. Jouw recensie betekent veel! 🌟",
   "rate_title": "Beoordeel app",
-
   "update_action_negative": "⏳ Later",
   "update_action_positive": "⚡ Nu updaten",
   "update_message": "✨ Een nieuwe versie is klaar! 🚀 Update nu voor een soepelere ervaring en spannende nieuwe functies! 🎉",
   "update_title": "🔄 App-update",
-
   "resource_history": "Uit de zoekgeschiedenis",
   "resource_popular": "Uit de populaire lijst",
   "resource_category_introducing_yourself": "Jezelf voorstellen",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "Vruchten",
   "resource_category_clothes": "Kleding",
   "resource_category_shopping": "Winkelen",
-
   "speed_lever": "Snelheid $lever",
-
   "title_game": "Spel Ipa 🎮",
   "title_answer_failed": "Niet helemaal juist",
   "title_answer_true": "Geweldig",
@@ -116,16 +107,12 @@
   "title_translate": "Vertalen:",
   "title_voice": "Stem:",
   "title_voice_speed": "Stemsnelheid:",
-
   "translating": "Vertalen",
   "translate_failed": "Vertaling mislukt",
-
   "type_ipa": "Transcriptie",
   "type_text": "Letter",
   "type_voice": "Uitspreken",
-
   "voice_index": "Stem $index",
-
   "game_config_screen_action_play_game": "Begin nu met spelen!",
   "game_config_screen_message_resource_from_history": "Gebaseerd op eerder gezochte woorden",
   "game_config_screen_message_resource_from_popular": "Gebaseerd op veelgebruikte woorden",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "Selecteer spel per bron",
   "game_config_screen_title_resource_ipa": "Selecteer spel per IPA",
   "game_config_screen_title_resource_category": "Selecteer spel per categorie",
-
   "game_congratulation_screen_action": "Laten we doorgaan!",
   "game_congratulation_screen_message": "Geweldig! Je hebt $number keer achter elkaar correct geantwoord! Blijf doorgaan en verlies je reeks niet! 😆👏",
   "game_congratulation_screen_message_1": "Ongelooflijk! Je hebt $number correcte antwoorden op rij! Het zou zonde zijn om nu te missen! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "Ongelofelijk! 😎",
   "game_congratulation_screen_title_3": "Ik buig voor u! 🙇‍♂️",
   "game_congratulation_screen_title_4": "Een levende legende! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "Het antwoord is: $param1.",
   "game_ipa_puzzle_screen_title": "Het woord $param1 heeft de uitspraak $param2, maar is onvolledig. Vul het ontbrekende deel aan.",
-
   "game_ipa_wordle_screen_action": "Controleren",
   "game_ipa_wordle_screen_action_continue": "Doorgaan",
   "game_ipa_wordle_screen_action_retry": "Opnieuw proberen",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "Kies de juiste $param1 voor $param2 hieronder?",
   "game_ipa_wordle_screen_title_answer_failed": "Niet helemaal juist",
   "game_ipa_wordle_screen_title_answer_true": "Geweldig",
-
   "game_ipa_match_screen_title": "Koppel de geschikte paren",
   "game_ipa_match_screen_title_choose": "De paren",
   "game_ipa_match_screen_message_answer_correct": "De paren zijn gekoppeld",
   "game_ipa_match_screen_message_answer_failed": "Sommige paren komen niet helemaal overeen",
-
   "game_screen_title": "Spel",
-
   "ipa_detail_screen_consonants_unvoiced": "Stemloze medeklinkers",
   "ipa_detail_screen_consonants_voiced": "Stemhebbende medeklinkers",
   "ipa_detail_screen_diphthongs": "Tweeklanken",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "Lange klinkers",
   "ipa_detail_screen_vowels_short": "Korte klinkers",
   "ipa_detail_screen_practice_with_games": "Oefen $ipa met spellen 🎮🧠",
-
   "ipa_list_screen_title": "IPA-lijst",
   "recording_screen_title": "Spreek alstublieft $language_name",
-
   "thank_screen_title_for_action_copy": "💡 Een speciale dank",
   "thank_screen_message_for_action_copy": "🎉 De functie die je zojuist hebt gebruikt, is bijgedragen door 💬 $author.\nSluit je aan bij de community om elke dag mee te helpen een beter product te bouwen! 🤝",
   "thank_screen_action_negative": "🙏 Bedankt",
   "thank_screen_action_positive": "Word lid van de community",
-
   "thank_screen_title_for_action_ads": "💡 Dank je",
   "thank_screen_message_for_action_ads": "Bedankt dat je de advertentie hebt bekeken! 🙏 Advertenties helpen ons het project te onderhouden 💡 en de app elke dag te verbeteren 🌱📱.",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "Sluiten",
-
   "campaign_screen_title_for_join_group": "🤝 Sluit je aan bij de Community en groei samen!",
   "campaign_screen_message_for_join_group": "📢 Deel ideeën, stel functies voor en werk samen met anderen om de app elke dag beter te maken! 🚀💡",
-
   "version_name": "🚀 Versie: $version",
-
   "reminder_title_1": "Goedemorgen ☀️",
   "reminder_title_2": "Hallo, nieuwe dag ☀️",
   "reminder_title_3": "Positieve energie ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "Vrede begint 🕊️",
   "reminder_title_11": "Klaar om te leren 💡",
   "reminder_title_12": "Een nieuwe reis 🗺️",
-
   "reminder_message_1": "Goedemorgen! Laten we vandaag ons best doen en alles geweldig maken! ✨",
   "reminder_message_2": "Een nieuwe dag is begonnen. Ik wens je veel energie en plezier! 💪",
   "reminder_message_3": "Word wakker met een glimlach 😊 en begin een dag vol hoop! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "Vergeet niet diep adem te halen en te ontspannen 😌. Een rustige geest helpt je elke uitdaging te overwinnen.",
   "reminder_message_8": "Elke dag is een nieuwe pagina. Schrijf vandaag je eigen succesverhaal! 📖🖊️",
   "reminder_message_9": "Uitdagingen zijn kansen om te schitteren. Wees moedig en geef het beste van jezelf! 💡💪",
-  "reminder_message_10": "Vergeet niet goed voor jezelf te zorgen! Eet gezond 🥗 en blijf gezond! ❤️"
+  "reminder_message_10": "Vergeet niet goed voor jezelf te zorgen! Eet gezond 🥗 en blijf gezond! ❤️",
+  "subscription_screen_title_subs_success": "Geweldig! Abonnement geslaagd 🎉",
+  "subscription_screen_title_subs_error": "O nee! Er is een fout opgetreden 😥",
+  "subscription_screen_message_subs_success": "Je $subscriptionId-plan is klaar. Geniet er nu van!",
+  "subscription_screen_message_subs_error": "We konden je $subscriptionId-plan op dit moment niet activeren. Probeer het later opnieuw!",
+  "subscription_screen_action_subs_success": "Verken nu",
+  "subscription_screen_action_subs_error": "Opnieuw proberen",
+  "subscription_screen_title": "Kies je abonnement",
+  "subscription_screen_message": "Upgrade om te genieten van alle geweldige functies",
+  "subscription_screen_action": "Abonneren",
+  "subscription_screen_premium_1_monthly_plan_title": "1-maandsplan 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "Geniet van 30 geweldige dagen. Geen advertenties, automatische verlenging – geen onderbrekingen! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "3-maandsplan 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "Verken vrij gedurende een heel kwartaal. Geen advertenties, automatische verlenging – plezier gaat door! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "6-maandsplan 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "Een half jaar geweldige ervaring. Geen advertenties, automatische verlenging – geniet volledig! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "1-jaarsplan (Beste waarde) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365 dagen volledige voordelen. Geen advertenties, automatische verlenging – de perfecte keuze voor jou! 💖",
+  "speak_screen_action_pronunciation_assessment": "Uitspraakoordeling",
+  "speak_screen_action_loading_model": "Model laden $percent",
+  "speak_screen_action_loading_ai_model": "AI-model laden",
+  "speak_screen_action_assessing": "Beoordelend",
+  "speak_screen_action_practice": "Uitspraak oefenen",
+  "speak_screen_note_pronunciation_assessment": "UITSPRAAKOPMERKINGEN \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ uitgesproken als /$substitutedWith/  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ extra ingevoegd\n",
+  "speak_screen_note_deletion": "• /$phoneme/ weggelaten  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "Uitstekend!",
+  "speak_screen_result_subtitle_70": "Heel goed — $error_count klanken te oefenen",
+  "speak_screen_result_subtitle_50": "Blijf proberen — $error_count klanken te oefenen",
+  "speak_screen_result_subtitle_0": "Meer oefenen — $error_count klanken te oefenen",
+  "speak_screen_result_label_score": "Score",
+  "speak_screen_result_label_accuracy": "Nauwkeurigheid",
+  "speak_screen_result_label_completion": "Voltooiing",
+  "speak_screen_result_label_fluency": "Vloeiendheid"
 }

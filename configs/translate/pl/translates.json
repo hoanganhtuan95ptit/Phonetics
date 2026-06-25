@@ -8,10 +8,8 @@
   "action_reverse": "Odwróć",
   "action_try_speak": "Spróbuj wymówić",
   "action_view_all_ipa": "Zobacz wszystko",
-
   "hint_enter_language_text": "Wprowadź $language_name tutaj!",
   "hint_enter_text": "Wprowadź tekst tutaj!",
-
   "ipa_c": "Centralny",
   "ipa_de": "Niemiecki",
   "ipa_eo": "Esperanto",
@@ -41,7 +39,6 @@
   "ipa_yue": "Kantoński",
   "ipa_zh_hans": "Chiński uproszczony",
   "ipa_zh_hant": "Chiński tradycyjny",
-
   "language_ar": "Arabski",
   "language_de": "Niemcy",
   "language_en": "Angielski",
@@ -65,7 +62,6 @@
   "language_tts": "Tajlandia",
   "language_vi": "Wietnamski",
   "language_zh": "Chiński",
-
   "message_completed_sync_phonetics": "Fonetyka $ipa_name pomyślnie zsynchronizowana",
   "message_completed_sync_translate": "Tłumaczenie pomyślnie zsynchronizowane",
   "message_result_empty": "Brak zawartości!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "Synchronizacja zakończona",
   "message_translate_download": "Pobieranie tłumaczenia...",
   "message_error_io_exception": "🔌 Brak połączenia z Internetem",
-
   "rate_action_negative": "Później",
   "rate_action_positive": "Oceń",
   "rate_message": "Chcielibyśmy poznać Twoją opinię, aby aplikacja była jeszcze lepsza. Twoja recenzja wiele dla nas znaczy! 🌟",
   "rate_title": "Oceń aplikację",
-
   "update_action_negative": "⏳ Później",
   "update_action_positive": "⚡ Aktualizuj teraz",
   "update_message": "✨ Nowa wersja jest gotowa! 🚀 Zaktualizuj teraz, aby uzyskać płynniejsze doświadczenie i ekscytujące nowe funkcje! 🎉",
   "update_title": "🔄 Aktualizacja aplikacji",
-
   "resource_history": "Z historii wyszukiwania",
   "resource_popular": "Z listy popularnych",
   "resource_category_introducing_yourself": "Przedstawianie się",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "Owoce",
   "resource_category_clothes": "Ubrania",
   "resource_category_shopping": "Zakupy",
-
   "speed_lever": "Prędkość $lever",
-
   "title_game": "Gra IPA 🎮",
   "title_answer_failed": "Nie całkiem dobrze",
   "title_answer_true": "Wspaniale",
@@ -116,16 +107,12 @@
   "title_translate": "Tłumaczenie:",
   "title_voice": "Głos:",
   "title_voice_speed": "Prędkość głosu:",
-
   "translating": "Tłumaczenie",
   "translate_failed": "Tłumaczenie nie powiodło się",
-
   "type_ipa": "Transkrypcja",
   "type_text": "Litera",
   "type_voice": "Wymowa",
-
   "voice_index": "Głos $index",
-
   "game_config_screen_action_play_game": "Rozpocznij grę teraz!",
   "game_config_screen_message_resource_from_history": "Na podstawie wcześniej wyszukiwanych słów",
   "game_config_screen_message_resource_from_popular": "Na podstawie powszechnie używanych słów",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "Wybierz grę według źródła",
   "game_config_screen_title_resource_ipa": "Wybierz grę według IPA",
   "game_config_screen_title_resource_category": "Wybierz grę według kategorii",
-
   "game_congratulation_screen_action": "Kontynuujmy!",
   "game_congratulation_screen_message": "Wspaniale! Odpowiedziałeś poprawnie $number razy z rzędu! Kontynuuj i nie trać swojej passy! 😆👏",
   "game_congratulation_screen_message_1": "Niesamowite! Masz $number poprawnych odpowiedzi z rzędu! Szkoda byłoby teraz się pomylić! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "Niewiarygodne! 😎",
   "game_congratulation_screen_title_3": "Kłaniam się przed tobą! 🙇‍♂️",
   "game_congratulation_screen_title_4": "Żywa legenda! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "Odpowiedź brzmi: $param1.",
   "game_ipa_puzzle_screen_title": "Słowo $param1 ma wymowę $param2, ale jest niekompletne. Uzupełnij brakującą część.",
-
   "game_ipa_wordle_screen_action": "Sprawdź",
   "game_ipa_wordle_screen_action_continue": "Kontynuuj",
   "game_ipa_wordle_screen_action_retry": "Spróbuj ponownie",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "Wybierz poprawny $param1 dla $param2 poniżej?",
   "game_ipa_wordle_screen_title_answer_failed": "Nie całkiem dobrze",
   "game_ipa_wordle_screen_title_answer_true": "Wspaniale",
-
   "game_ipa_match_screen_title": "Dopasuj odpowiednie pary",
   "game_ipa_match_screen_title_choose": "Pary",
   "game_ipa_match_screen_message_answer_correct": "Pary zostały dopasowane",
   "game_ipa_match_screen_message_answer_failed": "Niektóre pary nie pasują do siebie",
-
   "game_screen_title": "Gra",
-
   "ipa_detail_screen_consonants_unvoiced": "Spółgłoski bezdźwięczne",
   "ipa_detail_screen_consonants_voiced": "Spółgłoski dźwięczne",
   "ipa_detail_screen_diphthongs": "Dyftongi",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "Samogłoski długie",
   "ipa_detail_screen_vowels_short": "Samogłoski krótkie",
   "ipa_detail_screen_practice_with_games": "Ćwicz $ipa z grami 🎮🧠",
-
   "ipa_list_screen_title": "Lista IPA",
   "recording_screen_title": "Proszę mówić $language_name",
-
   "thank_screen_title_for_action_copy": "💡 Specjalne podziękowania",
   "thank_screen_message_for_action_copy": "🎉 Funkcja, której właśnie użyłeś, została stworzona przez 💬 $author.\nDołącz do społeczności, aby pomóc budować lepszy produkt każdego dnia! 🤝",
   "thank_screen_action_negative": "🙏 Dziękuję",
   "thank_screen_action_positive": "Dołącz do społeczności",
-
   "thank_screen_title_for_action_ads": "💡 Dziękujemy",
   "thank_screen_message_for_action_ads": "Dziękujemy za obejrzenie reklamy! 🙏 Reklamy pomagają nam utrzymywać projekt 💡 i stale ulepszać aplikację każdego dnia 🌱📱.",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "Zamknij",
-
   "campaign_screen_title_for_join_group": "🤝 Dołącz do społeczności i rozwijaj się razem!",
   "campaign_screen_message_for_join_group": "📢 Dziel się pomysłami, sugeruj funkcje i współpracuj z innymi, aby każdego dnia ulepszać aplikację! 🚀💡",
-
   "version_name": "🚀 Wersja: $version",
-
   "reminder_title_1": "Dzień dobry ☀️",
   "reminder_title_2": "Witaj, nowy dniu ☀️",
   "reminder_title_3": "Pozytywna energia ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "Początek spokoju 🕊️",
   "reminder_title_11": "Gotowy do nauki 💡",
   "reminder_title_12": "Nowa podróż 🗺️",
-
   "reminder_message_1": "Dzień dobry! Dajmy z siebie wszystko i sprawmy, aby ten dzień był wspaniały! ✨",
   "reminder_message_2": "Rozpoczął się nowy dzień. Życzę Ci mnóstwa energii i radości! 💪",
   "reminder_message_3": "Obudź się z uśmiechem 😊 i rozpocznij dzień pełen nadziei! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "Nie zapomnij wziąć głębokiego oddechu i się zrelaksować 😌. Spokojny umysł pomaga pokonać każde wyzwanie.",
   "reminder_message_8": "Każdy dzień to nowa strona. Napisz dziś swoją własną historię sukcesu! 📖🖊️",
   "reminder_message_9": "Wyzwania to szanse, by zabłysnąć. Bądź odważny i daj z siebie wszystko! 💡💪",
-  "reminder_message_10": "Pamiętaj, aby dbać o siebie! Jedz zdrowo 🥗 i bądź w dobrej formie! ❤️"
+  "reminder_message_10": "Pamiętaj, aby dbać o siebie! Jedz zdrowo 🥗 i bądź w dobrej formie! ❤️",
+  "subscription_screen_title_subs_success": "Wspaniale! Subskrypcja udana 🎉",
+  "subscription_screen_title_subs_error": "Och nie! Wystąpił błąd 😥",
+  "subscription_screen_message_subs_success": "Twój plan $subscriptionId jest gotowy. Ciesz się nim teraz!",
+  "subscription_screen_message_subs_error": "Nie mogliśmy aktywować planu $subscriptionId w tej chwili. Spróbuj ponownie później!",
+  "subscription_screen_action_subs_success": "Odkryj teraz",
+  "subscription_screen_action_subs_error": "Spróbuj ponownie",
+  "subscription_screen_title": "Wybierz swój plan",
+  "subscription_screen_message": "Ulepsz, aby cieszyć się wszystkimi niesamowitymi funkcjami",
+  "subscription_screen_action": "Subskrybuj",
+  "subscription_screen_premium_1_monthly_plan_title": "Plan miesięczny 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "Ciesz się 30 niesamowitymi dniami. Bez reklam, automatyczne odnawianie – bez przerw! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "Plan kwartalny 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "Odkrywaj swobodnie przez cały kwartał. Bez reklam, automatyczne odnawianie – radość trwa! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "Plan półroczny 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "Pół roku niesamowitych doświadczeń. Bez reklam, automatyczne odnawianie – ciesz się w pełni! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "Plan roczny (Najlepsza wartość) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365 dni pełnych przywilejów. Bez reklam, automatyczne odnawianie – idealny wybór dla Ciebie! 💖",
+  "speak_screen_action_pronunciation_assessment": "Ocena wymowy",
+  "speak_screen_action_loading_model": "Ładowanie modelu $percent",
+  "speak_screen_action_loading_ai_model": "Ładowanie modelu AI",
+  "speak_screen_action_assessing": "Ocenianie",
+  "speak_screen_action_practice": "Ćwiczenie wymowy",
+  "speak_screen_note_pronunciation_assessment": "UWAGI DOTYCZĄCE WYMOWY \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ wymawiane jako /$substitutedWith/  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ dodatkowe wstawienie\n",
+  "speak_screen_note_deletion": "• /$phoneme/ pominięte  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "Doskonale!",
+  "speak_screen_result_subtitle_70": "Całkiem dobrze — $error_count dźwięków do przećwiczenia",
+  "speak_screen_result_subtitle_50": "Dalej próbuj — $error_count dźwięków do przećwiczenia",
+  "speak_screen_result_subtitle_0": "Ćwicz więcej — $error_count dźwięków do przećwiczenia",
+  "speak_screen_result_label_score": "Wynik",
+  "speak_screen_result_label_accuracy": "Dokładność",
+  "speak_screen_result_label_completion": "Ukończenie",
+  "speak_screen_result_label_fluency": "Płynność"
 }

@@ -8,10 +8,8 @@
   "action_reverse": "Ters Çevir",
   "action_try_speak": "Konuşmayı Dene",
   "action_view_all_ipa": "Tümünü Görüntüle",
-
   "hint_enter_language_text": "$language_name buraya girin!",
   "hint_enter_text": "Metni buraya girin!",
-
   "ipa_c": "Merkez",
   "ipa_de": "Almanca",
   "ipa_eo": "Esperanto",
@@ -41,7 +39,6 @@
   "ipa_yue": "Kantonca",
   "ipa_zh_hans": "Basitleştirilmiş Çince",
   "ipa_zh_hant": "Geleneksel Çince",
-
   "language_ar": "Arapça",
   "language_de": "Almanya",
   "language_en": "İngilizce",
@@ -65,7 +62,6 @@
   "language_tts": "Tayland",
   "language_vi": "Vietnamca",
   "language_zh": "Çince",
-
   "message_completed_sync_phonetics": "Fonetik $ipa_name başarıyla senkronize edildi",
   "message_completed_sync_translate": "Çeviri başarıyla senkronize edildi",
   "message_result_empty": "Henüz içerik yok!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "Senkronizasyon tamamlandı",
   "message_translate_download": "Çeviri indiriliyor...",
   "message_error_io_exception": "🔌 İnternet Bağlantısı Yok",
-
   "rate_action_negative": "Daha Sonra",
   "rate_action_positive": "Değerlendir",
   "rate_message": "Uygulamayı daha iyi hale getirmek için geri bildiriminizi çok isteriz. Yorumunuz bizim için çok değerli! 🌟",
   "rate_title": "Uygulamayı Değerlendir",
-
   "update_action_negative": "⏳ Daha Sonra",
   "update_action_positive": "⚡ Şimdi Güncelle",
   "update_message": "✨ Yeni bir sürüm hazır! 🚀 Daha sorunsuz bir deneyim ve heyecan verici yeni özellikler için şimdi güncelleyin! 🎉",
   "update_title": "🔄 Uygulama Güncellemesi",
-
   "resource_history": "Arama geçmişinden",
   "resource_popular": "Popüler listeden",
   "resource_category_introducing_yourself": "Kendini Tanıtma",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "Meyveler",
   "resource_category_clothes": "Giysiler",
   "resource_category_shopping": "Alışveriş",
-
   "speed_lever": "Hız $lever",
-
   "title_game": "IPA Oyunu 🎮",
   "title_answer_failed": "Pek doğru değil",
   "title_answer_true": "Harika",
@@ -116,16 +107,12 @@
   "title_translate": "Çevir:",
   "title_voice": "Ses:",
   "title_voice_speed": "Ses hızı:",
-
   "translating": "Çeviriliyor",
   "translate_failed": "Çeviri başarısız oldu",
-
   "type_ipa": "Transkripsiyon",
   "type_text": "Harf",
   "type_voice": "Telaffuz Et",
-
   "voice_index": "Ses $index",
-
   "game_config_screen_action_play_game": "Şimdi oynamaya başla!",
   "game_config_screen_message_resource_from_history": "Daha önce aranan kelimelere göre",
   "game_config_screen_message_resource_from_popular": "Yaygın olarak kullanılan kelimelere göre",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "Kaynağa göre oyun seç",
   "game_config_screen_title_resource_ipa": "IPA'ya göre oyun seç",
   "game_config_screen_title_resource_category": "Kategoriye göre oyun seç",
-
   "game_congratulation_screen_action": "Devam edelim!",
   "game_congratulation_screen_message": "Harika! $number kez üst üste doğru cevap verdin! Devam et ve serini kaybetme! 😆👏",
   "game_congratulation_screen_message_1": "İnanılmaz! $number doğru cevabı art arda verdin! Şimdi kaçırmak ayıp olur! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "İnanılmaz! 😎",
   "game_congratulation_screen_title_3": "Önünde eğiliyorum! 🙇‍♂️",
   "game_congratulation_screen_title_4": "Yaşayan bir efsane! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "Cevap: $param1.",
   "game_ipa_puzzle_screen_title": "$param1 kelimesinin telaffuzu $param2, ancak eksik. Lütfen eksik kısmı tamamlayın.",
-
   "game_ipa_wordle_screen_action": "Kontrol Et",
   "game_ipa_wordle_screen_action_continue": "Devam Et",
   "game_ipa_wordle_screen_action_retry": "Tekrar Dene",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "Aşağıdaki $param2 için doğru $param1'i seçin?",
   "game_ipa_wordle_screen_title_answer_failed": "Pek doğru değil",
   "game_ipa_wordle_screen_title_answer_true": "Harika",
-
   "game_ipa_match_screen_title": "Uygun çiftleri eşleştirin",
   "game_ipa_match_screen_title_choose": "Çiftler",
   "game_ipa_match_screen_message_answer_correct": "Çiftler eşleştirildi",
   "game_ipa_match_screen_message_answer_failed": "Bazı çiftler tam uyuşmuyor",
-
   "game_screen_title": "Oyun",
-
   "ipa_detail_screen_consonants_unvoiced": "Sessiz ünsüzler",
   "ipa_detail_screen_consonants_voiced": "Sesli ünsüzler",
   "ipa_detail_screen_diphthongs": "İkili Ünlüler",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "Uzun Ünlüler",
   "ipa_detail_screen_vowels_short": "Kısa Ünlüler",
   "ipa_detail_screen_practice_with_games": "$ipa ile oyunlarla pratik yap 🎮🧠",
-
   "ipa_list_screen_title": "IPA listesi",
   "recording_screen_title": "Lütfen $language_name konuşun",
-
   "thank_screen_title_for_action_copy": "💡 Özel Bir Teşekkür",
   "thank_screen_message_for_action_copy": "🎉 Az önce kullandığınız özellik 💬 $author tarafından katkıda bulunulmuştur.\nHergün daha iyi bir ürün oluşturmaya yardımcı olmak için topluluğa katılın! 🤝",
   "thank_screen_action_negative": "🙏 Teşekkürler",
   "thank_screen_action_positive": "Topluluğa Katıl",
-
   "thank_screen_title_for_action_ads": "💡 Teşekkürler",
   "thank_screen_message_for_action_ads": "Reklamı izlediğin için teşekkürler! 🙏 Reklamlar, projeyi sürdürmemize 💡 ve uygulamayı her gün geliştirmemize yardımcı olur 🌱📱.",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "Kapat",
-
   "campaign_screen_title_for_join_group": "🤝 Topluluğa Katıl ve Birlikte Büyü!",
   "campaign_screen_message_for_join_group": "📢 Fikirlerini paylaş, özellikler öner ve uygulamayı her gün daha iyi hale getirmek için başkalarıyla işbirliği yap! 🚀💡",
-
   "version_name": "🚀 Sürüm: $version",
-
   "reminder_title_1": "Günaydın ☀️",
   "reminder_title_2": "Merhaba, yeni gün ☀️",
   "reminder_title_3": "Pozitif enerji ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "Huzur başlıyor 🕊️",
   "reminder_title_11": "Öğrenmeye hazır 💡",
   "reminder_title_12": "Yeni bir yolculuk 🗺️",
-
   "reminder_message_1": "Günaydın! Bugün elimizden gelenin en iyisini yapalım ve her şeyi harika kılalım! ✨",
   "reminder_message_2": "Yeni bir gün başladı. Sana bol enerji ve mutluluk diliyorum! 💪",
   "reminder_message_3": "Gülümseyerek uyan 😊 ve umut dolu bir güne başla! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "Derin bir nefes almayı ve rahatlamayı unutma 😌. Sakin bir zihin her zorluğun üstesinden gelmene yardımcı olur.",
   "reminder_message_8": "Her gün yeni bir sayfadır. Bugün kendi başarı hikâyeni yaz! 📖🖊️",
   "reminder_message_9": "Zorluklar parlamak için fırsattır. Cesur ol ve elinden gelenin en iyisini yap! 💡💪",
-  "reminder_message_10": "Kendine iyi bakmayı unutma! Sağlıklı beslen 🥗 ve sağlıklı kal! ❤️"
+  "reminder_message_10": "Kendine iyi bakmayı unutma! Sağlıklı beslen 🥗 ve sağlıklı kal! ❤️",
+  "subscription_screen_title_subs_success": "Harika! Abonelik başarılı 🎉",
+  "subscription_screen_title_subs_error": "Ah hayır! Bir hata oluştu 😥",
+  "subscription_screen_message_subs_success": "$subscriptionId planınız hazır. Şimdi keyfini çıkarın!",
+  "subscription_screen_message_subs_error": "$subscriptionId planınızı şu anda etkinleştiremiyoruz. Lütfen daha sonra tekrar deneyin!",
+  "subscription_screen_action_subs_success": "Şimdi keşfet",
+  "subscription_screen_action_subs_error": "Tekrar dene",
+  "subscription_screen_title": "Planınızı seçin",
+  "subscription_screen_message": "Tüm harika özelliklerin keyfini çıkarmak için yükseltin",
+  "subscription_screen_action": "Abone ol",
+  "subscription_screen_premium_1_monthly_plan_title": "1 Aylık Plan 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "30 harika günün keyfini çıkarın. Reklam yok, otomatik yenileme – kesinti yok! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "3 Aylık Plan 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "Tam bir çeyrek boyunca özgürce keşfedin. Reklam yok, otomatik yenileme – neşe devam ediyor! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "6 Aylık Plan 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "Yarım yıl harika deneyim. Reklam yok, otomatik yenileme – sonuna kadar keyfini çıkarın! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "1 Yıllık Plan (En İyi Değer) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365 gün tam ayrıcalık. Reklam yok, otomatik yenileme – sizin için mükemmel seçim! 💖",
+  "speak_screen_action_pronunciation_assessment": "Telaffuz Değerlendirmesi",
+  "speak_screen_action_loading_model": "Model yükleniyor $percent",
+  "speak_screen_action_loading_ai_model": "AI modeli yükleniyor",
+  "speak_screen_action_assessing": "Değerlendiriliyor",
+  "speak_screen_action_practice": "Telaffuz pratiği",
+  "speak_screen_note_pronunciation_assessment": "TELAFFUZ NOTLARI \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ olarak /$substitutedWith/ telaffuz edildi  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ fazladan eklendi\n",
+  "speak_screen_note_deletion": "• /$phoneme/ atlandı  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "Mükemmel!",
+  "speak_screen_result_subtitle_70": "Oldukça iyi — $error_count ses pratik gerektiriyor",
+  "speak_screen_result_subtitle_50": "Denemeye devam edin — $error_count ses pratik gerektiriyor",
+  "speak_screen_result_subtitle_0": "Daha fazla pratik yapın — $error_count ses pratik gerektiriyor",
+  "speak_screen_result_label_score": "Puan",
+  "speak_screen_result_label_accuracy": "Doğruluk",
+  "speak_screen_result_label_completion": "Tamamlanma",
+  "speak_screen_result_label_fluency": "Akıcılık"
 }

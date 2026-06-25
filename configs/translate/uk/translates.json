@@ -8,10 +8,8 @@
   "action_reverse": "Зворотний",
   "action_try_speak": "Спробуйте вимовити",
   "action_view_all_ipa": "Переглянути всі",
-
   "hint_enter_language_text": "Введіть $language_name тут!",
   "hint_enter_text": "Введіть текст тут!",
-
   "ipa_c": "Центральна",
   "ipa_de": "Німецька",
   "ipa_eo": "Есперанто",
@@ -41,7 +39,6 @@
   "ipa_yue": "Кантонська",
   "ipa_zh_hans": "Спрощена китайська",
   "ipa_zh_hant": "Традиційна китайська",
-
   "language_ar": "Арабська",
   "language_de": "Німецька",
   "language_en": "Англійська",
@@ -65,7 +62,6 @@
   "language_tts": "Таїланд",
   "language_vi": "В'єтнамська",
   "language_zh": "Китайська",
-
   "message_completed_sync_phonetics": "Фонетика $ipa_name успішно синхронізована",
   "message_completed_sync_translate": "Переклад успішно синхронізовано",
   "message_result_empty": "Поки що немає вмісту!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "Синхронізація завершена",
   "message_translate_download": "Завантаження перекладу...",
   "message_error_io_exception": "🔌 Відсутнє підключення до Інтернету",
-
   "rate_action_negative": "Пізніше",
   "rate_action_positive": "Оцінити",
   "rate_message": "Ми будемо раді вашим відгукам, щоб зробити додаток ще кращим. Ваша оцінка дуже важлива! 🌟",
   "rate_title": "Оцінити додаток",
-
   "update_action_negative": "⏳ Пізніше",
   "update_action_positive": "⚡ Оновити зараз",
   "update_message": "✨ Нова версія готова! 🚀 Оновіть зараз, щоб отримати плавніший досвід та захоплюючі нові функції! 🎉",
   "update_title": "🔄 Оновлення додатку",
-
   "resource_history": "З історії пошуку",
   "resource_popular": "З популярного списку",
   "resource_category_introducing_yourself": "Представлення себе",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "Фрукти",
   "resource_category_clothes": "Одяг",
   "resource_category_shopping": "Покупки",
-
   "speed_lever": "Швидкість $lever",
-
   "title_game": "Гра IPA 🎮",
   "title_answer_failed": "Не зовсім правильно",
   "title_answer_true": "Чудово",
@@ -116,16 +107,12 @@
   "title_translate": "Перекласти:",
   "title_voice": "Голос:",
   "title_voice_speed": "Швидкість голосу:",
-
   "translating": "Переклад",
   "translate_failed": "Помилка перекладу",
-
   "type_ipa": "Транскрипція",
   "type_text": "Літера",
   "type_voice": "Вимовити",
-
   "voice_index": "Голос $index",
-
   "game_config_screen_action_play_game": "Почніть грати зараз!",
   "game_config_screen_message_resource_from_history": "На основі раніше шуканих слів",
   "game_config_screen_message_resource_from_popular": "На основі часто вживаних слів",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "Виберіть гру за джерелом",
   "game_config_screen_title_resource_ipa": "Виберіть гру за IPA",
   "game_config_screen_title_resource_category": "Виберіть гру за категорією",
-
   "game_congratulation_screen_action": "Продовжуймо!",
   "game_congratulation_screen_message": "Чудово! Ви правильно відповіли $number разів поспіль! Продовжуйте і не втрачайте свою серію! 😆👏",
   "game_congratulation_screen_message_1": "Неймовірно! Ви отримали $number правильних відповідей поспіль! Було б шкода пропустити зараз! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "Неймовірно! 😎",
   "game_congratulation_screen_title_3": "Схиляюся перед вами! 🙇‍♂️",
   "game_congratulation_screen_title_4": "Жива легенда! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "Відповідь: $param1.",
   "game_ipa_puzzle_screen_title": "Слово $param1 має вимову $param2, але вона неповна. Будь ласка, заповніть пропущену частину.",
-
   "game_ipa_wordle_screen_action": "Перевірити",
   "game_ipa_wordle_screen_action_continue": "Продовжити",
   "game_ipa_wordle_screen_action_retry": "Спробувати ще раз",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "Виберіть правильний $param1 для $param2 нижче?",
   "game_ipa_wordle_screen_title_answer_failed": "Не зовсім правильно",
   "game_ipa_wordle_screen_title_answer_true": "Чудово",
-
   "game_ipa_match_screen_title": "Зіставте відповідні пари разом",
   "game_ipa_match_screen_title_choose": "Пари",
   "game_ipa_match_screen_message_answer_correct": "Пари зіставлено",
   "game_ipa_match_screen_message_answer_failed": "Деякі пари не зовсім збігаються",
-
   "game_screen_title": "Гра",
-
   "ipa_detail_screen_consonants_unvoiced": "Глухі приголосні",
   "ipa_detail_screen_consonants_voiced": "Дзвінкі приголосні",
   "ipa_detail_screen_diphthongs": "Дифтонги",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "Довгі голосні",
   "ipa_detail_screen_vowels_short": "Короткі голосні",
   "ipa_detail_screen_practice_with_games": "Практикуйте $ipa за допомогою ігор 🎮🧠",
-
   "ipa_list_screen_title": "Список IPA",
   "recording_screen_title": "Будь ласка, промовте $language_name",
-
   "thank_screen_title_for_action_copy": "💡 Особлива подяка",
   "thank_screen_message_for_action_copy": "🎉 Функція, яку ви щойно використали, була надана 💬 $author.\nПриєднуйтесь до спільноти, щоб допомагати створювати кращий продукт щодня! 🤝",
   "thank_screen_action_negative": "🙏 Дякую",
   "thank_screen_action_positive": "Приєднатися до спільноти",
-
   "thank_screen_title_for_action_ads": "💡 Дякуємо",
   "thank_screen_message_for_action_ads": "Дякуємо, що подивилися рекламу! 🙏 Реклама допомагає нам підтримувати проєкт 💡 і щодня вдосконалювати додаток 🌱📱.",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "Закрити",
-
   "campaign_screen_title_for_join_group": "🤝 Приєднуйтесь до спільноти та розвивайтеся разом!",
   "campaign_screen_message_for_join_group": "📢 Діліться ідеями, пропонуйте функції та співпрацюйте з іншими, щоб покращувати додаток щодня! 🚀💡",
-
   "version_name": "🚀 Версія: $version",
-
   "reminder_title_1": "Доброго ранку ☀️",
   "reminder_title_2": "Вітаю, новий день ☀️",
   "reminder_title_3": "Позитивна енергія ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "Мир починається 🕊️",
   "reminder_title_11": "Готовий вчитися 💡",
   "reminder_title_12": "Нова подорож 🗺️",
-
   "reminder_message_1": "Доброго ранку! Давай сьогодні зробимо все можливе та зробимо цей день чудовим! ✨",
   "reminder_message_2": "Почався новий день. Бажаю тобі багато енергії та радості! 💪",
   "reminder_message_3": "Прокинься з усмішкою 😊 і розпочни день, сповнений надії! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "Не забувай глибоко дихати та розслаблятися 😌. Спокійний розум допомагає долати будь-які виклики.",
   "reminder_message_8": "Кожен день — нова сторінка. Напиши сьогодні свою власну історію успіху! 📖🖊️",
   "reminder_message_9": "Виклики — це можливості засяяти. Будь сміливим і зроби все якнайкраще! 💡💪",
-  "reminder_message_10": "Не забувай піклуватися про себе! Харчуйся корисно 🥗 та будь здоровим! ❤️"
+  "reminder_message_10": "Не забувай піклуватися про себе! Харчуйся корисно 🥗 та будь здоровим! ❤️",
+  "subscription_screen_title_subs_success": "Чудово! Підписка успішна 🎉",
+  "subscription_screen_title_subs_error": "Ой! Сталася помилка 😥",
+  "subscription_screen_message_subs_success": "Ваш план $subscriptionId готовий. Насолоджуйтесь прямо зараз!",
+  "subscription_screen_message_subs_error": "Ми не змогли активувати план $subscriptionId зараз. Будь ласка, спробуйте пізніше!",
+  "subscription_screen_action_subs_success": "Досліджуйте зараз",
+  "subscription_screen_action_subs_error": "Спробувати знову",
+  "subscription_screen_title": "Оберіть свій план",
+  "subscription_screen_message": "Оновіться, щоб насолодитися всіма чудовими функціями",
+  "subscription_screen_action": "Підписатися",
+  "subscription_screen_premium_1_monthly_plan_title": "План на 1 місяць 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "Насолоджуйтесь 30 чудовими днями. Без реклами, автооновлення – без перерв! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "План на 3 місяці 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "Досліджуйте вільно цілий квартал. Без реклами, автооновлення – радість продовжується! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "План на 6 місяців 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "Півроку чудового досвіду. Без реклами, автооновлення – насолоджуйтесь сповна! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "Річний план (Найкраща ціна) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365 днів повних привілеїв. Без реклами, автооновлення – ідеальний вибір для вас! 💖",
+  "speak_screen_action_pronunciation_assessment": "Оцінка вимови",
+  "speak_screen_action_loading_model": "Завантаження моделі $percent",
+  "speak_screen_action_loading_ai_model": "Завантаження моделі AI",
+  "speak_screen_action_assessing": "Оцінювання",
+  "speak_screen_action_practice": "Практика вимови",
+  "speak_screen_note_pronunciation_assessment": "НОТАТКИ ЩОДО ВИМОВИ \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ вимовлено як /$substitutedWith/  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ зайве вставлення\n",
+  "speak_screen_note_deletion": "• /$phoneme/ пропущено  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "Відмінно!",
+  "speak_screen_result_subtitle_70": "Досить добре — $error_count звуків потребують практики",
+  "speak_screen_result_subtitle_50": "Продовжуйте намагатися — $error_count звуків потребують практики",
+  "speak_screen_result_subtitle_0": "Практикуйтеся більше — $error_count звуків потребують практики",
+  "speak_screen_result_label_score": "Оцінка",
+  "speak_screen_result_label_accuracy": "Точність",
+  "speak_screen_result_label_completion": "Завершеність",
+  "speak_screen_result_label_fluency": "Плавність"
 }

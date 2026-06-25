@@ -8,10 +8,8 @@
   "action_reverse": "反転",
   "action_try_speak": "話してみる",
   "action_view_all_ipa": "すべて表示",
-
   "hint_enter_language_text": "$language_name をここに入力してください！",
   "hint_enter_text": "ここにテキストを入力してください！",
-
   "ipa_c": "中央",
   "ipa_de": "ドイツ語",
   "ipa_eo": "エスペラント語",
@@ -41,7 +39,6 @@
   "ipa_yue": "広東語",
   "ipa_zh_hans": "簡体字中国語",
   "ipa_zh_hant": "繁体字中国語",
-
   "language_ar": "アラビア語",
   "language_de": "ドイツ語",
   "language_en": "英語",
@@ -65,7 +62,6 @@
   "language_tts": "タイ",
   "language_vi": "ベトナム語",
   "language_zh": "中国語",
-
   "message_completed_sync_phonetics": "音韻 $ipa_name の同期が成功しました",
   "message_completed_sync_translate": "翻訳の同期が成功しました",
   "message_result_empty": "まだコンテンツがありません！",
@@ -77,17 +73,14 @@
   "message_sync_completed": "同期完了",
   "message_translate_download": "翻訳をダウンロード中...",
   "message_error_io_exception": "🔌 インターネット接続がありません",
-
   "rate_action_negative": "後で",
   "rate_action_positive": "評価",
   "rate_message": "アプリをさらに改善するため、皆様のご意見をお待ちしております。皆様のレビューは大変重要です！🌟",
   "rate_title": "アプリを評価",
-
   "update_action_negative": "⏳ 後で",
   "update_action_positive": "⚡ 今すぐ更新",
   "update_message": "✨ 新しいバージョンが準備できました！🚀 よりスムーズな体験とエキサイティングな新機能のために今すぐ更新してください！🎉",
   "update_title": "🔄 アプリ更新",
-
   "resource_history": "検索履歴から",
   "resource_popular": "人気リストから",
   "resource_category_introducing_yourself": "自己紹介",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "果物",
   "resource_category_clothes": "服",
   "resource_category_shopping": "ショッピング",
-
   "speed_lever": "速度 $lever",
-
   "title_game": "IPAゲーム 🎮",
   "title_answer_failed": "少し違います",
   "title_answer_true": "素晴らしい",
@@ -116,16 +107,12 @@
   "title_translate": "翻訳：",
   "title_voice": "音声：",
   "title_voice_speed": "音声速度：",
-
   "translating": "翻訳中",
   "translate_failed": "翻訳失敗",
-
   "type_ipa": "転写",
   "type_text": "文字",
   "type_voice": "発音",
-
   "voice_index": "音声 $index",
-
   "game_config_screen_action_play_game": "今すぐプレイ開始！",
   "game_config_screen_message_resource_from_history": "以前に検索した単語に基づいています",
   "game_config_screen_message_resource_from_popular": "一般的に使用されている単語に基づいています",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "ソースでゲームを選択",
   "game_config_screen_title_resource_ipa": "IPAでゲームを選択",
   "game_config_screen_title_resource_category": "カテゴリでゲームを選択",
-
   "game_congratulation_screen_action": "続けよう！",
   "game_congratulation_screen_message": "素晴らしい！$number回連続で正解しました！このまま続けて連勝を維持しましょう！😆👏",
   "game_congratulation_screen_message_1": "信じられない！$number回連続で正解しました！今間違えるのはもったいない！🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "信じられない！😎",
   "game_congratulation_screen_title_3": "頭が下がります！🙇‍♂️",
   "game_congratulation_screen_title_4": "生きた伝説！🏆",
-
   "game_ipa_puzzle_screen_message_answer": "答えは：$param1です。",
   "game_ipa_puzzle_screen_title": "単語「$param1」の発音は「$param2」ですが、不完全です。不足している部分を補完してください。",
-
   "game_ipa_wordle_screen_action": "確認",
   "game_ipa_wordle_screen_action_continue": "続ける",
   "game_ipa_wordle_screen_action_retry": "再試行",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "以下の $param2 に合う正しい $param1 を選んでください。",
   "game_ipa_wordle_screen_title_answer_failed": "少し違います",
   "game_ipa_wordle_screen_title_answer_true": "素晴らしい",
-
   "game_ipa_match_screen_title": "適切なペアを一致させる",
   "game_ipa_match_screen_title_choose": "ペア",
   "game_ipa_match_screen_message_answer_correct": "ペアが一致しました",
   "game_ipa_match_screen_message_answer_failed": "いくつかのペアが一致しません",
-
   "game_screen_title": "ゲーム",
-
   "ipa_detail_screen_consonants_unvoiced": "無声子音",
   "ipa_detail_screen_consonants_voiced": "有声子音",
   "ipa_detail_screen_diphthongs": "二重母音",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "長母音",
   "ipa_detail_screen_vowels_short": "短母音",
   "ipa_detail_screen_practice_with_games": "ゲームで$ipaを練習 🎮🧠",
-
   "ipa_list_screen_title": "IPAリスト",
   "recording_screen_title": "$language_name を話してください",
-
   "thank_screen_title_for_action_copy": "💡 特別な感謝",
   "thank_screen_message_for_action_copy": "🎉 今お使いの機能は 💬 $author 様にご貢献いただきました。\nコミュニティに参加して、毎日より良い製品を一緒に作りましょう！🤝",
   "thank_screen_action_negative": "🙏 ありがとうございます",
   "thank_screen_action_positive": "コミュニティに参加",
-
   "thank_screen_title_for_action_ads": "💡 ありがとうございます",
   "thank_screen_message_for_action_ads": "広告をご覧いただきありがとうございます！🙏 広告は私たちがプロジェクトを維持し 💡 アプリを毎日改善し続けるために役立ちます 🌱📱。",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "閉じる",
-
   "campaign_screen_title_for_join_group": "🤝 コミュニティに参加して共に成長しましょう！",
   "campaign_screen_message_for_join_group": "📢 アイデアを共有し、機能を提案し、他のユーザーと協力して毎日アプリを改善しましょう！🚀💡",
-
   "version_name": "🚀 バージョン: $version",
-
   "reminder_title_1": "おはようございます ☀️",
   "reminder_title_2": "新しい一日 ☀️",
   "reminder_title_3": "ポジティブなエネルギー ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "平和はここから 🕊️",
   "reminder_title_11": "学ぶ準備はできています 💡",
   "reminder_title_12": "新しい旅 🗺️",
-
   "reminder_message_1": "おはようございます！今日もベストを尽くして、素敵な一日にしましょう！ ✨",
   "reminder_message_2": "新しい一日が始まりました。エネルギーと喜びに満ちた一日になりますように！ 💪",
   "reminder_message_3": "笑顔で目覚めて 😊、希望に満ちた一日を始めましょう！ 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "深呼吸してリラックスすることを忘れないでください 😌。落ち着いた心は、どんな挑戦も乗り越える力になります。",
   "reminder_message_8": "毎日は新しいページです。今日は自分だけの成功ストーリーを書きましょう！ 📖🖊️",
   "reminder_message_9": "挑戦は輝くチャンスです。勇気を持って、全力を尽くしましょう！ 💡💪",
-  "reminder_message_10": "自分を大切にしてください。バランスの良い食事を心がけ 🥗、健康でいましょう！ ❤️"
+  "reminder_message_10": "自分を大切にしてください。バランスの良い食事を心がけ 🥗、健康でいましょう！ ❤️",
+  "subscription_screen_title_subs_success": "すごい！サブスクリプション成功 🎉",
+  "subscription_screen_title_subs_error": "エラーが発生しました 😥",
+  "subscription_screen_message_subs_success": "$subscriptionIdプランの準備ができました。今すぐお楽しみください！",
+  "subscription_screen_message_subs_error": "現在、$subscriptionIdプランを有効化できませんでした。後でもう一度お試しください！",
+  "subscription_screen_action_subs_success": "今すぐ探索",
+  "subscription_screen_action_subs_error": "もう一度試す",
+  "subscription_screen_title": "プランを選んでください",
+  "subscription_screen_message": "最高の機能を楽しむためにアップグレード",
+  "subscription_screen_action": "プランに登録",
+  "subscription_screen_premium_1_monthly_plan_title": "1ヶ月プラン 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "30日間の素晴らしい体験。広告なし、自動更新 – 中断なし！ ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "3ヶ月プラン 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "1四半期丸ごと自由に探索。広告なし、自動更新 – 楽しさが続く！ 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "6ヶ月プラン 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "半年間の素晴らしい体験。広告なし、自動更新 – 存分に楽しんで！ 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "1年プラン（最もお得） 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365日間の完全な特典。広告なし、自動更新 – あなたへの完璧な選択！ 💖",
+  "speak_screen_action_pronunciation_assessment": "発音評価",
+  "speak_screen_action_loading_model": "モデルを読み込み中 $percent",
+  "speak_screen_action_loading_ai_model": "AIモデルを読み込み中",
+  "speak_screen_action_assessing": "評価中",
+  "speak_screen_action_practice": "発音練習",
+  "speak_screen_note_pronunciation_assessment": "発音メモ \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ が /$substitutedWith/ と発音されました  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ が余分に挿入されました\n",
+  "speak_screen_note_deletion": "• /$phoneme/ が省略されました  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "素晴らしい！",
+  "speak_screen_result_subtitle_70": "なかなか良い — $error_count 個の音を練習が必要",
+  "speak_screen_result_subtitle_50": "頑張り続けて — $error_count 個の音を練習が必要",
+  "speak_screen_result_subtitle_0": "もっと練習して — $error_count 個の音を練習が必要",
+  "speak_screen_result_label_score": "スコア",
+  "speak_screen_result_label_accuracy": "正確度",
+  "speak_screen_result_label_completion": "完了率",
+  "speak_screen_result_label_fluency": "流暢さ"
 }

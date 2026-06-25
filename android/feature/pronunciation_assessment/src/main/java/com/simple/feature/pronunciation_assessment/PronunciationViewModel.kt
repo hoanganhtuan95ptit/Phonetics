@@ -197,18 +197,18 @@ class PronunciationViewModel : BaseViewModel() {
             strings.getOrKey("speak_screen_action_pronunciation_assessment")
                 .with(Bold, TextSize(16), ForegroundColor(textColor))
         } else if (initState is ResultState.Running && initState.data in 0..99) {
-            strings.getOrKey("speak_screen_loading_model")
+            strings.getOrKey("speak_screen_action_loading_model")
                 .replace("\$percent", "${initState.data}%")
                 .with(Bold, TextSize(16), ForegroundColor(textColor))
                 .with("${initState.data}%", ForegroundColor(themes.colorError))
         } else if (initState.isLoading()) {
-            strings.getOrKey("speak_screen_loading_ai_model")
+            strings.getOrKey("speak_screen_action_loading_ai_model")
                 .with(Bold, TextSize(16), ForegroundColor(textColor))
         } else if (assessmentState.isStart()) {
-            strings.getOrKey("speak_screen_assessing")
+            strings.getOrKey("speak_screen_action_assessing")
                 .with(Bold, TextSize(16), ForegroundColor(textColor))
         } else {
-            strings.getOrKey("speak_screen_practice")
+            strings.getOrKey("speak_screen_action_practice")
                 .with(Bold, TextSize(16), ForegroundColor(textColor))
         }
 

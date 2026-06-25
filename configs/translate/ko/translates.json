@@ -8,10 +8,8 @@
   "action_reverse": "반대로",
   "action_try_speak": "말해보기",
   "action_view_all_ipa": "모두 보기",
-
   "hint_enter_language_text": "여기에 $language_name을(를) 입력하세요!",
   "hint_enter_text": "여기에 텍스트를 입력하세요!",
-
   "ipa_c": "중앙",
   "ipa_de": "독일어",
   "ipa_eo": "에스페란토",
@@ -41,7 +39,6 @@
   "ipa_yue": "광둥어",
   "ipa_zh_hans": "중국어 간체",
   "ipa_zh_hant": "중국어 번체",
-
   "language_ar": "아랍어",
   "language_de": "독일",
   "language_en": "영어",
@@ -65,7 +62,6 @@
   "language_tts": "태국",
   "language_vi": "베트남어",
   "language_zh": "중국어",
-
   "message_completed_sync_phonetics": "음성 $ipa_name 동기화 완료",
   "message_completed_sync_translate": "번역 동기화 완료",
   "message_result_empty": "아직 내용이 없습니다!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "동기화 완료",
   "message_translate_download": "번역 다운로드 중...",
   "message_error_io_exception": "🔌 인터넷 연결 없음",
-
   "rate_action_negative": "나중에",
   "rate_action_positive": "평가",
   "rate_message": "앱을 더 개선하기 위한 여러분의 의견을 듣고 싶습니다. 여러분의 리뷰는 큰 의미가 있습니다! 🌟",
   "rate_title": "앱 평가",
-
   "update_action_negative": "⏳ 나중에",
   "update_action_positive": "⚡ 지금 업데이트",
   "update_message": "✨ 새로운 버전이 준비되었습니다! 🚀 더 부드러운 경험과 흥미로운 새 기능을 위해 지금 업데이트하세요! 🎉",
   "update_title": "🔄 앱 업데이트",
-
   "resource_history": "검색 기록에서",
   "resource_popular": "인기 목록에서",
   "resource_category_introducing_yourself": "자기소개",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "과일",
   "resource_category_clothes": "옷",
   "resource_category_shopping": "쇼핑",
-
   "speed_lever": "속도 $lever",
-
   "title_game": "IPA 게임 🎮",
   "title_answer_failed": "정확하지 않습니다",
   "title_answer_true": "최고입니다",
@@ -116,16 +107,12 @@
   "title_translate": "번역:",
   "title_voice": "음성:",
   "title_voice_speed": "음성 속도:",
-
   "translating": "번역 중",
   "translate_failed": "번역 실패",
-
   "type_ipa": "전사",
   "type_text": "글자",
   "type_voice": "발음",
-
   "voice_index": "음성 $index",
-
   "game_config_screen_action_play_game": "지금 바로 플레이 시작!",
   "game_config_screen_message_resource_from_history": "이전에 검색한 단어 기준",
   "game_config_screen_message_resource_from_popular": "자주 사용되는 단어 기준",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "소스별 게임 선택",
   "game_config_screen_title_resource_ipa": "IPA별 게임 선택",
   "game_config_screen_title_resource_category": "카테고리별 게임 선택",
-
   "game_congratulation_screen_action": "계속합시다!",
   "game_congratulation_screen_message": "정말 대단해요! 연속 $number번 정답을 맞히셨습니다! 계속해서 연승을 이어가세요! 😆👏",
   "game_congratulation_screen_message_1": "놀랍습니다! 연속 $number번 정답을 맞히셨어요! 지금 틀리면 아쉬울 거예요! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "믿을 수 없습니다! 😎",
   "game_congratulation_screen_title_3": "존경합니다! 🙇‍♂️",
   "game_congratulation_screen_title_4": "살아있는 전설! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "정답은: $param1입니다.",
   "game_ipa_puzzle_screen_title": "단어 $param1의 발음은 $param2이지만, 불완전합니다. 누락된 부분을 완성해 주세요.",
-
   "game_ipa_wordle_screen_action": "확인",
   "game_ipa_wordle_screen_action_continue": "계속",
   "game_ipa_wordle_screen_action_retry": "다시 시도",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "아래 $param2에 대한 올바른 $param1을(를) 선택하세요?",
   "game_ipa_wordle_screen_title_answer_failed": "정확하지 않습니다",
   "game_ipa_wordle_screen_title_answer_true": "최고입니다",
-
   "game_ipa_match_screen_title": "적절한 쌍을 서로 맞추세요",
   "game_ipa_match_screen_title_choose": "쌍",
   "game_ipa_match_screen_message_answer_correct": "쌍이 맞춰졌습니다",
   "game_ipa_match_screen_message_answer_failed": "일부 쌍이 잘 맞지 않습니다",
-
   "game_screen_title": "게임",
-
   "ipa_detail_screen_consonants_unvoiced": "무성 자음",
   "ipa_detail_screen_consonants_voiced": "유성 자음",
   "ipa_detail_screen_diphthongs": "이중 모음",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "장모음",
   "ipa_detail_screen_vowels_short": "단모음",
   "ipa_detail_screen_practice_with_games": "게임으로 $ipa 연습하기 🎮🧠",
-
   "ipa_list_screen_title": "IPA 목록",
   "recording_screen_title": "$language_name을(를) 말해주세요",
-
   "thank_screen_title_for_action_copy": "💡 특별한 감사",
   "thank_screen_message_for_action_copy": "🎉 방금 사용하신 기능은 💬 $author님께서 기여해주셨습니다.\n매일 더 나은 제품을 함께 만들 수 있도록 커뮤니티에 참여하세요! 🤝",
   "thank_screen_action_negative": "🙏 감사합니다",
   "thank_screen_action_positive": "커뮤니티 가입",
-
   "thank_screen_title_for_action_ads": "💡 감사합니다",
   "thank_screen_message_for_action_ads": "광고를 시청해 주셔서 감사합니다! 🙏 광고는 우리가 프로젝트를 유지하고 💡 앱을 매일 개선하는 데 도움이 됩니다 🌱📱.",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "닫기",
-
   "campaign_screen_title_for_join_group": "🤝 커뮤니티에 가입하고 함께 성장하세요!",
   "campaign_screen_message_for_join_group": "📢 아이디어를 공유하고, 기능을 제안하며, 다른 사람들과 협력하여 매일 앱을 개선하세요! 🚀💡",
-
   "version_name": "🚀 버전: $version",
-
   "reminder_title_1": "좋은 아침 ☀️",
   "reminder_title_2": "새로운 하루 ☀️",
   "reminder_title_3": "긍정적인 에너지 ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "평화는 지금부터 🕊️",
   "reminder_title_11": "배울 준비 완료 💡",
   "reminder_title_12": "새로운 여정 🗺️",
-
   "reminder_message_1": "좋은 아침이에요! 오늘도 최선을 다해 멋진 하루를 만들어봐요! ✨",
   "reminder_message_2": "새로운 하루가 시작됐어요. 에너지와 기쁨이 가득하길 바라요! 💪",
   "reminder_message_3": "미소로 하루를 시작해요 😊 희망으로 가득한 하루가 될 거예요! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "깊게 숨 쉬고 편안해지는 걸 잊지 마세요 😌. 차분한 마음은 어떤 도전도 이겨낼 수 있게 해줘요.",
   "reminder_message_8": "매일은 새로운 한 페이지예요. 오늘 나만의 성공 이야기를 써 내려가요! 📖🖊️",
   "reminder_message_9": "도전은 빛날 수 있는 기회예요. 용기를 내고 최선을 다하세요! 💡💪",
-  "reminder_message_10": "자기 자신을 잘 돌보는 것도 잊지 마세요! 건강한 식사를 하고 🥗 건강을 지켜요! ❤️"
+  "reminder_message_10": "자기 자신을 잘 돌보는 것도 잊지 마세요! 건강한 식사를 하고 🥗 건강을 지켜요! ❤️",
+  "subscription_screen_title_subs_success": "멋져요! 구독 성공 🎉",
+  "subscription_screen_title_subs_error": "이런! 오류가 발생했습니다 😥",
+  "subscription_screen_message_subs_success": "$subscriptionId 플랜이 준비되었습니다. 지금 바로 즐기세요!",
+  "subscription_screen_message_subs_error": "현재 $subscriptionId 플랜을 활성화할 수 없습니다. 나중에 다시 시도해 주세요!",
+  "subscription_screen_action_subs_success": "지금 탐색",
+  "subscription_screen_action_subs_error": "다시 시도",
+  "subscription_screen_title": "플랜을 선택하세요",
+  "subscription_screen_message": "멋진 기능을 모두 즐기려면 업그레이드하세요",
+  "subscription_screen_action": "구독하기",
+  "subscription_screen_premium_1_monthly_plan_title": "1개월 플랜 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "30일간의 멋진 경험. 광고 없음, 자동 갱신 – 중단 없음! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "3개월 플랜 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "한 분기 동안 자유롭게 탐색. 광고 없음, 자동 갱신 – 즐거움 계속! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "6개월 플랜 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "반년간의 멋진 경험. 광고 없음, 자동 갱신 – 완전히 즐기세요! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "1년 플랜 (최고의 가치) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365일 완전한 혜택. 광고 없음, 자동 갱신 – 당신을 위한 최선의 선택! 💖",
+  "speak_screen_action_pronunciation_assessment": "발음 평가",
+  "speak_screen_action_loading_model": "모델 로딩 중 $percent",
+  "speak_screen_action_loading_ai_model": "AI 모델 로딩 중",
+  "speak_screen_action_assessing": "평가 중",
+  "speak_screen_action_practice": "발음 연습",
+  "speak_screen_note_pronunciation_assessment": "발음 메모 \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ 이(가) /$substitutedWith/ 으로 발음됨  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ 추가 삽입됨\n",
+  "speak_screen_note_deletion": "• /$phoneme/ 누락됨  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "훌륭해요!",
+  "speak_screen_result_subtitle_70": "꽤 좋아요 — $error_count 개 소리 연습 필요",
+  "speak_screen_result_subtitle_50": "계속 노력하세요 — $error_count 개 소리 연습 필요",
+  "speak_screen_result_subtitle_0": "더 연습하세요 — $error_count 개 소리 연습 필요",
+  "speak_screen_result_label_score": "점수",
+  "speak_screen_result_label_accuracy": "정확도",
+  "speak_screen_result_label_completion": "완성도",
+  "speak_screen_result_label_fluency": "유창성"
 }

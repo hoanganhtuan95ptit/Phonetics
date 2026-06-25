@@ -8,10 +8,8 @@
   "action_reverse": "ပြောင်းပြန်",
   "action_try_speak": "ပြောဆိုကြည့်ရန်",
   "action_view_all_ipa": "အားလုံးကြည့်ရန်",
-
   "hint_enter_language_text": "$language_name ကိုဤနေရာတွင်ထည့်ပါ!",
   "hint_enter_text": "စာသားကိုဤနေရာတွင်ထည့်ပါ!",
-
   "ipa_c": "အလယ်ပိုင်း",
   "ipa_de": "ဂျာမန်",
   "ipa_eo": "အက်စ်ပဲရဲန်တို",
@@ -41,7 +39,6 @@
   "ipa_yue": "ကန်တုံ",
   "ipa_zh_hans": "ရိုးရှင်းသော တရုတ်",
   "ipa_zh_hant": "ရိုးရာ တရုတ်",
-
   "language_ar": "အာရဗီ",
   "language_de": "ဂျာမနီ",
   "language_en": "အင်္ဂလိပ်",
@@ -65,7 +62,6 @@
   "language_tts": "ထိုင်း",
   "language_vi": "ဗီယက်နမ်",
   "language_zh": "တရုတ်",
-
   "message_completed_sync_phonetics": "ဖိုနက်တစ် $ipa_name ကို အောင်မြင်စွာ စင့်ခ်လုပ်ပြီးပါပြီ",
   "message_completed_sync_translate": "ဘာသာပြန်ခြင်းကို အောင်မြင်စွာ စင့်ခ်လုပ်ပြီးပါပြီ",
   "message_result_empty": "အကြောင်းအရာ မရှိသေးပါ!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "စင့်ခ်လုပ်ခြင်း ပြီးစီးပါပြီ",
   "message_translate_download": "ဘာသာပြန်ခြင်းကို ဒေါင်းလုတ်ဆွဲနေသည်...",
   "message_error_io_exception": "🔌 အင်တာနက်ချိတ်ဆက်မှု မရှိပါ",
-
   "rate_action_negative": "နောက်မှ",
   "rate_action_positive": "အဆင့်သတ်မှတ်ရန်",
   "rate_message": "အက်ပ်ကို ပိုကောင်းအောင်ပြုလုပ်ရန် သင်၏တုံ့ပြန်ချက်ကို နှစ်သက်ပါသည်။ သင်၏သုံးသပ်ချက်သည် အလွန်အရေးကြီးပါသည်! 🌟",
   "rate_title": "အက်ပ်ကို အဆင့်သတ်မှတ်ရန်",
-
   "update_action_negative": "⏳ နောက်မှ",
   "update_action_positive": "⚡ ယခု အပ်ဒိတ်လုပ်ရန်",
   "update_message": "✨ ဗားရှင်းအသစ်ရပါပြီ! 🚀 ပိုမိုချောမွေ့သော အတွေ့အကြုံနှင့် စိတ်လှုပ်ရှားဖွယ်ရာ အင်္ဂါရပ်အသစ်များအတွက် ယခုပဲ အပ်ဒိတ်လုပ်လိုက်ပါ! 🎉",
   "update_title": "🔄 အက်ပ် အပ်ဒိတ်",
-
   "resource_history": "ရှာဖွေမှု မှတ်တမ်းမှ",
   "resource_popular": "လူကြိုက်များသော စာရင်းမှ",
   "resource_category_introducing_yourself": "ကိုယ့်ကိုယ်ကို မိတ်ဆက်ခြင်း",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "သစ်သီးများ",
   "resource_category_clothes": "အဝတ်အထည်များ",
   "resource_category_shopping": "ဈေးဝယ်ခြင်း",
-
   "speed_lever": "အမြန်နှုန်း $lever",
-
   "title_game": "အိုင်ပီအေဂိမ်း 🎮",
   "title_answer_failed": "လုံးဝမမှန်သေးပါ",
   "title_answer_true": "အံ့ဩစရာ",
@@ -116,16 +107,12 @@
   "title_translate": "ဘာသာပြန်ရန်:",
   "title_voice": "အသံ:",
   "title_voice_speed": "အသံအမြန်နှုန်း:",
-
   "translating": "ဘာသာပြန်နေသည်",
   "translate_failed": "ဘာသာပြန်ခြင်း မအောင်မြင်ပါ",
-
   "type_ipa": "အသံထွက်မှတ်တမ်း",
   "type_text": "အက္ခရာ",
   "type_voice": "အသံထွက်ရန်",
-
   "voice_index": "အသံ $index",
-
   "game_config_screen_action_play_game": "အခုပဲ ကစားစတင်လိုက်ပါ!",
   "game_config_screen_message_resource_from_history": "ယခင်ရှာဖွေထားသော စကားလုံးများအပေါ် အခြေခံ၍",
   "game_config_screen_message_resource_from_popular": "အသုံးများသော စကားလုံးများအပေါ် အခြေခံ၍",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "အရင်းအမြစ်အလိုက် ဂိမ်းရွေးပါ",
   "game_config_screen_title_resource_ipa": "IPA အလိုက် ဂိမ်းရွေးပါ",
   "game_config_screen_title_resource_category": "အမျိုးအစားအလိုက် ဂိမ်းရွေးပါ",
-
   "game_congratulation_screen_action": "ဆက်လက်လုပ်ဆောင်ကြစို့!",
   "game_congratulation_screen_message": "အံ့ဩစရာ! သင် အဖြေမှန် $number ကြိမ် ဆက်တိုက်ဖြေဆိုခဲ့ပြီ! ဆက်လက်ကြိုးစားပြီး အောင်မြင်မှုကို မဆုံးရှုံးပါစေနဲ့! 😆👏",
   "game_congratulation_screen_message_1": "မယုံနိုင်စရာ! သင် အဖြေမှန် $number ကြိမ် ဆက်တိုက်ရခဲ့ပြီ! အခုမှ လွဲချော်တာကတော့ ရှက်စရာပါပဲ! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "မယုံနိုင်စရာ! 😎",
   "game_congratulation_screen_title_3": "ကျွန်တော် ဦးညွှတ် ဂါရဝပြုပါသည်! 🙇‍♂️",
   "game_congratulation_screen_title_4": "အသက်ရှင်သော ဒဏ္ဍာရီ! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "အဖြေမှာ- $param1 ဖြစ်ပါသည်။",
   "game_ipa_puzzle_screen_title": "စကားလုံး $param1 ၏ အသံထွက်မှာ $param2 ဖြစ်သော်လည်း မပြည့်စုံပါ။ ကျေးဇူးပြု၍ ပျောက်ဆုံးနေသော အပိုင်းကို ဖြည့်စွက်ပါ။",
-
   "game_ipa_wordle_screen_action": "စစ်ဆေးရန်",
   "game_ipa_wordle_screen_action_continue": "ဆက်လက်လုပ်ဆောင်ရန်",
   "game_ipa_wordle_screen_action_retry": "ထပ်ကြိုးစားရန်",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "အောက်ပါ $param2 အတွက် မှန်ကန်သော $param1 ကို ရွေးချယ်ပါ?",
   "game_ipa_wordle_screen_title_answer_failed": "လုံးဝမမှန်သေးပါ",
   "game_ipa_wordle_screen_title_answer_true": "အံ့ဩစရာ",
-
   "game_ipa_match_screen_title": "သင့်လျော်သော အတွဲများကို တွဲဖက်ရန်",
   "game_ipa_match_screen_title_choose": "အတွဲများ",
   "game_ipa_match_screen_message_answer_correct": "အတွဲများကို တွဲဖက်ပြီးပါပြီ",
   "game_ipa_match_screen_message_answer_failed": "အတွဲအချို့ လုံးဝမကိုက်ညီပါ",
-
   "game_screen_title": "ဂိမ်း",
-
   "ipa_detail_screen_consonants_unvoiced": "အသံမပါသော ဗျည်းများ",
   "ipa_detail_screen_consonants_voiced": "အသံပါသော ဗျည်းများ",
   "ipa_detail_screen_diphthongs": "ဒစ်ဖ်သောင် (တွဲဖက်သရ)",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "အရှည်သရများ",
   "ipa_detail_screen_vowels_short": "အတိုသရများ",
   "ipa_detail_screen_practice_with_games": "ဂိမ်းများဖြင့် $ipa ကို လေ့ကျင့်ပါ 🎮🧠",
-
   "ipa_list_screen_title": "IPA စာရင်း",
   "recording_screen_title": "$language_name ကို ကျေးဇူးပြု၍ ပြောပါ",
-
   "thank_screen_title_for_action_copy": "💡 အထူးကျေးဇူးတင်ရှိခြင်း",
   "thank_screen_message_for_action_copy": "🎉 သင်အသုံးပြုလိုက်သည့် အင်္ဂါရပ်အား 💬 $author မှ ပံ့ပိုးပေးထားပါသည်။\nနေ့စဉ် ပိုမိုကောင်းမွန်သော ထုတ်ကုန်တစ်ခု ဖန်တီးရန်အတွက် အသိုင်းအဝိုင်းသို့ ပူးပေါင်းလိုက်ပါ! 🤝",
   "thank_screen_action_negative": "🙏 ကျေးဇူးတင်ပါသည်",
   "thank_screen_action_positive": "အသိုင်းအဝိုင်းသို့ ပူးပေါင်းရန်",
-
   "thank_screen_title_for_action_ads": "💡 ကျေးဇူးတင်ပါသည်",
   "thank_screen_message_for_action_ads": "ကြော်ငြာကြည့်ပေးသည့်အတွက် ကျေးဇူးတင်ပါတယ်! 🙏 ကြော်ငြာများက ကျွန်တော်တို့၏ပရောဂျက်ကိုထိန်းသိမ်းရန် 💡 နှင့်အက်ပ်ကိုနေ့စဉ်ကောင်းမွန်အောင်လုပ်နိုင်ရန် အထောက်အပံ့ဖြစ်ပေးပါသည် 🌱📱။",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "ပိတ်မည်",
-
   "campaign_screen_title_for_join_group": "🤝 အသိုင်းအဝိုင်းသို့ ပူးပေါင်းပြီး အတူတကွ တိုးတက်ကြစို့!",
   "campaign_screen_message_for_join_group": "📢 အိုင်ဒီယာများကို မျှဝေပါ၊ အင်္ဂါရပ်များကို အကြံပြုပါ၊ နှင့် အက်ပ်ကို နေ့စဉ် ပိုမိုကောင်းမွန်အောင် ပြုလုပ်ရန် အခြားသူများနှင့် ပူးပေါင်းဆောင်ရွက်ပါ! 🚀💡",
-
   "version_name": "🚀 ဗားရှင်း: $version",
-
   "reminder_title_1": "မင်္ဂလာနံနက်ခင်းပါ ☀️",
   "reminder_title_2": "နေ့သစ်မင်္ဂလာပါ ☀️",
   "reminder_title_3": "အပြုသဘောဆောင်သော စွမ်းအင် ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "ငြိမ်းချမ်းမှု စတင်သည် 🕊️",
   "reminder_title_11": "လေ့လာရန် အသင့် 💡",
   "reminder_title_12": "ခရီးသစ်တစ်ခု 🗺️",
-
   "reminder_message_1": "မင်္ဂလာနံနက်ခင်းပါ! ဒီနေ့မှာ အကောင်းဆုံးကြိုးစားပြီး နေ့ကို လှပအောင်လုပ်ကြရအောင်! ✨",
   "reminder_message_2": "နေ့သစ်တစ်နေ့ စတင်ပါပြီ။ စွမ်းအင်နဲ့ ပျော်ရွှင်မှုတွေ ပြည့်ဝပါစေ! 💪",
   "reminder_message_3": "ပြုံးပြုံးနဲ့ နိုးထပါ 😊 မျှော်လင့်ချက်ပြည့်တဲ့ နေ့တစ်နေ့ကို စတင်လိုက်ပါ! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "အသက်ရှူလေးနက်နက်ယူပြီး အနားယူဖို့ မမေ့ပါနဲ့ 😌။ စိတ်အေးချမ်းမှုက စိန်ခေါ်မှုအားလုံးကို ကျော်လွှားနိုင်အောင် ကူညီပေးပါလိမ့်မယ်။",
   "reminder_message_8": "နေ့တိုင်းဟာ စာမျက်နှာအသစ်တစ်မျက်နှာပါ။ ဒီနေ့ ကိုယ်ပိုင်အောင်မြင်မှုဇာတ်လမ်းကို ရေးသားလိုက်ပါ! 📖🖊️",
   "reminder_message_9": "စိန်ခေါ်မှုတွေက တောက်ပဖို့ အခွင့်အရေးတွေပါ။ သတ္တိရှိပြီး အကောင်းဆုံးလုပ်ဆောင်ပါ! 💡💪",
-  "reminder_message_10": "ကိုယ့်ကိုယ်ကို ဂရုစိုက်ဖို့ မမေ့ပါနဲ့! ကျန်းမာရေးကောင်းတဲ့ အစားအစာစားပါ 🥗 နှင့် ကျန်းမာအောင်နေပါ! ❤️"
+  "reminder_message_10": "ကိုယ့်ကိုယ်ကို ဂရုစိုက်ဖို့ မမေ့ပါနဲ့! ကျန်းမာရေးကောင်းတဲ့ အစားအစာစားပါ 🥗 နှင့် ကျန်းမာအောင်နေပါ! ❤️",
+  "subscription_screen_title_subs_success": "အကောင်းဆုံးပဲ! စာရင်းသွင်းခြင်း အောင်မြင်သည် 🎉",
+  "subscription_screen_title_subs_error": "အော်ဟင်! အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့သည် 😥",
+  "subscription_screen_message_subs_success": "သင်၏ $subscriptionId အစီအစဉ် အသင့်ဖြစ်နေပါသည်။ ယခု ခံစားပါ!",
+  "subscription_screen_message_subs_error": "ယခုအချိန်တွင် သင်၏ $subscriptionId အစီအစဉ်ကို မဖွင့်နိုင်ပါ။ နောက်မှ ထပ်ကြိုးစားကြည့်ပါ!",
+  "subscription_screen_action_subs_success": "ယခု စူးစမ်းကြည့်ပါ",
+  "subscription_screen_action_subs_error": "ထပ်ကြိုးစားပါ",
+  "subscription_screen_title": "သင်၏ အစီအစဉ်ကို ရွေးချယ်ပါ",
+  "subscription_screen_message": "အကောင်းဆုံး အင်္ဂါရပ်များကို ခံစားရန် အဆင့်မြှင့်ပါ",
+  "subscription_screen_action": "စာရင်းသွင်းပါ",
+  "subscription_screen_premium_1_monthly_plan_title": "၁ လ အစီအစဉ် 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "ရက် ၃၀ ကောင်းမွန်သော အတွေ့အကြုံ။ ကြော်ငြာမပါ၊ အလိုအလျောက် သက်တမ်းတိုးသည် – အနှောင့်အယှက် မရှိ! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "၃ လ အစီအစဉ် 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "တစ်နှစ်ပတ်၏ လေးပုံတစ်ပုံ လွတ်လပ်စွာ စူးစမ်း။ ကြော်ငြာမပါ၊ အလိုအလျောက် သက်တမ်းတိုးသည် – ပျော်ရွှင်မှု ဆက်လက်! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "၆ လ အစီအစဉ် 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "နှစ်ဝက် ကောင်းမွန်သော အတွေ့အကြုံ။ ကြော်ငြာမပါ၊ အလိုအလျောက် သက်တမ်းတိုးသည် – ပြည့်ဝစွာ ခံစားပါ! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "၁ နှစ် အစီအစဉ် (အကောင်းဆုံး တန်ဖိုး) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "ရက် ၃၆၅ ပြည့်ဝသော အခွင့်ထူးများ။ ကြော်ငြာမပါ၊ အလိုအလျောက် သက်တမ်းတိုးသည် – သင်အတွက် စံပြ ရွေးချယ်မှု! 💖",
+  "speak_screen_action_pronunciation_assessment": "အသံထွက် အကဲဖြတ်ခြင်း",
+  "speak_screen_action_loading_model": "မော်ဒယ်လ် ထည့်သွင်းနေသည် $percent",
+  "speak_screen_action_loading_ai_model": "AI မော်ဒယ်လ် ထည့်သွင်းနေသည်",
+  "speak_screen_action_assessing": "အကဲဖြတ်နေသည်",
+  "speak_screen_action_practice": "အသံထွက် လေ့ကျင့်ပါ",
+  "speak_screen_note_pronunciation_assessment": "အသံထွက် မှတ်ချက်များ \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ ကို /$substitutedWith/ အဖြစ် ထွက်ဆိုခဲ့သည်  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ ပိုလျှံ ထပ်ထည့်ခဲ့သည်\n",
+  "speak_screen_note_deletion": "• /$phoneme/ ချန်လှပ်ခဲ့သည်  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "ထူးချွန်သည်!",
+  "speak_screen_result_subtitle_70": "တော်တော်ကောင်းသည် — $error_count အသံ လေ့ကျင့်ရန် လိုသည်",
+  "speak_screen_result_subtitle_50": "ဆက်ကြိုးစားပါ — $error_count အသံ လေ့ကျင့်ရန် လိုသည်",
+  "speak_screen_result_subtitle_0": "ပိုမို လေ့ကျင့်ပါ — $error_count အသံ လေ့ကျင့်ရန် လိုသည်",
+  "speak_screen_result_label_score": "ရမှတ်",
+  "speak_screen_result_label_accuracy": "တိကျမှု",
+  "speak_screen_result_label_completion": "ပြီးဆုံးမှု",
+  "speak_screen_result_label_fluency": "ချောမွေ့မှု"
 }

@@ -8,10 +8,8 @@
   "action_reverse": "उल्टा करें",
   "action_try_speak": "बोलने का प्रयास करें",
   "action_view_all_ipa": "सभी देखें",
-
   "hint_enter_language_text": "यहां $language_name दर्ज करें!",
   "hint_enter_text": "यहां टेक्स्ट दर्ज करें!",
-
   "ipa_c": "केंद्रीय",
   "ipa_de": "जर्मन",
   "ipa_eo": "एस्पेरांतो",
@@ -41,7 +39,6 @@
   "ipa_yue": "कैंटोनीज़",
   "ipa_zh_hans": "सरलीकृत चीनी",
   "ipa_zh_hant": "पारंपरिक चीनी",
-
   "language_ar": "अरबी",
   "language_de": "जर्मनी",
   "language_en": "अंग्रेजी",
@@ -65,7 +62,6 @@
   "language_tts": "थाईलैंड",
   "language_vi": "वियतनामी",
   "language_zh": "चीनी",
-
   "message_completed_sync_phonetics": "ध्वन्यात्मकता $ipa_name सफलतापूर्वक सिंक्रनाइज़ हो गई",
   "message_completed_sync_translate": "अनुवाद सफलतापूर्वक सिंक्रनाइज़ हो गया",
   "message_result_empty": "अभी कोई सामग्री नहीं है!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "सिंक्रनाइज़ेशन पूरा हुआ",
   "message_translate_download": "अनुवाद डाउनलोड हो रहा है...",
   "message_error_io_exception": "🔌 कोई इंटरनेट कनेक्शन नहीं है",
-
   "rate_action_negative": "बाद में",
   "rate_action_positive": "रेट करें",
   "rate_message": "ऐप को और बेहतर बनाने के लिए हम आपकी प्रतिक्रिया जानना चाहेंगे। आपकी समीक्षा बहुत मायने रखती है! 🌟",
   "rate_title": "ऐप रेट करें",
-
   "update_action_negative": "⏳ बाद में",
   "update_action_positive": "⚡ अभी अपडेट करें",
   "update_message": "✨ एक नया संस्करण तैयार है! 🚀 बेहतर अनुभव और रोमांचक नई सुविधाओं के लिए अभी अपडेट करें! 🎉",
   "update_title": "🔄 ऐप अपडेट",
-
   "resource_history": "खोज इतिहास से",
   "resource_popular": "लोकप्रिय सूची से",
   "resource_category_introducing_yourself": "अपना परिचय देना",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "फल",
   "resource_category_clothes": "कपड़े",
   "resource_category_shopping": "खरीदारी",
-
   "speed_lever": "गति $lever",
-
   "title_game": "गेम आईपा 🎮",
   "title_answer_failed": "बिल्कुल सही नहीं",
   "title_answer_true": "बहुत बढ़िया",
@@ -116,16 +107,12 @@
   "title_translate": "अनुवाद करें:",
   "title_voice": "आवाज:",
   "title_voice_speed": "आवाज की गति:",
-
   "translating": "अनुवाद हो रहा है",
   "translate_failed": "अनुवाद विफल",
-
   "type_ipa": "प्रतिलेखन",
   "type_text": "अक्षर",
   "type_voice": "उच्चारण करें",
-
   "voice_index": "आवाज $index",
-
   "game_config_screen_action_play_game": "अभी खेलना शुरू करें!",
   "game_config_screen_message_resource_from_history": "पहले से खोजे गए शब्दों पर आधारित",
   "game_config_screen_message_resource_from_popular": "आमतौर पर इस्तेमाल होने वाले शब्दों पर आधारित",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "स्रोत के अनुसार गेम चुनें",
   "game_config_screen_title_resource_ipa": "IPA के अनुसार गेम चुनें",
   "game_config_screen_title_resource_category": "श्रेणी के अनुसार गेम चुनें",
-
   "game_congratulation_screen_action": "चलिए जारी रखते हैं!",
   "game_congratulation_screen_message": "बहुत बढ़िया! आपने लगातार $number बार सही उत्तर दिया है! लगे रहें और अपनी लय न खोएं! 😆👏",
   "game_congratulation_screen_message_1": "अविश्वसनीय! आपने लगातार $number सही उत्तर दिए हैं! अब चूकना शर्म की बात होगी! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "अविश्वसनीय! 😎",
   "game_congratulation_screen_title_3": "मैं आपके सामने नतमस्तक हूँ! 🙇‍♂️",
   "game_congratulation_screen_title_4": "एक जीवित किंवदंती! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "उत्तर है: $param1.",
   "game_ipa_puzzle_screen_title": "शब्द $param1 का उच्चारण $param2 है, लेकिन यह अधूरा है। कृपया लापता भाग को पूरा करें।",
-
   "game_ipa_wordle_screen_action": "जांचें",
   "game_ipa_wordle_screen_action_continue": "जारी रखें",
   "game_ipa_wordle_screen_action_retry": "पुनः प्रयास करें",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "नीचे दिए गए $param2 के लिए सही $param1 चुनें?",
   "game_ipa_wordle_screen_title_answer_failed": "बिल्कुल सही नहीं",
   "game_ipa_wordle_screen_title_answer_true": "बहुत बढ़िया",
-
   "game_ipa_match_screen_title": "उपयुक्त जोड़े एक साथ मिलाएं",
   "game_ipa_match_screen_title_choose": "जोड़े",
   "game_ipa_match_screen_message_answer_correct": "जोड़े मिल गए हैं",
   "game_ipa_match_screen_message_answer_failed": "कुछ जोड़े बिल्कुल मेल नहीं खाते",
-
   "game_screen_title": "गेम",
-
   "ipa_detail_screen_consonants_unvoiced": "अघोष व्यंजन",
   "ipa_detail_screen_consonants_voiced": "घोष व्यंजन",
   "ipa_detail_screen_diphthongs": "द्विस्वर",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "दीर्घ स्वर",
   "ipa_detail_screen_vowels_short": "लघु स्वर",
   "ipa_detail_screen_practice_with_games": "गेम के साथ $ipa का अभ्यास करें 🎮🧠",
-
   "ipa_list_screen_title": "आईपा सूची",
   "recording_screen_title": "कृपया $language_name बोलें",
-
   "thank_screen_title_for_action_copy": "💡 एक विशेष धन्यवाद",
   "thank_screen_message_for_action_copy": "🎉 आपने अभी जिस सुविधा का उपयोग किया है, उसका योगदान 💬 $author द्वारा किया गया था।\nहर दिन एक बेहतर उत्पाद बनाने में मदद करने के लिए समुदाय में शामिल हों! 🤝",
   "thank_screen_action_negative": "🙏 धन्यवाद",
   "thank_screen_action_positive": "समुदाय में शामिल हों",
-
   "thank_screen_title_for_action_ads": "💡 धन्यवाद",
   "thank_screen_message_for_action_ads": "विज्ञापन देखने के लिए धन्यवाद! 🙏 विज्ञापन हमें परियोजना बनाए रखने 💡 और ऐप को हर दिन बेहतर बनाने में मदद करते हैं 🌱📱.",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "बंद करें",
-
   "campaign_screen_title_for_join_group": "🤝 समुदाय में शामिल हों और साथ मिलकर आगे बढ़ें!",
   "campaign_screen_message_for_join_group": "📢 विचार साझा करें, सुविधाओं का सुझाव दें और हर दिन ऐप को बेहतर बनाने के लिए दूसरों के साथ सहयोग करें! 🚀💡",
-
   "version_name": "🚀 संस्करण: $version",
-
   "reminder_title_1": "सुप्रभात ☀️",
   "reminder_title_2": "नए दिन की शुभकामनाएँ ☀️",
   "reminder_title_3": "सकारात्मक ऊर्जा ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "शांति की शुरुआत 🕊️",
   "reminder_title_11": "सीखने के लिए तैयार 💡",
   "reminder_title_12": "एक नई यात्रा 🗺️",
-
   "reminder_message_1": "सुप्रभात! आइए आज अपना सर्वश्रेष्ठ दें और इस दिन को शानदार बनाएं! ✨",
   "reminder_message_2": "एक नया दिन शुरू हो गया है। आपको भरपूर ऊर्जा और खुशी की शुभकामनाएँ! 💪",
   "reminder_message_3": "मुस्कान के साथ जागें 😊 और उम्मीदों से भरा दिन शुरू करें! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "गहरी सांस लेना और आराम करना न भूलें 😌। शांत मन हर चुनौती को पार करने में मदद करता है।",
   "reminder_message_8": "हर दिन एक नया पन्ना है। आज अपनी सफलता की कहानी लिखें! 📖🖊️",
   "reminder_message_9": "चुनौतियाँ चमकने के अवसर होती हैं। साहस रखें और अपना सर्वश्रेष्ठ दें! 💡💪",
-  "reminder_message_10": "खुद का ध्यान रखना न भूलें! पौष्टिक भोजन करें 🥗 और स्वस्थ रहें! ❤️"
+  "reminder_message_10": "खुद का ध्यान रखना न भूलें! पौष्टिक भोजन करें 🥗 और स्वस्थ रहें! ❤️",
+  "subscription_screen_title_subs_success": "शानदार! सदस्यता सफल 🎉",
+  "subscription_screen_title_subs_error": "ओह नहीं! एक त्रुटि हुई 😥",
+  "subscription_screen_message_subs_success": "आपका $subscriptionId प्लान तैयार है। अभी आनंद लें!",
+  "subscription_screen_message_subs_error": "हम अभी आपका $subscriptionId प्लान सक्रिय नहीं कर सके। कृपया बाद में पुनः प्रयास करें!",
+  "subscription_screen_action_subs_success": "अभी एक्सप्लोर करें",
+  "subscription_screen_action_subs_error": "पुनः प्रयास करें",
+  "subscription_screen_title": "अपना प्लान चुनें",
+  "subscription_screen_message": "सभी शानदार सुविधाओं का आनंद लेने के लिए अपग्रेड करें",
+  "subscription_screen_action": "सदस्यता लें",
+  "subscription_screen_premium_1_monthly_plan_title": "1 महीने का प्लान 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "30 दिनों का शानदार अनुभव। कोई विज्ञापन नहीं, स्वचालित नवीकरण – कोई रुकावट नहीं! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "3 महीने का प्लान 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "पूरी तिमाही स्वतंत्र रूप से एक्सप्लोर करें। कोई विज्ञापन नहीं, स्वचालित नवीकरण – खुशी जारी रहे! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "6 महीने का प्लान 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "आधे साल का अद्भुत अनुभव। कोई विज्ञापन नहीं, स्वचालित नवीकरण – भरपूर आनंद! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "1 साल का प्लान (सर्वश्रेष्ठ मूल्य) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365 दिन पूर्ण विशेषाधिकार। कोई विज्ञापन नहीं, स्वचालित नवीकरण – आपके लिए सर्वोत्तम विकल्प! 💖",
+  "speak_screen_action_pronunciation_assessment": "उच्चारण मूल्यांकन",
+  "speak_screen_action_loading_model": "मॉडल लोड हो रहा है $percent",
+  "speak_screen_action_loading_ai_model": "AI मॉडल लोड हो रहा है",
+  "speak_screen_action_assessing": "मूल्यांकन हो रहा है",
+  "speak_screen_action_practice": "उच्चारण अभ्यास",
+  "speak_screen_note_pronunciation_assessment": "उच्चारण नोट्स \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ को /$substitutedWith/ के रूप में उच्चारित किया  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ अतिरिक्त जोड़ा गया\n",
+  "speak_screen_note_deletion": "• /$phoneme/ छूट गया  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "उत्कृष्ट!",
+  "speak_screen_result_subtitle_70": "काफी अच्छा — $error_count ध्वनियों का अभ्यास आवश्यक",
+  "speak_screen_result_subtitle_50": "प्रयास जारी रखें — $error_count ध्वनियों का अभ्यास आवश्यक",
+  "speak_screen_result_subtitle_0": "और अभ्यास करें — $error_count ध्वनियों का अभ्यास आवश्यक",
+  "speak_screen_result_label_score": "स्कोर",
+  "speak_screen_result_label_accuracy": "सटीकता",
+  "speak_screen_result_label_completion": "पूर्णता",
+  "speak_screen_result_label_fluency": "प्रवाह"
 }

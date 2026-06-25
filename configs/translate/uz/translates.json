@@ -8,10 +8,8 @@
   "action_reverse": "Teskari",
   "action_try_speak": "Gapirishga urinish",
   "action_view_all_ipa": "Barchasini koʻrish",
-
   "hint_enter_language_text": "$language_nameni shu yerga kiriting!",
   "hint_enter_text": "Matnni shu yerga kiriting!",
-
   "ipa_c": "Markaziy",
   "ipa_de": "Nemis",
   "ipa_eo": "Esperanto",
@@ -41,7 +39,6 @@
   "ipa_yue": "Kanton",
   "ipa_zh_hans": "Soddalashtirilgan Xitoy",
   "ipa_zh_hant": "Anʼanaviy Xitoy",
-
   "language_ar": "Arab",
   "language_de": "Germaniya",
   "language_en": "Ingliz",
@@ -65,7 +62,6 @@
   "language_tts": "Tailand",
   "language_vi": "Vyetnam",
   "language_zh": "Xitoy",
-
   "message_completed_sync_phonetics": "Fonetikalar $ipa_name muvaffaqiyatli sinxronlandi",
   "message_completed_sync_translate": "Tarjima muvaffaqiyatli sinxronlandi",
   "message_result_empty": "Hozircha hech qanday kontent yoʻq!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "Sinxronlash yakunlandi",
   "message_translate_download": "Tarjima yuklanmoqda...",
   "message_error_io_exception": "🔌 Internetga ulanish yoʻq",
-
   "rate_action_negative": "Keyinroq",
   "rate_action_positive": "Baholash",
   "rate_message": "Ilovani yanada yaxshilash uchun sizning fikr-mulohazalaringizni kutamiz. Sizning bahoyingiz biz uchun juda muhim! 🌟",
   "rate_title": "Ilovani baholash",
-
   "update_action_negative": "⏳ Keyinroq",
   "update_action_positive": "⚡ Hozir yangilash",
   "update_message": "✨ Yangi versiya tayyor! 🚀 Silliq tajriba va qiziqarli yangi funksiyalar uchun hozir yangilang! 🎉",
   "update_title": "🔄 Ilova yangilanishi",
-
   "resource_history": "Qidiruv tarixidan",
   "resource_popular": "Mashhur roʻyxatdan",
   "resource_category_introducing_yourself": "Oʻzingizni tanishtirish",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "Mevalar",
   "resource_category_clothes": "Kiyimlar",
   "resource_category_shopping": "Xarid qilish",
-
   "speed_lever": "Tezlik $lever",
-
   "title_game": "Ipa oʻyini 🎮",
   "title_answer_failed": "Toʻgʻri emas",
   "title_answer_true": "Ajoyib",
@@ -116,16 +107,12 @@
   "title_translate": "Tarjima:",
   "title_voice": "Ovoz:",
   "title_voice_speed": "Ovoz tezligi:",
-
   "translating": "Tarjima qilinmoqda",
   "translate_failed": "Tarjima qilinmadi",
-
   "type_ipa": "Transkripsiya",
   "type_text": "Harf",
   "type_voice": "Talaffuz qilish",
-
   "voice_index": "Ovoz $index",
-
   "game_config_screen_action_play_game": "Hozir oʻynashni boshlang!",
   "game_config_screen_message_resource_from_history": "Oldin qidirilgan soʻzlar asosida",
   "game_config_screen_message_resource_from_popular": "Koʻp ishlatiladigan soʻzlar asosida",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "Manba boʻyicha oʻyinni tanlash",
   "game_config_screen_title_resource_ipa": "IPA boʻyicha oʻyinni tanlash",
   "game_config_screen_title_resource_category": "Kategoriya boʻyicha oʻyinni tanlash",
-
   "game_congratulation_screen_action": "Davom etamiz!",
   "game_congratulation_screen_message": "Ajoyib! Siz ketma-ket $number marta toʻgʻri javob berdingiz! Davom eting va seriyangizni yoʻqotmang! 😆👏",
   "game_congratulation_screen_message_1": "Aql bovar qilmaydigan! Siz ketma-ket $number ta toʻgʻri javob oldingiz! Endi xato qilish uyat boʻlar edi! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "Ishonib boʻlmaydi! 😎",
   "game_congratulation_screen_title_3": "Sizning oldingizda taʼzim qilaman! 🙇‍♂️",
   "game_congratulation_screen_title_4": "Tirik afsona! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "Javob: $param1.",
   "game_ipa_puzzle_screen_title": "$param1 soʻzining talaffuzi $param2, lekin u toʻliq emas. Iltimos, yetishmayotgan qismini toʻldiring.",
-
   "game_ipa_wordle_screen_action": "Tekshirish",
   "game_ipa_wordle_screen_action_continue": "Davom etish",
   "game_ipa_wordle_screen_action_retry": "Qayta urinish",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "Quyidagi $param2 uchun toʻgʻri $param1ni tanlang?",
   "game_ipa_wordle_screen_title_answer_failed": "Toʻgʻri emas",
   "game_ipa_wordle_screen_title_answer_true": "Ajoyib",
-
   "game_ipa_match_screen_title": "Mos juftliklarni birga birlashtiring",
   "game_ipa_match_screen_title_choose": "Juftliklar",
   "game_ipa_match_screen_message_answer_correct": "Juftliklar moslashtirildi",
   "game_ipa_match_screen_message_answer_failed": "Baʼzi juftliklar mos kelmadi",
-
   "game_screen_title": "Oʻyin",
-
   "ipa_detail_screen_consonants_unvoiced": "Unsiz undoshlar",
   "ipa_detail_screen_consonants_voiced": "Ovozli undoshlar",
   "ipa_detail_screen_diphthongs": "Diftonglar",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "Choʻziq unlilar",
   "ipa_detail_screen_vowels_short": "Qisqa unlilar",
   "ipa_detail_screen_practice_with_games": "$ipa bilan oʻyinlar orqali mashq qiling 🎮🧠",
-
   "ipa_list_screen_title": "Ipa roʻyxati",
   "recording_screen_title": "Iltimos, $language_name da gapiring",
-
   "thank_screen_title_for_action_copy": "💡 Maxsus minnatdorchilik",
   "thank_screen_message_for_action_copy": "🎉 Siz hozirgina ishlatgan funksiya 💬 $author tomonidan taqdim etildi.\nHar kuni birgalikda yaxshiroq mahsulot yaratish uchun jamoaga qoʻshiling! 🤝",
   "thank_screen_action_negative": "🙏 Rahmat",
   "thank_screen_action_positive": "Jamoaga qoʻshilish",
-
   "thank_screen_title_for_action_ads": "💡 Rahmat",
   "thank_screen_message_for_action_ads": "Reklamani tomosha qilganingiz uchun rahmat! 🙏 Reklamalar bizga loyihani qo‘llab-quvvatlashga 💡 va ilovani har kuni yaxshilashga yordam beradi 🌱📱.",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "Yopish",
-
   "campaign_screen_title_for_join_group": "🤝 Jamoaga qoʻshiling va birga rivojlaning!",
   "campaign_screen_message_for_join_group": "📢 Gʻoyalaringizni baham koʻring, funksiyalarni taklif qiling va ilovani har kuni yaxshilash uchun boshqalar bilan hamkorlik qiling! 🚀💡",
-
   "version_name": "🚀 Versiya: $version",
-
   "reminder_title_1": "Xayrli tong ☀️",
   "reminder_title_2": "Salom, yangi kun ☀️",
   "reminder_title_3": "Ijobiy energiya ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "Tinchlik boshlanadi 🕊️",
   "reminder_title_11": "O‘rganishga tayyor 💡",
   "reminder_title_12": "Yangi sayohat 🗺️",
-
   "reminder_message_1": "Xayrli tong! Bugun qo‘limizdan kelganicha harakat qilaylik va hammasini ajoyib qilaylik! ✨",
   "reminder_message_2": "Yangi kun boshlandi. Sizga ko‘p energiya va quvonch tilayman! 💪",
   "reminder_message_3": "Tabassum bilan uyg‘oning 😊 va umidga to‘la kunni boshlang! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "Chuqur nafas olishni va dam olishni unutmang 😌. Tinch ong har qanday qiyinchilikni yengishga yordam beradi.",
   "reminder_message_8": "Har bir kun — yangi sahifa. Bugun o‘z muvaffaqiyat hikoyangizni yozing! 📖🖊️",
   "reminder_message_9": "Qiyinchiliklar porlash uchun imkoniyatdir. Jasur bo‘ling va qo‘lingizdan kelganini qiling! 💡💪",
-  "reminder_message_10": "O‘zingizga g‘amxo‘rlik qilishni unutmang! Sog‘lom ovqatlaning 🥗 va sog‘lom bo‘ling! ❤️"
+  "reminder_message_10": "O‘zingizga g‘amxo‘rlik qilishni unutmang! Sog‘lom ovqatlaning 🥗 va sog‘lom bo‘ling! ❤️",
+  "subscription_screen_title_subs_success": "Ajoyib! Obuna muvaffaqiyatli 🎉",
+  "subscription_screen_title_subs_error": "Voy! Xatolik yuz berdi 😥",
+  "subscription_screen_message_subs_success": "$subscriptionId rejangiz tayyor. Hozir rohatlaning!",
+  "subscription_screen_message_subs_error": "Hozircha $subscriptionId rejangizni faollashtira olmadik. Iltimos, keyinroq qayta urinib ko'ring!",
+  "subscription_screen_action_subs_success": "Hozir o'rganing",
+  "subscription_screen_action_subs_error": "Qayta urining",
+  "subscription_screen_title": "Rejangizni tanlang",
+  "subscription_screen_message": "Barcha ajoyib imkoniyatlardan bahramand bo'lish uchun yangilang",
+  "subscription_screen_action": "Obuna bo'lish",
+  "subscription_screen_premium_1_monthly_plan_title": "1 oylik reja 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "30 kun ajoyib tajriba. Reklama yo'q, avtomatik yangilanish – uzilishsiz! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "3 oylik reja 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "To'liq chorak bo'yi erkin o'rganing. Reklama yo'q, avtomatik yangilanish – quvonch davom etadi! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "6 oylik reja 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "Yarim yil ajoyib tajriba. Reklama yo'q, avtomatik yangilanish – to'liq rohatlaning! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "1 yillik reja (Eng yaxshi narx) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365 kun to'liq imtiyozlar. Reklama yo'q, avtomatik yangilanish – siz uchun mukammal tanlov! 💖",
+  "speak_screen_action_pronunciation_assessment": "Talaffuzni baholash",
+  "speak_screen_action_loading_model": "Model yuklanmoqda $percent",
+  "speak_screen_action_loading_ai_model": "AI modeli yuklanmoqda",
+  "speak_screen_action_assessing": "Baholanmoqda",
+  "speak_screen_action_practice": "Talaffuz mashqi",
+  "speak_screen_note_pronunciation_assessment": "TALAFFUZ ESLATMALARI \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ /$substitutedWith/ sifatida talaffuz qilindi  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ qo'shimcha kiritildi\n",
+  "speak_screen_note_deletion": "• /$phoneme/ tushirib qoldirildi  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "A'lo!",
+  "speak_screen_result_subtitle_70": "Juda yaxshi — $error_count tovush mashq qilishni talab qiladi",
+  "speak_screen_result_subtitle_50": "Urinishda davom eting — $error_count tovush mashq qilishni talab qiladi",
+  "speak_screen_result_subtitle_0": "Ko'proq mashq qiling — $error_count tovush mashq qilishni talab qiladi",
+  "speak_screen_result_label_score": "Ball",
+  "speak_screen_result_label_accuracy": "Aniqlik",
+  "speak_screen_result_label_completion": "Yakunlanish",
+  "speak_screen_result_label_fluency": "Ravonlik"
 }

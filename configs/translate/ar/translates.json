@@ -8,10 +8,8 @@
   "action_reverse": "عكس",
   "action_try_speak": "حاول التحدث",
   "action_view_all_ipa": "عرض الكل",
-
   "hint_enter_language_text": "أدخل $language_name هنا!",
   "hint_enter_text": "أدخل النص هنا!",
-
   "ipa_c": "وسط",
   "ipa_de": "ألمانية",
   "ipa_eo": "إسبرانتو",
@@ -41,7 +39,6 @@
   "ipa_yue": "كانتونية",
   "ipa_zh_hans": "صينية مبسطة",
   "ipa_zh_hant": "صينية تقليدية",
-
   "language_ar": "عربي",
   "language_de": "ألمانية",
   "language_en": "إنجليزية",
@@ -65,7 +62,6 @@
   "language_tts": "تايلاند",
   "language_vi": "فيتنامية",
   "language_zh": "صينية",
-
   "message_completed_sync_phonetics": "تمت مزامنة الصوتيات $ipa_name بنجاح",
   "message_completed_sync_translate": "تمت مزامنة الترجمة بنجاح",
   "message_result_empty": "لا يوجد محتوى بعد!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "اكتملت المزامنة",
   "message_translate_download": "جارٍ تنزيل الترجمة...",
   "message_error_io_exception": "🔌 لا يوجد اتصال بالإنترنت",
-
   "rate_action_negative": "لاحقًا",
   "rate_action_positive": "قيم",
   "rate_message": "نود الحصول على ملاحظاتك لجعل التطبيق أفضل. رأيك يعني الكثير! 🌟",
   "rate_title": "تقييم التطبيق",
-
   "update_action_negative": "⏳ لاحقًا",
   "update_action_positive": "⚡ تحديث الآن",
   "update_message": "✨ نسخة جديدة جاهزة! 🚀 حدث الآن لتجربة أكثر سلاسة وميزات جديدة ومثيرة! 🎉",
   "update_title": "🔄 تحديث التطبيق",
-
   "resource_history": "من سجل البحث",
   "resource_popular": "من القائمة الشائعة",
   "resource_category_introducing_yourself": "تقديم النفس",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "الفواكه",
   "resource_category_clothes": "الملابس",
   "resource_category_shopping": "التسوق",
-
   "speed_lever": "السرعة $lever",
-
   "title_game": "لعبة IPA 🎮",
   "title_answer_failed": "غير صحيح تمامًا",
   "title_answer_true": "رائع",
@@ -116,16 +107,12 @@
   "title_translate": "الترجمة:",
   "title_voice": "الصوت:",
   "title_voice_speed": "سرعة الصوت:",
-
   "translating": "جارٍ الترجمة",
   "translate_failed": "فشل الترجمة",
-
   "type_ipa": "النسخ الصوتي",
   "type_text": "الحرف",
   "type_voice": "النطق",
-
   "voice_index": "الصوت $index",
-
   "game_config_screen_action_play_game": "ابدأ اللعب الآن!",
   "game_config_screen_message_resource_from_history": "بناءً على الكلمات التي تم البحث عنها مسبقًا",
   "game_config_screen_message_resource_from_popular": "بناءً على الكلمات الشائعة الاستخدام",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "اختر اللعبة حسب المصدر",
   "game_config_screen_title_resource_ipa": "اختر اللعبة حسب IPA",
   "game_config_screen_title_resource_category": "اختر اللعبة حسب الفئة",
-
   "game_congratulation_screen_action": "هيا نكمل!",
   "game_congratulation_screen_message": "رائع! لقد أجبت بشكل صحيح $number مرة على التوالي! استمر ولا تفقد تقدمك! 😆👏",
   "game_congratulation_screen_message_1": "لا يصدق! لقد حصلت على $number إجابة صحيحة على التوالي! سيكون من العار أن تفشل الآن! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "لا يصدق! 😎",
   "game_congratulation_screen_title_3": "أركع أمامك! 🙇‍♂️",
   "game_congratulation_screen_title_4": "أسطورة حية! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "الإجابة هي: $param1.",
   "game_ipa_puzzle_screen_title": "الكلمة $param1 لها النطق $param2، لكنها غير مكتملة. يرجى إكمال الجزء المفقود.",
-
   "game_ipa_wordle_screen_action": "تحقق",
   "game_ipa_wordle_screen_action_continue": "متابعة",
   "game_ipa_wordle_screen_action_retry": "أعد المحاولة",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "اختر $param1 الصحيح لـ $param2 أدناه؟",
   "game_ipa_wordle_screen_title_answer_failed": "غير صحيح تمامًا",
   "game_ipa_wordle_screen_title_answer_true": "رائع",
-
   "game_ipa_match_screen_title": "طابق الأزواج المناسبة معًا",
   "game_ipa_match_screen_title_choose": "الأزواج",
   "game_ipa_match_screen_message_answer_correct": "تمت مطابقة الأزواج",
   "game_ipa_match_screen_message_answer_failed": "بعض الأزواج لا تتطابق تمامًا",
-
   "game_screen_title": "لعبة",
-
   "ipa_detail_screen_consonants_unvoiced": "حروف ساكنة غير مجهورة",
   "ipa_detail_screen_consonants_voiced": "حروف ساكنة مجهورة",
   "ipa_detail_screen_diphthongs": "حروف العلة المزدوجة",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "حروف العلة الطويلة",
   "ipa_detail_screen_vowels_short": "حروف العلة القصيرة",
   "ipa_detail_screen_practice_with_games": "تدرب على $ipa بالألعاب 🎮🧠",
-
   "ipa_list_screen_title": "قائمة IPA",
   "recording_screen_title": "الرجاء التحدث باللغة $language_name",
-
   "thank_screen_title_for_action_copy": "💡 شكر خاص",
   "thank_screen_message_for_action_copy": "🎉 الميزة التي استخدمتها للتو ساهم بها 💬 $author.\nانضم إلى المجتمع للمساعدة في بناء منتج أفضل معًا كل يوم! 🤝",
   "thank_screen_action_negative": "🙏 شكرًا",
   "thank_screen_action_positive": "انضم إلى المجتمع",
-
   "thank_screen_title_for_action_ads": "💡 شكرًا لك",
   "thank_screen_message_for_action_ads": "شكرًا لمشاهدتك الإعلان! 🙏 تساعدنا الإعلانات في الحفاظ على المشروع 💡 ومواصلة تحسين التطبيق كل يوم 🌱📱.",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "إغلاق",
-
   "campaign_screen_title_for_join_group": "🤝 انضم إلى المجتمع وننمو معًا!",
   "campaign_screen_message_for_join_group": "📢 شارك الأفكار، اقترح الميزات، وتعاون مع الآخرين لجعل التطبيق أفضل كل يوم! 🚀💡",
-
   "version_name": "🚀 الإصدار: $version",
-
   "reminder_title_1": "صباح الخير ☀️",
   "reminder_title_2": "يوم جديد سعيد ☀️",
   "reminder_title_3": "طاقة إيجابية ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "السلام يبدأ 🕊️",
   "reminder_title_11": "جاهز للتعلّم 💡",
   "reminder_title_12": "رحلة جديدة 🗺️",
-
   "reminder_message_1": "صباح الخير! لنبذل أفضل ما لدينا اليوم ونجعل كل شيء رائعًا! ✨",
   "reminder_message_2": "بدأ يوم جديد، نتمنى لك طاقة كبيرة وسعادة دائمة! 💪",
   "reminder_message_3": "استيقظ بابتسامة 😊 وابدأ يومًا مليئًا بالأمل! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "لا تنسَ أن تأخذ نفسًا عميقًا وتسترخي 😌. الذهن الهادئ يساعدك على تجاوز كل التحديات.",
   "reminder_message_8": "كل يوم صفحة جديدة. اكتب قصة نجاحك الخاصة اليوم! 📖🖊️",
   "reminder_message_9": "التحديات فرص للتألّق. كن شجاعًا وابذل قصارى جهدك! 💡💪",
-  "reminder_message_10": "تذكّر أن تعتني بنفسك! تناول طعامًا صحيًا 🥗 واهتم بصحتك! ❤️"
+  "reminder_message_10": "تذكّر أن تعتني بنفسك! تناول طعامًا صحيًا 🥗 واهتم بصحتك! ❤️",
+  "subscription_screen_title_subs_success": "رائع! اشتراك ناجح 🎉",
+  "subscription_screen_title_subs_error": "يا إلهي! حدث خطأ 😥",
+  "subscription_screen_message_subs_success": "خطتك $subscriptionId جاهزة. دعنا نستمتع بها الآن!",
+  "subscription_screen_message_subs_error": "لم نتمكن من تفعيل خطتك $subscriptionId في الوقت الحالي. يرجى المحاولة مرة أخرى لاحقًا!",
+  "subscription_screen_action_subs_success": "استكشف الآن",
+  "subscription_screen_action_subs_error": "حاول مرة أخرى",
+  "subscription_screen_title": "اختر خطتك",
+  "subscription_screen_message": "قم بالترقية للاستمتاع بأروع الميزات",
+  "subscription_screen_action": "اشترك",
+  "subscription_screen_premium_1_monthly_plan_title": "خطة شهر واحد 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "استمتع بـ 30 يومًا رائعة. بلا إعلانات، تجديد تلقائي – بلا انقطاع! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "خطة 3 أشهر 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "استكشف بحرية لربع سنة كامل. بلا إعلانات، تجديد تلقائي – الفرح مستمر! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "خطة 6 أشهر 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "نصف عام من التجربة الرائعة. بلا إعلانات، تجديد تلقائي – استمتع للحد الأقصى! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "خطة سنة كاملة (الأفضل قيمة) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365 يومًا من الامتيازات الكاملة. بلا إعلانات، تجديد تلقائي – الخيار المثالي لك! 💖",
+  "speak_screen_action_pronunciation_assessment": "تقييم النطق",
+  "speak_screen_action_loading_model": "جارٍ تحميل النموذج $percent",
+  "speak_screen_action_loading_ai_model": "جارٍ تحميل نموذج الذكاء الاصطناعي",
+  "speak_screen_action_assessing": "جارٍ التقييم",
+  "speak_screen_action_practice": "تدريب النطق",
+  "speak_screen_note_pronunciation_assessment": "ملاحظات النطق \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ نُطقت كـ /$substitutedWith/  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ إضافة زائدة\n",
+  "speak_screen_note_deletion": "• /$phoneme/ محذوفة  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "ممتاز!",
+  "speak_screen_result_subtitle_70": "جيد جداً — $error_count أصوات تحتاج تدريباً",
+  "speak_screen_result_subtitle_50": "استمر في المحاولة — $error_count أصوات تحتاج تدريباً",
+  "speak_screen_result_subtitle_0": "تدرب أكثر — $error_count أصوات تحتاج تدريباً",
+  "speak_screen_result_label_score": "النتيجة",
+  "speak_screen_result_label_accuracy": "الدقة",
+  "speak_screen_result_label_completion": "الاكتمال",
+  "speak_screen_result_label_fluency": "الطلاقة"
 }

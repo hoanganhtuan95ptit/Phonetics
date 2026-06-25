@@ -8,10 +8,8 @@
   "action_reverse": "ย้อนกลับ",
   "action_try_speak": "ลองพูด",
   "action_view_all_ipa": "ดูทั้งหมด",
-
   "hint_enter_language_text": "ป้อน $language_name ที่นี่!",
   "hint_enter_text": "ป้อนข้อความที่นี่!",
-
   "ipa_c": "กลาง",
   "ipa_de": "เยอรมัน",
   "ipa_eo": "เอสเปรันโต",
@@ -41,7 +39,6 @@
   "ipa_yue": "กวางตุ้ง",
   "ipa_zh_hans": "จีนตัวย่อ",
   "ipa_zh_hant": "จีนตัวเต็ม",
-
   "language_ar": "อาหรับ",
   "language_de": "เยอรมนี",
   "language_en": "อังกฤษ",
@@ -65,7 +62,6 @@
   "language_tts": "ไทย",
   "language_vi": "เวียดนาม",
   "language_zh": "จีน",
-
   "message_completed_sync_phonetics": "การออกเสียง $ipa_name ซิงค์สำเร็จแล้ว",
   "message_completed_sync_translate": "การแปลซิงค์สำเร็จแล้ว",
   "message_result_empty": "ยังไม่มีเนื้อหา!",
@@ -77,17 +73,14 @@
   "message_sync_completed": "การซิงโครไนซ์เสร็จสมบูรณ์",
   "message_translate_download": "กำลังดาวน์โหลดการแปล...",
   "message_error_io_exception": "🔌 ไม่มีสัญญาณอินเทอร์เน็ต",
-
   "rate_action_negative": "ช้าไป",
   "rate_action_positive": "ให้คะแนน",
   "rate_message": "เราอยากได้ความคิดเห็นของคุณเพื่อทำให้แอปดียิ่งขึ้นไปอีก ความเห็นของคุณมีความหมายมาก! 🌟",
   "rate_title": "ให้คะแนนแอป",
-
   "update_action_negative": "⏳ ภายหลัง",
   "update_action_positive": "⚡ อัปเดตตอนนี้",
   "update_message": "✨ มีเวอร์ชันใหม่พร้อมใช้งานแล้ว! 🚀 อัปเดตตอนนี้เพื่อประสบการณ์ที่ราบรื่นยิ่งขึ้นและฟีเจอร์ใหม่ ๆ ที่น่าตื่นเต้น! 🎉",
   "update_title": "🔄 อัปเดตแอป",
-
   "resource_history": "จากประวัติการค้นหา",
   "resource_popular": "จากรายการยอดนิยม",
   "resource_category_introducing_yourself": "การแนะนำตัวเอง",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "ผลไม้",
   "resource_category_clothes": "เสื้อผ้า",
   "resource_category_shopping": "การช้อปปิ้ง",
-
   "speed_lever": "ความเร็ว $lever",
-
   "title_game": "เกม IPA 🎮",
   "title_answer_failed": "ไม่ถูกต้อง",
   "title_answer_true": "ยอดเยี่ยม",
@@ -116,16 +107,12 @@
   "title_translate": "แปล:",
   "title_voice": "เสียง:",
   "title_voice_speed": "ความเร็วเสียง:",
-
   "translating": "กำลังแปล",
   "translate_failed": "การแปลล้มเหลว",
-
   "type_ipa": "การถอดเสียง",
   "type_text": "ตัวอักษร",
   "type_voice": "การออกเสียง",
-
   "voice_index": "เสียง $index",
-
   "game_config_screen_action_play_game": "เริ่มเล่นเลย!",
   "game_config_screen_message_resource_from_history": "อ้างอิงจากคำที่ค้นหาไปก่อนหน้านี้",
   "game_config_screen_message_resource_from_popular": "อ้างอิงจากคำที่ใช้บ่อย",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "เลือกเกมจากแหล่งที่มา",
   "game_config_screen_title_resource_ipa": "เลือกเกมตาม IPA",
   "game_config_screen_title_resource_category": "เลือกเกมตามหมวดหมู่",
-
   "game_congratulation_screen_action": "ไปต่อกันเลย!",
   "game_congratulation_screen_message": "สุดยอด! คุณตอบถูก $number ครั้งติดกัน! ไปต่ออย่าให้เสียสตรีค! 😆👏",
   "game_congratulation_screen_message_1": "เหลือเชื่อ! คุณตอบถูก $number ครั้งติดกัน! ถ้าพลาดตอนนี้คงน่าเสียดาย! 🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "ไม่น่าเชื่อ! 😎",
   "game_congratulation_screen_title_3": "ขอน้อมรับคำนับ! 🙇‍♂️",
   "game_congratulation_screen_title_4": "ตำนานที่ยังมีชีวิต! 🏆",
-
   "game_ipa_puzzle_screen_message_answer": "คำตอบคือ: $param1",
   "game_ipa_puzzle_screen_title": "คำว่า $param1 มีการออกเสียงว่า $param2 แต่ไม่สมบูรณ์ โปรดเติมส่วนที่ขาดหายไปให้สมบูรณ์",
-
   "game_ipa_wordle_screen_action": "ตรวจสอบ",
   "game_ipa_wordle_screen_action_continue": "ดำเนินการต่อ",
   "game_ipa_wordle_screen_action_retry": "ลองอีกครั้ง",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "เลือก $param1 ที่ถูกต้องสำหรับ $param2 ด้านล่างนี้?",
   "game_ipa_wordle_screen_title_answer_failed": "ไม่ถูกต้อง",
   "game_ipa_wordle_screen_title_answer_true": "ยอดเยี่ยม",
-
   "game_ipa_match_screen_title": "จับคู่ที่เหมาะสมเข้าด้วยกัน",
   "game_ipa_match_screen_title_choose": "คู่",
   "game_ipa_match_screen_message_answer_correct": "จับคู่สำเร็จแล้ว",
   "game_ipa_match_screen_message_answer_failed": "บางคู่ไม่ตรงกัน",
-
   "game_screen_title": "เกม",
-
   "ipa_detail_screen_consonants_unvoiced": "พยัญชนะไม่ก้อง",
   "ipa_detail_screen_consonants_voiced": "พยัญชนะก้อง",
   "ipa_detail_screen_diphthongs": "สระประสม",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "สระเสียงยาว",
   "ipa_detail_screen_vowels_short": "สระเสียงสั้น",
   "ipa_detail_screen_practice_with_games": "ฝึก IPA ด้วยเกม 🎮🧠",
-
   "ipa_list_screen_title": "รายการ IPA",
   "recording_screen_title": "กรุณาพูด $language_name",
-
   "thank_screen_title_for_action_copy": "💡 ขอขอบคุณเป็นพิเศษ",
   "thank_screen_message_for_action_copy": "🎉 ฟีเจอร์ที่คุณเพิ่งใช้ได้รับความร่วมมือจาก 💬 $author\nเข้าร่วมชุมชนเพื่อช่วยกันสร้างผลิตภัณฑ์ที่ดีขึ้นทุกวัน! 🤝",
   "thank_screen_action_negative": "🙏 ขอบคุณ",
   "thank_screen_action_positive": "เข้าร่วมชุมชน",
-
   "thank_screen_title_for_action_ads": "💡 ขอบคุณ",
   "thank_screen_message_for_action_ads": "ขอบคุณที่รับชมโฆษณา! 🙏 โฆษณาช่วยให้เราดำเนินโครงการต่อไปได้ 💡 และปรับปรุงแอปให้ดีขึ้นทุกวัน 🌱📱.",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "ปิด",
-
   "campaign_screen_title_for_join_group": "🤝 เข้าร่วมชุมชนและเติบโตไปด้วยกัน!",
   "campaign_screen_message_for_join_group": "📢 แบ่งปันแนวคิด เสนอแนะคุณสมบัติ และร่วมมือกับผู้อื่นเพื่อทำให้แอปดียิ่งขึ้นทุกวัน! 🚀💡",
-
   "version_name": "🚀 เวอร์ชัน: $version",
-
   "reminder_title_1": "สวัสดีตอนเช้า ☀️",
   "reminder_title_2": "สวัสดีวันใหม่ ☀️",
   "reminder_title_3": "พลังบวก ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "ความสงบเริ่มต้น 🕊️",
   "reminder_title_11": "พร้อมเรียนรู้ 💡",
   "reminder_title_12": "การเดินทางครั้งใหม่ 🗺️",
-
   "reminder_message_1": "สวัสดีตอนเช้า! มาทำให้ดีที่สุดในวันนี้และทำให้ทุกอย่างยอดเยี่ยมกันเถอะ! ✨",
   "reminder_message_2": "วันใหม่ได้เริ่มขึ้นแล้ว ขอให้คุณเต็มไปด้วยพลังและความสุข! 💪",
   "reminder_message_3": "ตื่นมาพร้อมรอยยิ้ม 😊 และเริ่มต้นวันใหม่ที่เต็มไปด้วยความหวัง! 🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "อย่าลืมหายใจลึก ๆ และผ่อนคลาย 😌 จิตใจที่สงบจะช่วยให้คุณผ่านทุกความท้าทายได้",
   "reminder_message_8": "ทุกวันคือหน้ากระดาษใหม่ เขียนเรื่องราวความสำเร็จของคุณในวันนี้! 📖🖊️",
   "reminder_message_9": "ความท้าทายคือโอกาสในการเปล่งประกาย จงกล้าหาญและทำให้ดีที่สุด! 💡💪",
-  "reminder_message_10": "อย่าลืมดูแลตัวเองนะ! กินอาหารที่ดี 🥗 และรักษาสุขภาพให้แข็งแรง! ❤️"
+  "reminder_message_10": "อย่าลืมดูแลตัวเองนะ! กินอาหารที่ดี 🥗 และรักษาสุขภาพให้แข็งแรง! ❤️",
+  "subscription_screen_title_subs_success": "ยอดเยี่ยม! สมัครสมาชิกสำเร็จ 🎉",
+  "subscription_screen_title_subs_error": "โอ้ไม่! เกิดข้อผิดพลาด 😥",
+  "subscription_screen_message_subs_success": "แพ็กเกจ $subscriptionId ของคุณพร้อมแล้ว มาเพลิดเพลินกันเลย!",
+  "subscription_screen_message_subs_error": "เราไม่สามารถเปิดใช้งานแพ็กเกจ $subscriptionId ของคุณได้ในขณะนี้ กรุณาลองใหม่ภายหลัง!",
+  "subscription_screen_action_subs_success": "สำรวจเลย",
+  "subscription_screen_action_subs_error": "ลองอีกครั้ง",
+  "subscription_screen_title": "เลือกแพ็กเกจของคุณ",
+  "subscription_screen_message": "อัปเกรดเพื่อเพลิดเพลินกับฟีเจอร์ที่ยอดเยี่ยม",
+  "subscription_screen_action": "สมัครสมาชิก",
+  "subscription_screen_premium_1_monthly_plan_title": "แพ็กเกจ 1 เดือน 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "เพลิดเพลิน 30 วันสุดยอด ไม่มีโฆษณา ต่ออายุอัตโนมัติ – ไม่มีสะดุด! ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "แพ็กเกจ 3 เดือน 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "สำรวจอย่างอิสระตลอดไตรมาส ไม่มีโฆษณา ต่ออายุอัตโนมัติ – ความสุขต่อเนื่อง! 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "แพ็กเกจ 6 เดือน 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "ครึ่งปีแห่งประสบการณ์ที่ยอดเยี่ยม ไม่มีโฆษณา ต่ออายุอัตโนมัติ – เพลิดเพลินเต็มที่! 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "แพ็กเกจ 1 ปี (คุ้มที่สุด) 👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365 วันแห่งสิทธิพิเศษครบครัน ไม่มีโฆษณา ต่ออายุอัตโนมัติ – ตัวเลือกที่สมบูรณ์แบบสำหรับคุณ! 💖",
+  "speak_screen_action_pronunciation_assessment": "ประเมินการออกเสียง",
+  "speak_screen_action_loading_model": "กำลังโหลดโมเดล $percent",
+  "speak_screen_action_loading_ai_model": "กำลังโหลดโมเดล AI",
+  "speak_screen_action_assessing": "กำลังประเมิน",
+  "speak_screen_action_practice": "ฝึกการออกเสียง",
+  "speak_screen_note_pronunciation_assessment": "บันทึกการออกเสียง \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ ออกเสียงเป็น /$substitutedWith/  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ เพิ่มเสียงเกิน\n",
+  "speak_screen_note_deletion": "• /$phoneme/ ออกเสียงขาดไป  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "ยอดเยี่ยม!",
+  "speak_screen_result_subtitle_70": "ดีมาก — $error_count เสียงต้องฝึก",
+  "speak_screen_result_subtitle_50": "พยายามต่อไป — $error_count เสียงต้องฝึก",
+  "speak_screen_result_subtitle_0": "ฝึกเพิ่มเติม — $error_count เสียงต้องฝึก",
+  "speak_screen_result_label_score": "คะแนน",
+  "speak_screen_result_label_accuracy": "ความแม่นยำ",
+  "speak_screen_result_label_completion": "ความสมบูรณ์",
+  "speak_screen_result_label_fluency": "ความคล่องแคล่ว"
 }

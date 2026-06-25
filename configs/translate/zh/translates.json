@@ -8,10 +8,8 @@
   "action_reverse": "反转",
   "action_try_speak": "尝试说话",
   "action_view_all_ipa": "查看全部",
-
   "hint_enter_language_text": "在此输入$language_name！",
   "hint_enter_text": "在此输入文字！",
-
   "ipa_c": "中部",
   "ipa_de": "德语",
   "ipa_eo": "世界语",
@@ -41,7 +39,6 @@
   "ipa_yue": "粤语",
   "ipa_zh_hans": "简体中文",
   "ipa_zh_hant": "繁体中文",
-
   "language_ar": "阿拉伯语",
   "language_de": "德语",
   "language_en": "英语",
@@ -65,7 +62,6 @@
   "language_tts": "泰国",
   "language_vi": "越南语",
   "language_zh": "中文",
-
   "message_completed_sync_phonetics": "音标 $ipa_name 同步成功",
   "message_completed_sync_translate": "翻译同步成功",
   "message_result_empty": "暂无内容！",
@@ -77,17 +73,14 @@
   "message_sync_completed": "同步完成",
   "message_translate_download": "正在下载翻译...",
   "message_error_io_exception": "🔌 无网络连接",
-
   "rate_action_negative": "稍后",
   "rate_action_positive": "评分",
   "rate_message": "我们很乐意听取您的反馈，让应用程序变得更好。您的评论意义重大！🌟",
   "rate_title": "评价应用",
-
   "update_action_negative": "⏳ 稍后",
   "update_action_positive": "⚡ 立即更新",
   "update_message": "✨ 新版本已准备就绪！🚀 立即更新以获得更流畅的体验和令人兴奋的新功能！🎉",
   "update_title": "🔄 应用更新",
-
   "resource_history": "来自搜索历史",
   "resource_popular": "来自热门列表",
   "resource_category_introducing_yourself": "自我介绍",
@@ -102,9 +95,7 @@
   "resource_category_fruits": "水果",
   "resource_category_clothes": "衣服",
   "resource_category_shopping": "购物",
-
   "speed_lever": "速度 $lever",
-
   "title_game": "IPA 游戏 🎮",
   "title_answer_failed": "不太对",
   "title_answer_true": "太棒了",
@@ -116,16 +107,12 @@
   "title_translate": "翻译：",
   "title_voice": "语音：",
   "title_voice_speed": "语音速度：",
-
   "translating": "正在翻译",
   "translate_failed": "翻译失败",
-
   "type_ipa": "音译",
   "type_text": "字母",
   "type_voice": "发音",
-
   "voice_index": "语音 $index",
-
   "game_config_screen_action_play_game": "现在开始玩！",
   "game_config_screen_message_resource_from_history": "基于之前搜索的单词",
   "game_config_screen_message_resource_from_popular": "基于常用词",
@@ -133,7 +120,6 @@
   "game_config_screen_title_resource": "按来源选择游戏",
   "game_config_screen_title_resource_ipa": "按 IPA 选择游戏",
   "game_config_screen_title_resource_category": "按类别选择游戏",
-
   "game_congratulation_screen_action": "我们继续！",
   "game_congratulation_screen_message": "太棒了！你已经连续答对 $number 次了！继续努力，不要中断连胜！😆👏",
   "game_congratulation_screen_message_1": "不可思议！你已经连续答对 $number 次了！现在错过了就太可惜了！🤭🔥",
@@ -145,10 +131,8 @@
   "game_congratulation_screen_title_2": "难以置信！😎",
   "game_congratulation_screen_title_3": "我向你鞠躬！🙇‍♂️",
   "game_congratulation_screen_title_4": "活着的传奇！🏆",
-
   "game_ipa_puzzle_screen_message_answer": "答案是：$param1。",
   "game_ipa_puzzle_screen_title": "单词 $param1 的发音是 $param2，但它不完整。请完成缺失的部分。",
-
   "game_ipa_wordle_screen_action": "检查",
   "game_ipa_wordle_screen_action_continue": "继续",
   "game_ipa_wordle_screen_action_retry": "再试一次",
@@ -156,14 +140,11 @@
   "game_ipa_wordle_screen_title": "选择下面 $param2 的正确 $param1？",
   "game_ipa_wordle_screen_title_answer_failed": "不太对",
   "game_ipa_wordle_screen_title_answer_true": "太棒了",
-
   "game_ipa_match_screen_title": "将合适的配对匹配在一起",
   "game_ipa_match_screen_title_choose": "配对",
   "game_ipa_match_screen_message_answer_correct": "配对已匹配",
   "game_ipa_match_screen_message_answer_failed": "有些配对不太匹配",
-
   "game_screen_title": "游戏",
-
   "ipa_detail_screen_consonants_unvoiced": "清辅音",
   "ipa_detail_screen_consonants_voiced": "浊辅音",
   "ipa_detail_screen_diphthongs": "双元音",
@@ -171,25 +152,19 @@
   "ipa_detail_screen_vowels_long": "长元音",
   "ipa_detail_screen_vowels_short": "短元音",
   "ipa_detail_screen_practice_with_games": "通过游戏练习 $ipa 🎮🧠",
-
   "ipa_list_screen_title": "IPA 列表",
   "recording_screen_title": "请说 $language_name",
-
   "thank_screen_title_for_action_copy": "💡 特别感谢",
   "thank_screen_message_for_action_copy": "🎉 您刚才使用的功能由 💬 $author 贡献。\n加入社区，每天共同打造更好的产品！🤝",
   "thank_screen_action_negative": "🙏 谢谢",
   "thank_screen_action_positive": "加入社区",
-
   "thank_screen_title_for_action_ads": "💡 感谢您",
   "thank_screen_message_for_action_ads": "感谢您观看广告！🙏 广告帮助我们维持项目 💡 并每天不断改进应用 🌱📱。",
   "thank_screen_action_negative_ads": "",
   "thank_screen_action_positive_ads": "关闭",
-  
   "campaign_screen_title_for_join_group": "🤝 加入社区，共同成长！",
   "campaign_screen_message_for_join_group": "📢 分享想法，提出功能建议，并与他人协作，让应用每天都变得更好！🚀💡",
-
   "version_name": "🚀 版本：$version",
-
   "reminder_title_1": "早上好 ☀️",
   "reminder_title_2": "你好，新的一天 ☀️",
   "reminder_title_3": "正能量 ✨",
@@ -202,7 +177,6 @@
   "reminder_title_10": "平静从此开始 🕊️",
   "reminder_title_11": "准备学习 💡",
   "reminder_title_12": "新的旅程 🗺️",
-
   "reminder_message_1": "早上好！让我们今天全力以赴，把一切变得美好吧！✨",
   "reminder_message_2": "新的一天开始了，祝你充满能量与快乐！💪",
   "reminder_message_3": "带着微笑醒来 😊，开启充满希望的一天！🌈",
@@ -212,5 +186,39 @@
   "reminder_message_7": "别忘了深呼吸并放松 😌。平静的心态能帮助你克服任何挑战。",
   "reminder_message_8": "每一天都是新的一页。今天书写属于你的成功故事吧！📖🖊️",
   "reminder_message_9": "挑战就是闪耀的机会。勇敢一点，尽你所能！💡💪",
-  "reminder_message_10": "记得照顾好自己！健康饮食 🥗，保持身体健康！❤️"
+  "reminder_message_10": "记得照顾好自己！健康饮食 🥗，保持身体健康！❤️",
+  "subscription_screen_title_subs_success": "太棒了！订阅成功 🎉",
+  "subscription_screen_title_subs_error": "哦不！发生了错误 😥",
+  "subscription_screen_message_subs_success": "您的 $subscriptionId 计划已准备就绪。立即享受吧！",
+  "subscription_screen_message_subs_error": "我们暂时无法激活您的 $subscriptionId 计划。请稍后再试！",
+  "subscription_screen_action_subs_success": "立即探索",
+  "subscription_screen_action_subs_error": "重试",
+  "subscription_screen_title": "选择您的计划",
+  "subscription_screen_message": "升级以享受所有精彩功能",
+  "subscription_screen_action": "订阅",
+  "subscription_screen_premium_1_monthly_plan_title": "1个月计划 🎟️",
+  "subscription_screen_premium_1_monthly_plan_description": "享受30天精彩体验。无广告，自动续订 – 不间断！ ✨",
+  "subscription_screen_premium_3_monthly_plan_title": "3个月计划 🎈",
+  "subscription_screen_premium_3_monthly_plan_description": "自由探索整整一个季度。无广告，自动续订 – 乐趣不停！ 🥳",
+  "subscription_screen_premium_6_monthly_plan_title": "6个月计划 🌟",
+  "subscription_screen_premium_6_monthly_plan_description": "半年精彩体验。无广告，自动续订 – 尽情享受！ 🌈",
+  "subscription_screen_premium_12_monthly_plan_title": "1年计划（最超值）👑",
+  "subscription_screen_premium_12_monthly_plan_description": "365天完整特权。无广告，自动续订 – 为您量身定制的完美选择！ 💖",
+  "speak_screen_action_pronunciation_assessment": "发音评估",
+  "speak_screen_action_loading_model": "正在加载模型 $percent",
+  "speak_screen_action_loading_ai_model": "正在加载AI模型",
+  "speak_screen_action_assessing": "正在评估",
+  "speak_screen_action_practice": "练习发音",
+  "speak_screen_note_pronunciation_assessment": "发音备注 \n\n",
+  "speak_screen_note_substitution": "• /$phoneme/ 被发音为 /$substitutedWith/  (\"$wordContext\")\n",
+  "speak_screen_note_insertion": "• /$phoneme/ 多余插入\n",
+  "speak_screen_note_deletion": "• /$phoneme/ 被省略  (\"$wordContext\")\n",
+  "speak_screen_result_subtitle_90": "出色！",
+  "speak_screen_result_subtitle_70": "相当不错 — 还有 $error_count 个音需要练习",
+  "speak_screen_result_subtitle_50": "继续努力 — 还有 $error_count 个音需要练习",
+  "speak_screen_result_subtitle_0": "多加练习 — 还有 $error_count 个音需要练习",
+  "speak_screen_result_label_score": "分数",
+  "speak_screen_result_label_accuracy": "准确率",
+  "speak_screen_result_label_completion": "完成率",
+  "speak_screen_result_label_fluency": "流畅度"
 }
