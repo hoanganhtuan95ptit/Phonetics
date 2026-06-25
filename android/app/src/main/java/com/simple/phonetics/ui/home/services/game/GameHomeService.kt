@@ -32,7 +32,7 @@ class GameHomeService : HomeService {
 
         gameHomeServiceModel.viewItemList.observe(homeFragment.viewLifecycleOwner) {
 
-            homeViewModel.updateTypeViewItemList(type = 0, it)
+//            homeViewModel.updateTypeViewItemList(type = 0, it)
         }
 
         listenerEvent(eventName = EventName.TEXT_VIEW_ITEM_CLICKED, lifecycle = homeFragment.viewLifecycleOwner.lifecycle) {

@@ -1,21 +1,28 @@
 package com.simple.phonetics.ui.speak
 
+import android.content.res.Resources
+import android.graphics.Color
+import android.util.Log
+import android.util.TypedValue
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
+import com.simple.core.utils.extentions.toJson
 import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
+import com.simple.coreapp.utils.ext.toRich
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
-import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
@@ -23,6 +30,7 @@ import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.image.ImageRes
 import com.simple.image.RichImage
+import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.R
 import com.simple.phonetics.SpeakState
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsAsyncUseCase
@@ -33,12 +41,16 @@ import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
+import com.simple.phonetics.ui.common.adapters.PhoneticsViewItem2
+import com.simple.phonetics.ui.speak.adapters.ScoreResultViewItem
+import com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case.ErrorType
+import com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case.SentenceScore
 import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
-import com.simple.phonetics.utils.exts.toViewItem
+import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
@@ -50,7 +62,9 @@ import com.simple.state.isSuccess
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import com.unknown.coroutines.launchCollect
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
+import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -68,13 +82,14 @@ class SpeakViewModel(
 
     val text: LiveData<String> = MediatorLiveData()
 
+    val sentenceScore: LiveData<SentenceScore> = MediatorLiveData<SentenceScore>()
+
 
     val speakState: LiveData<ResultState<String>> = MediatorLiveData()
 
     val readingState: LiveData<ResultState<String>> = MediatorLiveData()
 
 
-    @VisibleForTesting
     val phoneticsState: LiveData<ResultState<List<Sentence>>> = combineSources(text, inputLanguage, outputLanguage, phoneticCodeSelected) {
 
         val param = GetPhoneticsAsyncUseCase.Param(
@@ -89,39 +104,126 @@ class SpeakViewModel(
 
         getPhoneticsAsyncUseCase.execute(param).collect {
 
+            Log.d("tuanha", "${it.toJson()}: ")
             postValue(it)
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, actionHeight, phoneticCodeSelected, phoneticsState, isSupportReading) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(size, theme, translate, actionHeight, phoneticCodeSelected, phoneticsState, isSupportReading, sentenceScore) {
 
-        val theme = theme.get()
-        val translate = translate.get()
+        val size = size.value ?: return@listenerSourcesWithDiff
+        val theme = theme.value ?: return@listenerSourcesWithDiff
+        val translate = translate.value ?: return@listenerSourcesWithDiff
 
-        val state = phoneticsState.get()
+        val state = phoneticsState.value ?: return@listenerSourcesWithDiff
+        val sentenceScore = sentenceScore.value
 
         state.doStart {
 
             postValue(getPhoneticLoadingViewItem(theme = theme))
-            return@combineSourcesWithDiff
+            return@listenerSourcesWithDiff
         }
 
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        state.toSuccess()?.data.orEmpty().toViewItem(
-            isSupportSpeak = false,
-            isSupportListen = isSupportReading.value == true,
-            isSupportTranslate = false,
+        fun Int?.getColor() = if (this == null) {
+            theme.colorPrimary
+        } else if (this in 0..50) {
+            Color.RED
+        } else if (this in 50..80) {
+            Color.YELLOW
+        } else {
+            Color.GREEN
+        }
 
-            theme = theme,
-            translate = translate
-        ).let {
+        val wordScoreMap = sentenceScore?.wordScores
+            .orEmpty()
+            .associateBy { it.word.lowercase() }
+            .toMutableMap()
+
+        sentenceScore?.let { score ->
+            val errorCount = score.errors.size
+            val subtitle = when {
+                score.finalScore >= 90 -> "Xuất sắc!"
+                score.finalScore >= 70 -> "Khá tốt — còn $errorCount âm cần luyện"
+                score.finalScore >= 50 -> "Cần cố gắng thêm — còn $errorCount âm cần luyện"
+                else                   -> "Hãy luyện tập thêm — còn $errorCount âm cần luyện"
+            }
+            viewItemList.add(SpaceViewItem(id = "score_space_top", height = DP.DP_16))
+            viewItemList.add(
+                ScoreResultViewItem(
+                    id = "score_result",
+                    data = score,
+                    subtitle = subtitle
+                )
+            )
+        }
+
+        state.toSuccess()?.data.orEmpty().flatMap {
+
+            it.phonetics
+        }.mapIndexed { i, it ->
+
+            val ipaList = it.ipaValueList
+            val ipa = ipaList.joinToString(separator = " - ")
+
+            val text = it.text
+
+            val wordScore = wordScoreMap.remove(text.lowercase())
+            val score = wordScore?.score
+
+            // Lấy grapheme + điểm trực tiếp từ PhonemeScore.grapheme (được điền bởi pipeline).
+            // Group theo grapheme, lấy min score để màu phản ánh âm tệ nhất trong cụm chữ.
+            val graphemeScores: List<Pair<String, Int>> = wordScore?.phonemeScores
+                ?.filter { it.errorType != ErrorType.INSERTION && it.grapheme != null }
+                ?.groupBy { it.grapheme!! }
+                ?.map { (g, list) -> g to list.minOf { it.score } }
+                .orEmpty()
+
+            // Build rich text: màu mặc định + size cho text/ipa, rồi override màu
+            // theo điểm cho từng cụm chữ (apply CUỐI cùng để đè).
+            var textDisplay = "$text\n$ipa"
+                .with(ForegroundColor(theme.colorOnSurface))
+                .with(text, TextSize(16))
+                .with(ipa, TextSize(12), ForegroundColor(if (ipaList.size > 1) theme.colorPrimary else theme.colorError))
+            for ((chunk, chunkScore) in graphemeScores) {
+                textDisplay = textDisplay.with(chunk, ForegroundColor(chunkScore.getColor()))
+            }
+
+            PhoneticsViewItem2(
+                id = "$text $i",
+                text = text,
+                textDisplay = textDisplay,
+                hasStroke = score != null,
+                strokeColor = score.getColor()
+            )
+        }.let {
 
             viewItemList.add(SpaceViewItem(id = "1", height = DP.DP_16))
             viewItemList.addAll(it)
-            viewItemList.add(SpaceViewItem(id = "2", height = actionHeight.get()))
         }
+
+        sentenceScore?.errors?.map {
+            val msg = when (it.errorType) {
+                ErrorType.SUBSTITUTION -> "• /${it.phoneme}/ đọc thành /${it.substitutedWith}/  (\"${it.wordContext}\")"
+                ErrorType.DELETION     -> "• /${it.phoneme}/ bị nuốt  (\"${it.wordContext}\")"
+                ErrorType.INSERTION    -> "• /${it.phoneme}/ thêm thừa"
+                else                   -> ""
+            }
+
+            NoneTextViewItem(
+                id = it.phoneme,
+                text = msg.toRich(),
+                size = Size(width = size.width)
+            )
+        }?.let {
+
+            viewItemList.add(SpaceViewItem(id = "1", height = DP.DP_16))
+            viewItemList.addAll(it)
+        }
+
+        viewItemList.add(SpaceViewItem(id = "2", height = actionHeight.get()))
 
         postValueIfActive(viewItemList)
     }
@@ -247,7 +349,6 @@ class SpeakViewModel(
         postValue(info)
     }
 
-
     fun updateText(it: String) {
 
         text.postValue(it)
@@ -301,6 +402,17 @@ class SpeakViewModel(
         stopSpeakUseCase.execute()
     }
 
+    fun Float.spToPx(): Float {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_SP,
+            this,
+            Resources.getSystem().displayMetrics
+        )
+    }
+
+    fun Int.spToPx(): Int {
+        return this.toFloat().spToPx().toInt()
+    }
 
     data class ResultInfo(
         val result: RichText,

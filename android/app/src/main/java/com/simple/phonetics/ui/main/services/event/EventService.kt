@@ -37,11 +37,11 @@ class EventService : MainService {
 
         viewModel.eventInfo.asFlow().launchCollect(mainActivity) { data ->
 
-            if (data.show) {
-                QueueEventState.readyTag(tag = tag)
-            } else {
-                QueueEventState.endTag(tag = tag)
-            }
+//            if (data.show) {
+//                QueueEventState.readyTag(tag = tag)
+//            } else {
+//                QueueEventState.endTag(tag = tag)
+//            }
         }
 
         listenerEvent(mainActivity.lifecycle, tag) {
@@ -50,14 +50,14 @@ class EventService : MainService {
 
             if (info.show) {
 
-                showEventAwait(mainActivity = mainActivity, info = info)
-                viewModel.updateShowEvent()
+//                showEventAwait(mainActivity = mainActivity, info = info)
+//                viewModel.updateShowEvent()
 
                 delay(350)
             }
 
 
-            QueueEventState.endTag(tag = tag)
+//            QueueEventState.endTag(tag = tag)
         }
     }
 

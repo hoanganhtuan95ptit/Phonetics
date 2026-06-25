@@ -24,36 +24,44 @@ package com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use
 
 /** Kết quả điểm của một phoneme */
 data class PhonemeScore(
-    val expected: String,        // Phoneme chuẩn,  ví dụ "/æ/"
-    val actual: String?,         // Phoneme người dùng phát ra (null = thiếu)
-    val score: Int,              // 0–100
-    val errorType: ErrorType
+    val expected: String = "",        // Phoneme chuẩn,  ví dụ "/æ/"
+    val actual: String? = "",         // Phoneme người dùng phát ra (null = thiếu)
+    val score: Int = 0,              // 0–100
+
+    val errorType: ErrorType = ErrorType.SUBSTITUTION,
+
+    /**
+     * Cụm ký tự (grapheme) tương ứng từ PhonemeDict, ví dụ "th", "ea", "kn".
+     * null nếu không có PhonemeDict hoặc từ không có trong dictionary.
+     */
+    val grapheme: String? = null
 )
 
 enum class ErrorType { CORRECT, SUBSTITUTION, DELETION, INSERTION }
 
 /** Kết quả điểm của một từ */
 data class WordScore(
-    val word: String,
-    val phonemeScores: List<PhonemeScore>,
-    val score: Int               // avg của phoneme scores
+    val word: String = "",
+    val phonemeScores: List<PhonemeScore> = emptyList(),
+    val score: Int = 0             // avg của phoneme scores
 )
 
 /** Kết quả điểm toàn câu */
 data class SentenceScore(
-    val referenceText: String,
-    val wordScores: List<WordScore>,
-    val accuracyScore: Int,      // avg(phoneme scores)
-    val completenessScore: Int,  // % âm đã đọc / tổng âm
-    val fluencyPenalty: Int,     // trừ điểm nếu dừng nhiều
-    val finalScore: Int,         // điểm cuối
-    val errors: List<PronunciationError>,
-    val isPartial: Boolean       // true nếu người dùng chưa đọc hết câu
+    val referenceText: String = "",
+    val wordScores: List<WordScore> = emptyList(),
+    val accuracyScore: Int = 0,      // avg(phoneme scores)
+    val completenessScore: Int = 0,  // % âm đã đọc / tổng âm
+    val fluencyPenalty: Int = 0,     // trừ điểm nếu dừng nhiều
+    val finalScore: Int = 0,         // điểm cuối
+    val errors: List<PronunciationError> = emptyList(),
+    val isPartial: Boolean = true,   // true nếu người dùng chưa đọc hết câu
+    val audioFilePath: String? = null // đường dẫn file WAV người dùng vừa đọc (chỉ có ở kết quả final)
 )
 
 data class PronunciationError(
-    val phoneme: String,
-    val errorType: ErrorType,
+    val phoneme: String = "",
+    val errorType: ErrorType = ErrorType.SUBSTITUTION,
     val substitutedWith: String? = null,
     val wordContext: String = ""
 )
@@ -446,7 +454,10 @@ object GOPScorer {
         return when {
             c1 != null && c2 != null -> consonantCost(c1, c2)
             v1 != null && v2 != null -> vowelCost(v1, v2)
-            else                     -> 90  // consonant vs vowel — cross-class
+            // Cross-class (consonant vs vowel) hoặc phoneme lạ (ngoài bảng,
+            // ví dụ ɾ/ɚ/ʁ từ vocab espeak). Cost = 65 thay vì 90 để không
+            // bị "vực 10/100" khi vocab decode ra phoneme tiếng nước ngoài.
+            else                     -> 65
         }
     }
 
@@ -533,18 +544,20 @@ object ScoreAggregator {
         }
         val finalScore = rawFinal.coerceIn(0, 100)
 
-        val errors = allPhonemeScores
-            .filter { it.errorType != ErrorType.CORRECT }
-            .map { ph ->
-                PronunciationError(
-                    phoneme     = ph.expected,
-                    errorType   = ph.errorType,
-                    substitutedWith = if (ph.errorType == ErrorType.SUBSTITUTION) ph.actual else null,
-                    wordContext = wordScores.find { ws ->
-                        ws.phonemeScores.any { it === ph }
-                    }?.word ?: ""
-                )
-            }
+        // Build errors trực tiếp từ wordScores → không cần tìm wordContext
+        // qua identity (===) — vốn rất giòn nếu list bị copy/map.
+        val errors = wordScores.flatMap { ws ->
+            ws.phonemeScores
+                .filter { it.errorType != ErrorType.CORRECT && it.errorType != ErrorType.INSERTION }
+                .map { ph ->
+                    PronunciationError(
+                        phoneme         = ph.expected,
+                        errorType       = ph.errorType,
+                        substitutedWith = if (ph.errorType == ErrorType.SUBSTITUTION) ph.actual else null,
+                        wordContext     = ws.word
+                    )
+                }
+        }
 
         return SentenceScore(
             referenceText       = referenceText,
@@ -590,17 +603,20 @@ class PronunciationScorer {
      * @param spokenPhonemes  Chuỗi IPA người dùng phát ra từ wav2vec2
      * @param fluencyPenalty  Điểm trừ do dừng nhiều (0–20, do VAD cung cấp)
      * @param noiseLevel      Nhiễu môi trường 0–5 ảnh hưởng baseline score
+     * @param phonemeDict     Dictionary grapheme–phoneme để điền trường [PhonemeScore.grapheme]
      */
     fun score(
         referenceText: String,
         spokenPhonemes: List<String>,
         fluencyPenalty: Int = 0,
-        noiseLevel: Int = 0
+        noiseLevel: Int = 0,
+        phonemeDict: PhonemeDict? = null
     ): SentenceScore = score(
         wordPhonemes   = G2PConverter.convert(referenceText),
         spokenPhonemes = spokenPhonemes,
         fluencyPenalty = fluencyPenalty,
-        noiseLevel     = noiseLevel
+        noiseLevel     = noiseLevel,
+        phonemeDict    = phonemeDict
     )
 
     /**
@@ -611,13 +627,15 @@ class PronunciationScorer {
         wordPhonemes: List<Pair<String, List<String>>>,
         spokenPhonemes: List<String>,
         fluencyPenalty: Int = 0,
-        noiseLevel: Int = 0
+        noiseLevel: Int = 0,
+        phonemeDict: PhonemeDict? = null
     ): SentenceScore = scoreFull(
         wordPhonemes   = wordPhonemes,
         spokenPhonemes = spokenPhonemes,
         fluencyPenalty = fluencyPenalty,
         noiseLevel     = noiseLevel,
-        isPartial      = false
+        isPartial      = false,
+        phonemeDict    = phonemeDict
     )
 
     /**
@@ -625,30 +643,34 @@ class PronunciationScorer {
      * completeness không penalize vào finalScore.
      * Chỉ chấm phần reference đã được phủ bởi spokenPhonemes.
      */
-    fun scorePartial(
-        referenceText: String,
-        spokenPhonemes: List<String>,
-        fluencyPenalty: Int = 0,
-        noiseLevel: Int = 0
-    ): SentenceScore = scorePartial(
-        wordPhonemes   = G2PConverter.convert(referenceText),
-        spokenPhonemes = spokenPhonemes,
-        fluencyPenalty = fluencyPenalty,
-        noiseLevel     = noiseLevel
-    )
+//    fun scorePartial(
+//        referenceText: String,
+//        spokenPhonemes: List<String>,
+//        fluencyPenalty: Int = 0,
+//        noiseLevel: Int = 0,
+//        phonemeDict: PhonemeDict? = null
+//    ): SentenceScore = scorePartial(
+//        wordPhonemes   = G2PConverter.convert(referenceText),
+//        spokenPhonemes = spokenPhonemes,
+//        fluencyPenalty = fluencyPenalty,
+//        noiseLevel     = noiseLevel,
+//        phonemeDict    = phonemeDict
+//    )
 
     /** Partial — caller cấp sẵn list cặp (word, IPA). */
     fun scorePartial(
         wordPhonemes: List<Pair<String, List<String>>>,
         spokenPhonemes: List<String>,
         fluencyPenalty: Int = 0,
-        noiseLevel: Int = 0
+        noiseLevel: Int = 0,
+        phonemeDict: PhonemeDict? = null
     ): SentenceScore = scoreFull(
         wordPhonemes   = wordPhonemes,
         spokenPhonemes = spokenPhonemes,
         fluencyPenalty = fluencyPenalty,
         noiseLevel     = noiseLevel,
-        isPartial      = true
+        isPartial      = true,
+        phonemeDict    = phonemeDict
     )
 
     // ── private core ──────────────────────────
@@ -658,7 +680,8 @@ class PronunciationScorer {
         spokenPhonemes: List<String>,
         fluencyPenalty: Int,
         noiseLevel: Int,
-        isPartial: Boolean
+        isPartial: Boolean,
+        phonemeDict: PhonemeDict? = null
     ): SentenceScore {
 
         // referenceText hiện được derive từ list từ — tiện cho prettyPrint
@@ -692,7 +715,7 @@ class PronunciationScorer {
 
         // 4. Map phoneme scores về từng từ
         //    Chỉ xét wordPhonemes đến từ coveredUpto — từ nào chưa đọc đến bỏ qua
-        val wordScores = buildWordScores(wordPhonemes, allPhonemeScores, coveredUpto)
+        val wordScores = buildWordScores(wordPhonemes, allPhonemeScores, coveredUpto, phonemeDict)
 
         // 5. Aggregate
         return ScoreAggregator.aggregateSentence(
@@ -712,11 +735,14 @@ class PronunciationScorer {
      * @param coveredUpto Số phoneme trong reference đã được align.
      *   Từ nào bắt đầu sau coveredUpto → chưa đọc → không đưa vào kết quả.
      *   Từ nào bị cắt ngang (partially covered) → đưa vào với phần đã có.
+     * @param phonemeDict Nếu khác null, mỗi [PhonemeScore] sẽ được điền trường
+     *   [PhonemeScore.grapheme] dựa trên mapping grapheme–phoneme trong dictionary.
      */
     private fun buildWordScores(
         wordPhonemes: List<Pair<String, List<String>>>,
         allPhonemeScores: List<PhonemeScore>,
-        coveredUpto: Int = Int.MAX_VALUE
+        coveredUpto: Int = Int.MAX_VALUE,
+        phonemeDict: PhonemeDict? = null
     ): List<WordScore> {
         var cursor = 0
         val result = mutableListOf<WordScore>()
@@ -734,9 +760,50 @@ class PronunciationScorer {
                 wordStart.coerceAtMost(allPhonemeScores.size),
                 wordEnd.coerceAtMost(allPhonemeScores.size)
             )
-            result.add(ScoreAggregator.aggregateWord(word, slice))
+
+            // Điền grapheme cho từng PhonemeScore nếu có PhonemeDict
+            val sliceWithGrapheme = if (phonemeDict != null) {
+                resolveGraphemes(word, slice, phonemeDict)
+            } else {
+                slice
+            }
+
+            result.add(ScoreAggregator.aggregateWord(word, sliceWithGrapheme))
         }
         return result
+    }
+
+    /**
+     * Gán [PhonemeScore.grapheme] cho từng phoneme score dựa trên PhonemeDict.
+     *
+     * Ví dụ với "knife" → chunks [("kn","n"), ("i","aɪ"), ("fe","f")]:
+     *   phoneme index 0 ("n")  → grapheme "kn"
+     *   phoneme index 1 ("aɪ") → grapheme "i"
+     *   phoneme index 2 ("f")  → grapheme "fe"
+     *
+     * Nếu từ không có trong dict → tất cả phoneme của từ đó nhận grapheme = word.
+     */
+    private fun resolveGraphemes(
+        word: String,
+        slice: List<PhonemeScore>,
+        dict: PhonemeDict
+    ): List<PhonemeScore> {
+        if (slice.isEmpty()) return slice
+        val chunks = dict[word]
+            ?: return slice.map { it.copy(grapheme = word) }
+
+        // Mỗi chunk có thể đại diện nhiều atomic phoneme (vd "ju" = j+u).
+        // Expand thành list grapheme theo thứ tự phoneme.
+        val graphemePerPhoneme = buildList {
+            for (chunk in chunks) {
+                val atomicCount = PhonemeDict.tokenizePhonemes(chunk.phoneme).size
+                repeat(atomicCount) { add(chunk.grapheme) }
+            }
+        }
+
+        return slice.mapIndexed { idx, ps ->
+            ps.copy(grapheme = graphemePerPhoneme.getOrNull(idx))
+        }
     }
 }
 
@@ -793,51 +860,51 @@ fun SentenceScore.prettyPrint() {
 // Demo — main()
 // ─────────────────────────────────────────────
 
-fun main() {
-    val scorer = PronunciationScorer()
-
-    // ── Full sentence ──────────────────────────────────────────────
-    println("\n【Test 1】 Đọc đủ câu — có lỗi")
-    scorer.score(
-        referenceText  = "the cat sat",
-        spokenPhonemes = listOf("d", "ə", "k", "ɛ", "t", "s", "æ"),
-        fluencyPenalty = 5
-    ).prettyPrint()
-
-    // ── Partial: đọc được "the cat", chưa đọc "sat" ───────────────
-    println("\n【Test 2】 Partial — mới đọc được \"the cat\"")
-    // Kỳ vọng: chỉ chấm [ð,ə, k,æ,t], bỏ qua [s,æ,t]
-    // /ð/→/d/ là lỗi, còn lại đúng → accuracy ~88
-    scorer.scorePartial(
-        referenceText  = "the cat sat",
-        spokenPhonemes = listOf("d", "ə", "k", "æ", "t")
-    ).prettyPrint()
-
-    // ── Partial: mới đọc 1 từ ─────────────────────────────────────
-    println("\n【Test 3】 Partial — mới đọc \"the\"")
-    scorer.scorePartial(
-        referenceText  = "the cat sat",
-        spokenPhonemes = listOf("ð", "ə")
-    ).prettyPrint()
-
-    // ── Partial: đọc xong hết = giống full ────────────────────────
-    println("\n【Test 4】 Partial nhưng đọc hết câu (benchmark với Test 1)")
-    scorer.scorePartial(
-        referenceText  = "the cat sat",
-        spokenPhonemes = listOf("d", "ə", "k", "ɛ", "t", "s", "æ")
-    ).prettyPrint()
-
-    // ── Full: phát âm tốt ─────────────────────────────────────────
-    println("\n【Test 5】 Phát âm tốt — đủ câu")
-    scorer.score(
-        referenceText  = "hello world",
-        spokenPhonemes = listOf("h", "ɛ", "l", "oʊ", "w", "ɜː", "l", "d")
-    ).prettyPrint()
-
-    // ── Partial: nhiều từ, dừng giữa chừng ───────────────────────
-    println("\n【Test 6】 Partial — đọc 2/3 từ \"think this\" trong \"think this that\"")
-    scorer.scorePartial(
-        referenceText  = "think this that",
-        spokenPhonemes = listOf("t", "ɪ", "ŋ", "k", "d", "ɪ", "s")
-    ).prettyPrint()
-}
+//fun main() {
+//    val scorer = PronunciationScorer()
+//
+//    // ── Full sentence ──────────────────────────────────────────────
+//    println("\n【Test 1】 Đọc đủ câu — có lỗi")
+//    scorer.score(
+//        referenceText  = "the cat sat",
+//        spokenPhonemes = listOf("d", "ə", "k", "ɛ", "t", "s", "æ"),
+//        fluencyPenalty = 5
+//    ).prettyPrint()
+//
+//    // ── Partial: đọc được "the cat", chưa đọc "sat" ───────────────
+//    println("\n【Test 2】 Partial — mới đọc được \"the cat\"")
+//    // Kỳ vọng: chỉ chấm [ð,ə, k,æ,t], bỏ qua [s,æ,t]
+//    // /ð/→/d/ là lỗi, còn lại đúng → accuracy ~88
+//    scorer.scorePartial(
+//        referenceText  = "the cat sat",
+//        spokenPhonemes = listOf("d", "ə", "k", "æ", "t")
+//    ).prettyPrint()
+//
+//    // ── Partial: mới đọc 1 từ ─────────────────────────────────────
+//    println("\n【Test 3】 Partial — mới đọc \"the\"")
+//    scorer.scorePartial(
+//        referenceText  = "the cat sat",
+//        spokenPhonemes = listOf("ð", "ə")
+//    ).prettyPrint()
+//
+//    // ── Partial: đọc xong hết = giống full ────────────────────────
+//    println("\n【Test 4】 Partial nhưng đọc hết câu (benchmark với Test 1)")
+//    scorer.scorePartial(
+//        referenceText  = "the cat sat",
+//        spokenPhonemes = listOf("d", "ə", "k", "ɛ", "t", "s", "æ")
+//    ).prettyPrint()
+//
+//    // ── Full: phát âm tốt ─────────────────────────────────────────
+//    println("\n【Test 5】 Phát âm tốt — đủ câu")
+//    scorer.score(
+//        referenceText  = "hello world",
+//        spokenPhonemes = listOf("h", "ɛ", "l", "oʊ", "w", "ɜː", "l", "d")
+//    ).prettyPrint()
+//
+//    // ── Partial: nhiều từ, dừng giữa chừng ───────────────────────
+//    println("\n【Test 6】 Partial — đọc 2/3 từ \"think this\" trong \"think this that\"")
+//    scorer.scorePartial(
+//        referenceText  = "think this that",
+//        spokenPhonemes = listOf("t", "ɪ", "ŋ", "k", "d", "ɪ", "s")
+//    ).prettyPrint()
+//}

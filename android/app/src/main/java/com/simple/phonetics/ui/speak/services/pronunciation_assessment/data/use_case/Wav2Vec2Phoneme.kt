@@ -5,14 +5,27 @@
  * để chuyển audio float32 → chuỗi IPA phoneme.
  *
  * Model: facebook/wav2vec2-lv-60-espeak-cv-ft
- *   - Input:  float32[1, num_samples]  (16kHz, mono, normalized [-1,1])
+ *   - Input:  float32[1, num_samples]  (16kHz, mono, normalized zero-mean unit-var)
  *   - Output: float32[1, time_steps, 392]  (logits trên vocab IPA)
  *   - Decode: CTC greedy → list IPA phonemes
  *
  * Cách tải model:
- *   1. Download từ HuggingFace: https://huggingface.co/facebook/wav2vec2-lv-60-espeak-cv-ft
- *   2. Export sang ONNX: python export_wav2vec2_onnx.py  (xem cuối file)
- *   3. Bỏ file wav2vec2_phoneme.onnx vào assets/
+ *   1. Chạy tools/export_wav2vec2_onnx.py — script này export ONNX + dump
+ *      vocab.json thật của tokenizer (392 token).
+ *   2. Copy 2 file vào assets/:
+ *         wav2vec2_phoneme.onnx
+ *         wav2vec2_phoneme_vocab.json
+ *
+ * QUAN TRỌNG — vì sao phải load vocab từ JSON?
+ *   Tokenizer của model này (Wav2Vec2PhonemeCTCTokenizer) có 392 token với
+ *   thứ tự CỤ THỂ. Hardcode tay → sai 1 index = decode ra IPA hoàn toàn
+ *   khác, scorer thấy substitution liên tục, điểm chìm về 10/100. Phải load
+ *   từ chính vocab.json của tokenizer mới đúng.
+ *
+ *   Model này KHÔNG có word delimiter "|" (Wav2Vec2PhonemeCTCTokenizer
+ *   xuất phoneme phẳng, không tách từ). Mọi logic word boundary ở phía
+ *   acoustic phải bỏ — việc tách phoneme về từ là trách nhiệm của
+ *   PronunciationScorer dựa trên alignment.
  *
  * build.gradle:
  *   implementation 'com.microsoft.onnxruntime:onnxruntime-android:1.26.0'
@@ -23,64 +36,74 @@
 
 package com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case
 
-import ai.onnxruntime.*
+import ai.onnxruntime.OnnxTensor
+import ai.onnxruntime.OrtEnvironment
+import ai.onnxruntime.OrtSession
 import android.content.Context
+import android.util.Log
+import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import java.nio.FloatBuffer
 
 // ─────────────────────────────────────────────
-// IPA Vocabulary
+// IPA Vocabulary — load từ assets/wav2vec2_phoneme_vocab.json
 // ─────────────────────────────────────────────
 
 /**
- * Vocabulary của wav2vec2-lv-60-espeak-cv-ft.
- * Index → IPA symbol.
+ * Vocabulary của tokenizer thật — load lúc init, không hardcode.
  *
- * Special tokens:
- *   0 = <pad>  — CTC blank token, bỏ qua khi decode
- *   4 = |      — word boundary
- *
- * Nguồn: tokenizer.json từ HuggingFace model card.
+ * Format file vocab.json (do tools/export_wav2vec2_onnx.py sinh):
+ *   {
+ *     "id_to_token": ["<pad>","<s>","</s>","<unk>","n","s","t",...,"a4"],
+ *     "pad_id":      0,
+ *     "special_ids": [0, 1, 2, 3],
+ *     "word_delimiter_id": null
+ *   }
  */
-object Wav2Vec2Vocab {
+class Wav2Vec2Vocab(
+    val idToToken: Array<String>,
+    val padId:     Int,
+    val specialIds: IntArray,
+    val wordDelimiterId: Int   // -1 nếu model không có
+) {
+    val size: Int get() = idToToken.size
 
-    val IPA_TOKENS: List<String> = listOf(
-        "<pad>", "<s>", "</s>", "<unk>", "|",
-        // Consonants
-        "p", "b", "t", "d", "k", "ɡ",
-        "f", "v", "θ", "ð", "s", "z", "ʃ", "ʒ", "h",
-        "tʃ", "dʒ",
-        "m", "n", "ŋ",
-        "l", "r", "w", "j",
-        // Vowels
-        "iː", "ɪ", "uː", "ʊ",
-        "eɪ", "e", "ɛ", "ə", "ɜː", "ʌ",
-        "oʊ", "ɔː", "ɔ",
-        "æ", "ɑː", "a",
-        "aɪ", "aʊ", "ɔɪ",
-        // Extended IPA (các ngôn ngữ khác trong training data)
-        "ɐ", "ɑ", "ɒ", "ø", "œ", "y", "ʏ", "ɯ",
-        "ç", "x", "ɣ", "χ", "ħ", "ʕ", "ʔ",
-        "ɬ", "ɮ", "ʎ", "ɹ", "ɻ", "ʀ", "ʁ",
-        "ɱ", "ɳ", "ɲ", "ʙ", "ʜ",
-        "ˈ", "ˌ", "ː",   // stress markers
-        // ... (392 tokens total — truncated for readability)
-    )
+    private val specialSet: Set<Int> = specialIds.toHashSet()
 
-    private val tokenToIndex: Map<String, Int> by lazy {
-        IPA_TOKENS.mapIndexed { i, t -> t to i }.toMap()
+    /** True nếu id là special token (<pad>, <s>, </s>, <unk>) hoặc word delimiter. */
+    fun isSpecial(id: Int): Boolean =
+        id in specialSet || (wordDelimiterId >= 0 && id == wordDelimiterId)
+
+    fun decode(id: Int): String? = idToToken.getOrNull(id)
+
+    companion object {
+        const val ASSET_FILE_NAME = "wav2vec2_phoneme_vocab.json"
+
+        fun loadFromAssets(context: Context, fileName: String = ASSET_FILE_NAME): Wav2Vec2Vocab {
+            val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
+            val root = JSONObject(json)
+
+            val arr = root.getJSONArray("id_to_token")
+            val tokens = Array(arr.length()) { arr.getString(it) }
+
+            val padId = root.optInt("pad_id", 0)
+
+            val specialArr = root.optJSONArray("special_ids")
+            val specials = IntArray(specialArr?.length() ?: 0) { specialArr!!.getInt(it) }
+
+            val wdt = if (root.isNull("word_delimiter_id")) -1 else root.optInt("word_delimiter_id", -1)
+
+            return Wav2Vec2Vocab(
+                idToToken         = tokens,
+                padId             = padId,
+                specialIds        = specials,
+                wordDelimiterId   = wdt
+            )
+        }
     }
-
-    val PAD_ID = 0
-    val WORD_BOUNDARY_ID = 4   // "|"
-
-    fun decode(id: Int): String? = IPA_TOKENS.getOrNull(id)
-    fun encode(token: String): Int = tokenToIndex[token] ?: 3  // <unk>
-
-    /** Lọc các token là âm vị thực sự (bỏ special tokens và markers) */
-    fun isPhoneme(token: String): Boolean =
-        token !in setOf("<pad>", "<s>", "</s>", "<unk>", "|", "ˈ", "ˌ", "ː")
 }
 
 // ─────────────────────────────────────────────
@@ -93,88 +116,45 @@ object Wav2Vec2Vocab {
  * CTC Greedy Decode:
  *   1. Với mỗi time step, lấy argmax → token có xác suất cao nhất
  *   2. Collapse consecutive duplicates: [k,k,k,æ,æ,t] → [k,æ,t]
- *   3. Bỏ <pad> (blank token)
- *   4. Bỏ word boundary "|" (optional — giữ lại để biết ranh giới từ)
+ *   3. Bỏ <pad> (blank) và các special token khác
  *
- * Ví dụ với "cat":
- *   logits argmax: [0,0,9,9,9,0,35,35,0,7,7,0]
- *   collapse dup:  [0,9,0,35,0,7,0]
- *   remove pad:    [9, 35, 7]  →  ["k", "æ", "t"]
+ * KHÔNG còn logic word boundary — model wav2vec2-lv-60-espeak-cv-ft
+ * không có token "|", xuất phoneme phẳng. Tách từ làm ở tầng scorer
+ * dựa trên alignment với reference IPA.
  */
 object CTCDecoder {
 
     /**
      * @param logits Float32 array shape [time_steps × vocab_size]
-     * @param vocabSize kích thước vocab (thường 392)
-     * @return list IPA phonemes
+     * @param vocabSize kích thước vocab (392 cho model này)
+     * @param vocab    bảng decode id → IPA token
      */
-    fun greedyDecode(logits: FloatArray, vocabSize: Int): List<String> {
+    fun greedyDecode(
+        logits: FloatArray,
+        vocabSize: Int,
+        vocab: Wav2Vec2Vocab
+    ): List<String> {
         val timeSteps = logits.size / vocabSize
-        val tokens = mutableListOf<String>()
+        val tokens = ArrayList<String>(timeSteps / 2)
         var prevId = -1
 
         for (t in 0 until timeSteps) {
             // Argmax trên vocab dimension
+            val base = t * vocabSize
             var maxId = 0
-            var maxVal = logits[t * vocabSize]
+            var maxVal = logits[base]
             for (v in 1 until vocabSize) {
-                val val_ = logits[t * vocabSize + v]
-                if (val_ > maxVal) { maxVal = val_; maxId = v }
+                val cur = logits[base + v]
+                if (cur > maxVal) { maxVal = cur; maxId = v }
             }
 
-            // Collapse duplicates + bỏ pad
-            if (maxId != prevId && maxId != Wav2Vec2Vocab.PAD_ID) {
-                val token = Wav2Vec2Vocab.decode(maxId)
-                if (token != null && Wav2Vec2Vocab.isPhoneme(token)) {
-                    tokens.add(token)
-                }
+            // Collapse duplicates + bỏ special tokens
+            if (maxId != prevId && !vocab.isSpecial(maxId)) {
+                vocab.decode(maxId)?.let { tokens.add(it) }
             }
             prevId = maxId
         }
-
         return tokens
-    }
-
-    /**
-     * Decode có word boundary — trả về list<list<string>>
-     * mỗi inner list là phonemes của 1 từ.
-     * Dùng để map phoneme về từng từ khi chấm điểm.
-     */
-    fun greedyDecodeWithBoundaries(logits: FloatArray, vocabSize: Int): List<List<String>> {
-        val timeSteps = logits.size / vocabSize
-        val words = mutableListOf<MutableList<String>>()
-        var current = mutableListOf<String>()
-        var prevId = -1
-
-        for (t in 0 until timeSteps) {
-            var maxId = 0
-            var maxVal = logits[t * vocabSize]
-            for (v in 1 until vocabSize) {
-                val v_ = logits[t * vocabSize + v]
-                if (v_ > maxVal) { maxVal = v_; maxId = v }
-            }
-
-            if (maxId != prevId) {
-                when {
-                    maxId == Wav2Vec2Vocab.WORD_BOUNDARY_ID -> {
-                        if (current.isNotEmpty()) {
-                            words.add(current)
-                            current = mutableListOf()
-                        }
-                    }
-                    maxId != Wav2Vec2Vocab.PAD_ID -> {
-                        val token = Wav2Vec2Vocab.decode(maxId)
-                        if (token != null && Wav2Vec2Vocab.isPhoneme(token)) {
-                            current.add(token)
-                        }
-                    }
-                }
-            }
-            prevId = maxId
-        }
-
-        if (current.isNotEmpty()) words.add(current)
-        return words
     }
 }
 
@@ -195,86 +175,118 @@ class Wav2Vec2Phoneme(private val context: Context) : AutoCloseable {
 
     private var ortEnv: OrtEnvironment? = null
     private var session: OrtSession? = null
-    private var vocabSize: Int = Wav2Vec2Vocab.IPA_TOKENS.size
+    private var vocab: Wav2Vec2Vocab? = null
 
     // ── Load model ────────────────────────────
 
     /**
-     * Load model từ assets vào OnnxRuntime.
-     * Gọi trong coroutine hoặc background thread — blocking ~200ms.
+     * Load model + vocab vào OnnxRuntime.
+     * Model được tải về từ [modelUrl] và cache tại cacheDir.
+     * Gọi trong coroutine hoặc background thread — blocking I/O.
      *
-     * @param modelFileName tên file .onnx trong assets/
-     * @param useGPU        dùng NNAPI (Neural Network API) trên Android
+     * @param modelUrl      URL tải model ONNX (raw, không phải GitHub blob viewer)
+     * @param modelFileName Tên file lưu trong cacheDir
+     * @param vocabFileName Tên file vocab trong assets
+     * @param useGPU        Dùng NNAPI nếu có
+     * @param onProgress    Callback tiến trình tải (0–100). Gọi trên thread hiện tại.
+     *                      Trả về 100 ngay lập tức nếu file đã cache sẵn.
      */
     fun load(
+        modelUrl: String = "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/develop/pronunciation/android/app/src/main/assets/wav2vec2_phoneme.onnx",
         modelFileName: String = "wav2vec2_phoneme.onnx",
-        useGPU: Boolean = false
+        vocabFileName: String = Wav2Vec2Vocab.ASSET_FILE_NAME,
+        useGPU: Boolean = false,
+        onProgress: ((percent: Int) -> Unit)? = null,
     ) {
+
+        // Tải model từ URL về cacheDir, báo tiến trình qua onProgress
+        val modelFile = downloadModelIfNeeded(modelUrl, modelFileName, onProgress)
+
+        // Load vocab trước — nếu fail thì biết ngay (file thiếu trong assets)
+        vocab = Wav2Vec2Vocab.loadFromAssets(context, vocabFileName)
+
         ortEnv = OrtEnvironment.getEnvironment()
 
         val sessionOptions = OrtSession.SessionOptions().apply {
-            // Inter/intra op parallelism — điều chỉnh theo số CPU core
             setIntraOpNumThreads(4)
             setInterOpNumThreads(1)
-
-            // Optimization level: ALL cho inference nhanh nhất
             setOptimizationLevel(OrtSession.SessionOptions.OptLevel.ALL_OPT)
 
             if (useGPU) {
-                // NNAPI = Android Neural Networks API — accelerate trên NPU/GPU
-                // Fallback về CPU nếu NNAPI không available
-                try {
-                    addNnapi()
-                } catch (e: Exception) {
-                    // NNAPI không available trên thiết bị này, dùng CPU
-                }
+                try { addNnapi() } catch (_: Exception) { /* fallback CPU */ }
             }
         }
 
-        // Copy model từ assets ra file cache (stream theo chunk để tránh OOM
-        // — model ~300MB sẽ ném OOM nếu đọc nguyên vào byte array).
-        // Sau đó load session trực tiếp từ đường dẫn file → ORT mmap nội bộ.
-        val modelFile = copyAssetToCacheIfNeeded(modelFileName)
         try {
             session = ortEnv!!.createSession(modelFile.absolutePath, sessionOptions)
         } catch (t: Throwable) {
-            // Xoá cache để lần load sau ép copy lại từ assets
-            // (tránh kẹt file model cũ bị lỗi).
+            Log.d("tuanha", "load: ", t)
             modelFile.delete()
             throw t
         }
     }
 
     /**
-     * Stream asset → file trong cacheDir. Bỏ qua nếu file đã tồn tại và cùng kích thước
-     * (asset size có sẵn qua AssetFileDescriptor.length).
+     * Tải model từ [url] về cacheDir nếu chưa có (hoặc file rỗng/lỗi).
+     * Dùng file .tmp để tránh để lại file incomplete khi bị gián đoạn.
+     *
+     * @param onProgress Callback (0–100). Không gọi nếu server không trả Content-Length.
+     *                   Luôn gọi với 100 khi hoàn thành.
      */
-    private fun copyAssetToCacheIfNeeded(assetName: String): File {
-        val outFile = File(context.cacheDir, assetName)
+    private fun downloadModelIfNeeded(
+        url: String,
+        fileName: String,
+        onProgress: ((Int) -> Unit)?
+    ): File {
+        val outFile = File(context.cacheDir, fileName)
 
-        val expectedSize: Long = try {
-            context.assets.openFd(assetName).use { it.length }
-        } catch (_: Exception) {
-            // Asset bị nén (không openFd được) → không biết size trước, sẽ copy lại
-            -1L
-        }
-
-        if (outFile.exists() && expectedSize > 0 && outFile.length() == expectedSize) {
+        // File hợp lệ — bỏ qua download
+        if (outFile.exists() && outFile.length() > 0) {
+            onProgress?.invoke(100)
             return outFile
         }
 
-        context.assets.open(assetName).use { input ->
-            FileOutputStream(outFile).use { output ->
-                val buffer = ByteArray(64 * 1024) // 64KB chunks
-                while (true) {
-                    val n = input.read(buffer)
-                    if (n <= 0) break
-                    output.write(buffer, 0, n)
+        val tempFile = File(context.cacheDir, "$fileName.tmp")
+        try {
+            val connection = URL(url).openConnection() as HttpURLConnection
+            connection.connectTimeout = 15_000
+            connection.readTimeout = 60_000
+            connection.connect()
+
+            val contentLength = connection.contentLengthLong   // -1 nếu không có header
+
+            connection.inputStream.use { input ->
+                FileOutputStream(tempFile).use { output ->
+                    val buffer = ByteArray(64 * 1024)
+                    var downloaded = 0L
+                    var lastProgress = -1
+
+                    while (true) {
+                        val n = input.read(buffer)
+                        if (n <= 0) break
+                        output.write(buffer, 0, n)
+                        downloaded += n
+
+                        if (onProgress != null && contentLength > 0) {
+                            val progress = (downloaded * 100L / contentLength).toInt().coerceIn(0, 99)
+                            if (progress != lastProgress) {
+                                lastProgress = progress
+                                onProgress(progress)
+                            }
+                        }
+                    }
+                    output.fd.sync()
                 }
-                output.fd.sync()
             }
+
+            tempFile.renameTo(outFile)
+            onProgress?.invoke(100)
+            return outFile
+
+        } catch (t: Throwable) {
+            tempFile.delete()
+            throw t
         }
-        return outFile
     }
 
     // ── Inference ─────────────────────────────
@@ -282,132 +294,65 @@ class Wav2Vec2Phoneme(private val context: Context) : AutoCloseable {
     /**
      * Nhận dạng phoneme từ audio.
      *
-     * @param audioFloat  PCM float32 [-1, 1], 16kHz, mono
+     * @param audioFloat  PCM float32, 16kHz, mono. Phải đã normalize
+     *                    zero-mean / unit-variance (xem PronunciationPipeline).
      * @return list IPA phonemes, ví dụ ["h", "ɛ", "l", "oʊ"]
      */
     fun recognize(audioFloat: FloatArray): List<String> {
         val env     = ortEnv     ?: error("Chưa gọi load()")
         val session = this.session ?: error("Chưa gọi load()")
+        val vocab   = this.vocab   ?: error("Chưa gọi load() — vocab chưa load")
 
-        // Tạo input tensor shape [1, num_samples]
+        // Input tensor shape [1, num_samples]
         val inputShape  = longArrayOf(1, audioFloat.size.toLong())
-        val inputTensor = OnnxTensor.createTensor(
-            env,
-            FloatBuffer.wrap(audioFloat),
-            inputShape
-        )
+        OnnxTensor.createTensor(env, FloatBuffer.wrap(audioFloat), inputShape).use { inputTensor ->
 
-        // Run inference
-        val results = session.run(mapOf("input_values" to inputTensor))
+            // Run inference (dùng use{} để close tự động → tránh leak GPU/CPU buffer)
+            session.run(mapOf("input_values" to inputTensor)).use { results ->
 
-        // Lấy output logits — shape [1, time_steps, vocab_size]
-        var logitsTensor: OnnxTensor? = null
-        for (entry in results) {
-            if (entry.key == "logits") {
-                logitsTensor = entry.value as OnnxTensor
-                break
+                // Lấy output 'logits'
+                val logitsTensor = (results.firstOrNull { it.key == "logits" }?.value as? OnnxTensor)
+                    ?: error("Output 'logits' not found")
+
+                val shape = logitsTensor.info.shape  // [1, time_steps, vocab_size]
+                val totalElements = shape.fold(1L) { acc, l -> acc * l }.toInt()
+                val logitsFlat = FloatArray(totalElements)
+                logitsTensor.floatBuffer.get(logitsFlat)
+
+                val vocabSize = shape[2].toInt()
+                check(vocabSize == vocab.size) {
+                    "Vocab size mismatch: model=$vocabSize  asset=${vocab.size}. " +
+                    "Bạn đang dùng vocab.json không khớp model."
+                }
+
+                return CTCDecoder.greedyDecode(logitsFlat, vocabSize, vocab)
             }
         }
-        val tensor = logitsTensor ?: error("Output 'logits' not found")
-
-        val shape = tensor.info.shape
-        val totalElements = shape.reduce { acc, l -> acc * l }.toInt()
-        val logitsFlat = FloatArray(totalElements)
-        tensor.floatBuffer.get(logitsFlat)
-
-        // Tính vocab size từ shape thực tế
-        vocabSize = shape[2].toInt()
-
-        // CTC decode → IPA phonemes
-        return CTCDecoder.greedyDecode(logitsFlat, vocabSize)
-    }
-
-    /**
-     * Nhận dạng với word boundaries.
-     * Trả về phonemes được nhóm theo từ.
-     */
-    fun recognizeWithBoundaries(audioFloat: FloatArray): List<List<String>> {
-        val env     = ortEnv     ?: error("Chưa gọi load()")
-        val session = this.session ?: error("Chưa gọi load()")
-
-        val inputShape  = longArrayOf(1, audioFloat.size.toLong())
-        val inputTensor = OnnxTensor.createTensor(
-            env,
-            FloatBuffer.wrap(audioFloat),
-            inputShape
-        )
-
-        val results      = session.run(mapOf("input_values" to inputTensor))
-
-        var logitsTensor: OnnxTensor? = null
-        for (entry in results) {
-            if (entry.key == "logits") {
-                logitsTensor = entry.value as OnnxTensor
-                break
-            }
-        }
-        val tensor = logitsTensor ?: error("Output 'logits' not found")
-
-        val shape        = tensor.info.shape
-        val totalElements = shape.reduce { acc, l -> acc * l }.toInt()
-        val logitsFlat   = FloatArray(totalElements)
-        tensor.floatBuffer.get(logitsFlat)
-
-        vocabSize        = shape[2].toInt()
-
-        return CTCDecoder.greedyDecodeWithBoundaries(logitsFlat, vocabSize)
     }
 
     override fun close() {
         session?.close()
         ortEnv?.close()
+        session = null
+        ortEnv = null
+        vocab = null
     }
 }
 
 /*
  * ─────────────────────────────────────────────
- * Script export ONNX (chạy trên máy tính, không phải Android)
+ * Script export ONNX + vocab.json
  * ─────────────────────────────────────────────
  *
- * File: export_wav2vec2_onnx.py
+ * Xem tools/export_wav2vec2_onnx.py — script đó vừa export ONNX,
+ * vừa dump vocab.json từ chính Wav2Vec2PhonemeCTCTokenizer.
  *
- * pip install transformers torch onnx onnxruntime
+ * Sau khi chạy script, copy 2 file vào assets/:
+ *   - wav2vec2_phoneme.onnx
+ *   - wav2vec2_phoneme_vocab.json
  *
- * from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
- * import torch
- *
- * MODEL_ID = "facebook/wav2vec2-lv-60-espeak-cv-ft"
- * model    = Wav2Vec2ForCTC.from_pretrained(MODEL_ID)
- * model.eval()
- *
- * # Dummy input: 3 giây audio tại 16kHz
- * dummy_input = torch.zeros(1, 48000)
- *
- * torch.onnx.export(
- *     model,
- *     dummy_input,
- *     "wav2vec2_phoneme.onnx",
- *     input_names  = ["input_values"],
- *     output_names = ["logits"],
- *     dynamic_axes = {
- *         "input_values": {0: "batch", 1: "num_samples"},
- *         "logits":       {0: "batch", 1: "time_steps"},
- *     },
- *     opset_version = 14,
- * )
- * print("Exported! Size:", os.path.getsize("wav2vec2_phoneme.onnx") / 1e6, "MB")
- * # Output: ~380MB (full model) hoặc ~95MB (quantized int8)
- *
- * # Quantize để giảm kích thước (optional nhưng khuyên dùng)
- * from onnxruntime.quantization import quantize_dynamic, QuantType
- * quantize_dynamic(
- *     "wav2vec2_phoneme.onnx",
- *     "wav2vec2_phoneme.onnx",
- *     weight_type = QuantType.QInt8,
- *     op_types_to_quantize = ["MatMul"],   # QUAN TRỌNG: chỉ quantize MatMul.
- *                                          # Mặc định sẽ quantize cả Conv → tạo ra
- *                                          # ConvInteger op mà onnxruntime-android
- *                                          # KHÔNG có kernel → crash khi load.
- * )
- * # Kết quả: ~110-120MB, chạy ngon trên Android.
+ * Đây là cách DUY NHẤT đảm bảo index → IPA token đúng. Mọi cách
+ * hardcode bảng tokens trong Kotlin đều sẽ lệch — vì
+ * Wav2Vec2PhonemeCTCTokenizer có thứ tự riêng (n=4, s=5, t=6, ə=7,
+ * l=8, a=9...) không phải thứ tự IPA chuẩn nào.
  */

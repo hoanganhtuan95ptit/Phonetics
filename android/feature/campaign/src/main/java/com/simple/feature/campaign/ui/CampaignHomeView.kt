@@ -27,7 +27,7 @@ class CampaignHomeView : HomeService {
 
         viewItemList.observe(fragment) {
 
-            homeViewModel.updateTypeViewItemList(type = -1, it)
+//            homeViewModel.updateTypeViewItemList(type = -1, it)
         }
     }
 }

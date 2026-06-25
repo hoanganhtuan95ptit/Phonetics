@@ -17,4 +17,22 @@
             <enum name="horizontal" value="0" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="ScoreGaugeView">
+        <attr name="sg_progress" format="integer" />
+        <attr name="sg_grade" format="string" />
+        <attr name="sg_label" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="OutlineView">
+        <attr name="ov_strokeColor" format="color" />
+        <attr name="ov_strokeWidth" format="dimension" />
+        <attr name="ov_cornerRadius" format="dimension" />
+        <attr name="ov_dashWidth" format="dimension" />
+        <attr name="ov_dashGap" format="dimension" />
+        <attr name="ov_loading" format="boolean" />
+        <attr name="ov_show" format="boolean" />
+        <attr name="ov_loadingSegmentRatio" format="float" />
+        <attr name="ov_loadingDuration" format="integer" />
+    </declare-styleable>
 </resources>

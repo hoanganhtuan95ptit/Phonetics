@@ -31,7 +31,7 @@ class IpaHomeService : HomeService {
 
         ipaHomeViewModel.viewItemList.asFlow().launchCollect(homeFragment.viewLifecycleOwner) {
 
-            viewModel.updateTypeViewItemList(type = 2, it)
+//            viewModel.updateTypeViewItemList(type = 2, it) // todo
         }
 
 

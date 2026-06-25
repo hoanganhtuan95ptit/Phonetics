@@ -1,5 +1,7 @@
 package com.simple.phonetics.ui.home.services.language
 
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
@@ -11,6 +13,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.services.HomeService
+import com.simple.phonetics.ui.speak.PronunciationActivity
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
@@ -34,8 +37,9 @@ class LanguageHomeService() : HomeService {
         binding.ivLanguage.setDebouncedClickListener {
 
             val transitionName = binding.ivLanguage.transitionName
+            homeFragment.startActivity(Intent(homeFragment.requireActivity(), PronunciationActivity::class.java))
 
-            sendDeeplink(DeeplinkManager.LANGUAGE, extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivLanguage))
+//            sendDeeplink(DeeplinkManager.LANGUAGE, extras = mapOf(Param.ROOT_TRANSITION_NAME to transitionName), sharedElement = mapOf(transitionName to binding.ivLanguage))
         }
     }
 }

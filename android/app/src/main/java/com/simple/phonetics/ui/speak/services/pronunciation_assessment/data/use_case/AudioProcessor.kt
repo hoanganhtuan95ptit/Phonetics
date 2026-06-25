@@ -5,10 +5,18 @@
  * và cắt audio thành chunks để đưa vào wav2vec2.
  *
  * Luồng dữ liệu:
- *   AudioRecord (PCM 16-bit, 16kHz) 
+ *   AudioRecord (PCM 16-bit, 16kHz)
  *     → VAD (energy-based)
- *       → onSpeechChunk(floatArray)  — realtime mỗi 500ms
- *       → onSpeechEnd(floatArray)    — khi người dùng dừng nói
+ *       → onSpeechChunk(chunk)  — realtime mỗi 500ms (partial)
+ *       → onSpeechEnd(chunk)    — khi người dùng dừng nói (final)
+ *
+ * Tối ưu so với bản cũ:
+ *   - speechBuffer dùng PRIMITIVE FloatArray (auto-grow), không
+ *     phải MutableList<Short> (16kHz × 15s = 240k boxed Short objects
+ *     → GC stall + ~6MB heap). Bản mới ~960KB float thuần.
+ *   - Convert short → float NGAY khi append, tránh duyệt lại 2 lần.
+ *   - Snapshot copyOfRange(0, size) thay vì toShortArray() rồi
+ *     pcmShortToFloat() — tiết kiệm 1 lần allocate.
  *
  * Cách dùng:
  *   val processor = AudioProcessor(context)
@@ -17,10 +25,6 @@
  *   processor.start()
  *   // ... người dùng nói ...
  *   processor.stop()
- *
- * Thư viện cần thêm vào build.gradle:
- *   implementation 'com.microsoft.onnxruntime:onnxruntime-android:1.26.0'
- *   (cho Silero VAD ở phần nâng cao)
  */
 
 package com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case
@@ -34,6 +38,10 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RequiresPermission
 import kotlinx.coroutines.*
+import java.io.File
+import java.io.FileOutputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import kotlin.coroutines.coroutineContext
 import kotlin.math.sqrt
 
@@ -48,13 +56,17 @@ private const val AUDIO_FORMAT      = AudioFormat.ENCODING_PCM_16BIT
 // VAD parameters
 private const val FRAME_SIZE_MS     = 20        // ms mỗi frame VAD
 private const val FRAME_SAMPLES     = SAMPLE_RATE * FRAME_SIZE_MS / 1000  // = 320 samples
-private const val ENERGY_THRESHOLD  = 500.0f    // RMS threshold — điều chỉnh theo môi trường
+private const val ENERGY_THRESHOLD  = 500.0f    // RMS threshold
 private const val SILENCE_TIMEOUT_MS = 800      // ms im lặng → coi là kết thúc câu
+private const val MID_PAUSE_MS      = 250       // ms im lặng giữa câu → tính là 1 lần dừng
 private const val MIN_SPEECH_MS     = 200       // ms tối thiểu để tính là có giọng nói
 private const val MAX_RECORD_MS     = 15_000    // ms tối đa 1 lần ghi
 
 // Partial scoring interval
-private const val PARTIAL_INTERVAL_MS = 500     // ms — cứ 500ms chấm điểm 1 lần
+private const val PARTIAL_INTERVAL_MS = 500     // ms — cứ 500ms emit partial chunk
+
+// Capacity ban đầu cho speechBuffer = ~1 giây audio
+private const val INITIAL_BUFFER_CAPACITY = SAMPLE_RATE
 
 // ─────────────────────────────────────────────
 // Data
@@ -70,8 +82,49 @@ enum class RecordingState {
 data class AudioChunk(
     val pcmFloat: FloatArray,    // normalized [-1, 1] cho wav2vec2
     val durationMs: Int,
-    val isFinal: Boolean         // true = người dùng đã dừng nói
+    val isFinal: Boolean,        // true = người dùng đã dừng nói
+    val pauseCount: Int = 0,     // số lần dừng giữa câu (VAD phát hiện)
+    val audioFilePath: String? = null // đường dẫn WAV (chỉ có khi isFinal = true)
 )
+
+// ─────────────────────────────────────────────
+// FloatBuffer mở rộng tay (tránh boxing)
+// ─────────────────────────────────────────────
+
+/**
+ * Buffer float thuần — auto-grow như ArrayList nhưng KHÔNG box.
+ * Dùng cho speechBuffer (16kHz × 15s = 240k samples).
+ */
+private class FloatGrowBuffer(initialCapacity: Int = INITIAL_BUFFER_CAPACITY) {
+    private var data = FloatArray(initialCapacity)
+    var size: Int = 0
+        private set
+
+    fun appendShortAsFloat(src: ShortArray, length: Int) {
+        ensureCapacity(size + length)
+        var i = size
+        for (k in 0 until length) {
+            data[i++] = src[k] / 32768.0f
+        }
+        size = i
+    }
+
+    fun snapshot(): FloatArray = data.copyOf(size)
+
+    fun clear() {
+        size = 0
+        // không shrink data — giữ capacity để lần sau khỏi allocate
+    }
+
+    fun isEmpty(): Boolean = size == 0
+
+    private fun ensureCapacity(min: Int) {
+        if (min <= data.size) return
+        var newCap = data.size + (data.size shr 1)  // grow ×1.5
+        if (newCap < min) newCap = min
+        data = data.copyOf(newCap)
+    }
+}
 
 // ─────────────────────────────────────────────
 // AudioProcessor
@@ -80,26 +133,18 @@ data class AudioChunk(
 class AudioProcessor(private val context: Context) {
 
     // ── Callbacks ─────────────────────────────
-    /** Gọi mỗi PARTIAL_INTERVAL_MS khi người dùng đang nói */
     var onSpeechChunk: ((AudioChunk) -> Unit)? = null
-
-    /** Gọi khi người dùng dừng nói (im lặng > SILENCE_TIMEOUT_MS) */
-    var onSpeechEnd: ((AudioChunk) -> Unit)? = null
-
-    /** Gọi khi state thay đổi — để cập nhật UI */
+    var onSpeechEnd:   ((AudioChunk) -> Unit)? = null
     var onStateChange: ((RecordingState) -> Unit)? = null
-
-    /** Gọi khi có lỗi */
-    var onError: ((String) -> Unit)? = null
+    var onError:       ((String) -> Unit)? = null
 
     // ── Internal state ────────────────────────
     private var audioRecord: AudioRecord? = null
     private var recordingJob: Job? = null
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    // Tất cả callback luôn được invoke trên main thread — recordLoop chạy ở
-    // Dispatchers.IO mà callbacks thường đụng UI (setActivated, setText...) →
-    // crash "Animators may only be run on Looper threads" nếu không marshal.
+    // Marshal callbacks về main thread — recordLoop chạy IO, callbacks
+    // hay đụng UI (setActivated, setText...) sẽ crash nếu không marshal.
     private val mainHandler = Handler(Looper.getMainLooper())
     private fun <T> ((T) -> Unit)?.invokeOnMain(value: T) {
         val cb = this ?: return
@@ -107,7 +152,7 @@ class AudioProcessor(private val context: Context) {
         else mainHandler.post { cb(value) }
     }
 
-    private val speechBuffer = mutableListOf<Short>()   // toàn bộ audio đã nói
+    private val speechBuffer = FloatGrowBuffer()
     private var state = RecordingState.IDLE
         set(value) { field = value; onStateChange.invokeOnMain(value) }
 
@@ -118,7 +163,7 @@ class AudioProcessor(private val context: Context) {
         if (state != RecordingState.IDLE) return
 
         val minBuf = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT)
-        val bufSize = maxOf(minBuf * 2, FRAME_SAMPLES * 2 * 4)  // đủ cho vài frame
+        val bufSize = maxOf(minBuf * 2, FRAME_SAMPLES * 2 * 4)
 
         audioRecord = AudioRecord(
             MediaRecorder.AudioSource.MIC,
@@ -141,7 +186,11 @@ class AudioProcessor(private val context: Context) {
 
     fun stop() {
         recordingJob?.cancel()
-        audioRecord?.apply { stop(); release() }
+        recordingJob = null
+        audioRecord?.apply {
+            try { stop() } catch (_: IllegalStateException) {}
+            release()
+        }
         audioRecord = null
         state = RecordingState.IDLE
         speechBuffer.clear()
@@ -150,11 +199,13 @@ class AudioProcessor(private val context: Context) {
     // ── Core recording loop ───────────────────
 
     private suspend fun recordLoop() {
-        val frameBuffer    = ShortArray(FRAME_SAMPLES)
+        val frameBuffer     = ShortArray(FRAME_SAMPLES)
         var silenceDuration = 0
         var speechDuration  = 0
         var totalDuration   = 0
         var lastPartialMs   = 0
+        var pauseCount      = 0   // số lần im lặng giữa câu (>= MID_PAUSE_MS, < SILENCE_TIMEOUT_MS)
+        var inPause         = false  // đang trong khoảng dừng giữa câu
 
         while (coroutineContext.isActive) {
             val read = audioRecord?.read(frameBuffer, 0, FRAME_SAMPLES) ?: break
@@ -170,41 +221,47 @@ class AudioProcessor(private val context: Context) {
                 // ── Đang nghe, phát hiện tiếng nói ──────
                 state == RecordingState.LISTENING && isSpeech -> {
                     state = RecordingState.SPEAKING
-                    speechBuffer.addAll(frameBuffer.take(read))
+                    speechBuffer.appendShortAsFloat(frameBuffer, read)
                     speechDuration = frameDuration
                     silenceDuration = 0
+                    inPause = false
                 }
 
                 // ── Đang nói, vẫn có tiếng ──────────────
                 state == RecordingState.SPEAKING && isSpeech -> {
-                    speechBuffer.addAll(frameBuffer.take(read))
+                    speechBuffer.appendShortAsFloat(frameBuffer, read)
                     speechDuration += frameDuration
-                    silenceDuration = 0
 
-                    // Phát partial score mỗi PARTIAL_INTERVAL_MS
+                    // Kết thúc một khoảng dừng giữa câu
+                    if (inPause && silenceDuration >= MID_PAUSE_MS) {
+                        pauseCount++
+                    }
+                    silenceDuration = 0
+                    inPause = false
+
                     if (speechDuration - lastPartialMs >= PARTIAL_INTERVAL_MS) {
                         lastPartialMs = speechDuration
-                        emitPartialChunk(isFinal = false)
+                        emitChunk(isFinal = false, pauseCount = pauseCount)
                     }
                 }
 
                 // ── Đang nói, bắt đầu im lặng ────────────
                 state == RecordingState.SPEAKING && !isSpeech -> {
-                    speechBuffer.addAll(frameBuffer.take(read))
+                    speechBuffer.appendShortAsFloat(frameBuffer, read)
                     silenceDuration += frameDuration
+                    if (silenceDuration >= MID_PAUSE_MS) inPause = true
 
                     if (silenceDuration >= SILENCE_TIMEOUT_MS &&
                         speechDuration  >= MIN_SPEECH_MS) {
-                        // Kết thúc câu — emit final chunk
-                        emitPartialChunk(isFinal = true)
+                        emitChunk(isFinal = true, pauseCount = pauseCount)
                         break
                     }
                 }
 
                 // ── Timeout tối đa ───────────────────────
                 else -> {
-                    if (totalDuration >= MAX_RECORD_MS && speechBuffer.isNotEmpty()) {
-                        emitPartialChunk(isFinal = true)
+                    if (totalDuration >= MAX_RECORD_MS && !speechBuffer.isEmpty()) {
+                        emitChunk(isFinal = true, pauseCount = pauseCount)
                         break
                     }
                 }
@@ -216,11 +273,11 @@ class AudioProcessor(private val context: Context) {
 
     // ── Emit helpers ──────────────────────────
 
-    private suspend fun emitPartialChunk(isFinal: Boolean) {
-        val pcm = speechBuffer.toShortArray()
-        val floats = pcmShortToFloat(pcm)
-        val durationMs = pcm.size * 1000 / SAMPLE_RATE
-        val chunk = AudioChunk(floats, durationMs, isFinal)
+    private suspend fun emitChunk(isFinal: Boolean, pauseCount: Int = 0) {
+        val snapshot   = speechBuffer.snapshot()
+        val durationMs = snapshot.size * 1000 / SAMPLE_RATE
+        val filePath   = if (isFinal) saveWav(snapshot) else null
+        val chunk      = AudioChunk(snapshot, durationMs, isFinal, pauseCount, filePath)
 
         withContext(Dispatchers.Main) {
             if (isFinal) {
@@ -232,38 +289,75 @@ class AudioProcessor(private val context: Context) {
         }
     }
 
+    /**
+     * Lưu audio dạng WAV 16-bit mono 16kHz vào cache với tên cố định
+     * "user_recording.wav" — ghi đè mỗi lần người dùng đọc xong.
+     *
+     * @return đường dẫn tuyệt đối của file đã lưu
+     */
+    private fun saveWav(samples: FloatArray): String {
+        val file      = File(context.cacheDir, "user_recording.wav")
+        val dataSize  = samples.size * 2        // 16-bit = 2 bytes/sample
+        val buf       = ByteBuffer.allocate(44 + dataSize).order(ByteOrder.LITTLE_ENDIAN)
+
+        // ── RIFF header ─────────────────────────
+        buf.put("RIFF".toByteArray())
+        buf.putInt(36 + dataSize)               // ChunkSize
+        buf.put("WAVE".toByteArray())
+        // ── fmt subchunk ────────────────────────
+        buf.put("fmt ".toByteArray())
+        buf.putInt(16)                          // Subchunk1Size (PCM)
+        buf.putShort(1)                         // AudioFormat = PCM
+        buf.putShort(1)                         // NumChannels  = mono
+        buf.putInt(SAMPLE_RATE)                 // SampleRate
+        buf.putInt(SAMPLE_RATE * 2)             // ByteRate
+        buf.putShort(2)                         // BlockAlign
+        buf.putShort(16)                        // BitsPerSample
+        // ── data subchunk ───────────────────────
+        buf.put("data".toByteArray())
+        buf.putInt(dataSize)
+        for (f in samples) {
+            buf.putShort((f * 32767f).toInt().coerceIn(-32768, 32767).toShort())
+        }
+
+        FileOutputStream(file).use { it.write(buf.array()) }
+        return file.absolutePath
+    }
+
     // ─────────────────────────────────────────
-    // DSP helpers
+    // DSP helpers (vẫn public — Wav2Vec2SpeechRecognizer còn dùng)
     // ─────────────────────────────────────────
 
     /**
-     * Root Mean Square — đo năng lượng frame.
-     * PCM 16-bit range: -32768..32767
+     * Root Mean Square — đo năng lượng frame PCM 16-bit.
      * RMS > 500 ≈ giọng nói bình thường trong phòng yên tĩnh.
      */
     private fun computeRMS(buffer: ShortArray, length: Int): Float {
         var sum = 0.0
         for (i in 0 until length) {
-            sum += buffer[i].toDouble() * buffer[i].toDouble()
+            val s = buffer[i].toDouble()
+            sum += s * s
         }
         return sqrt(sum / length).toFloat()
     }
 
     /**
      * Chuyển PCM 16-bit [-32768, 32767] → Float32 [-1.0, 1.0].
-     * wav2vec2 yêu cầu input normalize về [-1, 1].
      */
     fun pcmShortToFloat(pcm: ShortArray): FloatArray {
         return FloatArray(pcm.size) { i -> pcm[i] / 32768.0f }
     }
 
     /**
-     * Pre-emphasis filter — tăng cường tần số cao, giảm nhiễu thấp.
-     * Công thức: y[t] = x[t] - α * x[t-1], α thường = 0.97
-     * Áp dụng trước khi đưa vào wav2vec2 giúp tăng độ chính xác nhận dạng.
+     * Pre-emphasis filter — y[t] = x[t] - α * x[t-1].
+     *
+     * CHÚ Ý: KHÔNG dùng cho Wav2Vec2! Model end-to-end này được train
+     * trên raw waveform, pre-emphasis sẽ làm méo phân bố input. Giữ
+     * lại chỉ vì Wav2Vec2SpeechRecognizer (legacy) còn gọi.
      */
     fun preEmphasis(signal: FloatArray, alpha: Float = 0.97f): FloatArray {
         val out = FloatArray(signal.size)
+        if (signal.isEmpty()) return out
         out[0] = signal[0]
         for (i in 1 until signal.size) {
             out[i] = signal[i] - alpha * signal[i - 1]
@@ -273,21 +367,20 @@ class AudioProcessor(private val context: Context) {
 
     /**
      * Trim silence — cắt bỏ silence ở đầu và cuối.
-     * Dùng sau khi thu âm xong để giảm kích thước input cho model.
+     * Như preEmphasis, không nên dùng cho partial chunk của Wav2Vec2
+     * (làm CTC alignment dao động). Vẫn public cho Wav2Vec2SpeechRecognizer.
      */
     fun trimSilence(signal: FloatArray, threshold: Float = 0.01f): FloatArray {
         var start = 0
         var end = signal.size - 1
         val frameLen = FRAME_SAMPLES
 
-        // Tìm điểm đầu có tiếng
         while (start < end - frameLen) {
             val rms = computeRMSFloat(signal, start, frameLen)
             if (rms > threshold) break
             start += frameLen
         }
 
-        // Tìm điểm cuối có tiếng
         while (end > start + frameLen) {
             val rms = computeRMSFloat(signal, end - frameLen, frameLen)
             if (rms > threshold) break
@@ -299,7 +392,8 @@ class AudioProcessor(private val context: Context) {
 
     private fun computeRMSFloat(signal: FloatArray, offset: Int, length: Int): Float {
         var sum = 0.0
-        for (i in offset until (offset + length).coerceAtMost(signal.size)) {
+        val limit = (offset + length).coerceAtMost(signal.size)
+        for (i in offset until limit) {
             sum += signal[i].toDouble() * signal[i].toDouble()
         }
         return sqrt(sum / length).toFloat()

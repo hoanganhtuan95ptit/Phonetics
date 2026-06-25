@@ -1,0 +1,50 @@
+{
+  "accuracyScore": 53,
+  "audioFilePath": "/data/user/0/com.ipa.english.phonetics/cache/user_recording.wav",
+  "completenessScore": 100,
+  "errors": [
+    {
+      "errorType": "SUBSTITUTION",
+      "phoneme": "aɪ",
+      "substitutedWith": "i",
+      "wordContext": "nice"
+    },
+    {
+      "errorType": "SUBSTITUTION",
+      "phoneme": "s",
+      "substitutedWith": "u",
+      "wordContext": "nice"
+    }
+  ],
+  "finalScore": 53,
+  "referenceText": "nice",
+  "wordScores": [
+    {
+      "phonemeScores": [
+        {
+          "actual": "n",
+          "errorType": "CORRECT",
+          "expected": "n",
+          "grapheme": "n",
+          "score": 90
+        },
+        {
+          "actual": "i",
+          "errorType": "SUBSTITUTION",
+          "expected": "aɪ",
+          "grapheme": "i",
+          "score": 35
+        },
+        {
+          "actual": "u",
+          "errorType": "SUBSTITUTION",
+          "expected": "s",
+          "grapheme": "ce",
+          "score": 35
+        }
+      ],
+      "score": 53,
+      "word": "nice"
+    }
+  ]
+}

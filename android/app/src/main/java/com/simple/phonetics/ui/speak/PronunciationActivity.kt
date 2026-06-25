@@ -5,6 +5,7 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED as GRANTED
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import com.simple.core.utils.extentions.toJson
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case.*
 import kotlinx.coroutines.launch
@@ -124,6 +126,7 @@ class PronunciationActivity : AppCompatActivity() {
 
     private fun renderScore(score: SentenceScore) {
         // 1. Word cards
+        Log.d("tuanha", "renderScore: ${score.toJson()}")
         wordsContainer.removeAllViews()
         val inflater = LayoutInflater.from(this)
         score.wordScores.forEach { ws ->

@@ -205,9 +205,11 @@ abstract class BaseViewModel : TransitionViewModel() {
         map.clear()
     }
 
-    fun launchWithTag(tag: String, block: suspend CoroutineScope.() -> Unit) {
+    fun launchWithTag(tag: String, block: suspend CoroutineScope.() -> Unit) : Job{
 
         map[tag]?.cancel()
         map[tag] = viewModelScope.launch(handler + Dispatchers.IO, block = block)
+
+        return map[tag]!!
     }
 }

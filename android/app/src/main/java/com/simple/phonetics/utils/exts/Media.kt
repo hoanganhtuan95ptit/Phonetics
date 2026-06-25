@@ -6,11 +6,17 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 
-suspend fun playMedia(source: Int) = channelFlow {
+suspend fun playMedia(source: Int) = playMedia {
+    it.setDataSource(PhoneticsApp.share.resources.openRawResourceFd(source))
+}
 
-    val context = PhoneticsApp.share
+suspend fun playMedia(path: String) = playMedia {
+    it.setDataSource(path)
+}
 
-    val mediaPlayer = MediaPlayer.create(context, source)
+private suspend fun playMedia(block: (MediaPlayer) -> Unit) = channelFlow {
+
+    val mediaPlayer = MediaPlayer()
 
     mediaPlayer.setOnErrorListener { mp, what, extra ->
 
@@ -24,6 +30,9 @@ suspend fun playMedia(source: Int) = channelFlow {
         trySend(Unit)
     }
 
+    block.invoke(mediaPlayer)
+
+    mediaPlayer.prepare()
     mediaPlayer.start()
 
     awaitClose {

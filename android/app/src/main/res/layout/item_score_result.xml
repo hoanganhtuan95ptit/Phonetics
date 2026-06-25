@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Circular gauge -->
+        <com.simple.phonetics.ui.view.ScoreGaugeView
+            android:id="@+id/scoreGaugeView"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center_horizontal"
+            tools:ignore="MissingConstraints"
+            tools:sg_grade="GRADE B"
+            tools:sg_label="ĐIỂM"
+            tools:sg_progress="72" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#1A000000" />
+
+            <!-- Row: Độ chính xác -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Độ chính xác"
+                        android:textColor="#FF2C2C2A"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvAccuracyValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FF2C2C2A"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:text="68%" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressAccuracy"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:max="100"
+                    android:progress="68"
+                    android:progressDrawable="@drawable/progressbar_score_orange" />
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#1A000000" />
+
+            <!-- Row: Hoàn chính -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Hoàn chính"
+                        android:textColor="#FF2C2C2A"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvCompletionValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FF2C2C2A"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:text="100%" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressCompletion"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:max="100"
+                    android:progress="100"
+                    android:progressDrawable="@drawable/progressbar_score_green" />
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#1A000000" />
+
+            <!-- Row: Độ trôi chảy -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Độ trôi chảy"
+                        android:textColor="#FF2C2C2A"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvFluencyValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FF2C2C2A"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:text="76%" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressFluency"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:max="100"
+                    android:progress="76"
+                    android:progressDrawable="@drawable/progressbar_score_green" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Subtitle -->
+    <TextView
+        android:id="@+id/tvSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="#FF6F6E69"
+        android:textSize="13sp"
+        tools:text="Khá tốt — còn 6 âm cần luyện" />
+
+</LinearLayout>

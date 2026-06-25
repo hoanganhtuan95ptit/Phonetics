@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.text.style.CharacterStyle
 import android.text.style.ReplacementSpan
+import androidx.annotation.Keep
 import com.google.auto.service.AutoService
 import com.simple.coreapp.utils.ext.RichSpan
 import com.simple.coreapp.utils.ext.RichSpanConvert
@@ -16,8 +17,9 @@ data class RoundedBackground(
     val radius: Float = 20f
 ) : RichSpan()
 
+@Keep
 @AutoService(RichSpanConvert::class)
-class RelativeSizeConvert : RichSpanConvert {
+class BoundedBackgroundConvert : RichSpanConvert {
 
     override fun getAndroidSpan(richSpan: RichSpan): CharacterStyle? {
         return if (richSpan is RoundedBackground) RoundedBackgroundSpan(richSpan.backgroundColor, richSpan.textColor, richSpan.radius) else null
