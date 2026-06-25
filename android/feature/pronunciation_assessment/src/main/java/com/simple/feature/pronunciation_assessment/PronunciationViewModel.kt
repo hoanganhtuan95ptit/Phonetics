@@ -5,7 +5,6 @@ import android.graphics.Color
 import androidx.annotation.RequiresPermission
 import androidx.lifecycle.viewModelScope
 import com.simple.core.utils.AppException
-import com.simple.core.utils.extentions.toObject
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
@@ -14,7 +13,6 @@ import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
-import com.simple.coreapp.utils.extentions.postValue
 import com.simple.feature.pronunciation_assessment.use_case.PronunciationPipeline
 import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.PhoneticsApp
@@ -22,11 +20,13 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.SentenceScore
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.combineState
+import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
 import com.simple.state.isIdea
 import com.simple.state.isLoading
 import com.simple.state.isStart
+import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
@@ -41,15 +41,6 @@ import kotlinx.coroutines.launch
 
 class PronunciationViewModel : BaseViewModel() {
 
-    private val fakeState by lazy {
-
-        val sentenceScore = """
-            {"accuracyScore":51,"completenessScore":53,"errors":[{"errorType":"DELETION","phoneme":"ð","wordContext":"the"},{"errorType":"SUBSTITUTION","phoneme":"ə","substitutedWith":"i","wordContext":"the"},{"errorType":"SUBSTITUTION","phoneme":"t","substitutedWith":"s","wordContext":"cat"},{"errorType":"SUBSTITUTION","phoneme":"s","substitutedWith":"e","wordContext":"sat"},{"errorType":"SUBSTITUTION","phoneme":"æ","substitutedWith":"o","wordContext":"sat"},{"errorType":"SUBSTITUTION","phoneme":"t","substitutedWith":"n","wordContext":"sat"}],"finalScore":51,"referenceText":"the cat sat on the mat","wordScores":[{"phonemeScores":[{"errorType":"DELETION","expected":"ð"},{"actual":"i","errorType":"SUBSTITUTION","expected":"ə","score":35}],"score":17,"word":"the"},{"phonemeScores":[{"actual":"k","errorType":"CORRECT","expected":"k","score":90},{"actual":"æ","errorType":"CORRECT","expected":"æ","score":90},{"actual":"s","errorType":"SUBSTITUTION","expected":"t","score":70}],"score":83,"word":"cat"},{"phonemeScores":[{"actual":"e","errorType":"SUBSTITUTION","expected":"s","score":35},{"actual":"o","errorType":"SUBSTITUTION","expected":"æ","score":35},{"actual":"n","errorType":"SUBSTITUTION","expected":"t","score":55}],"score":41,"word":"sat"}],"partial":true}
-        """.trimIndent()
-
-        ResultState.Success(sentenceScore.toObject<SentenceScore>())
-    }
-
     private val pronunciationPipeline by lazy {
         PronunciationPipeline(PhoneticsApp.share)
     }
@@ -58,7 +49,7 @@ class PronunciationViewModel : BaseViewModel() {
 
     val recordState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.IDEA)
 
-    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(fakeState) // todo fake
+    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(ResultState.IDEA)
 
 
     val buttonData: StateFlow<ButtonData> = combineState(
@@ -70,23 +61,31 @@ class PronunciationViewModel : BaseViewModel() {
         ButtonData()
     ) { themes, strings, initState, recordState, assessmentState ->
 
-        val text = if (initState.isIdea()) {
-            "Chấm điểm phát âm"
-        } else if (initState is ResultState.Running && initState.data in 0..99) {
-            "Đang tải model ${initState.data}%"
-        } else if (initState.isLoading()) {
-            "Đang load model AI"
-        } else if (assessmentState.isStart()) {
-            "Đang chấm điểm"
-        } else {
-            "Luyện phát âm"
-        }
-
         val textColor = if (!initState.isLoading() && !assessmentState.isLoading()) {
             themes.colorOnPrimary
         } else {
             themes.colorPrimary
         }
+
+        val text = if (initState.isIdea()) {
+            strings.getOrEmpty("speak_screen_action_pronunciation_assessment")
+                .with(Bold, TextSize(16), ForegroundColor(textColor))
+        } else if (initState is ResultState.Running && initState.data in 0..99) {
+            strings.getOrEmpty("speak_screen_loading_model")
+                .replace("\$percent", "${initState.data}%")
+                .with(Bold, TextSize(16), ForegroundColor(textColor))
+                .with("${initState.data}%", ForegroundColor(themes.colorError))
+        } else if (initState.isLoading()) {
+            strings.getOrEmpty("speak_screen_loading_ai_model")
+                .with(Bold, TextSize(16), ForegroundColor(textColor))
+        } else if (assessmentState.isStart()) {
+            strings.getOrEmpty("speak_screen_assessing")
+                .with(Bold, TextSize(16), ForegroundColor(textColor))
+        } else {
+            strings.getOrEmpty("speak_screen_practice")
+                .with(Bold, TextSize(16), ForegroundColor(textColor))
+        }
+
 
         val backgroundColor = if (initState.isIdea()) {
             themes.colorPrimary
@@ -99,7 +98,7 @@ class PronunciationViewModel : BaseViewModel() {
         val imageShow = recordState.isLoading()
 
         ButtonData(
-            text = text.with(Bold, TextSize(16), ForegroundColor(textColor)),
+            text = text,
             textShow = !imageShow,
 
             imageShow = imageShow,

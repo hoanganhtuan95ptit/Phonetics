@@ -230,5 +230,11 @@
   "reminder_message_7": "Đừng quên hít thở sâu và thư giãn 😌. Một tâm hồn bình yên sẽ giúp bạn vượt qua mọi thử thách.",
   "reminder_message_8": "Mỗi ngày là một trang sách mới. Hãy viết nên câu chuyện thành công của riêng bạn hôm nay! 📖🖊️",
   "reminder_message_9": "Thử thách là cơ hội để bạn tỏa sáng. Hãy dũng cảm tiến lên và làm hết sức mình! 💡💪",
-  "reminder_message_10": "Nhớ chăm sóc bản thân! Ăn uống đủ chất 🥗 và giữ sức khỏe thật tốt nhé! ❤️"
+  "reminder_message_10": "Nhớ chăm sóc bản thân! Ăn uống đủ chất 🥗 và giữ sức khỏe thật tốt nhé! ❤️",
+
+  "speak_screen_action_pronunciation_assessment": "Chấm điểm phát âm",
+  "speak_screen_action_loading_model": "Đang tải model $percent",
+  "speak_screen_action_loading_ai_model": "Đang load model AI",
+  "speak_screen_action_assessing": "Đang chấm điểm",
+  "speak_screen_action_practice": "Luyện phát âm"
 }
