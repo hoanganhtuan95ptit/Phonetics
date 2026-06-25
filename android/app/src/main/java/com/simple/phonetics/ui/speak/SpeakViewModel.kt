@@ -41,7 +41,6 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.SentenceScore
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.ui.common.adapters.PhoneticsViewItem2
-import com.simple.phonetics.ui.speak.adapters.ScoreResultViewItem
 import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
@@ -148,23 +147,6 @@ class SpeakViewModel(
             .associateBy { it.word.lowercase() }
             .toMutableMap()
 
-        sentenceScore?.let { score ->
-            val errorCount = score.errors.size
-            val subtitle = when {
-                score.finalScore >= 90 -> "Xuất sắc!"
-                score.finalScore >= 70 -> "Khá tốt — còn $errorCount âm cần luyện"
-                score.finalScore >= 50 -> "Cần cố gắng thêm — còn $errorCount âm cần luyện"
-                else -> "Hãy luyện tập thêm — còn $errorCount âm cần luyện"
-            }
-            viewItemList.add(SpaceViewItem(id = "score_space_top", height = DP.DP_16))
-            viewItemList.add(
-                ScoreResultViewItem(
-                    id = "score_result",
-                    data = score,
-                    subtitle = subtitle
-                )
-            )
-        }
 
         state.toSuccess()?.data.orEmpty().flatMap {
 

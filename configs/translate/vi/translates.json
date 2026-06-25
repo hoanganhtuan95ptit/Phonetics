@@ -238,7 +238,17 @@
   "speak_screen_action_assessing": "Đang chấm điểm",
   "speak_screen_action_practice": "Luyện phát âm",
   "speak_screen_note_pronunciation_assessment": "GHI NHỚ PHÁT ÂM \n\n",
-  "speak_screen_note_substitution": "• /$phoneme/ đọc thành /$substitutedWith}/  (\"$wordContext\")\n",
+  "speak_screen_note_substitution": "• /$phoneme/ đọc thành /$substitutedWith/  (\"$wordContext\")\n",
   "speak_screen_note_insertion": "• /$phoneme/ thêm thừa\n",
-  "speak_screen_note_deletion": "• /$phoneme/ bị nuốt  (\"$wordContext\")\n"
+  "speak_screen_note_deletion": "• /$phoneme/ bị nuốt  (\"$wordContext\")\n",
+
+  "speak_screen_result_subtitle_90": "Xuất sắc!",
+  "speak_screen_result_subtitle_70": "Khá tốt — còn $error_count âm cần luyện",
+  "speak_screen_result_subtitle_50": "Cần cố gắng thêm — còn $error_count âm cần luyện",
+  "speak_screen_result_subtitle_0": "Hãy luyện tập thêm — còn $error_count âm cần luyện",
+
+  "speak_screen_result_label_score": "Điểm",
+  "speak_screen_result_label_accuracy": "Tỷ lệ chính xác",
+  "speak_screen_result_label_completion": "Tỷ lệ hoàn thành",
+  "speak_screen_result_label_fluency": "Tỷ lệ độ trôi chảy"
 }

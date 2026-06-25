@@ -17,6 +17,7 @@ import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.feature.pronunciation_assessment.ui.adapters.NoteViewItem
+import com.simple.feature.pronunciation_assessment.ui.adapters.ScoreResultViewItem
 import com.simple.feature.pronunciation_assessment.use_case.PronunciationPipeline
 import com.simple.feature.pronunciation_assessment.utils.plus
 import com.simple.image.ImageRes
@@ -27,7 +28,6 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.SentenceScore
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.combineState
-import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
@@ -37,6 +37,7 @@ import com.simple.state.isStart
 import com.simple.state.toSuccess
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnPrimary
+import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 import com.unknown.theme.utils.exts.colorSurfaceVariant
 import kotlinx.coroutines.Dispatchers
@@ -52,15 +53,6 @@ import kotlinx.coroutines.launch
 
 class PronunciationViewModel : BaseViewModel() {
 
-    private val fakeState by lazy {
-
-        val sentenceScore = """
-            {"accuracyScore":51,"completenessScore":53,"errors":[{"errorType":"DELETION","phoneme":"ð","wordContext":"the"},{"errorType":"SUBSTITUTION","phoneme":"ə","substitutedWith":"i","wordContext":"the"},{"errorType":"SUBSTITUTION","phoneme":"t","substitutedWith":"s","wordContext":"cat"},{"errorType":"SUBSTITUTION","phoneme":"s","substitutedWith":"e","wordContext":"sat"},{"errorType":"SUBSTITUTION","phoneme":"æ","substitutedWith":"o","wordContext":"sat"},{"errorType":"SUBSTITUTION","phoneme":"t","substitutedWith":"n","wordContext":"sat"}],"finalScore":51,"referenceText":"the cat sat on the mat","wordScores":[{"phonemeScores":[{"errorType":"DELETION","expected":"ð"},{"actual":"i","errorType":"SUBSTITUTION","expected":"ə","score":35}],"score":17,"word":"the"},{"phonemeScores":[{"actual":"k","errorType":"CORRECT","expected":"k","score":90},{"actual":"æ","errorType":"CORRECT","expected":"æ","score":90},{"actual":"s","errorType":"SUBSTITUTION","expected":"t","score":70}],"score":83,"word":"cat"},{"phonemeScores":[{"actual":"e","errorType":"SUBSTITUTION","expected":"s","score":35},{"actual":"o","errorType":"SUBSTITUTION","expected":"æ","score":35},{"actual":"n","errorType":"SUBSTITUTION","expected":"t","score":55}],"score":41,"word":"sat"}],"partial":true}
-        """.trimIndent()
-
-        ResultState.Success(sentenceScore.toObject<SentenceScore>())
-    }
-
     private val pronunciationPipeline by lazy {
         PronunciationPipeline(PhoneticsApp.share)
     }
@@ -69,7 +61,65 @@ class PronunciationViewModel : BaseViewModel() {
 
     val recordState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.IDEA)
 
-    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(fakeState) // todo fake
+    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(ResultState.IDEA) // todo fake
+
+
+    val resultViewItem: StateFlow<List<ViewItem>> = combineState(
+        themes,
+        strings,
+        assessmentState.mapNotNull { it.toSuccess()?.data },
+        emptyList()
+    ) { themes, strings, assessment ->
+
+        fun gradeOf(score: Int): String = when {
+            score >= 90 -> "GRADE A"
+            score >= 80 -> "GRADE B+"
+            score >= 70 -> "GRADE B"
+            score >= 60 -> "GRADE C+"
+            score >= 50 -> "GRADE C"
+            else -> "GRADE D"
+        }
+
+
+        val viewItemList = arrayListOf<ViewItem>()
+
+        val errorCount = assessment.errors.size
+
+        val subtitle = when {
+            assessment.finalScore >= 90 -> strings.getOrKey("speak_screen_result_subtitle_90")
+            assessment.finalScore >= 70 -> strings.getOrKey("speak_screen_result_subtitle_70").replace("\$error_count", errorCount.toString())
+            assessment.finalScore >= 50 -> strings.getOrKey("speak_screen_result_subtitle_50").replace("\$error_count", errorCount.toString())
+            else -> strings.getOrKey("speak_screen_result_subtitle_0").replace("\$error_count", errorCount.toString())
+        }
+
+        ScoreResultViewItem(
+            id = "score_result",
+            score = assessment.finalScore,
+            label = strings.getOrKey("speak_screen_result_label_score"),
+            grade = gradeOf(assessment.finalScore),
+
+            subtitle = subtitle.with(ForegroundColor(themes.colorOnSurface))
+                .with(errorCount.toString(), ForegroundColor(themes.colorError)),
+
+            accuracy = assessment.accuracyScore,
+            accuracyTitle = strings.getOrKey("speak_screen_result_label_accuracy").with(ForegroundColor(themes.colorOnSurface)),
+            accuracyValue = "${assessment.accuracyScore}%".with(ForegroundColor(themes.colorOnSurface)),
+
+            completion = assessment.completenessScore,
+            completionTitle = strings.getOrKey("speak_screen_result_label_completion").with(ForegroundColor(themes.colorOnSurface)),
+            completionValue = "${assessment.completenessScore}%".with(ForegroundColor(themes.colorOnSurface)),
+
+            fluency = (100 - assessment.fluencyPenalty).coerceAtLeast(0),
+            fluencyTitle = strings.getOrKey("speak_screen_result_label_fluency").with(ForegroundColor(themes.colorOnSurface)),
+            fluencyValue = "${(100 - assessment.fluencyPenalty).coerceAtLeast(0)}%".with(ForegroundColor(themes.colorOnSurface)),
+        ).let {
+
+            viewItemList.add(SpaceViewItem(id = "score_space_top", height = DP.DP_16))
+            viewItemList.add(it)
+        }
+
+        viewItemList
+    }
 
 
     val noteViewItem: StateFlow<List<ViewItem>> = combineState(

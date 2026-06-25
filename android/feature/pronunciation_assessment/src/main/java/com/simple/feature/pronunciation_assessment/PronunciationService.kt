@@ -85,6 +85,7 @@ class PronunciationService : FragmentViewCreatedService {
                     View.VISIBLE
                 }
 
+                bindingAction.tvMessage.visibility = visibility
                 bindingAction.frameCopy.root.visibility = visibility
                 bindingAction.frameSpeak.root.visibility = visibility
                 bindingAction.frameReading.root.visibility = visibility
@@ -118,6 +119,11 @@ class PronunciationService : FragmentViewCreatedService {
         viewModel.noteViewItem.launchCollect(fragment.viewLifecycleOwner) {
 
             speakViewModel.add(2, it)
+        }
+
+        viewModel.resultViewItem.launchCollect(fragment.viewLifecycleOwner) {
+
+            speakViewModel.add(0, it)
         }
 
         viewModel.assessmentState.launchCollect(fragment.viewLifecycleOwner) {

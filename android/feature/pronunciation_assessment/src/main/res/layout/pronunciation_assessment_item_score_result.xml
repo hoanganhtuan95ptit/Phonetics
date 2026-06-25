@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -28,12 +27,6 @@
             android:layout_marginStart="16dp"
             android:orientation="vertical">
 
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#1A000000" />
-
             <!-- Row: Độ chính xác -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,12 +42,13 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tvAccuracyTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Độ chính xác"
                         android:textColor="#FF2C2C2A"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        tools:text="Độ chính xác" />
 
                     <TextView
                         android:id="@+id/tvAccuracyValue"
@@ -76,12 +70,6 @@
                     android:progressDrawable="@drawable/progressbar_score_orange" />
             </LinearLayout>
 
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#1A000000" />
-
             <!-- Row: Hoàn chính -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,12 +85,13 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tvCompletionTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Hoàn chính"
                         android:textColor="#FF2C2C2A"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        tools:text="Hoàn chính" />
 
                     <TextView
                         android:id="@+id/tvCompletionValue"
@@ -124,12 +113,6 @@
                     android:progressDrawable="@drawable/progressbar_score_green" />
             </LinearLayout>
 
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#1A000000" />
-
             <!-- Row: Độ trôi chảy -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -145,12 +128,13 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tvFluencyTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Độ trôi chảy"
                         android:textColor="#FF2C2C2A"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        tools:text="Độ trôi chảy" />
 
                     <TextView
                         android:id="@+id/tvFluencyValue"
