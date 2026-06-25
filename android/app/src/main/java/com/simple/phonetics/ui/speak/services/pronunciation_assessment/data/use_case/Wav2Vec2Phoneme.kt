@@ -41,6 +41,7 @@ import ai.onnxruntime.OrtEnvironment
 import ai.onnxruntime.OrtSession
 import android.content.Context
 import android.util.Log
+import com.simple.phonetics.BRANCH
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
@@ -192,7 +193,7 @@ class Wav2Vec2Phoneme(private val context: Context) : AutoCloseable {
      *                      Trả về 100 ngay lập tức nếu file đã cache sẵn.
      */
     fun load(
-        modelUrl: String = "https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/develop/pronunciation/android/app/src/main/assets/wav2vec2_phoneme.onnx",
+        modelUrl: String = "https://github.com/hoanganhtuan95ptit/Phonetics/raw/refs/heads/${BRANCH}/models/wav2vec2_phoneme.onnx",
         modelFileName: String = "wav2vec2_phoneme.onnx",
         vocabFileName: String = Wav2Vec2Vocab.ASSET_FILE_NAME,
         useGPU: Boolean = false,

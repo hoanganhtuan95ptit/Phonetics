@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.speak.services.pronunciation_assessment.PronunciationViewModel
 import com.simple.phonetics.ui.view.outline.OutlineFrameLayout
 import com.simple.state.doRunning
+import com.simple.state.isLoading
 import com.simple.state.isSuccess
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorPrimary
@@ -58,7 +60,7 @@ class PronunciationView @JvmOverloads constructor(
             if (!viewModel.initState.value.isSuccess()) {
 
                 job = viewModel.loadModel(sentences)
-            } else PermissionX.init(findViewTreeViewModelStoreOwner().asObject<Fragment>()).permissions(arrayOf(Manifest.permission.RECORD_AUDIO).toList()).request { allGranted, _, _ ->
+            } else if (viewModel.initState.value.isSuccess() && !viewModel.recordState.value.isLoading()) PermissionX.init(findViewTreeViewModelStoreOwner().asObject<Fragment>()).permissions(arrayOf(Manifest.permission.RECORD_AUDIO).toList()).request { allGranted, _, _ ->
 
                 @SuppressLint("MissingPermission")
                 if (allGranted) job = viewModel.record()

@@ -5,14 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.core.utils.AppException
-import com.simple.core.utils.extentions.orZero
 import com.simple.core.utils.extentions.toObject
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
-import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetic.entities.ipaValueList
@@ -25,7 +23,6 @@ import com.simple.state.ResultState
 import com.simple.state.isIdea
 import com.simple.state.isLoading
 import com.simple.state.isStart
-import com.simple.state.toRunning
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
@@ -148,7 +145,6 @@ class PronunciationViewModel : BaseViewModel() {
             recordState.postValue(ResultState.Start)
 
             pronunciationPipeline.onPartialResult = { score ->
-//                pronunciationRecordState.postValue(ResultState.Running(score))
             }
 
             pronunciationPipeline.onRecordEnd = {
@@ -157,24 +153,11 @@ class PronunciationViewModel : BaseViewModel() {
                     delay(100)
                     recordState.postValue(ResultState.Success(""))
                 }
-//                pronunciationRecordState.postValue(ResultState.Running(score))
             }
             pronunciationPipeline.onFinalResult = { score ->
                 assessmentState.postValue(ResultState.Success(score))
             }
             pronunciationPipeline.onStateChange = { state ->
-//                statusText.text = when (state) {
-//                    PipelineState.READY -> "Sẵn sàng"
-//                    PipelineState.LISTENING -> "Đang nghe..."
-//                    PipelineState.RECORDING -> "Đang ghi âm"
-//                    PipelineState.PROCESSING -> "Đang xử lý..."
-//                    PipelineState.ERROR -> "Lỗi"
-//                    else -> "Đang tải model..."
-//                }
-//                micButton.text = when (state) {
-//                    PipelineState.RECORDING, PipelineState.LISTENING -> "Dừng lại"
-//                    else -> "Bắt đầu nói"
-//                }
             }
 
             pronunciationPipeline.onError = { msg ->
@@ -184,6 +167,7 @@ class PronunciationViewModel : BaseViewModel() {
             pronunciationPipeline.startListening()
 
             awaitClose {
+                if (recordState.value.isLoading()) recordState.postValue(ResultState.Failed(AppException("")))
                 pronunciationPipeline.stopListening()
             }
         }.collect()
