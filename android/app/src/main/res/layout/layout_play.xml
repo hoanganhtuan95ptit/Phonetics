@@ -7,7 +7,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:visibility="visible"
-        tools:src="@drawable/ic_ai_black_24dp" />
+        tools:src="@drawable/img_ai" />
 
     <ImageView
         android:id="@+id/iv_play_or_pause"

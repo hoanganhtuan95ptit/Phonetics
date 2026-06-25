@@ -3,7 +3,6 @@ package com.simple.phonetics.data.api
 import com.simple.ipa.entities.Ipa
 import com.simple.okhttp.cache.entities.Header
 import com.simple.phonetics.BRANCH
-import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.entities.Event
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.WordTopic
@@ -38,7 +37,7 @@ interface Api {
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/popular/{language_code}/populars.json")
     suspend fun syncPopular(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): List<String>
 
-//    @Headers("${Header.Name.HEADER_TIME_CACHE}: ${Header.CachePolicy.TIME_CACHE_1_DAY},${Header.CachePolicy.USE_CACHE_WHEN_ERROR}")
+    @Headers("${Header.Name.HEADER_TIME_CACHE}: ${Header.CachePolicy.TIME_CACHE_1_DAY},${Header.CachePolicy.USE_CACHE_WHEN_ERROR}")
     @GET("https://raw.githubusercontent.com/hoanganhtuan95ptit/Phonetics/refs/heads/{branch}/configs/translate/{language_code}/translates.json")
     suspend fun syncTranslate(@Path("language_code") languageCode: String, @Path("branch") branch: String = BRANCH): Map<String, String>
 

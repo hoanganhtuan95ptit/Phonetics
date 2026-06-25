@@ -1,4 +1,4 @@
-package com.simple.feature.pronunciation_assessment
+package com.simple.feature.pronunciation_assessment.ui
 
 import android.view.View
 import android.view.ViewGroup
@@ -41,15 +41,14 @@ class PronunciationService : FragmentViewCreatedService {
             return
         }
 
-        val dialog = fragment.dialog as BottomSheetDialog
-
-        val behavior = dialog.behavior
-        behavior.isDraggable = false
-
         viewModel = fragment.viewModels<PronunciationViewModel>().value
         speakViewModel = fragment.viewModel<SpeakViewModel>().value
 
-        val bindingActionPronunciation = PronunciationAssessmentLayoutPronunciationAssessmentBinding.inflate(fragment.layoutInflater, fragment.bindingAction!!.framePronunciation)
+        val bindingActionPronunciation =
+            PronunciationAssessmentLayoutPronunciationAssessmentBinding.inflate(
+                fragment.layoutInflater,
+                fragment.bindingAction!!.framePronunciation,
+            )
 
         speakViewModel.text.asFlow().launchCollect(fragment.viewLifecycleOwner) {
 
@@ -112,7 +111,8 @@ class PronunciationService : FragmentViewCreatedService {
             bindingAction.root.awaitDelayedTransition {
 
                 bindingActionPronunciation.tvAudio.isVisible = assessment.isSuccess()
-                bindingActionPronunciation.tvTextToSpeech.isVisible = (!record.isLoading() && !assessment.isLoading() && viewModel.initState.value.isSuccess())
+                bindingActionPronunciation.tvTextToSpeech.isVisible =
+                    (!record.isLoading() && !assessment.isLoading() && viewModel.initState.value.isSuccess())
             }
         }
 
@@ -171,7 +171,10 @@ class PronunciationService : FragmentViewCreatedService {
         }
     }
 
-    private suspend fun ViewGroup.awaitDelayedTransition(transition: Transition = AutoTransition(), changes: () -> Unit) = suspendCancellableCoroutine<Unit> { cont ->
+    private suspend fun ViewGroup.awaitDelayedTransition(
+        transition: Transition = AutoTransition(),
+        changes: () -> Unit,
+    ) = suspendCancellableCoroutine<Unit> { cont ->
 
         val timeoutRunner = Runnable {
             if (cont.isActive) {
@@ -184,33 +187,26 @@ class PronunciationService : FragmentViewCreatedService {
         val listener = object : Transition.TransitionListener {
 
             override fun onTransitionStart(transition: Transition) {
-
                 removeCallbacks(timeoutRunner)
             }
 
             override fun onTransitionEnd(transition: Transition) {
-
                 transition.removeListener(this)
-
                 if (cont.isActive) {
                     cont.resume(Unit)
                 }
             }
 
             override fun onTransitionCancel(transition: Transition) {
-
                 transition.removeListener(this)
-
                 if (cont.isActive) {
                     cont.resume(Unit)
                 }
             }
 
-            override fun onTransitionPause(transition: Transition) {
-            }
+            override fun onTransitionPause(transition: Transition) {}
 
-            override fun onTransitionResume(transition: Transition) {
-            }
+            override fun onTransitionResume(transition: Transition) {}
         }
 
         transition.addListener(listener)

@@ -1,4 +1,4 @@
-package com.simple.feature.pronunciation_assessment
+package com.simple.feature.pronunciation_assessment.ui
 
 import android.Manifest
 import android.graphics.Color
@@ -6,7 +6,6 @@ import androidx.annotation.RequiresPermission
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
-import com.simple.core.utils.extentions.toObject
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.Bold
@@ -16,9 +15,18 @@ import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
+import com.simple.feature.pronunciation_assessment.R
+import com.simple.feature.pronunciation_assessment.data.audio.AudioRecorderImpl
+import com.simple.feature.pronunciation_assessment.data.dictionary.PhonemeDictionaryImpl
+import com.simple.feature.pronunciation_assessment.data.recognizer.Wav2Vec2PhonemeRecognizer
+import com.simple.feature.pronunciation_assessment.data.repositories.PronunciationAssessmentRepositoryImpl
+import com.simple.feature.pronunciation_assessment.domain.entities.AssessmentEvent
+import com.simple.feature.pronunciation_assessment.domain.scoring.PhonemeTokenizer
+import com.simple.feature.pronunciation_assessment.domain.usecase.PrepareAssessmentUseCase
+import com.simple.feature.pronunciation_assessment.domain.usecase.StartAssessmentUseCase
+import com.simple.feature.pronunciation_assessment.domain.usecase.StopAssessmentUseCase
 import com.simple.feature.pronunciation_assessment.ui.adapters.NoteViewItem
 import com.simple.feature.pronunciation_assessment.ui.adapters.ScoreResultViewItem
-import com.simple.feature.pronunciation_assessment.use_case.PronunciationPipeline
 import com.simple.feature.pronunciation_assessment.utils.plus
 import com.simple.image.ImageRes
 import com.simple.phonetic.entities.ipaValueList
@@ -42,26 +50,37 @@ import com.unknown.theme.utils.exts.colorPrimary
 import com.unknown.theme.utils.exts.colorSurfaceVariant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 
 class PronunciationViewModel : BaseViewModel() {
 
-    private val pronunciationPipeline by lazy {
-        PronunciationPipeline(PhoneticsApp.share)
+    // ── Manual wiring (data layer instantiated trên-tay theo yêu cầu) ───
+    private val repository by lazy {
+        val ctx = PhoneticsApp.share
+        PronunciationAssessmentRepositoryImpl(
+            audioRecorder = AudioRecorderImpl(ctx),
+            phonemeRecognizer = Wav2Vec2PhonemeRecognizer(ctx),
+            phonemeDictionary = PhonemeDictionaryImpl.load(ctx),
+        )
     }
+
+    private val prepareAssessmentUseCase by lazy { PrepareAssessmentUseCase(repository) }
+    private val startAssessmentUseCase by lazy { StartAssessmentUseCase(repository) }
+    private val stopAssessmentUseCase by lazy { StopAssessmentUseCase(repository) }
+
+    // ── UI state ──────────────────────────────
 
     val initState: MutableStateFlow<ResultState<Int>> = MutableStateFlow(ResultState.IDEA)
 
     val recordState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.IDEA)
 
-    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(ResultState.IDEA) // todo fake
+    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> =
+        MutableStateFlow(ResultState.IDEA)
 
 
     val resultViewItem: StateFlow<List<ViewItem>> = combineState(
@@ -87,9 +106,12 @@ class PronunciationViewModel : BaseViewModel() {
 
         val subtitle = when {
             assessment.finalScore >= 90 -> strings.getOrKey("speak_screen_result_subtitle_90")
-            assessment.finalScore >= 70 -> strings.getOrKey("speak_screen_result_subtitle_70").replace("\$error_count", errorCount.toString())
-            assessment.finalScore >= 50 -> strings.getOrKey("speak_screen_result_subtitle_50").replace("\$error_count", errorCount.toString())
-            else -> strings.getOrKey("speak_screen_result_subtitle_0").replace("\$error_count", errorCount.toString())
+            assessment.finalScore >= 70 -> strings.getOrKey("speak_screen_result_subtitle_70")
+                .replace("\$error_count", errorCount.toString())
+            assessment.finalScore >= 50 -> strings.getOrKey("speak_screen_result_subtitle_50")
+                .replace("\$error_count", errorCount.toString())
+            else -> strings.getOrKey("speak_screen_result_subtitle_0")
+                .replace("\$error_count", errorCount.toString())
         }
 
         ScoreResultViewItem(
@@ -102,16 +124,22 @@ class PronunciationViewModel : BaseViewModel() {
                 .with(errorCount.toString(), ForegroundColor(themes.colorError)),
 
             accuracy = assessment.accuracyScore,
-            accuracyTitle = strings.getOrKey("speak_screen_result_label_accuracy").with(ForegroundColor(themes.colorOnSurface)),
-            accuracyValue = "${assessment.accuracyScore}%".with(ForegroundColor(themes.colorOnSurface)),
+            accuracyTitle = strings.getOrKey("speak_screen_result_label_accuracy")
+                .with(ForegroundColor(themes.colorOnSurface)),
+            accuracyValue = "${assessment.accuracyScore}%"
+                .with(ForegroundColor(themes.colorOnSurface)),
 
             completion = assessment.completenessScore,
-            completionTitle = strings.getOrKey("speak_screen_result_label_completion").with(ForegroundColor(themes.colorOnSurface)),
-            completionValue = "${assessment.completenessScore}%".with(ForegroundColor(themes.colorOnSurface)),
+            completionTitle = strings.getOrKey("speak_screen_result_label_completion")
+                .with(ForegroundColor(themes.colorOnSurface)),
+            completionValue = "${assessment.completenessScore}%"
+                .with(ForegroundColor(themes.colorOnSurface)),
 
             fluency = (100 - assessment.fluencyPenalty).coerceAtLeast(0),
-            fluencyTitle = strings.getOrKey("speak_screen_result_label_fluency").with(ForegroundColor(themes.colorOnSurface)),
-            fluencyValue = "${(100 - assessment.fluencyPenalty).coerceAtLeast(0)}%".with(ForegroundColor(themes.colorOnSurface)),
+            fluencyTitle = strings.getOrKey("speak_screen_result_label_fluency")
+                .with(ForegroundColor(themes.colorOnSurface)),
+            fluencyValue = "${(100 - assessment.fluencyPenalty).coerceAtLeast(0)}%"
+                .with(ForegroundColor(themes.colorOnSurface)),
         ).let {
 
             viewItemList.add(SpaceViewItem(id = "score_space_top", height = DP.DP_16))
@@ -134,7 +162,7 @@ class PronunciationViewModel : BaseViewModel() {
         var title = strings.getOrKey("speak_screen_note_pronunciation_assessment")
             .with(TextSize(16), ForegroundColor(themes.colorPrimary))
 
-        errors.mapIndexedNotNull { index, it ->
+        errors.mapIndexedNotNull { _, it ->
 
             val msg = when (it.errorType) {
                 ErrorType.SUBSTITUTION -> strings.getOrKey("speak_screen_note_substitution")
@@ -161,12 +189,14 @@ class PronunciationViewModel : BaseViewModel() {
         NoteViewItem(
             id = "NOTE",
             note = title,
-            image = ImageRes(R.drawable.pronunciation_assessment_ic_note_black_24dp, themes.colorPrimary),
+            image = ImageRes(
+                R.drawable.pronunciation_assessment_ic_note_black_24dp,
+                themes.colorPrimary
+            ),
             background = Background(
                 cornerRadius = DP.DP_16,
-
                 strokeWidth = DP.DP_1,
-                strokeColor = themes.colorSurfaceVariant
+                strokeColor = themes.colorSurfaceVariant,
             )
         ).let {
 
@@ -235,14 +265,14 @@ class PronunciationViewModel : BaseViewModel() {
 
             background = Background(
                 cornerRadius = DP.DP_10,
-                backgroundColor = backgroundColor
+                backgroundColor = backgroundColor,
             )
         )
     }
 
     override fun onCleared() {
         super.onCleared()
-        pronunciationPipeline.close()
+        repository.close()
     }
 
     fun loadModel(sentences: List<Sentence>) = viewModelScope.launch(handler + Dispatchers.IO) {
@@ -254,74 +284,61 @@ class PronunciationViewModel : BaseViewModel() {
             it.phonetics
         }.map { phonetic ->
 
-            phonetic.text to phonetic.ipaValueList.firstOrNull().orEmpty().parseIpaPhonemes()
+            phonetic.text to PhonemeTokenizer.parseIpa(
+                phonetic.ipaValueList.firstOrNull().orEmpty()
+            )
         }
 
-        pronunciationPipeline.prepare(reference = reference, useGPU = true) {
+        prepareAssessmentUseCase.execute(
+            PrepareAssessmentUseCase.Param(
+                reference = reference,
+                useGPU = true,
+                onProgress = { initState.value = ResultState.Running(it) },
+            )
+        )
 
-            initState.value = (ResultState.Running(it))
-        }
-
-        initState.value = (ResultState.Success(100))
+        initState.value = ResultState.Success(100)
     }
 
     @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     fun record(): Job = launchWithTag("record") {
 
-        channelFlow<Unit> {
+        recordState.value = ResultState.Start
 
-            recordState.value = (ResultState.Start)
+        startAssessmentUseCase.execute().collect { event ->
 
-            pronunciationPipeline.onPartialResult = { score ->
-            }
+            when (event) {
+                is AssessmentEvent.StateChanged -> {
+                    // pipeline state — UI hiện không bind, để dành mở rộng sau
+                }
 
-            pronunciationPipeline.onRecordEnd = {
-                assessmentState.value = (ResultState.Start)
-                launch {
-                    delay(100)
-                    recordState.value = (ResultState.Success(""))
+                is AssessmentEvent.Partial -> {
+                    // partial — UI hiện chưa bind, có thể thêm sau
+                }
+
+                is AssessmentEvent.RecordEnded -> {
+                    assessmentState.value = ResultState.Start
+                    launch {
+                        delay(100)
+                        recordState.value = ResultState.Success("")
+                    }
+                }
+
+                is AssessmentEvent.Final -> {
+                    assessmentState.value = ResultState.Success(event.score)
+                }
+
+                is AssessmentEvent.Error -> {
+                    recordState.value = ResultState.Failed(AppException(event.message))
                 }
             }
-            pronunciationPipeline.onFinalResult = { score ->
-                assessmentState.value = (ResultState.Success(score))
-            }
-            pronunciationPipeline.onStateChange = { state ->
-            }
-
-            pronunciationPipeline.onError = { msg ->
-                recordState.value = (ResultState.Failed(AppException(msg)))
-            }
-
-            pronunciationPipeline.startListening()
-
-            awaitClose {
-                if (recordState.value.isLoading()) recordState.value = (ResultState.Failed(AppException("")))
-                pronunciationPipeline.stopListening()
-            }
-        }.collect()
-    }
-
-    /**
-     * Tách chuỗi IPA (vd: "/ˈtiːm/") thành list phoneme riêng lẻ (vd: ["t","iː","m"]).
-     * Dùng greedy matching để ưu tiên token nhiều ký tự trước (iː, tʃ, ...).
-     */
-    private fun String.parseIpaPhonemes(): List<String> {
-        val clean = replace("/", "").replace("ˈ", "").replace("ˌ", "").trim()
-        val multiChar = listOf("tʃ", "dʒ", "iː", "uː", "eɪ", "ɜː", "ɔː", "aɪ", "aʊ", "ɔɪ", "oʊ", "ɑː")
-        val result = mutableListOf<String>()
-        var i = 0
-        while (i < clean.length) {
-            val matched = multiChar.firstOrNull { clean.startsWith(it, i) }
-            if (matched != null) {
-                result.add(matched)
-                i += matched.length
-            } else {
-                val ch = clean[i].toString()
-                if (ch.isNotBlank()) result.add(ch)
-                i++
-            }
         }
-        return result
+
+        // Flow đóng — nếu record vẫn loading thì coi như user cancel
+        if (recordState.value.isLoading()) {
+            recordState.value = ResultState.Failed(AppException(""))
+        }
+        stopAssessmentUseCase.execute()
     }
 
     data class ButtonData(
@@ -331,6 +348,6 @@ class PronunciationViewModel : BaseViewModel() {
         val progressShow: Boolean = false,
 
         val loading: Boolean = false,
-        val background: Background = com.simple.coreapp.ui.view.Background()
+        val background: Background = com.simple.coreapp.ui.view.Background(),
     )
 }
