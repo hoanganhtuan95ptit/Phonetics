@@ -42,11 +42,13 @@
  *   <uses-permission android:name="android.permission.RECORD_AUDIO"/>
  */
 
-package com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case
+package com.simple.feature.pronunciation_assessment.use_case
 
 import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtEnvironment
 import ai.onnxruntime.OrtSession
+import android.Manifest
+import android.app.ActivityManager
 import android.content.Context
 import android.speech.SpeechRecognizer
 import androidx.annotation.RequiresPermission
@@ -222,7 +224,7 @@ object CTCTextDecoder {
 
 /**
  * Wav2Vec2SpeechRecognizer — offline speech-to-text, giao diện giống
- * [android.speech.SpeechRecognizer] + [android.speech.RecognitionListener].
+ * [SpeechRecognizer] + [android.speech.RecognitionListener].
  *
  * Điểm khác biệt so với Google SpeechRecognizer:
  *   ✓ Hoàn toàn offline, không cần internet
@@ -384,7 +386,7 @@ class Wav2Vec2SpeechRecognizer(
      *
      * @throws SecurityException nếu thiếu RECORD_AUDIO permission
      */
-    @RequiresPermission(android.Manifest.permission.RECORD_AUDIO)
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     fun startListening() {
         if (!isLoaded) {
             onError?.invoke(
@@ -615,8 +617,8 @@ class Wav2Vec2SpeechRecognizer(
          */
         fun isDeviceCapable(context: Context): Boolean {
             val am = context.getSystemService(Context.ACTIVITY_SERVICE)
-                    as android.app.ActivityManager
-            val info = android.app.ActivityManager.MemoryInfo()
+                    as ActivityManager
+            val info = ActivityManager.MemoryInfo()
             am.getMemoryInfo(info)
             return info.availMem > 400L * 1024 * 1024
         }

@@ -45,11 +45,14 @@
  *   pipeline.close()
  */
 
-package com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case
+package com.simple.feature.pronunciation_assessment.use_case
 
+import android.Manifest
 import android.content.Context
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import com.simple.core.utils.extentions.toJson
+import com.simple.phonetics.entities.SentenceScore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -118,7 +121,7 @@ class PronunciationPipeline(private val context: Context) : AutoCloseable {
 
     /**
      * Dictionary grapheme–phoneme — load lazy lần đầu dùng.
-     * Pipeline tự động điền [PhonemeScore.grapheme] cho mọi kết quả partial và final.
+     * Pipeline tự động điền [com.simple.phonetics.entities.PhonemeScore.grapheme] cho mọi kết quả partial và final.
      */
     private val phonemeDict: PhonemeDict by lazy { PhonemeDict.load(context) }
 
@@ -163,7 +166,7 @@ class PronunciationPipeline(private val context: Context) : AutoCloseable {
 
     // ── Recording ─────────────────────────────
 
-    @androidx.annotation.RequiresPermission(android.Manifest.permission.RECORD_AUDIO)
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     fun startListening() {
         if (state == PipelineState.UNINITIALIZED) {
             onError?.invoke("Chưa gọi prepare()")

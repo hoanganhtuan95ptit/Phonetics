@@ -1,4 +1,11 @@
-package com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case
+package com.simple.feature.pronunciation_assessment.use_case
+
+import com.simple.phonetics.entities.ErrorType
+import com.simple.phonetics.entities.PhonemeScore
+import com.simple.phonetics.entities.PronunciationError
+import com.simple.phonetics.entities.SentenceScore
+import com.simple.phonetics.entities.WordScore
+import kotlin.math.abs
 
 /**
  * PronunciationScorer.kt
@@ -18,53 +25,6 @@ package com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use
  *   - GOP log prob → thay bằng softmax scores từ acoustic model
  */
 
-// ─────────────────────────────────────────────
-// Data classes
-// ─────────────────────────────────────────────
-
-/** Kết quả điểm của một phoneme */
-data class PhonemeScore(
-    val expected: String = "",        // Phoneme chuẩn,  ví dụ "/æ/"
-    val actual: String? = "",         // Phoneme người dùng phát ra (null = thiếu)
-    val score: Int = 0,              // 0–100
-
-    val errorType: ErrorType = ErrorType.SUBSTITUTION,
-
-    /**
-     * Cụm ký tự (grapheme) tương ứng từ PhonemeDict, ví dụ "th", "ea", "kn".
-     * null nếu không có PhonemeDict hoặc từ không có trong dictionary.
-     */
-    val grapheme: String? = null
-)
-
-enum class ErrorType { CORRECT, SUBSTITUTION, DELETION, INSERTION }
-
-/** Kết quả điểm của một từ */
-data class WordScore(
-    val word: String = "",
-    val phonemeScores: List<PhonemeScore> = emptyList(),
-    val score: Int = 0             // avg của phoneme scores
-)
-
-/** Kết quả điểm toàn câu */
-data class SentenceScore(
-    val referenceText: String = "",
-    val wordScores: List<WordScore> = emptyList(),
-    val accuracyScore: Int = 0,      // avg(phoneme scores)
-    val completenessScore: Int = 0,  // % âm đã đọc / tổng âm
-    val fluencyPenalty: Int = 0,     // trừ điểm nếu dừng nhiều
-    val finalScore: Int = 0,         // điểm cuối
-    val errors: List<PronunciationError> = emptyList(),
-    val isPartial: Boolean = true,   // true nếu người dùng chưa đọc hết câu
-    val audioFilePath: String? = null // đường dẫn file WAV người dùng vừa đọc (chỉ có ở kết quả final)
-)
-
-data class PronunciationError(
-    val phoneme: String = "",
-    val errorType: ErrorType = ErrorType.SUBSTITUTION,
-    val substitutedWith: String? = null,
-    val wordContext: String = ""
-)
 
 // ─────────────────────────────────────────────
 // Bước 1 — G2P: text → phoneme chuẩn
@@ -315,7 +275,7 @@ private fun mannerDist(a: Manner, b: Manner): Int =
     MANNER_DIST[Pair(a.ordinal, b.ordinal)] ?: 5
 
 private fun placeDist(a: Place, b: Place): Int =
-    kotlin.math.abs(a.ordinal - b.ordinal)
+    abs(a.ordinal - b.ordinal)
 
 /**
  * Tính confusion cost giữa 2 consonant dựa trên phonetic features.
@@ -355,8 +315,8 @@ private fun consonantCost(f1: ConsonantFeatures, f2: ConsonantFeatures): Int {
  *   /aɪ/→/aʊ/ = 2 backness diph      = 28  → score 72
  */
 private fun vowelCost(v1: VowelFeatures, v2: VowelFeatures): Int {
-    val heightCost   = kotlin.math.abs(v1.height.level   - v2.height.level)   * 18
-    val backnessCost = kotlin.math.abs(v1.backness.level - v2.backness.level)  * 14
+    val heightCost   = abs(v1.height.level   - v2.height.level) * 18
+    val backnessCost = abs(v1.backness.level - v2.backness.level) * 14
     val roundCost    = if (v1.rounded   == v2.rounded)   0 else 10
     val tenseCost    = if (v1.tense     == v2.tense)     0 else 8
     val diphCost     = if (v1.diphthong == v2.diphthong) 0 else 14
@@ -551,23 +511,23 @@ object ScoreAggregator {
                 .filter { it.errorType != ErrorType.CORRECT && it.errorType != ErrorType.INSERTION }
                 .map { ph ->
                     PronunciationError(
-                        phoneme         = ph.expected,
-                        errorType       = ph.errorType,
+                        phoneme = ph.expected,
+                        errorType = ph.errorType,
                         substitutedWith = if (ph.errorType == ErrorType.SUBSTITUTION) ph.actual else null,
-                        wordContext     = ws.word
+                        wordContext = ws.word
                     )
                 }
         }
 
         return SentenceScore(
-            referenceText       = referenceText,
-            wordScores          = wordScores,
-            accuracyScore       = accuracyScore,
-            completenessScore   = completenessScore,
-            fluencyPenalty      = fluencyPenalty,
-            finalScore          = finalScore,
-            errors              = errors,
-            isPartial           = isPartial
+            referenceText = referenceText,
+            wordScores = wordScores,
+            accuracyScore = accuracyScore,
+            completenessScore = completenessScore,
+            fluencyPenalty = fluencyPenalty,
+            finalScore = finalScore,
+            errors = errors,
+            isPartial = isPartial
         )
     }
 }
@@ -703,9 +663,9 @@ class PronunciationScorer {
                 val expected = pair.reference!!
                 val actual   = pair.hypothesis
                 PhonemeScore(
-                    expected  = expected,
-                    actual    = actual,
-                    score     = GOPScorer.score(expected, actual, noiseLevel),
+                    expected = expected,
+                    actual = actual,
+                    score = GOPScorer.score(expected, actual, noiseLevel),
                     errorType = GOPScorer.errorType(expected, actual)
                 )
             }

@@ -7,7 +7,7 @@ plugins {
 apply from: "$rootDir/constant.gradle"
 
 android {
-    namespace 'com.simple.feature.ipa_voice_en'
+    namespace 'com.simple.feature.pronunciation_assessment'
 }
 
 dependencies {
@@ -16,6 +16,9 @@ dependencies {
     implementation project(':library:phonetic')
 
     implementation googleDependencies.material
+
+    implementation otherDependencies.permissionx
+    implementation otherDependencies.onnxruntime
 
     implementation hoanganhtuan95Dependencies.service
 

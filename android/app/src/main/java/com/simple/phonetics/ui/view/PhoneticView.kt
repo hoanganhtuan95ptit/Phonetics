@@ -33,7 +33,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class PhoneticLayout @JvmOverloads constructor(
+class PhoneticView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : OutlineLinearLayout(context, attrs) {
 

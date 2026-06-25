@@ -7,7 +7,7 @@ import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.phonetics.databinding.ItemScoreResultBinding
-import com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case.SentenceScore
+import com.simple.phonetics.entities.SentenceScore
 
 @ItemAdapter
 class ScoreResultAdapter(

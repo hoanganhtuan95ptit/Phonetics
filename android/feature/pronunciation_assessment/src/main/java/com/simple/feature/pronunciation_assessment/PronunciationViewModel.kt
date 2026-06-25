@@ -1,11 +1,14 @@
-package com.simple.phonetics.ui.speak.services.pronunciation_assessment
+package com.simple.feature.pronunciation_assessment
 
+import android.Manifest
 import android.graphics.Color
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.core.utils.AppException
 import com.simple.core.utils.extentions.toObject
+import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
@@ -17,8 +20,8 @@ import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
-import com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case.PronunciationPipeline
-import com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case.SentenceScore
+import com.simple.feature.pronunciation_assessment.use_case.PronunciationPipeline
+import com.simple.phonetics.entities.SentenceScore
 import com.simple.state.ResultState
 import com.simple.state.isIdea
 import com.simple.state.isLoading
@@ -102,7 +105,7 @@ class PronunciationViewModel : BaseViewModel() {
 
             loading = initState.isLoading() || assessmentState.isLoading(),
 
-            background = com.simple.coreapp.ui.view.Background(
+            background = Background(
                 cornerRadius = DP.DP_10,
                 backgroundColor = backgroundColor
             )
@@ -137,7 +140,7 @@ class PronunciationViewModel : BaseViewModel() {
         initState.postValue(ResultState.Success(100))
     }
 
-    @androidx.annotation.RequiresPermission(android.Manifest.permission.RECORD_AUDIO)
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     fun record(): Job = launchWithTag("record") {
 
         channelFlow<Unit> {
@@ -203,6 +206,6 @@ class PronunciationViewModel : BaseViewModel() {
         val progressShow: Boolean = false,
 
         val loading: Boolean,
-        val background: com.simple.coreapp.ui.view.Background
+        val background: Background
     )
 }

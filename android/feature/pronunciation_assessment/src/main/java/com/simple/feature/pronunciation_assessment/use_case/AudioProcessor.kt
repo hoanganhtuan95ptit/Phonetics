@@ -27,7 +27,7 @@
  *   processor.stop()
  */
 
-package com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case
+package com.simple.feature.pronunciation_assessment.use_case
 
 import android.Manifest
 import android.content.Context

@@ -39,13 +39,13 @@ import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
+import com.simple.phonetics.entities.ErrorType
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Sentence
+import com.simple.phonetics.entities.SentenceScore
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.ui.common.adapters.PhoneticsViewItem2
 import com.simple.phonetics.ui.speak.adapters.ScoreResultViewItem
-import com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case.ErrorType
-import com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case.SentenceScore
 import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant

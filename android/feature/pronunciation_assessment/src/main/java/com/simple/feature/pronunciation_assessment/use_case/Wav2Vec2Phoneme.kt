@@ -34,7 +34,7 @@
  *   <uses-permission android:name="android.permission.RECORD_AUDIO"/>
  */
 
-package com.simple.phonetics.ui.speak.services.pronunciation_assessment.data.use_case
+package com.simple.feature.pronunciation_assessment.use_case
 
 import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtEnvironment
@@ -48,6 +48,7 @@ import java.io.FileOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.FloatBuffer
+import kotlin.use
 
 // ─────────────────────────────────────────────
 // IPA Vocabulary — load từ assets/wav2vec2_phoneme_vocab.json

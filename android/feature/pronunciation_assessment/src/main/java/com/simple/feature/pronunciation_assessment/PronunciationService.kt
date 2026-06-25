@@ -1,4 +1,4 @@
-package com.simple.phonetics.ui.speak.services.pronunciation_assessment
+package com.simple.feature.pronunciation_assessment
 
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +10,12 @@ import androidx.lifecycle.asFlow
 import androidx.transition.AutoTransition
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
+import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.resize
 import com.simple.coreapp.utils.extentions.postValue
-import com.simple.phonetics.databinding.LayoutPronunciationAssessmentBinding
+import com.simple.feature.pronunciation_assessment.databinding.LayoutPronunciationAssessmentBinding
 import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import com.simple.service.FragmentViewCreatedService
@@ -125,8 +126,8 @@ class PronunciationService : FragmentViewCreatedService {
         val dialog = fragment.dialog as BottomSheetDialog
 
         val behavior = dialog.behavior
-        val container = dialog.findViewById<View>(com.google.android.material.R.id.container)!!
-        val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)!!
+        val container = dialog.findViewById<View>(R.id.container)!!
+        val bottomSheet = dialog.findViewById<View>(R.id.design_bottom_sheet)!!
 
         val top = bottomSheet.top
         behavior.isDraggable = false

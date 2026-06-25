@@ -1,10 +1,9 @@
-package com.simple.phonetics.ui.view
+package com.simple.feature.pronunciation_assessment.ui.views
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -18,9 +17,10 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setText
-import com.simple.phonetics.R
+import com.simple.feature.pronunciation_assessment.R
+import com.simple.feature.pronunciation_assessment.PronunciationViewModel
 import com.simple.phonetics.entities.Sentence
-import com.simple.phonetics.ui.speak.services.pronunciation_assessment.PronunciationViewModel
+import com.simple.phonetics.ui.view.RecordingWaveView
 import com.simple.phonetics.ui.view.outline.OutlineFrameLayout
 import com.simple.state.doRunning
 import com.simple.state.isLoading

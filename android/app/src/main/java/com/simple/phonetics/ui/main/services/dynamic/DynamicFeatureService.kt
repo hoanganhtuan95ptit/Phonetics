@@ -46,6 +46,7 @@ class DynamicFeatureService : MainService {
             if (mainActivity.viewModel.inputLanguageFlow.filterNotNull().first().id.equals(Language.Companion.EN, true)) {
 
                 featureList.add("ipa_voice_en")
+                featureList.add("pronunciation_assessment")
             }
 
             featureList.map { moduleName ->
