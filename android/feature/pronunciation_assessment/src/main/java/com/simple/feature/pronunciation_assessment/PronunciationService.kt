@@ -60,7 +60,7 @@ class PronunciationService : FragmentViewCreatedService {
         }
 
 
-        viewModel.initState.asFlow().launchCollect(fragment.viewLifecycleOwner) {
+        viewModel.initState.launchCollect(fragment.viewLifecycleOwner) {
 
             val binding = fragment.binding ?: return@launchCollect
             val bindingAction = fragment.bindingAction ?: return@launchCollect
@@ -95,8 +95,8 @@ class PronunciationService : FragmentViewCreatedService {
         }
 
         combine(
-            viewModel.recordState.asFlow(),
-            viewModel.assessmentState.asFlow()
+            viewModel.recordState,
+            viewModel.assessmentState
         ) { record, assessment ->
             record to assessment
         }.launchCollect(fragment.viewLifecycleOwner) { (record, assessment) ->
@@ -110,7 +110,7 @@ class PronunciationService : FragmentViewCreatedService {
             }
         }
 
-        viewModel.assessmentState.asFlow().launchCollect(fragment.viewLifecycleOwner) {
+        viewModel.assessmentState.launchCollect(fragment.viewLifecycleOwner) {
 
             it.doSuccess {
 

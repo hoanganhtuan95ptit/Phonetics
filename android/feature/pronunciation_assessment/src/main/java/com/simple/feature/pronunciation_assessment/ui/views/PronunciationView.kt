@@ -79,7 +79,7 @@ class PronunciationView @JvmOverloads constructor(
             strokeColor = it.colorPrimary
         }
 
-        viewModel.buttonData.asFlow().launchCollect(lifecycleOwner) {
+        viewModel.buttonData.launchCollect(lifecycleOwner) {
 
             setLoading(it.loading, animate = true)
 
@@ -100,7 +100,7 @@ class PronunciationView @JvmOverloads constructor(
             setBackground(it.background)
         }
 
-        viewModel.initState.asFlow().launchCollect(lifecycleOwner) {
+        viewModel.initState.launchCollect(lifecycleOwner) {
 
             it.doRunning {
                 progressPronunciation.progress = it

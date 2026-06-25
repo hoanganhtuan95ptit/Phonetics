@@ -3,18 +3,17 @@ package com.simple.feature.pronunciation_assessment
 import android.Manifest
 import android.graphics.Color
 import androidx.annotation.RequiresPermission
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.core.utils.AppException
 import com.simple.core.utils.extentions.toObject
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
+import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
-import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.feature.pronunciation_assessment.use_case.PronunciationPipeline
 import com.simple.phonetic.entities.ipaValueList
@@ -22,6 +21,8 @@ import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.SentenceScore
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.combineState
+import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
 import com.simple.state.isIdea
 import com.simple.state.isLoading
@@ -32,6 +33,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -51,21 +54,21 @@ class PronunciationViewModel : BaseViewModel() {
         PronunciationPipeline(PhoneticsApp.share)
     }
 
-    val initState: LiveData<ResultState<Int>> = MediatorLiveData(ResultState.IDEA)
+    val initState: MutableStateFlow<ResultState<Int>> = MutableStateFlow(ResultState.IDEA)
 
-    val recordState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.IDEA)
+    val recordState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.IDEA)
 
-    val assessmentState: LiveData<ResultState<SentenceScore>> = MediatorLiveData(fakeState)
+    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(fakeState)
 
 
-    val buttonData: LiveData<ButtonData> = combineSourcesWithDiff<ButtonData>(translate, theme, initState, recordState, assessmentState) {
-
-        val theme = theme.value ?: return@combineSourcesWithDiff
-        val translate = translate.value ?: return@combineSourcesWithDiff
-
-        val initState = initState.value ?: return@combineSourcesWithDiff
-        val recordState = recordState.value ?: return@combineSourcesWithDiff
-        val assessmentState = assessmentState.value ?: return@combineSourcesWithDiff
+    val buttonData: StateFlow<ButtonData> = combineState(
+        themes,
+        strings,
+        initState,
+        recordState,
+        assessmentState,
+        ButtonData()
+    ) { themes, strings, initState, recordState, assessmentState ->
 
         val text = if (initState.isIdea()) {
             "Chấm điểm phát âm"
@@ -80,23 +83,23 @@ class PronunciationViewModel : BaseViewModel() {
         }
 
         val textColor = if (!initState.isLoading() && !assessmentState.isLoading()) {
-            theme.colorOnPrimary
+            themes.colorOnPrimary
         } else {
-            theme.colorPrimary
+            themes.colorPrimary
         }
 
         val backgroundColor = if (initState.isIdea()) {
-            theme.colorPrimary
+            themes.colorPrimary
         } else if (initState.isLoading() || recordState.isLoading() || assessmentState.isLoading()) {
             Color.TRANSPARENT
         } else {
-            theme.colorPrimary
+            themes.colorPrimary
         }
 
         val imageShow = recordState.isLoading()
 
         ButtonData(
-            text = text.with(ForegroundColor(textColor)),
+            text = text.with(Bold, TextSize(16), ForegroundColor(textColor)),
             textShow = !imageShow,
 
             imageShow = imageShow,
@@ -109,10 +112,7 @@ class PronunciationViewModel : BaseViewModel() {
                 cornerRadius = DP.DP_10,
                 backgroundColor = backgroundColor
             )
-        ).let {
-
-            postValue(it)
-        }
+        )
     }
 
     override fun onCleared() {
@@ -122,7 +122,7 @@ class PronunciationViewModel : BaseViewModel() {
 
     fun loadModel(sentences: List<Sentence>) = viewModelScope.launch(handler + Dispatchers.IO) {
 
-        initState.postValue(ResultState.Start)
+        initState.value = ResultState.Start
 
         val reference = sentences.flatMap {
 
@@ -134,10 +134,10 @@ class PronunciationViewModel : BaseViewModel() {
 
         pronunciationPipeline.prepare(reference = reference, useGPU = true) {
 
-            initState.postValue(ResultState.Running(it))
+            initState.value = (ResultState.Running(it))
         }
 
-        initState.postValue(ResultState.Success(100))
+        initState.value = (ResultState.Success(100))
     }
 
     @RequiresPermission(Manifest.permission.RECORD_AUDIO)
@@ -145,32 +145,32 @@ class PronunciationViewModel : BaseViewModel() {
 
         channelFlow<Unit> {
 
-            recordState.postValue(ResultState.Start)
+            recordState.value = (ResultState.Start)
 
             pronunciationPipeline.onPartialResult = { score ->
             }
 
             pronunciationPipeline.onRecordEnd = {
-                assessmentState.postValue(ResultState.Start)
+                assessmentState.value = (ResultState.Start)
                 launch {
                     delay(100)
-                    recordState.postValue(ResultState.Success(""))
+                    recordState.value = (ResultState.Success(""))
                 }
             }
             pronunciationPipeline.onFinalResult = { score ->
-                assessmentState.postValue(ResultState.Success(score))
+                assessmentState.value = (ResultState.Success(score))
             }
             pronunciationPipeline.onStateChange = { state ->
             }
 
             pronunciationPipeline.onError = { msg ->
-                recordState.postValue(ResultState.Failed(AppException(msg)))
+                recordState.value = (ResultState.Failed(AppException(msg)))
             }
 
             pronunciationPipeline.startListening()
 
             awaitClose {
-                if (recordState.value.isLoading()) recordState.postValue(ResultState.Failed(AppException("")))
+                if (recordState.value.isLoading()) recordState.value = (ResultState.Failed(AppException("")))
                 pronunciationPipeline.stopListening()
             }
         }.collect()
@@ -200,12 +200,12 @@ class PronunciationViewModel : BaseViewModel() {
     }
 
     data class ButtonData(
-        val text: RichText,
+        val text: RichText = emptyText(),
         val textShow: Boolean = true,
         val imageShow: Boolean = false,
         val progressShow: Boolean = false,
 
-        val loading: Boolean,
-        val background: Background
+        val loading: Boolean = false,
+        val background: Background = com.simple.coreapp.ui.view.Background()
     )
 }
