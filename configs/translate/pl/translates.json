@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Wynik",
   "speak_screen_result_label_accuracy": "Dokładność",
   "speak_screen_result_label_completion": "Ukończenie",
-  "speak_screen_result_label_fluency": "Płynność"
+  "speak_screen_result_label_fluency": "Płynność",
+  "speak_screen_title": "Ćwiczenie wymowy"
 }

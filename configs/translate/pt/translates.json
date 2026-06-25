@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Pontuação",
   "speak_screen_result_label_accuracy": "Precisão",
   "speak_screen_result_label_completion": "Conclusão",
-  "speak_screen_result_label_fluency": "Fluência"
+  "speak_screen_result_label_fluency": "Fluência",
+  "speak_screen_title": "Praticar pronúncia"
 }

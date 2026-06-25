@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "النتيجة",
   "speak_screen_result_label_accuracy": "الدقة",
   "speak_screen_result_label_completion": "الاكتمال",
-  "speak_screen_result_label_fluency": "الطلاقة"
+  "speak_screen_result_label_fluency": "الطلاقة",
+  "speak_screen_title": "تدريب النطق"
 }

@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "スコア",
   "speak_screen_result_label_accuracy": "正確度",
   "speak_screen_result_label_completion": "完了率",
-  "speak_screen_result_label_fluency": "流暢さ"
+  "speak_screen_result_label_fluency": "流暢さ",
+  "speak_screen_title": "発音練習"
 }

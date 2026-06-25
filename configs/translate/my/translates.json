@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "ရမှတ်",
   "speak_screen_result_label_accuracy": "တိကျမှု",
   "speak_screen_result_label_completion": "ပြီးဆုံးမှု",
-  "speak_screen_result_label_fluency": "ချောမွေ့မှု"
+  "speak_screen_result_label_fluency": "ချောမွေ့မှု",
+  "speak_screen_title": "အသံထွက် လေ့ကျင့်ပါ"
 }

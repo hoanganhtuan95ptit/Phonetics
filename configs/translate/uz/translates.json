@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Ball",
   "speak_screen_result_label_accuracy": "Aniqlik",
   "speak_screen_result_label_completion": "Yakunlanish",
-  "speak_screen_result_label_fluency": "Ravonlik"
+  "speak_screen_result_label_fluency": "Ravonlik",
+  "speak_screen_title": "Talaffuz mashqi"
 }

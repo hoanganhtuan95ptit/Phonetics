@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Оцінка",
   "speak_screen_result_label_accuracy": "Точність",
   "speak_screen_result_label_completion": "Завершеність",
-  "speak_screen_result_label_fluency": "Плавність"
+  "speak_screen_result_label_fluency": "Плавність",
+  "speak_screen_title": "Практика вимови"
 }

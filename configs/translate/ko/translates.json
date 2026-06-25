@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "점수",
   "speak_screen_result_label_accuracy": "정확도",
   "speak_screen_result_label_completion": "완성도",
-  "speak_screen_result_label_fluency": "유창성"
+  "speak_screen_result_label_fluency": "유창성",
+  "speak_screen_title": "발음 연습"
 }

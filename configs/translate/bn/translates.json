@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "স্কোর",
   "speak_screen_result_label_accuracy": "নির্ভুলতা",
   "speak_screen_result_label_completion": "সমাপ্তি",
-  "speak_screen_result_label_fluency": "প্রবাহমানতা"
+  "speak_screen_result_label_fluency": "প্রবাহমানতা",
+  "speak_screen_title": "উচ্চারণ অনুশীলন"
 }

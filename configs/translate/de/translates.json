@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Punktzahl",
   "speak_screen_result_label_accuracy": "Genauigkeit",
   "speak_screen_result_label_completion": "Vollständigkeit",
-  "speak_screen_result_label_fluency": "Flüssigkeit"
+  "speak_screen_result_label_fluency": "Flüssigkeit",
+  "speak_screen_title": "Aussprache üben"
 }

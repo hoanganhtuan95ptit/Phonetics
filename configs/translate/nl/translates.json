@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Score",
   "speak_screen_result_label_accuracy": "Nauwkeurigheid",
   "speak_screen_result_label_completion": "Voltooiing",
-  "speak_screen_result_label_fluency": "Vloeiendheid"
+  "speak_screen_result_label_fluency": "Vloeiendheid",
+  "speak_screen_title": "Uitspraak oefenen"
 }

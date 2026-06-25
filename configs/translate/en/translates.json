@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Score",
   "speak_screen_result_label_accuracy": "Accuracy",
   "speak_screen_result_label_completion": "Completion",
-  "speak_screen_result_label_fluency": "Fluency"
+  "speak_screen_result_label_fluency": "Fluency",
+  "speak_screen_title": "Practice Pronunciation"
 }

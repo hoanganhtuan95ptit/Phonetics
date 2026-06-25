@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Skor",
   "speak_screen_result_label_accuracy": "Akurasi",
   "speak_screen_result_label_completion": "Penyelesaian",
-  "speak_screen_result_label_fluency": "Kelancaran"
+  "speak_screen_result_label_fluency": "Kelancaran",
+  "speak_screen_title": "Latihan pengucapan"
 }

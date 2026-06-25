@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Poäng",
   "speak_screen_result_label_accuracy": "Noggrannhet",
   "speak_screen_result_label_completion": "Fullständighet",
-  "speak_screen_result_label_fluency": "Flyt"
+  "speak_screen_result_label_fluency": "Flyt",
+  "speak_screen_title": "Öva uttal"
 }

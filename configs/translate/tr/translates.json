@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Puan",
   "speak_screen_result_label_accuracy": "Doğruluk",
   "speak_screen_result_label_completion": "Tamamlanma",
-  "speak_screen_result_label_fluency": "Akıcılık"
+  "speak_screen_result_label_fluency": "Akıcılık",
+  "speak_screen_title": "Telaffuz pratiği"
 }

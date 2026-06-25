@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "Счёт",
   "speak_screen_result_label_accuracy": "Точность",
   "speak_screen_result_label_completion": "Завершённость",
-  "speak_screen_result_label_fluency": "Беглость"
+  "speak_screen_result_label_fluency": "Беглость",
+  "speak_screen_title": "Практика произношения"
 }

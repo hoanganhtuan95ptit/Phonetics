@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "स्कोर",
   "speak_screen_result_label_accuracy": "सटीकता",
   "speak_screen_result_label_completion": "पूर्णता",
-  "speak_screen_result_label_fluency": "प्रवाह"
+  "speak_screen_result_label_fluency": "प्रवाह",
+  "speak_screen_title": "उच्चारण अभ्यास"
 }

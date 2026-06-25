@@ -220,5 +220,6 @@
   "speak_screen_result_label_score": "คะแนน",
   "speak_screen_result_label_accuracy": "ความแม่นยำ",
   "speak_screen_result_label_completion": "ความสมบูรณ์",
-  "speak_screen_result_label_fluency": "ความคล่องแคล่ว"
+  "speak_screen_result_label_fluency": "ความคล่องแคล่ว",
+  "speak_screen_title": "ฝึกการออกเสียง"
 }
