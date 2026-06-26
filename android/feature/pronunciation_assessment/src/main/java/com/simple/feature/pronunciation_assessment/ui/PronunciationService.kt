@@ -14,6 +14,7 @@ import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.resize
+import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.feature.pronunciation_assessment.databinding.PronunciationAssessmentLayoutPronunciationAssessmentBinding
 import com.simple.phonetics.ui.speak.SpeakFragment
@@ -44,11 +45,10 @@ class PronunciationService : FragmentViewCreatedService {
         viewModel = fragment.viewModels<PronunciationViewModel>().value
         speakViewModel = fragment.viewModel<SpeakViewModel>().value
 
-        val bindingActionPronunciation =
-            PronunciationAssessmentLayoutPronunciationAssessmentBinding.inflate(
-                fragment.layoutInflater,
-                fragment.bindingAction!!.framePronunciation,
-            )
+        val framePronunciation = fragment.bindingAction?.framePronunciation ?: return
+        framePronunciation.setVisible(true)
+
+        val bindingActionPronunciation = PronunciationAssessmentLayoutPronunciationAssessmentBinding.inflate(fragment.layoutInflater, framePronunciation)
 
         speakViewModel.text.asFlow().launchCollect(fragment.viewLifecycleOwner) {
 
@@ -71,23 +71,19 @@ class PronunciationService : FragmentViewCreatedService {
 
             it.doSuccess {
 
-                expan(fragment)
+                expandBottomSheet(fragment)
             }
 
             bindingAction.root.awaitDelayedTransition {
 
-                val visibility = if (it.isSuccess()) {
+                bindingAction.tvMessage.visibility = View.GONE
+                bindingAction.frameAction.visibility = if (it.isSuccess()) {
                     View.GONE
                 } else if (it.isLoading()) {
                     View.INVISIBLE
                 } else {
                     View.VISIBLE
                 }
-
-                bindingAction.tvMessage.visibility = visibility
-                bindingAction.frameCopy.root.visibility = visibility
-                bindingAction.frameSpeak.root.visibility = visibility
-                bindingAction.frameReading.root.visibility = visibility
 
                 bindingActionPronunciation.tvTextToSpeech.isVisible = it.isSuccess()
             }
@@ -110,9 +106,8 @@ class PronunciationService : FragmentViewCreatedService {
 
             bindingAction.root.awaitDelayedTransition {
 
-                bindingActionPronunciation.tvAudio.isVisible = assessment.isSuccess()
-                bindingActionPronunciation.tvTextToSpeech.isVisible =
-                    (!record.isLoading() && !assessment.isLoading() && viewModel.initState.value.isSuccess())
+                bindingActionPronunciation.tvAudio.isVisible = assessment.isSuccess() && record.isSuccess()
+                bindingActionPronunciation.tvTextToSpeech.isVisible = (!record.isLoading() && !assessment.isLoading() && viewModel.initState.value.isSuccess())
             }
         }
 
@@ -136,7 +131,7 @@ class PronunciationService : FragmentViewCreatedService {
         }
     }
 
-    private suspend fun expan(fragment: SpeakFragment) {
+    private suspend fun expandBottomSheet(fragment: SpeakFragment) {
 
         val view = fragment.view ?: return
         val dialog = fragment.dialog as BottomSheetDialog
@@ -155,10 +150,10 @@ class PronunciationService : FragmentViewCreatedService {
         bottomSheet.setPadding(0, 0, 0, 0)
         view.translationY = top + 0f
 
-        view.animate().translationY(0f).awaitEnd()
+        view.animate().translationY(0f).awaitAnimationEnd()
     }
 
-    private suspend fun ViewPropertyAnimator.awaitEnd() = suspendCancellableCoroutine<Unit> { cont ->
+    private suspend fun ViewPropertyAnimator.awaitAnimationEnd() = suspendCancellableCoroutine<Unit> { cont ->
 
         withEndAction {
             if (cont.isActive) {
@@ -171,10 +166,7 @@ class PronunciationService : FragmentViewCreatedService {
         }
     }
 
-    private suspend fun ViewGroup.awaitDelayedTransition(
-        transition: Transition = AutoTransition(),
-        changes: () -> Unit,
-    ) = suspendCancellableCoroutine<Unit> { cont ->
+    private suspend fun ViewGroup.awaitDelayedTransition(transition: Transition = AutoTransition(), changes: () -> Unit) = suspendCancellableCoroutine<Unit> { cont ->
 
         val timeoutRunner = Runnable {
             if (cont.isActive) {

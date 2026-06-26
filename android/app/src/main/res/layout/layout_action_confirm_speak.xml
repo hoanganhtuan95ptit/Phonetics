@@ -10,9 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:visibility="gone"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp" />
+        android:paddingVertical="8dp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/frame_action"
@@ -46,14 +46,10 @@
         android:id="@+id/frame_pronunciation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         android:paddingHorizontal="12dp"
-        android:layout_marginTop="16dp">
+        android:visibility="gone">
 
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/frame_ads"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </LinearLayout>
