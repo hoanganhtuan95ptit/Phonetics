@@ -7,9 +7,10 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.simple.phonetics.R
+import com.simple.phonetics.utils.exts.toPronunciationColor
 import kotlin.math.min
+import androidx.core.graphics.toColorInt
 
 /**
  * Circular gauge view showing a score (0–100) with label and grade.
@@ -38,8 +39,6 @@ class ScoreGaugeView @JvmOverloads constructor(
 
         private const val COLOR_TRACK = 0xFFE6E5DE.toInt()
         private const val COLOR_GREEN = 0xFF1ED760.toInt()
-        private const val COLOR_ORANGE = 0xFFF5A623.toInt()
-        private const val COLOR_RED = 0xFFE9201F.toInt()
 
         private const val DEFAULT_TRACK_WIDTH_DP = 10f
     }
@@ -80,12 +79,12 @@ class ScoreGaugeView @JvmOverloads constructor(
     private val scorePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.CENTER
         isFakeBoldText = true
-        color = Color.parseColor("#111111")
+        color = "#111111".toColorInt()
     }
 
     private val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.CENTER
-        color = Color.parseColor("#6F6E69")
+        color = "#6F6E69".toColorInt()
     }
 
     private val gradePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -172,9 +171,5 @@ class ScoreGaugeView @JvmOverloads constructor(
         }
     }
 
-    private fun progressColor(): Int = when {
-        progress >= 80 -> COLOR_GREEN
-        progress >= 60 -> COLOR_ORANGE
-        else -> COLOR_RED
-    }
+    private fun progressColor(): Int = progress.toPronunciationColor()
 }

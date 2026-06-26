@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.speak
 
 import android.content.res.Resources
-import android.graphics.Color
 import android.util.TypedValue
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -11,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.RichText
@@ -47,6 +47,7 @@ import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
+import com.simple.phonetics.utils.exts.toPronunciationColor
 import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
 import com.simple.state.doFailed
@@ -132,15 +133,7 @@ class SpeakViewModel(
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        fun Int?.getColor() = if (this == null) {
-            theme.colorPrimary
-        } else if (this in 0..50) {
-            Color.RED
-        } else if (this in 50..80) {
-            Color.YELLOW
-        } else {
-            Color.GREEN
-        }
+        fun Int?.getColor() = this?.toPronunciationColor() ?: theme.colorPrimary
 
         val wordScoreMap = sentenceScore?.wordScores
             .orEmpty()
@@ -173,7 +166,7 @@ class SpeakViewModel(
             // theo điểm cho từng cụm chữ (apply CUỐI cùng để đè).
             var textDisplay = "$text\n$ipa"
                 .with(ForegroundColor(theme.colorOnSurface))
-                .with(text, TextSize(16))
+                .with(text, Bold, TextSize(16))
                 .with(ipa, TextSize(12), ForegroundColor(if (ipaList.size > 1) theme.colorPrimary else theme.colorError))
             for ((chunk, chunkScore) in graphemeScores) {
                 textDisplay = textDisplay.with(chunk, ForegroundColor(chunkScore.getColor()))
