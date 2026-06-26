@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asFlow
@@ -14,7 +13,7 @@ import com.simple.image.setImage
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.view.outline.OutlineLinearLayout
 import com.simple.state.isCompleted
-import com.simple.state.isIdea
+import com.simple.state.isIdle
 import com.simple.state.isStart
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorPrimary
@@ -71,7 +70,7 @@ class TextToSpeechView @JvmOverloads constructor(
 
             val theme = viewModel.themes.first()
 
-            val res = if (it.isIdea() || it.isStart() || it.isCompleted()) {
+            val res = if (it.isIdle() || it.isStart() || it.isCompleted()) {
                 ImageRes(data = R.drawable.ic_volume_24dp, colorFilter = theme.colorPrimary)
             } else {
                 ImageRes(data = R.drawable.ic_pause_24dp, colorFilter = theme.colorPrimary)

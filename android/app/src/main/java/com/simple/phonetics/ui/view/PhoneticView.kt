@@ -90,7 +90,7 @@ class PhoneticView @JvmOverloads constructor(
 
 class ReadingViewModel : BaseViewModel() {
 
-    val readingState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.IDEA)
+    val readingState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Idle)
 
     fun startReading(text: String) = viewModelScope.launch(handler + Dispatchers.IO) {
 

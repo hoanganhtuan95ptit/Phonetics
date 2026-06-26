@@ -17,8 +17,10 @@ import com.simple.coreapp.utils.ext.resize
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.feature.pronunciation_assessment.databinding.PronunciationAssessmentLayoutPronunciationAssessmentBinding
+import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.ui.speak.SpeakViewModel
+import com.simple.phonetics.utils.exts.value
 import com.simple.service.FragmentViewCreatedService
 import com.simple.state.doSuccess
 import com.simple.state.isLoading
@@ -26,6 +28,7 @@ import com.simple.state.isSuccess
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.suspendCancellableCoroutine
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.resume
 
@@ -41,6 +44,13 @@ class PronunciationService : FragmentViewCreatedService {
         if (fragment !is SpeakFragment) {
             return
         }
+
+        val mainViewModel = fragment.activityViewModel<MainViewModel>().value
+
+        if (mainViewModel.strings.value?.contains("speak_screen_action_pronunciation_assessment") != true) {
+            return
+        }
+
 
         viewModel = fragment.viewModels<PronunciationViewModel>().value
         speakViewModel = fragment.viewModel<SpeakViewModel>().value

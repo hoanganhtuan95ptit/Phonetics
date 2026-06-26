@@ -19,7 +19,7 @@ import com.simple.phonetics.ui.view.outline.OutlineLinearLayout
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
-import com.simple.state.isIdea
+import com.simple.state.isIdle
 import com.simple.state.isStart
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorPrimary
@@ -78,7 +78,7 @@ class AudioView @JvmOverloads constructor(
 
             val theme = viewModel.themes.first()
 
-            val res = if (it.isIdea() ||it.isStart() || it.isCompleted()) {
+            val res = if (it.isIdle() ||it.isStart() || it.isCompleted()) {
                 ImageRes(data = R.drawable.ic_volume_24dp, colorFilter = theme.colorPrimary)
             } else {
                 ImageRes(data = R.drawable.ic_pause_24dp, colorFilter = theme.colorPrimary)
@@ -90,7 +90,7 @@ class AudioView @JvmOverloads constructor(
 
 class AudioViewModel : BaseViewModel() {
 
-    val playState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.IDEA)
+    val playState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Idle)
 
     fun play(audioPath: String): Job = viewModelScope.launch {
 

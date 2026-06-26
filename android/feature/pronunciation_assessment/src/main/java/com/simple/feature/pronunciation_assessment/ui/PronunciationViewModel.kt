@@ -6,7 +6,6 @@ import androidx.annotation.RequiresPermission
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
-import com.simple.core.utils.extentions.toObject
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.Bold
@@ -42,7 +41,7 @@ import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.spans.RoundedOutline
 import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
-import com.simple.state.isIdea
+import com.simple.state.isIdle
 import com.simple.state.isLoading
 import com.simple.state.isStart
 import com.simple.state.toSuccess
@@ -77,11 +76,11 @@ class PronunciationViewModel : BaseViewModel() {
 
     // ── UI state ──────────────────────────────
 
-    val initState: MutableStateFlow<ResultState<Int>> = MutableStateFlow(ResultState.IDEA)
+    val initState: MutableStateFlow<ResultState<Int>> = MutableStateFlow(ResultState.Idle)
 
-    val recordState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.IDEA)
+    val recordState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.Idle)
 
-    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(ResultState.IDEA)
+    val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(ResultState.Idle)
 
 
     val resultViewItem: StateFlow<List<ViewItem>> = combineState(
@@ -227,7 +226,7 @@ class PronunciationViewModel : BaseViewModel() {
             themes.colorPrimary
         }
 
-        val text = if (initState.isIdea()) {
+        val text = if (initState.isIdle()) {
             strings.getOrKey("speak_screen_action_pronunciation_assessment")
                 .with(Bold, TextSize(16), ForegroundColor(textColor))
         } else if (initState is ResultState.Running && initState.data in 0..99) {
@@ -247,7 +246,7 @@ class PronunciationViewModel : BaseViewModel() {
         }
 
 
-        val backgroundColor = if (initState.isIdea()) {
+        val backgroundColor = if (initState.isIdle()) {
             themes.colorPrimary
         } else if (initState.isLoading() || recordState.isLoading() || assessmentState.isLoading()) {
             Color.TRANSPARENT
