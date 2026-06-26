@@ -95,7 +95,7 @@ class ScoreGaugeView @JvmOverloads constructor(
 
     private val percentPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.CENTER
-        color = Color.parseColor("#111111")
+        color = "#111111".toColorInt()
     }
 
     private val arcRect = RectF()
