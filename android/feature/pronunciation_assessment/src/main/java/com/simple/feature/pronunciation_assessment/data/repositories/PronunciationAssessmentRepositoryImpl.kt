@@ -106,7 +106,6 @@ class PronunciationAssessmentRepositoryImpl(
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     _state.value = AssessmentState.ERROR
-                    Log.d("tuanha", "prepare: ", e)
                     throw e
                 }
             }
@@ -141,7 +140,6 @@ class PronunciationAssessmentRepositoryImpl(
         partialWorker = scope.launch(Dispatchers.IO) {
             for (chunk in ch) {
                 runCatching {
-                    Log.d("tuanha", "start: partialWorker")
                     val phonemes = recognizePhonemes(chunk)
                     val score = scorer.scorePartial(
                         wordPhonemes = referenceWords,
@@ -149,7 +147,6 @@ class PronunciationAssessmentRepositoryImpl(
                         fluencyPenalty = chunk.pauseCount.toFluencyPenalty(),
                         phonemeDict = phonemeDictionary,
                     )
-                    Log.d("tuanha", "start: partialWorker end")
                     trySend(AssessmentEvent.Partial(score))
                 }.onFailure { e ->
                     trySend(AssessmentEvent.Error("Lỗi partial: ${e.message}"))
@@ -159,19 +156,25 @@ class PronunciationAssessmentRepositoryImpl(
 
         // ── Wire AudioRecorder callbacks ──────
         audioRecorder.onStateChange = { recordState ->
-            Log.d("tuanha", "start: onStateChange:$recordState")
+
             val newState = when (recordState) {
                 RecordingState.LISTENING -> AssessmentState.LISTENING
                 RecordingState.SPEAKING -> AssessmentState.RECORDING
                 RecordingState.PROCESSING -> AssessmentState.PROCESSING
                 RecordingState.IDLE -> AssessmentState.READY
+                else -> AssessmentState.ERROR
             }
+
             _state.value = newState
-            trySend(AssessmentEvent.StateChanged(newState))
+
+            if (newState == AssessmentState.ERROR) {
+                trySend(AssessmentEvent.Error("Lỗi"))
+            } else {
+                trySend(AssessmentEvent.StateChanged(newState))
+            }
         }
 
         audioRecorder.onSpeechChunk = { chunk ->
-            Log.d("tuanha", "start: onSpeechChunk")
             // Đẩy vào channel — nếu worker bận, chunk cũ sẽ bị overwrite
             partialChannel?.trySend(chunk)
         }
@@ -180,7 +183,6 @@ class PronunciationAssessmentRepositoryImpl(
             // Đóng channel partial — không chạy partial nữa, dồn lực cho final
             partialWorker?.cancel()
             partialChannel?.close()
-            Log.d("tuanha", "start: onSpeechEnd")
 
             scope.launch(Dispatchers.IO) {
                 runCatching {
@@ -193,7 +195,8 @@ class PronunciationAssessmentRepositoryImpl(
                         phonemeDict = phonemeDictionary,
                     ).copy(audioFilePath = chunk.audioFilePath)
 
-                    Log.d("tuanha", "start: onSpeechEnd end ----:${score.toJson()}")
+                    Log.d("tuanha", "referenceWords: ${referenceWords.toJson()}")
+                    Log.d("tuanha", "score: ${score.toJson()}")
                     trySend(AssessmentEvent.Final(score))
                     _state.value = AssessmentState.READY
                     close()
@@ -206,7 +209,6 @@ class PronunciationAssessmentRepositoryImpl(
         }
 
         audioRecorder.onError = { msg ->
-            Log.d("tuanha", "start: onError")
             _state.value = AssessmentState.ERROR
             trySend(AssessmentEvent.Error(msg))
             close()

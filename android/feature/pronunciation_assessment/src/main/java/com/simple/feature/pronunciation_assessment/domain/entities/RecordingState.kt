@@ -13,4 +13,7 @@ enum class RecordingState {
 
     /** Đã dừng thu, đang xử lý chunk cuối. */
     PROCESSING,
+
+    /** Hết thời gian tối đa mà không phát hiện giọng nói. */
+    TIMEOUT,
 }

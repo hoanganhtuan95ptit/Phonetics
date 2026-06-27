@@ -20,6 +20,7 @@ import android.media.AudioRecord
 import android.media.MediaRecorder
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.simple.feature.pronunciation_assessment.domain.entities.AudioChunk
 import com.simple.feature.pronunciation_assessment.domain.entities.RecordingState
@@ -33,7 +34,6 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import kotlin.coroutines.coroutineContext
 import kotlin.math.sqrt
 
 // ─────────────────────────────────────────────
@@ -47,7 +47,6 @@ private const val AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT
 // VAD
 private const val FRAME_SIZE_MS = 20
 private const val FRAME_SAMPLES = SAMPLE_RATE * FRAME_SIZE_MS / 1000 // 320 samples
-private const val ENERGY_THRESHOLD = 500.0f
 private const val SILENCE_TIMEOUT_MS = 800
 private const val MID_PAUSE_MS = 250
 private const val MIN_SPEECH_MS = 200
@@ -132,7 +131,7 @@ class AudioRecorderImpl(private val context: Context) : AudioRecorder {
 
     // ── Core recording loop ───────────────────
 
-    private suspend fun recordLoop() {
+    private suspend fun recordLoop() = runCatching {
         val frameBuffer = ShortArray(FRAME_SAMPLES)
         val vad = EnergyVad()
 
@@ -148,10 +147,29 @@ class AudioRecorderImpl(private val context: Context) : AudioRecorder {
             if (read <= 0) continue
 
             val rms = computeRMS(frameBuffer, read)
-            val isSpeech = vad.isSpeech(rms = rms, currentlySpeaking = state == RecordingState.SPEAKING)
+            val isSpeech = vad.isSpeech(
+                rms = rms,
+                currentlySpeaking = state == RecordingState.SPEAKING,
+            )
             val frameDuration = read * 1000 / SAMPLE_RATE
 
             totalDuration += frameDuration
+
+            Log.d("tuanha", "recordLoop: totalDuration:$totalDuration MAX_RECORD_MS:$MAX_RECORD_MS")
+            // ── Timeout tối đa: check trước, đảm bảo luôn trigger ─
+            if (totalDuration >= MAX_RECORD_MS) {
+                if (state == RecordingState.SPEAKING) {
+                    speechBuffer.appendShortAsFloat(frameBuffer, read)
+                }
+                if (!speechBuffer.isEmpty()) {
+                    // Có giọng nói → emit chunk cuối như bình thường.
+                    emitChunk(isFinal = true, pauseCount = pauseCount)
+                } else {
+                    // Không phát hiện giọng nói trong suốt MAX_RECORD_MS.
+                    withContext(Dispatchers.Main) { state = RecordingState.TIMEOUT }
+                }
+                break
+            }
 
             when {
                 // ── Đang nghe, phát hiện tiếng nói ──────
@@ -193,14 +211,6 @@ class AudioRecorderImpl(private val context: Context) : AudioRecorder {
                         break
                     }
                 }
-
-                // ── Timeout tối đa ───────────────────────
-                else -> {
-                    if (totalDuration >= MAX_RECORD_MS && !speechBuffer.isEmpty()) {
-                        emitChunk(isFinal = true, pauseCount = pauseCount)
-                        break
-                    }
-                }
             }
         }
 
@@ -232,36 +242,55 @@ class AudioRecorderImpl(private val context: Context) : AudioRecorder {
 
     // ── DSP helpers (private) ─────────────────
 
-    /** RMS — đo năng lượng frame PCM 16-bit. */
+    /** RMS — đo năng lượng frame PCM 16-bit. Dùng Long thay Double để nhanh hơn. */
     private fun computeRMS(buffer: ShortArray, length: Int): Float {
-        var sum = 0.0
+        if (length <= 0) return 0f
+        var sum = 0L
         for (i in 0 until length) {
-            val s = buffer[i].toDouble()
-            sum += s * s
+            val s = buffer[i].toInt()
+            sum += (s * s).toLong()
         }
-        return sqrt(sum / length).toFloat()
+        return sqrt(sum.toDouble() / length).toFloat()
     }
 
+    /**
+     * VAD năng lượng với:
+     *  - Cached threshold (chỉ tính lại khi noiseRms thay đổi)
+     *  - Cập nhật noise nền asymmetric (tăng nhanh / giảm chậm)
+     *  - Cap noiseRms để tránh drift làm ngưỡng tăng vô hạn
+     *  - Hard reset counter giữ stop logic chắc chắn (silence đủ lâu là dừng)
+     */
     private class EnergyVad(
         private val frameMs: Int = FRAME_SIZE_MS,
     ) {
         private var noiseRms = 300f
 
+        // Cached thresholds — chỉ recompute khi noiseRms thay đổi.
+        private var startThreshold = 0f
+        private var stopThreshold = 0f
+
         private var speechFrames = 0
         private var silenceFrames = 0
 
-        private val minSpeechFrames = 3      // 3 * 20ms = 60ms
-        private val minSilenceFrames = 5     // 5 * 20ms = 100ms
+        private val minSpeechFrames = 3      // 60ms
+        private val minSilenceFrames = 5     // 100ms
+
+        // Cap noise floor để tránh drift làm threshold cao bất thường.
+        private val noiseRmsFloor = 100f
+        private val noiseRmsCap = 1000f
+
+        init {
+            updateThresholds()
+        }
+
+        private fun updateThresholds() {
+            startThreshold = maxOf(600f, noiseRms * 3.5f)
+            stopThreshold = maxOf(350f, noiseRms * 2.0f)
+        }
 
         fun isSpeech(rms: Float, currentlySpeaking: Boolean): Boolean {
-            val startThreshold = maxOf(600f, noiseRms * 3.5f)
-            val stopThreshold = maxOf(350f, noiseRms * 2.0f)
-
-            val rawSpeech = if (currentlySpeaking) {
-                rms > stopThreshold
-            } else {
-                rms > startThreshold
-            }
+            val rawSpeech = if (currentlySpeaking) rms > stopThreshold
+                            else rms > startThreshold
 
             if (rawSpeech) {
                 speechFrames++
@@ -270,9 +299,16 @@ class AudioRecorderImpl(private val context: Context) : AudioRecorder {
                 silenceFrames++
                 speechFrames = 0
 
-                // Chỉ cập nhật noise nền khi không đang nói
+                // Cập nhật noise nền chỉ khi không đang nói.
+                // Asymmetric: tăng nhanh (α=0.1) khi noise cao, giảm chậm (α=0.02).
                 if (!currentlySpeaking) {
-                    noiseRms = noiseRms * 0.95f + rms * 0.05f
+                    val alpha = if (rms > noiseRms) 0.1f else 0.02f
+                    val newNoise = (noiseRms * (1f - alpha) + rms * alpha)
+                        .coerceIn(noiseRmsFloor, noiseRmsCap)
+                    if (newNoise != noiseRms) {
+                        noiseRms = newNoise
+                        updateThresholds()
+                    }
                 }
             }
 
