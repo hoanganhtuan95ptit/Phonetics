@@ -182,7 +182,8 @@ class PronunciationViewModel : BaseViewModel() {
                 else -> return@mapNotNull null
             }
 
-            msg.with("/${it.phoneme}/", ForegroundColor(themes.colorError))
+            msg.with(ForegroundColor(themes.colorOnSurface))
+                .with("/${it.phoneme}/", ForegroundColor(themes.colorError))
         }.forEach {
 
             note += "\n"

@@ -134,6 +134,8 @@ class AudioRecorderImpl(private val context: Context) : AudioRecorder {
 
     private suspend fun recordLoop() {
         val frameBuffer = ShortArray(FRAME_SAMPLES)
+        val vad = EnergyVad()
+
         var silenceDuration = 0
         var speechDuration = 0
         var totalDuration = 0
@@ -146,7 +148,7 @@ class AudioRecorderImpl(private val context: Context) : AudioRecorder {
             if (read <= 0) continue
 
             val rms = computeRMS(frameBuffer, read)
-            val isSpeech = rms > ENERGY_THRESHOLD
+            val isSpeech = vad.isSpeech(rms = rms, currentlySpeaking = state == RecordingState.SPEAKING)
             val frameDuration = read * 1000 / SAMPLE_RATE
 
             totalDuration += frameDuration
@@ -238,5 +240,47 @@ class AudioRecorderImpl(private val context: Context) : AudioRecorder {
             sum += s * s
         }
         return sqrt(sum / length).toFloat()
+    }
+
+    private class EnergyVad(
+        private val frameMs: Int = FRAME_SIZE_MS,
+    ) {
+        private var noiseRms = 300f
+
+        private var speechFrames = 0
+        private var silenceFrames = 0
+
+        private val minSpeechFrames = 3      // 3 * 20ms = 60ms
+        private val minSilenceFrames = 5     // 5 * 20ms = 100ms
+
+        fun isSpeech(rms: Float, currentlySpeaking: Boolean): Boolean {
+            val startThreshold = maxOf(600f, noiseRms * 3.5f)
+            val stopThreshold = maxOf(350f, noiseRms * 2.0f)
+
+            val rawSpeech = if (currentlySpeaking) {
+                rms > stopThreshold
+            } else {
+                rms > startThreshold
+            }
+
+            if (rawSpeech) {
+                speechFrames++
+                silenceFrames = 0
+            } else {
+                silenceFrames++
+                speechFrames = 0
+
+                // Chỉ cập nhật noise nền khi không đang nói
+                if (!currentlySpeaking) {
+                    noiseRms = noiseRms * 0.95f + rms * 0.05f
+                }
+            }
+
+            return if (currentlySpeaking) {
+                silenceFrames < minSilenceFrames
+            } else {
+                speechFrames >= minSpeechFrames
+            }
+        }
     }
 }

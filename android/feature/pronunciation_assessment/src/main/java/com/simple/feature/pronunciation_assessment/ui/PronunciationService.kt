@@ -22,6 +22,7 @@ import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.ui.speak.SpeakViewModel
 import com.simple.phonetics.utils.exts.value
 import com.simple.service.FragmentViewCreatedService
+import com.simple.state.doStart
 import com.simple.state.doSuccess
 import com.simple.state.isLoading
 import com.simple.state.isSuccess
@@ -78,6 +79,11 @@ class PronunciationService : FragmentViewCreatedService {
 
             val binding = fragment.binding ?: return@launchCollect
             val bindingAction = fragment.bindingAction ?: return@launchCollect
+
+            it.doStart {
+                speakViewModel.stopSpeak()
+                speakViewModel.stopReading()
+            }
 
             it.doSuccess {
 
