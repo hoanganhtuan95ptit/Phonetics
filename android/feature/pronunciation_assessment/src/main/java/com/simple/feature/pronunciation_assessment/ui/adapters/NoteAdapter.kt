@@ -54,7 +54,6 @@ class NoteAdapter : ViewItemAdapter<NoteViewItem, PronunciationAssessmentItemNot
     override fun onBindViewHolder(binding: PronunciationAssessmentItemNoteBinding, viewType: Int, position: Int, item: NoteViewItem) {
         super.onBindViewHolder(binding, viewType, position, item)
 
-        Log.d("tuanha", "onBindViewHolder: ")
         binding.tvNote.setText(item.note)
         binding.ivNote.setImage(item.image)
 

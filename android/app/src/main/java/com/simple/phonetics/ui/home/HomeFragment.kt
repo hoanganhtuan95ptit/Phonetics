@@ -154,7 +154,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             if (viewModel.isSupportSpeak.value == true) {
 
-                Log.d("tuanha", "setupRecyclerView: 1")
                 sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
             } else if (viewModel.isSupportReading.value == true) {
 
@@ -166,7 +165,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             val (_, item) = it.asObject<Pair<View, SentenceViewItem>>()
 
-            Log.d("tuanha", "setupRecyclerView: 2")
             sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
         }
 

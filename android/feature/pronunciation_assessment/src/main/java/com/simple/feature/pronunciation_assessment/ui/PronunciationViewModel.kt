@@ -38,6 +38,7 @@ import com.simple.phonetics.entities.SentenceScore
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.combineState
 import com.simple.phonetics.utils.exts.getOrKey
+import com.simple.phonetics.utils.spans.RoundedBackground
 import com.simple.phonetics.utils.spans.RoundedOutline
 import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
@@ -46,6 +47,7 @@ import com.simple.state.isLoading
 import com.simple.state.isStart
 import com.simple.state.toSuccess
 import com.unknown.theme.utils.exts.colorError
+import com.unknown.theme.utils.exts.colorOnError
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
@@ -190,7 +192,7 @@ class PronunciationViewModel : BaseViewModel() {
             note += it
         }
 
-        NoteViewItem(
+        if (errors.isNotEmpty()) NoteViewItem(
             id = "NOTE",
             note = note,
             image = ImageRes(
@@ -228,8 +230,9 @@ class PronunciationViewModel : BaseViewModel() {
         }
 
         val text = if (initState.isIdle()) {
-            strings.getOrKey("speak_screen_action_pronunciation_assessment")
+            (strings.getOrKey("speak_screen_action_pronunciation_assessment") + " Beta")
                 .with(Bold, TextSize(16), ForegroundColor(textColor))
+                .with("Beta", Bold, RoundedBackground(backgroundColor = themes.colorError, themes.colorOnError, DP.DP_4.toFloat()))
         } else if (initState is ResultState.Running && initState.data in 0..99) {
             strings.getOrKey("speak_screen_action_loading_model")
                 .replace("\$percent", "${initState.data}%")

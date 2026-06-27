@@ -40,6 +40,7 @@ import com.simple.core.utils.extentions.toJson
 import com.simple.feature.pronunciation_assessment.domain.entities.AssessmentEvent
 import com.simple.feature.pronunciation_assessment.domain.entities.AssessmentState
 import com.simple.feature.pronunciation_assessment.domain.entities.AudioChunk
+import com.simple.feature.pronunciation_assessment.domain.entities.RecognitionResult
 import com.simple.feature.pronunciation_assessment.domain.entities.RecordingState
 import com.simple.feature.pronunciation_assessment.domain.repositories.AudioRecorder
 import com.simple.feature.pronunciation_assessment.domain.repositories.PhonemeDictionary
@@ -140,10 +141,11 @@ class PronunciationAssessmentRepositoryImpl(
         partialWorker = scope.launch(Dispatchers.IO) {
             for (chunk in ch) {
                 runCatching {
-                    val phonemes = recognizePhonemes(chunk)
+                    val result = recognize(chunk)
                     val score = scorer.scorePartial(
                         wordPhonemes = referenceWords,
-                        spokenPhonemes = phonemes,
+                        spokenPhonemes = result.phonemes,
+                        spokenFrames = result.frames,
                         fluencyPenalty = chunk.pauseCount.toFluencyPenalty(),
                         phonemeDict = phonemeDictionary,
                     )
@@ -187,14 +189,17 @@ class PronunciationAssessmentRepositoryImpl(
             scope.launch(Dispatchers.IO) {
                 runCatching {
                     trySend(AssessmentEvent.RecordEnded)
-                    val phonemes = recognizePhonemes(chunk)
+                    val result = recognize(chunk)
                     val score = scorer.score(
                         wordPhonemes = referenceWords,
-                        spokenPhonemes = phonemes,
+                        spokenPhonemes = result.phonemes,
+                        spokenFrames = result.frames,
                         fluencyPenalty = chunk.pauseCount.toFluencyPenalty(),
                         phonemeDict = phonemeDictionary,
                     ).copy(audioFilePath = chunk.audioFilePath)
 
+                    Log.d("tuanha", "phonemes: ${result.phonemes}")
+                    Log.d("tuanha", "frames: ${result.frames.joinToString { "${it.phoneme}@${it.durationMs}ms" }}")
                     Log.d("tuanha", "referenceWords: ${referenceWords.toJson()}")
                     Log.d("tuanha", "score: ${score.toJson()}")
                     trySend(AssessmentEvent.Final(score))
@@ -237,18 +242,19 @@ class PronunciationAssessmentRepositoryImpl(
     // ── Inference ─────────────────────────────
 
     /**
-     * Chạy Wav2Vec2 inference trên audio chunk.
+     * Chạy Wav2Vec2 inference trên audio chunk + lấy frame timing cho
+     * length scoring.
      *
      * Pre-processing:
      *   1. Guard — bỏ qua nếu audio quá ngắn (< 0.1s = 1600 samples)
      *   2. Normalize zero-mean / unit-variance — chuẩn input của
      *      Wav2Vec2FeatureExtractor (HuggingFace). KHÔNG pre-emphasis.
      */
-    private fun recognizePhonemes(chunk: AudioChunk): List<String> {
+    private fun recognize(chunk: AudioChunk): RecognitionResult {
         val raw = chunk.pcmFloat
-        if (raw.size < 1600) return emptyList()
+        if (raw.size < 1600) return RecognitionResult(emptyList(), emptyList())
         val audio = normalize(raw)
-        return phonemeRecognizer.recognize(audio)
+        return phonemeRecognizer.recognizeWithTiming(audio)
     }
 
     /**

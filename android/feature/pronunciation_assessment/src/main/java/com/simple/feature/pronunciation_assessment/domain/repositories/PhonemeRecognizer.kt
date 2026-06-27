@@ -1,5 +1,7 @@
 package com.simple.feature.pronunciation_assessment.domain.repositories
 
+import com.simple.feature.pronunciation_assessment.domain.entities.RecognitionResult
+
 /**
  * Nhận dạng phoneme từ audio float32 (16 kHz mono, normalized).
  *
@@ -24,5 +26,15 @@ interface PhonemeRecognizer : AutoCloseable {
      *                   zero-mean / unit-variance.
      * @return list IPA phonemes, ví dụ ["h", "ɛ", "l", "oʊ"].
      */
-    fun recognize(audioFloat: FloatArray): List<String>
+    fun recognize(audioFloat: FloatArray): List<String> =
+        recognizeWithTiming(audioFloat).phonemes
+
+    /**
+     * Chạy inference + trả về cả frame timing cho mỗi phoneme.
+     *
+     * Cần thiết cho chấm điểm vowel length (long/short vowel) — chỉ
+     * có duration thực tế mới phân biệt được /iː/ vs /ɪ/ khi model
+     * không output dấu kéo dài.
+     */
+    fun recognizeWithTiming(audioFloat: FloatArray): RecognitionResult
 }

@@ -77,7 +77,6 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) {
 
-                Log.d("tuanha", "setupRecyclerView: 3")
                 sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to (item.data as Sentence).text))
             } else if (item.id.startsWith(Id.GAME)) {
 
@@ -89,7 +88,6 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
             if (viewModel.isSupportSpeak.value == true) {
 
-                Log.d("tuanha", "setupRecyclerView: 4")
                 sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
             } else if (viewModel.isSupportReading.value == true) viewModel.startReading(
                 text = item.data.text
