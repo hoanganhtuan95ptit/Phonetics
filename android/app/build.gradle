@@ -40,9 +40,16 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
 
         versionCode getGitVersionCode()
-        versionName "1.${new Date().format('yy.MM')}.${getGitHash()}"
+        versionName "1.${new Date().format('yy.MM.dd')}.${getGitVersionCode()}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        println("-------------------------------------------")
+        println("🚀 Building EPhonetics")
+        println("📌 Version Code: ${versionCode}")
+        println("📌 Version Name: ${versionName}")
+        println("-------------------------------------------")
+
         vectorDrawables {
             useSupportLibrary true
         }
