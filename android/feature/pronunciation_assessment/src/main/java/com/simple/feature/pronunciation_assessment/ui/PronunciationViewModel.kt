@@ -16,6 +16,7 @@ import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.toPx
+import com.simple.crashlytics.logCrashlytics
 import com.simple.feature.pronunciation_assessment.R
 import com.simple.feature.pronunciation_assessment.data.audio.AudioRecorderImpl
 import com.simple.feature.pronunciation_assessment.data.dictionary.PhonemeDictionaryImpl
@@ -42,6 +43,7 @@ import com.simple.phonetics.utils.spans.RoundedBackground
 import com.simple.phonetics.utils.spans.RoundedOutline
 import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
+import com.simple.state.isFailed
 import com.simple.state.isIdle
 import com.simple.state.isLoading
 import com.simple.state.isStart
@@ -229,7 +231,7 @@ class PronunciationViewModel : BaseViewModel() {
             themes.colorPrimary
         }
 
-        val text = if (initState.isIdle()) {
+        val text = if (initState.isIdle() || initState.isFailed()) {
             (strings.getOrKey("speak_screen_action_pronunciation_assessment") + " Beta")
                 .with(Bold, TextSize(16), ForegroundColor(textColor))
                 .with("Beta", Bold, RoundedBackground(backgroundColor = themes.colorError, themes.colorOnError, DP.DP_4.toFloat()))
@@ -296,15 +298,21 @@ class PronunciationViewModel : BaseViewModel() {
             )
         }
 
-        prepareAssessmentUseCase.execute(
-            PrepareAssessmentUseCase.Param(
-                reference = reference,
-                useGPU = true,
-                onProgress = { initState.value = ResultState.Running(it) },
-            )
+        val param = PrepareAssessmentUseCase.Param(
+            reference = reference,
+            useGPU = true,
+            onProgress = { initState.value = ResultState.Running(it) },
         )
 
-        initState.value = ResultState.Success(100)
+        runCatching {
+
+            prepareAssessmentUseCase.execute(param)
+            initState.value = ResultState.Success(100)
+        }.getOrElse {
+
+            logCrashlytics("Pronunciation init", it)
+            initState.value = ResultState.Failed(it)
+        }
     }
 
     @RequiresPermission(Manifest.permission.RECORD_AUDIO)
