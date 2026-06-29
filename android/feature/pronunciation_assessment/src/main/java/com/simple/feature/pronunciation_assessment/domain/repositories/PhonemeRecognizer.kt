@@ -1,6 +1,8 @@
 package com.simple.feature.pronunciation_assessment.domain.repositories
 
+import com.simple.feature.pronunciation_assessment.data.recognizer.Wav2Vec2PhonemeRecognizer
 import com.simple.feature.pronunciation_assessment.domain.entities.RecognitionResult
+import com.simple.phonetics.PhoneticsApp
 
 /**
  * Nhận dạng phoneme từ audio float32 (16 kHz mono, normalized).
@@ -37,4 +39,11 @@ interface PhonemeRecognizer : AutoCloseable {
      * không output dấu kéo dài.
      */
     fun recognizeWithTiming(audioFloat: FloatArray): RecognitionResult
+
+    companion object{
+
+        val instance by lazy {
+            Wav2Vec2PhonemeRecognizer(PhoneticsApp.share)
+        }
+    }
 }

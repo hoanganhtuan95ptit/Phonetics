@@ -53,6 +53,11 @@ class Wav2Vec2PhonemeRecognizer(
     // ── Load model ────────────────────────────
 
     override suspend fun load(useGPU: Boolean, onProgress: ((percent: Int) -> Unit)?) {
+
+        if (vocab != null) {
+            return
+        }
+
         // Tải model từ URL về cacheDir, báo tiến trình qua onProgress
         val modelFile = ModelDownloader.downloadIfNeeded(
             url = modelUrl,

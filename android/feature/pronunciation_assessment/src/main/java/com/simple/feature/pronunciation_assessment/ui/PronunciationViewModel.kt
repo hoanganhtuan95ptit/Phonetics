@@ -18,11 +18,8 @@ import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.toPx
 import com.simple.crashlytics.logCrashlytics
 import com.simple.feature.pronunciation_assessment.R
-import com.simple.feature.pronunciation_assessment.data.audio.AudioRecorderImpl
-import com.simple.feature.pronunciation_assessment.data.dictionary.PhonemeDictionaryImpl
-import com.simple.feature.pronunciation_assessment.data.recognizer.Wav2Vec2PhonemeRecognizer
-import com.simple.feature.pronunciation_assessment.data.repositories.PronunciationAssessmentRepositoryImpl
 import com.simple.feature.pronunciation_assessment.domain.entities.AssessmentEvent
+import com.simple.feature.pronunciation_assessment.domain.repositories.PronunciationAssessmentRepository
 import com.simple.feature.pronunciation_assessment.domain.scoring.PhonemeTokenizer
 import com.simple.feature.pronunciation_assessment.domain.usecase.PrepareAssessmentUseCase
 import com.simple.feature.pronunciation_assessment.domain.usecase.StartAssessmentUseCase
@@ -32,7 +29,6 @@ import com.simple.feature.pronunciation_assessment.ui.adapters.ScoreResultViewIt
 import com.simple.feature.pronunciation_assessment.utils.plus
 import com.simple.image.ImageRes
 import com.simple.phonetic.entities.ipaValueList
-import com.simple.phonetics.PhoneticsApp
 import com.simple.phonetics.entities.ErrorType
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.SentenceScore
@@ -64,19 +60,10 @@ import kotlinx.coroutines.launch
 
 class PronunciationViewModel : BaseViewModel() {
 
-    // ── Manual wiring (data layer instantiated trên-tay theo yêu cầu) ───
-    private val repository by lazy {
-        val ctx = PhoneticsApp.share
-        PronunciationAssessmentRepositoryImpl(
-            audioRecorder = AudioRecorderImpl(ctx),
-            phonemeRecognizer = Wav2Vec2PhonemeRecognizer(ctx),
-            phonemeDictionary = PhonemeDictionaryImpl.load(ctx),
-        )
-    }
 
-    private val stopAssessmentUseCase by lazy { StopAssessmentUseCase(repository) }
-    private val startAssessmentUseCase by lazy { StartAssessmentUseCase(repository) }
-    private val prepareAssessmentUseCase by lazy { PrepareAssessmentUseCase(repository) }
+    private val stopAssessmentUseCase by lazy { StopAssessmentUseCase(PronunciationAssessmentRepository.instance) }
+    private val startAssessmentUseCase by lazy { StartAssessmentUseCase(PronunciationAssessmentRepository.instance) }
+    private val prepareAssessmentUseCase by lazy { PrepareAssessmentUseCase(PronunciationAssessmentRepository.instance) }
 
     // ── UI state ──────────────────────────────
 
@@ -281,7 +268,7 @@ class PronunciationViewModel : BaseViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        repository.close()
+        PronunciationAssessmentRepository.instance.stop()
     }
 
     fun loadModel(sentences: List<Sentence>) = viewModelScope.launch(handler + Dispatchers.IO) {

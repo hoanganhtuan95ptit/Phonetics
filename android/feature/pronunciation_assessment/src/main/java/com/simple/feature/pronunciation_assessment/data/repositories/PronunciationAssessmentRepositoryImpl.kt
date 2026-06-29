@@ -286,8 +286,11 @@ class PronunciationAssessmentRepositoryImpl(
         partialChannel = null
         partialWorker?.cancel()
         partialWorker = null
-        phonemeRecognizer.close()
         scope.cancel()
+    }
+
+    override fun release() {
+        phonemeRecognizer.close()
     }
 }
 

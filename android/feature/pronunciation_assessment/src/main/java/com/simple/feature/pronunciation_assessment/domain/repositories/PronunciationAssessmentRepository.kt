@@ -2,8 +2,12 @@ package com.simple.feature.pronunciation_assessment.domain.repositories
 
 import android.Manifest
 import androidx.annotation.RequiresPermission
+import com.simple.feature.pronunciation_assessment.data.audio.AudioRecorderImpl
+import com.simple.feature.pronunciation_assessment.data.dictionary.PhonemeDictionaryImpl
+import com.simple.feature.pronunciation_assessment.data.repositories.PronunciationAssessmentRepositoryImpl
 import com.simple.feature.pronunciation_assessment.domain.entities.AssessmentEvent
 import com.simple.feature.pronunciation_assessment.domain.entities.AssessmentState
+import com.simple.phonetics.PhoneticsApp
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -51,4 +55,19 @@ interface PronunciationAssessmentRepository : AutoCloseable {
 
     /** Dừng pipeline thủ công (không chờ VAD). */
     fun stop()
+
+    fun release()
+
+    companion object {
+
+        // ── Manual wiring (data layer instantiated trên-tay theo yêu cầu) ───
+        val instance by lazy {
+            val ctx = PhoneticsApp.share
+            PronunciationAssessmentRepositoryImpl(
+                audioRecorder = AudioRecorderImpl(ctx),
+                phonemeRecognizer = PhonemeRecognizer.instance,
+                phonemeDictionary = PhonemeDictionaryImpl.load(ctx),
+            )
+        }
+    }
 }

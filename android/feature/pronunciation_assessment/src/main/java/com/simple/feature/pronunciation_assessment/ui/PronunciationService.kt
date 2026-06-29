@@ -54,7 +54,10 @@ class PronunciationService : FragmentViewCreatedService {
 
 
         viewModel = fragment.viewModels<PronunciationViewModel>().value
+
         speakViewModel = fragment.viewModel<SpeakViewModel>().value
+
+        fragment.activityViewModel<GlobalPronunciationViewModel>()
 
         val framePronunciation = fragment.bindingAction?.framePronunciation ?: return
         framePronunciation.setVisible(true)
