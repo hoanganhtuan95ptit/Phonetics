@@ -60,3 +60,11 @@ if (localPropertiesFile.exists()) {
         }
     }
 }
+
+includeBuild("/Users/hoanganhtuan/AndroidStudioProjects/TProject") {
+    dependencySubstitution {
+        // Khi Repo mới gọi đến group này, nó sẽ lấy code local từ TProject
+        substitute(module("com.github.hoanganhtuan95ptit.core:glide-loader")).using(project(":glide-loader"))
+        substitute(module("com.github.hoanganhtuan95ptit.core:node-engine")).using(project(":node-engine"))
+    }
+}

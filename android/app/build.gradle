@@ -209,6 +209,8 @@ dependencies {
     implementation otherDependencies.permissionx
     implementation otherDependencies.keyboardvisibilityevent
 
+    implementation("com.github.hoanganhtuan95ptit.core:glide-loader")
+
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0'
