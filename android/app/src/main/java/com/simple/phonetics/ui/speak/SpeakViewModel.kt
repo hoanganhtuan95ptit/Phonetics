@@ -1,7 +1,6 @@
 package com.simple.phonetics.ui.speak
 
 import android.content.res.Resources
-import android.util.Log
 import android.util.TypedValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
@@ -9,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
+import com.simple.coreapp.utils.JobQueue
 import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
@@ -78,6 +78,10 @@ class SpeakViewModel(
 
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
 ) : BaseActionViewModel() {
+
+
+    val jobQueue = JobQueue()
+
 
     val text: MutableStateFlow<String> = MutableStateFlow("")
 
@@ -359,15 +363,14 @@ class SpeakViewModel(
         add(order.toDouble(), list)
     }
 
-    fun add(order: Double, list: List<ViewItem>) {
-        val map = viewItemMap.value
+    fun add(order: Double, list: List<ViewItem>) = jobQueue.submit {
+        val map = ConcurrentHashMap(viewItemMap.value)
         map[order] = list
-        viewItemMap.value = ConcurrentHashMap(map)
+        viewItemMap.value = map
     }
 
     fun updateText(it: String) {
 
-        Log.d("tuanha", "updateText: $it")
         text.value = it
     }
 

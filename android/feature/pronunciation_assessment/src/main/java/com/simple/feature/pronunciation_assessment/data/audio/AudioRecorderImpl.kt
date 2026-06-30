@@ -155,7 +155,6 @@ class AudioRecorderImpl(private val context: Context) : AudioRecorder {
 
             totalDuration += frameDuration
 
-            Log.d("tuanha", "recordLoop: totalDuration:$totalDuration MAX_RECORD_MS:$MAX_RECORD_MS")
             // ── Timeout tối đa: check trước, đảm bảo luôn trigger ─
             if (totalDuration >= MAX_RECORD_MS) {
                 if (state == RecordingState.SPEAKING) {
