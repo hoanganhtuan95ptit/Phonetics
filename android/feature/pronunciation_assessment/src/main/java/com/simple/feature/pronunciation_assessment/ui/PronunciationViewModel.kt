@@ -82,6 +82,7 @@ class PronunciationViewModel : BaseViewModel() {
     ) { themes, strings, assessment ->
 
         fun gradeOf(score: Int): String = when {
+            score >= 95 -> "GRADE A+"
             score >= 90 -> "GRADE A"
             score >= 80 -> "GRADE B+"
             score >= 70 -> "GRADE B"
