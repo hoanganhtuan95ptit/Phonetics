@@ -1,25 +1,15 @@
 package com.simple.phonetics.ui.speak
 
-import android.content.res.Resources
-import android.util.TypedValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.JobQueue
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.toEvent
-import com.simple.image.ImageRes
-import com.simple.image.RichImage
+import com.simple.coreapp.utils.extentions.toPx
 import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.R
 import com.simple.phonetics.SpeakState
@@ -42,7 +32,6 @@ import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toPronunciationColor
-import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
@@ -54,16 +43,33 @@ import com.simple.state.isSuccess
 import com.simple.state.mapToData
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.image.BigImage
+import com.simple.ui.precompute.image.ColorFilter
+import com.simple.ui.precompute.image.addTransform
+import com.simple.ui.precompute.image.build
+import com.simple.ui.precompute.image.emptyImage
+import com.simple.ui.precompute.image.toBuilder
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.emptyText
+import com.simple.ui.precompute.text.span.Bold
+import com.simple.ui.precompute.text.span.ForegroundColor
+import com.simple.ui.precompute.text.span.TextSize
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
 import com.unknown.coroutines.launchCollect
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -93,12 +99,14 @@ class SpeakViewModel(
     val readingState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.Idle)
 
 
-    val title: StateFlow<RichText> = combineState(
+    val title: StateFlow<BigText> = combineState(
         themes,
         strings,
         initialValue = emptyText()
     ) { themes, strings ->
-        value = strings.getOrKey("speak_screen_title").with(ForegroundColor(themes.colorOnSurface))
+        value = strings.getOrKey("speak_screen_title")
+            .with(ForegroundColor(themes.colorOnSurface))
+            .build()
     }
 
     val phoneticsState: StateFlow<ResultState<List<Sentence>>> = combineState(
@@ -138,11 +146,12 @@ class SpeakViewModel(
         themes,
         strings,
         phoneticsState,
+        isSupportReadingFlow,
         sentenceScore,
         initialValue = emptyList()
-    ) { size, themes, strings, state, sentenceScore ->
+    ) { size, themes, strings, phoneticState, isSupportReading, sentenceScore ->
 
-        if (state.isStart()) {
+        if (phoneticState.isStart()) {
 
             value = getPhoneticLoadingViewItem(theme = themes)
             return@combineState
@@ -159,10 +168,13 @@ class SpeakViewModel(
             .toMutableMap()
 
 
-        state.toSuccess()?.data.orEmpty().flatMap {
+        phoneticState.toSuccess()?.data.orEmpty().flatMap {
 
             it.phonetics
         }.mapIndexed { i, it ->
+
+            val id = "${it.text} $i"
+
 
             val ipaList = it.ipaValueList
             val ipa = ipaList.joinToString(separator = " - ")
@@ -184,18 +196,27 @@ class SpeakViewModel(
             // theo điểm cho từng cụm chữ (apply CUỐI cùng để đè).
             var textDisplay = "$text\n$ipa"
                 .with(ForegroundColor(themes.colorOnSurface))
-                .with(text, Bold, TextSize(16))
-                .with(ipa, TextSize(12), ForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
+                .withFirst(text, Bold, TextSize(16.toPx()))
+                .withFirst(ipa, TextSize(12.toPx()), ForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
+
             for ((chunk, chunkScore) in graphemeScores) {
-                textDisplay = textDisplay.with(chunk, ForegroundColor(chunkScore.getColor()))
+                textDisplay = textDisplay.withFirst(chunk, ForegroundColor(chunkScore.getColor()))
             }
 
             PhoneticsViewItem2(
-                id = "$text $i",
+                id = id,
                 text = text,
-                textDisplay = textDisplay,
+                textDisplay = textDisplay.build(),
+
+                iconShow = isSupportReading,
+                iconDisplay = R.drawable.ic_volume_black_24dp.toBuilder()
+                    .addTransform(ColorFilter(themes.colorOnSurface))
+                    .build(),
+
                 hasStroke = score != null,
-                strokeColor = score.getColor()
+                strokeColor = score.getColor(),
+
+                maxWidth = size.width
             )
         }.let {
 
@@ -244,12 +265,17 @@ class SpeakViewModel(
             } else {
                 null
             },
+
             image = if (speakState.isRunning()) {
                 null
             } else if (speakState.isIdle() || speakState.isStart() || speakState.isCompleted()) {
-                ImageRes(data = R.drawable.ic_microphone_24dp, colorFilter = themes.colorPrimary)
+                R.drawable.ic_microphone_black_24dp.toBuilder()
+                    .addTransform(ColorFilter(themes.colorPrimary))
+                    .build()
             } else {
-                ImageRes(data = R.drawable.ic_microphone_slash_24dp, colorFilter = themes.colorPrimary)
+                R.drawable.ic_microphone_slash_black_24dp.toBuilder()
+                    .addTransform(ColorFilter(themes.colorPrimary))
+                    .build()
             },
 
             isLoading = speakState.isStart(),
@@ -263,15 +289,19 @@ class SpeakViewModel(
         strings,
         isSupportReadingFlow,
         readingState,
-        initialValue = ReadingInfo(ImageRes(0), false, false)
+        initialValue = ReadingInfo(emptyImage(), false, false)
     ) { themes, strings, isSupportReading, readingState ->
 
         value = ReadingInfo(
 
             image = if (readingState.isIdle() || readingState.isStart() || readingState.isCompleted()) {
-                ImageRes(data = R.drawable.ic_volume_24dp, colorFilter = themes.colorPrimary)
+                R.drawable.ic_volume_black_24dp.toBuilder()
+                    .addTransform(ColorFilter(themes.colorPrimary))
+                    .build()
             } else {
-                ImageRes(data = R.drawable.ic_pause_24dp, colorFilter = themes.colorPrimary)
+                R.drawable.ic_pause_black_24dp.toBuilder()
+                    .addTransform(ColorFilter(themes.colorPrimary))
+                    .build()
             },
 
             isShow = isSupportReading,
@@ -282,12 +312,14 @@ class SpeakViewModel(
     val copyInfo: StateFlow<CopyInfo> = combineState(
         themes,
         strings,
-        initialValue = CopyInfo(ImageRes(0), false, emptyText())
+        initialValue = CopyInfo(emptyImage(), false, emptyText())
     ) { themes, strings ->
 
         value = CopyInfo(
 
-            image = ImageRes(R.drawable.ic_copy_24dp, themes.colorPrimary),
+            image = R.drawable.ic_copy_black_24dp.toBuilder()
+                .addTransform(ColorFilter(themes.colorPrimary))
+                .build(),
 
             isShow = true,
             messageThankUser = emptyText()
@@ -311,9 +343,11 @@ class SpeakViewModel(
         value = speakResult.equals(text, true)
     }
 
-    val isCorrectEvent: LiveData<Event<Boolean>> = isCorrect.mapNotNull { it }
-        .asLiveData()
-        .toEvent() as LiveData<Event<Boolean>>
+    val isCorrectEvent: Flow<Event<Boolean>> = isCorrect.mapNotNull {
+        it
+    }.map {
+        it.toEvent()
+    }
 
 
     val resultInfo: StateFlow<ResultInfo> = combineState(
@@ -345,7 +379,8 @@ class SpeakViewModel(
 
         value = ResultInfo(
             result = speakResult
-                .with(ForegroundColor(if (isCorrect) themes.colorOnPrimaryVariant else themes.colorOnErrorVariant)),
+                .with(ForegroundColor(if (isCorrect) themes.colorOnPrimaryVariant else themes.colorOnErrorVariant))
+                .build(),
             isShow = speakResult.isNotBlank(),
             background = background
         )
@@ -374,7 +409,7 @@ class SpeakViewModel(
         text.value = it
     }
 
-    fun startReading(text: String? = null) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startReading(text: String? = null) = launchWithTag("reading") {
 
         val param = StartReadingUseCase.Param(
             text = text ?: this@SpeakViewModel.text.value
@@ -383,7 +418,7 @@ class SpeakViewModel(
         readingState.value = ResultState.Start
 
         var job: Job? = null
-        job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
+        job = startReadingUseCase.execute(param).launchCollect(this) { state ->
 
             readingState.value = state
 
@@ -422,20 +457,8 @@ class SpeakViewModel(
         stopSpeakUseCase.execute()
     }
 
-    fun Float.spToPx(): Float {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_SP,
-            this,
-            Resources.getSystem().displayMetrics
-        )
-    }
-
-    fun Int.spToPx(): Int {
-        return this.toFloat().spToPx().toInt()
-    }
-
     data class ResultInfo(
-        val result: RichText,
+        val result: BigText,
 
         val isShow: Boolean,
 
@@ -443,21 +466,21 @@ class SpeakViewModel(
     )
 
     data class CopyInfo(
-        val image: RichImage,
+        val image: BigImage,
 
         val isShow: Boolean,
-        val messageThankUser: RichText,
+        val messageThankUser: BigText,
     )
 
     data class SpeakInfo(
         val anim: Int?,
-        val image: RichImage?,
+        val image: BigImage?,
         val isShow: Boolean,
         val isLoading: Boolean
     )
 
     data class ReadingInfo(
-        val image: RichImage,
+        val image: BigImage,
         val isShow: Boolean,
         val isLoading: Boolean
     )

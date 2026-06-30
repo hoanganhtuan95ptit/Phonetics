@@ -1,111 +1,125 @@
 package com.simple.phonetics.ui.view
 
 import android.content.Context
+import android.graphics.Canvas
 import android.util.AttributeSet
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.view.isVisible
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.ext.setVisible
-import com.simple.coreapp.utils.extentions.postValue
-import com.simple.image.ImageRes
-import com.simple.image.setImage
-import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
+import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
-import com.simple.phonetics.ui.view.outline.OutlineLinearLayout
+import com.simple.phonetics.ui.view.outline.OutlineDelegate
+import com.simple.phonetics.ui.view.outline.OutlineHost
+import com.simple.phonetics.utils.exts.value
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isStart
+import com.simple.ui.precompute.PrecomputedDelegate
+import com.simple.ui.precompute.PrecomputedHost
 import com.unknown.coroutines.launchCollect
-import com.unknown.theme.utils.exts.colorOnSurface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class PhoneticView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
-) : OutlineLinearLayout(context, attrs) {
+) : View(context, attrs), OutlineHost, PrecomputedHost {
 
     var id: String = ""
     var text: String = ""
+
+
     var hasStroke: Boolean = false
 
-    var ivReading: ImageView
-    var tvPhonetic: TextView
+
+    override val outline = OutlineDelegate(this, context, attrs)
+
+    override val delegate: PrecomputedDelegate = PrecomputedDelegate(this, context, attrs)
+
 
     private val viewModel: ReadingViewModel by lazy {
-        ViewModelProvider(findViewTreeViewModelStoreOwner()!!)["PhoneticLayout:$id", ReadingViewModel::class.java]
+        ViewModelProvider(findViewTreeViewModelStoreOwner()!!)[ReadingViewModel::class.java]
     }
 
+
     init {
-        inflate(context, R.layout.layout_phonetic, this)
-
-        ivReading = findViewById(R.id.iv_read)
-        tvPhonetic = findViewById(R.id.tv_phonetic)
-
-        var job: Job? = null
 
         setDebouncedClickListener {
 
-            job?.cancel()
-            job = viewModel.startReading(text)
+            viewModel.startReading(id, text)
         }
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        outline.onSizeChanged(w, h)
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        setMeasuredDimension(delegate.spec?.width ?: 0, delegate.spec?.height ?: 0)
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        outline.onDraw(canvas)
+        delegate.onDraw(canvas)
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        outline.onAttachedToWindow()
+        delegate.onAttachedToWindow()
 
         val lifecycleOwner = findViewTreeLifecycleOwner() ?: return
 
-        viewModel.themes.launchCollect(lifecycleOwner) {
+        viewModel.readingState.launchCollect(lifecycleOwner) {
 
-            ivReading.setImage(ImageRes(R.drawable.ic_volume_24dp, colorFilter = it.colorOnSurface))
-        }
+            val state = if (it.first == id) {
+                it.second
+            } else {
+                ResultState.Idle
+            }
 
-        viewModel.readingState.asFlow().launchCollect(lifecycleOwner) {
+            setLoading(state.isStart(), show = hasStroke || state.isStart(), animate = true)
 
-            setLoading(it.isStart(), show = hasStroke || it.isStart(), animate = true)
-
-            isClickable = !it.isStart() && ivReading.isVisible
+            isClickable = !state.isStart() && viewModel.isSupportReadingFlow.value == true
         }
 
         viewModel.isSupportReadingFlow.launchCollect(lifecycleOwner) {
 
             isClickable = it
-            ivReading.setVisible(it)
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        outline.onDetachedFromWindow()
+        delegate.onDetachedFromWindow()
     }
 }
 
 class ReadingViewModel : BaseViewModel() {
 
-    val readingState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Idle)
+    val readingState: MutableStateFlow<Pair<String, ResultState<String>>> = MutableStateFlow("" to ResultState.Idle)
 
-    fun startReading(text: String) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun startReading(id: String = "", text: String) = launchWithTag("reading") {
+
+        readingState.value = (id to ResultState.Start)
 
         val param = StartReadingUseCase.Param(
             text = text
         )
 
-        readingState.postValue(ResultState.Start)
-
-        delay(1000)
-
         var job: Job? = null
         job = StartReadingUseCase.instant.execute(param).launchCollect(viewModelScope) { state ->
 
-            readingState.postValue(state)
+            readingState.value = (id to state)
 
             state.doSuccess {
                 job?.cancel()
@@ -115,5 +129,10 @@ class ReadingViewModel : BaseViewModel() {
                 job?.cancel()
             }
         }
+    }
+
+    fun stopReading() = viewModelScope.launch(handler + Dispatchers.IO) {
+
+        StopReadingUseCase.instant.execute()
     }
 }

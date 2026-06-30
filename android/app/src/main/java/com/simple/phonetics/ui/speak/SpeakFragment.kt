@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.JustifyContent
@@ -23,13 +22,11 @@ import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
-import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.submitListAwait
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
-import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.R
@@ -50,6 +47,8 @@ import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isIdle
 import com.simple.state.isRunning
+import com.simple.ui.precompute.setImage
+import com.simple.ui.precompute.text.setText
 import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.height
 import com.unknown.theme.utils.exts.colorBackground
@@ -277,7 +276,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             }
         }
 
-        isCorrectEvent.asFlow().launchCollect(viewLifecycleOwner) {
+        isCorrectEvent.launchCollect(viewLifecycleOwner) {
 
             val isCorrect = it.getContentIfNotHandled() ?: return@launchCollect
 

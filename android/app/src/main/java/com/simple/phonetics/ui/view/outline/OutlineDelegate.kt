@@ -174,7 +174,7 @@ class OutlineDelegate(private val view: View, context: Context, attrs: Attribute
             segLen = targetLen
             internalState = settled
             if (needsAnimating(settled)) startAnimating() else stopAnimating()
-            view.invalidate()
+            view.postInvalidateOnAnimation()
             return
         }
 
@@ -186,7 +186,7 @@ class OutlineDelegate(private val view: View, context: Context, attrs: Attribute
 
         if (needsAnimating(internalState)) startAnimating() else {
             stopAnimating()
-            view.invalidate()
+            view.postInvalidateOnAnimation()
         }
     }
 
@@ -322,7 +322,7 @@ class OutlineDelegate(private val view: View, context: Context, attrs: Attribute
                 }
             }
         }
-        view.invalidate()
+        view.postInvalidateOnAnimation()
     }
 
     private fun wrap(v: Float): Float {
