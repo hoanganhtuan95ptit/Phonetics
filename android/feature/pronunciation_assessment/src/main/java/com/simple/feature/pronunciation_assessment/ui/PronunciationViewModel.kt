@@ -66,9 +66,13 @@ class PronunciationViewModel : BaseViewModel() {
     val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(ResultState.Idle)
 
 
-    val assessment = assessmentState.mapNotNull { it.toSuccess()?.data }
+    val assessment = assessmentState.mapNotNull {
+        it.toSuccess()?.data
+    }
 
-    val assessmentErrors = assessment.map { it.errors }
+    val assessmentErrors = assessment.map {
+        it.errors
+    }
 
     val resultViewItem: StateFlow<List<ViewItem>> = combineState(
         themes,
@@ -286,9 +290,7 @@ class PronunciationViewModel : BaseViewModel() {
             it.phonetics
         }.map { phonetic ->
 
-            phonetic.text to PhonemeTokenizer.parseIpa(
-                phonetic.ipaValueList.firstOrNull().orEmpty()
-            )
+            phonetic.text to PhonemeTokenizer.parseIpa(phonetic.ipaValueList.firstOrNull().orEmpty())
         }
 
         StartAssessmentUseCase.instance.execute(referenceWords).collect { event ->
@@ -304,10 +306,8 @@ class PronunciationViewModel : BaseViewModel() {
 
                 is AssessmentEvent.RecordEnded -> {
                     assessmentState.value = ResultState.Start
-                    launch {
-                        delay(100)
-                        recordState.value = ResultState.Success("")
-                    }
+                    delay(100)
+                    recordState.value = ResultState.Success("")
                 }
 
                 is AssessmentEvent.Final -> {

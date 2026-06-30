@@ -17,6 +17,7 @@ import com.simple.coreapp.utils.ext.resize
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.feature.pronunciation_assessment.databinding.PronunciationAssessmentLayoutPronunciationAssessmentBinding
+import com.simple.feature.pronunciation_assessment.ui.views.AudioViewModel
 import com.simple.phonetics.ui.MainViewModel
 import com.simple.phonetics.ui.speak.SpeakFragment
 import com.simple.phonetics.ui.speak.SpeakViewModel
@@ -111,6 +112,14 @@ class PronunciationService : FragmentViewCreatedService {
 
                 binding.vAnchor.isVisible = false
                 binding.frameHeader.root.isVisible = true
+            }
+        }
+
+        viewModel.recordState.launchCollect(fragment.viewLifecycleOwner) {
+
+            it.doStart {
+                fragment.viewModel<AudioViewModel>().value.stop()
+                speakViewModel.stopReading()
             }
         }
 

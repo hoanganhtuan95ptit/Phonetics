@@ -90,6 +90,8 @@ class AudioView @JvmOverloads constructor(
 
 class AudioViewModel : BaseViewModel() {
 
+    var job: Job? = null
+
     val playState: LiveData<ResultState<String>> = MediatorLiveData(ResultState.Idle)
 
     fun play(audioPath: String): Job = viewModelScope.launch {
@@ -111,5 +113,13 @@ class AudioViewModel : BaseViewModel() {
         }.onFailure {
             (playState as? MediatorLiveData)?.value = ResultState.Failed(it)
         }
+    }.apply {
+
+        job = this
+    }
+
+    fun stop() {
+
+        job?.cancel()
     }
 }
