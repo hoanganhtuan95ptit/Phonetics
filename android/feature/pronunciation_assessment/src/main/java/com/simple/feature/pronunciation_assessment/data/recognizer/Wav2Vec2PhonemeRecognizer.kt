@@ -62,7 +62,7 @@ class Wav2Vec2PhonemeRecognizer(
         vocabFileName: String,
     ) {
 
-        if (vocab != null) {
+        if (vocab != null && session != null) {
 
             return
         }
@@ -147,8 +147,12 @@ class Wav2Vec2PhonemeRecognizer(
         } catch (t: Throwable) {
 
             // Xóa cache lỗi để lần load sau có thể tải lại model sạch.
+            // Reset vocab + ortEnv để guard `vocab != null && session != null` không
+            // bỏ qua load() ở lần thử tiếp theo khi session chưa được tạo thành công.
             Log.d(LOG_TAG, "load: ", t)
             modelFile.delete()
+            vocab = null
+            ortEnv = null
             throw t
         }
     }

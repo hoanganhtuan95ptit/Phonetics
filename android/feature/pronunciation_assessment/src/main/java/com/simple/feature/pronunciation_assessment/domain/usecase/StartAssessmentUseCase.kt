@@ -10,10 +10,17 @@ import kotlinx.coroutines.flow.Flow
  * Bắt đầu nghe + chấm phát âm. Trả về [Flow] phát [AssessmentEvent]
  * — collector nhận partial, recordEnded, final, stateChanged, error.
  */
-class StartAssessmentUseCase(
-    private val repository: PronunciationAssessmentRepository,
-) {
+class StartAssessmentUseCase(private val repository: PronunciationAssessmentRepository, ) {
 
     @RequiresPermission(Manifest.permission.RECORD_AUDIO)
-    fun execute(): Flow<AssessmentEvent> = repository.start()
+    fun execute(referenceWords: List<Pair<String, List<String>>>): Flow<AssessmentEvent> {
+
+        return repository.start(referenceWords)
+    }
+
+    companion object{
+        val instance by lazy {
+            StartAssessmentUseCase(PronunciationAssessmentRepository.instance)
+        }
+    }
 }

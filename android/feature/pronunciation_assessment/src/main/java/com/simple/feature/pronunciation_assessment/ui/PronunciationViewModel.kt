@@ -16,14 +16,11 @@ import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.toPx
-import com.simple.crashlytics.logCrashlytics
 import com.simple.feature.pronunciation_assessment.R
 import com.simple.feature.pronunciation_assessment.domain.entities.AssessmentEvent
-import com.simple.feature.pronunciation_assessment.domain.repositories.PronunciationAssessmentRepository
 import com.simple.feature.pronunciation_assessment.domain.scoring.PhonemeTokenizer
 import com.simple.feature.pronunciation_assessment.domain.usecase.PrepareAssessmentUseCase
 import com.simple.feature.pronunciation_assessment.domain.usecase.StartAssessmentUseCase
-import com.simple.feature.pronunciation_assessment.domain.usecase.StopAssessmentUseCase
 import com.simple.feature.pronunciation_assessment.ui.adapters.NoteViewItem
 import com.simple.feature.pronunciation_assessment.ui.adapters.ScoreResultViewItem
 import com.simple.feature.pronunciation_assessment.utils.plus
@@ -55,18 +52,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 
 class PronunciationViewModel : BaseViewModel() {
 
-
-    private val stopAssessmentUseCase by lazy { StopAssessmentUseCase(PronunciationAssessmentRepository.instance) }
-    private val startAssessmentUseCase by lazy { StartAssessmentUseCase(PronunciationAssessmentRepository.instance) }
-    private val prepareAssessmentUseCase by lazy { PrepareAssessmentUseCase(PronunciationAssessmentRepository.instance) }
-
     // ── UI state ──────────────────────────────
-
     val initState: MutableStateFlow<ResultState<Int>> = MutableStateFlow(ResultState.Idle)
 
     val recordState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.Idle)
@@ -74,10 +66,14 @@ class PronunciationViewModel : BaseViewModel() {
     val assessmentState: MutableStateFlow<ResultState<SentenceScore>> = MutableStateFlow(ResultState.Idle)
 
 
+    val assessment = assessmentState.mapNotNull { it.toSuccess()?.data }
+
+    val assessmentErrors = assessment.map { it.errors }
+
     val resultViewItem: StateFlow<List<ViewItem>> = combineState(
         themes,
         strings,
-        assessmentState.mapNotNull { it.toSuccess()?.data },
+        assessment,
         emptyList()
     ) { themes, strings, assessment ->
 
@@ -146,7 +142,7 @@ class PronunciationViewModel : BaseViewModel() {
     val noteViewItem: StateFlow<List<ViewItem>> = combineState(
         themes,
         strings,
-        assessmentState.mapNotNull { it.toSuccess()?.data?.errors },
+        assessmentErrors,
         emptyList()
     ) { themes, strings, errors ->
 
@@ -266,16 +262,26 @@ class PronunciationViewModel : BaseViewModel() {
         )
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        PronunciationAssessmentRepository.instance.stop()
-    }
-
-    fun loadModel(sentences: List<Sentence>) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun loadModel() = viewModelScope.launch(handler + Dispatchers.IO) {
 
         initState.value = ResultState.Start
 
-        val reference = sentences.flatMap {
+        val param = PrepareAssessmentUseCase.Param(
+            useGPU = true,
+        )
+
+        PrepareAssessmentUseCase.instance.execute(param).collect {
+
+            initState.value = it
+        }
+    }
+
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
+    fun record(sentences: List<Sentence>): Job = launchWithTag("record") {
+
+        recordState.value = ResultState.Start
+
+        val referenceWords = sentences.flatMap {
 
             it.phonetics
         }.map { phonetic ->
@@ -285,29 +291,7 @@ class PronunciationViewModel : BaseViewModel() {
             )
         }
 
-        val param = PrepareAssessmentUseCase.Param(
-            reference = reference,
-            useGPU = true,
-            onProgress = { initState.value = ResultState.Running(it) },
-        )
-
-        runCatching {
-
-            prepareAssessmentUseCase.execute(param)
-            initState.value = ResultState.Success(100)
-        }.getOrElse {
-
-            logCrashlytics("Pronunciation init", it)
-            initState.value = ResultState.Failed(it)
-        }
-    }
-
-    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
-    fun record(): Job = launchWithTag("record") {
-
-        recordState.value = ResultState.Start
-
-        startAssessmentUseCase.execute().collect { event ->
+        StartAssessmentUseCase.instance.execute(referenceWords).collect { event ->
 
             when (event) {
                 is AssessmentEvent.StateChanged -> {
@@ -335,12 +319,6 @@ class PronunciationViewModel : BaseViewModel() {
                 }
             }
         }
-
-        // Flow đóng — nếu record vẫn loading thì coi như user cancel
-        if (recordState.value.isLoading()) {
-            recordState.value = ResultState.Failed(AppException(""))
-        }
-        stopAssessmentUseCase.execute()
     }
 
     data class ButtonData(

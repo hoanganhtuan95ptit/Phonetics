@@ -57,11 +57,11 @@ class PronunciationView @JvmOverloads constructor(
 
             if (!viewModel.initState.value.isSuccess()) {
 
-                job = viewModel.loadModel(sentences)
+                job = viewModel.loadModel()
             } else if (viewModel.initState.value.isSuccess() && !viewModel.recordState.value.isLoading()) PermissionX.init(findViewTreeViewModelStoreOwner().asObject<Fragment>()).permissions(arrayOf(Manifest.permission.RECORD_AUDIO).toList()).request { allGranted, _, _ ->
 
                 @SuppressLint("MissingPermission")
-                if (allGranted) job = viewModel.record()
+                if (allGranted) job = viewModel.record(sentences)
             }
         }
     }

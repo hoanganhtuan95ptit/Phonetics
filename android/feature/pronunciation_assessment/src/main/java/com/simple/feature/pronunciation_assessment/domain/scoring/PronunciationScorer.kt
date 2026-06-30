@@ -16,9 +16,9 @@ import com.simple.phonetics.entities.WordScore
  *   5. Map về từng từ + điền grapheme nếu có dict
  *   6. Aggregate thành [SentenceScore]
  *
- * Class này pure logic — không đụng Android/IO.
+ * Object này pure logic — không đụng Android/IO.
  */
-class PronunciationScorer {
+object PronunciationScorer {
 
     /** Chấm điểm full — người dùng đã đọc xong câu. */
     fun score(

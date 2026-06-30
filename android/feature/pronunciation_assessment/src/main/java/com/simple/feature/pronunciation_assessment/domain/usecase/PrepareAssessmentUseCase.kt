@@ -1,29 +1,26 @@
 package com.simple.feature.pronunciation_assessment.domain.usecase
 
 import com.simple.feature.pronunciation_assessment.domain.repositories.PronunciationAssessmentRepository
+import com.simple.state.ResultState
+import kotlinx.coroutines.flow.Flow
 
 /**
- * Load model + set câu reference cho pipeline chấm phát âm.
+ * Load model cho pipeline chấm phát âm.
  *
- * Blocking — gọi trên IO dispatcher.
+ * Repository tự chạy phần load model trên IO và trả progress qua Flow.
  */
-class PrepareAssessmentUseCase(
-    private val repository: PronunciationAssessmentRepository,
-) {
+class PrepareAssessmentUseCase(private val repository: PronunciationAssessmentRepository) {
 
-    suspend fun execute(param: Param) {
-        repository.prepare(
-            reference = param.reference,
-            useGPU = param.useGPU,
-            onProgress = param.onProgress,
-        )
-    }
+    fun execute(param: Param): Flow<ResultState<Int>> = repository.prepare(useGPU = param.useGPU)
 
     data class Param(
-        /** List cặp (word, IPA phonemes). */
-        val reference: List<Pair<String, List<String>>>,
         val useGPU: Boolean = false,
-        /** Tiến trình tải model 0–100. Gọi trên IO dispatcher. */
-        val onProgress: ((percent: Int) -> Unit)? = null,
     )
+
+    companion object {
+
+        val instance by lazy {
+            PrepareAssessmentUseCase(PronunciationAssessmentRepository.instance)
+        }
+    }
 }

@@ -2,7 +2,7 @@
 
 ## 1. Giới hạn độ sâu lồng nhau (Max Nesting Depth)
 
-Không được lồng quá **3 cặp `{}`**. Nếu vượt quá, phải tách thành hàm riêng.
+Không được lồng quá **2 cặp `{}`**. Nếu vượt quá, phải tách thành hàm riêng.
 
 **❌ Sai — lồng quá sâu:**
 ```kotlin

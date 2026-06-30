@@ -6,10 +6,9 @@ import com.simple.feature.pronunciation_assessment.data.audio.AudioRecorderImpl
 import com.simple.feature.pronunciation_assessment.data.dictionary.PhonemeDictionaryImpl
 import com.simple.feature.pronunciation_assessment.data.repositories.PronunciationAssessmentRepositoryImpl
 import com.simple.feature.pronunciation_assessment.domain.entities.AssessmentEvent
-import com.simple.feature.pronunciation_assessment.domain.entities.AssessmentState
 import com.simple.phonetics.PhoneticsApp
+import com.simple.state.ResultState
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Orchestrator chấm phát âm — gắn [AudioRecorder] + [PhonemeRecognizer] +
@@ -17,33 +16,18 @@ import kotlinx.coroutines.flow.StateFlow
  */
 interface PronunciationAssessmentRepository : AutoCloseable {
 
-    /** Trạng thái pipeline hiện tại. */
-    val state: StateFlow<AssessmentState>
-
-    /** Câu reference dưới dạng list (word, IPA phonemes). */
-    val referenceWords: List<Pair<String, List<String>>>
-
-    /** Text reference đã ghép, tiện cho hiển thị. */
-    val referenceText: String
-
     /**
-     * Load model + set câu reference. Gọi 1 lần khi khởi tạo.
+     * Load model. Gọi 1 lần khi khởi tạo và phát tiến trình tải model.
      *
-     * @param reference  danh sách cặp (word, IPA phonemes)
-     * @param useGPU     dùng NNAPI nếu có
-     * @param onProgress callback tiến trình tải model (0–100)
+     * @param useGPU dùng NNAPI nếu có
+     * @return Flow tiến trình 0-100; lỗi load model được throw qua Flow.
      */
-    suspend fun prepare(
-        reference: List<Pair<String, List<String>>>,
-        useGPU: Boolean = false,
-        onProgress: ((percent: Int) -> Unit)? = null,
-    )
-
-    /** Đổi reference mà không cần load lại model. */
-    fun setReference(reference: List<Pair<String, List<String>>>)
+    fun prepare(useGPU: Boolean = false): Flow<ResultState<Int>>
 
     /**
      * Bắt đầu nghe + chấm phát âm. Trả về Flow phát [AssessmentEvent].
+     *
+     * @param referenceWords danh sách cặp (word, IPA phonemes)
      *
      * Flow tự đóng khi:
      *   - VAD phát hiện người dùng dừng nói (Final emit xong)
@@ -51,10 +35,7 @@ interface PronunciationAssessmentRepository : AutoCloseable {
      *   - Collector cancel — pipeline sẽ dừng mic và worker
      */
     @RequiresPermission(Manifest.permission.RECORD_AUDIO)
-    fun start(): Flow<AssessmentEvent>
-
-    /** Dừng pipeline thủ công (không chờ VAD). */
-    fun stop()
+    fun start(referenceWords: List<Pair<String, List<String>>>): Flow<AssessmentEvent>
 
     fun release()
 
