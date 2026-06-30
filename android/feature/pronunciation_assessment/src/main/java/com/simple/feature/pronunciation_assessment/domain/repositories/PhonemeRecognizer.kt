@@ -18,8 +18,17 @@ interface PhonemeRecognizer : AutoCloseable {
      * @param useGPU     dùng NNAPI nếu có
      * @param onProgress callback tiến trình tải model (0–100). Gọi trên
      *                   thread hiện tại. Báo 100 ngay nếu file đã cache.
+     * @param modelUrl URL tải model ONNX nếu cache chưa có.
+     * @param modelFileName tên file cache cho model ONNX.
+     * @param vocabFileName tên vocab trong assets.
      */
-    suspend fun load(useGPU: Boolean = false, onProgress: ((percent: Int) -> Unit)? = null)
+    suspend fun load(
+        useGPU: Boolean = false,
+        onProgress: ((percent: Int) -> Unit)? = null,
+        modelUrl: String = Wav2Vec2PhonemeRecognizer.defaultModelUrl(),
+        modelFileName: String = Wav2Vec2PhonemeRecognizer.MODEL_FILE_NAME,
+        vocabFileName: String = Wav2Vec2PhonemeRecognizer.VOCAB_FILE_NAME,
+    )
 
     /**
      * Chạy inference trên 1 chunk audio.
@@ -40,9 +49,10 @@ interface PhonemeRecognizer : AutoCloseable {
      */
     fun recognizeWithTiming(audioFloat: FloatArray): RecognitionResult
 
-    companion object{
+    companion object {
 
         val instance by lazy {
+
             Wav2Vec2PhonemeRecognizer(PhoneticsApp.share)
         }
     }
