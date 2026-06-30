@@ -43,10 +43,12 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.ensureGradientUpdates
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
+import com.simple.phonetics.utils.exts.value
 import com.simple.phonetics.utils.sendDeeplinkWithThank
 import com.simple.phonetics.utils.showAds
 import com.simple.state.isCompleted
 import com.simple.state.isFailed
+import com.simple.state.isIdle
 import com.simple.state.isRunning
 import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.height
@@ -74,7 +76,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         super.onViewCreated(view, savedInstanceState)
 
         binding?.frameHeader?.root?.setVisible(false)
-        viewModel.sizeFlow.map { it.height }.distinctUntilChanged().launchCollect(viewLifecycleOwner){
+        viewModel.sizes.map { it.height }.distinctUntilChanged().launchCollect(viewLifecycleOwner){
             behavior?.peekHeight = it
         }
 
@@ -122,7 +124,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
         binding.root.setDebouncedClickListener {
 
-            sendDeeplinkWithThank(DeeplinkManager.COPY, extras = mapOf(Param.TEXT to viewModel.text.value.orEmpty()))
+            sendDeeplinkWithThank(DeeplinkManager.COPY, extras = mapOf(Param.TEXT to viewModel.text.value))
         }
     }
 
@@ -170,7 +172,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
         val phoneticsAdapter = PhoneticsAdapter { _, item ->
 
-            if (viewModel.isSupportReading.value == true) {
+            if (viewModel.isSupportReadingFlow.value == true) {
 
                 reading(text = item.data.text)
             }
@@ -192,10 +194,10 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
 
         var rootSizeJob: Job? = null
 
-        theme.observe(viewLifecycleOwner) {
+        themes.launchCollect(viewLifecycleOwner) {
 
-            val binding = binding ?: return@observe
-            val bindingAction = this@SpeakFragment.bindingAction ?: return@observe
+            val binding = binding ?: return@launchCollect
+            val bindingAction = this@SpeakFragment.bindingAction ?: return@launchCollect
 
             val background = Background(
                 backgroundColor = it.colorBackground,
@@ -214,15 +216,15 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             bindingAction.frameSpeak.root.setBackground(Background(strokeWidth = DP.DP_2, strokeColor = it.colorPrimary, cornerRadius = DP.DP_16))
         }
 
-        title.observe(viewLifecycleOwner) {
+        title.launchCollect(viewLifecycleOwner) {
 
-            val binding = binding ?: return@observe
+            val binding = binding ?: return@launchCollect
             binding.frameHeader.tvTitle.setText(it)
         }
 
-        copyInfo.observe(viewLifecycleOwner) {
+        copyInfo.launchCollect(viewLifecycleOwner) {
 
-            val binding = bindingAction?.frameCopy ?: return@observe
+            val binding = bindingAction?.frameCopy ?: return@launchCollect
 
             binding.ivImage.setImage(it.image)
 
@@ -231,9 +233,9 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             binding.progressBar.setVisible(false)
         }
 
-        speakInfo.observe(viewLifecycleOwner) {
+        speakInfo.launchCollect(viewLifecycleOwner) {
 
-            val binding = bindingAction?.frameSpeak ?: return@observe
+            val binding = bindingAction?.frameSpeak ?: return@launchCollect
 
             if (it.anim != null) {
                 binding.ivImage.setAnimation(it.anim)
@@ -248,9 +250,9 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             binding.progressBar.setVisible(it.isLoading)
         }
 
-        readingInfo.observe(viewLifecycleOwner) {
+        readingInfo.launchCollect(viewLifecycleOwner) {
 
-            val binding = bindingAction?.frameReading ?: return@observe
+            val binding = bindingAction?.frameReading ?: return@launchCollect
 
             binding.ivImage.setImage(it.image)
 
@@ -259,16 +261,16 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             binding.progressBar.setVisible(it.isLoading)
         }
 
-        resultInfo.observe(viewLifecycleOwner) {
+        resultInfo.launchCollect(viewLifecycleOwner) {
 
-            val binding = bindingAction ?: return@observe
+            val binding = bindingAction ?: return@launchCollect
 
             binding.tvMessage.setText(it.result)
             binding.tvMessage.setVisible(it.isShow)
             binding.tvMessage.setBackground(it.background)
         }
 
-        speakState.asFlow().launchCollect(viewLifecycleOwner) {
+        speakState.launchCollect(viewLifecycleOwner) {
 
             if (it.isFailed()) viewLifecycleOwner.lifecycleScope.launch {
                 playVibrate()
@@ -288,7 +290,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             }
         }
 
-        viewItemList.asFlow().launchCollect(viewLifecycleOwner) {
+        viewItemList.launchCollect(viewLifecycleOwner) {
 
             val binding = binding ?: return@launchCollect
             val bindingAction = bindingAction ?: return@launchCollect
@@ -314,7 +316,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         if (speakState.isRunning()) {
 
             viewModel.stopSpeak()
-        } else if (speakState == null || speakState.isCompleted()) {
+        } else if (speakState.isIdle() || speakState.isCompleted()) {
 
             viewModel.startSpeak()
         }
@@ -327,7 +329,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
         if (voiceState.isRunning()) {
 
             viewModel.stopReading()
-        } else if (voiceState == null || voiceState.isCompleted()) viewModel.startReading(
+        } else if (voiceState.isIdle() || voiceState.isCompleted()) viewModel.startReading(
             text = text
         )
     }

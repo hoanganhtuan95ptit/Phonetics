@@ -6,7 +6,6 @@ import android.view.ViewPropertyAnimator
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.asFlow
 import androidx.transition.AutoTransition
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
@@ -15,7 +14,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.simple.autobind.annotation.AutoBind
 import com.simple.coreapp.utils.ext.resize
 import com.simple.coreapp.utils.ext.setVisible
-import com.simple.coreapp.utils.extentions.postValue
 import com.simple.feature.pronunciation_assessment.databinding.PronunciationAssessmentLayoutPronunciationAssessmentBinding
 import com.simple.feature.pronunciation_assessment.ui.views.AudioViewModel
 import com.simple.phonetics.ui.MainViewModel
@@ -65,12 +63,12 @@ class PronunciationService : FragmentViewCreatedService {
 
         val bindingActionPronunciation = PronunciationAssessmentLayoutPronunciationAssessmentBinding.inflate(fragment.layoutInflater, framePronunciation)
 
-        speakViewModel.text.asFlow().launchCollect(fragment.viewLifecycleOwner) {
+        speakViewModel.text.launchCollect(fragment.viewLifecycleOwner) {
 
             bindingActionPronunciation.tvTextToSpeech.text = it
         }
 
-        speakViewModel.phoneticsState.asFlow().launchCollect(fragment.viewLifecycleOwner) {
+        speakViewModel.phoneticsState.launchCollect(fragment.viewLifecycleOwner) {
 
             it.doSuccess {
 
@@ -154,7 +152,7 @@ class PronunciationService : FragmentViewCreatedService {
             it.doSuccess {
 
                 bindingActionPronunciation.tvAudio.audioPath = it.audioFilePath.orEmpty()
-                speakViewModel.sentenceScore.postValue(it)
+                speakViewModel.sentenceScore.value = it
             }
         }
     }

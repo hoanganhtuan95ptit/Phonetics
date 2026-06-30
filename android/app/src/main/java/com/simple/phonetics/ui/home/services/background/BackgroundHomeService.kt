@@ -3,7 +3,6 @@ package com.simple.phonetics.ui.home.services.background
 import android.graphics.Outline
 import android.view.View
 import android.view.ViewOutlineProvider
-import androidx.core.view.children
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import com.google.android.material.appbar.AppBarLayout
@@ -29,7 +28,7 @@ class BackgroundHomeService : HomeService {
 
         val backgroundHomeViewModel: BackgroundHomeViewModel by homeFragment.viewModels()
 
-        backgroundHomeViewModel.sizeFlow.collectWithLockTransitionIfCached(fragment = homeFragment, tag = "BACKGROUND_RESIZE") { size, isFromCache ->
+        backgroundHomeViewModel.sizes.collectWithLockTransitionIfCached(fragment = homeFragment, tag = "BACKGROUND_RESIZE") { size, isFromCache ->
 
             val binding = homeFragment.binding ?: return@collectWithLockTransitionIfCached
 

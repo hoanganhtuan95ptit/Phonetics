@@ -4,12 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.coreapp.utils.extentions.postValue
 
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+
 open class BaseActionViewModel : BaseViewModel() {
 
+    @Deprecated("Use actionHeightFlow")
     val actionHeight: LiveData<Int> = MediatorLiveData()
+
+    val actionHeightFlow: MutableStateFlow<Int> = MutableStateFlow(0)
 
     fun updateActionHeight(height: Int) {
 
         actionHeight.postValue(height)
+        actionHeightFlow.value = height
     }
 }

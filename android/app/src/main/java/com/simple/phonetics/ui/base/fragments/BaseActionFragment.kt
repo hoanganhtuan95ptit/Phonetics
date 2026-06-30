@@ -67,7 +67,7 @@ abstract class BaseActionFragment<AVB : ViewBinding, VB : ViewBinding, VM : Base
 
     open fun setupPaddingBottom() {
 
-        viewModel.sizeFlow.map { it.navigationBarHeight }.distinctUntilChanged().launchCollect(viewLifecycleOwner) {
+        viewModel.sizes.map { it.navigationBarHeight }.distinctUntilChanged().launchCollect(viewLifecycleOwner) {
 
             val bindingAction = bindingAction ?: return@launchCollect
 

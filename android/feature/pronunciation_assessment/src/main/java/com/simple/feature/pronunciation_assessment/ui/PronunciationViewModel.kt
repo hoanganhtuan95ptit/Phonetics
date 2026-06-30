@@ -78,7 +78,7 @@ class PronunciationViewModel : BaseViewModel() {
         themes,
         strings,
         assessment,
-        emptyList()
+        initialValue = emptyList()
     ) { themes, strings, assessment ->
 
         fun gradeOf(score: Int): String = when {
@@ -139,7 +139,7 @@ class PronunciationViewModel : BaseViewModel() {
             viewItemList.add(it)
         }
 
-        viewItemList
+        value = viewItemList
     }
 
 
@@ -147,7 +147,7 @@ class PronunciationViewModel : BaseViewModel() {
         themes,
         strings,
         assessmentErrors,
-        emptyList()
+        initialValue = emptyList()
     ) { themes, strings, errors ->
 
         val viewItemList = arrayListOf<ViewItem>()
@@ -199,7 +199,7 @@ class PronunciationViewModel : BaseViewModel() {
             viewItemList.add(it)
         }
 
-        viewItemList
+        value = viewItemList
     }
 
 
@@ -209,7 +209,7 @@ class PronunciationViewModel : BaseViewModel() {
         initState,
         recordState,
         assessmentState,
-        ButtonData()
+        initialValue = ButtonData()
     ) { themes, strings, initState, recordState, assessmentState ->
 
         val textColor = if (!initState.isLoading() && !assessmentState.isLoading()) {
@@ -249,7 +249,7 @@ class PronunciationViewModel : BaseViewModel() {
 
         val imageShow = recordState.isLoading()
 
-        ButtonData(
+        value = ButtonData(
             text = text,
             textShow = !imageShow,
 

@@ -40,7 +40,7 @@ abstract class BaseViewModel : TransitionViewModel() {
         }
     }
 
-    val sizeFlow: Flow<Map<String, Int>> = mutableSharedFlowWithDiff {
+    val sizes: Flow<Map<String, Int>> = mutableSharedFlowWithDiff {
 
         appSize.collect {
 

@@ -53,7 +53,7 @@ class AdsSpeakServices : FragmentViewCreatedService {
         speakFragment.dialog?.findViewById<ViewGroup>(com.google.android.material.R.id.container)?.addView(bindingAds.root, layoutParam) ?: return
 
 
-        viewModel.sizeFlow.map { it.navigationBarHeight }.distinctUntilChanged().launchCollect(fragment.viewLifecycleOwner) {
+        viewModel.sizes.map { it.navigationBarHeight }.distinctUntilChanged().launchCollect(fragment.viewLifecycleOwner) {
 
             val bindingAds = bindingAds
 

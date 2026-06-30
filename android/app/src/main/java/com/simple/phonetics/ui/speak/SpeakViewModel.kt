@@ -1,11 +1,10 @@
 package com.simple.phonetics.ui.speak
 
 import android.content.res.Resources
+import android.util.Log
 import android.util.TypedValue
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
@@ -18,12 +17,6 @@ import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
-import com.simple.coreapp.utils.extentions.combineSources
-import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
-import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
-import com.simple.coreapp.utils.extentions.postValue
-import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.image.ImageRes
 import com.simple.image.RichImage
@@ -41,6 +34,7 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.SentenceScore
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.ui.common.adapters.PhoneticsViewItem2
+import com.simple.phonetics.utils.combineState
 import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
@@ -51,12 +45,13 @@ import com.simple.phonetics.utils.exts.toPronunciationColor
 import com.simple.phonetics.utils.spans.TextSize
 import com.simple.state.ResultState
 import com.simple.state.doFailed
-import com.simple.state.doStart
 import com.simple.state.doSuccess
 import com.simple.state.isCompleted
+import com.simple.state.isIdle
 import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.simple.state.isSuccess
+import com.simple.state.mapToData
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
 import com.unknown.coroutines.launchCollect
@@ -65,6 +60,12 @@ import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 
@@ -78,62 +79,75 @@ class SpeakViewModel(
     private val getPhoneticsAsyncUseCase: GetPhoneticsAsyncUseCase
 ) : BaseActionViewModel() {
 
-    val text: LiveData<String> = MediatorLiveData()
+    val text: MutableStateFlow<String> = MutableStateFlow("")
 
-    val sentenceScore: LiveData<SentenceScore> = MediatorLiveData<SentenceScore>()
-
-
-    val speakState: LiveData<ResultState<String>> = MediatorLiveData()
-
-    val readingState: LiveData<ResultState<String>> = MediatorLiveData()
+    val sentenceScore: MutableStateFlow<SentenceScore?> = MutableStateFlow(null)
 
 
-    val title: LiveData<RichText> = combineSourcesWithDiff(theme, translate) {
+    val speakState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.Idle)
 
-        val theme = theme.value ?: return@combineSourcesWithDiff
-        val translate = translate.value ?: return@combineSourcesWithDiff
+    val readingState: MutableStateFlow<ResultState<String>> = MutableStateFlow(ResultState.Idle)
 
-        postValueIfActive(translate.getOrKey("speak_screen_title").with(ForegroundColor(theme.colorOnSurface)))
+
+    val title: StateFlow<RichText> = combineState(
+        themes,
+        strings,
+        initialValue = emptyText()
+    ) { themes, strings ->
+        value = strings.getOrKey("speak_screen_title").with(ForegroundColor(themes.colorOnSurface))
     }
 
-    val phoneticsState: LiveData<ResultState<List<Sentence>>> = combineSources(text, inputLanguage, outputLanguage, phoneticCodeSelected) {
+    val phoneticsState: StateFlow<ResultState<List<Sentence>>> = combineState(
+        text,
+        inputLanguageFlow,
+        outputLanguageFlow,
+        phoneticCodeSelectedFlow,
+        ResultState.Idle as ResultState<List<Sentence>>
+    ) { text, inputLanguage, outputLanguage, phoneticCodeSelected ->
 
         val param = GetPhoneticsAsyncUseCase.Param(
-            textNew = text.get(),
+            textNew = text,
 
             isReverse = false,
             isSaveToHistory = false,
-            phoneticCode = phoneticCodeSelected.get(),
-            inputLanguageCode = inputLanguage.get().id,
-            outputLanguageCode = outputLanguage.get().id
+            phoneticCode = phoneticCodeSelected,
+            inputLanguageCode = inputLanguage?.id ?: Language.EN,
+            outputLanguageCode = outputLanguage.id
         )
 
-        getPhoneticsAsyncUseCase.execute(param).collect {
+        fun Sentence.copy() = Sentence(this.text).apply {
+            phonetics = this@copy.phonetics
+            translateState = this@copy.translateState
+        }
 
-            postValue(it)
+        getPhoneticsAsyncUseCase.execute(param).mapToData { sentences ->
+
+            sentences.toMutableList().map { it.copy() }
+        }.collect {
+
+            value = it
         }
     }
 
+    val phoneticViewItemList: StateFlow<List<ViewItem>> = combineState(
+        sizes,
+        themes,
+        strings,
+        phoneticsState,
+        sentenceScore,
+        initialValue = emptyList()
+    ) { size, themes, strings, state, sentenceScore ->
 
-    val phoneticViewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(size, theme, translate, phoneticCodeSelected, phoneticsState, isSupportReading, sentenceScore) {
+        if (state.isStart()) {
 
-        val size = size.value ?: return@listenerSourcesWithDiff
-        val theme = theme.value ?: return@listenerSourcesWithDiff
-        val translate = translate.value ?: return@listenerSourcesWithDiff
-
-        val state = phoneticsState.value ?: return@listenerSourcesWithDiff
-        val sentenceScore = sentenceScore.value
-
-        state.doStart {
-
-            postValue(getPhoneticLoadingViewItem(theme = theme))
-            return@listenerSourcesWithDiff
+            value = getPhoneticLoadingViewItem(theme = themes)
+            return@combineState
         }
 
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        fun Int?.getColor() = this?.toPronunciationColor() ?: theme.colorPrimary
+        fun Int?.getColor() = this?.toPronunciationColor() ?: themes.colorPrimary
 
         val wordScoreMap = sentenceScore?.wordScores
             .orEmpty()
@@ -165,9 +179,9 @@ class SpeakViewModel(
             // Build rich text: màu mặc định + size cho text/ipa, rồi override màu
             // theo điểm cho từng cụm chữ (apply CUỐI cùng để đè).
             var textDisplay = "$text\n$ipa"
-                .with(ForegroundColor(theme.colorOnSurface))
+                .with(ForegroundColor(themes.colorOnSurface))
                 .with(text, Bold, TextSize(16))
-                .with(ipa, TextSize(12), ForegroundColor(if (ipaList.size > 1) theme.colorPrimary else theme.colorError))
+                .with(ipa, TextSize(12), ForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
             for ((chunk, chunkScore) in graphemeScores) {
                 textDisplay = textDisplay.with(chunk, ForegroundColor(chunkScore.getColor()))
             }
@@ -185,14 +199,16 @@ class SpeakViewModel(
             viewItemList.addAll(it)
         }
 
-        postValueIfActive(viewItemList)
+        value = viewItemList
     }
 
-    val viewItemMap: LiveData<ConcurrentHashMap<Double, List<ViewItem>>> = MediatorLiveData(ConcurrentHashMap())
+    val viewItemMap: MutableStateFlow<ConcurrentHashMap<Double, List<ViewItem>>> = MutableStateFlow(ConcurrentHashMap())
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(actionHeight, viewItemMap) {
-
-        val map = viewItemMap.value ?: return@listenerSourcesWithDiff
+    val viewItemList: StateFlow<List<ViewItem>> = combineState(
+        actionHeightFlow,
+        viewItemMap,
+        initialValue = emptyList()
+    ) { actionHeight, map ->
 
         val viewItemList = arrayListOf<ViewItem>()
 
@@ -204,18 +220,20 @@ class SpeakViewModel(
             viewItemList.addAll(it)
         }
 
-        viewItemList.add(SpaceViewItem(id = "2", height = actionHeight.get()))
+        viewItemList.add(SpaceViewItem(id = "2", height = actionHeight))
 
-        postValue(viewItemList)
+        value = viewItemList
     }
 
-    val speakInfo: LiveData<SpeakInfo> = listenerSourcesWithDiff(size, theme, translate, isSupportSpeak, speakState) {
+    val speakInfo: StateFlow<SpeakInfo> = combineState(
+        themes,
+        strings,
+        isSupportSpeakFlow,
+        speakState,
+        initialValue = SpeakInfo(null, null, false, false)
+    ) { themes, strings, isSupportSpeak, speakState ->
 
-        val theme = theme.value ?: return@listenerSourcesWithDiff
-
-        val speakState = speakState.value
-
-        val info = SpeakInfo(
+        value = SpeakInfo(
 
             anim = if (speakState.isRunning()) {
                 R.raw.anim_recording
@@ -224,118 +242,117 @@ class SpeakViewModel(
             },
             image = if (speakState.isRunning()) {
                 null
-            } else if (speakState == null || speakState.isStart() || speakState.isCompleted()) {
-                ImageRes(data = R.drawable.ic_microphone_24dp, colorFilter = theme.colorPrimary)
+            } else if (speakState.isIdle() || speakState.isStart() || speakState.isCompleted()) {
+                ImageRes(data = R.drawable.ic_microphone_24dp, colorFilter = themes.colorPrimary)
             } else {
-                ImageRes(data = R.drawable.ic_microphone_slash_24dp, colorFilter = theme.colorPrimary)
+                ImageRes(data = R.drawable.ic_microphone_slash_24dp, colorFilter = themes.colorPrimary)
             },
 
             isLoading = speakState.isStart(),
 
-            isShow = isSupportSpeak.value == true,
+            isShow = isSupportSpeak,
         )
-
-        postValue(info)
     }
 
-    val readingInfo: LiveData<ReadingInfo> = listenerSourcesWithDiff(size, theme, translate, isSupportReading, readingState) {
+    val readingInfo: StateFlow<ReadingInfo> = combineState(
+        themes,
+        strings,
+        isSupportReadingFlow,
+        readingState,
+        initialValue = ReadingInfo(ImageRes(0), false, false)
+    ) { themes, strings, isSupportReading, readingState ->
 
-        val theme = theme.value ?: return@listenerSourcesWithDiff
+        value = ReadingInfo(
 
-        val listenState = readingState.value
-
-        val info = ReadingInfo(
-
-            image = if (listenState == null || listenState.isStart() || listenState.isCompleted()) {
-                ImageRes(data = R.drawable.ic_volume_24dp, colorFilter = theme.colorPrimary)
+            image = if (readingState.isIdle() || readingState.isStart() || readingState.isCompleted()) {
+                ImageRes(data = R.drawable.ic_volume_24dp, colorFilter = themes.colorPrimary)
             } else {
-                ImageRes(data = R.drawable.ic_pause_24dp, colorFilter = theme.colorPrimary)
+                ImageRes(data = R.drawable.ic_pause_24dp, colorFilter = themes.colorPrimary)
             },
 
-            isShow = isSupportReading.value == true,
-            isLoading = listenState.isStart()
+            isShow = isSupportReading,
+            isLoading = readingState.isStart()
         )
-
-        postValue(info)
     }
 
-    val copyInfo: LiveData<CopyInfo> = listenerSourcesWithDiff(size, theme, translate) {
+    val copyInfo: StateFlow<CopyInfo> = combineState(
+        themes,
+        strings,
+        initialValue = CopyInfo(ImageRes(0), false, emptyText())
+    ) { themes, strings ->
 
-        val theme = theme.value ?: return@listenerSourcesWithDiff
+        value = CopyInfo(
 
-        val info = CopyInfo(
-
-            image = ImageRes(R.drawable.ic_copy_24dp, theme.colorPrimary),
+            image = ImageRes(R.drawable.ic_copy_24dp, themes.colorPrimary),
 
             isShow = true,
             messageThankUser = emptyText()
         )
-
-        postValue(info)
     }
 
-    @VisibleForTesting
-    val isCorrect: LiveData<Boolean> = combineSources(text, speakState) {
-
-        val text = text.value ?: return@combineSources
-        val speakState = speakState.value
+    val isCorrect: StateFlow<Boolean?> = combineState(
+        text,
+        speakState,
+        initialValue = null
+    ) { text, speakState ->
 
         if (!speakState.isSuccess()) {
 
-            return@combineSources
+            value = null
+            return@combineState
         }
 
-        val speakResult = speakState?.toSuccess()?.data.orEmpty()
+        val speakResult = speakState.toSuccess()?.data.orEmpty()
 
-        val isCorrect = speakResult.equals(text, true)
-
-        postValue(isCorrect)
+        value = speakResult.equals(text, true)
     }
-    val isCorrectEvent: LiveData<Event<Boolean>> = isCorrect.toEvent()
+
+    val isCorrectEvent: LiveData<Event<Boolean>> = isCorrect.mapNotNull { it }
+        .asLiveData()
+        .toEvent() as LiveData<Event<Boolean>>
 
 
-    val resultInfo: LiveData<ResultInfo> = listenerSourcesWithDiff(theme, translate, text, speakState) {
+    val resultInfo: StateFlow<ResultInfo> = combineState(
+        themes,
+        strings,
+        text,
+        speakState,
+        initialValue = ResultInfo(emptyText(), false, Background())
+    ) { themes, strings, text, speakState ->
 
-        val theme = theme.value ?: return@listenerSourcesWithDiff
-
-        val text = text.value ?: return@listenerSourcesWithDiff
-
-        val speakState = speakState.value
-
-        val speakResult = speakState?.toRunning()?.data
-            ?: speakState?.toSuccess()?.data.orEmpty()
+        val speakResult = speakState.toRunning()?.data
+            ?: speakState.toSuccess()?.data.orEmpty()
 
         if (speakResult in SpeakState.stateList) {
 
-            return@listenerSourcesWithDiff
+            value = ResultInfo(emptyText(), false, Background())
+            return@combineState
         }
 
 
         val isCorrect = speakResult.equals(text, true)
 
         val background = Background(
-            strokeColor = if (isCorrect) theme.colorPrimary else theme.colorError,
+            strokeColor = if (isCorrect) themes.colorPrimary else themes.colorError,
             strokeWidth = DP.DP_1,
             cornerRadius = DP.DP_8,
-            backgroundColor = if (isCorrect) theme.colorPrimaryVariant else theme.colorErrorVariant
+            backgroundColor = if (isCorrect) themes.colorPrimaryVariant else themes.colorErrorVariant
         )
 
-        val info = ResultInfo(
+        value = ResultInfo(
             result = speakResult
-                .with(ForegroundColor(if (isCorrect) theme.colorOnPrimaryVariant else theme.colorOnErrorVariant)),
+                .with(ForegroundColor(if (isCorrect) themes.colorOnPrimaryVariant else themes.colorOnErrorVariant)),
             isShow = speakResult.isNotBlank(),
             background = background
         )
-
-        postValue(info)
     }
 
     init {
 
-        phoneticViewItemList.asFlow().launchCollect(viewModelScope) {
+        phoneticViewItemList.onEach {
 
             add(1, it)
-        }
+        }.launchIn(viewModelScope)
     }
 
     fun add(order: Int, list: List<ViewItem>) {
@@ -344,27 +361,28 @@ class SpeakViewModel(
 
     fun add(order: Double, list: List<ViewItem>) {
         val map = viewItemMap.value
-        map?.put(order, list)
-        viewItemMap.postValue(map)
+        map[order] = list
+        viewItemMap.value = ConcurrentHashMap(map)
     }
 
     fun updateText(it: String) {
 
-        text.postValue(it)
+        Log.d("tuanha", "updateText: $it")
+        text.value = it
     }
 
     fun startReading(text: String? = null) = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val param = StartReadingUseCase.Param(
-            text = text ?: this@SpeakViewModel.text.value.orEmpty()
+            text = text ?: this@SpeakViewModel.text.value
         )
 
-        readingState.postValue(ResultState.Start)
+        readingState.value = ResultState.Start
 
         var job: Job? = null
         job = startReadingUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
-            readingState.postValue(state)
+            readingState.value = state
 
             state.doSuccess {
                 job?.cancel()
@@ -385,14 +403,14 @@ class SpeakViewModel(
     fun startSpeak() = viewModelScope.launch(handler + Dispatchers.IO) {
 
         val param = StartSpeakUseCase.Param(
-            languageCode = inputLanguage.value?.id ?: Language.EN,
+            languageCode = inputLanguageFlow.first()?.id ?: Language.EN,
         )
 
-        speakState.postValue(ResultState.Start)
+        speakState.value = ResultState.Start
 
         startSpeakUseCase.execute(param).launchCollect(viewModelScope) { state ->
 
-            speakState.postValue(state)
+            speakState.value = state
         }
     }
 
