@@ -26,10 +26,8 @@ class LocalIpaReading : IpaReading {
     }
 
     override fun reading(ipa: Ipa, phoneticCode: String): Flow<ResultState<String>> = channelFlow {
-
-
+        
         trySend(ResultState.Start)
-
 
         val ipaText = ipa.ipa
             .replace("/", "", true)
