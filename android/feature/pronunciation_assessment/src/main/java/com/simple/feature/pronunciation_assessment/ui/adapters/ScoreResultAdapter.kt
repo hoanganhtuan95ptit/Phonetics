@@ -1,101 +1,298 @@
 package com.simple.feature.pronunciation_assessment.ui.adapters
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import com.simple.adapter.ViewItemAdapter
+import android.graphics.Typeface
 import com.simple.adapter.annotation.ItemAdapter
-import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.emptyText
-import com.simple.coreapp.utils.ext.setText
-import com.simple.feature.pronunciation_assessment.databinding.PronunciationAssessmentItemScoreResultBinding
-import com.simple.phonetics.entities.SentenceScore
+import com.simple.coreapp.utils.ext.DP
+import com.simple.phonetics.ui.common.adapters.PrecomputeAdapter
+import com.simple.phonetics.ui.common.adapters.PrecomputeViewItem
+import com.simple.phonetics.utils.exts.dp
+import com.simple.phonetics.utils.exts.sp
+import com.simple.phonetics.utils.exts.toPronunciationColor
+import com.simple.ui.precompute.DrawSpec
+import com.simple.ui.precompute.LayoutEngine
+import com.simple.ui.precompute.node.ConstraintChild
+import com.simple.ui.precompute.node.ConstraintNode
+import com.simple.ui.precompute.node.Constraints
+import com.simple.ui.precompute.node.CrossAlign
+import com.simple.ui.precompute.node.EdgeInsets
+import com.simple.ui.precompute.node.GaugeArcNode
+import com.simple.ui.precompute.node.GaugeScoreNode
+import com.simple.ui.precompute.node.LayoutDimension
+import com.simple.ui.precompute.node.LinearNode
+import com.simple.ui.precompute.node.Orientation
+import com.simple.ui.precompute.node.ProgressBarNode
+import com.simple.ui.precompute.node.TextNode
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.emptyText
 
 @ItemAdapter
-class ScoreResultAdapter : ViewItemAdapter<ScoreResultViewItem, PronunciationAssessmentItemScoreResultBinding>() {
+class ScoreResultAdapter : PrecomputeAdapter<ScoreResultViewItem>() {
 
     override val viewItemClass: Class<ScoreResultViewItem> by lazy {
         ScoreResultViewItem::class.java
     }
-
-    override fun createViewBinding(parent: ViewGroup, viewType: Int): PronunciationAssessmentItemScoreResultBinding {
-        return PronunciationAssessmentItemScoreResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    }
-
-    override fun onBindViewHolder(binding: PronunciationAssessmentItemScoreResultBinding, viewType: Int, position: Int, item: ScoreResultViewItem, payloads: MutableList<Any>) {
-        super.onBindViewHolder(binding, viewType, position, item, payloads)
-
-        if (payloads.contains(PAYLOAD_SCORE)) refreshScore(binding, item)
-        if (payloads.contains(PAYLOAD_SUBTITLE)) refreshSubtitle(binding, item)
-        if (payloads.contains(PAYLOAD_METRICS)) refreshMetrics(binding, item)
-    }
-
-    override fun onBindViewHolder(binding: PronunciationAssessmentItemScoreResultBinding, viewType: Int, position: Int, item: ScoreResultViewItem) {
-        super.onBindViewHolder(binding, viewType, position, item)
-
-        refreshScore(binding, item)
-        refreshSubtitle(binding, item)
-        refreshMetrics(binding, item)
-    }
-
-    private fun refreshScore(binding: PronunciationAssessmentItemScoreResultBinding, item: ScoreResultViewItem) {
-        binding.scoreGaugeView.label = item.label
-        binding.scoreGaugeView.grade = item.grade
-        binding.scoreGaugeView.progress = item.score
-    }
-
-    private fun refreshSubtitle(binding: PronunciationAssessmentItemScoreResultBinding, item: ScoreResultViewItem) {
-        binding.tvSubtitle.setText(item.subtitle)
-    }
-
-    private fun refreshMetrics(binding: PronunciationAssessmentItemScoreResultBinding, item: ScoreResultViewItem) {
-        binding.tvAccuracyTitle.setText(item.accuracyTitle)
-        binding.tvAccuracyValue.setText(item.accuracyValue)
-        binding.progressAccuracy.progress = item.accuracy
-
-        binding.tvCompletionTitle.setText(item.completionTitle)
-        binding.tvCompletionValue.setText(item.completionValue)
-        binding.progressCompletion.progress = item.completion
-
-        binding.tvFluencyTitle.setText(item.fluencyTitle)
-        binding.tvFluencyValue.setText(item.fluencyValue)
-        binding.progressFluency.progress = item.fluency
-    }
 }
 
 data class ScoreResultViewItem(
-    val id: String,
+    override val id: String,
+    override val maxWidth: Int = 0,
 
     val score: Int = 0,
     val label: String = "",
     val grade: String = "",
-    val subtitle: RichText = emptyText(),
+    val subtitle: BigText = emptyText(),
 
     val accuracy: Int = 0,
-    val accuracyTitle: RichText = emptyText(),
-    val accuracyValue: RichText = emptyText(),
+    val accuracyTitle: BigText = emptyText(),
+    val accuracyValue: BigText = emptyText(),
 
     val completion: Int = 0,
-    val completionTitle: RichText = emptyText(),
-    val completionValue: RichText = emptyText(),
+    val completionTitle: BigText = emptyText(),
+    val completionValue: BigText = emptyText(),
 
     val fluency: Int = 0,
-    val fluencyTitle: RichText = emptyText(),
-    val fluencyValue: RichText = emptyText(),
-) : ViewItem {
+    val fluencyTitle: BigText = emptyText(),
+    val fluencyValue: BigText = emptyText(),
+) : PrecomputeViewItem() {
 
-    override fun areItemsTheSame(): List<Any> = listOf(id)
+    private val gaugeSize = 160.dp().toInt()
+    private val textSizePx = 13.sp()
+    private val strokeWidthPx = 12.dp()
+    private val progressHeight = 12.dp().toInt()
+
+    override val drawSpec: DrawSpec = LayoutEngine.measure(
+        node = buildRoot(),
+        constraints = Constraints(maxWidth),
+        id = id
+    )
+
+    private fun buildRoot(): LinearNode {
+
+        val topRow = buildTopRow()
+        val subtitleNode = buildSubtitleNode()
+        val children = listOf(topRow, subtitleNode)
+        return LinearNode(
+            orientation = Orientation.VERTICAL,
+            crossAlign = CrossAlign.CENTER,
+            layoutWidth = LayoutDimension.MatchParent,
+            children = children,
+        )
+    }
+
+    private fun buildTopRow(): LinearNode {
+
+        val gauge = buildGauge()
+        val metricsColumn = buildMetricsColumn()
+        val children = listOf(gauge, metricsColumn)
+        return LinearNode(
+            orientation = Orientation.HORIZONTAL,
+            crossAlign = CrossAlign.CENTER,
+            gap = DP.DP_16,
+            layoutWidth = LayoutDimension.MatchParent,
+            children = children,
+        )
+    }
+
+    private fun buildGauge(): ConstraintNode {
+
+        val arcChild = buildGaugeArcChild()
+        val scoreChild = buildGaugeScoreChild()
+        val children = listOf(arcChild, scoreChild)
+        return ConstraintNode(
+            children = children,
+            layoutWidth = LayoutDimension.Fixed(gaugeSize),
+            layoutHeight = LayoutDimension.Fixed(gaugeSize),
+        )
+    }
+
+    private fun buildGaugeArcChild(): ConstraintChild {
+
+        val node = GaugeArcNode(
+            progress = score,
+            progressColor = score.toPronunciationColor(),
+            strokeWidthPx = strokeWidthPx,
+            layoutWidth = LayoutDimension.MatchParent,
+            layoutHeight = LayoutDimension.MatchParent,
+        )
+        return ConstraintChild(
+            id = "arc",
+            node = node,
+            startToStartOf = ConstraintNode.PARENT,
+            endToEndOf = ConstraintNode.PARENT,
+            topToTopOf = ConstraintNode.PARENT,
+            bottomToBottomOf = ConstraintNode.PARENT,
+            width = LayoutDimension.MatchParent,
+            height = LayoutDimension.MatchParent,
+        )
+    }
+
+    private fun buildGaugeScoreChild(): ConstraintChild {
+
+        val node = GaugeScoreNode(
+            progress = score,
+            label = label,
+            grade = grade,
+            gradeColor = score.toPronunciationColor(),
+            layoutWidth = LayoutDimension.MatchParent,
+            layoutHeight = LayoutDimension.MatchParent,
+        )
+        return ConstraintChild(
+            id = "score",
+            node = node,
+            startToStartOf = ConstraintNode.PARENT,
+            endToEndOf = ConstraintNode.PARENT,
+            topToTopOf = ConstraintNode.PARENT,
+            bottomToBottomOf = ConstraintNode.PARENT,
+            width = LayoutDimension.MatchParent,
+            height = LayoutDimension.MatchParent,
+        )
+    }
+
+    private fun buildMetricsColumn(): LinearNode {
+
+        val children = buildMetricRows()
+        return LinearNode(
+            orientation = Orientation.VERTICAL,
+            layoutWidth = LayoutDimension.MatchParent,
+            children = children,
+        )
+    }
+
+    private fun buildMetricRows(): List<LinearNode> {
+
+        val accuracyRow = buildMetric(
+            title = accuracyTitle,
+            value = accuracyValue,
+            progress = accuracy,
+            idSuffix = "accuracy",
+            paddingBottom = DP.DP_12,
+        )
+        val completionRow = buildMetric(
+            title = completionTitle,
+            value = completionValue,
+            progress = completion,
+            idSuffix = "completion",
+            paddingBottom = DP.DP_12,
+        )
+        val fluencyRow = buildMetric(
+            title = fluencyTitle,
+            value = fluencyValue,
+            progress = fluency,
+            idSuffix = "fluency",
+            paddingBottom = DP.DP_4,
+        )
+        return listOf(accuracyRow, completionRow, fluencyRow)
+    }
+
+    private fun buildMetric(
+        title: BigText,
+        value: BigText,
+        progress: Int,
+        idSuffix: String,
+        paddingBottom: Int,
+    ): LinearNode {
+
+        val header = buildMetricHeader(title, value, idSuffix)
+        val progressBar = buildMetricProgressBar(progress)
+        val padding = EdgeInsets.symmetric(v = 8.dp().toInt())
+        val children = listOf(header, progressBar)
+        return LinearNode(
+            orientation = Orientation.VERTICAL,
+            gap = DP.DP_6,
+            padding = padding,
+            layoutWidth = LayoutDimension.MatchParent,
+            children = children,
+        )
+    }
+
+    private fun buildMetricHeader(
+        title: BigText,
+        value: BigText,
+        idSuffix: String,
+    ): ConstraintNode {
+
+        val valueChild = buildMetricValueChild(value, idSuffix)
+        val titleChild = buildMetricTitleChild(title, idSuffix)
+        val children = listOf(valueChild, titleChild)
+        return ConstraintNode(
+            children = children,
+            layoutWidth = LayoutDimension.MatchParent,
+            layoutHeight = LayoutDimension.WrapContent,
+        )
+    }
+
+    private fun buildMetricValueChild(value: BigText, idSuffix: String): ConstraintChild {
+
+        val node = TextNode(
+            text = value,
+            textSizePx = textSizePx,
+            typeface = Typeface.DEFAULT_BOLD,
+            maxLines = 1,
+        )
+        return ConstraintChild(
+            id = "value_$idSuffix",
+            node = node,
+            endToEndOf = ConstraintNode.PARENT,
+            topToTopOf = ConstraintNode.PARENT,
+            width = LayoutDimension.WrapContent,
+            height = LayoutDimension.WrapContent,
+        )
+    }
+
+    private fun buildMetricTitleChild(title: BigText, idSuffix: String): ConstraintChild {
+
+        val node = TextNode(
+            text = title,
+            textSizePx = textSizePx,
+            maxLines = 1,
+        )
+        return ConstraintChild(
+            id = "title_$idSuffix",
+            node = node,
+            startToStartOf = ConstraintNode.PARENT,
+            endToStartOf = "value_$idSuffix",
+            topToTopOf = ConstraintNode.PARENT,
+            width = LayoutDimension.MatchParent,
+            height = LayoutDimension.WrapContent,
+            horizontalBias = 0f,
+        )
+    }
+
+    private fun buildMetricProgressBar(progress: Int): ProgressBarNode {
+
+        return ProgressBarNode(
+            progress = progress,
+            progressColor = progress.toPronunciationColor(),
+            layoutWidth = LayoutDimension.MatchParent,
+            layoutHeight = LayoutDimension.Fixed(progressHeight),
+        )
+    }
+
+    private fun buildSubtitleNode(): TextNode {
+
+        val padding = EdgeInsets(top = DP.DP_16, bottom = DP.DP_16)
+
+        return TextNode(
+            text = subtitle,
+            textSizePx = textSizePx,
+            padding = padding,
+        )
+    }
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
-        score to PAYLOAD_SCORE,
-        grade to PAYLOAD_SCORE,
-        subtitle to PAYLOAD_SUBTITLE,
-        accuracy to PAYLOAD_METRICS,
-        completion to PAYLOAD_METRICS,
-        fluency to PAYLOAD_METRICS,
+        score to "drawSpec",
+        label to "drawSpec",
+        grade to "drawSpec",
+        subtitle to "drawSpec",
+        accuracy to "drawSpec",
+        accuracyTitle to "drawSpec",
+        accuracyValue to "drawSpec",
+        completion to "drawSpec",
+        completionTitle to "drawSpec",
+        completionValue to "drawSpec",
+        fluency to "drawSpec",
+        fluencyTitle to "drawSpec",
+        fluencyValue to "drawSpec",
+        maxWidth to "drawSpec",
     )
 }
-
-private const val PAYLOAD_SCORE    = "PAYLOAD_SCORE"
-private const val PAYLOAD_SUBTITLE = "PAYLOAD_SUBTITLE"
-private const val PAYLOAD_METRICS  = "PAYLOAD_METRICS"

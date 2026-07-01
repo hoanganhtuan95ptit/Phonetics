@@ -1,17 +1,13 @@
 package com.simple.phonetics.ui.common.adapters
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
-import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.event.sendEvent
 import com.simple.phonetics.databinding.ItemPhonetics2Binding
 import com.simple.ui.precompute.LayoutEngine
 import com.simple.ui.precompute.image.BigImage
@@ -25,8 +21,6 @@ import com.simple.ui.precompute.node.ImageNode
 import com.simple.ui.precompute.node.LayoutDimension
 import com.simple.ui.precompute.node.LinearNode
 import com.simple.ui.precompute.node.Orientation
-import com.simple.ui.precompute.node.OutlineNode
-import com.simple.ui.precompute.node.OutlineState
 import com.simple.ui.precompute.node.TextNode
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.emptyText

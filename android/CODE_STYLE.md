@@ -34,7 +34,43 @@ fun processItem(item: Item) {
 
 ---
 
-## 2. Cách 1 dòng sau dấu `{`
+## 2. Giới hạn độ sâu thụt dòng theo dấu `(` (Max Parentheses Indent Depth)
+
+Không được để biểu thức bị thụt dòng theo quá **2 cặp `()`**. Nếu vượt quá, phải tách thành biến trung gian hoặc hàm riêng.
+
+**❌ Sai — lồng `(` quá sâu:**
+```kotlin
+val result = mapper.map(
+    repository.load(
+        requestFactory.create(
+            user.id,
+            config
+        )
+    )
+)
+```
+
+**✅ Đúng — tách biến trung gian:**
+```kotlin
+val request = requestFactory.create(user.id, config)
+val response = repository.load(request)
+val result = mapper.map(response)
+```
+
+**✅ Đúng — tách hàm khi logic có ý nghĩa riêng:**
+```kotlin
+val result = mapper.map(loadUserResponse(user, config))
+
+private fun loadUserResponse(user: User, config: Config): Response {
+
+    val request = requestFactory.create(user.id, config)
+    return repository.load(request)
+}
+```
+
+---
+
+## 3. Cách 1 dòng sau dấu `{`
 
 Sau mỗi dấu `{` mở khối (hàm, class, if, for, lambda...) phải có **1 dòng trắng** trước khi bắt đầu nội dung.
 
@@ -64,11 +100,11 @@ if (isReady) {
 
 ---
 
-## 3. Không dùng Callback — dùng Flow hoặc Coroutines
+## 4. Không dùng Callback — dùng Flow hoặc Coroutines
 
 Callback gây callback hell và khó đọc. Thay thế bằng **Kotlin Coroutines** hoặc **Flow**.
 
-### 3.1 Thay Callback đơn bằng `suspend fun`
+### 4.1 Thay Callback đơn bằng `suspend fun`
 
 **❌ Sai — callback:**
 ```kotlin
@@ -87,7 +123,7 @@ suspend fun fetchUser(id: String): User {
 }
 ```
 
-### 3.2 Thay stream / listener bằng `Flow`
+### 4.2 Thay stream / listener bằng `Flow`
 
 **❌ Sai — callback liên tục:**
 ```kotlin
@@ -111,7 +147,7 @@ viewModelScope.launch {
 }
 ```
 
-### 3.3 Wrap API Java callback sẵn có bằng `suspendCoroutine`
+### 4.3 Wrap API Java callback sẵn có bằng `suspendCoroutine`
 
 Khi buộc phải làm việc với thư viện Java dùng callback, wrap lại thành suspend:
 
@@ -131,6 +167,7 @@ suspend fun legacyFetch(id: String): Data = suspendCoroutine { cont ->
 
 | Quy tắc | Yêu cầu |
 |---|---|
-| Độ sâu lồng `{}` | Tối đa 3 cấp; nếu hơn → tách hàm |
+| Độ sâu lồng `{}` | Tối đa 2 cấp; nếu hơn → tách hàm |
+| Độ sâu thụt dòng theo `()` | Tối đa 2 cấp; nếu hơn → tách biến / tách hàm |
 | Sau dấu `{` | Luôn có 1 dòng trắng |
 | Async | Dùng `suspend` / `Flow`; **không** dùng callback |

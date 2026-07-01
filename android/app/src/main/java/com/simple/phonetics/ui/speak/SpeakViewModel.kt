@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.speak
 
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.JobQueue
 import com.simple.coreapp.utils.ext.DP
@@ -24,11 +23,13 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.SentenceScore
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
 import com.simple.phonetics.ui.common.adapters.PhoneticsViewItem2
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
 import com.simple.phonetics.utils.combineState
 import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
+import com.simple.phonetics.utils.exts.dp
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toPronunciationColor
@@ -149,7 +150,7 @@ class SpeakViewModel(
         isSupportReadingFlow,
         sentenceScore,
         initialValue = emptyList()
-    ) { size, themes, strings, phoneticState, isSupportReading, sentenceScore ->
+    ) { sizes, themes, strings, phoneticState, isSupportReading, sentenceScore ->
 
         if (phoneticState.isStart()) {
 
@@ -216,11 +217,11 @@ class SpeakViewModel(
                 hasStroke = score != null,
                 strokeColor = score.getColor(),
 
-                maxWidth = size.width
+                maxWidth = sizes.width
             )
         }.let {
 
-            viewItemList.add(SpaceViewItem(id = "1", height = DP.DP_16))
+            viewItemList.add(SpaceViewItem2(id = "1", maxWidth = sizes.width, height = 16.dp()))
             viewItemList.addAll(it)
         }
 
@@ -230,12 +231,17 @@ class SpeakViewModel(
     val viewItemMap: MutableStateFlow<ConcurrentHashMap<Double, List<ViewItem>>> = MutableStateFlow(ConcurrentHashMap())
 
     val viewItemList: StateFlow<List<ViewItem>> = combineState(
+        sizes,
         actionHeightFlow,
         viewItemMap,
         initialValue = emptyList()
-    ) { actionHeight, map ->
+    ) { sizes, actionHeight, map ->
 
         val viewItemList = arrayListOf<ViewItem>()
+
+        if (map.isEmpty()) {
+            return@combineState
+        }
 
         map.toList().sortedBy {
             it.first
@@ -245,7 +251,7 @@ class SpeakViewModel(
             viewItemList.addAll(it)
         }
 
-        viewItemList.add(SpaceViewItem(id = "2", height = actionHeight))
+        viewItemList.add(SpaceViewItem2(id = "2", maxWidth = sizes.width, height = actionHeight.toFloat()))
 
         value = viewItemList
     }

@@ -57,7 +57,7 @@ val apiModule = module {
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .connectTimeout(20, TimeUnit.SECONDS)
-            .addInterceptor(interceptor)
+//            .addInterceptor(interceptor)
             .addInterceptor(CacheInterceptor(get()))
             .hostnameVerifier { _, _ -> true }
             .build()

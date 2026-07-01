@@ -23,6 +23,7 @@ import com.simple.phonetics.ui.view.outline.OutlineFrameLayout
 import com.simple.state.doRunning
 import com.simple.state.isLoading
 import com.simple.state.isSuccess
+import com.simple.ui.precompute.text.setText
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.Job

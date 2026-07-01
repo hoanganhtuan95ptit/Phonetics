@@ -6,15 +6,9 @@ import androidx.annotation.RequiresPermission
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.toPx
 import com.simple.feature.pronunciation_assessment.R
 import com.simple.feature.pronunciation_assessment.domain.entities.AssessmentEvent
@@ -23,30 +17,45 @@ import com.simple.feature.pronunciation_assessment.domain.usecase.PrepareAssessm
 import com.simple.feature.pronunciation_assessment.domain.usecase.StartAssessmentUseCase
 import com.simple.feature.pronunciation_assessment.ui.adapters.NoteViewItem
 import com.simple.feature.pronunciation_assessment.ui.adapters.ScoreResultViewItem
-import com.simple.feature.pronunciation_assessment.utils.plus
-import com.simple.image.ImageRes
 import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.entities.ErrorType
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.entities.SentenceScore
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
 import com.simple.phonetics.utils.combineState
+import com.simple.phonetics.utils.exts.dp
 import com.simple.phonetics.utils.exts.getOrKey
-import com.simple.phonetics.utils.spans.RoundedBackground
-import com.simple.phonetics.utils.spans.RoundedOutline
-import com.simple.phonetics.utils.spans.TextSize
+import com.simple.phonetics.utils.exts.sp
 import com.simple.state.ResultState
 import com.simple.state.isFailed
 import com.simple.state.isIdle
 import com.simple.state.isLoading
 import com.simple.state.isStart
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.image.ColorFilter
+import com.simple.ui.precompute.image.addTransform
+import com.simple.ui.precompute.image.build
+import com.simple.ui.precompute.image.toBuilder
+import com.simple.ui.precompute.node.BackgroundData
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.emptyText
+import com.simple.ui.precompute.text.plus
+import com.simple.ui.precompute.text.span.Bold
+import com.simple.ui.precompute.text.span.ForegroundColor
+import com.simple.ui.precompute.text.span.RoundedBackground
+import com.simple.ui.precompute.text.span.RoundedOutline
+import com.simple.ui.precompute.text.span.TextSize
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnError
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurface
+import com.unknown.theme.utils.exts.colorOnSurfaceVariant
 import com.unknown.theme.utils.exts.colorPrimary
-import com.unknown.theme.utils.exts.colorSurfaceVariant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -75,11 +84,12 @@ class PronunciationViewModel : BaseViewModel() {
     }
 
     val resultViewItem: StateFlow<List<ViewItem>> = combineState(
+        sizes,
         themes,
         strings,
         assessment,
         initialValue = emptyList()
-    ) { themes, strings, assessment ->
+    ) { sizes, themes, strings, assessment ->
 
         fun gradeOf(score: Int): String = when {
             score >= 95 -> "GRADE A+"
@@ -115,28 +125,37 @@ class PronunciationViewModel : BaseViewModel() {
             grade = gradeOf(assessment.finalScore),
 
             subtitle = subtitle.with(ForegroundColor(themes.colorOnSurface))
-                .with(errorCount.toString(), Bold, TextSize(16), ForegroundColor(themes.colorError)),
+                .withFirst(errorCount.toString(), Bold, TextSize(16.toPx()), ForegroundColor(themes.colorError))
+                .build(),
 
             accuracy = assessment.accuracyScore,
             accuracyTitle = strings.getOrKey("speak_screen_result_label_accuracy")
-                .with(ForegroundColor(themes.colorOnSurface)),
+                .with(ForegroundColor(themes.colorOnSurface))
+                .build(),
             accuracyValue = "${assessment.accuracyScore}%"
-                .with(ForegroundColor(themes.colorOnSurface)),
+                .with(ForegroundColor(themes.colorOnSurface))
+                .build(),
 
             completion = assessment.completenessScore,
             completionTitle = strings.getOrKey("speak_screen_result_label_completion")
-                .with(ForegroundColor(themes.colorOnSurface)),
+                .with(ForegroundColor(themes.colorOnSurface))
+                .build(),
             completionValue = "${assessment.completenessScore}%"
-                .with(ForegroundColor(themes.colorOnSurface)),
+                .with(ForegroundColor(themes.colorOnSurface))
+                .build(),
 
             fluency = (100 - assessment.fluencyPenalty).coerceAtLeast(0),
             fluencyTitle = strings.getOrKey("speak_screen_result_label_fluency")
-                .with(ForegroundColor(themes.colorOnSurface)),
+                .with(ForegroundColor(themes.colorOnSurface))
+                .build(),
             fluencyValue = "${(100 - assessment.fluencyPenalty).coerceAtLeast(0)}%"
-                .with(ForegroundColor(themes.colorOnSurface)),
+                .with(ForegroundColor(themes.colorOnSurface))
+                .build(),
+
+            maxWidth = sizes.width - 2 * DP.DP_16,
         ).let {
 
-            viewItemList.add(SpaceViewItem(id = "score_space_top", height = DP.DP_16))
+            viewItemList.add(SpaceViewItem2(id = "score_space_top", maxWidth = sizes.width, height = 16.dp()))
             viewItemList.add(it)
         }
 
@@ -145,16 +164,20 @@ class PronunciationViewModel : BaseViewModel() {
 
 
     val noteViewItem: StateFlow<List<ViewItem>> = combineState(
+        sizes,
         themes,
         strings,
         assessmentErrors,
         initialValue = emptyList()
-    ) { themes, strings, errors ->
+    ) { sizes, themes, strings, errors ->
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        var note = strings.getOrKey("speak_screen_note_pronunciation_assessment")
-            .with(RoundedOutline(textSize = 16.toPx().toFloat(), strokeColor = Color.TRANSPARENT, paddingVertical = DP.DP_4.toFloat()), ForegroundColor(themes.colorPrimary))
+        var noteTitle = strings.getOrKey("speak_screen_note_pronunciation_assessment")
+            .with(TextSize(16.sp().toInt()), RoundedOutline(textSize = 16.toPx().toFloat(), strokeColor = Color.TRANSPARENT, paddingVertical = DP.DP_4.toFloat()), ForegroundColor(themes.colorPrimary))
+            .build()
+
+        var note = emptyText()
 
         errors.mapNotNull {
 
@@ -174,29 +197,38 @@ class PronunciationViewModel : BaseViewModel() {
                 else -> return@mapNotNull null
             }
 
-            msg.with(ForegroundColor(themes.colorOnSurface))
-                .with("/${it.phoneme}/", ForegroundColor(themes.colorError))
-        }.forEach {
+            msg.with(TextSize(16.sp().toInt()), ForegroundColor(themes.colorOnSurface))
+                .withFirst("/${it.phoneme}/", ForegroundColor(themes.colorError))
+                .build()
+        }.forEachIndexed { index, text ->
 
-            note += "\n"
-            note += it
+            if (index != 0) note += "\n"
+            note += text
         }
 
         if (errors.isNotEmpty()) NoteViewItem(
             id = "NOTE",
+            maxWidth = sizes.width - 2 * 16.dp().toInt(),
+
             note = note,
-            image = ImageRes(
-                R.drawable.pronunciation_assessment_ic_note_black_24dp,
-                themes.colorPrimary
-            ),
-            background = Background(
-                cornerRadius = DP.DP_16,
-                strokeWidth = DP.DP_1,
-                strokeColor = themes.colorSurfaceVariant,
+            title = noteTitle,
+            image = R.drawable.pronunciation_assessment_ic_note_black_24dp
+                .toBuilder()
+                .addTransform(ColorFilter(themes.colorPrimary))
+                .build(),
+            background = BackgroundData(
+
+                cornerRadius = 16.dp(),
+
+                dashGap = 4.dp(),
+                dashWidth = 4.dp(),
+
+                strokeWidth = 1.dp(),
+                strokeColor = themes.colorOnSurfaceVariant,
             )
         ).let {
 
-            viewItemList.add(SpaceViewItem(id = "1", height = DP.DP_16))
+            viewItemList.add(SpaceViewItem2(id = "1", maxWidth = sizes.width, height = 16.dp()))
             viewItemList.add(it)
         }
 
@@ -221,22 +253,22 @@ class PronunciationViewModel : BaseViewModel() {
 
         val text = if (initState.isIdle() || initState.isFailed()) {
             (strings.getOrKey("speak_screen_action_pronunciation_assessment") + " Beta")
-                .with(Bold, TextSize(16), ForegroundColor(textColor))
-                .with("Beta", Bold, RoundedBackground(backgroundColor = themes.colorError, themes.colorOnError, DP.DP_4.toFloat()))
+                .with(Bold, TextSize(16.toPx()), ForegroundColor(textColor))
+                .withFirst("Beta", Bold, RoundedBackground(backgroundColor = themes.colorError, themes.colorOnError, DP.DP_4.toFloat()))
         } else if (initState is ResultState.Running && initState.data in 0..99) {
             strings.getOrKey("speak_screen_action_loading_model")
                 .replace("\$percent", "${initState.data}%")
-                .with(Bold, TextSize(16), ForegroundColor(textColor))
-                .with("${initState.data}%", ForegroundColor(themes.colorError))
+                .with(Bold, TextSize(16.toPx()), ForegroundColor(textColor))
+                .withFirst("${initState.data}%", ForegroundColor(themes.colorError))
         } else if (initState.isLoading()) {
             strings.getOrKey("speak_screen_action_loading_ai_model")
-                .with(Bold, TextSize(16), ForegroundColor(textColor))
+                .with(Bold, TextSize(16.toPx()), ForegroundColor(textColor))
         } else if (assessmentState.isStart()) {
             strings.getOrKey("speak_screen_action_assessing")
-                .with(Bold, TextSize(16), ForegroundColor(textColor))
+                .with(Bold, TextSize(16.toPx()), ForegroundColor(textColor))
         } else {
             strings.getOrKey("speak_screen_action_practice")
-                .with(Bold, TextSize(16), ForegroundColor(textColor))
+                .with(Bold, TextSize(16.toPx()), ForegroundColor(textColor))
         }
 
 
@@ -251,7 +283,7 @@ class PronunciationViewModel : BaseViewModel() {
         val imageShow = recordState.isLoading()
 
         value = ButtonData(
-            text = text,
+            text = text.build(),
             textShow = !imageShow,
 
             imageShow = imageShow,
@@ -323,7 +355,7 @@ class PronunciationViewModel : BaseViewModel() {
     }
 
     data class ButtonData(
-        val text: RichText = emptyText(),
+        val text: BigText = emptyText(),
         val textShow: Boolean = true,
         val imageShow: Boolean = false,
         val progressShow: Boolean = false,

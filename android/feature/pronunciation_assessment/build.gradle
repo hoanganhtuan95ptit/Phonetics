@@ -20,6 +20,8 @@ dependencies {
     implementation otherDependencies.permissionx
     implementation otherDependencies.onnxruntime
 
+    implementation("com.github.hoanganhtuan95ptit.core:glide-loader")
+
     implementation hoanganhtuan95Dependencies.service
 
     implementation hoanganhtuan95Dependencies.adapter
