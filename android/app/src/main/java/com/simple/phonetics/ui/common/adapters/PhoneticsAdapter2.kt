@@ -12,8 +12,6 @@ import com.simple.phonetics.databinding.ItemPhonetics2Binding
 import com.simple.ui.precompute.LayoutEngine
 import com.simple.ui.precompute.image.BigImage
 import com.simple.ui.precompute.image.emptyImage
-import com.simple.ui.precompute.node.ConstraintChild
-import com.simple.ui.precompute.node.ConstraintNode
 import com.simple.ui.precompute.node.Constraints
 import com.simple.ui.precompute.node.CrossAlign
 import com.simple.ui.precompute.node.EdgeInsets
@@ -37,44 +35,27 @@ class PhoneticsAdapter2(onItemClick: ((View, PhoneticsViewItem2) -> Unit)? = nul
         return ItemPhonetics2Binding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
 
-//    override fun createViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<ItemPhonetics2Binding>? {
-//        val viewHolder = super.createViewHolder(parent, viewType) ?: return null
-//
-//        viewHolder.itemView.setDebouncedClickListener {
-//
-//            val item = getViewItem(viewHolder.absoluteAdapterPosition) ?: return@setDebouncedClickListener
-//
-//            sendEvent("PHONETIC_CLICKED", item)
-//        }
-//
-//        return viewHolder
-//    }
+    override fun onBindViewHolder(binding: ItemPhonetics2Binding, viewType: Int, position: Int, item: PhoneticsViewItem2) {
+        super.onBindViewHolder(binding, viewType, position, item)
+        onBindViewHolder(binding, viewType, position, item, mutableListOf())
+    }
 
     override fun onBindViewHolder(binding: ItemPhonetics2Binding, viewType: Int, position: Int, item: PhoneticsViewItem2, payloads: MutableList<Any>) {
         super.onBindViewHolder(binding, viewType, position, item, payloads)
 
         binding.root.id = item.id
         binding.root.text = item.text
+        binding.root.onlyReading = item.onlyReading
 
-        if (payloads.contains("hasStroke")) hasStroke(binding, item, animate = true)
-        if (payloads.contains("textDisplay")) textDisplay(binding, item)
-        if (payloads.contains("strokeColor")) strokeColor(binding, item)
+        if (payloads.isEmpty() || payloads.contains("strokeShow")) strokeShow(binding, item, animate = payloads.isNotEmpty())
+        if (payloads.isEmpty() || payloads.contains("textDisplay")) textDisplay(binding, item)
+        if (payloads.isEmpty() || payloads.contains("strokeColor")) strokeColor(binding, item)
     }
 
-    override fun onBindViewHolder(binding: ItemPhonetics2Binding, viewType: Int, position: Int, item: PhoneticsViewItem2) {
-        super.onBindViewHolder(binding, viewType, position, item)
 
-        binding.root.id = item.id
-        binding.root.text = item.text
-
-        hasStroke(binding, item)
-        textDisplay(binding, item)
-        strokeColor(binding, item)
-    }
-
-    private fun hasStroke(binding: ItemPhonetics2Binding, item: PhoneticsViewItem2, animate: Boolean = false) {
-        binding.root.hasStroke = item.hasStroke
-        binding.root.setLoading(false, item.hasStroke, animate)
+    private fun strokeShow(binding: ItemPhonetics2Binding, item: PhoneticsViewItem2, animate: Boolean = false) {
+        binding.root.strokeShow = item.strokeShow
+        binding.root.setLoading(false, item.strokeShow, animate)
     }
 
     private fun textDisplay(binding: ItemPhonetics2Binding, item: PhoneticsViewItem2) {
@@ -91,59 +72,48 @@ data class PhoneticsViewItem2(
     val text: String,
 
     val textDisplay: BigText = emptyText(),
+    val phoneticDisplay: BigText = emptyText(),
 
     val iconShow: Boolean = false,
     val iconDisplay: BigImage = emptyImage(),
 
-    val hasStroke: Boolean = false,
+    val onlyReading: Boolean = false,
+
+    val strokeShow: Boolean = false,
     val strokeColor: Int = Color.TRANSPARENT,
 
     val maxWidth: Int,
 ) : ViewItem {
 
-    val drawSpec = ConstraintNode(
+    val drawSpec = LinearNode(
+        orientation = Orientation.VERTICAL,
+        crossAlign = CrossAlign.START,
+        padding = EdgeInsets.symmetric(h = DP.DP_8, v = DP.DP_4),
         children = listOf(
-//            ConstraintChild(
-//                id = "bg",
-//                node = OutlineNode(
-//                    state = outlineState,
-//                    strokeColor = outlineStrokeColor,
-//                    cornerRadius = DP.DP_8.toFloat(),
-//                    strokeWidth = DP.DP_1.toFloat(),
-//                    layoutWidth = LayoutDimension.MatchParent,
-//                    layoutHeight = LayoutDimension.MatchParent,
-//                ),
-//                startToStartOf = "content",
-//                endToEndOf = "content",
-//                topToTopOf = "content",
-//                bottomToBottomOf = "content",
-//                width = LayoutDimension.MatchParent,
-//                height = LayoutDimension.MatchParent,
-//            ),
-            ConstraintChild(
-                id = "content",
-                node = LinearNode(
-                    orientation = Orientation.HORIZONTAL,
-                    crossAlign = CrossAlign.CENTER,
-                    gap = DP.DP_4, // marginStart của ImageView
-                    padding = EdgeInsets.symmetric(h = DP.DP_8, v = DP.DP_4),
-                    children = listOfNotNull(
-                        TextNode(
-                            text = textDisplay,
-                        ),
-                        if (iconShow) ImageNode(
-                            source = iconDisplay,
-                            layoutWidth = LayoutDimension.Fixed(DP.DP_10),
-                            layoutHeight = LayoutDimension.Fixed(DP.DP_24),
-                        ) else null,
+            LinearNode(
+                orientation = Orientation.HORIZONTAL,
+                crossAlign = CrossAlign.CENTER,
+                gap = DP.DP_4,
+                children = listOfNotNull(
+                    TextNode(
+                        text = textDisplay,
                     ),
+                    ImageNode(
+                        source = iconDisplay,
+                        layoutWidth = LayoutDimension.Fixed(DP.DP_10),
+                        layoutHeight = LayoutDimension.Fixed(DP.DP_24),
+                    ).takeIf {
+                        iconShow
+                    },
                 ),
-                startToStartOf = ConstraintNode.PARENT,
-                topToTopOf = ConstraintNode.PARENT,
             ),
-        )
+            TextNode(
+                text = phoneticDisplay,
+            )
+        ),
     ).let {
-        LayoutEngine.measure(it, Constraints(maxWidth))
+
+        LayoutEngine.measure(id = id, node = it, constraints = Constraints(maxWidth))
     }
 
     override fun areItemsTheSame(): List<Any> = listOf(
@@ -155,7 +125,7 @@ data class PhoneticsViewItem2(
         iconShow to "textDisplay",
         iconDisplay to "textDisplay",
 
-        hasStroke to "hasStroke",
+        strokeShow to "strokeShow",
         strokeColor to "strokeColor",
     )
 }

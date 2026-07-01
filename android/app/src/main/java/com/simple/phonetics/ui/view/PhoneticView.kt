@@ -10,6 +10,9 @@ import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
 import com.simple.coreapp.utils.ext.handler
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
+import com.simple.deeplink.sendDeeplink
+import com.simple.phonetics.DeeplinkManager
+import com.simple.phonetics.Param
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
@@ -35,8 +38,8 @@ class PhoneticView @JvmOverloads constructor(
     var id: String = ""
     var text: String = ""
 
-
-    var hasStroke: Boolean = false
+    var strokeShow: Boolean = false
+    var onlyReading: Boolean = false
 
 
     override val outline = OutlineDelegate(this, context, attrs)
@@ -53,7 +56,11 @@ class PhoneticView @JvmOverloads constructor(
 
         setDebouncedClickListener {
 
-            viewModel.startReading(id, text)
+            if (onlyReading) {
+                viewModel.startReading(id, text)
+            } else {
+                sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to text))
+            }
         }
     }
 
@@ -86,7 +93,7 @@ class PhoneticView @JvmOverloads constructor(
                 ResultState.Idle
             }
 
-            setLoading(state.isStart(), show = hasStroke || state.isStart(), animate = true)
+            setLoading(state.isStart(), show = strokeShow || state.isStart(), animate = true)
 
             isClickable = !state.isStart() && viewModel.isSupportReadingFlow.value == true
         }

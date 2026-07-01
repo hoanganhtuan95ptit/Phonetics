@@ -158,16 +158,20 @@ class SpeakViewModel(
             return@combineState
         }
 
+        fun Int?.getColor() = this?.toPronunciationColor() ?: themes.colorPrimary
+
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        fun Int?.getColor() = this?.toPronunciationColor() ?: themes.colorPrimary
 
         val wordScoreMap = sentenceScore?.wordScores
             .orEmpty()
             .associateBy { it.word.lowercase() }
             .toMutableMap()
 
+        val iconDisplay = R.drawable.ic_volume_black_24dp.toBuilder()
+            .addTransform(ColorFilter(themes.colorOnSurface))
+            .build()
 
         phoneticState.toSuccess()?.data.orEmpty().flatMap {
 
@@ -185,36 +189,38 @@ class SpeakViewModel(
             val wordScore = wordScoreMap.remove(text.lowercase())
             val score = wordScore?.score
 
-            // Lấy grapheme + điểm trực tiếp từ PhonemeScore.grapheme (được điền bởi pipeline).
-            // Group theo grapheme, lấy min score để màu phản ánh âm tệ nhất trong cụm chữ.
-            val graphemeScores: List<Pair<String, Int>> = wordScore?.phonemeScores
-                ?.filter { it.errorType != ErrorType.INSERTION && it.grapheme != null }
-                ?.groupBy { it.grapheme!! }
-                ?.map { (g, list) -> g to list.minOf { it.score } }
-                .orEmpty()
-
-            // Build rich text: màu mặc định + size cho text/ipa, rồi override màu
-            // theo điểm cho từng cụm chữ (apply CUỐI cùng để đè).
-            var textDisplay = "$text\n$ipa"
+            var textDisplay = text
                 .with(ForegroundColor(themes.colorOnSurface))
                 .withFirst(text, Bold, TextSize(16.toPx()))
-                .withFirst(ipa, TextSize(12.toPx()), ForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
 
-            for ((chunk, chunkScore) in graphemeScores) {
+            wordScore?.phonemeScores?.filter {
+                it.errorType != ErrorType.INSERTION && it.grapheme != null
+            }?.groupBy {
+                it.grapheme!!
+            }?.map { (g, list) ->
+                g to list.minOf { it.score }
+            }.orEmpty().forEach { (chunk, chunkScore) ->
+
                 textDisplay = textDisplay.withFirst(chunk, ForegroundColor(chunkScore.getColor()))
             }
+
+            val phoneticDisplay = ipa
+                .with(TextSize(12.toPx()), ForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
+
 
             PhoneticsViewItem2(
                 id = id,
                 text = text,
+
                 textDisplay = textDisplay.build(),
+                phoneticDisplay = phoneticDisplay.build(),
 
                 iconShow = isSupportReading,
-                iconDisplay = R.drawable.ic_volume_black_24dp.toBuilder()
-                    .addTransform(ColorFilter(themes.colorOnSurface))
-                    .build(),
+                iconDisplay = iconDisplay,
 
-                hasStroke = score != null,
+                onlyReading = isSupportReading,
+
+                strokeShow = score != null,
                 strokeColor = score.getColor(),
 
                 maxWidth = sizes.width
