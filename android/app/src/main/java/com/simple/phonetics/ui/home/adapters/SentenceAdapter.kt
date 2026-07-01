@@ -6,15 +6,15 @@ import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.emptyText
-import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemSentenceBinding
 import com.simple.phonetics.entities.Sentence
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.emptyText
+import com.simple.ui.precompute.text.setText
 
 @ItemAdapter
 class SentenceAdapter : ViewItemAdapter<SentenceViewItem, ItemSentenceBinding>() {
@@ -70,7 +70,7 @@ data class SentenceViewItem(
     val id: String,
     val data: Sentence,
 
-    var text: RichText = emptyText(),
+    var text: BigText = emptyText(),
 
     var isLast: Boolean = false
 ) : ViewItem {

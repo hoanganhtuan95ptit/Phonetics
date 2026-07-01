@@ -2,7 +2,6 @@ package com.simple.feature.ipa_voice_en
 
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.util.Log
 import com.simple.analytics.logAnalytics
 import com.simple.autobind.annotation.AutoBind
 import com.simple.crashlytics.logCrashlytics

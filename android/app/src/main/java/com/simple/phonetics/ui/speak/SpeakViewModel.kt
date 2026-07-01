@@ -53,9 +53,9 @@ import com.simple.ui.precompute.image.toBuilder
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.emptyText
-import com.simple.ui.precompute.text.span.Bold
-import com.simple.ui.precompute.text.span.ForegroundColor
-import com.simple.ui.precompute.text.span.TextSize
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.span.BigTextSize
 import com.simple.ui.precompute.text.with
 import com.simple.ui.precompute.text.withFirst
 import com.unknown.coroutines.launchCollect
@@ -106,7 +106,7 @@ class SpeakViewModel(
         initialValue = emptyText()
     ) { themes, strings ->
         value = strings.getOrKey("speak_screen_title")
-            .with(ForegroundColor(themes.colorOnSurface))
+            .with(BigForegroundColor(themes.colorOnSurface))
             .build()
     }
 
@@ -190,8 +190,8 @@ class SpeakViewModel(
             val score = wordScore?.score
 
             var textDisplay = text
-                .with(ForegroundColor(themes.colorOnSurface))
-                .withFirst(text, Bold, TextSize(16.toPx()))
+                .with(BigForegroundColor(themes.colorOnSurface))
+                .withFirst(text, BigBold, BigTextSize(16.toPx()))
 
             wordScore?.phonemeScores?.filter {
                 it.errorType != ErrorType.INSERTION && it.grapheme != null
@@ -201,11 +201,11 @@ class SpeakViewModel(
                 g to list.minOf { it.score }
             }.orEmpty().forEach { (chunk, chunkScore) ->
 
-                textDisplay = textDisplay.withFirst(chunk, ForegroundColor(chunkScore.getColor()))
+                textDisplay = textDisplay.withFirst(chunk, BigForegroundColor(chunkScore.getColor()))
             }
 
             val phoneticDisplay = ipa
-                .with(TextSize(16.toPx()), ForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
+                .with(BigTextSize(16.toPx()), BigForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
 
 
             PhoneticsViewItem2(
@@ -391,7 +391,7 @@ class SpeakViewModel(
 
         value = ResultInfo(
             result = speakResult
-                .with(ForegroundColor(if (isCorrect) themes.colorOnPrimaryVariant else themes.colorOnErrorVariant))
+                .with(BigForegroundColor(if (isCorrect) themes.colorOnPrimaryVariant else themes.colorOnErrorVariant))
                 .build(),
             isShow = speakResult.isNotBlank(),
             background = background

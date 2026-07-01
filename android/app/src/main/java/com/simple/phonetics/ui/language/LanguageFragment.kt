@@ -16,7 +16,6 @@ import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.coreapp.utils.ext.setInvisible
-import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.with
 import com.simple.deeplink.DeeplinkHandler
@@ -40,6 +39,7 @@ import com.simple.state.ResultState
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorOnBackground
+import com.simple.ui.precompute.text.setText as setBigText
 
 class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, LanguageViewModel>() {
 
@@ -116,15 +116,15 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.frameHeader.tvTitle.setText(it.title)
-            binding.frameHeader.tvMessage.setText(it.message)
+            binding.frameHeader.tvTitle.setBigText(it.title)
+            binding.frameHeader.tvMessage.setBigText(it.message)
         }
 
         buttonInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON_INFO") {
 
             val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
 
-            binding.btnConfirm.setText(it.text)
+            binding.btnConfirm.setBigText(it.text)
             binding.progress.setVisible(it.isShowLoading)
 
             binding.root.isClickable = it.isClickable

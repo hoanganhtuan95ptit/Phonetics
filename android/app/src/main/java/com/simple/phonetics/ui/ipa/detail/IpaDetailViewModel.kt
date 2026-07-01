@@ -10,18 +10,14 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
@@ -38,6 +34,7 @@ import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsRandomUseCase
 import com.simple.phonetics.domain.usecase.reading.StartReadingUseCase
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailViewItem
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.phonetics.utils.exts.TitleViewItem
@@ -46,7 +43,7 @@ import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.phonetics.utils.provider.ipa_reading.IpaReading
-import com.simple.phonetics.utils.spans.RoundedBackground
+import com.simple.phonetics.utils.spans.BigRoundedBackground
 import com.simple.state.ResultState
 import com.simple.state.doFailed
 import com.simple.state.doStart
@@ -54,6 +51,11 @@ import com.simple.state.doSuccess
 import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
@@ -102,7 +104,7 @@ class IpaDetailViewModel(
 
             data = ipa,
 
-            ipa = ipa.ipa.with(ForegroundColor(theme.colorOnSurface)),
+            ipa = ipa.ipa.with(BigForegroundColor(theme.colorOnSurface)).build(),
 
             image = if (readingState.isRunning()) {
                 R.drawable.ic_pause_black_24dp
@@ -168,7 +170,7 @@ class IpaDetailViewModel(
         TitleViewItem(
             id = "TITLE_EXAMPLE",
             text = translate["ipa_detail_screen_title_example"].orEmpty()
-                .with(Bold, ForegroundColor(theme.colorOnSurface)),
+                .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
         ).let {
 
             viewItemList.add(it)
@@ -230,14 +232,14 @@ class IpaDetailViewModel(
 
         val list = arrayListOf<ViewItem>()
 
-        ClickTextViewItem(
+        ClickBigTextViewItem(
             id = Id.GAME,
             data = ipa.ipa,
             text = translate["ipa_detail_screen_practice_with_games"]
                 .orEmpty()
                 .replace("\$ipa", ipa.ipa)
-                .with(Bold, ForegroundColor(theme.colorPrimary))
-                .with(ipa.ipa, Bold, RoundedBackground(backgroundColor = theme.colorErrorVariant, textColor = theme.colorOnErrorVariant)),
+                .with(BigBold, BigForegroundColor(theme.colorPrimary))
+                .withFirst(ipa.ipa, BigBold, BigRoundedBackground(backgroundColor = theme.colorErrorVariant, textColor = theme.colorOnErrorVariant)).build(),
             textSize = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.MATCH_PARENT

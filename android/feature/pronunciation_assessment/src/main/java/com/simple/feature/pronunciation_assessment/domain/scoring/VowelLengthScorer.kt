@@ -1,6 +1,7 @@
 package com.simple.feature.pronunciation_assessment.domain.scoring
 
 import com.simple.feature.pronunciation_assessment.domain.entities.PhonemeFrame
+import com.simple.feature.pronunciation_assessment.domain.scoring.VowelLengthScorer.averageVowelDurationMs
 
 /**
  * VowelLengthScorer — chấm điểm độ dài nguyên âm dựa trên duration thực tế.

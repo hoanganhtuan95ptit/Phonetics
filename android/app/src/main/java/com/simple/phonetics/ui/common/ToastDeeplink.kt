@@ -6,12 +6,13 @@ import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.Param
 import com.simple.coreapp.ui.dialogs.toast.ToastDialog
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.ui.main.MainActivity
+import com.simple.phonetics.utils.exts.toRich
+import com.simple.ui.precompute.text.BigText
 
 @Deeplink
 class ToastDeeplink : DeeplinkHandler {
@@ -26,11 +27,11 @@ class ToastDeeplink : DeeplinkHandler {
             return false
         }
 
-        val message = extras.orEmpty()[Param.MESSAGE].asObjectOrNull<RichText>()
+        val message = extras.orEmpty()[Param.MESSAGE].asObjectOrNull<BigText>()
 
         val background = extras.orEmpty()[Param.BACKGROUND].asObjectOrNull<Background>()
 
-        val fragment = ToastDialog.newInstance(componentCallbacks, message = message, background = background)
+        val fragment = ToastDialog.newInstance(componentCallbacks, message = message?.toRich(), background = background)
         fragment.showOrAwaitDismiss(componentCallbacks.supportFragmentManager, "")
 
         return true

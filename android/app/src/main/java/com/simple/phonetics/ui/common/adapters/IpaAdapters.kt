@@ -19,10 +19,7 @@ import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.ui.view.setSize
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.ext.setText
 import com.simple.event.sendEvent
 import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.EventName
@@ -31,6 +28,9 @@ import com.simple.phonetics.databinding.ItemIpaBinding
 import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.measureTextViewHeight
 import com.simple.phonetics.utils.TextViewMetrics
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.emptyText
+import com.simple.ui.precompute.text.setText
 import com.unknown.size.uitls.exts.width
 
 @ItemAdapter
@@ -118,8 +118,8 @@ data class IpaViewItem(
     val id: String,
     val data: Ipa,
 
-    val ipa: RichText = emptyText(),
-    val text: RichText = emptyText(),
+    val ipa: BigText = emptyText(),
+    val text: BigText = emptyText(),
 
     override var size: Size = DEFAULT_SIZE,
     val margin: Margin = DEFAULT_MARGIN,

@@ -14,10 +14,8 @@ import com.simple.phonetics.R
 import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.ui.main.services.MainService
 import com.simple.phonetics.ui.main.services.queue.QueueEventState
-import com.simple.state.ResultState
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import org.koin.androidx.viewmodel.ext.android.viewModel

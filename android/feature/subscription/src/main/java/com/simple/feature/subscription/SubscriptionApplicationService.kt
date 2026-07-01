@@ -3,7 +3,6 @@ package com.simple.feature.subscription
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import android.util.Log
 import com.simple.autobind.annotation.AutoBind
 import com.simple.feature.subscription.data.repositories.ActivityTracker
 import com.simple.service.ApplicationService

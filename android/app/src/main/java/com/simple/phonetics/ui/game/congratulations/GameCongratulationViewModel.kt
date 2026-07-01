@@ -4,18 +4,21 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.toRich
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
@@ -68,15 +71,15 @@ class GameCongratulationViewModel : BaseViewModel() {
         val info = Info(
             anim = anim,
             title = title
-                .with(ForegroundColor(theme.colorOnSurface)),
+                .with(BigForegroundColor(theme.colorOnSurface)).build(),
             message = message
                 .replace("\$number", numberStr)
-                .with(ForegroundColor(theme.colorOnSurface))
-                .with(numberStr, Bold, ForegroundColor(theme.colorPrimary)),
+                .with(BigForegroundColor(theme.colorOnSurface))
+                .withFirst(numberStr, BigBold, BigForegroundColor(theme.colorPrimary)).build(),
 
             button = ButtonInfo(
                 text = translate["game_congratulation_screen_action"].orEmpty()
-                    .with(Bold, ForegroundColor(theme.colorOnPrimary)),
+                    .with(BigBold, BigForegroundColor(theme.colorOnPrimary)).build().toRich(),
                 background = Background(
                     backgroundColor = theme.colorPrimary,
                     cornerRadius = DP.DP_350
@@ -95,8 +98,8 @@ class GameCongratulationViewModel : BaseViewModel() {
     data class Info(
         val anim: Int,
 
-        val title: RichText,
-        val message: RichText,
+        val title: BigText,
+        val message: BigText,
 
         val button: ButtonInfo
     )

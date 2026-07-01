@@ -7,19 +7,21 @@ import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.emptyText
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.getOrEmpty
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.domain.usecase.phonetics.SyncPhoneticAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.exts.toRich
 import com.simple.state.ResultState
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 
@@ -36,7 +38,7 @@ class PhoneticHomeViewModel(
 //        }
     }
 
-    val pairViewList: LiveData<List<Pair<String, RichText>>> = combineSourcesWithDiff(theme, translate, phoneticState) {
+    val pairViewList: LiveData<List<Pair<String, BigText>>> = combineSourcesWithDiff(theme, translate, phoneticState) {
 
         val theme = theme.value ?: return@combineSourcesWithDiff
         val translate = translate.value ?: return@combineSourcesWithDiff
@@ -65,14 +67,14 @@ class PhoneticHomeViewModel(
                 translate["message_start_sync_phonetics"].orEmpty()
                     .replace("\$ipa_name", ipaName)
                     .replace("\$percent", "$percentWrap")
-                    .with(ForegroundColor(theme.colorOnSurface))
-                    .with(ipaName, Bold)
-                    .with("${percentWrap}%", Bold, ForegroundColor(theme.colorPrimary))
+                    .with(BigForegroundColor(theme.colorOnSurface))
+                    .withFirst(ipaName, BigBold)
+                    .withFirst("${percentWrap}%", BigBold, BigForegroundColor(theme.colorPrimary)).build()
             } else {
                 translate["message_completed_sync_phonetics"].orEmpty()
                     .replace("\$ipa_name", ipaName)
-                    .with(ForegroundColor(theme.colorOnSurface))
-                    .with(ipaName, Bold)
+                    .with(BigForegroundColor(theme.colorOnSurface))
+                    .withFirst(ipaName, BigBold).build()
             }
 
             key to text
@@ -90,7 +92,7 @@ class PhoneticHomeViewModel(
 
             NoneTextViewItem(
                 id = "phonetic_" + it.first,
-                text = emptyText(),
+                text = it.second.toRich(),
                 textStyle = TextStyle(
                     textSize = 14f
                 ),

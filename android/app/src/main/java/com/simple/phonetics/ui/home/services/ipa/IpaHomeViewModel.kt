@@ -12,10 +12,7 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValueIfActive
@@ -31,6 +28,10 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.common.adapters.IpaViewItem
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.state.ResultState
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
 import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
@@ -77,7 +78,7 @@ class IpaHomeViewModel(
         if (ipaList.isNotEmpty()) TextSimpleViewItem(
             id = "TITLE_IPA",
             text = translate["title_ipa"].orEmpty()
-                .with(Bold, ForegroundColor(theme.colorOnSurface)),
+                .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
             margin = Margin(
                 marginHorizontal = DP.DP_4
@@ -98,9 +99,9 @@ class IpaHomeViewModel(
                 data = it,
 
                 ipa = it.ipa
-                    .with(ForegroundColor(theme.colorOnSurface)),
+                    .with(BigForegroundColor(theme.colorOnSurface)).build(),
                 text = it.examples.firstOrNull().orEmpty()
-                    .with(ForegroundColor(theme.colorOnSurface)),
+                    .with(BigForegroundColor(theme.colorOnSurface)).build(),
 
                 size = Size(
                     width = (size.width - 6 * DP.DP_4 - 2 * DP.DP_12) / 3,
@@ -124,7 +125,7 @@ class IpaHomeViewModel(
 
 
         val actionText = translate["action_view_all_ipa"].orEmpty()
-            .with(Bold, ForegroundColor(theme.colorPrimary))
+            .with(BigBold, BigForegroundColor(theme.colorPrimary)).build()
 
         val ipaHeight = viewItemList.filterIsInstance<IpaViewItem>().firstOrNull()?.size?.height ?: DP.DP_72
 

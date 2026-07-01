@@ -10,9 +10,9 @@ import com.simple.ui.precompute.image.addTransform
 import com.simple.ui.precompute.image.build
 import com.simple.ui.precompute.image.toBuilder
 import com.simple.ui.precompute.text.build
-import com.simple.ui.precompute.text.span.Bold
-import com.simple.ui.precompute.text.span.ForegroundColor
-import com.simple.ui.precompute.text.span.TextSize
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.span.BigTextSize
 import com.simple.ui.precompute.text.with
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
@@ -42,14 +42,14 @@ internal fun com.simple.phonetic.entities.Phonetic.toViewItem(
         .build()
 
     val textDisplay = text
-        .with(Bold, TextSize(16.toPx()), ForegroundColor(themes.colorOnSurface))
+        .with(BigBold, BigTextSize(16.toPx()), BigForegroundColor(themes.colorOnSurface))
 
 
     val ipaList = ipaValueList
     val ipa = ipaList.joinToString(separator = " - ")
 
     val phoneticDisplay = ipa
-        .with(TextSize(16.toPx()), ForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
+        .with(BigTextSize(16.toPx()), BigForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
 
 
     return PhoneticsViewItem2(
@@ -63,6 +63,8 @@ internal fun com.simple.phonetic.entities.Phonetic.toViewItem(
         iconDisplay = iconDisplay,
 
         onlyReading = isSupportReading && !isSupportSpeaking,
+
+        strokeColor = themes.colorPrimary,
 
         maxWidth = sizes.width
     )

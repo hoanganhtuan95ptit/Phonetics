@@ -2,15 +2,14 @@ package com.simple.phonetics.ui.view
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.graphics.toColorInt
 import com.simple.phonetics.R
 import com.simple.phonetics.utils.exts.toPronunciationColor
 import kotlin.math.min
-import androidx.core.graphics.toColorInt
 
 /**
  * Circular gauge view showing a score (0–100) with label and grade.

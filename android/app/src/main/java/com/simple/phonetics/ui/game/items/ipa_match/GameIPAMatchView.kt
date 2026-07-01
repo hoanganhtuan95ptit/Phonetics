@@ -5,21 +5,18 @@ import android.view.Gravity
 import android.view.ViewGroup
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.with
 import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.common.adapters.ImageStateViewItem
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
+import com.simple.phonetics.ui.common.adapters.texts.NoneBigTextViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorErrorVariant
@@ -27,9 +24,14 @@ import com.simple.phonetics.utils.exts.colorLoading
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
+import com.simple.phonetics.utils.exts.toRich
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isStart
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnPrimary
@@ -60,10 +62,10 @@ fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Any>, transl
 
     val list = arrayListOf<ViewItem>()
 
-    NoneTextViewItem(
+    NoneBigTextViewItem(
         id = "2",
         text = title.orEmpty()
-            .with(Bold, ForegroundColor(textColor)),
+            .with(BigBold, BigForegroundColor(textColor)).build(),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
         ),
@@ -79,10 +81,10 @@ fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Any>, transl
         list.add(it)
     }
 
-    NoneTextViewItem(
+    NoneBigTextViewItem(
         id = "3",
         text = message.orEmpty()
-            .with(ForegroundColor(textColor)),
+            .with(BigForegroundColor(textColor)).build(),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
         ),
@@ -107,7 +109,7 @@ fun getIPAMatchStateInfo(size: Map<String, Int>, theme: Map<String, Any>, transl
 
     val positive = ButtonInfo(
         text = buttonText.orEmpty()
-            .with(ForegroundColor(theme.colorOnPrimary)),
+            .with(BigForegroundColor(theme.colorOnPrimary)).build().toRich(),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
@@ -173,7 +175,7 @@ fun getIPAMatchQuestionViewItem(
     TitleViewItem(
         id = "TITLE",
         text = translate["game_ipa_match_screen_title"].orEmpty()
-            .with(ForegroundColor(theme.colorOnSurface)),
+            .with(BigForegroundColor(theme.colorOnSurface)).build(),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
@@ -218,7 +220,7 @@ fun getIPAMatchOptionViewItem(
     TitleViewItem(
         id = "TITLE_OPTION_CHO0SE",
         text = translate["game_ipa_match_screen_title_choose"].orEmpty()
-            .with(ForegroundColor(theme.colorOnSurface)),
+            .with(BigForegroundColor(theme.colorOnSurface)).build(),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
@@ -239,7 +241,7 @@ fun getIPAMatchLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>):
         backgroundColor = theme.colorLoading
     )
 
-    NoneTextViewItem(
+    NoneBigTextViewItem(
         id = "LOADING_1",
         textSize = Size(
             width = DP.DP_350,
@@ -255,7 +257,7 @@ fun getIPAMatchLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>):
         add(it)
     }
 
-    for (i in 0..7) NoneTextViewItem(
+    for (i in 0..7) NoneBigTextViewItem(
         id = "LOADING_ITEM_$i",
         textSize = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
@@ -315,12 +317,12 @@ private fun OptionTextViewItem(
         ""
     }
 
-    return ClickTextViewItem(
+    return ClickBigTextViewItem(
         id = "${phonetic?.text}_${data.option?.type?.name}_${data.newType?.name}",
         data = data,
 
         text = text.orEmpty()
-            .with(Bold, ForegroundColor(theme.colorOnSurface)),
+            .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
         textStyle = TextStyle(
             textSize = 16f,
             textGravity = Gravity.CENTER

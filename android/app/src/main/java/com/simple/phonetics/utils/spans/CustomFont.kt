@@ -6,21 +6,21 @@ import android.text.style.CharacterStyle
 import android.text.style.MetricAffectingSpan
 import androidx.annotation.Keep
 import com.google.auto.service.AutoService
-import com.simple.coreapp.utils.ext.RichSpan
-import com.simple.coreapp.utils.ext.RichSpanConvert
+import com.simple.ui.precompute.text.BigSpan
+import com.simple.ui.precompute.text.BigSpanConvert
 
 /**
  * Span áp dụng custom Typeface (font) cho đoạn text.
  * Dùng để kiểm soát font của title toolbar, header... từ ViewModel.
  * Ví dụ: CustomFont(Typeface.create("sans-serif-medium", Typeface.NORMAL))
  */
-data class CustomFont(val typeface: Typeface) : RichSpan()
+data class BigCustomFont(val typeface: Typeface) : BigSpan()
 
 @Keep
-@AutoService(RichSpanConvert::class)
-class CustomFontConvert : RichSpanConvert {
-    override fun getAndroidSpan(richSpan: RichSpan): CharacterStyle? {
-        return (richSpan as? CustomFont)?.let { CustomFontAndroidSpan(it.typeface) }
+@AutoService(BigSpanConvert::class)
+class BigCustomFontConvert : BigSpanConvert {
+    override fun getAndroidSpan(bigSpan: BigSpan): CharacterStyle? {
+        return (bigSpan as? BigCustomFont)?.let { CustomFontAndroidSpan(it.typeface) }
     }
 }
 

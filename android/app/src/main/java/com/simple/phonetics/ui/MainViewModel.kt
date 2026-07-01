@@ -9,7 +9,6 @@ import com.simple.analytics.logAnalytics
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.phonetics.domain.usecase.SyncDataUseCase
 import com.simple.phonetics.utils.exts.awaitResume
-import com.simple.phonetics.utils.exts.mutableSharedFlow
 import com.simple.state.ResultState
 import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.flow.launchIn

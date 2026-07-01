@@ -2,7 +2,6 @@ package com.simple.phonetics.ui.home
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -17,13 +16,9 @@ import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.getStatusBarHeight
 import com.simple.coreapp.utils.ext.getViewModel
-import com.simple.coreapp.utils.ext.resize
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
-import com.simple.coreapp.utils.extentions.getHeightStatusBarOrNull
 import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
@@ -47,15 +42,12 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.colorBackgroundVariant
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
-import com.simple.phonetics.utils.exts.listenerWindowInsetsChangeAsync
 import com.simple.phonetics.utils.exts.replace
 import com.simple.phonetics.utils.exts.submitListAndAwait
-import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
-import kotlinx.coroutines.flow.map
-import kotlin.math.abs
 import kotlin.math.absoluteValue
+import com.simple.ui.precompute.text.setText as setBigText
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScreen {
 
@@ -230,7 +222,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.tvTitle.setText(it)
+            binding.tvTitle.setBigText(it)
         }
 
         enterInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "ENTER") {
@@ -245,7 +237,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.tvClear.setText(it.text)
+            binding.tvClear.setBigText(it.text)
             binding.frameClear.setVisible(it.isShow)
             binding.tvClear.setBackground(it.background)
         }
@@ -262,7 +254,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.tvReverse.setText(it.text)
+            binding.tvReverse.setBigText(it.text)
             binding.frameReverse.setVisible(it.isShow)
             binding.tvReverse.setBackground(it.background)
         }

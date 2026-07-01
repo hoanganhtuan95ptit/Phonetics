@@ -10,20 +10,13 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.JobQueue
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.toRich
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSources
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
@@ -45,6 +38,7 @@ import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.common.adapters.texts.NoneBigTextViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
@@ -52,6 +46,7 @@ import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.listenerSourcesWithDiff
 import com.simple.phonetics.utils.exts.mutableSharedFlow
+import com.simple.phonetics.utils.exts.toRich
 import com.simple.phonetics.utils.exts.toViewItem
 import com.simple.phonetics.utils.exts.value
 import com.simple.state.ResultState
@@ -63,6 +58,14 @@ import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.emptyText
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.toBig
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
 import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.height
 import com.unknown.theme.utils.exts.colorOnSurface
@@ -85,14 +88,14 @@ class HomeViewModel(
     @VisibleForTesting
     val jobQueue = JobQueue()
 
-    val title: LiveData<RichText> = combineSourcesWithDiff(theme, translate) {
+    val title: LiveData<BigText> = combineSourcesWithDiff(theme, translate) {
 
         val theme = theme.get()
         val translate = translate.get()
 
         val title = translate.getOrKey("Ephonetics")
-            .with(ForegroundColor(theme.colorOnSurface))
-            .with("Ep", Bold, ForegroundColor(theme.colorPrimary))
+            .with(BigForegroundColor(theme.colorOnSurface))
+            .withFirst("Ep", BigBold, BigForegroundColor(theme.colorPrimary)).build()
 
         postValue(title)
     }
@@ -162,7 +165,7 @@ class HomeViewModel(
 
         val info = ReverseInfo(
             text = translate["action_reverse"].orEmpty()
-                .with(ForegroundColor(textColor)),
+                .with(BigForegroundColor(textColor)).build(),
             isShow = isSupportReverse,
             background = Background(
                 strokeWidth = DP.DP_1 + DP.DP_05.toInt(),
@@ -203,7 +206,7 @@ class HomeViewModel(
 
         val info = ClearInfo(
             text = translate["action_clear"].orEmpty()
-                .with(ForegroundColor(theme.colorPrimary)),
+                .with(BigForegroundColor(theme.colorPrimary)).build(),
             isShow = text.second.isNotBlank(),
             background = Background(
                 strokeWidth = DP.DP_1 + DP.DP_05.toInt(),
@@ -234,8 +237,8 @@ class HomeViewModel(
 
         val info = EnterInfo(
             hint = hint
-                .with(ForegroundColor(theme.colorOnSurfaceVariant))
-                .with(languageName, Bold, ForegroundColor(theme.colorOnSurface)),
+                .with(BigForegroundColor(theme.colorOnSurfaceVariant))
+                .withFirst(languageName, BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
             textColor = theme.colorOnSurface,
         )
 
@@ -298,7 +301,7 @@ class HomeViewModel(
         if (viewItemList.isNotEmpty()) TitleViewItem(
             id = "TITLE_RESULT",
             text = translate["title_result"].orEmpty()
-                .with(Bold, ForegroundColor(theme.colorOnSurface)),
+                .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
         ).let {
 
             viewItemList.add(0, it)
@@ -328,7 +331,6 @@ class HomeViewModel(
     val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, translate, typeViewItemList, phoneticsViewItemList) {
 
         val size = size.get()
-        val style = style.get()
         val translate = translate.get()
 
         val typeViewItemList = typeViewItemList.get().toMutableMap()
@@ -359,7 +361,7 @@ class HomeViewModel(
 
         if (list.isEmpty() || typeViewItemList[TYPE_HISTORY].isNullOrEmpty()) com.simple.coreapp.ui.adapters.EmptyViewItem(
             id = "EMPTY",
-            message = translate["message_result_empty"].orEmpty().toRich(),
+            message = translate["message_result_empty"].orEmpty().toBig().toRich(),
             imageRes = R.raw.anim_empty
         ).let {
 
@@ -473,13 +475,13 @@ class HomeViewModel(
 
     private fun versionViewItem(theme: Map<String, Any>, translate: Map<String, String>) = arrayListOf<ViewItem>().apply {
 
-        if (translate.containsKey("version_name")) NoneTextViewItem(
+        if (translate.containsKey("version_name")) NoneBigTextViewItem(
             id = "VERSION",
             text = translate["version_name"]
                 .orEmpty()
                 .replace("\$version", BuildConfig.VERSION_NAME)
-                .with(ForegroundColor(theme.colorOnSurface))
-                .with(BuildConfig.VERSION_NAME, ForegroundColor(theme.colorPrimary), Bold),
+                .with(BigForegroundColor(theme.colorOnSurface))
+                .withFirst(BuildConfig.VERSION_NAME, BigForegroundColor(theme.colorPrimary), BigBold).build(),
             textSize = Size(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT),
             textStyle = TextStyle(
                 textSize = 14f,
@@ -505,19 +507,19 @@ class HomeViewModel(
     )
 
     data class EnterInfo(
-        val hint: RichText = emptyText(),
+        val hint: BigText = emptyText(),
         val textColor: Int,
     )
 
     data class ClearInfo(
-        val text: RichText = emptyText(),
+        val text: BigText = emptyText(),
         val isShow: Boolean = false,
 
         val background: Background
     )
 
     data class ReverseInfo(
-        val text: RichText = emptyText(),
+        val text: BigText = emptyText(),
         val isShow: Boolean = false,
 
         val background: Background

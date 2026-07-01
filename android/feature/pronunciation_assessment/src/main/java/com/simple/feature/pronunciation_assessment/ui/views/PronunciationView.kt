@@ -15,7 +15,6 @@ import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.ext.setText
 import com.simple.feature.pronunciation_assessment.R
 import com.simple.feature.pronunciation_assessment.ui.PronunciationViewModel
 import com.simple.phonetics.entities.Sentence

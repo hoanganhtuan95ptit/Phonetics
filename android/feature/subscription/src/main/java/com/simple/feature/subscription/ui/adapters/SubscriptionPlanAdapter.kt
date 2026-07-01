@@ -8,14 +8,12 @@ import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
-import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.ext.setText
 import com.simple.feature.subscription.databinding.ItemSubscriptionPlanBinding
 import com.simple.feature.subscription.entities.SubscriptionPlan
 import com.simple.phonetics.Payload
-import com.simple.phonetics.databinding.ItemLanguageBinding
-import com.simple.phonetics.ui.language.adapters.LanguageViewItem
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.setText
 
 @ItemAdapter
 class SubscriptionPlanAdapter(val onItemClick: (SubscriptionPlanViewItem) -> Unit = {}) : ViewItemAdapter<SubscriptionPlanViewItem, ItemSubscriptionPlanBinding>() {
@@ -60,7 +58,7 @@ class SubscriptionPlanAdapter(val onItemClick: (SubscriptionPlanViewItem) -> Uni
         binding.tvTitle.setText(item.title)
         binding.tvDescription.setText(item.description)
 
-        binding.tvPrice.setText(item.data.price)
+        binding.tvPrice.setText(item.price)
     }
 
     private fun refreshTheme(binding: ItemSubscriptionPlanBinding, item: SubscriptionPlanViewItem) {
@@ -73,10 +71,10 @@ data class SubscriptionPlanViewItem(
     val id: String,
     val data: SubscriptionPlan,
 
-    val title: RichText,
-    val description: RichText,
+    val title: BigText,
+    val description: BigText,
 
-    val price: RichText,
+    val price: BigText,
 
     val background: Background,
 ) : ViewItem {

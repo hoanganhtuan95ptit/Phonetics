@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.setText
 import com.simple.phonetics.databinding.ItemLanguageStateBinding
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.setText
 
 @ItemAdapter
 class LanguageStateAdapter : ViewItemAdapter<LanguageStateViewItem, ItemLanguageStateBinding>() {
@@ -40,7 +40,7 @@ class LanguageStateAdapter : ViewItemAdapter<LanguageStateViewItem, ItemLanguage
 data class LanguageStateViewItem(
     val data: String,
 
-    val name: RichText,
+    val name: BigText,
 ) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(

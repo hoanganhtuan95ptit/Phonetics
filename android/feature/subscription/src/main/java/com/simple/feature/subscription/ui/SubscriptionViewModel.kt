@@ -11,12 +11,8 @@ import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.toEvent
 import com.simple.feature.subscription.R
 import com.simple.feature.subscription.data.repositories.SubscriptionRepository
@@ -34,12 +30,19 @@ import com.simple.phonetics.utils.exts.get
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.listenerSourcesWithDiff
 import com.simple.phonetics.utils.exts.mutableSharedFlowWithDiff
+import com.simple.phonetics.utils.exts.toRich
 import com.simple.phonetics.utils.exts.value
 import com.simple.state.ResultState
 import com.simple.state.doSuccess
 import com.simple.state.isStart
 import com.simple.state.isSuccess
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
 import com.unknown.coroutines.handler
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorOnBackground
@@ -48,7 +51,6 @@ import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -63,9 +65,9 @@ class SubscriptionViewModel : BaseViewModel() {
         val info = HeaderInfo(
             back = ImageRes(R.drawable.ic_arrow_left_on_surface, themes.colorOnBackground),
             title = strings.getOrKey("subscription_screen_title")
-                .with(ForegroundColor(themes.colorOnBackground)),
+                .with(BigForegroundColor(themes.colorOnBackground)).build(),
             message = strings.getOrKey("subscription_screen_message")
-                .with(ForegroundColor(themes.colorOnBackgroundVariant)),
+                .with(BigForegroundColor(themes.colorOnBackgroundVariant)).build(),
         )
 
         emit(info)
@@ -127,11 +129,11 @@ class SubscriptionViewModel : BaseViewModel() {
                 id = it.id,
                 data = it,
                 title = strings.getOrKey("subscription_screen_${it.id}_title")
-                    .with(Bold, ForegroundColor(themes.colorOnBackground)),
+                    .with(BigBold, BigForegroundColor(themes.colorOnBackground)).build(),
                 description = strings.getOrKey("subscription_screen_${it.id}_description")
-                    .with(ForegroundColor(themes.colorOnBackgroundVariant)),
+                    .with(BigForegroundColor(themes.colorOnBackgroundVariant)).build(),
                 price = it.price
-                    .with(ForegroundColor(themes.colorOnBackgroundVariant)),
+                    .with(BigForegroundColor(themes.colorOnBackgroundVariant)).build(),
 
                 background = Background(
                     cornerRadius = DP.DP_16,
@@ -175,7 +177,7 @@ class SubscriptionViewModel : BaseViewModel() {
 
         val info = ConfirmInfo(
             text = strings.getOrKey("subscription_screen_action")
-                .with(ForegroundColor(if (isSelected) themes.colorOnPrimary else themes.colorOnSurface)),
+                .with(BigForegroundColor(if (isSelected) themes.colorOnPrimary else themes.colorOnSurface)).build(),
             isClickable = isClickable,
             isShowLoading = confirmState.isStart() || subscriptionPlanListState.isStart(),
             background = Background(
@@ -245,7 +247,7 @@ class SubscriptionViewModel : BaseViewModel() {
         NoneTextViewItem(
             id = "2",
             text = strings.getOrKey(title)
-                .with(Bold, ForegroundColor(themes.colorOnSurface)),
+                .with(BigBold, BigForegroundColor(themes.colorOnSurface)).build().toRich(),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -278,8 +280,8 @@ class SubscriptionViewModel : BaseViewModel() {
             id = "3",
             text = strings.getOrKey(message)
                 .replace("\$subscriptionId", subscriptionName)
-                .with(ForegroundColor(themes.colorOnSurface))
-                .with(subscriptionName, Bold, ForegroundColor(themes.colorPrimary)),
+                .with(BigForegroundColor(themes.colorOnSurface))
+                .withFirst(subscriptionName, BigBold, BigForegroundColor(themes.colorPrimary)).build().toRich(),
             size = Size(
                 width = ViewGroup.LayoutParams.MATCH_PARENT,
                 height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -316,7 +318,7 @@ class SubscriptionViewModel : BaseViewModel() {
 
             positive = ButtonInfo(
                 text = strings.getOrKey(action)
-                    .with(ForegroundColor(themes.colorOnPrimary)),
+                    .with(BigForegroundColor(themes.colorOnPrimary)).build().toRich(),
                 background = Background(
                     backgroundColor = themes.colorPrimary,
                     cornerRadius = DP.DP_16
@@ -336,12 +338,12 @@ class SubscriptionViewModel : BaseViewModel() {
 
     data class HeaderInfo(
         val back: RichImage,
-        val title: RichText,
-        val message: RichText,
+        val title: BigText,
+        val message: BigText,
     )
 
     data class ConfirmInfo(
-        val text: RichText,
+        val text: BigText,
 
         val isClickable: Boolean,
         val isShowLoading: Boolean,

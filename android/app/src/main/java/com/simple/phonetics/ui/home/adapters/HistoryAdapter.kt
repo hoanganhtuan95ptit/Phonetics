@@ -7,13 +7,13 @@ import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.emptyText
-import com.simple.coreapp.utils.ext.setText
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemHistoryBinding
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.emptyText
+import com.simple.ui.precompute.text.setText
 
 @ItemAdapter
 class HistoryAdapter(private val onItemClickV2: ((View, HistoryViewItem) -> Unit)? = null) : ViewItemAdapter<HistoryViewItem, ItemHistoryBinding>() {
@@ -63,7 +63,7 @@ class HistoryAdapter(private val onItemClickV2: ((View, HistoryViewItem) -> Unit
 data class HistoryViewItem(
     val id: String,
 
-    val text: RichText = emptyText(),
+    val text: BigText = emptyText(),
 ) : ViewItem {
 
     override fun areItemsTheSame(): List<Any> = listOf(

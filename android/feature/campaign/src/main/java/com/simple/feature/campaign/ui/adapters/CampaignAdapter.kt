@@ -12,9 +12,6 @@ import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setSize
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.emptyText
-import com.simple.coreapp.utils.ext.setText
 import com.simple.deeplink.sendDeeplink
 import com.simple.feature.campaign.entities.Campaign
 import com.simple.image.RichImage
@@ -24,6 +21,9 @@ import com.simple.phonetics.databinding.ItemCampaignBinding
 import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.measureTextViewHeight
 import com.simple.phonetics.utils.TextViewMetrics
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.emptyText
+import com.simple.ui.precompute.text.setText
 import com.unknown.size.uitls.exts.width
 import kotlin.math.max
 
@@ -75,8 +75,8 @@ data class CampaignViewItem(
 
     val image: RichImage,
 
-    val text: RichText = emptyText(),
-    val message: RichText = emptyText(),
+    val text: BigText = emptyText(),
+    val message: BigText = emptyText(),
 
     val background: Background,
 

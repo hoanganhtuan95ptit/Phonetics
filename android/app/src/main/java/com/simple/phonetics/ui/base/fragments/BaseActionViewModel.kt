@@ -3,9 +3,7 @@ package com.simple.phonetics.ui.base.fragments
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.coreapp.utils.extentions.postValue
-
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 open class BaseActionViewModel : BaseViewModel() {
 

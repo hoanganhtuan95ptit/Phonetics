@@ -8,8 +8,6 @@ import androidx.lifecycle.lifecycleScope
 import com.simple.phonetics.BuildConfig
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.base.fragments.LifecycleState.Companion.doCreated
-import com.simple.phonetics.ui.base.fragments.LifecycleState.Companion.doDestroyed
-import com.simple.phonetics.ui.base.fragments.LifecycleState.Companion.doPause
 import com.simple.phonetics.ui.base.fragments.LifecycleState.Companion.doResumed
 import com.unknown.coroutines.handler
 import com.unknown.coroutines.launchCollect

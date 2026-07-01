@@ -7,8 +7,6 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValueIfActive
@@ -18,6 +16,9 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.common.adapters.IpaViewItem
 import com.simple.phonetics.utils.exts.BackgroundColor
 import com.simple.state.ResultState
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 
@@ -63,9 +64,9 @@ class IpaListViewModel(
                 data = it,
 
                 ipa = it.ipa
-                    .with(ForegroundColor(theme.colorOnSurface)),
+                    .with(BigForegroundColor(theme.colorOnSurface)).build(),
                 text = it.examples.firstOrNull().orEmpty()
-                    .with(ForegroundColor(theme.colorOnSurface)),
+                    .with(BigForegroundColor(theme.colorOnSurface)).build(),
 
                 size = Size(
                     width = (size.width - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,

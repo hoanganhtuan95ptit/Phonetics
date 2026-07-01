@@ -3,19 +3,16 @@ package com.simple.phonetics.ui.game.items.ipa_puzzle
 import android.view.Gravity
 import android.view.ViewGroup
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.with
 import com.simple.phonetics.Id
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
+import com.simple.phonetics.ui.common.adapters.texts.NoneBigTextViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorErrorVariant
@@ -23,6 +20,12 @@ import com.simple.phonetics.utils.exts.colorLoading
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
+import com.simple.phonetics.utils.exts.toRich
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnPrimary
@@ -50,16 +53,16 @@ fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Any>, trans
     val message = translate["game_ipa_puzzle_screen_message_answer"].orEmpty()
         .trim()
         .replace("\$param1", param1)
-        .with(ForegroundColor(textColor))
-        .with(param1, Bold, ForegroundColor(theme.colorPrimary))
+        .with(BigForegroundColor(textColor))
+        .withFirst(param1, BigBold, BigForegroundColor(theme.colorPrimary)).build()
 
 
     val list = arrayListOf<ViewItem>()
 
-    NoneTextViewItem(
+    NoneBigTextViewItem(
         id = "2",
         text = title.orEmpty()
-            .with(Bold, ForegroundColor(textColor)),
+            .with(BigBold, BigForegroundColor(textColor)).build(),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
         ),
@@ -75,7 +78,7 @@ fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Any>, trans
         list.add(it)
     }
 
-    NoneTextViewItem(
+    NoneBigTextViewItem(
         id = "3",
         text = message,
         size = Size(
@@ -102,7 +105,7 @@ fun getIPAPuzzleStateInfo(size: Map<String, Int>, theme: Map<String, Any>, trans
 
     val positive = ButtonInfo(
         text = buttonText.orEmpty()
-            .with(ForegroundColor(theme.colorOnPrimary)),
+            .with(BigForegroundColor(theme.colorOnPrimary)).build().toRich(),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
@@ -137,10 +140,10 @@ fun getIPAPuzzleTitleViewItem(size: Map<String, Int>, theme: Map<String, Any>, t
         text = translate["game_ipa_puzzle_screen_title"].orEmpty()
             .replace("\$param1", quiz.question.text)
             .replace("\$param2", quiz.question.ipaIncomplete)
-            .with(ForegroundColor(theme.colorOnSurface))
-            .with(quiz.question.text, Bold, ForegroundColor(theme.colorOnSurface))
-            .with(quiz.question.ipaIncomplete, Bold, ForegroundColor(theme.colorOnSurface))
-            .with("____", Bold, ForegroundColor(theme.colorError)),
+            .with(BigForegroundColor(theme.colorOnSurface))
+            .withFirst(quiz.question.text, BigBold, BigForegroundColor(theme.colorOnSurface))
+            .withFirst(quiz.question.ipaIncomplete, BigBold, BigForegroundColor(theme.colorOnSurface))
+            .withFirst("____", BigBold, BigForegroundColor(theme.colorError)).build(),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
@@ -149,12 +152,12 @@ fun getIPAPuzzleTitleViewItem(size: Map<String, Int>, theme: Map<String, Any>, t
 
 fun getIPAPuzzleOptionViewItem(size: Map<String, Int>, theme: Map<String, Any>, translate: Map<String, String>, quiz: GameIPAPuzzleQuiz, choose: String?) = quiz.answers.mapIndexed { index, answer ->
 
-    ClickTextViewItem(
+    ClickBigTextViewItem(
         id = "${Id.CHOOSE}_$index",
         data = answer,
 
         text = answer
-            .with(Bold, ForegroundColor(theme.colorOnSurface)),
+            .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
         textStyle = TextStyle(
             textSize = 16f,
             textGravity = Gravity.CENTER
@@ -191,7 +194,7 @@ fun getIPAPuzzleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>)
         backgroundColor = theme.colorLoading
     )
 
-    NoneTextViewItem(
+    NoneBigTextViewItem(
         id = "LOADING_1",
         textSize = Size(
             width = DP.DP_350,
@@ -207,7 +210,7 @@ fun getIPAPuzzleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>)
         add(it)
     }
 
-    for (i in 0..3) NoneTextViewItem(
+    for (i in 0..3) NoneBigTextViewItem(
         id = "LOADING_ITEM_$i",
         textSize = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,

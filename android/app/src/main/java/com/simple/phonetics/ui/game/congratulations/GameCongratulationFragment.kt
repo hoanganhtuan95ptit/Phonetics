@@ -10,7 +10,6 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
@@ -22,6 +21,8 @@ import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
 import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.colorDivider
 import com.unknown.theme.utils.exts.colorBackground
+import com.simple.coreapp.utils.ext.setText as setRichText
+import com.simple.ui.precompute.text.setText as setBigText
 
 class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, GameCongratulationViewModel>() {
 
@@ -57,10 +58,10 @@ class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, Ga
             binding.lottieAnimationView.setAnimation(it.anim)
             binding.lottieAnimationView.playAnimation()
 
-            binding.tvTitle.setText(it.title)
-            binding.tvMessage.setText(it.message)
+            binding.tvTitle.setBigText(it.title)
+            binding.tvMessage.setBigText(it.message)
 
-            binding.tvAction.setText(it.button.text)
+            binding.tvAction.setRichText(it.button.text)
             binding.tvAction.setBackground(it.button.background)
         }
 

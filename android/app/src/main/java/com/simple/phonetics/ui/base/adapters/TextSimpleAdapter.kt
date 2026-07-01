@@ -18,15 +18,15 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.ui.view.setSize
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.emptyText
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.ext.setText
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.R
 import com.simple.phonetics.databinding.ItemTextSimpleBinding
 import com.simple.phonetics.utils.TextViewMetrics
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.emptyText
+import com.simple.ui.precompute.text.setText
 import com.unknown.size.uitls.exts.width
 
 @ItemAdapter
@@ -141,7 +141,7 @@ data class TextSimpleViewItem(
     val id: String,
     val data: Any? = null,
 
-    var text: RichText = emptyText(),
+    var text: BigText = emptyText(),
     var textStyle: Int = R.style.TextBody1,
 
     val textSize: Size = DEFAULT_SIZE,

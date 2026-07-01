@@ -4,16 +4,16 @@ import android.text.style.CharacterStyle
 import android.text.style.RelativeSizeSpan
 import androidx.annotation.Keep
 import com.google.auto.service.AutoService
-import com.simple.coreapp.utils.ext.RichSpan
-import com.simple.coreapp.utils.ext.RichSpanConvert
+import com.simple.ui.precompute.text.BigSpan
+import com.simple.ui.precompute.text.BigSpanConvert
 
-data class RelativeSize(val proportion: Float) : RichSpan()
+data class BigRelativeSize(val proportion: Float) : BigSpan()
 
 @Keep
-@AutoService(RichSpanConvert::class)
-class RelativeSizeConvert : RichSpanConvert {
+@AutoService(BigSpanConvert::class)
+class BigRelativeSizeConvert : BigSpanConvert {
 
-    override fun getAndroidSpan(richSpan: RichSpan): CharacterStyle? {
-        return if (richSpan is RelativeSize) RelativeSizeSpan(richSpan.proportion) else null
+    override fun getAndroidSpan(bigSpan: BigSpan): CharacterStyle? {
+        return if (bigSpan is BigRelativeSize) RelativeSizeSpan(bigSpan.proportion) else null
     }
 }

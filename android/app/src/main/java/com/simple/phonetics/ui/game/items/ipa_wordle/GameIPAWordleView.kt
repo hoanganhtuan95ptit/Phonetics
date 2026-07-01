@@ -3,22 +3,19 @@ package com.simple.phonetics.ui.game.items.ipa_wordle
 import android.view.Gravity
 import android.view.ViewGroup
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.ButtonInfo
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.with
 import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.common.adapters.ImageStateViewItem
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
+import com.simple.phonetics.ui.common.adapters.texts.NoneBigTextViewItem
 import com.simple.phonetics.ui.game.items.GameItemViewModel
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorErrorVariant
@@ -26,9 +23,15 @@ import com.simple.phonetics.utils.exts.colorLoading
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
+import com.simple.phonetics.utils.exts.toRich
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isStart
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnPrimary
@@ -99,18 +102,18 @@ fun getIPAWordleStateInfo(
         .replace("\$param2", param2)
         .replace("\$param3", param3)
         .replace("  ", " ")
-        .with(ForegroundColor(textColor))
-        .with(param1, Bold, ForegroundColor(theme.colorPrimary))
-        .with(param2, Bold, ForegroundColor(theme.colorPrimary))
-        .with(param3, Bold, ForegroundColor(theme.colorPrimary))
+        .with(BigForegroundColor(textColor))
+        .withFirst(param1, BigBold, BigForegroundColor(theme.colorPrimary))
+        .withFirst(param2, BigBold, BigForegroundColor(theme.colorPrimary))
+        .withFirst(param3, BigBold, BigForegroundColor(theme.colorPrimary)).build()
 
 
     val list = arrayListOf<ViewItem>()
 
-    NoneTextViewItem(
+    NoneBigTextViewItem(
         id = "2",
         text = title.orEmpty()
-            .with(Bold, ForegroundColor(textColor)),
+            .with(BigBold, BigForegroundColor(textColor)).build(),
         size = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
         ),
@@ -126,7 +129,7 @@ fun getIPAWordleStateInfo(
         list.add(it)
     }
 
-    NoneTextViewItem(
+    NoneBigTextViewItem(
         id = "3",
         text = message,
         size = Size(
@@ -153,7 +156,7 @@ fun getIPAWordleStateInfo(
 
     val positive = ButtonInfo(
         text = buttonText.orEmpty()
-            .with(ForegroundColor(theme.colorOnPrimary)),
+            .with(BigForegroundColor(theme.colorOnPrimary)).build().toRich(),
         background = Background(
             strokeWidth = 0,
             cornerRadius = DP.DP_16,
@@ -191,9 +194,9 @@ fun getIPAWordleTitleViewItem(theme: Map<String, Any>, translate: Map<String, St
         text = translate["game_ipa_wordle_screen_title"].orEmpty()
             .replace("\$param1", param1)
             .replace("\$param2", param2)
-            .with(ForegroundColor(theme.colorOnSurface))
-            .with(param1, Bold, ForegroundColor(theme.colorOnSurface))
-            .with(param2, Bold, ForegroundColor(theme.colorPrimary)),
+            .with(BigForegroundColor(theme.colorOnSurface))
+            .withFirst(param1, BigBold, BigForegroundColor(theme.colorOnSurface))
+            .withFirst(param2, BigBold, BigForegroundColor(theme.colorPrimary)).build(),
         textMargin = Margin(
             marginHorizontal = DP.DP_8
         )
@@ -227,7 +230,7 @@ fun getIpaWordleQuestionViewItem(
         width = ViewGroup.LayoutParams.MATCH_PARENT,
         height = (size.width / 2.5f).toInt()
     )
-) else NoneTextViewItem(
+) else NoneBigTextViewItem(
     id = "TEXT",
     data = quiz.question,
     text = if (quiz.questionType == GameIPAWordleQuiz.Type.TEXT) {
@@ -235,7 +238,7 @@ fun getIpaWordleQuestionViewItem(
     } else {
         quiz.question.ipaValueList.firstOrNull().orEmpty()
     }
-        .with(Bold, ForegroundColor(theme.colorOnSurface)),
+        .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
     textStyle = TextStyle(
         textSize = 30f,
         textGravity = Gravity.CENTER
@@ -265,12 +268,12 @@ fun getIPAWordleOptionViewItem(
         phonetic.ipaValueList.firstOrNull().orEmpty()
 
 
-    ClickTextViewItem(
+    ClickBigTextViewItem(
         id = "${Id.CHOOSE}_$index",
         data = phonetic,
 
         text = text
-            .with(Bold, ForegroundColor(theme.colorOnSurface)),
+            .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
         textStyle = TextStyle(
             textSize = 16f,
             textGravity = Gravity.CENTER
@@ -307,7 +310,7 @@ fun getIPAWordleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>)
         backgroundColor = theme.colorLoading
     )
 
-    NoneTextViewItem(
+    NoneBigTextViewItem(
         id = "LOADING_1",
         textSize = Size(
             width = DP.DP_350,
@@ -323,7 +326,7 @@ fun getIPAWordleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>)
         add(it)
     }
 
-    NoneTextViewItem(
+    NoneBigTextViewItem(
         id = "LOADING_2",
         textSize = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,
@@ -344,7 +347,7 @@ fun getIPAWordleLoadingViewItem(size: Map<String, Int>, theme: Map<String, Any>)
         add(it)
     }
 
-    for (i in 0..3) NoneTextViewItem(
+    for (i in 0..3) NoneBigTextViewItem(
         id = "LOADING_ITEM_$i",
         textSize = Size(
             width = ViewGroup.LayoutParams.MATCH_PARENT,

@@ -9,11 +9,8 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.handler
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
@@ -30,6 +27,10 @@ import com.simple.state.doFailed
 import com.simple.state.doSuccess
 import com.simple.state.isStart
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurfaceVariant
@@ -161,7 +162,7 @@ class GameIPAWordleViewModel(
 
         val info = ActionInfo(
             text = translate["action_check"].orEmpty()
-                .with(Bold, ForegroundColor(textColor)),
+                .with(BigBold, BigForegroundColor(textColor)).build(),
             isClickable = isClickable,
 
             background = Background(

@@ -6,11 +6,11 @@ import androidx.lifecycle.MediatorLiveData
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
-import com.simple.coreapp.utils.ext.RichText
 import com.simple.coreapp.utils.extentions.Event
 import com.simple.coreapp.utils.extentions.postDifferentValue
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.ui.precompute.text.BigText
 import java.util.UUID
 
 abstract class GameItemViewModel : BaseViewModel() {
@@ -42,7 +42,7 @@ abstract class GameItemViewModel : BaseViewModel() {
     )
 
     data class ActionInfo(
-        val text: RichText,
+        val text: BigText,
         val isClickable: Boolean,
 
         val background: Background = DEFAULT_BACKGROUND

@@ -8,10 +8,7 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Margin
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValueIfActive
@@ -23,6 +20,10 @@ import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
 import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
@@ -67,7 +68,7 @@ class HistoryHomeViewModel(
         if (historyList.isNotEmpty()) TextSimpleViewItem(
             id = "TITLE_HISTORY",
             text = translate["title_history"].orEmpty()
-                .with(Bold, ForegroundColor(theme.colorOnSurface)),
+                .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
             margin = Margin(
                 marginHorizontal = DP.DP_4
@@ -83,7 +84,7 @@ class HistoryHomeViewModel(
 
             HistoryViewItem(
                 id = sentence.text,
-                text = sentence.text.with(ForegroundColor(theme.colorOnSurface)),
+                text = sentence.text.with(BigForegroundColor(theme.colorOnSurface)).build(),
             )
         }.let {
 

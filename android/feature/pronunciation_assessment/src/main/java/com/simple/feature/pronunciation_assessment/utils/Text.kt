@@ -1,32 +1,32 @@
 package com.simple.feature.pronunciation_assessment.utils
 
-import com.simple.coreapp.utils.ext.RichRange
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.toRich
+import com.simple.ui.precompute.text.BigRange
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.toBig
 
-operator fun String.plus(other: RichText): RichText {
+operator fun String.plus(other: BigText): BigText {
 
-    return this.toRich() + other
+    return this.toBig() + other
 }
 
-operator fun RichText.plus(text: String): RichText {
+operator fun BigText.plus(text: String): BigText {
 
-    return this + text.toRich()
+    return this + text.toBig()
 }
 
-operator fun RichText.plus(other: RichText): RichText {
+operator fun BigText.plus(other: BigText): BigText {
     val offset = this.text.length
 
     val shiftedSpans = other.spans.map { richStyle ->
         richStyle.copy(
-            range = RichRange(
+            range = BigRange(
                 start = richStyle.range.start + offset,
                 end = richStyle.range.end + offset
             )
         )
     }
 
-    return RichText(
+    return BigText(
         text = this.text + other.text,
         spans = ArrayList(this.spans + shiftedSpans)
     )

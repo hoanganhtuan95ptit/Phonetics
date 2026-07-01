@@ -22,7 +22,6 @@ import com.simple.coreapp.ui.view.setTextStyle
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.observeQueue
 import com.simple.coreapp.utils.extentions.submitListAwait
@@ -42,6 +41,7 @@ import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.unknown.theme.utils.exts.colorBackground
+import com.simple.ui.precompute.text.setText as setBigText
 
 class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, DialogListBinding, GameConfigViewModel>() {
 
@@ -141,7 +141,7 @@ class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, Di
             binding.root.setPadding(item.padding)
             binding.root.setBackground(item.background)
 
-            binding.tvTitle.setText(item.text)
+            binding.tvTitle.setBigText(item.text)
             binding.tvTitle.setTextStyle(item.textStyle)
             binding.tvTitle.setSize(item.textSize)
             binding.tvTitle.setMargin(item.textMargin)

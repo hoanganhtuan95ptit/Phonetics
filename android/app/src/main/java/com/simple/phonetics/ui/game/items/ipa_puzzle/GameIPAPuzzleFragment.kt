@@ -14,7 +14,6 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.coreapp.utils.ext.setText
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.ext.updateMargin
 import com.simple.coreapp.utils.extentions.isActive
@@ -36,6 +35,7 @@ import com.simple.state.doSuccess
 import com.simple.state.isSuccess
 import com.unknown.coroutines.launchCollect
 import java.util.UUID
+import com.simple.ui.precompute.text.setText as setBigText
 
 class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
 
@@ -134,7 +134,7 @@ class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
 
             val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
 
-            binding.btnConfirm.setText(it.text)
+            binding.btnConfirm.setBigText(it.text)
 
             binding.root.isClickable = it.isClickable
             binding.root.setBackground(it.background)

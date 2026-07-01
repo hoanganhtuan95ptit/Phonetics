@@ -11,18 +11,11 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
-import com.simple.coreapp.ui.adapters.texts.TextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RichText
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
@@ -44,6 +37,9 @@ import com.simple.phonetics.domain.usecase.translate.selected.GetTranslateSelect
 import com.simple.phonetics.domain.usecase.translate.selected.UpdateTranslateSelectedUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.common.adapters.texts.BigTextViewItem
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
+import com.simple.phonetics.ui.common.adapters.texts.NoneBigTextViewItem
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedViewItem
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrEmpty
@@ -54,6 +50,13 @@ import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isStart
 import com.simple.state.isSuccess
+import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.toBuilder
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
@@ -102,7 +105,7 @@ class ConfigViewModel(
             createOptionViewItem(
                 id = Id.IPA + "_" + it.code,
                 data = it.code to isSelect,
-                text = ipaName.with(ForegroundColor(if (isSelect) theme.colorPrimary else theme.colorOnSurface)),
+                text = ipaName.with(BigForegroundColor(if (isSelect) theme.colorPrimary else theme.colorOnSurface)).build(),
                 strokeColor = if (isSelect) theme.colorPrimary else theme.colorOnSurface,
                 backgroundColor = if (isSelect) theme.colorPrimaryVariant else Color.TRANSPARENT
             )
@@ -201,7 +204,7 @@ class ConfigViewModel(
         createOptionViewItem(
             id = "$TRANSLATE-$id",
             data = id to isSelect,
-            text = text.orEmpty().with(ForegroundColor(if (isSelect) theme.colorPrimary else theme.colorOnSurface)),
+            text = text.orEmpty().with(BigForegroundColor(if (isSelect) theme.colorPrimary else theme.colorOnSurface)).build(),
             strokeColor = if (isSelect) theme.colorPrimary else theme.colorOnSurface,
             backgroundColor = if (isSelect) theme.colorPrimaryVariant else Color.TRANSPARENT
         ).let {
@@ -315,7 +318,7 @@ class ConfigViewModel(
                 data = voice to isSelect,
                 text = translate["voice_index"].orEmpty()
                     .replace("\$index", "$index")
-                    .with(ForegroundColor(if (isSelect) theme.colorPrimary else theme.colorOnSurface)),
+                    .with(BigForegroundColor(if (isSelect) theme.colorPrimary else theme.colorOnSurface)).build(),
                 strokeColor = if (isSelect) theme.colorPrimary else theme.colorOnSurface,
                 backgroundColor = if (isSelect) theme.colorPrimaryVariant else Color.TRANSPARENT
             )
@@ -336,11 +339,11 @@ class ConfigViewModel(
         val strokeColor = theme.colorOnSurface
         val backgroundColor = Color.TRANSPARENT
 
-        phoneticViewItemList.getOrEmpty().filterIsInstance<TextViewItem>().find { it.data.asObjectOrNull<Pair<String, Boolean>>()?.second == true }?.let {
+        phoneticViewItemList.getOrEmpty().filterIsInstance<BigTextViewItem>().find { it.data.asObjectOrNull<Pair<String, Boolean>>()?.second == true }?.let {
 
             createOptionViewItem(
                 id = "LIST_PHONE_VIEW_ITEM",
-                text = it.text.text.with(ForegroundColor(textColor)),
+                text = it.text.text.with(BigForegroundColor(textColor)).build(),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -349,11 +352,11 @@ class ConfigViewModel(
             list.add(it)
         }
 
-        translateViewItemList.getOrEmpty().filterIsInstance<TextViewItem>().find { it.data.asObjectOrNull<Pair<String, Boolean>>()?.second == true }?.let {
+        translateViewItemList.getOrEmpty().filterIsInstance<BigTextViewItem>().find { it.data.asObjectOrNull<Pair<String, Boolean>>()?.second == true }?.let {
 
             createOptionViewItem(
                 id = "LIST_TRANSLATE_VIEW_ITEM",
-                text = it.text.text.with(ForegroundColor(textColor)),
+                text = it.text.text.with(BigForegroundColor(textColor)).build(),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -366,7 +369,7 @@ class ConfigViewModel(
 
             createOptionViewItem(
                 id = "LIST_VOICE_SPEED_VIEW_ITEM",
-                text = it.text.with(ForegroundColor(textColor)),
+                text = it.text.with(BigForegroundColor(textColor)).build(),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -375,11 +378,11 @@ class ConfigViewModel(
             list.add(it)
         }
 
-        voiceViewItemList.getOrEmpty().filterIsInstance<TextViewItem>().find { it.data.asObjectOrNull<Pair<String, Boolean>>()?.second == true }?.let {
+        voiceViewItemList.getOrEmpty().filterIsInstance<BigTextViewItem>().find { it.data.asObjectOrNull<Pair<String, Boolean>>()?.second == true }?.let {
 
             createOptionViewItem(
                 id = "LIST_VOICE_VIEW_ITEM",
-                text = it.text.text.with(ForegroundColor(textColor)),
+                text = it.text.text.with(BigForegroundColor(textColor)).build(),
                 strokeColor = strokeColor,
                 backgroundColor = backgroundColor
             )
@@ -403,7 +406,7 @@ class ConfigViewModel(
 
             val text = translate["title_phonetic"].orEmpty()
 
-            list.add(createTitleTextView(id = "TITLE_PHONETIC", text = text.with(ForegroundColor(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "TITLE_PHONETIC", text = text.with(BigForegroundColor(theme.colorOnSurface)).build()))
 
             list.addAll(it)
         }
@@ -412,7 +415,7 @@ class ConfigViewModel(
 
             val text = translate["title_translate"].orEmpty()
 
-            list.add(createTitleTextView(id = "TITLE_TRANSLATE", text = text.with(ForegroundColor(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "TITLE_TRANSLATE", text = text.with(BigForegroundColor(theme.colorOnSurface)).build()))
 
             list.addAll(it)
         }
@@ -420,8 +423,8 @@ class ConfigViewModel(
         voiceSpeedViewItemList.getOrEmpty().takeIf { it.isNotEmpty() }?.let {
 
             val text = (translate.getOrEmpty("title_voice_speed") + " ${voiceSpeed.value}")
-                .with(ForegroundColor(theme.colorOnSurface))
-                .with("${voiceSpeed.value}", ForegroundColor(theme.colorPrimary))
+                .with(BigForegroundColor(theme.colorOnSurface))
+                .withFirst("${voiceSpeed.value}", BigForegroundColor(theme.colorPrimary)).build()
 
             list.add(createTitleTextView(id = "TITLE_VOICE_SPEED", text = text))
 
@@ -432,7 +435,7 @@ class ConfigViewModel(
 
             val text = translate["title_voice"].orEmpty()
 
-            list.add(createTitleTextView(id = "TITLE_VOICE", text = text.with(ForegroundColor(theme.colorOnSurface))))
+            list.add(createTitleTextView(id = "TITLE_VOICE", text = text.with(BigForegroundColor(theme.colorOnSurface)).build()))
 
             list.addAll(it)
         }
@@ -493,10 +496,10 @@ class ConfigViewModel(
 
     private fun createTitleTextView(
         id: String,
-        text: RichText
-    ) = NoneTextViewItem(
+        text: BigText
+    ) = NoneBigTextViewItem(
         id = id,
-        text = text.with(Bold),
+        text = text.toBuilder().with(BigBold).build(),
         textStyle = TextStyle(
             textSize = 16f
         ),
@@ -513,13 +516,13 @@ class ConfigViewModel(
     private fun createOptionViewItem(
         id: String,
 
-        text: RichText,
+        text: BigText,
 
         data: Any? = null,
 
         strokeColor: Int,
         backgroundColor: Int
-    ) = ClickTextViewItem(
+    ) = ClickBigTextViewItem(
         id = id,
         data = data,
         text = text,

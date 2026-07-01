@@ -48,7 +48,6 @@ class PhoneticsAdapter2(onItemClick: ((View, PhoneticsViewItem2) -> Unit)? = nul
         binding.root.text = item.text
         binding.root.onlyReading = item.onlyReading
 
-        Log.d("tuanha", "onBindViewHolder: ")
         if (payloads.isEmpty() || payloads.contains("strokeShow")) strokeShow(binding, item, animate = payloads.isNotEmpty())
         if (payloads.isEmpty() || payloads.contains("drawSpec")) drawSpec(binding, item)
         if (payloads.isEmpty() || payloads.contains("strokeColor")) strokeColor(binding, item)

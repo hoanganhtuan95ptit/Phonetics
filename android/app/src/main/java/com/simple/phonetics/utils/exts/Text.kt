@@ -2,8 +2,6 @@ package com.simple.phonetics.utils.exts
 
 import android.view.Gravity
 import android.view.ViewGroup
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.DEFAULT_MARGIN
@@ -14,11 +12,13 @@ import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.RichText
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
+import com.simple.phonetics.ui.common.adapters.texts.NoneBigTextViewItem
+import com.simple.ui.precompute.text.BigText
 
 fun TitleViewItem(
     id: String,
-    text: RichText,
+    text: BigText,
 
     textSize: Float? = 20f,
     textMargin: Margin = DEFAULT_MARGIN,
@@ -27,7 +27,7 @@ fun TitleViewItem(
         width = ViewGroup.LayoutParams.MATCH_PARENT,
         height = ViewGroup.LayoutParams.WRAP_CONTENT
     )
-) = NoneTextViewItem(
+) = NoneBigTextViewItem(
     id = id,
     text = text,
     textStyle = TextStyle(
@@ -51,11 +51,11 @@ fun OptionViewItem(
 
     data: Any? = null,
 
-    text: RichText,
+    text: BigText,
 
     strokeColor: Int,
     backgroundColor: Int,
-) = ClickTextViewItem(
+) = ClickBigTextViewItem(
     id = id,
     data = data,
     text = text,
@@ -87,12 +87,12 @@ fun OptionPrimaryViewItem(
 
     data: Any? = null,
 
-    text: RichText,
+    text: BigText,
     textSize: Size? = null,
 
     size: Size? = null,
     strokeColor: Int,
-) = ClickTextViewItem(
+) = ClickBigTextViewItem(
     id = id,
     data = data,
     text = text,
@@ -132,11 +132,11 @@ fun ButtonViewItem(
 
     data: Any? = null,
 
-    text: RichText,
+    text: BigText,
 
     strokeColor: Int,
     backgroundColor: Int,
-) = ClickTextViewItem(
+) = ClickBigTextViewItem(
     id = id,
     data = data,
     text = text,

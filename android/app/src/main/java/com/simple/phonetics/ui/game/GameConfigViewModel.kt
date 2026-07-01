@@ -12,16 +12,11 @@ import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.ui.adapters.SpaceViewItem
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.RelativeSize
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.getOrEmpty
@@ -34,6 +29,7 @@ import com.simple.phonetics.domain.usecase.ipa.CountIpaAsyncUseCase
 import com.simple.phonetics.domain.usecase.word.GetListWordResourceCountAsyncUseCase
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.ui.base.fragments.BaseActionViewModel
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
 import com.simple.phonetics.utils.exts.OptionViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
@@ -41,6 +37,12 @@ import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
 import com.simple.phonetics.utils.exts.getOrEmpty
 import com.simple.phonetics.utils.exts.removeSpecialCharacters
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.span.BigRelativeSize
+import com.simple.ui.precompute.text.with
+import com.simple.ui.precompute.text.withFirst
 import com.simple.word.entities.WordResourceCount
 import com.unknown.theme.utils.exts.colorOnPrimary
 import com.unknown.theme.utils.exts.colorOnSurface
@@ -129,7 +131,7 @@ class GameConfigViewModel(
             if (viewItemList.isNotEmpty()) TitleViewItem(
                 id = it.first.first,
                 text = text
-                    .with(Bold, ForegroundColor(theme.colorOnSurface)),
+                    .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
             ).let {
 
                 list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_24))
@@ -145,7 +147,7 @@ class GameConfigViewModel(
         postValue(list)
     }
 
-    val buttonInfo: LiveData<ClickTextViewItem> = listenerSourcesWithDiff(theme, translate, resourceSelected) {
+    val buttonInfo: LiveData<ClickBigTextViewItem> = listenerSourcesWithDiff(theme, translate, resourceSelected) {
 
         val theme = theme.value ?: return@listenerSourcesWithDiff
         val translate = translate.value ?: return@listenerSourcesWithDiff
@@ -154,10 +156,10 @@ class GameConfigViewModel(
 
         val isAvailable = resourceSelected != null
 
-        ClickTextViewItem(
+        ClickBigTextViewItem(
             id = "",
             text = translate["game_config_screen_action_play_game"].orEmpty()
-                .with(ForegroundColor(if (isAvailable) theme.colorOnPrimary else theme.colorOnSurface)),
+                .with(BigForegroundColor(if (isAvailable) theme.colorOnPrimary else theme.colorOnSurface)).build(),
             textStyle = TextStyle(
                 textSize = 18f,
                 textGravity = Gravity.CENTER
@@ -254,11 +256,11 @@ class GameConfigViewModel(
 
         val text = if (caption.isNotBlank()) {
             "$name\n$caption"
-                .with(ForegroundColor(if (isSelect) theme.colorPrimary else theme.colorOnSurface))
-                .with(caption, RelativeSize(0.8f), ForegroundColor(captionColor))
+                .with(BigForegroundColor(if (isSelect) theme.colorPrimary else theme.colorOnSurface))
+                .withFirst(caption, BigRelativeSize(0.8f), BigForegroundColor(captionColor)).build()
         } else {
             name
-                .with(ForegroundColor(if (isSelect) theme.colorPrimary else theme.colorOnSurface))
+                .with(BigForegroundColor(if (isSelect) theme.colorPrimary else theme.colorOnSurface)).build()
         }
 
         OptionViewItem(

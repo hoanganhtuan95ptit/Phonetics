@@ -20,7 +20,6 @@ import android.media.AudioRecord
 import android.media.MediaRecorder
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.simple.feature.pronunciation_assessment.domain.entities.AudioChunk
 import com.simple.feature.pronunciation_assessment.domain.entities.RecordingState

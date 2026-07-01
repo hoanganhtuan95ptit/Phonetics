@@ -15,10 +15,10 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.Glide
-import com.simple.coreapp.utils.ext.RichText
 import com.simple.image.GifImageData
 import com.simple.image.RichImage
 import com.simple.image.RichImageData
+import com.simple.ui.precompute.text.BigText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -112,13 +112,13 @@ class RichImagePaint(
 }
 
 // ─────────────────────────────────────────────────────────────
-// RichTextPaint — TextPaint per-instance để hỗ trợ custom style
+// BigTextPaint — TextPaint per-instance để hỗ trợ custom style
 // ─────────────────────────────────────────────────────────────
 
-class RichTextPaint(
+class BigTextPaint(
     override val frame: Rect,
     val gravity: Int,
-    val richText: RichText,
+    val bigText: BigText,
     textSize: Float = 12f,
     textColor: Int = Color.BLACK,
 ) : DrawPaint {
@@ -129,7 +129,7 @@ class RichTextPaint(
     }
 
     override fun onDraw(canvas: Canvas) {
-        val text = richText.text
+        val text = bigText.text
         if (text.isEmpty() || frame.width() <= 0) return
 
         val layout = StaticLayout.Builder

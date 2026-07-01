@@ -6,13 +6,13 @@ import com.simple.adapter.base.BaseBindingViewHolder
 import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.databinding.ItemTextBinding
-import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
-import com.simple.coreapp.utils.ext.setText
+import com.simple.phonetics.ui.common.adapters.texts.NoneBigTextViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.services.HomeService
 import com.unknown.coroutines.launchCollect
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.simple.ui.precompute.text.setText as setBigText
 
 @AutoBind(HomeFragment::class)
 class PhoneticHomeService : HomeService {
@@ -36,7 +36,7 @@ class PhoneticHomeService : HomeService {
 
             adapter.currentList.forEachIndexed { index, viewItem ->
 
-                if (viewItem !is NoneTextViewItem || !viewItem.id.startsWith("phonetic_")) return@forEachIndexed
+                if (viewItem !is NoneBigTextViewItem || !viewItem.id.startsWith("phonetic_")) return@forEachIndexed
 
                 val pair = it.firstOrNull { pair -> viewItem.id.endsWith(pair.first, true) }
 
@@ -46,7 +46,7 @@ class PhoneticHomeService : HomeService {
                     ?.asObjectOrNull<BaseBindingViewHolder<*>>()
                     ?.binding
                     .asObjectOrNull<ItemTextBinding>()
-                    ?.tvTitle?.setText(pair.second)
+                    ?.tvTitle?.setBigText(pair.second)
             }
         }
     }

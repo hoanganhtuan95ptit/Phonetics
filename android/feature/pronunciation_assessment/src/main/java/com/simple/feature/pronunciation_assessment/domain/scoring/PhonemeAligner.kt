@@ -1,5 +1,8 @@
 package com.simple.feature.pronunciation_assessment.domain.scoring
 
+import com.simple.feature.pronunciation_assessment.domain.scoring.PhonemeAligner.alignPartial
+
+
 /**
  * Align hai chuỗi phoneme (reference vs hypothesis) bằng Levenshtein DP.
  *

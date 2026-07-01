@@ -42,11 +42,11 @@ import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.emptyText
 import com.simple.ui.precompute.text.plus
-import com.simple.ui.precompute.text.span.Bold
-import com.simple.ui.precompute.text.span.ForegroundColor
-import com.simple.ui.precompute.text.span.RoundedBackground
-import com.simple.ui.precompute.text.span.RoundedOutline
-import com.simple.ui.precompute.text.span.TextSize
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.span.BigRoundedBackground
+import com.simple.ui.precompute.text.span.BigRoundedOutline
+import com.simple.ui.precompute.text.span.BigTextSize
 import com.simple.ui.precompute.text.with
 import com.simple.ui.precompute.text.withFirst
 import com.unknown.size.uitls.exts.width
@@ -124,32 +124,32 @@ class PronunciationViewModel : BaseViewModel() {
             label = strings.getOrKey("speak_screen_result_label_score"),
             grade = gradeOf(assessment.finalScore),
 
-            subtitle = subtitle.with(ForegroundColor(themes.colorOnSurface))
-                .withFirst(errorCount.toString(), Bold, TextSize(16.toPx()), ForegroundColor(themes.colorError))
+            subtitle = subtitle.with(BigForegroundColor(themes.colorOnSurface))
+                .withFirst(errorCount.toString(), BigBold, BigTextSize(16.toPx()), BigForegroundColor(themes.colorError))
                 .build(),
 
             accuracy = assessment.accuracyScore,
             accuracyTitle = strings.getOrKey("speak_screen_result_label_accuracy")
-                .with(ForegroundColor(themes.colorOnSurface))
+                .with(BigForegroundColor(themes.colorOnSurface))
                 .build(),
             accuracyValue = "${assessment.accuracyScore}%"
-                .with(ForegroundColor(themes.colorOnSurface))
+                .with(BigForegroundColor(themes.colorOnSurface))
                 .build(),
 
             completion = assessment.completenessScore,
             completionTitle = strings.getOrKey("speak_screen_result_label_completion")
-                .with(ForegroundColor(themes.colorOnSurface))
+                .with(BigForegroundColor(themes.colorOnSurface))
                 .build(),
             completionValue = "${assessment.completenessScore}%"
-                .with(ForegroundColor(themes.colorOnSurface))
+                .with(BigForegroundColor(themes.colorOnSurface))
                 .build(),
 
             fluency = (100 - assessment.fluencyPenalty).coerceAtLeast(0),
             fluencyTitle = strings.getOrKey("speak_screen_result_label_fluency")
-                .with(ForegroundColor(themes.colorOnSurface))
+                .with(BigForegroundColor(themes.colorOnSurface))
                 .build(),
             fluencyValue = "${(100 - assessment.fluencyPenalty).coerceAtLeast(0)}%"
-                .with(ForegroundColor(themes.colorOnSurface))
+                .with(BigForegroundColor(themes.colorOnSurface))
                 .build(),
 
             maxWidth = sizes.width - 2 * DP.DP_16,
@@ -174,7 +174,7 @@ class PronunciationViewModel : BaseViewModel() {
         val viewItemList = arrayListOf<ViewItem>()
 
         var noteTitle = strings.getOrKey("speak_screen_note_pronunciation_assessment")
-            .with(TextSize(16.sp().toInt()), RoundedOutline(textSize = 16.toPx().toFloat(), strokeColor = Color.TRANSPARENT, paddingVertical = DP.DP_4.toFloat()), ForegroundColor(themes.colorPrimary))
+            .with(BigTextSize(16.sp().toInt()), BigRoundedOutline(textSize = 16.toPx().toFloat(), strokeColor = Color.TRANSPARENT, paddingVertical = DP.DP_4.toFloat()), BigForegroundColor(themes.colorPrimary))
             .build()
 
         var note = emptyText()
@@ -197,8 +197,8 @@ class PronunciationViewModel : BaseViewModel() {
                 else -> return@mapNotNull null
             }
 
-            msg.with(TextSize(16.sp().toInt()), ForegroundColor(themes.colorOnSurface))
-                .withFirst("/${it.phoneme}/", ForegroundColor(themes.colorError))
+            msg.with(BigTextSize(16.sp().toInt()), BigForegroundColor(themes.colorOnSurface))
+                .withFirst("/${it.phoneme}/", BigForegroundColor(themes.colorError))
                 .build()
         }.forEachIndexed { index, text ->
 
@@ -253,22 +253,22 @@ class PronunciationViewModel : BaseViewModel() {
 
         val text = if (initState.isIdle() || initState.isFailed()) {
             (strings.getOrKey("speak_screen_action_pronunciation_assessment") + " Beta")
-                .with(Bold, TextSize(16.toPx()), ForegroundColor(textColor))
-                .withFirst("Beta", Bold, RoundedBackground(backgroundColor = themes.colorError, themes.colorOnError, DP.DP_4.toFloat()))
+                .with(BigBold, BigTextSize(16.toPx()), BigForegroundColor(textColor))
+                .withFirst("Beta", BigBold, BigRoundedBackground(backgroundColor = themes.colorError, themes.colorOnError, DP.DP_4.toFloat()))
         } else if (initState is ResultState.Running && initState.data in 0..99) {
             strings.getOrKey("speak_screen_action_loading_model")
                 .replace("\$percent", "${initState.data}%")
-                .with(Bold, TextSize(16.toPx()), ForegroundColor(textColor))
-                .withFirst("${initState.data}%", ForegroundColor(themes.colorError))
+                .with(BigBold, BigTextSize(16.toPx()), BigForegroundColor(textColor))
+                .withFirst("${initState.data}%", BigForegroundColor(themes.colorError))
         } else if (initState.isLoading()) {
             strings.getOrKey("speak_screen_action_loading_ai_model")
-                .with(Bold, TextSize(16.toPx()), ForegroundColor(textColor))
+                .with(BigBold, BigTextSize(16.toPx()), BigForegroundColor(textColor))
         } else if (assessmentState.isStart()) {
             strings.getOrKey("speak_screen_action_assessing")
-                .with(Bold, TextSize(16.toPx()), ForegroundColor(textColor))
+                .with(BigBold, BigTextSize(16.toPx()), BigForegroundColor(textColor))
         } else {
             strings.getOrKey("speak_screen_action_practice")
-                .with(Bold, TextSize(16.toPx()), ForegroundColor(textColor))
+                .with(BigBold, BigTextSize(16.toPx()), BigForegroundColor(textColor))
         }
 
 

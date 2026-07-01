@@ -10,10 +10,7 @@ import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.postValueIfActive
@@ -26,6 +23,10 @@ import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.getOrEmpty
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
 import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
@@ -70,7 +71,7 @@ class GameHomeServiceModel(
         TextSimpleViewItem(
             id = "TITLE_GAME",
             text = translate.getOrEmpty("title_game")
-                .with(Bold, ForegroundColor(theme.colorOnSurface)),
+                .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
             margin = Margin(
                 marginHorizontal = DP.DP_4
@@ -85,7 +86,7 @@ class GameHomeServiceModel(
         TextSimpleViewItem(
             id = Id.GAME,
             text = translate.getOrEmpty("action_play_game")
-                .with(Bold, ForegroundColor(theme.colorPrimary)),
+                .with(BigBold, BigForegroundColor(theme.colorPrimary)).build(),
             textStyle = R.style.TextAppearance_MaterialComponents_Body1,
 
             margin = Margin(

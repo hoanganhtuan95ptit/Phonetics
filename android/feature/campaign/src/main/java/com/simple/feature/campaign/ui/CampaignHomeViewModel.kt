@@ -7,10 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.utils.ext.Bold
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.with
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigBold
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.mediatorLiveData
@@ -58,10 +59,12 @@ class CampaignHomeViewModel : BaseViewModel() {
 
         val title = translate.getOrKey(campaign.title.orEmpty())
         val titleSpan = title
-            .with(Bold, ForegroundColor(campaign.titleColor))
+            .with(BigBold, BigForegroundColor(campaign.titleColor))
+            .build()
 
         val messageSpan = translate.getOrKey(campaign.message.orEmpty())
-            .with(ForegroundColor(campaign.messageColor))
+            .with(BigForegroundColor(campaign.messageColor))
+            .build()
 
 
         if (!title.contains("title_", true)) CampaignViewItem(
