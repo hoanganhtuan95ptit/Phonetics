@@ -31,15 +31,13 @@ class LocalIpaReading : IpaReading {
         trySend(ResultState.Start)
 
 
-        var fileName = ipa.ipa
+        val ipaText = ipa.ipa
             .replace("/", "", true)
-            .replace("ː", "_", true)
-            .replace("ɹ", "r", true)
-            .lowercase() + ".mp3"
+            .trim()
 
-        if (phoneticCode.equals("us", true)) {
-            fileName = "us_$fileName"
-        }
+        val prefix = if (phoneticCode.equals("us", true)) "us" else "uk"
+
+        val fileName = "${prefix}_${ipaText}.mp3"
 
         val assetFileDescriptor = runCatching {
 

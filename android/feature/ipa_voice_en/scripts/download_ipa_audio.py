@@ -4,8 +4,8 @@ Download IPA phoneme audio for EPhonetics (feature/ipa_voice_en).
 
 Source : Wikimedia Commons (CC license — phoneme reference recordings)
 Target : feature/ipa_voice_en/src/main/assets/voices/
-Format : <ipa>.mp3 (UK)  and  us_<ipa>.mp3 (US)
-         — naming follows LocalIpaReading.kt: strip '/', replace 'ː' with '_', lowercase.
+Format : uk_<ipa>.mp3 (UK)  and  us_<ipa>.mp3 (US)
+         — naming follows LocalIpaReading.kt: strip '/', prefix with dialect.
 
 Why this script (instead of bundling files into the repo)
 ---------------------------------------------------------
@@ -132,11 +132,9 @@ US_VOICE = "Samantha"
 # ──────────────────────────────────────────────────────────────────────────────
 
 def ipa_to_filename(ipa: str, *, dialect: str) -> str:
-    """Match LocalIpaReading.kt: strip '/', replace 'ː' with '_', lowercase, + .mp3"""
-    base = ipa.replace("/", "").replace("ː", "_").lower()
-    if dialect == "us":
-        base = f"us_{base}"
-    return f"{base}.mp3"
+    """Match LocalIpaReading.kt: strip '/', prefix with dialect, + .mp3"""
+    base = ipa.replace("/", "").strip()
+    return f"{dialect}_{base}.mp3"
 
 
 def have(cmd: str) -> bool:

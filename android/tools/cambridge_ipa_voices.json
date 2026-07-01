@@ -1,0 +1,1706 @@
+[
+    {
+        "ipa": "iː",
+        "example_word": "sheep",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_sheep_2023feb.mp3",
+        "local_file": "uk_sheep_sound_0.mp3"
+    },
+    {
+        "ipa": "iː",
+        "example_word": "sheep",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_sheep_2023feb.mp3",
+        "local_file": "us_sheep_sound_1.mp3"
+    },
+    {
+        "ipa": "iː",
+        "example_word": "sheep",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_sheep_2023feb.mp3",
+        "local_file": "uk_sheep_word_2.mp3"
+    },
+    {
+        "ipa": "iː",
+        "example_word": "sheep",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_sheep_2023feb.mp3",
+        "local_file": "us_sheep_word_3.mp3"
+    },
+    {
+        "ipa": "ɪ",
+        "example_word": "ship",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_ship_2023feb.mp3",
+        "local_file": "uk_ship_sound_4.mp3"
+    },
+    {
+        "ipa": "ɪ",
+        "example_word": "ship",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_ship_2023feb.mp3",
+        "local_file": "us_ship_sound_5.mp3"
+    },
+    {
+        "ipa": "ɪ",
+        "example_word": "ship",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_ship_2023feb.mp3",
+        "local_file": "uk_ship_word_6.mp3"
+    },
+    {
+        "ipa": "ɪ",
+        "example_word": "ship",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_ship_2023feb.mp3",
+        "local_file": "us_ship_word_7.mp3"
+    },
+    {
+        "ipa": "ɑː",
+        "example_word": "father",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_father_2023feb.mp3",
+        "local_file": "uk_father_sound_8.mp3"
+    },
+    {
+        "ipa": "ɑː",
+        "example_word": "father",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_father_2023feb.mp3",
+        "local_file": "us_father_sound_9.mp3"
+    },
+    {
+        "ipa": "ɑː",
+        "example_word": "father",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_father_2023feb.mp3",
+        "local_file": "uk_father_word_10.mp3"
+    },
+    {
+        "ipa": "ɑː",
+        "example_word": "father",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_father_2023feb.mp3",
+        "local_file": "us_father_word_11.mp3"
+    },
+    {
+        "ipa": "æ",
+        "example_word": "hat",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_hat_2023feb.mp3",
+        "local_file": "uk_hat_sound_12.mp3"
+    },
+    {
+        "ipa": "æ",
+        "example_word": "hat",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_hat_2023feb.mp3",
+        "local_file": "us_hat_sound_13.mp3"
+    },
+    {
+        "ipa": "æ",
+        "example_word": "hat",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_hat_2023feb.mp3",
+        "local_file": "uk_hat_word_14.mp3"
+    },
+    {
+        "ipa": "æ",
+        "example_word": "hat",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_hat_2023feb.mp3",
+        "local_file": "us_hat_word_15.mp3"
+    },
+    {
+        "ipa": "ʌ",
+        "example_word": "cup",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_cup_2023feb.mp3",
+        "local_file": "uk_cup_sound_16.mp3"
+    },
+    {
+        "ipa": "ʌ",
+        "example_word": "cup",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_cup_2023feb.mp3",
+        "local_file": "us_cup_sound_17.mp3"
+    },
+    {
+        "ipa": "ʌ",
+        "example_word": "cup",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_cup_2023feb.mp3",
+        "local_file": "uk_cup_word_18.mp3"
+    },
+    {
+        "ipa": "ʌ",
+        "example_word": "cup",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_cup_2023feb.mp3",
+        "local_file": "us_cup_word_19.mp3"
+    },
+    {
+        "ipa": "ɔː",
+        "example_word": "horse",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_horse_2023feb.mp3",
+        "local_file": "uk_horse_sound_20.mp3"
+    },
+    {
+        "ipa": "ɔː",
+        "example_word": "horse",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_horse_2023feb.mp3",
+        "local_file": "us_horse_sound_21.mp3"
+    },
+    {
+        "ipa": "ɔː",
+        "example_word": "horse",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_horse_2023feb.mp3",
+        "local_file": "uk_horse_word_22.mp3"
+    },
+    {
+        "ipa": "ɔː",
+        "example_word": "horse",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_horse_2023feb.mp3",
+        "local_file": "us_horse_word_23.mp3"
+    },
+    {
+        "ipa": "ɒ",
+        "example_word": "sock",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_sock_2023feb.mp3",
+        "local_file": "uk_sock_sound_24.mp3"
+    },
+    {
+        "ipa": "ɒ",
+        "example_word": "sock",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_sock_2023feb.mp3",
+        "local_file": "uk_sock_word_25.mp3"
+    },
+    {
+        "ipa": "uː",
+        "example_word": "blue",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_blue_2023feb.mp3",
+        "local_file": "uk_blue_sound_26.mp3"
+    },
+    {
+        "ipa": "uː",
+        "example_word": "blue",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_blue_2023feb.mp3",
+        "local_file": "us_blue_sound_27.mp3"
+    },
+    {
+        "ipa": "uː",
+        "example_word": "blue",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_blue_2023feb.mp3",
+        "local_file": "uk_blue_word_28.mp3"
+    },
+    {
+        "ipa": "uː",
+        "example_word": "blue",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_blue_2023feb.mp3",
+        "local_file": "us_blue_word_29.mp3"
+    },
+    {
+        "ipa": "ʊ",
+        "example_word": "foot",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_foot_2023feb.mp3",
+        "local_file": "uk_foot_sound_30.mp3"
+    },
+    {
+        "ipa": "ʊ",
+        "example_word": "foot",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_foot_2023feb.mp3",
+        "local_file": "us_foot_sound_31.mp3"
+    },
+    {
+        "ipa": "ʊ",
+        "example_word": "foot",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_foot_2023feb.mp3",
+        "local_file": "uk_foot_word_32.mp3"
+    },
+    {
+        "ipa": "ʊ",
+        "example_word": "foot",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_foot_2023feb.mp3",
+        "local_file": "us_foot_word_33.mp3"
+    },
+    {
+        "ipa": "e",
+        "example_word": "head",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_head_2023feb.mp3",
+        "local_file": "uk_head_sound_34.mp3"
+    },
+    {
+        "ipa": "e",
+        "example_word": "head",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_head_2023feb.mp3",
+        "local_file": "us_head_sound_35.mp3"
+    },
+    {
+        "ipa": "e",
+        "example_word": "head",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_head_2023feb.mp3",
+        "local_file": "uk_head_word_36.mp3"
+    },
+    {
+        "ipa": "e",
+        "example_word": "head",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_head_2023feb.mp3",
+        "local_file": "us_head_word_37.mp3"
+    },
+    {
+        "ipa": "ɜː",
+        "example_word": "bird",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_bird_2023feb.mp3",
+        "local_file": "uk_bird_sound_38.mp3"
+    },
+    {
+        "ipa": "ɜː",
+        "example_word": "bird",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_bird_2023feb.mp3",
+        "local_file": "uk_bird_word_39.mp3"
+    },
+    {
+        "ipa": "ɝː",
+        "example_word": "bird",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_bird_2023feb.mp3",
+        "local_file": "us_bird_sound_40.mp3"
+    },
+    {
+        "ipa": "ɝː",
+        "example_word": "bird",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_bird_2023feb.mp3",
+        "local_file": "us_bird_word_41.mp3"
+    },
+    {
+        "ipa": "ə",
+        "example_word": "above",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_above_2023feb.mp3",
+        "local_file": "uk_above_sound_42.mp3"
+    },
+    {
+        "ipa": "ə",
+        "example_word": "above",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_above_2023feb.mp3",
+        "local_file": "us_above_sound_43.mp3"
+    },
+    {
+        "ipa": "ə",
+        "example_word": "above",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_above_2023feb.mp3",
+        "local_file": "uk_above_word_44.mp3"
+    },
+    {
+        "ipa": "ə",
+        "example_word": "above",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_above_2023feb.mp3",
+        "local_file": "us_above_word_45.mp3"
+    },
+    {
+        "ipa": "ɚ",
+        "example_word": "mother",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_mother_2023feb.mp3",
+        "local_file": "us_mother_sound_46.mp3"
+    },
+    {
+        "ipa": "ɚ",
+        "example_word": "mother",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_mother_2023feb.mp3",
+        "local_file": "us_mother_word_47.mp3"
+    },
+    {
+        "ipa": "eɪ",
+        "example_word": "day",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_day_2023feb_002.mp3",
+        "local_file": "uk_day_sound_48.mp3"
+    },
+    {
+        "ipa": "eɪ",
+        "example_word": "day",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_day_2023feb_002.mp3",
+        "local_file": "us_day_sound_49.mp3"
+    },
+    {
+        "ipa": "eɪ",
+        "example_word": "day",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_day_2023feb_002.mp3",
+        "local_file": "uk_day_word_50.mp3"
+    },
+    {
+        "ipa": "eɪ",
+        "example_word": "day",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_day_2023feb_002.mp3",
+        "local_file": "us_day_word_51.mp3"
+    },
+    {
+        "ipa": "aɪ",
+        "example_word": "eye",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_eye_2023feb.mp3",
+        "local_file": "uk_eye_sound_52.mp3"
+    },
+    {
+        "ipa": "aɪ",
+        "example_word": "eye",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_eye_2023feb.mp3",
+        "local_file": "us_eye_sound_53.mp3"
+    },
+    {
+        "ipa": "aɪ",
+        "example_word": "eye",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_eye_2023feb.mp3",
+        "local_file": "uk_eye_word_54.mp3"
+    },
+    {
+        "ipa": "aɪ",
+        "example_word": "eye",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_eye_2023feb.mp3",
+        "local_file": "us_eye_word_55.mp3"
+    },
+    {
+        "ipa": "ɔɪ",
+        "example_word": "boy",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_boy_2023feb.mp3",
+        "local_file": "uk_boy_sound_56.mp3"
+    },
+    {
+        "ipa": "ɔɪ",
+        "example_word": "boy",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_boy_2023feb.mp3",
+        "local_file": "us_boy_sound_57.mp3"
+    },
+    {
+        "ipa": "ɔɪ",
+        "example_word": "boy",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_boy_2023feb.mp3",
+        "local_file": "uk_boy_word_58.mp3"
+    },
+    {
+        "ipa": "ɔɪ",
+        "example_word": "boy",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_boy_2023feb.mp3",
+        "local_file": "us_boy_word_59.mp3"
+    },
+    {
+        "ipa": "əʊ",
+        "example_word": "nose",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_nose_2023feb.mp3",
+        "local_file": "uk_nose_sound_60.mp3"
+    },
+    {
+        "ipa": "əʊ",
+        "example_word": "nose",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_nose_2023feb.mp3",
+        "local_file": "uk_nose_word_61.mp3"
+    },
+    {
+        "ipa": "oʊ",
+        "example_word": "nose",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_nose_2023feb.mp3",
+        "local_file": "us_nose_sound_62.mp3"
+    },
+    {
+        "ipa": "oʊ",
+        "example_word": "nose",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_nose_2023feb.mp3",
+        "local_file": "us_nose_word_63.mp3"
+    },
+    {
+        "ipa": "aʊ",
+        "example_word": "mouth",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_mouth_2023feb.mp3",
+        "local_file": "uk_mouth_sound_64.mp3"
+    },
+    {
+        "ipa": "aʊ",
+        "example_word": "mouth",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_mouth_2023feb.mp3",
+        "local_file": "us_mouth_sound_65.mp3"
+    },
+    {
+        "ipa": "aʊ",
+        "example_word": "mouth",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_mouth_2023feb.mp3",
+        "local_file": "uk_mouth_word_66.mp3"
+    },
+    {
+        "ipa": "aʊ",
+        "example_word": "mouth",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_mouth_2023feb.mp3",
+        "local_file": "us_mouth_word_67.mp3"
+    },
+    {
+        "ipa": "ɪə",
+        "example_word": "ear",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_ear_2023feb.mp3",
+        "local_file": "uk_ear_sound_68.mp3"
+    },
+    {
+        "ipa": "ɪə",
+        "example_word": "ear",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_ear_2023feb.mp3",
+        "local_file": "uk_ear_word_69.mp3"
+    },
+    {
+        "ipa": "eə",
+        "example_word": "hair",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_hair_2023feb.mp3",
+        "local_file": "uk_hair_sound_70.mp3"
+    },
+    {
+        "ipa": "eə",
+        "example_word": "hair",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_hair_2023feb.mp3",
+        "local_file": "uk_hair_word_71.mp3"
+    },
+    {
+        "ipa": "ʊə",
+        "example_word": "pure",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_pure_2023feb.mp3",
+        "local_file": "uk_pure_sound_72.mp3"
+    },
+    {
+        "ipa": "ʊə",
+        "example_word": "pure",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_pure_2023feb.mp3",
+        "local_file": "uk_pure_word_73.mp3"
+    },
+    {
+        "ipa": "aɪə",
+        "example_word": "fire",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_fire_2023feb.mp3",
+        "local_file": "uk_fire_sound_74.mp3"
+    },
+    {
+        "ipa": "aɪə",
+        "example_word": "fire",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_fire_2023feb.mp3",
+        "local_file": "uk_fire_word_75.mp3"
+    },
+    {
+        "ipa": "aʊə",
+        "example_word": "hour",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_hour_2023feb.mp3",
+        "local_file": "uk_hour_sound_76.mp3"
+    },
+    {
+        "ipa": "aʊə",
+        "example_word": "hour",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_hour_2023feb.mp3",
+        "local_file": "uk_hour_word_77.mp3"
+    },
+    {
+        "ipa": "p",
+        "example_word": "pen",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_pen_2023feb.mp3",
+        "local_file": "uk_pen_sound_78.mp3"
+    },
+    {
+        "ipa": "p",
+        "example_word": "pen",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_pen_2023feb.mp3",
+        "local_file": "us_pen_sound_79.mp3"
+    },
+    {
+        "ipa": "p",
+        "example_word": "pen",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_pen_2023feb.mp3",
+        "local_file": "uk_pen_word_80.mp3"
+    },
+    {
+        "ipa": "p",
+        "example_word": "pen",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_pen_2023feb.mp3",
+        "local_file": "us_pen_word_81.mp3"
+    },
+    {
+        "ipa": "b",
+        "example_word": "book",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_book_2023feb.mp3",
+        "local_file": "uk_book_sound_82.mp3"
+    },
+    {
+        "ipa": "b",
+        "example_word": "book",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_book_2023feb.mp3",
+        "local_file": "us_book_sound_83.mp3"
+    },
+    {
+        "ipa": "b",
+        "example_word": "book",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_book_2023feb.mp3",
+        "local_file": "uk_book_word_84.mp3"
+    },
+    {
+        "ipa": "b",
+        "example_word": "book",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_book_2023feb.mp3",
+        "local_file": "us_book_word_85.mp3"
+    },
+    {
+        "ipa": "t",
+        "example_word": "town",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_town_2023feb.mp3",
+        "local_file": "uk_town_sound_86.mp3"
+    },
+    {
+        "ipa": "t",
+        "example_word": "town",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_town_2023feb.mp3",
+        "local_file": "us_town_sound_87.mp3"
+    },
+    {
+        "ipa": "t",
+        "example_word": "town",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_town_2023feb.mp3",
+        "local_file": "uk_town_word_88.mp3"
+    },
+    {
+        "ipa": "t",
+        "example_word": "town",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_town_2023feb.mp3",
+        "local_file": "us_town_word_89.mp3"
+    },
+    {
+        "ipa": "t̬",
+        "example_word": "cutting",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_cutting_2023feb.mp3",
+        "local_file": "us_cutting_sound_90.mp3"
+    },
+    {
+        "ipa": "t̬",
+        "example_word": "cutting",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_cutting_2023feb.mp3",
+        "local_file": "us_cutting_word_91.mp3"
+    },
+    {
+        "ipa": "d",
+        "example_word": "day",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_day_2023feb_001.mp3",
+        "local_file": "uk_day_sound_92.mp3"
+    },
+    {
+        "ipa": "d",
+        "example_word": "day",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_day_2023feb_001.mp3",
+        "local_file": "us_day_sound_93.mp3"
+    },
+    {
+        "ipa": "d",
+        "example_word": "day",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_day_2023feb_001.mp3",
+        "local_file": "uk_day_word_94.mp3"
+    },
+    {
+        "ipa": "d",
+        "example_word": "day",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_day_2023feb_001.mp3",
+        "local_file": "us_day_word_95.mp3"
+    },
+    {
+        "ipa": "k",
+        "example_word": "cat",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_cat_2023feb.mp3",
+        "local_file": "uk_cat_sound_96.mp3"
+    },
+    {
+        "ipa": "k",
+        "example_word": "cat",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_cat_2023feb.mp3",
+        "local_file": "us_cat_sound_97.mp3"
+    },
+    {
+        "ipa": "k",
+        "example_word": "cat",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_cat_2023feb.mp3",
+        "local_file": "uk_cat_word_98.mp3"
+    },
+    {
+        "ipa": "k",
+        "example_word": "cat",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_cat_2023feb.mp3",
+        "local_file": "us_cat_word_99.mp3"
+    },
+    {
+        "ipa": "g",
+        "example_word": "give",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_give_2023feb.mp3",
+        "local_file": "uk_give_sound_100.mp3"
+    },
+    {
+        "ipa": "g",
+        "example_word": "give",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_give_2023feb.mp3",
+        "local_file": "us_give_sound_101.mp3"
+    },
+    {
+        "ipa": "g",
+        "example_word": "give",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_give_2023feb.mp3",
+        "local_file": "uk_give_word_102.mp3"
+    },
+    {
+        "ipa": "g",
+        "example_word": "give",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_give_2023feb.mp3",
+        "local_file": "us_give_word_103.mp3"
+    },
+    {
+        "ipa": "f",
+        "example_word": "fish",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_fish_2023feb.mp3",
+        "local_file": "uk_fish_sound_104.mp3"
+    },
+    {
+        "ipa": "f",
+        "example_word": "fish",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_fish_2023feb.mp3",
+        "local_file": "us_fish_sound_105.mp3"
+    },
+    {
+        "ipa": "f",
+        "example_word": "fish",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_fish_2023feb.mp3",
+        "local_file": "uk_fish_word_106.mp3"
+    },
+    {
+        "ipa": "f",
+        "example_word": "fish",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_fish_2023feb.mp3",
+        "local_file": "us_fish_word_107.mp3"
+    },
+    {
+        "ipa": "v",
+        "example_word": "very",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_very_2023feb.mp3",
+        "local_file": "uk_very_sound_108.mp3"
+    },
+    {
+        "ipa": "v",
+        "example_word": "very",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_very_2023feb.mp3",
+        "local_file": "us_very_sound_109.mp3"
+    },
+    {
+        "ipa": "v",
+        "example_word": "very",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_very_2023feb.mp3",
+        "local_file": "uk_very_word_110.mp3"
+    },
+    {
+        "ipa": "v",
+        "example_word": "very",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_very_2023feb.mp3",
+        "local_file": "us_very_word_111.mp3"
+    },
+    {
+        "ipa": "θ",
+        "example_word": "think",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_think_2023feb.mp3",
+        "local_file": "uk_think_sound_112.mp3"
+    },
+    {
+        "ipa": "θ",
+        "example_word": "think",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_think_2023feb.mp3",
+        "local_file": "us_think_sound_113.mp3"
+    },
+    {
+        "ipa": "θ",
+        "example_word": "think",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_think_2023feb.mp3",
+        "local_file": "uk_think_word_114.mp3"
+    },
+    {
+        "ipa": "θ",
+        "example_word": "think",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_think_2023feb.mp3",
+        "local_file": "us_think_word_115.mp3"
+    },
+    {
+        "ipa": "ð",
+        "example_word": "this",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_this_2023feb.mp3",
+        "local_file": "uk_this_sound_116.mp3"
+    },
+    {
+        "ipa": "ð",
+        "example_word": "this",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_this_2023feb.mp3",
+        "local_file": "us_this_sound_117.mp3"
+    },
+    {
+        "ipa": "ð",
+        "example_word": "this",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_this_2023feb.mp3",
+        "local_file": "uk_this_word_118.mp3"
+    },
+    {
+        "ipa": "ð",
+        "example_word": "this",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_this_2023feb.mp3",
+        "local_file": "us_this_word_119.mp3"
+    },
+    {
+        "ipa": "s",
+        "example_word": "say",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_say_2023feb.mp3",
+        "local_file": "uk_say_sound_120.mp3"
+    },
+    {
+        "ipa": "s",
+        "example_word": "say",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_say_2023feb.mp3",
+        "local_file": "us_say_sound_121.mp3"
+    },
+    {
+        "ipa": "s",
+        "example_word": "say",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_say_2023feb.mp3",
+        "local_file": "uk_say_word_122.mp3"
+    },
+    {
+        "ipa": "s",
+        "example_word": "say",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_say_2023feb.mp3",
+        "local_file": "us_say_word_123.mp3"
+    },
+    {
+        "ipa": "z",
+        "example_word": "zoo",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_zoo_2023feb.mp3",
+        "local_file": "uk_zoo_sound_124.mp3"
+    },
+    {
+        "ipa": "z",
+        "example_word": "zoo",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_zoo_2023feb.mp3",
+        "local_file": "us_zoo_sound_125.mp3"
+    },
+    {
+        "ipa": "z",
+        "example_word": "zoo",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_zoo_2023feb.mp3",
+        "local_file": "uk_zoo_word_126.mp3"
+    },
+    {
+        "ipa": "z",
+        "example_word": "zoo",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_zoo_2023feb.mp3",
+        "local_file": "us_zoo_word_127.mp3"
+    },
+    {
+        "ipa": "ʃ",
+        "example_word": "she",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_she_2023feb.mp3",
+        "local_file": "uk_she_sound_128.mp3"
+    },
+    {
+        "ipa": "ʃ",
+        "example_word": "she",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_she_2023feb.mp3",
+        "local_file": "us_she_sound_129.mp3"
+    },
+    {
+        "ipa": "ʃ",
+        "example_word": "she",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_she_2023feb.mp3",
+        "local_file": "uk_she_word_130.mp3"
+    },
+    {
+        "ipa": "ʃ",
+        "example_word": "she",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_she_2023feb.mp3",
+        "local_file": "us_she_word_131.mp3"
+    },
+    {
+        "ipa": "ʒ",
+        "example_word": "vision",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_vision_2023feb.mp3",
+        "local_file": "uk_vision_sound_132.mp3"
+    },
+    {
+        "ipa": "ʒ",
+        "example_word": "vision",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_vision_2023feb.mp3",
+        "local_file": "us_vision_sound_133.mp3"
+    },
+    {
+        "ipa": "ʒ",
+        "example_word": "vision",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_vision_2023feb.mp3",
+        "local_file": "uk_vision_word_134.mp3"
+    },
+    {
+        "ipa": "ʒ",
+        "example_word": "vision",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_vision_2023feb.mp3",
+        "local_file": "us_vision_word_135.mp3"
+    },
+    {
+        "ipa": "tʃ",
+        "example_word": "cheese",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_cheese_2023feb.mp3",
+        "local_file": "uk_cheese_sound_136.mp3"
+    },
+    {
+        "ipa": "tʃ",
+        "example_word": "cheese",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_cheese_2023feb.mp3",
+        "local_file": "us_cheese_sound_137.mp3"
+    },
+    {
+        "ipa": "tʃ",
+        "example_word": "cheese",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_cheese_2023feb.mp3",
+        "local_file": "uk_cheese_word_138.mp3"
+    },
+    {
+        "ipa": "tʃ",
+        "example_word": "cheese",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_cheese_2023feb.mp3",
+        "local_file": "us_cheese_word_139.mp3"
+    },
+    {
+        "ipa": "dʒ",
+        "example_word": "jump",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_jump_2023feb.mp3",
+        "local_file": "uk_jump_sound_140.mp3"
+    },
+    {
+        "ipa": "dʒ",
+        "example_word": "jump",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_jump_2023feb.mp3",
+        "local_file": "us_jump_sound_141.mp3"
+    },
+    {
+        "ipa": "dʒ",
+        "example_word": "jump",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_jump_2023feb.mp3",
+        "local_file": "uk_jump_word_142.mp3"
+    },
+    {
+        "ipa": "dʒ",
+        "example_word": "jump",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_jump_2023feb.mp3",
+        "local_file": "us_jump_word_143.mp3"
+    },
+    {
+        "ipa": "m",
+        "example_word": "moon",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_moon_2023feb.mp3",
+        "local_file": "uk_moon_sound_144.mp3"
+    },
+    {
+        "ipa": "m",
+        "example_word": "moon",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_moon_2023feb.mp3",
+        "local_file": "us_moon_sound_145.mp3"
+    },
+    {
+        "ipa": "m",
+        "example_word": "moon",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_moon_2023feb.mp3",
+        "local_file": "uk_moon_word_146.mp3"
+    },
+    {
+        "ipa": "m",
+        "example_word": "moon",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_moon_2023feb.mp3",
+        "local_file": "us_moon_word_147.mp3"
+    },
+    {
+        "ipa": "n",
+        "example_word": "name",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_name_2023feb.mp3",
+        "local_file": "uk_name_sound_148.mp3"
+    },
+    {
+        "ipa": "n",
+        "example_word": "name",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_name_2023feb.mp3",
+        "local_file": "us_name_sound_149.mp3"
+    },
+    {
+        "ipa": "n",
+        "example_word": "name",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_name_2023feb.mp3",
+        "local_file": "uk_name_word_150.mp3"
+    },
+    {
+        "ipa": "n",
+        "example_word": "name",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_name_2023feb.mp3",
+        "local_file": "us_name_word_151.mp3"
+    },
+    {
+        "ipa": "ŋ",
+        "example_word": "sing",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_sing_2023feb.mp3",
+        "local_file": "uk_sing_sound_152.mp3"
+    },
+    {
+        "ipa": "ŋ",
+        "example_word": "sing",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_sing_2023feb.mp3",
+        "local_file": "us_sing_sound_153.mp3"
+    },
+    {
+        "ipa": "ŋ",
+        "example_word": "sing",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_sing_2023feb.mp3",
+        "local_file": "uk_sing_word_154.mp3"
+    },
+    {
+        "ipa": "ŋ",
+        "example_word": "sing",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_sing_2023feb.mp3",
+        "local_file": "us_sing_word_155.mp3"
+    },
+    {
+        "ipa": "l",
+        "example_word": "look",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_look_2023feb.mp3",
+        "local_file": "uk_look_sound_156.mp3"
+    },
+    {
+        "ipa": "l",
+        "example_word": "look",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_look_2023feb.mp3",
+        "local_file": "us_look_sound_157.mp3"
+    },
+    {
+        "ipa": "l",
+        "example_word": "look",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_look_2023feb.mp3",
+        "local_file": "uk_look_word_158.mp3"
+    },
+    {
+        "ipa": "l",
+        "example_word": "look",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_look_2023feb.mp3",
+        "local_file": "us_look_word_159.mp3"
+    },
+    {
+        "ipa": "r",
+        "example_word": "run",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_run_2023feb.mp3",
+        "local_file": "uk_run_sound_160.mp3"
+    },
+    {
+        "ipa": "r",
+        "example_word": "run",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_run_2023feb.mp3",
+        "local_file": "us_run_sound_161.mp3"
+    },
+    {
+        "ipa": "r",
+        "example_word": "run",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_run_2023feb.mp3",
+        "local_file": "uk_run_word_162.mp3"
+    },
+    {
+        "ipa": "r",
+        "example_word": "run",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_run_2023feb.mp3",
+        "local_file": "us_run_word_163.mp3"
+    },
+    {
+        "ipa": "w",
+        "example_word": "we",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_we_2023feb.mp3",
+        "local_file": "uk_we_sound_164.mp3"
+    },
+    {
+        "ipa": "w",
+        "example_word": "we",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_we_2023feb.mp3",
+        "local_file": "us_we_sound_165.mp3"
+    },
+    {
+        "ipa": "w",
+        "example_word": "we",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_we_2023feb.mp3",
+        "local_file": "uk_we_word_166.mp3"
+    },
+    {
+        "ipa": "w",
+        "example_word": "we",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_we_2023feb.mp3",
+        "local_file": "us_we_word_167.mp3"
+    },
+    {
+        "ipa": "j",
+        "example_word": "yes",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_yes_2023feb.mp3",
+        "local_file": "uk_yes_sound_168.mp3"
+    },
+    {
+        "ipa": "j",
+        "example_word": "yes",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_yes_2023feb.mp3",
+        "local_file": "us_yes_sound_169.mp3"
+    },
+    {
+        "ipa": "j",
+        "example_word": "yes",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_yes_2023feb.mp3",
+        "local_file": "uk_yes_word_170.mp3"
+    },
+    {
+        "ipa": "j",
+        "example_word": "yes",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_yes_2023feb.mp3",
+        "local_file": "us_yes_word_171.mp3"
+    },
+    {
+        "ipa": "h",
+        "example_word": "hand",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_hand_2023feb.mp3",
+        "local_file": "uk_hand_sound_172.mp3"
+    },
+    {
+        "ipa": "h",
+        "example_word": "hand",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_hand_2023feb.mp3",
+        "local_file": "us_hand_sound_173.mp3"
+    },
+    {
+        "ipa": "h",
+        "example_word": "hand",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_hand_2023feb.mp3",
+        "local_file": "uk_hand_word_174.mp3"
+    },
+    {
+        "ipa": "h",
+        "example_word": "hand",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_hand_2023feb.mp3",
+        "local_file": "us_hand_word_175.mp3"
+    },
+    {
+        "ipa": "i",
+        "example_word": "happy",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_happy_2023feb.mp3",
+        "local_file": "uk_happy_sound_176.mp3"
+    },
+    {
+        "ipa": "i",
+        "example_word": "happy",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_happy_2023feb.mp3",
+        "local_file": "us_happy_sound_177.mp3"
+    },
+    {
+        "ipa": "i",
+        "example_word": "happy",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_happy_2023feb.mp3",
+        "local_file": "uk_happy_word_178.mp3"
+    },
+    {
+        "ipa": "i",
+        "example_word": "happy",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_happy_2023feb.mp3",
+        "local_file": "us_happy_word_179.mp3"
+    },
+    {
+        "ipa": "u",
+        "example_word": "situation",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_situation_2023feb.mp3",
+        "local_file": "uk_situation_sound_180.mp3"
+    },
+    {
+        "ipa": "u",
+        "example_word": "situation",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_situation_2023feb.mp3",
+        "local_file": "us_situation_sound_181.mp3"
+    },
+    {
+        "ipa": "u",
+        "example_word": "situation",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_situation_2023feb.mp3",
+        "local_file": "uk_situation_word_182.mp3"
+    },
+    {
+        "ipa": "u",
+        "example_word": "situation",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_situation_2023feb.mp3",
+        "local_file": "us_situation_word_183.mp3"
+    },
+    {
+        "ipa": "ɒ̃",
+        "example_word": "croissant",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_croissant_2023feb.mp3",
+        "local_file": "uk_croissant_sound_184.mp3"
+    },
+    {
+        "ipa": "ɒ̃",
+        "example_word": "croissant",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_croissant_2023feb.mp3",
+        "local_file": "us_croissant_sound_185.mp3"
+    },
+    {
+        "ipa": "ɒ̃",
+        "example_word": "croissant",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_croissant_2023feb.mp3",
+        "local_file": "uk_croissant_word_186.mp3"
+    },
+    {
+        "ipa": "ɒ̃",
+        "example_word": "croissant",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_croissant_2023feb.mp3",
+        "local_file": "us_croissant_word_187.mp3"
+    },
+    {
+        "ipa": "x",
+        "example_word": "loch",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_loch_2023feb.mp3",
+        "local_file": "uk_loch_sound_188.mp3"
+    },
+    {
+        "ipa": "x",
+        "example_word": "loch",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_loch_2023feb.mp3",
+        "local_file": "us_loch_sound_189.mp3"
+    },
+    {
+        "ipa": "x",
+        "example_word": "loch",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_loch_2023feb.mp3",
+        "local_file": "uk_loch_word_190.mp3"
+    },
+    {
+        "ipa": "x",
+        "example_word": "loch",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_loch_2023feb.mp3",
+        "local_file": "us_loch_word_191.mp3"
+    },
+    {
+        "ipa": "əl",
+        "example_word": "label",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_label_2023feb.mp3",
+        "local_file": "uk_label_sound_192.mp3"
+    },
+    {
+        "ipa": "əl",
+        "example_word": "label",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_label_2023feb.mp3",
+        "local_file": "us_label_sound_193.mp3"
+    },
+    {
+        "ipa": "əl",
+        "example_word": "label",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_label_2023feb.mp3",
+        "local_file": "uk_label_word_194.mp3"
+    },
+    {
+        "ipa": "əl",
+        "example_word": "label",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_label_2023feb.mp3",
+        "local_file": "us_label_word_195.mp3"
+    },
+    {
+        "ipa": "əm",
+        "example_word": "criticism",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_criticism_2023feb.mp3",
+        "local_file": "uk_criticism_sound_196.mp3"
+    },
+    {
+        "ipa": "əm",
+        "example_word": "criticism",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_criticism_2023feb.mp3",
+        "local_file": "us_criticism_sound_197.mp3"
+    },
+    {
+        "ipa": "əm",
+        "example_word": "criticism",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_criticism_2023feb.mp3",
+        "local_file": "uk_criticism_word_198.mp3"
+    },
+    {
+        "ipa": "əm",
+        "example_word": "criticism",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_criticism_2023feb.mp3",
+        "local_file": "us_criticism_word_199.mp3"
+    },
+    {
+        "ipa": "ən",
+        "example_word": "sudden",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_sudden_2023feb.mp3",
+        "local_file": "uk_sudden_sound_200.mp3"
+    },
+    {
+        "ipa": "ən",
+        "example_word": "sudden",
+        "region": "US",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_sound_sudden_2023feb.mp3",
+        "local_file": "us_sudden_sound_201.mp3"
+    },
+    {
+        "ipa": "ən",
+        "example_word": "sudden",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_sudden_2023feb.mp3",
+        "local_file": "uk_sudden_word_202.mp3"
+    },
+    {
+        "ipa": "ən",
+        "example_word": "sudden",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_sudden_2023feb.mp3",
+        "local_file": "us_sudden_word_203.mp3"
+    },
+    {
+        "ipa": "ər",
+        "example_word": "dictionary",
+        "region": "UK",
+        "type": "sound",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_sound_dictionary_2023jun.mp3",
+        "local_file": "uk_dictionary_sound_204.mp3"
+    },
+    {
+        "ipa": "ər",
+        "example_word": "dictionary",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_dictionary_2023jun.mp3",
+        "local_file": "uk_dictionary_word_205.mp3"
+    },
+    {
+        "ipa": "ər",
+        "example_word": "dictionary",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_dictionary_2023jun.mp3",
+        "local_file": "uk_dictionary_word_206.mp3"
+    },
+    {
+        "ipa": ".",
+        "example_word": "system",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_system_2023feb.mp3",
+        "local_file": "uk_system_word_207.mp3"
+    },
+    {
+        "ipa": ".",
+        "example_word": "system",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_system_2023feb.mp3",
+        "local_file": "us_system_word_208.mp3"
+    },
+    {
+        "ipa": "ˈ",
+        "example_word": "surprise",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_surprise_2023feb.mp3",
+        "local_file": "uk_surprise_word_209.mp3"
+    },
+    {
+        "ipa": "ˈ",
+        "example_word": "surprise",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_surprise_2023feb.mp3",
+        "local_file": "us_surprise_word_210.mp3"
+    },
+    {
+        "ipa": "ˌ",
+        "example_word": "retell",
+        "region": "UK",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/uk_phonetic/uk_phonetics_word_retell_2023feb.mp3",
+        "local_file": "uk_retell_word_211.mp3"
+    },
+    {
+        "ipa": "ˌ",
+        "example_word": "retell",
+        "region": "US",
+        "type": "word",
+        "url": "https://dictionary.cambridge.org/media/english/us_phonetic/us_phonetics_word_retell_2023feb.mp3",
+        "local_file": "us_retell_word_212.mp3"
+    }
+]
