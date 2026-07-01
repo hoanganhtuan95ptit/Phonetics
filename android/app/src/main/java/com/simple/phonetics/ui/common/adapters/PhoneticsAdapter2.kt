@@ -1,6 +1,7 @@
 package com.simple.phonetics.ui.common.adapters
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,8 +48,9 @@ class PhoneticsAdapter2(onItemClick: ((View, PhoneticsViewItem2) -> Unit)? = nul
         binding.root.text = item.text
         binding.root.onlyReading = item.onlyReading
 
+        Log.d("tuanha", "onBindViewHolder: ")
         if (payloads.isEmpty() || payloads.contains("strokeShow")) strokeShow(binding, item, animate = payloads.isNotEmpty())
-        if (payloads.isEmpty() || payloads.contains("textDisplay")) textDisplay(binding, item)
+        if (payloads.isEmpty() || payloads.contains("drawSpec")) drawSpec(binding, item)
         if (payloads.isEmpty() || payloads.contains("strokeColor")) strokeColor(binding, item)
     }
 
@@ -58,7 +60,7 @@ class PhoneticsAdapter2(onItemClick: ((View, PhoneticsViewItem2) -> Unit)? = nul
         binding.root.setLoading(false, item.strokeShow, animate)
     }
 
-    private fun textDisplay(binding: ItemPhonetics2Binding, item: PhoneticsViewItem2) {
+    private fun drawSpec(binding: ItemPhonetics2Binding, item: PhoneticsViewItem2) {
         binding.root.spec = item.drawSpec
     }
 
@@ -93,7 +95,7 @@ data class PhoneticsViewItem2(
             LinearNode(
                 orientation = Orientation.HORIZONTAL,
                 crossAlign = CrossAlign.CENTER,
-                gap = DP.DP_4,
+                gap = DP.DP_8,
                 children = listOfNotNull(
                     TextNode(
                         text = textDisplay,
@@ -121,9 +123,10 @@ data class PhoneticsViewItem2(
     )
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
-        textDisplay to "textDisplay",
-        iconShow to "textDisplay",
-        iconDisplay to "textDisplay",
+        textDisplay to "drawSpec",
+        phoneticDisplay to "drawSpec",
+        iconShow to "drawSpec",
+        iconDisplay to "drawSpec",
 
         strokeShow to "strokeShow",
         strokeColor to "strokeColor",

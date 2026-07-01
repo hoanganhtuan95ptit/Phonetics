@@ -147,8 +147,9 @@ class IpaDetailViewModel(
     }
 
     @VisibleForTesting
-    val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportReading) {
+    val phoneticsViewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(size, theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportReading) {
 
+        val size = size.value ?: return@listenerSourcesWithDiff
         val theme = theme.value ?: return@listenerSourcesWithDiff
         val translate = translate.value ?: return@listenerSourcesWithDiff
 
@@ -182,6 +183,7 @@ class IpaDetailViewModel(
             isSupportListen = isSupportReading.value == true,
             isSupportTranslate = false,
 
+            sizes = size,
             theme = theme,
             translate = translate
         ).let {

@@ -169,7 +169,7 @@ class SpeakViewModel(
             .associateBy { it.word.lowercase() }
             .toMutableMap()
 
-        val iconDisplay = R.drawable.ic_volume_black_24dp.toBuilder()
+        val iconDisplay = R.drawable.img_volume.toBuilder()
             .addTransform(ColorFilter(themes.colorOnSurface))
             .build()
 
@@ -205,7 +205,7 @@ class SpeakViewModel(
             }
 
             val phoneticDisplay = ipa
-                .with(TextSize(12.toPx()), ForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
+                .with(TextSize(16.toPx()), ForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
 
 
             PhoneticsViewItem2(

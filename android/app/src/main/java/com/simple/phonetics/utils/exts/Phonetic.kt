@@ -15,12 +15,10 @@ import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
 import com.simple.coreapp.utils.ext.with
-import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.common.adapters.PhoneticsLoadingViewItem
-import com.simple.phonetics.ui.common.adapters.PhoneticsViewItem
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 import com.simple.state.ResultState
 import com.unknown.theme.utils.exts.colorError
@@ -49,7 +47,7 @@ fun List<Sentence>.toViewItem(
     isSupportListen: Boolean = false,
     isSupportTranslate: Boolean = false,
 
-    theme: Map<String, Any>, translate: Map<String, String>
+    sizes: Map<String, Int>, theme: Map<String, Any>, translate: Map<String, String>
 ) = flatMapIndexed { indexItem: Int, item: Sentence ->
 
     item.toViewItem(
@@ -62,6 +60,7 @@ fun List<Sentence>.toViewItem(
         isSupportListen = isSupportListen,
         isSupportTranslate = isSupportTranslate,
 
+        sizes = sizes,
         theme = theme,
         translate = translate
     )
@@ -76,7 +75,8 @@ private fun Sentence.toViewItem(
     isSupportListen: Boolean = false,
     isSupportTranslate: Boolean = false,
 
-    theme: Map<String, Any>, translate: Map<String, String>
+
+    sizes: Map<String, Int>, theme: Map<String, Any>, translate: Map<String, String>
 ): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
     val item = this@toViewItem
@@ -93,10 +93,11 @@ private fun Sentence.toViewItem(
         phonetic.toViewItem(
             id = "${index * 1000 + indexPhonetic}",
 
-            isSupportSpeak = isSupportSpeak,
-            isSupportListen = isSupportListen,
+            isSupportSpeaking = isSupportSpeak,
+            isSupportReading = isSupportListen,
 
-            theme = theme
+            sizes = sizes,
+            themes = theme
         )
     }.let {
 
@@ -190,6 +191,7 @@ private fun Sentence.toSpeakViewItem(index: Int, theme: Map<String, Any>, transl
         imageLeftPadding = DEFAULT_PADDING
     )
 }
+/*
 
 private fun com.simple.phonetic.entities.Phonetic.toViewItem(
     id: String,
@@ -228,3 +230,4 @@ private fun com.simple.phonetic.entities.Phonetic.toViewItem(
         )
     )
 }
+*/

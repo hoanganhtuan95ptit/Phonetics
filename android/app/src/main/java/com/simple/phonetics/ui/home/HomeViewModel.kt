@@ -267,6 +267,7 @@ class HomeViewModel(
     @VisibleForTesting
     val phoneticsViewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff<List<ViewItem>>(size, theme, translate, phoneticsState, phoneticCodeSelected, isSupportSpeak, isSupportReading, isSupportTranslate) {
 
+        val size = size.get()
         val theme = theme.get()
         val translate = translate.get()
 
@@ -286,6 +287,7 @@ class HomeViewModel(
             isSupportListen = isSupportReading.value == true,
             isSupportTranslate = isSupportTranslate,
 
+            sizes = size,
             theme = theme,
             translate = translate
         ).let {
