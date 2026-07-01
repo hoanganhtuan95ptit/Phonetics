@@ -72,7 +72,7 @@ val useCaseModule = module {
     }
 
     single {
-        GetPhoneticsRandomUseCase(get(), get(), get())
+        GetPhoneticsRandomUseCase(get(), get())
     }
 
     single {

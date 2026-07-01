@@ -26,4 +26,15 @@ interface PhoneticRepository {
 
 
     suspend fun suggest(text: String): List<Phonetic>
+
+
+    suspend fun getRandomPhonetics(
+        resource: String,
+        languageCode: String,
+        ipaCode: String,
+        ipaQuery: String?,
+        textMin: Int,
+        textLimit: Int,
+        limit: Int
+    ): List<Phonetic>
 }

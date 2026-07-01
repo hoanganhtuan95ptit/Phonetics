@@ -1,18 +1,16 @@
 package com.simple.phonetics.domain.usecase.phonetics
 
+import android.util.Log
 import com.simple.core.utils.extentions.toJson
 import com.simple.crashlytics.logCrashlytics
 import com.simple.phonetics.domain.repositories.LanguageRepository
 import com.simple.phonetics.domain.repositories.PhoneticRepository
-import com.simple.phonetics.domain.repositories.WordRepository
 import com.simple.phonetics.entities.Word
 import com.simple.phonetics.utils.exts.getWordDelimiters
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlin.math.min
 
 class GetPhoneticsRandomUseCase(
-    private val wordRepository: WordRepository,
     private val phoneticRepository: PhoneticRepository,
     private val languageRepository: LanguageRepository
 ) {
@@ -21,29 +19,7 @@ class GetPhoneticsRandomUseCase(
 
         val languageCode = languageRepository.getLanguageInputAsync().filterNotNull().first().id
 
-
-
-        val wordList = getWords(param = param, languageCode = languageCode)
-
-
-        val phoneticList = if (!param.resource.startsWith("/")) {
-
-            phoneticRepository.getPhonetic(textList = wordList, phoneticCode = param.phoneticsCode)
-        } else param.resource.replace("/", "").let {
-
-            phoneticRepository.getPhonetic(ipaQuery = ipaWrap(phoneticCode = param.phoneticsCode, ipa = it), textList = wordList, phoneticCode = param.phoneticsCode)
-        }
-
-
-        if (phoneticList.isEmpty() || phoneticList.size < param.limit) {
-
-            logCrashlytics("phonetic_empty_${wordList.size}", RuntimeException(param.toJson()))
-        }
-
-        return phoneticList.shuffled().subList(0, min(phoneticList.size, param.limit))
-    }
-
-    private suspend fun getWords(param: Param, languageCode: String): List<String> {
+        Log.d(TAG, "execute: param=${param.toJson()}, languageCode=$languageCode     -------------------------------------->")
 
         val textLengthMin = if (getWordDelimiters(languageCode = languageCode).contains("")) {
             0
@@ -51,33 +27,60 @@ class GetPhoneticsRandomUseCase(
             param.textLengthMin
         }
 
-        var list = wordRepository.getRandom(
-            resource = param.resource,
+        val ipaQuery = if (param.resource.startsWith("/")) {
+            ipaWrap(phoneticCode = param.phoneticsCode, ipa = param.resource.replace("/", ""))
+        } else {
+            null
+        }
+
+        val resource = if (param.resource.startsWith("/")) {
+            param.resource
+        } else {
+            param.resource
+        }
+
+        Log.d(TAG, "execute: resource=$resource, ipaCode=${param.phoneticsCode}, ipaQuery=$ipaQuery, textLengthMin=$textLengthMin, textLengthMax=${param.textLengthMax}, limit=${param.limit}")
+
+
+        var phoneticList = phoneticRepository.getRandomPhonetics(
+            resource = resource,
             languageCode = languageCode,
-
-            limit = 200,
-
+            ipaCode = param.phoneticsCode,
+            ipaQuery = ipaQuery,
             textMin = textLengthMin,
-            textLimit = param.textLengthMax
+            textLimit = param.textLengthMax,
+            limit = param.limit
         )
 
-        if (list.isNotEmpty()) {
+        Log.d(TAG, "execute: first query result size=${phoneticList.size}, texts=${phoneticList.map { it.text }}")
 
-            return list
+        if (phoneticList.isEmpty()) {
+
+            Log.d(TAG, "execute: first query empty, fallback to Popular")
+
+            phoneticList = phoneticRepository.getRandomPhonetics(
+                resource = Word.Resource.Popular.value,
+                languageCode = languageCode,
+                ipaCode = param.phoneticsCode,
+                ipaQuery = ipaQuery,
+                textMin = textLengthMin,
+                textLimit = param.textLengthMax,
+                limit = param.limit
+            )
+
+            Log.d(TAG, "execute: fallback result size=${phoneticList.size}, texts=${phoneticList}")
         }
 
 
-        list = wordRepository.getRandom(
-            resource = Word.Resource.Popular.value,
-            languageCode = languageCode,
+        if (phoneticList.isEmpty() || phoneticList.size < param.limit) {
 
-            limit = 3000,
+            Log.d(TAG, "execute: insufficient results ${phoneticList.size}/${param.limit}")
+            logCrashlytics("phonetic_empty_${phoneticList.size}", RuntimeException(param.toJson()))
+        }
 
-            textMin = textLengthMin,
-            textLimit = param.textLengthMax
-        )
-
-        return list
+        Log.d(TAG, "execute: <---------------------------------------------------------------------------------")
+        
+        return phoneticList
     }
 
     private fun ipaWrap(phoneticCode: String, ipa: String): String {
@@ -105,6 +108,10 @@ class GetPhoneticsRandomUseCase(
         } else {
             ipa
         }
+    }
+
+    companion object {
+        private const val TAG = "GetPhoneticsRandomUC"
     }
 
     data class Param(

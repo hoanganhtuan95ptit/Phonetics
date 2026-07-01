@@ -151,6 +151,29 @@ class PhoneticRepositoryImpl(
         }
     }
 
+    override suspend fun getRandomPhonetics(
+        resource: String,
+        languageCode: String,
+        ipaCode: String,
+        ipaQuery: String?,
+        textMin: Int,
+        textLimit: Int,
+        limit: Int
+    ): List<Phonetic> {
+        val wordDbPath = context.getDatabasePath("word_database_v2").absolutePath
+        PhoneticProviderV2.attachWordDatabase(wordDbPath)
+
+        return phoneticNewDao.getRandomPhonetics(
+            resource = resource,
+            languageCode = languageCode,
+            ipaCode = ipaCode.lowercase(),
+            ipaQuery = ipaQuery,
+            textMin = textMin,
+            textLimit = textLimit,
+            limit = limit
+        )
+    }
+
 
     private fun copyPhonetic() = channelFlow {
 

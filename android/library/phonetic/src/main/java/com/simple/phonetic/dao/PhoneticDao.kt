@@ -9,8 +9,11 @@ import androidx.room.Index
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.simple.core.utils.extentions.toJson
 import com.simple.phonetic.PhoneticInitializer
 import com.simple.phonetic.entities.Phonetic
@@ -68,6 +71,40 @@ interface PhoneticDaoV2 {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdateRoom(vararg rooms: RoomPhonetic)
+
+
+    @RawQuery
+    fun getRandomPhoneticsRaw(query: SupportSQLiteQuery): List<Phonetic>
+
+    fun getRandomPhonetics(
+        resource: String,
+        languageCode: String,
+        ipaCode: String,
+        ipaQuery: String?,
+        textMin: Int,
+        textLimit: Int,
+        limit: Int
+    ): List<Phonetic> {
+        val sql = buildString {
+            append("SELECT p.* FROM phonetics p")
+            append(" JOIN word_db.words w ON p.text = w.text")
+            append(" WHERE w.resource = ?")
+            append(" AND w.languageCode = ? COLLATE NOCASE")
+            append(" AND LENGTH(w.text) >= ?")
+            append(" AND LENGTH(w.text) < ?")
+            append(" AND p.ipaCode = ?")
+            if (ipaQuery != null) {
+                append(" AND p.ipaValue LIKE '%' || ? || '%'")
+            }
+            append(" ORDER BY RANDOM() LIMIT ?")
+        }
+
+        val args = mutableListOf<Any>(resource, languageCode, textMin, textLimit, ipaCode)
+        if (ipaQuery != null) args.add(ipaQuery)
+        args.add(limit)
+
+        return getRandomPhoneticsRaw(SimpleSQLiteQuery(sql, args.toTypedArray()))
+    }
 }
 
 @Keep
@@ -114,8 +151,21 @@ abstract class PhoneticRoomDatabase : RoomDatabase() {
 
 object PhoneticProviderV2 {
 
-    val phoneticDao by lazy {
+    private val database by lazy {
         Room.databaseBuilder(PhoneticInitializer.application, PhoneticRoomDatabase::class.java, "phonetics_database_v2")
-            .build().phoneticDao()
+            .build()
+    }
+
+    val phoneticDao by lazy {
+        database.phoneticDao()
+    }
+
+    private var isWordDbAttached = false
+
+    @Synchronized
+    fun attachWordDatabase(wordDbPath: String) {
+        if (isWordDbAttached) return
+        database.openHelper.writableDatabase.execSQL("ATTACH DATABASE '$wordDbPath' AS word_db")
+        isWordDbAttached = true
     }
 }

@@ -3,6 +3,7 @@
 package com.simple.phonetics.ui.game.items.ipa_match
 
 import android.graphics.Color
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
