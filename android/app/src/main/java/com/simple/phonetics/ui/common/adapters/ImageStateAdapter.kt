@@ -15,7 +15,6 @@ import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.ui.view.setSize
 import com.simple.coreapp.utils.ext.setVisible
-import com.simple.image.setImage
 import com.simple.phonetics.databinding.ItemImageStateBinding
 
 @ItemAdapter
@@ -70,7 +69,7 @@ class ImageStateAdapter(onItemClick: (View, ImageStateViewItem) -> Unit = { _, _
             binding.ivImage.playAnimation()
         }
         if (item.image != null) {
-            binding.ivImage.setImage(item.image)
+            binding.ivImage.setImageResource(item.image)
         }
     }
 

@@ -10,7 +10,6 @@ import com.simple.coreapp.ui.view.DEFAULT_PADDING
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.utils.ext.setVisible
-import com.simple.image.setImage
 import com.simple.phonetic.entities.Phonetic
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemPhoneticsBinding
@@ -56,7 +55,7 @@ class PhoneticsAdapter(onItemClick: ((View, PhoneticsViewItem) -> Unit)? = null)
     }
 
     private fun refreshImage(binding: ItemPhoneticsBinding, item: PhoneticsViewItem) {
-        binding.ivDown.setImage(item.image)
+        binding.ivDown.setImageResource(item.image)
         binding.ivDown.setVisible(item.image != 0)
     }
 

@@ -8,7 +8,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.flexbox.AlignItems
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
@@ -24,7 +23,6 @@ import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
-import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
 import com.simple.phonetics.Id
@@ -44,6 +42,7 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.replace
 import com.simple.phonetics.utils.exts.submitListAndAwait
+import com.simple.ui.precompute.image.setImage
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlin.math.absoluteValue
@@ -189,7 +188,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             val binding = binding ?: return@observe
 
-            binding.ivPicture.setImage(it.image, CircleCrop())
+            binding.ivPicture.setImage(it.image)
             binding.ivPicture.setVisible(it.isShow)
         }
 

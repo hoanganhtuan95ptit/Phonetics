@@ -12,8 +12,8 @@ import com.simple.phonetics.di.repositoryModule
 import com.simple.phonetics.di.taskModule
 import com.simple.phonetics.di.useCaseModule
 import com.simple.phonetics.di.viewModelModule
-import com.simple.ui.precompute.GlideImageLoader
-import com.simple.ui.precompute.ImageLoader
+import com.simple.ui.precompute.loader.GlideImageLoader
+import com.simple.ui.precompute.loader.ImageLoader
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

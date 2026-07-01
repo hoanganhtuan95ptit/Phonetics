@@ -4,15 +4,15 @@ import android.text.style.AbsoluteSizeSpan
 import android.text.style.CharacterStyle
 import androidx.annotation.Keep
 import com.google.auto.service.AutoService
-import com.simple.ui.precompute.text.BigSpan
-import com.simple.ui.precompute.text.BigSpanConvert
+import com.simple.ui.precompute.text.BigImageSpan
+import com.simple.ui.precompute.text.BigImageSpanConvert
 
-data class BigTextSize(val sizeDip: Int) : BigSpan()
+data class BigTextSize(val sizeDip: Int) : BigImageSpan
 
 @Keep
-@AutoService(BigSpanConvert::class)
-class BigTextSizeConvert : BigSpanConvert {
-    override fun getAndroidSpan(bigSpan: BigSpan): CharacterStyle? {
+@AutoService(BigImageSpanConvert::class)
+class BigTextSizeConvert : BigImageSpanConvert {
+    override fun convert(bigSpan: BigImageSpan): CharacterStyle? {
         return if (bigSpan is BigTextSize) AbsoluteSizeSpan(bigSpan.sizeDip, true) else null
     }
 }

@@ -26,7 +26,6 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.event.sendEvent
-import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
@@ -38,6 +37,7 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.image.setImage
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 

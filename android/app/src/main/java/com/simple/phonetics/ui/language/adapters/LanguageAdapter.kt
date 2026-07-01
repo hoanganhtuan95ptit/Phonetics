@@ -3,17 +3,16 @@ package com.simple.phonetics.ui.language.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
-import com.simple.image.RichImage
-import com.simple.image.setImage
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemLanguageBinding
 import com.simple.phonetics.entities.Language
+import com.simple.ui.precompute.image.setImage
+import com.simple.ui.precompute.image.BigImage
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.setText
 
@@ -38,7 +37,7 @@ class LanguageAdapter(onItemClick: (View, LanguageViewItem) -> Unit = { _, _ -> 
     override fun onBindViewHolder(binding: ItemLanguageBinding, viewType: Int, position: Int, item: LanguageViewItem) {
         super.onBindViewHolder(binding, viewType, position, item)
 
-        binding.ivFlag.setImage(item.image, CircleCrop())
+        binding.ivFlag.setImage(item.image)
 
         refreshName(binding, item)
         refreshTheme(binding, item)
@@ -59,7 +58,7 @@ data class LanguageViewItem(
     val data: Language,
 
     val name: BigText,
-    val image: RichImage,
+    val image: BigImage,
     val isSelected: Boolean,
 
     val background: Background,

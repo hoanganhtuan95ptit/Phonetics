@@ -20,4 +20,6 @@ dependencies {
     kapt hoanganhtuan95Dependencies.deeplink_processor
     implementation hoanganhtuan95Dependencies.autobind
     kapt hoanganhtuan95Dependencies.autobind_processor
+
+    implementation("com.github.hoanganhtuan95ptit.core:glide-loader")
 }

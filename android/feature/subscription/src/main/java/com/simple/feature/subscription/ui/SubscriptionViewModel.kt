@@ -18,8 +18,6 @@ import com.simple.feature.subscription.R
 import com.simple.feature.subscription.data.repositories.SubscriptionRepository
 import com.simple.feature.subscription.entities.SubscriptionPlan
 import com.simple.feature.subscription.ui.adapters.SubscriptionPlanViewItem
-import com.simple.image.ImageRes
-import com.simple.image.RichImage
 import com.simple.phonetics.domain.usecase.GetConfigAsyncUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.utils.exts.colorDivider
@@ -37,6 +35,11 @@ import com.simple.state.doSuccess
 import com.simple.state.isStart
 import com.simple.state.isSuccess
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.image.BigImage
+import com.simple.ui.precompute.image.ColorFilter
+import com.simple.ui.precompute.image.addTransform
+import com.simple.ui.precompute.image.build
+import com.simple.ui.precompute.image.toBuilder
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.span.BigBold
@@ -63,7 +66,9 @@ class SubscriptionViewModel : BaseViewModel() {
         val strings = strings.value ?: return@combineSourcesWithDiff
 
         val info = HeaderInfo(
-            back = ImageRes(R.drawable.ic_arrow_left_on_surface, themes.colorOnBackground),
+            back = R.drawable.ic_arrow_left_on_surface.toBuilder()
+                .addTransform(ColorFilter(themes.colorOnBackground))
+                .build(),
             title = strings.getOrKey("subscription_screen_title")
                 .with(BigForegroundColor(themes.colorOnBackground)).build(),
             message = strings.getOrKey("subscription_screen_message")
@@ -337,7 +342,7 @@ class SubscriptionViewModel : BaseViewModel() {
     }
 
     data class HeaderInfo(
-        val back: RichImage,
+        val back: BigImage,
         val title: BigText,
         val message: BigText,
     )

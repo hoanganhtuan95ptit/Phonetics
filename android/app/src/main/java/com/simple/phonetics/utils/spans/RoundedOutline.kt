@@ -11,8 +11,8 @@ import android.text.style.LineBackgroundSpan
 import android.text.style.MetricAffectingSpan
 import androidx.annotation.Keep
 import com.google.auto.service.AutoService
-import com.simple.ui.precompute.text.BigSpan
-import com.simple.ui.precompute.text.BigSpanConvert
+import com.simple.ui.precompute.text.BigImageSpan
+import com.simple.ui.precompute.text.BigImageSpanConvert
 
 data class BigRoundedOutline(
     val textSize: Float,
@@ -25,13 +25,13 @@ data class BigRoundedOutline(
     val cornerRadius: Float = 0f,
     val dashWidth: Float = 0f,
     val dashGap: Float = 0f
-) : BigSpan()
+) : BigImageSpan
 
 @Keep
-@AutoService(BigSpanConvert::class)
-class BigRoundedOutlineSpanConvert : BigSpanConvert {
+@AutoService(BigImageSpanConvert::class)
+class BigRoundedOutlineSpanConvert : BigImageSpanConvert {
 
-    override fun getAndroidSpan(bigSpan: BigSpan): CharacterStyle? {
+    override fun convert(bigSpan: BigImageSpan): CharacterStyle? {
         return (bigSpan as? BigRoundedOutline)?.let(::RoundedOutlineAndroidSpan)
     }
 }

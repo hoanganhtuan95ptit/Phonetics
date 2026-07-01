@@ -22,4 +22,5 @@ dependencies {
     kapt hoanganhtuan95Dependencies.autobind_processor
 
     implementation "com.android.billingclient:billing-ktx:7.1.0"
+    implementation("com.github.hoanganhtuan95ptit.core:glide-loader")
 }

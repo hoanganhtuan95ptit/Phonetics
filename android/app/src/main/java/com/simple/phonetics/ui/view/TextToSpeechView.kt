@@ -7,14 +7,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
-import com.simple.image.ImageRes
-import com.simple.image.setImage
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.view.outline.OutlineLinearLayout
 import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isIdle
 import com.simple.state.isStart
+import com.simple.ui.precompute.image.setImage
+import com.simple.ui.precompute.image.ColorFilter
+import com.simple.ui.precompute.image.addTransform
+import com.simple.ui.precompute.image.build
+import com.simple.ui.precompute.image.toBuilder
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlinx.coroutines.flow.first
@@ -37,7 +40,7 @@ class TextToSpeechView @JvmOverloads constructor(
         inflate(context, R.layout.layout_play, this)
 
         ivSource = findViewById(R.id.iv_source)
-        ivSource.setImage(R.drawable.img_ai)
+        ivSource.setImageResource(R.drawable.img_ai)
 
         ivReading = findViewById(R.id.iv_play_or_pause)
 
@@ -55,7 +58,11 @@ class TextToSpeechView @JvmOverloads constructor(
 
         viewModel.themes.launchCollect(lifecycleOwner) {
 
-            ivReading.setImage(ImageRes(R.drawable.ic_volume_24dp, colorFilter = it.colorPrimary))
+            ivReading.setImage(
+                R.drawable.ic_volume_24dp.toBuilder()
+                    .addTransform(ColorFilter(it.colorPrimary))
+                    .build()
+            )
             strokeColor =  it.colorPrimary
         }
 
@@ -74,9 +81,13 @@ class TextToSpeechView @JvmOverloads constructor(
             val theme = viewModel.themes.first()
 
             val res = if (state.isIdle() || state.isStart() || state.isCompleted()) {
-                ImageRes(data = R.drawable.ic_volume_24dp, colorFilter = theme.colorPrimary)
+                R.drawable.ic_volume_24dp.toBuilder()
+                    .addTransform(ColorFilter(theme.colorPrimary))
+                    .build()
             } else {
-                ImageRes(data = R.drawable.ic_pause_24dp, colorFilter = theme.colorPrimary)
+                R.drawable.ic_pause_24dp.toBuilder()
+                    .addTransform(ColorFilter(theme.colorPrimary))
+                    .build()
             }
             ivReading.setImage(res)
         }

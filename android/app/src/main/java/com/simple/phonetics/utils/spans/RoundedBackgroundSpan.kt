@@ -7,21 +7,21 @@ import android.text.style.CharacterStyle
 import android.text.style.ReplacementSpan
 import androidx.annotation.Keep
 import com.google.auto.service.AutoService
-import com.simple.ui.precompute.text.BigSpan
-import com.simple.ui.precompute.text.BigSpanConvert
+import com.simple.ui.precompute.text.BigImageSpan
+import com.simple.ui.precompute.text.BigImageSpanConvert
 
 
 data class BigRoundedBackground(
     val backgroundColor: Int,
     val textColor: Int,
     val radius: Float = 20f
-) : BigSpan()
+) : BigImageSpan
 
 @Keep
-@AutoService(BigSpanConvert::class)
-class BigRoundedBackgroundConvert : BigSpanConvert {
+@AutoService(BigImageSpanConvert::class)
+class BigRoundedBackgroundConvert : BigImageSpanConvert {
 
-    override fun getAndroidSpan(bigSpan: BigSpan): CharacterStyle? {
+    override fun convert(bigSpan: BigImageSpan): CharacterStyle? {
         return if (bigSpan is BigRoundedBackground) RoundedBackgroundSpan(bigSpan.backgroundColor, bigSpan.textColor, bigSpan.radius) else null
     }
 }

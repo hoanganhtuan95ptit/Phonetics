@@ -47,7 +47,7 @@ import com.simple.state.isCompleted
 import com.simple.state.isFailed
 import com.simple.state.isIdle
 import com.simple.state.isRunning
-import com.simple.ui.precompute.setImage
+import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.text.setText
 import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.height

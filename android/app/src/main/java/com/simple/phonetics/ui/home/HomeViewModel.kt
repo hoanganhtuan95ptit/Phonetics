@@ -58,6 +58,11 @@ import com.simple.state.isRunning
 import com.simple.state.isStart
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.image.BigImage
+import com.simple.ui.precompute.image.CircleCrop
+import com.simple.ui.precompute.image.addTransform
+import com.simple.ui.precompute.image.build
+import com.simple.ui.precompute.image.toBuilder
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.emptyText
@@ -118,7 +123,10 @@ class HomeViewModel(
         val detectState = detectState.value
 
         val info = ImageInfo(
-            image = detectState?.toRunning()?.data.orEmpty(),
+            image = detectState?.toRunning()?.data.orEmpty()
+                .toBuilder()
+                .addTransform(CircleCrop)
+                .build(),
             isShow = !detectState.isCompleted(),
         )
 
@@ -502,7 +510,7 @@ class HomeViewModel(
     )
 
     data class ImageInfo(
-        val image: String,
+        val image: BigImage,
         val isShow: Boolean = false,
     )
 

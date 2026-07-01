@@ -15,7 +15,6 @@ import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.mediatorLiveData
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.crashlytics.logCrashlytics
-import com.simple.image.ImagePath
 import com.simple.phonetics.domain.usecase.language.GetLanguageSupportAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.GetLanguageInputAsyncUseCase
 import com.simple.phonetics.domain.usecase.language.input.UpdateLanguageInputUseCase
@@ -36,6 +35,10 @@ import com.simple.state.isCompleted
 import com.simple.state.isSuccess
 import com.simple.state.toRunning
 import com.simple.state.toSuccess
+import com.simple.ui.precompute.image.CircleCrop
+import com.simple.ui.precompute.image.addTransform
+import com.simple.ui.precompute.image.build
+import com.simple.ui.precompute.image.toBuilder
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.span.BigBold
@@ -140,7 +143,9 @@ class LanguageViewModel(
                 name = name
                     .with(BigForegroundColor(if (isSelected) theme.colorOnPrimaryVariant else theme.colorOnSurface)).build(),
 
-                image = ImagePath(it.image),
+                image = it.image.toBuilder()
+                    .addTransform(CircleCrop)
+                    .build(),
 
                 isSelected = isSelected,
 

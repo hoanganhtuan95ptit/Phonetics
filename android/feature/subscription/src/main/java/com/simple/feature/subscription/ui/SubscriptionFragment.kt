@@ -15,7 +15,6 @@ import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
 import com.simple.feature.subscription.ui.adapters.SubscriptionPlanAdapter
-import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.FragmentListHeaderVerticalBinding
@@ -25,6 +24,7 @@ import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
 import com.simple.phonetics.utils.exts.replace
 import com.simple.phonetics.utils.exts.submitListAndAwait
 import com.simple.state.doSuccess
+import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.text.setText
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground

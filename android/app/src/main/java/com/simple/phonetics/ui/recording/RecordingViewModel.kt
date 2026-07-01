@@ -26,8 +26,6 @@ import com.simple.coreapp.utils.extentions.listenerSourcesWithDiff
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.coreapp.utils.extentions.toPx
-import com.simple.image.ImageRes
-import com.simple.image.RichImage
 import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.speak.StartSpeakUseCase
 import com.simple.phonetics.domain.usecase.speak.StopSpeakUseCase
@@ -37,6 +35,11 @@ import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isStart
+import com.simple.ui.precompute.image.BigImage
+import com.simple.ui.precompute.image.ColorFilter
+import com.simple.ui.precompute.image.addTransform
+import com.simple.ui.precompute.image.build
+import com.simple.ui.precompute.image.toBuilder
 import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
@@ -139,9 +142,13 @@ class RecordingViewModel(
             image = if (speakState.isRunning()) {
                 null
             } else if (speakState == null || speakState.isStart() || speakState.isCompleted()) {
-                ImageRes(R.drawable.ic_microphone_24dp, theme.colorPrimary)
+                R.drawable.ic_microphone_24dp.toBuilder()
+                    .addTransform(ColorFilter(theme.colorPrimary))
+                    .build()
             } else {
-                ImageRes(R.drawable.ic_microphone_slash_24dp, theme.colorPrimary)
+                R.drawable.ic_microphone_slash_24dp.toBuilder()
+                    .addTransform(ColorFilter(theme.colorPrimary))
+                    .build()
             },
 
             isLoading = speakState.isStart(),
@@ -211,7 +218,7 @@ class RecordingViewModel(
         val data: Any? = null,
 
         val anim: Int? = null,
-        val image: RichImage? = null,
+        val image: BigImage? = null,
 
         val isLoading: Boolean = false,
 

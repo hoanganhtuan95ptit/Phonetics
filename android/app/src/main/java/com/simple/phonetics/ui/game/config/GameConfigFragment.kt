@@ -29,7 +29,6 @@ import com.simple.coreapp.utils.exts.showOrAwaitDismiss
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.event.sendEvent
-import com.simple.image.setImage
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
@@ -149,14 +148,14 @@ class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, Di
             binding.tvTitle.setBackground(item.textBackground)
 
             binding.ivLeft.setVisible(item.imageLeft != null)
-            binding.ivLeft.setImage(item.imageLeft ?: return@observe)
+            binding.ivLeft.setImageResource(item.imageLeft ?: return@observe)
             binding.ivLeft.setSize(item.imageLeftSize)
             binding.ivLeft.setMargin(item.imageLeftMargin)
             binding.ivLeft.setPadding(item.imageLeftPadding)
             binding.ivLeft.setBackground(item.imageLeftBackground)
 
             binding.ivRight.setVisible(item.imageRight != null)
-            binding.ivRight.setImage(item.imageRight ?: return@observe)
+            binding.ivRight.setImageResource(item.imageRight ?: return@observe)
             binding.ivRight.setSize(item.imageRightSize)
             binding.ivRight.setMargin(item.imageRightMargin)
             binding.ivRight.setPadding(item.imageRightPadding)
