@@ -13,10 +13,10 @@ import com.simple.state.ResultState
 import com.simple.state.isCompleted
 import com.simple.state.isIdle
 import com.simple.state.isStart
-import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.image.ColorFilter
 import com.simple.ui.precompute.image.addTransform
 import com.simple.ui.precompute.image.build
+import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.image.toBuilder
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorPrimary
@@ -59,7 +59,7 @@ class TextToSpeechView @JvmOverloads constructor(
         viewModel.themes.launchCollect(lifecycleOwner) {
 
             ivReading.setImage(
-                R.drawable.ic_volume_24dp.toBuilder()
+                R.drawable.ic_volume_black_24dp.toBuilder()
                     .addTransform(ColorFilter(it.colorPrimary))
                     .build()
             )
@@ -81,11 +81,11 @@ class TextToSpeechView @JvmOverloads constructor(
             val theme = viewModel.themes.first()
 
             val res = if (state.isIdle() || state.isStart() || state.isCompleted()) {
-                R.drawable.ic_volume_24dp.toBuilder()
+                R.drawable.ic_volume_black_24dp.toBuilder()
                     .addTransform(ColorFilter(theme.colorPrimary))
                     .build()
             } else {
-                R.drawable.ic_pause_24dp.toBuilder()
+                R.drawable.ic_pause_black_24dp.toBuilder()
                     .addTransform(ColorFilter(theme.colorPrimary))
                     .build()
             }

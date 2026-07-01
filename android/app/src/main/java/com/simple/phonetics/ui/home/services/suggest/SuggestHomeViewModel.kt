@@ -6,22 +6,23 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.ext.ForegroundColor
-import com.simple.coreapp.utils.ext.with
 import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
 import com.simple.coreapp.utils.extentions.get
 import com.simple.coreapp.utils.extentions.postValue
 import com.simple.phonetics.Id
 import com.simple.phonetics.domain.usecase.phonetics.suggest.GetPhoneticsSuggestUseCase
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
 import com.simple.phonetics.utils.exts.colorOnBackgroundVariant
+import com.simple.ui.precompute.text.build
+import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.with
 import com.unknown.theme.utils.exts.colorOnSurface
 
 class SuggestHomeViewModel(
@@ -52,11 +53,12 @@ class SuggestHomeViewModel(
             it.text.length
         }.map {
 
-            ClickTextViewItem(
+            ClickBigTextViewItem(
                 id = Id.SUGGEST + "-" + it.text.lowercase(),
                 data = it,
                 text = it.text
-                    .with(ForegroundColor(theme.colorOnSurface)),
+                    .with(BigForegroundColor(theme.colorOnSurface))
+                    .build(),
                 textSize = Size(
                     width = ViewGroup.LayoutParams.WRAP_CONTENT,
                     height = ViewGroup.LayoutParams.MATCH_PARENT

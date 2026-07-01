@@ -70,7 +70,7 @@ class AudioView @JvmOverloads constructor(
         viewModel.themes.launchCollect(lifecycleOwner) {
 
             ivReading.setImage(
-                R.drawable.ic_volume_24dp.toBuilder()
+                R.drawable.ic_volume_black_24dp.toBuilder()
                     .addTransform(ColorFilter(it.colorPrimary))
                     .build()
             )
@@ -86,11 +86,11 @@ class AudioView @JvmOverloads constructor(
             val theme = viewModel.themes.first()
 
             val res = if (it.isIdle() ||it.isStart() || it.isCompleted()) {
-                R.drawable.ic_volume_24dp.toBuilder()
+                R.drawable.ic_volume_black_24dp.toBuilder()
                     .addTransform(ColorFilter(theme.colorPrimary))
                     .build()
             } else {
-                R.drawable.ic_pause_24dp.toBuilder()
+                R.drawable.ic_pause_black_24dp.toBuilder()
                     .addTransform(ColorFilter(theme.colorPrimary))
                     .build()
             }

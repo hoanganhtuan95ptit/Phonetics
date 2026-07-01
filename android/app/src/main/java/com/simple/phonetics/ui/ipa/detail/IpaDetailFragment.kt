@@ -10,8 +10,6 @@ import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObject
-import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.ForegroundColor
@@ -33,6 +31,8 @@ import com.simple.phonetics.databinding.FragmentListHeaderHorizontalBinding
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextAdapter
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
 import com.simple.phonetics.ui.ipa.detail.adapters.IpaDetailAdapters
 import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
@@ -72,7 +72,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
 
         val binding = binding ?: return
 
-        val clickTextAdapter = ClickTextAdapter { view, item ->
+        val clickTextAdapter = ClickBigTextAdapter { view, item ->
 
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) {
 
@@ -185,7 +185,7 @@ class IpaDetailFragment : BaseFragment<FragmentListHeaderHorizontalBinding, IpaD
         }
     }
 
-    private fun openGame(view: View, item: ClickTextViewItem) {
+    private fun openGame(view: View, item: ClickBigTextViewItem) {
 
         val transitionName = view.transitionName ?: item.id
 

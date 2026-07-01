@@ -26,6 +26,7 @@ import com.simple.phonetics.Id
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.base.fragments.BaseSheetFragment
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextAdapter
 import com.simple.phonetics.ui.config.adapters.VoiceSpeedAdapter
 import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.colorDivider
@@ -58,7 +59,7 @@ class ConfigFragment : BaseSheetFragment<DialogListBinding, ConfigViewModel>() {
 
         val binding = binding ?: return
 
-        val clickTextAdapter = ClickTextAdapter { _, item ->
+        val clickTextAdapter = ClickBigTextAdapter { _, item ->
 
             if (item.id.startsWith(Id.TRANSLATE)) {
 

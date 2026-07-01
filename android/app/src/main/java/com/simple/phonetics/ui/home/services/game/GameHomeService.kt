@@ -5,7 +5,6 @@ import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObject
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.EventName
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
 import com.simple.phonetics.DeeplinkManager
@@ -13,6 +12,7 @@ import com.simple.phonetics.EventName.TEXT_SIMPLE_VIEW_ITEM_CLICKED
 import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.services.HomeService
@@ -37,7 +37,7 @@ class GameHomeService : HomeService {
 
         listenerEvent(eventName = EventName.TEXT_VIEW_ITEM_CLICKED, lifecycle = homeFragment.viewLifecycleOwner.lifecycle) {
 
-            val (view, viewItem) = it.asObjectOrNull<Pair<View, ClickTextViewItem>>() ?: return@listenerEvent
+            val (view, viewItem) = it.asObjectOrNull<Pair<View, ClickBigTextViewItem>>() ?: return@listenerEvent
 
             if (!viewItem.id.startsWith(Id.GAME)) {
 

@@ -9,6 +9,7 @@ import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.ui.ConfigViewModel
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextAdapter
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
@@ -32,7 +33,7 @@ class ConfigHomeService : HomeService {
 
         val binding = homeFragment.binding ?: return
 
-        val textAdapter = ClickTextAdapter { _, _ ->
+        val textAdapter = ClickBigTextAdapter { _, _ ->
 
             sendDeeplink(DeeplinkManager.CONFIG)
         }

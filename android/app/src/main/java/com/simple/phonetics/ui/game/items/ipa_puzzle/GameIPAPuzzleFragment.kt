@@ -24,6 +24,7 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextAdapter
 import com.simple.phonetics.ui.game.GameFragment
 import com.simple.phonetics.ui.game.items.GameItemFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
@@ -66,10 +67,10 @@ class GameIPAPuzzleFragment : GameItemFragment<GameIPAPuzzleViewModel>() {
 
         val binding = binding ?: return
 
-        val clickTextAdapter = ClickTextAdapter { view, item ->
+        val clickTextAdapter = ClickBigTextAdapter { view, item ->
 
             if (item.id.startsWith(Id.CHOOSE)) {
-                viewModel.updateChoose(item.data.asObjectOrNull<String>() ?: return@ClickTextAdapter)
+                viewModel.updateChoose(item.data.asObjectOrNull<String>() ?: return@ClickBigTextAdapter)
             }
         }
 

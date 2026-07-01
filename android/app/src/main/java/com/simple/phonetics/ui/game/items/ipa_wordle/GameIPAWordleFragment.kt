@@ -20,10 +20,12 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.deeplink.DeeplinkHandler
 import com.simple.deeplink.annotation.Deeplink
 import com.simple.deeplink.sendDeeplink
+import com.simple.phonetic.entities.Phonetic
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.ui.common.adapters.ImageStateAdapter
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextAdapter
 import com.simple.phonetics.ui.game.GameFragment
 import com.simple.phonetics.ui.game.items.GameItemFragment
 import com.simple.phonetics.utils.exts.collectWithLockTransitionIfCached
@@ -68,16 +70,16 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
 
         val binding = binding ?: return
 
-        val clickTextAdapter = ClickTextAdapter { view, item ->
+        val clickTextAdapter = ClickBigTextAdapter { view, item ->
 
             if (item.id.startsWith(Id.CHOOSE)) {
-                viewModel.updateChoose(item.data.asObjectOrNull<com.simple.phonetic.entities.Phonetic>() ?: return@ClickTextAdapter)
+                viewModel.updateChoose(item.data.asObjectOrNull<Phonetic>() ?: return@ClickBigTextAdapter)
             }
 
-            val quiz = viewModel.quiz.value ?: return@ClickTextAdapter
+            val quiz = viewModel.quiz.value ?: return@ClickBigTextAdapter
 
             if (quiz.answerType != GameIPAWordleQuiz.Type.VOICE && quiz.questionType != GameIPAWordleQuiz.Type.VOICE) {
-                viewModel.startReading(item.data.asObjectOrNull<com.simple.phonetic.entities.Phonetic>()?.text)
+                viewModel.startReading(item.data.asObjectOrNull<Phonetic>()?.text)
             }
         }
 

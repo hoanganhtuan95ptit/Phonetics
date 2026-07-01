@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.simple.autobind.annotation.AutoBind
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.EventName
-import com.simple.coreapp.ui.adapters.texts.ClickTextViewItem
 import com.simple.coreapp.utils.ext.listenerOnChangeHeightStatusAndHeightNavigation
 import com.simple.coreapp.utils.ext.setVisible
 import com.simple.coreapp.utils.extentions.observeLaunch
@@ -17,6 +16,7 @@ import com.simple.crashlytics.logCrashlytics
 import com.simple.event.listenerEvent
 import com.simple.phonetic.entities.Phonetic
 import com.simple.phonetics.Id
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.ui.view.SelectionEdittext
@@ -58,7 +58,7 @@ class SuggestHomeService : HomeService {
 
         listenerEvent(homeFragment.viewLifecycleOwner.lifecycle, eventName = EventName.TEXT_VIEW_ITEM_CLICKED) {
 
-            val (view, viewItem) = it.asObjectOrNull<Pair<View, ClickTextViewItem>>() ?: return@listenerEvent
+            val (view, viewItem) = it.asObjectOrNull<Pair<View, ClickBigTextViewItem>>() ?: return@listenerEvent
 
             if (!viewItem.id.startsWith(Id.SUGGEST)) {
 

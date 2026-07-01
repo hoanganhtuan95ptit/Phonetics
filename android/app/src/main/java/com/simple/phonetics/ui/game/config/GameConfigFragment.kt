@@ -35,6 +35,7 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.DialogListBinding
 import com.simple.phonetics.databinding.LayoutActionConfirmGameBinding
 import com.simple.phonetics.ui.base.fragments.BaseActionFragment
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextAdapter
 import com.simple.phonetics.ui.game.GameConfigViewModel
 import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.colorDivider
@@ -98,7 +99,7 @@ class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, Di
 
         val binding = binding ?: return
 
-        val clickTextAdapter = ClickTextAdapter { _, item ->
+        val clickTextAdapter = ClickBigTextAdapter { _, item ->
 
             if (item.id.startsWith(Id.RESOURCE, true)) {
 

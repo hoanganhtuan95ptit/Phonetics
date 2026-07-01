@@ -32,6 +32,7 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.base.fragments.BaseFragment
 import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
+import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextAdapter
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 import com.simple.phonetics.ui.main.services.queue.HomeScreen
 import com.simple.phonetics.ui.main.services.queue.QueueEventState
@@ -133,7 +134,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
         val binding = binding ?: return
 
-        val clickTextAdapter = ClickTextAdapter { _, item ->
+        val clickTextAdapter = ClickBigTextAdapter { _, item ->
 
             if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) sendDeeplink(
                 deepLink = DeeplinkManager.SPEAK,

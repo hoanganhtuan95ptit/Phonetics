@@ -14,6 +14,7 @@ import com.simple.coreapp.ui.view.setMargin
 import com.simple.coreapp.ui.view.setPadding
 import com.simple.coreapp.ui.view.setSize
 import com.simple.coreapp.ui.view.setTextStyle
+import com.simple.coreapp.utils.ext.setVisible
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.emptyText
 import com.simple.ui.precompute.text.setText
@@ -136,6 +137,7 @@ internal interface BigTextAdapter {
 
     private fun refreshImageLeft(binding: ItemTextBinding, item: BigTextViewItem) {
 
+        binding.ivLeft.setVisible(item.imageLeft != 0)
         binding.ivLeft.setImageResource(item.imageLeft ?: 0)
     }
 
