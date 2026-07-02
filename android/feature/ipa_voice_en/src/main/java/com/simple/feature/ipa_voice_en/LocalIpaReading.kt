@@ -30,6 +30,9 @@ class LocalIpaReading : IpaReading {
 
         val ipaText = ipa.ipa
             .replace("/", "", true)
+            .replace("ɹ", "r")
+            .replace("ɡ", "g")
+            .replace("ɫ", "l")
             .trim()
 
         val prefix = if (phoneticCode.equals("us", true)) "us" else "uk"
@@ -39,6 +42,9 @@ class LocalIpaReading : IpaReading {
         val assetFileDescriptor = runCatching {
 
             PhoneticsApp.share.assets.openFd("voices/$fileName")
+        }.recoverCatching {
+
+            PhoneticsApp.share.assets.openFd("voices/${fileName.replace("us", "uk")}")
         }.getOrElse {
 
             trySend(ResultState.Failed(it))
