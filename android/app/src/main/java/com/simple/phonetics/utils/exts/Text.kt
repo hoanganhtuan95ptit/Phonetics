@@ -15,6 +15,10 @@ import com.simple.coreapp.utils.ext.DP
 import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
 import com.simple.phonetics.ui.common.adapters.texts.NoneBigTextViewItem
 import com.simple.ui.precompute.text.BigText
+import com.simple.ui.precompute.text.BigTextBuilder
+import com.simple.ui.precompute.text.span.BigTextSize
+import com.simple.ui.precompute.text.toBuilder
+import com.simple.ui.precompute.text.with
 
 fun TitleViewItem(
     id: String,
@@ -163,3 +167,65 @@ fun ButtonViewItem(
         height = ViewGroup.LayoutParams.WRAP_CONTENT
     )
 )
+
+
+
+fun String.withStyleDisplayLarge(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(57.sp().toInt()))
+}
+
+fun String.withStyleDisplayMedium(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(45.sp().toInt()))
+}
+
+fun String.withStyleDisplaySmall(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(36.sp().toInt()))
+}
+
+fun String.withStyleHeadlineLarge(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(32.sp().toInt()))
+}
+
+fun String.withStyleHeadlineMedium(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(28.sp().toInt()))
+}
+
+fun String.withStyleHeadlineSmall(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(24.sp().toInt()))
+}
+
+fun String.withStyleTitleLarge(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(22.sp().toInt()))
+}
+
+fun String.withStyleTitleMedium(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(16.sp().toInt()))
+}
+
+fun String.withStyleTitleSmall(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(14.sp().toInt()))
+}
+
+fun String.withStyleBodyLarge(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(16.sp().toInt()))
+}
+
+fun String.withStyleBodyMedium(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(14.sp().toInt()))
+}
+
+fun String.withStyleBodySmall(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(12.sp().toInt()))
+}
+
+fun String.withStyleLabelLarge(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(14.sp().toInt()))
+}
+
+fun String.withStyleLabelMedium(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(12.sp().toInt()))
+}
+
+fun String.withStyleLabelSmall(): BigTextBuilder {
+    return toBuilder().with(BigTextSize(11.sp().toInt()))
+}

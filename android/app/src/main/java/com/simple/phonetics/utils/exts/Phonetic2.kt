@@ -3,8 +3,11 @@ package com.simple.phonetics.utils.exts
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.utils.extentions.toPx
 import com.simple.phonetic.entities.ipaValueList
+import com.simple.phonetics.Id
 import com.simple.phonetics.R
+import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.common.adapters.PhoneticsViewItem2
+import com.simple.phonetics.ui.home.adapters.SpeakSentenceViewItem
 import com.simple.ui.precompute.image.ColorFilter
 import com.simple.ui.precompute.image.addTransform
 import com.simple.ui.precompute.image.build
@@ -18,6 +21,28 @@ import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
+
+internal fun Sentence.toSpeakViewItem(
+    index: Int,
+    sizes: Map<String, Int>,
+    themes: Map<String, Any>,
+    strings: Map<String, String>
+): ViewItem {
+
+    return SpeakSentenceViewItem(
+        id = "${Id.SENTENCE}_${index}",
+        maxWidth = sizes.width,
+
+        sentence = this,
+
+        text = strings.getOrEmpty("action_try_speak")
+            .withStyleBodyLarge()
+            .with(BigForegroundColor(themes.colorPrimary))
+            .build(),
+
+        contentColor = themes.colorPrimary
+    )
+}
 
 internal fun com.simple.phonetic.entities.Phonetic.toViewItem(
     id: String,
@@ -54,6 +79,8 @@ internal fun com.simple.phonetic.entities.Phonetic.toViewItem(
 
     return PhoneticsViewItem2(
         id = id,
+        maxWidth = sizes.width,
+
         text = text,
 
         textDisplay = textDisplay.build(),
@@ -65,7 +92,5 @@ internal fun com.simple.phonetic.entities.Phonetic.toViewItem(
         onlyReading = isSupportReading && !isSupportSpeaking,
 
         strokeColor = themes.colorPrimary,
-
-        maxWidth = sizes.width
     )
 }

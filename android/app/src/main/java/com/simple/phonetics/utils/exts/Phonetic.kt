@@ -1,22 +1,11 @@
 package com.simple.phonetics.utils.exts
 
-import android.view.Gravity
-import android.view.ViewGroup
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
-import com.simple.coreapp.ui.view.DEFAULT_PADDING
-import com.simple.coreapp.ui.view.Margin
-import com.simple.coreapp.ui.view.Padding
-import com.simple.coreapp.ui.view.Size
-import com.simple.coreapp.ui.view.TextStyle
 import com.simple.coreapp.utils.ext.DP
-import com.simple.phonetics.Id
-import com.simple.phonetics.R
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.common.adapters.PhoneticsLoadingViewItem
-import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 import com.simple.state.ResultState
 import com.simple.ui.precompute.text.build
@@ -24,7 +13,6 @@ import com.simple.ui.precompute.text.span.BigForegroundColor
 import com.simple.ui.precompute.text.with
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnSurface
-import com.unknown.theme.utils.exts.colorPrimary
 
 fun getPhoneticLoadingViewItem(theme: Map<String, Any>, background: Background? = null): List<ViewItem> = arrayListOf<ViewItem>().apply {
 
@@ -85,7 +73,7 @@ private fun Sentence.toViewItem(
 
     if (isShowSpeak && isSupportSpeak && item.phonetics.size >= 2) {
 
-        add(item.toSpeakViewItem(index, theme, translate))
+        add(item.toSpeakViewItem(index, sizes, theme, translate))
     }
 
 
@@ -140,6 +128,7 @@ private fun Sentence.toViewItem(
     }
 }
 
+/*
 private fun Sentence.toSpeakViewItem(index: Int, theme: Map<String, Any>, translate: Map<String, String>): ViewItem {
 
     return ClickBigTextViewItem(
@@ -192,8 +181,9 @@ private fun Sentence.toSpeakViewItem(index: Int, theme: Map<String, Any>, transl
         imageLeftPadding = DEFAULT_PADDING
     )
 }
-/*
+*/
 
+/*
 private fun com.simple.phonetic.entities.Phonetic.toViewItem(
     id: String,
 

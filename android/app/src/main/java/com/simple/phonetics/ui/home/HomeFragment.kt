@@ -133,24 +133,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
         val binding = binding ?: return
 
-        val clickTextAdapter = ClickBigTextAdapter { _, item ->
-
-            if (item.id.startsWith(Id.SENTENCE) && item.data is Sentence) sendDeeplink(
-                deepLink = DeeplinkManager.SPEAK,
-                extras = mapOf(Param.TEXT to (item.data as Sentence).text)
-            )
-        }
-
-        val phoneticsAdapter = PhoneticsAdapter { _, item ->
-
-            if (viewModel.isSupportSpeak.value == true) {
-
-                sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
-            } else if (viewModel.isSupportReading.value == true) {
-
-                startSpeak(text = item.data.text)
-            }
-        }
 
         listenerEvent(viewLifecycleOwner.lifecycle, EventName.SENTENCE_VIEW_ITEM_CLICKED) {
 
@@ -159,7 +141,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
             sendDeeplink(DeeplinkManager.SPEAK, extras = mapOf(Param.TEXT to item.data.text))
         }
 
-        MultiAdapter(clickTextAdapter, phoneticsAdapter).apply {
+        MultiAdapter().apply {
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
