@@ -1,7 +1,6 @@
 package com.simple.phonetics.utils.exts
 
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.utils.extentions.toPx
 import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
@@ -15,7 +14,6 @@ import com.simple.ui.precompute.image.toBuilder
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.span.BigBold
 import com.simple.ui.precompute.text.span.BigForegroundColor
-import com.simple.ui.precompute.text.span.BigTextSize
 import com.simple.ui.precompute.text.with
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
@@ -67,14 +65,16 @@ internal fun com.simple.phonetic.entities.Phonetic.toViewItem(
         .build()
 
     val textDisplay = text
-        .with(BigBold, BigTextSize(16.toPx()), BigForegroundColor(themes.colorOnSurface))
+        .withStyleBodyLarge()
+        .with(BigBold, BigForegroundColor(themes.colorOnSurface))
 
 
     val ipaList = ipaValueList
     val ipa = ipaList.joinToString(separator = " - ")
 
     val phoneticDisplay = ipa
-        .with(BigTextSize(16.toPx()), BigForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
+        .withStyleBodyLarge()
+        .with(BigForegroundColor(if (ipaList.size > 1) themes.colorPrimary else themes.colorError))
 
 
     return PhoneticsViewItem2(

@@ -9,7 +9,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Size
@@ -38,10 +37,12 @@ import com.simple.phonetics.domain.usecase.reading.StopReadingUseCase
 import com.simple.phonetics.entities.Language
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
 import com.simple.phonetics.ui.common.adapters.texts.NoneBigTextViewItem
 import com.simple.phonetics.utils.exts.TitleViewItem
 import com.simple.phonetics.utils.exts.colorOnPrimaryVariant
 import com.simple.phonetics.utils.exts.colorPrimaryVariant
+import com.simple.phonetics.utils.exts.dp
 import com.simple.phonetics.utils.exts.getOrKey
 import com.simple.phonetics.utils.exts.getPhoneticLoadingViewItem
 import com.simple.phonetics.utils.exts.listenerSourcesWithDiff
@@ -73,6 +74,7 @@ import com.simple.ui.precompute.text.with
 import com.simple.ui.precompute.text.withFirst
 import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.height
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorOnSurfaceVariant
 import com.unknown.theme.utils.exts.colorPrimary
@@ -293,7 +295,7 @@ class HomeViewModel(
 
         val viewItemList = arrayListOf<ViewItem>()
 
-        state.toSuccess()?.data.orEmpty().toViewItem(
+        val phonetics = state.toSuccess()?.data.orEmpty().toViewItem(
             isSupportSpeak = isSupportSpeak.value == true,
             isSupportListen = isSupportReading.value == true,
             isSupportTranslate = isSupportTranslate,
@@ -301,19 +303,22 @@ class HomeViewModel(
             sizes = size,
             theme = theme,
             translate = translate
-        ).let {
+        )
 
-            viewItemList.addAll(it)
-        }
-
-        if (viewItemList.isNotEmpty()) TitleViewItem(
+        if (phonetics.isNotEmpty()) TitleViewItem(
             id = "TITLE_RESULT",
             text = translate["title_result"].orEmpty()
                 .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
         ).let {
 
-            viewItemList.add(0, it)
-            viewItemList.add(0, SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_8))
+            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE", maxWidth = size.width - 2 * 12.dp().toInt(), height = 8.dp()))
+            viewItemList.add(it)
+            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_RESULT", maxWidth = size.width - 2 * 12.dp().toInt(), height = 8.dp()))
+        }
+
+        phonetics.let {
+
+            viewItemList.addAll(it)
         }
 
         postValueIfActive(viewItemList)
@@ -384,7 +389,7 @@ class HomeViewModel(
             list.addAll(it)
         }
 
-        list.add(SpaceViewItem(id = "BOTTOM_0", height = size.height - DP.DP_350))
+        list.add(SpaceViewItem2(id = "BOTTOM_0", maxWidth = size.width - 2 * 12.dp().toInt(), height = size.height - 350.dp()))
 
         postValueIfActive(list)
     }

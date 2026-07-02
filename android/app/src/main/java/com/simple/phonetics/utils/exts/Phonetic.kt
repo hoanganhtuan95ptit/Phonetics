@@ -11,6 +11,7 @@ import com.simple.state.ResultState
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.span.BigForegroundColor
 import com.simple.ui.precompute.text.with
+import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
 import com.unknown.theme.utils.exts.colorOnSurface
 
@@ -96,27 +97,36 @@ private fun Sentence.toViewItem(
 
     if (isSupportTranslate) item.translateState.let { translateState ->
 
-        val textPair = when (translateState) {
+        val text = when (translateState) {
 
             is ResultState.Start -> {
-                translate["translating"].orEmpty() to theme.colorOnSurface
+                translate.getOrEmpty("translating")
+                    .withStyleBodyLarge()
+                    .with(BigForegroundColor(theme.colorOnSurface))
             }
 
             is ResultState.Success -> {
-                translateState.data to theme.colorOnSurface
+                translateState.data
+                    .withStyleBodyLarge()
+                    .with(BigForegroundColor(theme.colorOnSurface))
             }
 
             else -> {
-                translate["translate_failed"].orEmpty() to theme.colorError
+                translate.getOrEmpty("translate_failed")
+                    .withStyleBodyLarge()
+                    .with(BigForegroundColor(theme.colorError))
             }
         }
 
         SentenceViewItem(
             id = "${index * 1000}",
+            maxWidth = sizes.width - 2 * 16.dp().toInt(),
 
             data = item,
 
-            text = textPair.first.with(BigForegroundColor(textPair.second)).build(),
+            text = text
+                .build(),
+
             isLast = index == total
         )
     }.let {

@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.utils.ext.DP
 import com.simple.phonetics.databinding.ItemPhonetics2Binding
+import com.simple.phonetics.utils.exts.dp
 import com.simple.ui.precompute.LayoutEngine
 import com.simple.ui.precompute.image.BigImage
 import com.simple.ui.precompute.image.emptyImage
@@ -88,20 +88,20 @@ data class PhoneticsViewItem2(
     val drawSpec = LinearNode(
         orientation = Orientation.VERTICAL,
         crossAlign = CrossAlign.START,
-        padding = EdgeInsets.symmetric(h = DP.DP_8, v = DP.DP_4),
+        padding = EdgeInsets(left = 4.dp().toInt(), right = 8.dp().toInt(), bottom = 8.dp().toInt()),
         children = listOf(
             LinearNode(
                 orientation = Orientation.HORIZONTAL,
                 crossAlign = CrossAlign.CENTER,
-                gap = DP.DP_8,
+                gap = 8.dp().toInt(),
                 children = listOfNotNull(
                     TextNode(
                         text = textDisplay,
                     ),
                     ImageNode(
                         source = iconDisplay,
-                        layoutWidth = LayoutDimension.Fixed(DP.DP_10),
-                        layoutHeight = LayoutDimension.Fixed(DP.DP_24),
+                        layoutWidth = LayoutDimension.Fixed(8.dp().toInt()),
+                        layoutHeight = LayoutDimension.Fixed(8.dp().toInt()),
                     ).takeIf {
                         iconShow
                     },
