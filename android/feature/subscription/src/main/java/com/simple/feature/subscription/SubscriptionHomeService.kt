@@ -10,8 +10,8 @@ import com.simple.phonetics.Param
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.ui.main.services.ads.AdsViewModel
-import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.image.build
+import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.image.toBuilder
 import com.unknown.coroutines.launchCollect
 

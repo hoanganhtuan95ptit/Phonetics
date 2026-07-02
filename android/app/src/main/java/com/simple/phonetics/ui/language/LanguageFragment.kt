@@ -36,10 +36,10 @@ import com.simple.phonetics.utils.exts.colorErrorVariant
 import com.simple.phonetics.utils.exts.colorOnErrorVariant
 import com.simple.phonetics.utils.exts.submitListAwaitV2
 import com.simple.state.ResultState
+import com.simple.ui.precompute.text.setText
 import com.unknown.coroutines.launchCollect
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorOnBackground
-import com.simple.ui.precompute.text.setText as setBigText
 
 class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, LanguageViewModel>() {
 
@@ -116,15 +116,15 @@ class LanguageFragment : BaseFragment<FragmentListHeaderVerticalBinding, Languag
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.frameHeader.tvTitle.setBigText(it.title)
-            binding.frameHeader.tvMessage.setBigText(it.message)
+            binding.frameHeader.tvTitle.setText(it.title)
+            binding.frameHeader.tvMessage.setText(it.message)
         }
 
         buttonInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "BUTTON_INFO") {
 
             val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
 
-            binding.btnConfirm.setBigText(it.text)
+            binding.btnConfirm.setText(it.text)
             binding.progress.setVisible(it.isShowLoading)
 
             binding.root.isClickable = it.isClickable

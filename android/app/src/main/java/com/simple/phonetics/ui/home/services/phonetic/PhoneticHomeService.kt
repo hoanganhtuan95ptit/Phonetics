@@ -12,7 +12,7 @@ import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.services.HomeService
 import com.unknown.coroutines.launchCollect
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.simple.ui.precompute.text.setText as setBigText
+import com.simple.ui.precompute.text.setText
 
 @AutoBind(HomeFragment::class)
 class PhoneticHomeService : HomeService {
@@ -46,7 +46,7 @@ class PhoneticHomeService : HomeService {
                     ?.asObjectOrNull<BaseBindingViewHolder<*>>()
                     ?.binding
                     .asObjectOrNull<ItemTextBinding>()
-                    ?.tvTitle?.setBigText(pair.second)
+                    ?.tvTitle?.setText(pair.second)
             }
         }
     }

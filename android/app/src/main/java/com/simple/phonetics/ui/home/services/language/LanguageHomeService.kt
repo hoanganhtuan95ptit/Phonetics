@@ -9,10 +9,10 @@ import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.services.HomeService
 import com.simple.phonetics.utils.exts.collectWithLockTransitionUntilData
-import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.image.CircleCrop
 import com.simple.ui.precompute.image.addTransform
 import com.simple.ui.precompute.image.build
+import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.image.toBuilder
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 

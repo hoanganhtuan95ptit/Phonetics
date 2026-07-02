@@ -11,7 +11,6 @@ import androidx.core.widget.doAfterTextChanged
 import com.google.android.flexbox.AlignItems
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
-import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
@@ -47,7 +46,7 @@ import com.simple.ui.precompute.image.setImage
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlin.math.absoluteValue
-import com.simple.ui.precompute.text.setText as setBigText
+import com.simple.ui.precompute.text.setText
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScreen {
 
@@ -222,7 +221,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.tvTitle.setBigText(it)
+            binding.tvTitle.setText(it)
         }
 
         enterInfo.collectWithLockTransitionUntilData(fragment = fragment, tag = "ENTER") {
@@ -237,7 +236,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.tvClear.setBigText(it.text)
+            binding.tvClear.setText(it.text)
             binding.frameClear.setVisible(it.isShow)
             binding.tvClear.setBackground(it.background)
         }
@@ -254,7 +253,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             val binding = binding ?: return@collectWithLockTransitionUntilData
 
-            binding.tvReverse.setBigText(it.text)
+            binding.tvReverse.setText(it.text)
             binding.frameReverse.setVisible(it.isShow)
             binding.tvReverse.setBackground(it.background)
         }

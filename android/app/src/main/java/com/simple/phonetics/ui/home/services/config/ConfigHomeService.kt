@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.simple.adapter.MultiAdapter
 import com.simple.autobind.annotation.AutoBind
-import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.utils.ext.getViewModel
 import com.simple.deeplink.sendDeeplink
 import com.simple.phonetics.DeeplinkManager

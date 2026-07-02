@@ -19,8 +19,8 @@ import com.simple.phonetics.databinding.ItemCampaignBinding
 import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.measureTextViewHeight
 import com.simple.phonetics.utils.TextViewMetrics
-import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.image.BigImage
+import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.emptyText
 import com.simple.ui.precompute.text.setText

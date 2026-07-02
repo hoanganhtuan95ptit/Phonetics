@@ -9,7 +9,6 @@ import androidx.lifecycle.asFlow
 import com.google.android.flexbox.JustifyContent
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObjectOrNull
-import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.doOnChangeHeightStatusAndHeightNavigation
@@ -37,9 +36,9 @@ import com.simple.state.doSuccess
 import com.simple.state.isCompleted
 import com.simple.state.isRunning
 import com.simple.state.isSuccess
+import com.simple.ui.precompute.text.setText
 import com.unknown.coroutines.launchCollect
 import java.util.UUID
-import com.simple.ui.precompute.text.setText as setBigText
 
 class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
 
@@ -152,7 +151,7 @@ class GameIPAWordleFragment : GameItemFragment<GameIPAWordleViewModel>() {
 
             val binding = binding?.frameConfirm ?: return@collectWithLockTransitionUntilData
 
-            binding.btnConfirm.setBigText(it.text)
+            binding.btnConfirm.setText(it.text)
 
             binding.root.isClickable = it.isClickable
             binding.root.setBackground(it.background)

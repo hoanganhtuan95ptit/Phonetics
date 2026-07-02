@@ -22,7 +22,7 @@ import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.colorDivider
 import com.unknown.theme.utils.exts.colorBackground
 import com.simple.coreapp.utils.ext.setText as setRichText
-import com.simple.ui.precompute.text.setText as setBigText
+import com.simple.ui.precompute.text.setText
 
 class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, GameCongratulationViewModel>() {
 
@@ -58,8 +58,8 @@ class CongratulationFragment : BaseSheetFragment<DialogCongratulationBinding, Ga
             binding.lottieAnimationView.setAnimation(it.anim)
             binding.lottieAnimationView.playAnimation()
 
-            binding.tvTitle.setBigText(it.title)
-            binding.tvMessage.setBigText(it.message)
+            binding.tvTitle.setText(it.title)
+            binding.tvMessage.setText(it.message)
 
             binding.tvAction.setRichText(it.button.text)
             binding.tvAction.setBackground(it.button.background)

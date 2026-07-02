@@ -12,7 +12,6 @@ import com.simple.adapter.MultiAdapter
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObject
 import com.simple.coreapp.databinding.ItemTextBinding
-import com.simple.coreapp.ui.adapters.texts.ClickTextAdapter
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
 import com.simple.coreapp.ui.view.setMargin
@@ -41,7 +40,7 @@ import com.simple.phonetics.ui.main.MainActivity
 import com.simple.phonetics.utils.exts.colorDivider
 import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.unknown.theme.utils.exts.colorBackground
-import com.simple.ui.precompute.text.setText as setBigText
+import com.simple.ui.precompute.text.setText
 
 class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, DialogListBinding, GameConfigViewModel>() {
 
@@ -141,7 +140,7 @@ class GameConfigFragment : BaseActionFragment<LayoutActionConfirmGameBinding, Di
             binding.root.setPadding(item.padding)
             binding.root.setBackground(item.background)
 
-            binding.tvTitle.setBigText(item.text)
+            binding.tvTitle.setText(item.text)
             binding.tvTitle.setTextStyle(item.textStyle)
             binding.tvTitle.setSize(item.textSize)
             binding.tvTitle.setMargin(item.textMargin)

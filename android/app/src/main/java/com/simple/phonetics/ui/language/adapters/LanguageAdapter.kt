@@ -11,8 +11,8 @@ import com.simple.coreapp.ui.view.setBackground
 import com.simple.phonetics.Payload
 import com.simple.phonetics.databinding.ItemLanguageBinding
 import com.simple.phonetics.entities.Language
-import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.image.BigImage
+import com.simple.ui.precompute.image.setImage
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.setText
 
