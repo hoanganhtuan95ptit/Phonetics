@@ -7,7 +7,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
@@ -77,6 +77,7 @@ class IpaHomeViewModel(
 
         if (ipaList.isNotEmpty()) TextSimpleViewItem(
             id = "TITLE_IPA",
+            maxWidth = size.width,
             text = translate["title_ipa"].orEmpty()
                 .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
@@ -85,9 +86,9 @@ class IpaHomeViewModel(
             )
         ).let {
 
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_IPA_0", height = DP.DP_16))
+            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_IPA_0", maxWidth = size.width, height = DP.DP_16.toFloat()))
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_IPA_1", height = DP.DP_8))
+            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_IPA_1", maxWidth = size.width, height = DP.DP_8.toFloat()))
         }
 
 
@@ -95,6 +96,7 @@ class IpaHomeViewModel(
 
             IpaViewItem(
                 id = it.ipa,
+                maxWidth = size.width,
 
                 data = it,
 
@@ -134,6 +136,7 @@ class IpaHomeViewModel(
 
         if (ipaList.isNotEmpty()) TextSimpleViewItem(
             id = Id.IPA_LIST,
+            maxWidth = size.width,
             text = actionText,
             textStyle = R.style.TextAppearance_MaterialComponents_Body1,
             textSize = Size(
@@ -161,7 +164,7 @@ class IpaHomeViewModel(
         ).let {
 
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_IPA_2", height = DP.DP_16))
+            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_IPA_2", maxWidth = size.width, height = DP.DP_16.toFloat()))
         }
 
         viewItemList.forEach {

@@ -9,7 +9,8 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
+import com.unknown.size.uitls.exts.width
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.Margin
@@ -281,26 +282,27 @@ class IpaDetailViewModel(
     }
 
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(ipaViewItemList, gameViewItemList, phoneticsViewItemList) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(size, ipaViewItemList, gameViewItemList, phoneticsViewItemList) {
 
+        val size = size.value ?: return@listenerSourcesWithDiff
         val list = arrayListOf<ViewItem>()
 
         ipaViewItemList.getOrEmpty().let {
 
             list.addAll(it)
-            list.add(SpaceViewItem(id = "SPACE_IPA", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_40))
+            list.add(SpaceViewItem2(id = "SPACE_IPA", maxWidth = size.width, height = DP.DP_40.toFloat()))
         }
 
         phoneticsViewItemList.getOrEmpty().let {
 
             list.addAll(it)
-            list.add(SpaceViewItem(id = "SPACE_PHONETICS", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
+            list.add(SpaceViewItem2(id = "SPACE_PHONETICS", maxWidth = size.width, height = DP.DP_24.toFloat()))
         }
 
         gameViewItemList.getOrEmpty().let {
 
             list.addAll(it)
-            list.add(SpaceViewItem(id = "SPACE_GAME", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
+            list.add(SpaceViewItem2(id = "SPACE_GAME", maxWidth = size.width, height = DP.DP_24.toFloat()))
         }
 
         postValueIfActive(list)

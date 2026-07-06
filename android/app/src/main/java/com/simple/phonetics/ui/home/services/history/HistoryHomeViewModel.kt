@@ -1,23 +1,20 @@
 package com.simple.phonetics.ui.home.services.history
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
-import com.simple.coreapp.ui.adapters.SpaceViewItem
-import com.simple.coreapp.ui.view.Margin
-import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
-import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postValueIfActive
-import com.simple.phonetics.R
+import com.simple.coreapp.ui.view.Padding
 import com.simple.phonetics.domain.usecase.phonetics.GetPhoneticsHistoryAsyncUseCase
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem
+import com.simple.phonetics.utils.combineState
+import com.simple.phonetics.utils.exts.dp
+import com.simple.phonetics.utils.exts.withStyleBodyLarge
+import com.simple.phonetics.utils.exts.withStyleBodySmall
+import com.simple.phonetics.utils.exts.withStyleTitleLarge
 import com.simple.state.ResultState
 import com.simple.state.toSuccess
 import com.simple.ui.precompute.text.build
@@ -27,6 +24,7 @@ import com.simple.ui.precompute.text.with
 import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -35,31 +33,28 @@ class HistoryHomeViewModel(
 ) : BaseViewModel() {
 
     @VisibleForTesting
-    val historyState: LiveData<ResultState<List<Sentence>>> = mediatorLiveData {
-
-        postValue(ResultState.Start)
+    val historyState: StateFlow<ResultState<List<Sentence>>> = combineState(
+        sizes,
+        ResultState.Idle as ResultState<List<Sentence>>
+    ) {
 
         getPhoneticsHistoryAsyncUseCase.execute(null).collect { list ->
-
-            postValue(ResultState.Success(list))
+            value = ResultState.Success(list)
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, historyState) {
-
-        val size = size.value ?: return@combineSourcesWithDiff
-        val style = style.value ?: return@combineSourcesWithDiff
-        val theme = theme.value ?: return@combineSourcesWithDiff
-        val translate = translate.value ?: return@combineSourcesWithDiff
-
-        val historyState = historyState.value ?: return@combineSourcesWithDiff
+    val viewItemList: StateFlow<List<ViewItem>> = combineState(
+        sizes,
+        themes,
+        strings,
+        historyState,
+        initialValue = emptyList()
+    ) { sizes, themes, strings, historyState ->
 
         if (historyState !is ResultState.Success) {
-
-            postValue(emptyList())
-            return@combineSourcesWithDiff
+            value = emptyList()
+            return@combineState
         }
-
 
         val viewItemList = arrayListOf<ViewItem>()
 
@@ -67,36 +62,43 @@ class HistoryHomeViewModel(
 
         if (historyList.isNotEmpty()) TextSimpleViewItem(
             id = "TITLE_HISTORY",
-            text = translate["title_history"].orEmpty()
-                .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
-            textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
-            margin = Margin(
-                marginHorizontal = DP.DP_4
+            maxWidth = sizes.width - 2 * 12.dp().toInt(),
+            text = strings["title_history"].orEmpty()
+                .withStyleTitleLarge()
+                .with(BigBold, BigForegroundColor(themes.colorOnSurface))
+                .build(),
+            textPadding = Padding(
+                top = 16.dp().toInt(),
+                left = 4.dp().toInt(),
+                right = 4.dp().toInt(),
+                bottom = 8.dp().toInt()
             )
         ).let {
 
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY_0", width = size.width, height = DP.DP_16))
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_HISTORY_1", width = size.width, height = DP.DP_8))
         }
 
         historyList.mapIndexed { _, sentence ->
 
             HistoryViewItem(
                 id = sentence.text,
-                text = sentence.text.with(BigForegroundColor(theme.colorOnSurface)).build(),
+                maxWidth = sizes.width - 2 * 12.dp().toInt(),
+                text = sentence.text
+                    .withStyleBodyLarge()
+                    .with(BigForegroundColor(themes.colorOnSurface))
+                    .build(),
             )
         }.let {
 
             viewItemList.addAll(it)
         }
 
-        postValueIfActive(viewItemList)
+        value = viewItemList
     }
 
     init {
 
-        viewItemList.asFlow().map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
+        viewItemList.map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
 
             logAnalytics("feature_history_home_show_$it")
         }

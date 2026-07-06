@@ -7,7 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.adapters.ImageViewItem
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
+import com.unknown.size.uitls.exts.width
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Size
@@ -51,8 +52,9 @@ class EventViewModel(
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(theme, translate, eventState) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, translate, eventState) {
 
+        val size = size.value ?: return@combineSourcesWithDiff
         val theme = theme.value ?: return@combineSourcesWithDiff
         val translate = translate.value ?: return@combineSourcesWithDiff
 
@@ -84,7 +86,7 @@ class EventViewModel(
         ).let {
 
             list.add(it)
-            list.add(SpaceViewItem("SPACE_IMAGE", height = DP.DP_24))
+            list.add(SpaceViewItem2("SPACE_IMAGE", maxWidth = size.width, height = DP.DP_24.toFloat()))
         }
 
         NoneTextViewItem(
@@ -98,7 +100,7 @@ class EventViewModel(
         ).let {
 
             list.add(it)
-            list.add(SpaceViewItem("SPACE_TITLE", height = DP.DP_24))
+            list.add(SpaceViewItem2("SPACE_TITLE", maxWidth = size.width, height = DP.DP_24.toFloat()))
         }
 
         NoneTextViewItem(
@@ -112,7 +114,7 @@ class EventViewModel(
         ).let {
 
             list.add(it)
-            list.add(SpaceViewItem("SPACE_MESSAGE", height = DP.DP_24))
+            list.add(SpaceViewItem2("SPACE_MESSAGE", maxWidth = size.width, height = DP.DP_24.toFloat()))
         }
 
         postValue(list)

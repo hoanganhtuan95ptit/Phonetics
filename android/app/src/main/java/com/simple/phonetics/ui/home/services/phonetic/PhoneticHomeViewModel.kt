@@ -3,7 +3,8 @@ package com.simple.phonetics.ui.home.services.phonetic
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
+import com.unknown.size.uitls.exts.width
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.TextStyle
@@ -84,8 +85,9 @@ class PhoneticHomeViewModel(
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(pairViewList) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, pairViewList) {
 
+        val size = size.value ?: return@combineSourcesWithDiff
         val viewItemList = arrayListOf<ViewItem>()
 
         pairViewList.getOrEmpty().map {
@@ -103,7 +105,7 @@ class PhoneticHomeViewModel(
             )
         }.let {
 
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_PHONETIC_0", height = DP.DP_16))
+            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_PHONETIC_0", maxWidth = size.width, height = DP.DP_16.toFloat()))
             viewItemList.addAll(it)
         }
 

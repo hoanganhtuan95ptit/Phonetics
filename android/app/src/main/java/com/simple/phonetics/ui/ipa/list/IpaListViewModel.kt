@@ -60,6 +60,7 @@ class IpaListViewModel(
 
             IpaViewItem(
                 id = it.ipa,
+                maxWidth = size.width,
 
                 data = it,
 

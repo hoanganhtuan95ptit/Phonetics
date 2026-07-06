@@ -7,7 +7,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.AppException
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
+import com.unknown.size.uitls.exts.width
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.handler
@@ -145,13 +146,13 @@ class GameIPAPuzzleViewModel(
 
         getIPAPuzzleTitleViewItem(size = size, theme = theme, translate = translate, quiz = quiz).let {
 
-            list.add(SpaceViewItem(id = "SPACE_TITLE", height = DP.DP_16))
+            list.add(SpaceViewItem2(id = "SPACE_TITLE", maxWidth = size.width, height = DP.DP_16.toFloat()))
             list.add(it)
         }
 
         getIPAPuzzleOptionViewItem(size = size, theme = theme, translate = translate, quiz = quiz, choose = choose).let {
 
-            list.add(SpaceViewItem(id = "SPACE_OPTION_TITLE", height = DP.DP_24))
+            list.add(SpaceViewItem2(id = "SPACE_OPTION_TITLE", maxWidth = size.width, height = DP.DP_24.toFloat()))
             list.addAll(it)
         }
 

@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewGroup
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
@@ -181,10 +181,10 @@ fun getIPAMatchQuestionViewItem(
         )
     ).let {
 
-        add(SpaceViewItem(id = "SPACE_CHOOSE_0", height = DP.DP_16))
+        add(SpaceViewItem2(id = "SPACE_CHOOSE_0", maxWidth = size.width, height = DP.DP_16.toFloat()))
         add(it)
 
-        add(SpaceViewItem(id = "SPACE_CHOOSE_1", height = DP.DP_16))
+        add(SpaceViewItem2(id = "SPACE_CHOOSE_1", maxWidth = size.width, height = DP.DP_16.toFloat()))
         addAll(chooseViewItemList)
     }
 }
@@ -226,10 +226,10 @@ fun getIPAMatchOptionViewItem(
         )
     ).let {
 
-        add(SpaceViewItem(id = "SPACE_OPTION_1", height = DP.DP_24))
+        add(SpaceViewItem2(id = "SPACE_OPTION_1", maxWidth = size.width, height = DP.DP_24.toFloat()))
         add(it)
 
-        add(SpaceViewItem(id = "SPACE_OPTION_2", height = DP.DP_8))
+        add(SpaceViewItem2(id = "SPACE_OPTION_2", maxWidth = size.width, height = DP.DP_8.toFloat()))
         addAll(optionViewItemList)
     }
 }

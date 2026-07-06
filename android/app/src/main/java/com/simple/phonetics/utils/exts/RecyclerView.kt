@@ -202,7 +202,7 @@ suspend fun RecyclerView.submitListAndAwait(viewItemList: List<ViewItem>, isAnim
 
     fun PrecomputeViewItem.idSpec() = "${javaClass.simpleName}_${id}"
 
-    Log.d("tuanha", "submitListAndAwait: start-----------------------")
+//    Log.d("tuanha", "submitListAndAwait: start-----------------------")
     fun printDrawSpecs(specs: List<DrawSpec>, indent: String = ""): String {
         return specs.joinToString("\n") { spec ->
             val idString = " (data=${spec.data} id=${spec.node?.id})"
@@ -228,7 +228,7 @@ suspend fun RecyclerView.submitListAndAwait(viewItemList: List<ViewItem>, isAnim
                 val uniqueId = it.idSpec()
                 it.result = LayoutEngine.build(groupName = groupName, id = uniqueId, node = it.node, constraints = Constraints(it.maxWidth))
 
-                Log.d("tuanha", "submitListAndAwait:$groupName ${it.id} (unique:$uniqueId) \n${printDrawSpecs(it.result.draws)}")
+//                Log.d("tuanha", "submitListAndAwait:$groupName ${it.id} (unique:$uniqueId) \n${printDrawSpecs(it.result.draws)}")
             }
             it
         }
@@ -249,7 +249,7 @@ suspend fun RecyclerView.submitListAndAwait(viewItemList: List<ViewItem>, isAnim
     withContext(Dispatchers.IO) {
         LayoutEngine.release(groupName = groupName, keepIds = viewItemList.mapNotNull { it.asObjectOrNull<PrecomputeViewItem>()?.idSpec() })
     }
-    Log.d("tuanha", "submitListAndAwait: end----------------------------")
+//    Log.d("tuanha", "submitListAndAwait: end----------------------------")
 }
 
 @Deprecated("use submitListAndAwait")

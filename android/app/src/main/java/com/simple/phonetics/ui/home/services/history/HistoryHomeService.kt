@@ -10,6 +10,7 @@ import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.adapters.HistoryViewItem
 import com.simple.phonetics.ui.home.services.HomeService
+import com.unknown.coroutines.launchCollect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @AutoBind(HomeFragment::class)
@@ -21,7 +22,7 @@ class HistoryHomeService : HomeService {
 
         val viewModel: HistoryHomeViewModel by homeFragment.viewModel()
 
-        viewModel.viewItemList.observe(homeFragment.viewLifecycleOwner) {
+        viewModel.viewItemList.launchCollect(homeFragment.viewLifecycleOwner) {
 
             homeViewModel.updateTypeViewItemList(type = TYPE_HISTORY, it)
         }

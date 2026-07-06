@@ -1,11 +1,8 @@
 package com.simple.phonetics.ui.base.adapters
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
-import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.DEFAULT_MARGIN
@@ -14,39 +11,33 @@ import com.simple.coreapp.ui.view.DEFAULT_SIZE
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
-import com.simple.coreapp.ui.view.setBackground
-import com.simple.coreapp.ui.view.setMargin
-import com.simple.coreapp.ui.view.setPadding
-import com.simple.coreapp.ui.view.setSize
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
 import com.simple.phonetics.R
-import com.simple.phonetics.databinding.ItemTextSimpleBinding
-import com.simple.phonetics.utils.TextViewMetrics
+import com.simple.phonetics.databinding.ItemPrecomputeBinding
+import com.simple.phonetics.ui.common.adapters.PrecomputeAdapter
+import com.simple.phonetics.ui.common.adapters.PrecomputeViewItem
+import com.simple.ui.precompute.node.ConstraintChild
+import com.simple.ui.precompute.node.ConstraintNode
+import com.simple.ui.precompute.node.EdgeInsets
+import com.simple.ui.precompute.node.LayoutNode
+import com.simple.ui.precompute.node.TextNode
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.emptyText
-import com.simple.ui.precompute.text.setText
-import com.unknown.size.uitls.exts.width
 
 @ItemAdapter
-class TextSimpleAdapter() : ViewItemAdapter<TextSimpleViewItem, ItemTextSimpleBinding>() {
+class TextSimpleAdapter : PrecomputeAdapter<TextSimpleViewItem>() {
 
     override val viewItemClass: Class<TextSimpleViewItem> by lazy {
         TextSimpleViewItem::class.java
     }
 
-    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemTextSimpleBinding {
-        return ItemTextSimpleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    }
+    override fun createViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<ItemPrecomputeBinding> {
 
-    override fun createViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<ItemTextSimpleBinding> {
+        val viewHolder = super.createViewHolder(parent, viewType)!!
 
-        val viewHolder = BaseBindingViewHolder(createViewBinding(parent, viewType), viewType)
-
-        val binding = viewHolder.binding
-
-        binding.root.setDebouncedClickListener { view ->
+        viewHolder.binding.root.setDebouncedClickListener { view ->
 
             val viewItem = getViewItem(viewHolder.bindingAdapterPosition) ?: return@setDebouncedClickListener
 
@@ -55,90 +46,11 @@ class TextSimpleAdapter() : ViewItemAdapter<TextSimpleViewItem, ItemTextSimpleBi
 
         return viewHolder
     }
-
-    override fun onBindViewHolder(binding: ItemTextSimpleBinding, viewType: Int, position: Int, item: TextSimpleViewItem, payloads: MutableList<Any>) {
-        super.onBindViewHolder(binding, viewType, position, item, payloads)
-
-        binding.root.transitionName = item.id
-
-        if (payloads.contains("size")) refreshSize(binding, item)
-        if (payloads.contains("margin")) refreshMargin(binding, item)
-        if (payloads.contains("padding")) refreshPadding(binding, item)
-        if (payloads.contains("background")) refreshBackground(binding, item)
-
-        if (payloads.contains("text")) refreshText(binding, item)
-        if (payloads.contains("textStyle")) refreshTextStyle(binding, item)
-
-        if (payloads.contains("textSize")) refreshTextSize(binding, item)
-        if (payloads.contains("textMargin")) refreshTextMargin(binding, item)
-        if (payloads.contains("textPadding")) refreshTextPadding(binding, item)
-        if (payloads.contains("textBackground")) refreshTextBackground(binding, item)
-    }
-
-    override fun onBindViewHolder(binding: ItemTextSimpleBinding, viewType: Int, position: Int, item: TextSimpleViewItem) {
-        super.onBindViewHolder(binding, viewType, position, item)
-
-        binding.root.transitionName = item.id
-
-        refreshSize(binding, item)
-        refreshMargin(binding, item)
-        refreshPadding(binding, item)
-        refreshBackground(binding, item)
-
-        refreshText(binding, item)
-        refreshTextStyle(binding, item)
-
-        refreshTextSize(binding, item)
-        refreshTextMargin(binding, item)
-        refreshTextPadding(binding, item)
-        refreshTextBackground(binding, item)
-    }
-
-    private fun refreshSize(binding: ItemTextSimpleBinding, item: TextSimpleViewItem) {
-        binding.root.setSize(item.size)
-    }
-
-    private fun refreshMargin(binding: ItemTextSimpleBinding, item: TextSimpleViewItem) {
-        binding.root.setMargin(item.margin)
-    }
-
-    private fun refreshPadding(binding: ItemTextSimpleBinding, item: TextSimpleViewItem) {
-        binding.root.setPadding(item.padding)
-    }
-
-    private fun refreshBackground(binding: ItemTextSimpleBinding, item: TextSimpleViewItem) {
-        binding.root.setBackground(item.background)
-    }
-
-
-    private fun refreshText(binding: ItemTextSimpleBinding, item: TextSimpleViewItem) {
-        binding.tvText.setText(item.text)
-    }
-
-    private fun refreshTextStyle(binding: ItemTextSimpleBinding, item: TextSimpleViewItem) {
-        binding.tvText.setTextAppearance(item.textStyle)
-    }
-
-
-    private fun refreshTextSize(binding: ItemTextSimpleBinding, item: TextSimpleViewItem) {
-        binding.tvText.setSize(item.textSize)
-    }
-
-    private fun refreshTextMargin(binding: ItemTextSimpleBinding, item: TextSimpleViewItem) {
-        binding.tvText.setMargin(item.textMargin)
-    }
-
-    private fun refreshTextPadding(binding: ItemTextSimpleBinding, item: TextSimpleViewItem) {
-        binding.tvText.setPadding(item.textPadding)
-    }
-
-    private fun refreshTextBackground(binding: ItemTextSimpleBinding, item: TextSimpleViewItem) {
-        binding.tvText.setBackground(item.textBackground)
-    }
 }
 
 data class TextSimpleViewItem(
-    val id: String,
+    override val id: String,
+    override val maxWidth: Int,
     val data: Any? = null,
 
     var text: BigText = emptyText(),
@@ -149,42 +61,31 @@ data class TextSimpleViewItem(
     val textPadding: Padding = DEFAULT_PADDING,
     val textBackground: Background = DEFAULT_BACKGROUND,
 
-    override var size: Size = DEFAULT_SIZE,
+    var size: Size = DEFAULT_SIZE,
     val margin: Margin = DEFAULT_MARGIN,
     val padding: Padding = DEFAULT_PADDING,
     val background: Background = DEFAULT_BACKGROUND
-) : ViewItem, SizeViewItem {
-
-    override fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
-
-        val styleMap = R.style::class.java.fields.toList().associateBy({ it.getInt(null) }, { it.name })
-
-        val styleName = styleMap[textStyle] ?: return this.size
-
-        val textMetrics = style[styleName] ?: return this.size
+) : PrecomputeViewItem() {
 
 
-        val maxWidth = if (this.size.width < 10) {
-            size.width - textPadding.left - textPadding.right - textMargin.left - textMargin.right - padding.left - padding.right - margin.left - margin.right
-        } else {
-            this.size.width - textPadding.left - textPadding.right - textMargin.left - textMargin.right - padding.left - padding.right
-        }
-
-        val textWidth = measureTextViewWidth(
-            text = text.textChar,
-            maxWidth = maxWidth,
-            metrics = textMetrics
-        )
-
-        val textHeight = measureTextViewHeight(
-            text = text.textChar,
-            maxWidth = maxWidth,
-            metrics = textMetrics
-        )
-
-        return Size(
-            width = textWidth + textPadding.left + textPadding.right + textMargin.left + textMargin.right + padding.left + padding.right,
-            height = textHeight + textPadding.top + textPadding.bottom + textMargin.top + textMargin.bottom + padding.top + padding.bottom
+    override val node: LayoutNode by lazy {
+        ConstraintNode(
+            children = listOf(
+                ConstraintChild(
+                    id = "text",
+                    node = TextNode(
+                        text = text,
+                        padding = EdgeInsets(
+                            left = textPadding.left,
+                            top = textPadding.top,
+                            right = textPadding.right,
+                            bottom = textPadding.bottom
+                        ),
+                    ),
+                    startToStartOf = ConstraintNode.PARENT,
+                    topToTopOf = ConstraintNode.PARENT,
+                )
+            )
         )
     }
 

@@ -11,7 +11,8 @@ import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.orZero
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
+import com.unknown.size.uitls.exts.width
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
@@ -83,8 +84,9 @@ class GameConfigViewModel(
     val resourceSelected: LiveData<String> = MediatorLiveData()
 
 
-    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(theme, translate, actionHeight, wordCountMap, resourceSelected) {
+    val viewItemList: LiveData<List<ViewItem>> = listenerSourcesWithDiff(size, theme, translate, actionHeight, wordCountMap, resourceSelected) {
 
+        val size = size.value ?: return@listenerSourcesWithDiff
         val theme = theme.value ?: return@listenerSourcesWithDiff
         val translate = translate.value ?: return@listenerSourcesWithDiff
 
@@ -134,15 +136,15 @@ class GameConfigViewModel(
                     .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
             ).let {
 
-                list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE", height = DP.DP_24))
+                list.add(SpaceViewItem2(id = "SPACE_TITLE_RESOURCE", maxWidth = size.width, height = DP.DP_24.toFloat()))
                 list.add(it)
-                list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_1", height = DP.DP_12))
+                list.add(SpaceViewItem2(id = "SPACE_TITLE_RESOURCE_1", maxWidth = size.width, height = DP.DP_12.toFloat()))
             }
 
             list.addAll(viewItemList)
         }
 
-        list.add(SpaceViewItem(id = "SPACE_TITLE_RESOURCE_3", height = actionHeight + DP.DP_24))
+        list.add(SpaceViewItem2(id = "SPACE_TITLE_RESOURCE_3", maxWidth = size.width, height = (actionHeight + DP.DP_24).toFloat()))
 
         postValue(list)
     }

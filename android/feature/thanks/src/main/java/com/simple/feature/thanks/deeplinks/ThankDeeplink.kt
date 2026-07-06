@@ -13,7 +13,8 @@ import com.simple.analytics.logAnalytics
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.coreapp.Param
 import com.simple.coreapp.ui.adapters.ImageViewItem
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
+import com.unknown.size.uitls.exts.width
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Size
@@ -64,6 +65,7 @@ class ThankDeeplink : DeeplinkHandler {
 
         val theme = viewModel.theme.asFlow().first()
         val translate = viewModel.translate.asFlow().first()
+        val size = viewModel.size.asFlow().first()
 
         val thank = viewModel.thank.asFlow().firstOrNull().orEmpty()[deepLink] ?: return true
 
@@ -85,7 +87,7 @@ class ThankDeeplink : DeeplinkHandler {
             viewItemList.add(it)
         }
 
-        viewItemList.add(SpaceViewItem("SPACE_IMAGE", height = DP.DP_24))
+        viewItemList.add(SpaceViewItem2("SPACE_IMAGE", maxWidth = size.width, height = DP.DP_24.toFloat()))
 
         NoneTextViewItem(
             id = "2",
@@ -106,7 +108,7 @@ class ThankDeeplink : DeeplinkHandler {
         ).let {
 
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem("SPACE_TITLE", height = DP.DP_24))
+            viewItemList.add(SpaceViewItem2("SPACE_TITLE", maxWidth = size.width, height = DP.DP_24.toFloat()))
         }
 
         NoneTextViewItem(
@@ -121,7 +123,7 @@ class ThankDeeplink : DeeplinkHandler {
         ).let {
 
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem("SPACE_TITLE", height = DP.DP_40))
+            viewItemList.add(SpaceViewItem2("SPACE_TITLE", maxWidth = size.width, height = DP.DP_40.toFloat()))
         }
 
 

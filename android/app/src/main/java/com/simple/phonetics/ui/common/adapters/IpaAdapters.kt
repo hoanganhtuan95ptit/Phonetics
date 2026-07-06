@@ -1,12 +1,9 @@
 package com.simple.phonetics.ui.common.adapters
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.adapter.base.BaseBindingViewHolder
-import com.simple.adapter.entities.ViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.DEFAULT_BACKGROUND
 import com.simple.coreapp.ui.view.DEFAULT_MARGIN
@@ -14,43 +11,45 @@ import com.simple.coreapp.ui.view.DEFAULT_SIZE
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
-import com.simple.coreapp.ui.view.setBackground
-import com.simple.coreapp.ui.view.setMargin
-import com.simple.coreapp.ui.view.setPadding
-import com.simple.coreapp.ui.view.setSize
 import com.simple.coreapp.utils.ext.DP
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.event.sendEvent
 import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.EventName
-import com.simple.phonetics.Payload
-import com.simple.phonetics.databinding.ItemIpaBinding
+import com.simple.phonetics.databinding.ItemPrecomputeBinding
 import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.measureTextViewHeight
 import com.simple.phonetics.utils.TextViewMetrics
+import com.simple.phonetics.utils.exts.dp
+import com.simple.phonetics.utils.exts.sp
+import com.simple.ui.precompute.node.BackgroundNode
+import com.simple.ui.precompute.node.ConstraintChild
+import com.simple.ui.precompute.node.ConstraintNode
+import com.simple.ui.precompute.node.CrossAlign
+import com.simple.ui.precompute.node.EdgeInsets
+import com.simple.ui.precompute.node.LayoutDimension
+import com.simple.ui.precompute.node.LayoutNode
+import com.simple.ui.precompute.node.LinearNode
+import com.simple.ui.precompute.node.Orientation
+import com.simple.ui.precompute.node.SpaceNode
+import com.simple.ui.precompute.node.TextNode
+import com.simple.ui.precompute.node.linearChild
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.emptyText
-import com.simple.ui.precompute.text.setText
 import com.unknown.size.uitls.exts.width
 
 @ItemAdapter
-class IpaAdapters(private val onItemClickV2: ((View, IpaViewItem) -> Unit)? = null) : ViewItemAdapter<IpaViewItem, ItemIpaBinding>() {
+class IpaAdapters(private val onItemClickV2: ((View, IpaViewItem) -> Unit)? = null) : PrecomputeAdapter<IpaViewItem>() {
 
     override val viewItemClass: Class<IpaViewItem> by lazy {
         IpaViewItem::class.java
     }
 
-    override fun createViewBinding(parent: ViewGroup, viewType: Int): ItemIpaBinding {
-        return ItemIpaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    }
+    override fun createViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<ItemPrecomputeBinding> {
 
-    override fun createViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<ItemIpaBinding> {
+        val viewHolder = super.createViewHolder(parent, viewType)!!
 
-        val viewHolder = BaseBindingViewHolder(createViewBinding(parent, viewType), viewType)
-
-        val binding = viewHolder.binding
-
-        binding.root.setDebouncedClickListener { view ->
+        viewHolder.binding.root.setDebouncedClickListener { view ->
 
             val viewItem = getViewItem(viewHolder.bindingAdapterPosition) ?: return@setDebouncedClickListener
 
@@ -60,62 +59,11 @@ class IpaAdapters(private val onItemClickV2: ((View, IpaViewItem) -> Unit)? = nu
 
         return viewHolder
     }
-
-    override fun onBindViewHolder(binding: ItemIpaBinding, viewType: Int, position: Int, item: IpaViewItem, payloads: MutableList<Any>) {
-        super.onBindViewHolder(binding, viewType, position, item, payloads)
-
-        binding.root.transitionName = item.id
-
-        if (payloads.contains(Payload.SIZE)) refreshSize(binding, item)
-        if (payloads.contains(Payload.MARGIN)) refreshMargin(binding, item)
-        if (payloads.contains(Payload.BACKGROUND)) refreshBackground(binding, item)
-
-        if (payloads.contains(PAYLOAD_IPA)) refreshIpa(binding, item)
-        if (payloads.contains(PAYLOAD_TEXT)) refreshText(binding, item)
-    }
-
-    override fun onBindViewHolder(binding: ItemIpaBinding, viewType: Int, position: Int, item: IpaViewItem) {
-        super.onBindViewHolder(binding, viewType, position, item)
-
-        binding.root.transitionName = item.id
-
-        refreshSize(binding, item)
-        refreshMargin(binding, item)
-        refreshPadding(binding, item)
-        refreshBackground(binding, item)
-
-        refreshIpa(binding, item)
-
-        refreshText(binding, item)
-    }
-
-    private fun refreshSize(binding: ItemIpaBinding, item: IpaViewItem) {
-        binding.root.setSize(item.size)
-    }
-
-    private fun refreshIpa(binding: ItemIpaBinding, item: IpaViewItem) {
-        binding.tvIpa.setText(item.ipa)
-    }
-
-    private fun refreshText(binding: ItemIpaBinding, item: IpaViewItem) {
-        binding.tvWord.setText(item.text)
-    }
-
-    private fun refreshMargin(binding: ItemIpaBinding, item: IpaViewItem) {
-        binding.root.setMargin(item.margin)
-    }
-
-    private fun refreshPadding(binding: ItemIpaBinding, item: IpaViewItem) {
-        binding.root.setPadding(item.padding)
-    }
-
-    private fun refreshBackground(binding: ItemIpaBinding, item: IpaViewItem) {
-        binding.root.setBackground(item.background)
-    }
 }
 
 data class IpaViewItem(
-    val id: String,
+    override val id: String,
+    override val maxWidth: Int,
     val data: Ipa,
 
     val ipa: BigText = emptyText(),
@@ -125,38 +73,98 @@ data class IpaViewItem(
     val margin: Margin = DEFAULT_MARGIN,
     val padding: Padding = Padding(paddingVertical = DP.DP_16),
     val background: Background = DEFAULT_BACKGROUND
-) : ViewItem, SizeViewItem {
+) : PrecomputeViewItem(), SizeViewItem {
 
+    private var ipaMetrics: TextViewMetrics? = null
+    private var textMetrics: TextViewMetrics? = null
 
-    override fun measureSize(size: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
+    override val node: LayoutNode by lazy {
+        ConstraintNode(
+            children = listOf(
+                ConstraintChild(
+                    id = "bg",
+                    node = BackgroundNode(
+                        backgroundColor = background.backgroundColor,
+                        strokeColor = background.strokeColor,
+                        strokeWidth = background.strokeWidth.toFloat(),
+                        cornerRadius = background.cornerRadius_TL.toFloat(),
+                        layoutWidth = LayoutDimension.MatchParent,
+                        layoutHeight = LayoutDimension.MatchParent,
+                    ),
+                    startToStartOf = ConstraintNode.PARENT,
+                    endToEndOf = ConstraintNode.PARENT,
+                    topToTopOf = ConstraintNode.PARENT,
+                    bottomToBottomOf = ConstraintNode.PARENT,
+                ),
+                ConstraintChild(
+                    id = "content",
+                    node = LinearNode(
+                        orientation = Orientation.VERTICAL,
+                        crossAlign = CrossAlign.CENTER,
+                        padding = EdgeInsets(
+                            left = padding.left,
+                            top = padding.top,
+                            right = padding.right,
+                            bottom = padding.bottom
+                        ),
+                        layoutWidth = LayoutDimension.MatchParent,
+                        children = listOf(
+                            TextNode(
+                                text = ipa,
+                                textSizePx = ipaMetrics?.textSizePx ?: 20.sp(),
+                                typeface = ipaMetrics?.typeface,
+                                layoutWidth = LayoutDimension.WrapContent
+                            ).linearChild(),
+                            SpaceNode.vertical(4.dp().toInt()).linearChild(),
+                            TextNode(
+                                text = text,
+                                textSizePx = textMetrics?.textSizePx ?: 14.sp(),
+                                typeface = textMetrics?.typeface,
+                                layoutWidth = LayoutDimension.WrapContent
+                            ).linearChild()
+                        )
+                    ),
+                    startToStartOf = ConstraintNode.PARENT,
+                    endToEndOf = ConstraintNode.PARENT,
+                    topToTopOf = ConstraintNode.PARENT,
+                    bottomToBottomOf = ConstraintNode.PARENT,
+                )
+            )
+        )
+    }
 
+    override fun measureSize(appSize: Map<String, Int>, style: Map<String, TextViewMetrics>): Size {
 
         val ipaMetrics = style["TextAppearance_MaterialComponents_Headline6"] ?: return this.size
         val textMetrics = style["TextAppearance_MaterialComponents_Body1"] ?: return this.size
 
+        this.ipaMetrics = ipaMetrics
+        this.textMetrics = textMetrics
 
-        val maxWidth = if (this.size.width < 10) {
-            size.width - padding.left - padding.right - margin.left - margin.right
+        val innerMaxWidth = if (this.size.width < 10) {
+            appSize.width - padding.left - padding.right - margin.left - margin.right
         } else {
             this.size.width - padding.left - padding.right
         }
 
         val ipaHeight = measureTextViewHeight(
             text = ipa.textChar,
-            maxWidth = maxWidth,
+            maxWidth = innerMaxWidth,
             metrics = ipaMetrics
         )
 
         val textHeight = measureTextViewHeight(
             text = text.textChar,
-            maxWidth = maxWidth,
+            maxWidth = innerMaxWidth,
             metrics = textMetrics
         )
 
         return Size(
-            width = maxWidth,
-            height = ipaHeight + DP.DP_4 + textHeight + padding.top + padding.bottom
-        )
+            width = if (this.size.width < 10) innerMaxWidth else this.size.width,
+            height = ipaHeight + 4.dp().toInt() + textHeight + padding.top + padding.bottom
+        ).also {
+            this.size = it
+        }
     }
 
     override fun areItemsTheSame(): List<Any> = listOf(
@@ -164,14 +172,11 @@ data class IpaViewItem(
     )
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
-        ipa to PAYLOAD_IPA,
-        text to PAYLOAD_TEXT,
+        ipa to "ipa",
+        text to "text",
 
-        size to Payload.SIZE,
-        margin to Payload.MARGIN,
-        background to Payload.BACKGROUND
+        size to "size",
+        margin to "margin",
+        background to "background"
     )
 }
-
-private const val PAYLOAD_IPA = "PAYLOAD_IPA"
-private const val PAYLOAD_TEXT = "PAYLOAD_TEXT"

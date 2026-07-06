@@ -2,6 +2,7 @@ package com.simple.phonetics.ui.home
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -241,6 +242,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
         viewItemList.collectWithLockTransitionIfCached(fragment = fragment, tag = "VIEW_ITEM_LIST") { data, isFromCache ->
 
             val binding = binding ?: return@collectWithLockTransitionIfCached
+
+            data.forEach {
+                Log.d("tuanha", "observeData: ${it.javaClass.simpleName}")
+            }
 
             QueueEventState.addTag("view_item_list", order = Int.MAX_VALUE)
             binding.recyclerView.submitListAndAwait(viewItemList = data, isAnimation = !isFromCache, groupName = "HOME_VIEW_ITEM_LIST")

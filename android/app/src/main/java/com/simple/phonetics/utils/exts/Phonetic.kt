@@ -1,7 +1,6 @@
 package com.simple.phonetics.utils.exts
 
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.SpaceViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.phonetics.entities.Sentence

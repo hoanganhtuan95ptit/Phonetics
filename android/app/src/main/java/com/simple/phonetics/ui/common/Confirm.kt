@@ -23,7 +23,8 @@ import com.simple.core.utils.extentions.asListOrNull
 import com.simple.core.utils.extentions.asObjectOrNull
 import com.simple.core.utils.extentions.orZero
 import com.simple.coreapp.Param
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
+import com.unknown.size.uitls.exts.width
 import com.simple.coreapp.ui.base.dialogs.sheet.BaseViewModelSheetFragment
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.setBackground
@@ -205,11 +206,12 @@ class VerticalConfirmViewModel : BaseViewModel() {
 
     val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, theme, itemList, actionHeight) {
 
+        val size = size.value ?: return@combineSourcesWithDiff
         val list = arrayListOf<ViewItem>()
 
         list.addAll(itemList.getOrEmpty())
 
-        list.add(SpaceViewItem(id = "1", height = actionHeight.get()))
+        list.add(SpaceViewItem2(id = "1", maxWidth = size.width, height = actionHeight.get().toFloat()))
 
         postValue(list)
     }

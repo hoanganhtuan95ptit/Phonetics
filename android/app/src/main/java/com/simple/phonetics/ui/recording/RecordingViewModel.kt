@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
 import com.simple.coreapp.ui.adapters.texts.NoneTextViewItem
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
@@ -111,13 +111,14 @@ class RecordingViewModel(
         postValue(list)
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(titleViewItemList, actionHeight) {
+    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, titleViewItemList, actionHeight) {
 
+        val size = size.get()
         val list = arrayListOf<ViewItem>()
 
-        list.add(SpaceViewItem(id = "SPACE_PHONETICS_0", width = ViewGroup.LayoutParams.MATCH_PARENT, height = DP.DP_24))
+        list.add(SpaceViewItem2(id = "SPACE_PHONETICS_0", maxWidth = size.width, height = DP.DP_24.toFloat()))
         list.addAll(titleViewItemList.getOrEmpty())
-        list.add(SpaceViewItem(id = "SPACE_PHONETICS_1", width = ViewGroup.LayoutParams.MATCH_PARENT, height = actionHeight.get()))
+        list.add(SpaceViewItem2(id = "SPACE_PHONETICS_1", maxWidth = size.width, height = actionHeight.get().toFloat()))
 
         postValueIfActive(list)
     }

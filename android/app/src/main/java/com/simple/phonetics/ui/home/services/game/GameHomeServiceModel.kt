@@ -6,7 +6,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
-import com.simple.coreapp.ui.adapters.SpaceViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
 import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
@@ -70,6 +70,7 @@ class GameHomeServiceModel(
 
         TextSimpleViewItem(
             id = "TITLE_GAME",
+            maxWidth = size.width,
             text = translate.getOrEmpty("title_game")
                 .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
             textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
@@ -78,13 +79,14 @@ class GameHomeServiceModel(
             )
         ).let {
 
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_0", width = size.width, height = DP.DP_16))
+            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_GAME_0", maxWidth = size.width, height = DP.DP_16.toFloat()))
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_1", width = size.width, height = DP.DP_8))
+            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_GAME_1", maxWidth = size.width, height = DP.DP_8.toFloat()))
         }
 
         TextSimpleViewItem(
             id = Id.GAME,
+            maxWidth = size.width,
             text = translate.getOrEmpty("action_play_game")
                 .with(BigBold, BigForegroundColor(theme.colorPrimary)).build(),
             textStyle = R.style.TextAppearance_MaterialComponents_Body1,
@@ -104,7 +106,7 @@ class GameHomeServiceModel(
         ).let {
 
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem(id = "SPACE_TITLE_AND_GAME_2", width = size.width, height = DP.DP_16))
+            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_GAME_2", maxWidth = size.width, height = DP.DP_16.toFloat()))
         }
 
         viewItemList.forEach {
