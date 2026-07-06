@@ -35,10 +35,10 @@ import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.emptyText
 
 @ItemAdapter
-class SentenceAdapter : PrecomputeAdapter<SentenceViewItem>() {
+class TranslateAdapter : PrecomputeAdapter<TranslateViewItem>() {
 
-    override val viewItemClass: Class<SentenceViewItem> by lazy {
-        SentenceViewItem::class.java
+    override val viewItemClass: Class<TranslateViewItem> by lazy {
+        TranslateViewItem::class.java
     }
 
     override fun createViewHolder(parent: ViewGroup, viewType: Int): BaseBindingViewHolder<ItemPrecomputeBinding>? {
@@ -57,13 +57,15 @@ class SentenceAdapter : PrecomputeAdapter<SentenceViewItem>() {
     }
 }
 
-data class SentenceViewItem(
+data class TranslateViewItem(
     override val id: String,
     override val maxWidth: Int,
 
     val data: Sentence,
 
-    val viewItems: List<PrecomputeViewItem>
+    var text: BigText = emptyText(),
+
+    var isLast: Boolean = false,
 ) : PrecomputeViewItem() {
 
     override val node: LayoutNode = LinearNode(
@@ -73,24 +75,37 @@ data class SentenceViewItem(
         padding = EdgeInsets(top = 14.dp().toInt()),
         layoutWidth = LayoutDimension.MatchParent,
         children = listOfNotNull(
-            FlexboxNode(
-                flexWrap = FlexWrap.WRAP,
-                flexDirection = FlexDirection.ROW,
-                alignItems = FlexAlignItems.FLEX_START,
-                alignContent = FlexAlignContent.FLEX_START,
-                justifyContent = FlexJustifyContent.FLEX_START,
-                gap = 4.dp().toInt(),
+            LineNode(
+                color = 0xFFB8B8B8.toInt(),
+                strokeWidth = 1.5f * 1.dp(),
+                dashWidth = 4.dp(),
+                dashGap = 4.dp(),
+                layoutWidth = LayoutDimension.Fixed(240.dp().toInt()),
+                layoutHeight = LayoutDimension.Fixed(2.dp().toInt()),
+            ).linearChild(),
+            TextNode(
+                text = text,
                 layoutWidth = LayoutDimension.MatchParent,
-                children = viewItems.mapIndexed { index, item ->
-                    FlexChild(
-                        node = item.node
-                    )
-                }
+            ).linearChild(),
+            SpaceNode(
+                layoutHeight = LayoutDimension.Fixed(8.dp().toInt())
+            ).linearChild(),
+            LineNode(
+                color = 0xFFB8B8B8.toInt(),
+                strokeWidth = 1.dp(),
+                layoutWidth = LayoutDimension.MatchParent,
+                layoutHeight = LayoutDimension.WrapContent,
+            ).linearChild().takeIf {
+                !isLast
+            },
+            SpaceNode(
+                layoutHeight = LayoutDimension.Fixed(8.dp().toInt())
             ).linearChild()
         )
     )
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
-        viewItems to "viewItems"
+        text to "text",
+        isLast to "isLast"
     )
 }

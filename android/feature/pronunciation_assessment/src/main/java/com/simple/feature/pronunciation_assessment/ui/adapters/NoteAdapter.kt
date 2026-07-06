@@ -4,8 +4,8 @@ import com.simple.adapter.annotation.ItemAdapter
 import com.simple.phonetics.ui.common.adapters.PrecomputeAdapter
 import com.simple.phonetics.ui.common.adapters.PrecomputeViewItem
 import com.simple.phonetics.utils.exts.dp
-import com.simple.ui.precompute.DrawSpec
 import com.simple.ui.precompute.LayoutEngine
+import com.simple.ui.precompute.LayoutResult
 import com.simple.ui.precompute.image.BigImage
 import com.simple.ui.precompute.image.emptyImage
 import com.simple.ui.precompute.node.BackgroundData
@@ -17,10 +17,12 @@ import com.simple.ui.precompute.node.CrossAlign
 import com.simple.ui.precompute.node.EdgeInsets
 import com.simple.ui.precompute.node.ImageNode
 import com.simple.ui.precompute.node.LayoutDimension
+import com.simple.ui.precompute.node.LayoutNode
 import com.simple.ui.precompute.node.LinearNode
 import com.simple.ui.precompute.node.Orientation
 import com.simple.ui.precompute.node.SpaceNode
 import com.simple.ui.precompute.node.TextNode
+import com.simple.ui.precompute.node.linearChild
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.emptyText
 
@@ -43,7 +45,7 @@ data class NoteViewItem(
     val background: BackgroundData = BackgroundData()
 ) : PrecomputeViewItem() {
 
-    override val drawSpec: DrawSpec = ConstraintNode(
+    override val node: LayoutNode = ConstraintNode(
         children = listOf(
             ConstraintChild(
                 id = "bg",
@@ -75,8 +77,8 @@ data class NoteViewItem(
                             source = image,
                             layoutWidth = LayoutDimension.Fixed(28.dp().toInt()),
                             layoutHeight = LayoutDimension.Fixed(28.dp().toInt())
-                        ),
-                        SpaceNode.horizontal(16.dp().toInt()),
+                        ).linearChild(),
+                        SpaceNode.horizontal(16.dp().toInt()).linearChild(),
                         LinearNode(
                             orientation = Orientation.VERTICAL,
                             layoutWidth = LayoutDimension.MatchParent,
@@ -84,25 +86,21 @@ data class NoteViewItem(
                                 TextNode(
                                     text = title,
                                     layoutWidth = LayoutDimension.MatchParent
-                                ),
-                                SpaceNode.vertical(8.dp().toInt()),
+                                ).linearChild(),
+                                SpaceNode.vertical(8.dp().toInt()).linearChild(),
                                 TextNode(
                                     text = note,
                                     layoutWidth = LayoutDimension.MatchParent
-                                )
+                                ).linearChild()
                             )
-                        )
+                        ).linearChild()
                     )
                 ),
                 startToStartOf = ConstraintNode.PARENT,
                 topToTopOf = ConstraintNode.PARENT,
             ),
         )
-    ).let {
-
-        LayoutEngine.measure(node = it, constraints = Constraints(maxWidth), id = id)
-    }
-
+    )
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
         note to "note",

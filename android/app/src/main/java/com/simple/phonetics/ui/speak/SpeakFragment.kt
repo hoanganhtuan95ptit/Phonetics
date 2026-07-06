@@ -40,6 +40,7 @@ import com.simple.phonetics.utils.exts.createFlexboxLayoutManager
 import com.simple.phonetics.utils.exts.ensureGradientUpdates
 import com.simple.phonetics.utils.exts.playMedia
 import com.simple.phonetics.utils.exts.playVibrate
+import com.simple.phonetics.utils.exts.submitListAndAwait
 import com.simple.phonetics.utils.exts.value
 import com.simple.phonetics.utils.sendDeeplinkWithThank
 import com.simple.phonetics.utils.showAds
@@ -294,7 +295,7 @@ class SpeakFragment : BaseActionFragment<LayoutActionConfirmSpeakBinding, Dialog
             val binding = binding ?: return@launchCollect
             val bindingAction = bindingAction ?: return@launchCollect
 
-            binding.recyclerView.submitListAwait(it)
+            binding.recyclerView.submitListAndAwait(it, groupName = "SPEAK_VIEW_ITEM_LIST")
 
             bindingAction.root.setVisible(true)
         }

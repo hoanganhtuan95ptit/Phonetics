@@ -8,8 +8,8 @@ import com.simple.phonetics.ui.common.adapters.PrecomputeViewItem
 import com.simple.phonetics.utils.exts.dp
 import com.simple.phonetics.utils.exts.sp
 import com.simple.phonetics.utils.exts.toPronunciationColor
-import com.simple.ui.precompute.DrawSpec
 import com.simple.ui.precompute.LayoutEngine
+import com.simple.ui.precompute.LayoutResult
 import com.simple.ui.precompute.node.ConstraintChild
 import com.simple.ui.precompute.node.ConstraintNode
 import com.simple.ui.precompute.node.Constraints
@@ -18,10 +18,13 @@ import com.simple.ui.precompute.node.EdgeInsets
 import com.simple.ui.precompute.node.GaugeArcNode
 import com.simple.ui.precompute.node.GaugeScoreNode
 import com.simple.ui.precompute.node.LayoutDimension
+import com.simple.ui.precompute.node.LayoutNode
+import com.simple.ui.precompute.node.LinearChild
 import com.simple.ui.precompute.node.LinearNode
 import com.simple.ui.precompute.node.Orientation
 import com.simple.ui.precompute.node.ProgressBarNode
 import com.simple.ui.precompute.node.TextNode
+import com.simple.ui.precompute.node.linearChild
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.emptyText
 
@@ -60,30 +63,23 @@ data class ScoreResultViewItem(
     private val strokeWidthPx = 12.dp()
     private val progressHeight = 12.dp().toInt()
 
-    override val drawSpec: DrawSpec = LayoutEngine.measure(
-        node = buildRoot(),
-        constraints = Constraints(maxWidth),
-        id = id
-    )
-
-    private fun buildRoot(): LinearNode {
-
-        val topRow = buildTopRow()
-        val subtitleNode = buildSubtitleNode()
-        val children = listOf(topRow, subtitleNode)
-        return LinearNode(
+    override val node: LayoutNode by lazy {
+        LinearNode(
             orientation = Orientation.VERTICAL,
             crossAlign = CrossAlign.CENTER,
             layoutWidth = LayoutDimension.MatchParent,
-            children = children,
+            children = listOf(
+                buildTopRow().linearChild(),
+                buildSubtitleNode().linearChild()
+            ),
         )
     }
 
-    private fun buildTopRow(): LinearNode {
+    private fun buildTopRow(): LayoutNode {
 
         val gauge = buildGauge()
         val metricsColumn = buildMetricsColumn()
-        val children = listOf(gauge, metricsColumn)
+        val children = listOf(gauge.linearChild(), metricsColumn.linearChild())
         return LinearNode(
             orientation = Orientation.HORIZONTAL,
             crossAlign = CrossAlign.CENTER,
@@ -98,6 +94,7 @@ data class ScoreResultViewItem(
         val arcChild = buildGaugeArcChild()
         val scoreChild = buildGaugeScoreChild()
         val children = listOf(arcChild, scoreChild)
+
         return ConstraintNode(
             children = children,
             layoutWidth = LayoutDimension.Fixed(gaugeSize),
@@ -148,7 +145,7 @@ data class ScoreResultViewItem(
         )
     }
 
-    private fun buildMetricsColumn(): LinearNode {
+    private fun buildMetricsColumn(): LayoutNode {
 
         val children = buildMetricRows()
         return LinearNode(
@@ -158,7 +155,7 @@ data class ScoreResultViewItem(
         )
     }
 
-    private fun buildMetricRows(): List<LinearNode> {
+    private fun buildMetricRows(): List<LinearChild> {
 
         val accuracyRow = buildMetric(
             title = accuracyTitle,
@@ -181,7 +178,7 @@ data class ScoreResultViewItem(
             idSuffix = "fluency",
             paddingBottom = DP.DP_4,
         )
-        return listOf(accuracyRow, completionRow, fluencyRow)
+        return listOf(accuracyRow.linearChild(), completionRow.linearChild(), fluencyRow.linearChild())
     }
 
     private fun buildMetric(
@@ -190,12 +187,12 @@ data class ScoreResultViewItem(
         progress: Int,
         idSuffix: String,
         paddingBottom: Int,
-    ): LinearNode {
+    ): LayoutNode {
 
         val header = buildMetricHeader(title, value, idSuffix)
         val progressBar = buildMetricProgressBar(progress)
         val padding = EdgeInsets.symmetric(v = 8.dp().toInt())
-        val children = listOf(header, progressBar)
+        val children = listOf(header.linearChild(), progressBar.linearChild())
         return LinearNode(
             orientation = Orientation.VERTICAL,
             gap = DP.DP_6,

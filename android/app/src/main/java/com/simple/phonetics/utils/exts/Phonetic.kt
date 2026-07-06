@@ -6,7 +6,10 @@ import com.simple.coreapp.ui.view.Background
 import com.simple.coreapp.utils.ext.DP
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.common.adapters.PhoneticsLoadingViewItem
+import com.simple.phonetics.ui.common.adapters.PrecomputeViewItem
+import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
+import com.simple.phonetics.ui.home.adapters.TranslateViewItem
 import com.simple.state.ResultState
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.span.BigForegroundColor
@@ -71,10 +74,14 @@ private fun Sentence.toViewItem(
 
     val item = this@toViewItem
 
+    val maxWidth = sizes.width - 2 * 16.dp().toInt()
+
+
+    val childViewItemList = arrayListOf<PrecomputeViewItem>()
 
     if (isShowSpeak && isSupportSpeak && item.phonetics.size >= 2) {
 
-        add(item.toSpeakViewItem(index, sizes, theme, translate))
+        childViewItemList.add(item.toSpeakViewItem(index, sizes, theme, translate))
     }
 
 
@@ -91,9 +98,20 @@ private fun Sentence.toViewItem(
         )
     }.let {
 
-        addAll(it)
+        childViewItemList.addAll(it)
     }
 
+    if (childViewItemList.isNotEmpty()) SentenceViewItem(
+        id = "${index * 1000}",
+        maxWidth = maxWidth,
+
+        data = item,
+
+        viewItems = childViewItemList
+    ).let {
+
+        add(it)
+    }
 
     if (isSupportTranslate) item.translateState.let { translateState ->
 
@@ -118,117 +136,22 @@ private fun Sentence.toViewItem(
             }
         }
 
-        SentenceViewItem(
+        TranslateViewItem(
             id = "${index * 1000}",
-            maxWidth = sizes.width - 2 * 16.dp().toInt(),
+            maxWidth = maxWidth,
 
             data = item,
 
             text = text
                 .build(),
 
-            isLast = index == total
+            isLast = index == total,
         )
     }.let {
 
         add(it)
     } else {
 
-        add(SpaceViewItem(id = "$index", height = DP.DP_8))
+        add(SpaceViewItem2(id = "1", maxWidth = sizes.width - 2 * 16.dp().toInt(), height = 8.dp()))
     }
 }
-
-/*
-private fun Sentence.toSpeakViewItem(index: Int, theme: Map<String, Any>, translate: Map<String, String>): ViewItem {
-
-    return ClickBigTextViewItem(
-        id = "${Id.SENTENCE}_${index}",
-        data = this,
-
-        size = Size(
-            width = ViewGroup.LayoutParams.WRAP_CONTENT,
-            height = DP.DP_40
-        ),
-        margin = Margin(
-            left = DP.DP_4,
-            right = DP.DP_12,
-            top = DP.DP_12,
-            bottom = DP.DP_12
-        ),
-        background = DEFAULT_BACKGROUND,
-
-        text = translate["action_try_speak"].orEmpty().with(BigForegroundColor(theme.colorPrimary)).build(),
-        textStyle = TextStyle(
-            textGravity = Gravity.CENTER_VERTICAL
-        ),
-        textSize = Size(
-            width = ViewGroup.LayoutParams.MATCH_PARENT,
-            height = DP.DP_40,
-        ),
-        textPadding = Padding(
-            left = DP.DP_18 + DP.DP_8 * 2,
-            top = DP.DP_8,
-            right = DP.DP_8,
-            bottom = DP.DP_8
-        ),
-        textBackground = Background(
-            cornerRadius = DP.DP_16,
-            strokeColor = theme.colorPrimary,
-
-            strokeWidth = DP.DP_2,
-            strokeDashGap = DP.DP_4,
-            strokeDashWidth = DP.DP_4
-        ),
-
-        imageLeft = R.drawable.ic_microphone_24dp,
-        imageLeftSize = Size(
-            width = DP.DP_18,
-            height = DP.DP_40
-        ),
-        imageLeftMargin = Margin(
-            marginHorizontal = DP.DP_8
-        ),
-        imageLeftPadding = DEFAULT_PADDING
-    )
-}
-*/
-
-/*
-private fun com.simple.phonetic.entities.Phonetic.toViewItem(
-    id: String,
-
-    isSupportSpeak: Boolean = false,
-    isSupportListen: Boolean = false,
-
-    theme: Map<String, Any>
-): ViewItem {
-
-    val ipaList = ipaValueList
-    val ipa = ipaList.joinToString(separator = " - ")
-
-    val image = if (isSupportSpeak) {
-        R.drawable.img_down
-    } else if (isSupportListen) {
-        R.drawable.img_volume
-    } else {
-        0
-    }
-
-    return PhoneticsViewItem(
-        id = id,
-        data = this,
-
-        ipa = ipa.with(ForegroundColor(if (ipaList.size > 1) theme.colorPrimary else theme.colorError)),
-        text = this.text.with(ForegroundColor(theme.colorOnSurface)),
-
-        image = image,
-
-        padding = Padding(
-            top = DP.DP_12,
-            bottom = DP.DP_12,
-            left = DP.DP_4,
-            right = DP.DP_12
-        )
-    )
-}
-*/

@@ -1,11 +1,12 @@
 package com.simple.phonetics.utils.exts
 
-import com.simple.adapter.entities.ViewItem
+import android.graphics.Color
 import com.simple.phonetic.entities.ipaValueList
 import com.simple.phonetics.Id
 import com.simple.phonetics.R
 import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.common.adapters.PhoneticsViewItem2
+import com.simple.phonetics.ui.common.adapters.PrecomputeViewItem
 import com.simple.phonetics.ui.home.adapters.SpeakSentenceViewItem
 import com.simple.ui.precompute.image.ColorFilter
 import com.simple.ui.precompute.image.addTransform
@@ -14,6 +15,7 @@ import com.simple.ui.precompute.image.toBuilder
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.span.BigBold
 import com.simple.ui.precompute.text.span.BigForegroundColor
+import com.simple.ui.precompute.text.span.BigRoundedBackground
 import com.simple.ui.precompute.text.with
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorError
@@ -25,7 +27,7 @@ internal fun Sentence.toSpeakViewItem(
     sizes: Map<String, Int>,
     themes: Map<String, Any>,
     strings: Map<String, String>
-): ViewItem {
+): PrecomputeViewItem {
 
     return SpeakSentenceViewItem(
         id = "${Id.SENTENCE}_${index}",
@@ -50,7 +52,7 @@ internal fun com.simple.phonetic.entities.Phonetic.toViewItem(
 
     sizes: Map<String, Int>,
     themes: Map<String, Any>,
-): ViewItem {
+): PrecomputeViewItem {
 
     val icon = if (isSupportSpeaking) {
         R.drawable.img_down
@@ -78,7 +80,7 @@ internal fun com.simple.phonetic.entities.Phonetic.toViewItem(
 
 
     return PhoneticsViewItem2(
-        id = id,
+        id = "$id PhoneticsViewItem",
         maxWidth = sizes.width,
 
         text = text,

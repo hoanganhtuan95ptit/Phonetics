@@ -1,6 +1,5 @@
 package com.simple.phonetics.ui.common.adapters
 
-import android.util.Log
 import com.simple.adapter.annotation.ItemAdapter
 import com.simple.ui.precompute.LayoutEngine
 import com.simple.ui.precompute.node.ConstraintChild
@@ -8,6 +7,7 @@ import com.simple.ui.precompute.node.ConstraintNode
 import com.simple.ui.precompute.node.Constraints
 import com.simple.ui.precompute.node.LayoutDimension
 import com.simple.ui.precompute.node.LayoutDimension.Companion.toLayoutDimension
+import com.simple.ui.precompute.node.LayoutNode
 import com.simple.ui.precompute.node.SpaceNode
 
 @ItemAdapter
@@ -39,7 +39,7 @@ data class SpaceViewItem2(
     val height: LayoutDimension = LayoutDimension.MatchParent,
 ) : PrecomputeViewItem() {
 
-    override val drawSpec = ConstraintNode(
+    override val node: LayoutNode = ConstraintNode(
         children = listOf(
             ConstraintChild(
                 id = "content",
@@ -51,14 +51,7 @@ data class SpaceViewItem2(
                 topToTopOf = ConstraintNode.PARENT,
             ),
         )
-    ).let {
-
-        LayoutEngine.measure(node = it, constraints = Constraints(maxWidth), id = id)
-    }.apply {
-
-        Log.d("tuanha", "drawSpec: $this")
-    }
-
+    )
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
         width to "width",

@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.AlignItems
 import com.simple.adapter.MultiAdapter
 import com.simple.core.utils.extentions.asObject
@@ -24,14 +25,10 @@ import com.simple.deeplink.sendDeeplink
 import com.simple.event.listenerEvent
 import com.simple.phonetics.DeeplinkManager
 import com.simple.phonetics.EventName
-import com.simple.phonetics.Id
 import com.simple.phonetics.Param
 import com.simple.phonetics.databinding.FragmentHomeBinding
-import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.ConfigViewModel
 import com.simple.phonetics.ui.base.fragments.BaseFragment
-import com.simple.phonetics.ui.common.adapters.PhoneticsAdapter
-import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextAdapter
 import com.simple.phonetics.ui.home.adapters.SentenceViewItem
 import com.simple.phonetics.ui.main.services.queue.HomeScreen
 import com.simple.phonetics.ui.main.services.queue.QueueEventState
@@ -43,10 +40,10 @@ import com.simple.phonetics.utils.exts.getCurrentOffset
 import com.simple.phonetics.utils.exts.replace
 import com.simple.phonetics.utils.exts.submitListAndAwait
 import com.simple.ui.precompute.image.setImage
+import com.simple.ui.precompute.text.setText
 import com.unknown.theme.utils.exts.colorBackground
 import com.unknown.theme.utils.exts.colorPrimary
 import kotlin.math.absoluteValue
-import com.simple.ui.precompute.text.setText
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScreen {
 
@@ -145,6 +142,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             binding.recyclerView.adapter = this
             binding.recyclerView.itemAnimator = null
+            binding.recyclerView.setHasFixedSize(false)
 
             val layoutManager = createFlexboxLayoutManager(context = context) {
 
@@ -157,7 +155,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
 
             layoutManager.alignItems = AlignItems.FLEX_START
 
-            binding.recyclerView.layoutManager = layoutManager
+            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
             binding.recyclerView.updatePadding(left = DP.DP_12, right = DP.DP_12)
         }
     }
@@ -245,7 +243,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeScr
             val binding = binding ?: return@collectWithLockTransitionIfCached
 
             QueueEventState.addTag("view_item_list", order = Int.MAX_VALUE)
-            binding.recyclerView.submitListAndAwait(viewItemList = data, isAnimation = !isFromCache)
+            binding.recyclerView.submitListAndAwait(viewItemList = data, isAnimation = !isFromCache, groupName = "HOME_VIEW_ITEM_LIST")
             QueueEventState.endTag("view_item_list")
         }
     }

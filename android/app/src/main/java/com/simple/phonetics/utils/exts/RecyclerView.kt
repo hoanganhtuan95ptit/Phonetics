@@ -1,5 +1,6 @@
 package com.simple.phonetics.utils.exts
 
+import android.util.Log
 import androidx.core.view.children
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
@@ -12,11 +13,20 @@ import androidx.transition.TransitionSet
 import com.simple.adapter.MultiAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.core.utils.extentions.asObjectOrNull
+import com.simple.phonetics.ui.common.adapters.PrecomputeViewItem
+import com.simple.ui.precompute.CachedDrawSpec
+import com.simple.ui.precompute.DrawSpec
+import com.simple.ui.precompute.LayoutEngine
+import com.simple.ui.precompute.node.Constraints
+import com.simple.ui.precompute.node.GroupSpec
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.UUID
 
 
 fun RecyclerView.listenerScrollAsync() = channelFlow {
@@ -188,19 +198,58 @@ private fun RecyclerView.submitListAndGetListPositionChangeAsync(viewItemList: L
 }
 
 
-suspend fun RecyclerView.submitListAndAwait(viewItemList: List<ViewItem>, isAnimation: Boolean = false) {
+suspend fun RecyclerView.submitListAndAwait(viewItemList: List<ViewItem>, isAnimation: Boolean = false, groupName: String = UUID.randomUUID().toString()) {
+
+    fun PrecomputeViewItem.idSpec() = "${javaClass.simpleName}_${id}"
+
+    Log.d("tuanha", "submitListAndAwait: start-----------------------")
+    fun printDrawSpecs(specs: List<DrawSpec>, indent: String = ""): String {
+        return specs.joinToString("\n") { spec ->
+            val idString = " (data=${spec.data} id=${spec.node?.id})"
+            var line = "$indent- ${spec.javaClass.simpleName}$idString (${spec.width}x${spec.height}) @(${spec.left},${spec.top})"
+
+            val children = when (spec) {
+                is GroupSpec -> spec.children
+                is CachedDrawSpec -> spec.children
+                else -> emptyList()
+            }
+
+            if (children.isNotEmpty()) {
+                line += "\n" + printDrawSpecs(children, "$indent  ")
+            }
+            line
+        }
+    }
+
+    val items = withContext(Dispatchers.IO) {
+        viewItemList.map {
+            if (it is PrecomputeViewItem) {
+                // Thêm index hoặc identifier riêng biệt để tránh trùng ID giữa các item khác nhau trong cùng 1 list
+                val uniqueId = it.idSpec()
+                it.result = LayoutEngine.build(groupName = groupName, id = uniqueId, node = it.node, constraints = Constraints(it.maxWidth))
+
+                Log.d("tuanha", "submitListAndAwait:$groupName ${it.id} (unique:$uniqueId) \n${printDrawSpecs(it.result.draws)}")
+            }
+            it
+        }
+    }
 
     val visiblePositionSet = children.map { getChildAdapterPosition(it) }.toSet()
-    val updatedPositionSet = submitListAndGetListPositionChangeAsync(viewItemList = viewItemList).first()
+    val updatedPositionSet = submitListAndGetListPositionChangeAsync(viewItemList = items).first()
 
 
-    val canChangeItemVisible = visiblePositionSet.isEmpty() || viewItemList.isEmpty() || updatedPositionSet.intersect(visiblePositionSet).isNotEmpty()
+    val canChangeItemVisible = visiblePositionSet.isEmpty() || items.isEmpty() || updatedPositionSet.intersect(visiblePositionSet).isNotEmpty()
 
     if (canChangeItemVisible) if (isAnimation) {
         transitionAsync().first()
     } else {
         doOnPreDrawAsync().first()
     }
+
+    withContext(Dispatchers.IO) {
+        LayoutEngine.release(groupName = groupName, keepIds = viewItemList.mapNotNull { it.asObjectOrNull<PrecomputeViewItem>()?.idSpec() })
+    }
+    Log.d("tuanha", "submitListAndAwait: end----------------------------")
 }
 
 @Deprecated("use submitListAndAwait")

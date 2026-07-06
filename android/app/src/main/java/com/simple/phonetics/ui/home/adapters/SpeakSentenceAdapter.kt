@@ -14,8 +14,8 @@ import com.simple.phonetics.entities.Sentence
 import com.simple.phonetics.ui.common.adapters.PrecomputeAdapter
 import com.simple.phonetics.ui.common.adapters.PrecomputeViewItem
 import com.simple.phonetics.utils.exts.dp
-import com.simple.ui.precompute.DrawSpec
 import com.simple.ui.precompute.LayoutEngine
+import com.simple.ui.precompute.LayoutResult
 import com.simple.ui.precompute.image.ColorFilter
 import com.simple.ui.precompute.image.addTransform
 import com.simple.ui.precompute.image.build
@@ -28,9 +28,11 @@ import com.simple.ui.precompute.node.CrossAlign
 import com.simple.ui.precompute.node.EdgeInsets
 import com.simple.ui.precompute.node.ImageNode
 import com.simple.ui.precompute.node.LayoutDimension
+import com.simple.ui.precompute.node.LayoutNode
 import com.simple.ui.precompute.node.LinearNode
 import com.simple.ui.precompute.node.Orientation
 import com.simple.ui.precompute.node.TextNode
+import com.simple.ui.precompute.node.linearChild
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.emptyText
 
@@ -67,7 +69,7 @@ data class SpeakSentenceViewItem(
     val contentColor: Int,
 ) : PrecomputeViewItem() {
 
-    override val drawSpec: DrawSpec = ConstraintNode(
+    override val node: LayoutNode = ConstraintNode(
         children = listOf(
             ConstraintChild(
                 id = "outline",
@@ -101,22 +103,18 @@ data class SpeakSentenceViewItem(
                                 .build(),
                             layoutWidth = LayoutDimension.Fixed(20.dp().toInt()),
                             layoutHeight = LayoutDimension.Fixed(20.dp().toInt()),
-                        ),
+                        ).linearChild(),
                         TextNode(
                             text = text,
                             maxLines = 1,
-                        ),
+                        ).linearChild(),
                     )
                 ),
                 startToStartOf = ConstraintNode.PARENT,
                 topToTopOf = ConstraintNode.PARENT,
             )
         )
-    ).let {
-
-        LayoutEngine.measure(node = it, constraints = Constraints(maxWidth), id = id)
-    }
-
+    )
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
         text to "text",

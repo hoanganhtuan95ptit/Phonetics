@@ -70,7 +70,7 @@ class PhoneticView @JvmOverloads constructor(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        setMeasuredDimension(delegate.spec?.width ?: 0, delegate.spec?.height ?: 0)
+        setMeasuredDimension(delegate.result?.width ?: 0, delegate.result?.height ?: 0)
     }
 
     override fun onDraw(canvas: Canvas) {

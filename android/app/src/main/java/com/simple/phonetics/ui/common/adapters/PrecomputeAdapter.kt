@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import com.simple.adapter.ViewItemAdapter
 import com.simple.adapter.entities.ViewItem
 import com.simple.phonetics.databinding.ItemPrecomputeBinding
-import com.simple.ui.precompute.DrawSpec
+import com.simple.ui.precompute.LayoutResult
+import com.simple.ui.precompute.node.LayoutNode
 
 abstract class PrecomputeAdapter<T : PrecomputeViewItem>(onItemClick: ((View, T) -> Unit)? = null) : ViewItemAdapter<T, ItemPrecomputeBinding>(onItemClick) {
 
@@ -27,7 +28,7 @@ abstract class PrecomputeAdapter<T : PrecomputeViewItem>(onItemClick: ((View, T)
     }
 
     private fun drawSpec(binding: ItemPrecomputeBinding, item: T) {
-        binding.root.spec = item.drawSpec
+        binding.root.result = item.result
     }
 }
 
@@ -35,7 +36,10 @@ abstract class PrecomputeViewItem : ViewItem {
 
     abstract val id: String
     abstract val maxWidth: Int
-    abstract val drawSpec: DrawSpec
+
+    abstract val node: LayoutNode
+
+    lateinit var result: LayoutResult
 
     override fun areItemsTheSame(): List<Any> = listOf(
         id
