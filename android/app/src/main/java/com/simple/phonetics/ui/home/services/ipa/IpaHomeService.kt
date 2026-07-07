@@ -28,7 +28,7 @@ class IpaHomeService : HomeService {
         val ipaHomeViewModel: IpaHomeViewModel by homeFragment.viewModel()
 
 
-        ipaHomeViewModel.viewItemList.asFlow().launchCollect(homeFragment.viewLifecycleOwner) {
+        ipaHomeViewModel.viewItemList.launchCollect(homeFragment.viewLifecycleOwner) {
 
             viewModel.updateTypeViewItemList(type = 2, it)
         }

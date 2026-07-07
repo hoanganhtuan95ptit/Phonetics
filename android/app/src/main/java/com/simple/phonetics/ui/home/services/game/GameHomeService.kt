@@ -16,6 +16,7 @@ import com.simple.phonetics.ui.common.adapters.texts.ClickBigTextViewItem
 import com.simple.phonetics.ui.home.HomeFragment
 import com.simple.phonetics.ui.home.HomeViewModel
 import com.simple.phonetics.ui.home.services.HomeService
+import com.unknown.coroutines.launchCollect
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -30,7 +31,7 @@ class GameHomeService : HomeService {
 
         val gameHomeServiceModel: GameHomeServiceModel by homeFragment.viewModel()
 
-        gameHomeServiceModel.viewItemList.observe(homeFragment.viewLifecycleOwner) {
+        gameHomeServiceModel.viewItemList.launchCollect(homeFragment.viewLifecycleOwner) {
 
             homeViewModel.updateTypeViewItemList(type = 0, it)
         }

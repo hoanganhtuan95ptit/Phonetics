@@ -69,13 +69,13 @@ class IpaListViewModel(
                 text = it.examples.firstOrNull().orEmpty()
                     .with(BigForegroundColor(theme.colorOnSurface)).build(),
 
-                size = Size(
-                    width = (size.width - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
-                    height = DP.DP_90
-                ),
-                margin = Margin(
-                    margin = DP.DP_4
-                ),
+//                size = Size(
+//                    width = (size.width - 2 * DP.DP_12) / 3 - 2 * DP.DP_4,
+//                    height = DP.DP_90
+//                ),
+//                margin = Margin(
+//                    margin = DP.DP_4
+//                ),
                 background = Background(
                     cornerRadius = DP.DP_16,
                     backgroundColor = it.BackgroundColor(theme = theme)

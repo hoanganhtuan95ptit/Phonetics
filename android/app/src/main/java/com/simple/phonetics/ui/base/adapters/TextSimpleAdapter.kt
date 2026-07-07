@@ -14,15 +14,21 @@ import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.utils.ext.setDebouncedClickListener
 import com.simple.event.sendEvent
 import com.simple.phonetics.EventName
-import com.simple.phonetics.R
 import com.simple.phonetics.databinding.ItemPrecomputeBinding
 import com.simple.phonetics.ui.common.adapters.PrecomputeAdapter
 import com.simple.phonetics.ui.common.adapters.PrecomputeViewItem
+import com.simple.ui.precompute.node.BackgroundNode
 import com.simple.ui.precompute.node.ConstraintChild
 import com.simple.ui.precompute.node.ConstraintNode
+import com.simple.ui.precompute.node.CrossAlign
 import com.simple.ui.precompute.node.EdgeInsets
+import com.simple.ui.precompute.node.LayoutDimension
+import com.simple.ui.precompute.node.LayoutDimension.Companion.toLayoutDimension
 import com.simple.ui.precompute.node.LayoutNode
+import com.simple.ui.precompute.node.LinearNode
+import com.simple.ui.precompute.node.Orientation
 import com.simple.ui.precompute.node.TextNode
+import com.simple.ui.precompute.node.linearChild
 import com.simple.ui.precompute.text.BigText
 import com.simple.ui.precompute.text.emptyText
 
@@ -51,10 +57,10 @@ class TextSimpleAdapter : PrecomputeAdapter<TextSimpleViewItem>() {
 data class TextSimpleViewItem(
     override val id: String,
     override val maxWidth: Int,
+
     val data: Any? = null,
 
     var text: BigText = emptyText(),
-    var textStyle: Int = R.style.TextBody1,
 
     val textSize: Size = DEFAULT_SIZE,
     val textMargin: Margin = DEFAULT_MARGIN,
@@ -68,26 +74,55 @@ data class TextSimpleViewItem(
 ) : PrecomputeViewItem() {
 
 
-    override val node: LayoutNode by lazy {
-        ConstraintNode(
-            children = listOf(
-                ConstraintChild(
-                    id = "text",
-                    node = TextNode(
-                        text = text,
-                        padding = EdgeInsets(
-                            left = textPadding.left,
-                            top = textPadding.top,
-                            right = textPadding.right,
-                            bottom = textPadding.bottom
-                        ),
-                    ),
-                    startToStartOf = ConstraintNode.PARENT,
-                    topToTopOf = ConstraintNode.PARENT,
-                )
+    override val node: LayoutNode = ConstraintNode(
+        padding = EdgeInsets(
+            left = padding.left,
+            top = padding.top,
+            right = padding.right,
+            bottom = padding.bottom
+        ),
+        children = listOf(
+            ConstraintChild(
+                id = "bg",
+                node = BackgroundNode(
+                    backgroundColor = background.backgroundColor,
+                    strokeColor = background.strokeColor,
+                    strokeWidth = background.strokeWidth.toFloat(),
+                    cornerRadius = background.cornerRadius_TL.toFloat(),
+                    layoutWidth = LayoutDimension.MatchParent,
+                    layoutHeight = LayoutDimension.MatchParent
+                ),
+                topToTopOf = "content",
+                endToEndOf = "content",
+                startToStartOf = "content",
+                bottomToBottomOf = "content",
+                width = LayoutDimension.MatchParent,
+                height = LayoutDimension.MatchParent
+            ),
+            ConstraintChild(
+                id = "content",
+                node = LinearNode(
+                    crossAlign = CrossAlign.CENTER,
+                    orientation = Orientation.HORIZONTAL,
+                    layoutWidth = textSize.width.toLayoutDimension(),
+                    layoutHeight = textSize.height.toLayoutDimension(),
+                    children = listOf(
+                        TextNode(
+                            text = text,
+                            padding = EdgeInsets(
+                                left = textPadding.left,
+                                top = textPadding.top,
+                                right = textPadding.right,
+                                bottom = textPadding.bottom
+                            ),
+                        ).linearChild()
+                    )
+                ),
+                startToStartOf = ConstraintNode.PARENT,
+                topToTopOf = ConstraintNode.PARENT,
             )
         )
-    }
+    )
 
     override fun areItemsTheSame(): List<Any> = listOf(
         id
@@ -95,7 +130,6 @@ data class TextSimpleViewItem(
 
     override fun getContentsCompare(): List<Pair<Any, String>> = listOf(
         text to "text",
-        textStyle to "textStyle",
 
         textSize to "textSize",
         textMargin to "textMargin",

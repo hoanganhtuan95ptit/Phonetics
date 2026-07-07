@@ -1,28 +1,22 @@
 package com.simple.phonetics.ui.home.services.game
 
-import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
-import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
-import com.simple.coreapp.utils.extentions.get
-import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.phonetics.Constants
 import com.simple.phonetics.Id
-import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.word.CountWordAsyncUseCase
 import com.simple.phonetics.entities.Word
-import com.simple.phonetics.ui.base.adapters.SizeViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
+import com.simple.phonetics.utils.combineState
+import com.simple.phonetics.utils.exts.dp
 import com.simple.phonetics.utils.exts.getOrEmpty
+import com.simple.phonetics.utils.exts.withStyleBodyLarge
+import com.simple.phonetics.utils.exts.withStyleTitleLarge
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.span.BigBold
 import com.simple.ui.precompute.text.span.BigForegroundColor
@@ -31,38 +25,37 @@ import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
 class GameHomeServiceModel(
     private val countWordAsyncUseCase: CountWordAsyncUseCase
 ) : BaseViewModel() {
 
-    @VisibleForTesting
-    val wordPopularCount: LiveData<Int> = combineSourcesWithDiff(inputLanguage) {
-
-        val inputLanguage = inputLanguage.get()
+    val wordPopularCount: StateFlow<Int> = combineState(
+        inputLanguageFlow.filterNotNull(),
+        initialValue = 0
+    ) { inputLanguage ->
 
         countWordAsyncUseCase.execute(CountWordAsyncUseCase.Param(resource = Word.Resource.Popular, languageCode = inputLanguage.id)).collect {
-
-            postValue(it)
+            value = it
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, wordPopularCount) {
+    val viewItemList: StateFlow<List<ViewItem>> = combineState(
+        sizes,
+        themes,
+        strings,
+        wordPopularCount,
+        initialValue = emptyList()
+    ) { sizes, themes, strings, wordPopularCount ->
 
-        val size = size.value ?: return@combineSourcesWithDiff
-        val style = style.value ?: return@combineSourcesWithDiff
-        val theme = theme.value ?: return@combineSourcesWithDiff
-        val translate = translate.value ?: return@combineSourcesWithDiff
+        if (!strings.containsKey("title_game") || wordPopularCount <= Constants.WORD_COUNT_MIN) {
 
-        val wordPopularCount = wordPopularCount.get()
-
-
-        if (!translate.containsKey("title_game") || wordPopularCount <= Constants.WORD_COUNT_MIN) {
-
-            postValue(emptyList())
-            return@combineSourcesWithDiff
+            value = emptyList()
+            return@combineState
         }
 
 
@@ -70,56 +63,55 @@ class GameHomeServiceModel(
 
         TextSimpleViewItem(
             id = "TITLE_GAME",
-            maxWidth = size.width,
-            text = translate.getOrEmpty("title_game")
-                .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
-            textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
-            margin = Margin(
-                marginHorizontal = DP.DP_4
+            maxWidth = sizes.width - 2 * 12.dp().toInt(),
+            text = strings.getOrEmpty("title_game")
+                .withStyleTitleLarge()
+                .with(BigBold, BigForegroundColor(themes.colorOnSurface))
+                .build(),
+            textPadding = Padding(
+                top = 16.dp().toInt(),
+                left = 4.dp().toInt(),
+                right = 4.dp().toInt(),
+                bottom = 8.dp().toInt()
             )
         ).let {
 
-            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_GAME_0", maxWidth = size.width, height = DP.DP_16.toFloat()))
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_GAME_1", maxWidth = size.width, height = DP.DP_8.toFloat()))
         }
 
         TextSimpleViewItem(
             id = Id.GAME,
-            maxWidth = size.width,
-            text = translate.getOrEmpty("action_play_game")
-                .with(BigBold, BigForegroundColor(theme.colorPrimary)).build(),
-            textStyle = R.style.TextAppearance_MaterialComponents_Body1,
+            maxWidth = sizes.width,
+            text = strings.getOrEmpty("action_play_game")
+                .withStyleBodyLarge()
+                .with(BigBold, BigForegroundColor(themes.colorPrimary))
+                .build(),
 
-            margin = Margin(
-                marginHorizontal = DP.DP_4
+            textPadding = Padding(
+                16.dp().toInt(),
             ),
+
             padding = Padding(
-                paddingVertical = DP.DP_20,
-                paddingHorizontal = DP.DP_16
+                left = 4.dp().toInt(),
+                bottom = 16.dp().toInt()
             ),
+
             background = Background(
-                strokeColor = theme.colorPrimary,
+                strokeColor = themes.colorPrimary,
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
             ),
         ).let {
 
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_GAME_2", maxWidth = size.width, height = DP.DP_16.toFloat()))
         }
 
-        viewItemList.forEach {
-
-            if (it is SizeViewItem) it.measure(size, style)
-        }
-
-        postValueIfActive(viewItemList)
+        value = viewItemList
     }
 
     init {
 
-        viewItemList.asFlow().map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
+        viewItemList.map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
 
             logAnalytics("feature_game_home_show_$it")
         }

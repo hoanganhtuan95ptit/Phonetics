@@ -14,7 +14,22 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
+
+fun <R> ViewModel.mutableStateFlow(
+    initialValue: R,
+    context: CoroutineContext = handler + Dispatchers.IO,
+    transform: suspend MutableStateFlow<R>.() -> Unit
+): StateFlow<R> {
+    val state = MutableStateFlow(initialValue)
+
+    viewModelScope.launch(context) {
+        state.transform()
+    }
+
+    return state.asStateFlow()
+}
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun <T1, R> ViewModel.combineState(

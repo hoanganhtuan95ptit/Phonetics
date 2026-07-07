@@ -1,32 +1,28 @@
 package com.simple.phonetics.ui.home.services.ipa
 
-import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.simple.adapter.entities.ViewItem
 import com.simple.analytics.logAnalytics
-import com.simple.phonetics.ui.common.adapters.SpaceViewItem2
 import com.simple.coreapp.ui.view.Background
-import com.simple.coreapp.ui.view.Margin
 import com.simple.coreapp.ui.view.Padding
 import com.simple.coreapp.ui.view.Size
 import com.simple.coreapp.utils.ext.DP
-import com.simple.coreapp.utils.extentions.combineSourcesWithDiff
-import com.simple.coreapp.utils.extentions.mediatorLiveData
-import com.simple.coreapp.utils.extentions.postValueIfActive
 import com.simple.ipa.entities.Ipa
 import com.simple.phonetics.Id
-import com.simple.phonetics.R
 import com.simple.phonetics.domain.usecase.ipa.GetIpaStateAsyncUseCase
-import com.simple.phonetics.ui.base.adapters.SizeViewItem
+import com.simple.phonetics.ui.base.adapters.GridViewItem
 import com.simple.phonetics.ui.base.adapters.TextSimpleViewItem
-import com.simple.phonetics.ui.base.adapters.measureTextViewHeight
-import com.simple.phonetics.ui.base.adapters.measureTextViewWidth
 import com.simple.phonetics.ui.base.fragments.BaseViewModel
 import com.simple.phonetics.ui.common.adapters.IpaViewItem
+import com.simple.phonetics.ui.common.adapters.PrecomputeViewItem
+import com.simple.phonetics.utils.combineState
 import com.simple.phonetics.utils.exts.BackgroundColor
+import com.simple.phonetics.utils.exts.dp
+import com.simple.phonetics.utils.exts.withStyleBodyLarge
+import com.simple.phonetics.utils.exts.withStyleBodySmall
+import com.simple.phonetics.utils.exts.withStyleTitleLarge
+import com.simple.phonetics.utils.mutableStateFlow
 import com.simple.state.ResultState
 import com.simple.ui.precompute.text.build
 import com.simple.ui.precompute.text.span.BigBold
@@ -36,6 +32,7 @@ import com.unknown.coroutines.launchCollect
 import com.unknown.size.uitls.exts.width
 import com.unknown.theme.utils.exts.colorOnSurface
 import com.unknown.theme.utils.exts.colorPrimary
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -44,140 +41,128 @@ class IpaHomeViewModel(
 ) : BaseViewModel() {
 
     @VisibleForTesting
-    val ipaState: LiveData<ResultState<List<Ipa>>> = mediatorLiveData {
-
-        postValue(ResultState.Start)
-
+    val ipaState: StateFlow<ResultState<List<Ipa>>> = mutableStateFlow(
+        initialValue = ResultState.Idle as ResultState<List<Ipa>>
+    ) {
         getIpaStateAsyncUseCase.execute().collect {
-
-            postValue(it)
+            value = it
         }
     }
 
-    val viewItemList: LiveData<List<ViewItem>> = combineSourcesWithDiff(size, style, theme, translate, ipaState) {
+    val viewItemList: StateFlow<List<ViewItem>> = combineState(
+        sizes,
+        themes,
+        strings,
+        ipaState,
+        initialValue = emptyList()
+    ) { sizes, themes, strings, state ->
 
-        val size = size.value ?: return@combineSourcesWithDiff
-        val style = style.value ?: return@combineSourcesWithDiff
-        val theme = theme.value ?: return@combineSourcesWithDiff
-        val translate = translate.value ?: return@combineSourcesWithDiff
-
-        val state = ipaState.value ?: return@combineSourcesWithDiff
-
-        if (!translate.containsKey("title_ipa") || state !is ResultState.Success) {
-
-            postValue(emptyList())
-            return@combineSourcesWithDiff
+        if (!strings.containsKey("title_ipa") || state !is ResultState.Success) {
+            value = emptyList()
+            return@combineState
         }
 
 
-        val viewItemList = arrayListOf<ViewItem>()
+        val childViewItemList = arrayListOf<PrecomputeViewItem>()
 
-
-        val ipaList = state.data.runCatching { subList(0, 4) }.getOrNull().orEmpty()
-
-        if (ipaList.isNotEmpty()) TextSimpleViewItem(
-            id = "TITLE_IPA",
-            maxWidth = size.width,
-            text = translate["title_ipa"].orEmpty()
-                .with(BigBold, BigForegroundColor(theme.colorOnSurface)).build(),
-            textStyle = R.style.TextAppearance_MaterialComponents_Headline6,
-            margin = Margin(
-                marginHorizontal = DP.DP_4
-            )
-        ).let {
-
-            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_IPA_0", maxWidth = size.width, height = DP.DP_16.toFloat()))
-            viewItemList.add(it)
-            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_IPA_1", maxWidth = size.width, height = DP.DP_8.toFloat()))
-        }
-
+        val ipaList = state.data.take(4)
 
         ipaList.map {
 
             IpaViewItem(
                 id = it.ipa,
-                maxWidth = size.width,
+                maxWidth = (sizes.width - 2 * 12.dp().toInt()) / 3,
 
                 data = it,
 
                 ipa = it.ipa
-                    .with(BigForegroundColor(theme.colorOnSurface)).build(),
+                    .withStyleTitleLarge()
+                    .with(BigBold, BigForegroundColor(themes.colorOnSurface))
+                    .build(),
                 text = it.examples.firstOrNull().orEmpty()
-                    .with(BigForegroundColor(theme.colorOnSurface)).build(),
+                    .withStyleBodySmall()
+                    .with(BigForegroundColor(themes.colorOnSurface))
+                    .build(),
 
-                size = Size(
-                    width = (size.width - 6 * DP.DP_4 - 2 * DP.DP_12) / 3,
-                ),
-                margin = Margin(
-                    margin = DP.DP_4
-                ),
                 background = Background(
                     cornerRadius = DP.DP_16,
-                    backgroundColor = it.BackgroundColor(theme = theme)
+                    backgroundColor = it.BackgroundColor(theme = themes)
                 )
             )
-        }.map {
-
-            it.measure(appSize = size, style = style)
-            it
         }.let {
 
-            viewItemList.addAll(it)
+            childViewItemList.addAll(it)
         }
 
-
-        val actionText = translate["action_view_all_ipa"].orEmpty()
-            .with(BigBold, BigForegroundColor(theme.colorPrimary)).build()
-
-        val ipaHeight = viewItemList.filterIsInstance<IpaViewItem>().firstOrNull()?.size?.height ?: DP.DP_72
-
-        val textWidth = measureTextViewWidth(actionText.textChar, size.width, style["TextAppearance_MaterialComponents_Body1"] ?: return@combineSourcesWithDiff)
-        val textHeight = measureTextViewHeight(actionText.textChar, size.width, style["TextAppearance_MaterialComponents_Body1"] ?: return@combineSourcesWithDiff)
-
-        if (ipaList.isNotEmpty()) TextSimpleViewItem(
+        if (childViewItemList.isNotEmpty()) TextSimpleViewItem(
             id = Id.IPA_LIST,
-            maxWidth = size.width,
-            text = actionText,
-            textStyle = R.style.TextAppearance_MaterialComponents_Body1,
+            maxWidth = sizes.width,
+
+            text = strings["action_view_all_ipa"].orEmpty()
+                .withStyleBodyLarge()
+                .with(BigBold, BigForegroundColor(themes.colorPrimary))
+                .build(),
+
             textSize = Size(
-                height = DP.DP_76,
-                width = ViewGroup.LayoutParams.WRAP_CONTENT
+                height = 90.dp().toInt()
             ),
 
-            size = Size(
-                width = textWidth + 2 * DP.DP_16,
-                height = ipaHeight
+            textPadding = Padding(
+                paddingHorizontal = 16.dp().toInt(),
             ),
-            margin = Margin(
-                marginVertical = DP.DP_4,
-                marginHorizontal = DP.DP_4
-            ),
+
             padding = Padding(
-                paddingVertical = (ipaHeight - textHeight) / 2,
-                paddingHorizontal = DP.DP_16
+                top = 4.dp().toInt(),
+                left = 4.dp().toInt(),
             ),
+
             background = Background(
-                strokeColor = theme.colorPrimary,
+                strokeColor = themes.colorPrimary,
                 strokeWidth = DP.DP_2,
                 cornerRadius = DP.DP_16
             ),
         ).let {
 
+            childViewItemList.add(it)
+        }
+
+
+        val viewItemList = arrayListOf<ViewItem>()
+
+        if (ipaList.isNotEmpty()) TextSimpleViewItem(
+            id = "TITLE_IPA",
+            maxWidth = sizes.width,
+            text = strings["title_ipa"].orEmpty()
+                .withStyleTitleLarge()
+                .with(BigBold, BigForegroundColor(themes.colorOnSurface))
+                .build(),
+            textPadding = Padding(
+                top = 16.dp().toInt(),
+                left = 4.dp().toInt(),
+                right = 4.dp().toInt(),
+                bottom = 8.dp().toInt()
+            )
+        ).let {
+
             viewItemList.add(it)
-            viewItemList.add(SpaceViewItem2(id = "SPACE_TITLE_AND_IPA_2", maxWidth = size.width, height = DP.DP_16.toFloat()))
         }
 
-        viewItemList.forEach {
+        if (childViewItemList.isNotEmpty()) GridViewItem(
+            id = "TITLE_IPA",
+            maxWidth = sizes.width - 2 * 12.dp().toInt(),
+            column = 3,
+            viewItems = childViewItemList
+        ).let {
 
-            if (it is SizeViewItem) it.measure(size, style)
+            viewItemList.add(it)
         }
 
-        postValueIfActive(viewItemList)
+        value = viewItemList
     }
 
     init {
 
-        viewItemList.asFlow().map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
+        viewItemList.map { it.isNotEmpty() }.distinctUntilChanged().launchCollect(viewModelScope) {
 
             logAnalytics("feature_ipa_home_show_$it")
         }
